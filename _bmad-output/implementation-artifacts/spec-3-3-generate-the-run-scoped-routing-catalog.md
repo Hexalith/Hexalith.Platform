@@ -2,7 +2,7 @@
 title: '3.3 Generate the run-scoped routing catalog'
 type: 'feature'
 created: '2026-10-30'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '1316523edfab050e03539a4e6425605245070de9'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -139,3 +139,65 @@ The approved frozen block and original baseline are unchanged. Tasks 8 and 9 now
 The parent captured the complete baseline diff, including untracked files, and inspected the story's production changes, owner runtime changes, tests and matrix receipts. The original 90-file routing audit retains 88 identical files; the changed bootstrap and finite receiver were inspected against their new tests and runtime receipts. All 219 source hashes in the final receipt matched the workspace at verification. Every frozen matrix row has executed passing coverage, including the separately executed live lanes; the four gated class skips are not used as matrix evidence. The five focused corrections reconcile the collecting class's failures without claiming that its original command passed. Formal review is complete; verified patches and the seven deferred items are recorded in the triage log.
 
 The parent completed post-review verification in [parent-final/verification.json](evidence/3-3/verification/resume-20261030/parent-final/verification.json): all four owner builds and Platform build passed; 47 executed cases passed with no failures or skips, including real source HTTP/catalog activation and reference readiness. Review items B2–B6, E1 and P1 are resolved. The final ordinary package run `91021c1904c986041184792bc4b61ca1` reached readiness in 52.472 seconds with 22 healthy resources, six matching readbacks and authenticated HTTP comparison of all 44 public schemas. Actual Docker observations verified five participant containers had only the shared writable catalog plus their own read-only component/ACL files and the explicit host UID/GID. Supported cleanup reported no owned resources; the loopback registry was removed. Seven unrelated or concurrent findings are recorded in deferred work; the native consumer suite remains a separate story 2.9 limitation.
+
+### Review Findings
+
+Code review 2 (2026-10-31). Scope: Platform baseline `1316523e`..`8af2e4d2` story files, plus the routing and catalog files in the EventStore, Tenants, Parties, Memories and Builds submodules over the same pin range (96 files, +3,737/−136). Layers: Blind Hunter, Edge Case Hunter, Verification Gap and Acceptance Auditor. Findings were verified against the current checkout. Identifiers: B = Blind Hunter, E = Edge Case Hunter, V = Verification Gap, A = Acceptance Auditor.
+
+- [ ] [Review][Patch] (D1 resolved 2026-10-31: refuse package-mode catalog compositions at compose time, naming the unreleased owner-SDK boundary; guard the Platform host's source-only HTTP-security calls like the Builds host, falling back to `SidecarChannelPolicy`; record package/CI acceptance as an undelivered boundary and keep the story open until owner packages ship and Builds pins are bumped) Package/CI catalog activation is not deliverable with the delivered owner code — high (A1, E4, B1, E24, V-other). `PlatformRoutingCatalogBootstrap.Create` (`src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:121`) generates a catalog and injects `CatalogPath`/`Directory` for every eventstore+domain graph, in any mode. In package/Release mode, two hosts then fail. The delivered Builds seed throws `NotSupportedException` (`references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs:35`; Builds `6cee7b0`). The Platform host throws in its `#else` branch. The Platform host also calls `UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel`, `HumanPolicy` and `UseEventStoreHumanSurface` without guards (`src/Hexalith.Platform.EventStoreHost/Program.cs:48-80`); none of these exist in the pinned 3.128.4 packages. The package qualification cited above used a private Builds commit `9d3d720`, in which the host called the SDK unconditionally. That commit is absent from Builds history, so the delivered code does not support the package-run claims in the Implementation Notes. Context: the whole Release build of the solution already fails earlier, in `Hexalith.Platform.Custody`, against 3.128.4. The Builds non-mapped branch would also fail at startup once an EventStore package registers the HTTP-security startup validator.
+- [ ] [Review][Patch] (D2 resolved 2026-10-31: fail fast at compose time when a selected caller with gateway grants, such as Timesheets, is not an enrolled catalog participant; declaration-driven owner/participant discovery moves to story 3.6) Catalog participants and owners are hard-coded rather than declaration-driven, and enabling Timesheets now fails activation — medium (A3, A6). Owners are taken only from `ServerId == "domain"`; assembly names come from module-specific conventions (`PlatformCatalogContractBinding.cs:12-19`); participants are fixed to `tenants-api`/`memories` (`PlatformRoutingCatalogBootstrap.cs:123-124`). Timesheets is a selected caller with eventstore ACL grants but is not a participant. `RouteCatalogTopologyValidator.cs:107` therefore refuses `selected-acl-caller-lacks-catalog-enrollment`, so the existing Development Timesheets opt-in can no longer become ready. Folders and Projects (story 3.6) will need Platform code edits.
+- [ ] [Review][Patch] (D3 resolved 2026-10-31: accept the per-Compose reader build, which the spec requires before resources start; add `-nodeReuse:false --disable-build-servers` to it; defer caching) Every Compose with eventstore+domain runs a synchronous `dotnet build` of the catalog reader — medium (B3). This applies to tests that only inspect the model too: there is no cache and no skip, the timeout is up to 5 minutes plus 1, and the build has `-m:1` but no `-nodeReuse:false`/`--disable-build-servers` (`src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs:52-54`). It slows the Composition suite and every AppHost cold start.
+- [ ] [Review][Patch] Generated-ingress eligibility refusal returns 503 (unavailable) while command and query ingress return 403 — medium (A13) [references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRouteCatalogFilter.cs:75]
+- [ ] [Review][Patch] No normally run test checks that each owner's CatalogBuilder bindings (AppId/Method/ContractVersion/idempotency) match the real host's `DevelopmentDomainRouteCatalog.Targets` and gateway admission; only the gated live smoke test covers this — medium (V1) [src/Hexalith.Platform.CatalogBuilder/Program.cs:26]
+- [ ] [Review][Patch] `DevelopmentDomainRouteCatalog.Targets` refusals (undeclared command, query or projection; wrong verb or policy) have no tests — medium (V2) [references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs:41]
+- [ ] [Review][Patch] The domain guard's schema-3 rules (service surface required, step-up refused) are never exercised; every guard test uses schema 2 — medium (V3) [references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/DomainRouteCatalogGuard.cs:23]
+- [ ] [Review][Patch] `RouteCatalogEligibilityBehavior` internal-workload exemption and verified-origin confirmation path are untested — medium (V4) [references/Hexalith.EventStore/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs:37]
+- [ ] [Review][Patch] `ValidateFiniteReceiver`, `/*` prefix grants and the five topology refusal codes are never executed by tests — medium (V5) [references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs:113]
+- [ ] [Review][Patch] Schema-3 rule `internal-operation-is-public` has no refusal case — medium (V6) [references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogValidator.cs:127]
+- [ ] [Review][Patch] Catalog cohort waits are checked by resource name only: no test checks `WaitUntilStarted`, or that participants have no waits on non-participants, so a revert to `WaitFor` would deadlock undetected — medium (V7, B13; also open in the story 2.9 deferred ledger) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:379]
+- [ ] [Review][Patch] Bootstrap gateway trust and allowed-domain keys, idempotency and assembly lists, the rendered `routing-catalog.yaml`, and the `native-scope.json`/`selected-closure.json` producer→consumer contract are unchecked — medium (V8, V-other) [src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:26]
+- [ ] [Review][Patch] `GatewaySeedSubscriptionTests` fails all four cases and still expects unauthenticated `/dapr/subscribe` to return 200, so the seed hosts' new channel and OpenAPI protections have no passing test — medium (V9, V-other) [tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:60]
+- [ ] [Review][Patch] Swagger UI is registered after `UseEventStoreHttpHostSecurity`, so `/swagger` returns 404 (EventStore's own host registers it before) — low (B2, E6) [src/Hexalith.Platform.EventStoreHost/Program.cs:58]
+- [ ] [Review][Patch] The "tampered predecessor" test omits the root digest, so it is refused as `missing-committed-root-or-bytes` before any decode and would pass even if tamper detection were broken — low (B12, A5) [tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs:42]
+- [ ] [Review][Patch] `duplicate-owner-operation` does not name the duplicated route or module, so the "Invalid enrollment" matrix row's identification requirement is unmet — low (A7) [references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/VersionedRouteCatalogBuilder.cs:18]
+- [ ] [Review][Patch] `PlatformRoutingCatalogTests.Root` ignores the `PlatformTestRepositoryRoot` metadata that `PlatformAppModelTests.Root` honours; use one helper — low (B14) [tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs:138]
+- [ ] [Review][Patch] A relative `CommittedRoutingCatalogPath` is resolved against the reader's working directory; apply `Path.GetFullPath` — low (E9) [src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs:63]
+- [x] [Review][Defer] Parties internal identity commands (`EstablishHumanActorBinding`, `RebindHumanActorBinding`, `RevokeHumanActorBinding`, `RotatePartyKey`) require an acting subject — medium if true, unverified (A9) [references/Hexalith.Parties/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs:97] — deferred: settle it by tracing `HttpPartiesIdentityClient.SubmitAsync`'s endpoint. For plain `/workload` submissions, `CommandsController.cs:266` sets `AuthenticatedSubject` with no workload fallback, so `DeclaredIdempotencyIntentAdapter.cs:104` would refuse these commands under the catalog. The `bound/workload` endpoint, with its principal, would not refuse them.
+
+**Rejected (36 entries, 43 raw findings):**
+- B4 `false`: the reader is compiled by the ungated `ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances` test.
+- B5/E11 `low`: a missing receiver key surfaces as `KeyNotFoundException` naming the route id in `generation.log`. Missing adapters and changed assemblies are refused at activation by independent observation.
+- B6/E12 `low`: same-attempt restart is the documented, tested MVP limitation (prior B1). A crashed participant is bounded by the runner deadline, and Aspire identifies it.
+- B7/E7 `low`: Platform always sets both `Directory` and `CatalogPath`, so a split configuration is only reachable by hand.
+- B8/E8 `low`: EventStore routes each domain to one service, and owners bind all commands to `process`.
+- B9/E18 `false`: `UsePrebuiltProjects` comes only from the file-entry configuration; `ComposeRun` and retention never set it, and publish mode is refused.
+- B10/E5 `false`: the container case was fixed after the reviewed snapshot by `5b50eae3`.
+- B11 `false`: retained history is meant to persist until an authorized contraction, which this story excludes.
+- B13 (remaining) `low`: environment-id characters, the run-plan mismatch, `MarkFailed`, metadata `Forbid`/503 and assembly-load tests are diagnostics-level gaps.
+- B15 `low`: the opt-in live lane deliberately retains evidence, and the `describe` environment is fully redacted.
+- B16 `low`: Development placeholders apply with the lifecycle disabled.
+- B17 `low`: per-run disposable local keys follow the existing environment-variable signing-key pattern.
+- B18/E17 `false`: all owner and adapter assemblies come from one reader output directory; each owner has a single `Create`.
+- B19 `low`: no route has a mid-segment parameter, and the runtime fence refuses it anyway.
+- A2/E2 `false`: `PlatformServerBindings.Resolve` already refuses package-origin servers in Source mode, before generation.
+- A4 `reject`: the code configures EventStore's existing bound-workload proofs scoped to declared domains. The discrepancy is the spec's "no new credential grant" note, and fixing it would mean editing the spec.
+- A5 (remaining) `low`: local/CI runs have no committed predecessor; builder retention is covered by the EventStore V3 tests.
+- A8 `low`: the extra agent-eligible entry is GetParty's existing `PartyDetail` wire alias, with the same request type.
+- A10 `low`: labels on internal operations are inert, because the surface policy admits only public operations for ui/agent.
+- A11 `low`: the spec requires explicit adapters, and any drift is refused at activation.
+- A12 `low`: the receipt is consumed only by the Development bootstrap of the same run.
+- A13 (remaining) `false`: skipping waits on non-participants is deliberate deadlock avoidance; the memories transport is already fixed.
+- E1 `false`: domain servers outside the enrolled owners are refused earlier, and fail-closed generation is intended.
+- E3 `false`: Builds' central package versions declare all six owner catalog packages.
+- E10 `false`: the workspace is private to one run.
+- E13 `low`: orphan `.tmp` files are left only in a private, failed attempt.
+- E14 `low`: no fence-less participant has inbound grants.
+- E15 `false`: `_surface` is published after `_allowed` is filled, and requests check `_surface` first.
+- E16 `low`: no owner declares a step-up internal projection.
+- E19 `low`: the non-Linux container-user policy is pre-existing and shared with sentry and placement.
+- E20 `low`: this is story 2.9 code, and source entries carry paths.
+- E21 `false`: no caller reads both re-exporting sample assemblies.
+- E22 `low`: unverified package-mode test-compile risk in Parties.
+- E23 `low`: no workspace consumer constructs the records, and central pinning prevents mixed versions.
+- V10 `low`: an opt-in verification-lane flag; also open in the story 2.9 ledger.
+- V11 `low`: diagnostics-only marker.

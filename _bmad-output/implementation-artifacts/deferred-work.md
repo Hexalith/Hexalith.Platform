@@ -1758,3 +1758,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: R6-BH-10: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner
   evidence: The concurrent v1 main calls verify before every phase, and verify rejects an expired review before cleanup can inspect namespace ownership. Cleanup after the 24-hour authority window is therefore unavailable through that runner; its separate lifecycle needs an ownership-bound cleanup path.
+
+## Deferred from: code review of spec-3-3-generate-the-run-scoped-routing-catalog (2026-10-31, second pass)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Parties internal identity commands may be refused under the catalog for lack of an acting subject (A9; medium if true, unverified).
+  evidence: `PartiesCatalogDeclarations.cs:97,103,110,111` declare `EstablishHumanActorBinding`, `RebindHumanActorBinding`, `RevokeHumanActorBinding` and `RotatePartyKey` with `Command<T>(true)`, although they are internal workload-only. For plain `/workload` submissions, EventStore `CommandsController.cs:266` sets `AuthenticatedSubject` to the bound principal or actor-binding claim, with no workload fallback. `DeclaredIdempotencyIntentAdapter.cs:104` then throws "An authenticated acting subject is required." Settle this by tracing which endpoint `HttpPartiesIdentityClient.SubmitAsync` posts to, and whether it supplies a bound principal.
