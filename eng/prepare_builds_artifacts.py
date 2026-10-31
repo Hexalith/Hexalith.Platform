@@ -7,10 +7,8 @@ import subprocess
 import urllib.request
 import zipfile
 
-VERSION = "4.38.3"
-SOURCE = "d1931b1e803144048d927fff16cb8119afde541e"
-ARCHIVE_SHA256 = "6c074186a9bbfb66c558fe5d1090e1e35fdd58577c0396266074bd1cea8919fd"
-TOOLING_SHA256 = "4e307577ae4fb02104914951a9905a1c9dd453447a80735443d24fbc83496823"
+from builds_tuple import load_binding, validate_owner_pins, validate_recorded_source, verify_catalog
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -31,24 +29,26 @@ def main():
     output = args.output.resolve()
     if output.exists():
         raise ValueError("Choose a new artifact directory; existing evidence is never replaced.")
-    manifest = json.loads((ROOT / ".config/dotnet-tools.json").read_bytes())
-    if manifest["tools"]["hexalith.builds.module.cli"]["version"] != VERSION:
-        raise ValueError("Approved archive must match the owner tool pin.")
+    binding = load_binding()
+    publication = binding["publication"]
+    version, source = publication["version"], binding["producer"]["sourceRevision"]
+    archive_sha256, tooling_sha256 = publication["archiveSha256"], publication["toolingSha256"]
+    validate_owner_pins(binding, ROOT)
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     state = source_state()
     if args.require_recorded:
         pin = subprocess.check_output(["git", "rev-parse", "HEAD:references/Hexalith.Builds"], cwd=ROOT, text=True).strip()
-        if pin != SOURCE or state["dirty"]:
-            raise ValueError("CI requires clean recorded Platform source with the exact approved Builds pin.")
+        validate_recorded_source(binding, pin, state["dirty"])
+        verify_catalog(binding, ROOT / "references/Hexalith.Builds")
     output.mkdir(parents=True)
-    archive = output / ("hexalith.builds.module.cli." + VERSION + ".nupkg")
+    archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
     if args.archive:
         archive.write_bytes(args.archive.read_bytes())
     else:
-        url = "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/" + VERSION + "/" + archive.name
+        url = "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/" + version + "/" + archive.name
         with urllib.request.urlopen(url, timeout=90) as response:
             archive.write_bytes(response.read())
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != ARCHIVE_SHA256:
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != archive_sha256:
         raise ValueError("Published signed Builds archive SHA-256 differs from the approved observation.")
     verification = subprocess.run(["dotnet", "nuget", "verify", str(archive), "--all"], capture_output=True, text=True)
     (output / "signature.stdout").write_text(verification.stdout)
@@ -69,16 +69,16 @@ def main():
             destination.write_bytes(payload)
             hashes[entry.filename] = hashlib.sha256(payload).hexdigest()
     tool = extracted / "tools/net10.0/any"
-    if hashes["tools/net10.0/any/Hexalith.Builds.Tooling.dll"] != TOOLING_SHA256:
+    if hashes["tools/net10.0/any/Hexalith.Builds.Tooling.dll"] != tooling_sha256:
         raise ValueError("Unexpected published Tooling identity.")
     host = tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
-    version = subprocess.check_output(["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"], text=True).strip()
-    if version != VERSION + "+" + SOURCE:
+    executable_version = subprocess.check_output(["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"], text=True).strip()
+    if executable_version != version + "+" + source:
         raise ValueError("Published executable source/version does not match the approved tuple.")
-    receipt = {"platformRevision": revision, "platformSourceState": state, "buildsRevision": SOURCE, "version": VERSION,
-               "archiveSha256": ARCHIVE_SHA256, "files": hashes,
+    receipt = {"platformRevision": revision, "platformSourceState": state, "buildsRevision": source, "version": version,
+               "archiveSha256": archive_sha256, "files": hashes,
                "toolRoot": str(tool), "toolingAssembly": str(tool / "Hexalith.Builds.Tooling.dll"),
-               "eventStoreHostAssembly": str(host), "qualification": "artifact identity only"}
+               "eventStoreHostAssembly": str(host), "tupleBinding": binding, "qualification": "artifact identity only", "candidateAcceptance": False}
     (output / "artifact-identity.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(str(tool))
 

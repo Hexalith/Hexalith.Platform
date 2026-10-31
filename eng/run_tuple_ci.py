@@ -12,7 +12,8 @@ import signal
 import xml.etree.ElementTree as ET
 import zipfile
 
-from prepare_builds_artifacts import ARCHIVE_SHA256, SOURCE, VERSION, source_state
+from prepare_builds_artifacts import source_state
+from builds_tuple import load_binding, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -81,6 +82,14 @@ def main():
         result["platform"] = platform.platform()
         result["runner"] = {name: os.environ.get(name) for name in ["RUNNER_OS", "RUNNER_ARCH", "ImageOS", "ImageVersion", "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT"]}
         run("dotnet-info", ["dotnet", "--info"])
+        binding = load_binding()
+        result["tupleBinding"] = binding
+        version, source = binding["publication"]["version"], binding["producer"]["sourceRevision"]
+        archive_sha256 = binding["publication"]["archiveSha256"]
+        validate_owner_pins(binding, ROOT)
+        pin = run("builds-pin", ["git", "rev-parse", "HEAD:references/Hexalith.Builds"]).strip()
+        validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
+        catalog = verify_catalog(binding, ROOT / "references/Hexalith.Builds")
         profile = json.loads((ROOT / "eng/tuple-ci-suites.json").read_bytes())
         required_total = validate_profile(profile)
         if not args.audit_only:
@@ -93,10 +102,10 @@ def main():
         if args.artifacts:
             identity = json.loads((args.artifacts.resolve() / "artifact-identity.json").read_bytes())
             tool = args.artifacts.resolve() / "published/tools/net10.0/any"
-            if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != VERSION or identity["buildsRevision"] != SOURCE:
+            if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != version or identity["buildsRevision"] != source or identity.get("tupleBinding") != binding:
                 raise ValueError("Artifact receipt names another tool root or tuple.")
-            archive = args.artifacts.resolve() / ("hexalith.builds.module.cli." + VERSION + ".nupkg")
-            if hashlib.sha256(archive.read_bytes()).hexdigest() != ARCHIVE_SHA256:
+            archive = args.artifacts.resolve() / ("hexalith.builds.module.cli." + version + ".nupkg")
+            if hashlib.sha256(archive.read_bytes()).hexdigest() != archive_sha256:
                 raise ValueError("Reused archive is not the approved signed package.")
             # Local graph diagnostics can reuse an already verified archive, but recheck every extracted byte.
             with zipfile.ZipFile(archive) as package:
@@ -127,8 +136,9 @@ def main():
             result["projectGraphPaths"] = [str(x.relative_to(ROOT)) for x in projects]
             result["status"] = "graph-verified"
             return
+        run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
-        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py"])
+        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(catalog)])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         assets = evidence / "assets"
         assets.mkdir()

@@ -48,9 +48,10 @@ jobs:
           trap 'code=$?; printf "%s\n" "$code" > "$bootstrap/initialize.exit"' EXIT
           [[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
-          test "$(git rev-parse HEAD:references/Hexalith.Builds)" = d1931b1e803144048d927fff16cb8119afde541e
+          builds_source="$(python3 -B eng/builds_tuple.py)"
+          test "$(git rev-parse HEAD:references/Hexalith.Builds)" = "$builds_source"
           git submodule update --init
-          test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = d1931b1e803144048d927fff16cb8119afde541e
+          test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = "$builds_source"
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         id: dotnet
         with:

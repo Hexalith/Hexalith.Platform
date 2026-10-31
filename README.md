@@ -36,23 +36,28 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The local tool manifest prepares `hexalith.builds.module.cli` `4.38.3`, and
-`hexalith-platform.json` prepares the matching floor `[4.38.3, 5.0.0-0)`.
-This is a local preparation candidate. Platform integration qualification,
-verification of the recorded Builds gitlink, publication of the resulting Platform identity
-and consumer adoption remain pending. The historical accepted `4.35.2` evidence
-below does not qualify this candidate for `run`, `debug` or package composition.
+The local bootstrap tool remains `hexalith.builds.module.cli` `4.38.3`, with
+range `[4.38.3, 5.0.0-0)` in `hexalith-platform.json`. It is explicitly
+**unqualified for the current source catalog**. The recorded Builds gitlink
+`cc0db51b800be1d0d5badc3780395cfb5953d0f5` could not be retrieved from the official
+producer. Neither that pin nor current source may be relabeled as published 4.38.3.
 
 [Builds release `v4.38.3`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.38.3)
-identifies exact source `d1931b1e803144048d927fff16cb8119afde541e`. Its official
-qualification inventory and signed NuGet archive were verified for Story 6.4.
-The Platform Builds selection targets that same exact published source.
-Exact-candidate integration/CI qualification remains pending. This release preserves the current Projects catalog, including
-Conversations `1.3.1`, Tenants `5.11.1` and EventStore `3.128.4`; its embedded runtime catalog selects
-Aspire `13.6.4`, Dapr CLI `1.18.2` and Dapr runtime `1.18.7`. The direct file AppHost
-also selects Aspire `13.6.4` and must use EventStore `3.128.4` and Toolkit
-`13.6.2-beta.959` for this tuple. Both generated and direct launch paths require
-their own integration qualification. Version agreement alone is not acceptance. No runtime prerequisite was installed or deployment performed.
+identifies exact source `d1931b1e803144048d927fff16cb8119afde541e`. Its historical
+signed-archive qualification remains valid only for those inputs. The current
+catalog preserves newer selections, including Commons `2.30.7` and Memories
+`3.0.10`, and has no verified compatible published tool yet.
+
+The exact official producer preparation is recorded in
+[`eng/builds-tuple.json`](eng/builds-tuple.json): source
+`6cc96b4ff23c40c77651e1e4f85ed3170c25c7a4` and committed catalog SHA-256
+`abe630443a9f095a1bce171c4b10314a714a8bba9f3bde8980a5c40ef46ef172`.
+Publication fields remain unavailable. No future version or archive identity is
+assumed. See the [qualification and recording sequence](docs/current-tuple-preparation.md).
+The direct file AppHost already selects Aspire `13.6.4` and Toolkit
+`13.6.2-beta.959`; TenantRegistry inherits the selected root catalog's transitive
+pinning while retaining Gateway `3.128.4`. Both generated and direct launch paths
+require fresh integration qualification after the actual publication is bound.
 
 The configured range permits later 4.x versions, including prereleases, and excludes
 5.0 prereleases. Each accepted tool carries its own catalog; matching the range
@@ -106,17 +111,23 @@ the policy does not establish current workflow enforcement.
 
 ## Exact tuple CI preflight
 
-The approved tool/catalog selection is Builds `4.38.3` at
-`d1931b1e803144048d927fff16cb8119afde541e`. Local Debug defaults retain source
-references. For owner CI, `HexalithBuildsPublishedToolRoot` binds Tooling and the
-EventStore seed to that signed tool archive, including the host dependency
-manifest and MVC Testing content root. CI rejects foreign project references.
+[`eng/builds-tuple.json`](eng/builds-tuple.json) is the single exact producer and
+publication binding used by the workflow and artifact scripts. Its missing
+publication values deliberately block preflight before dependency initialization,
+archive download or Release execution. After official publication is verified,
+the exact tool pin, range floor, recorded gitlink and publication hashes must all
+agree. The source catalog blob and SHA-256 are checked against the actual Builds
+checkout, with Git's normal CRLF checkout conversion preserved.
 
-The manual `Platform tuple CI preflight` workflow accepts a full recorded
-candidate SHA, initializes only this standalone owner's direct dependencies,
-verifies the pinned signed archive, retains package graphs, builds Release and
-runs test projects individually. Artifacts include failures. It publishes or
-deploys nothing. Do not initialize this umbrella checkout's nested dependencies.
+Local Debug defaults retain source references. For owner CI,
+`HexalithBuildsPublishedToolRoot` binds Tooling and the EventStore seed to the
+verified signed tool archive, including the host dependency manifest and MVC
+Testing content root. CI rejects foreign project references and changed extracted
+bytes, requires clean recorded source, builds Release and enforces the declared
+suite counts. The manual `Platform tuple CI preflight` workflow accepts a full
+recorded candidate SHA and initializes only this standalone owner's direct
+dependencies. Artifacts include terminal failures. Do not initialize this umbrella
+checkout's nested dependencies.
 
 A passing preflight does not grant candidate acceptance. The authenticated
 candidate-decision request, expected/loaded runtime identities, required live

@@ -171,6 +171,24 @@ class HostBuildsResolutionTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Platform CI refuses foreign project references", result.stdout + result.stderr)
 
+    def test_tenant_registry_inherits_transitive_catalog_and_keeps_one_gateway_pin(self):
+        selected = self.builds(self.workspace / "Hexalith.Builds", "tenant")
+        catalog = selected / "Props/Directory.Packages.props"
+        catalog.write_text('<Project><ItemGroup><PackageVersion Include="Hexalith.Commons.UniqueIds" Version="2.30.7" /><PackageVersion Include="Hexalith.EventStore.Gateway" Version="3.124.0" /></ItemGroup></Project>')
+        project = self.platform / "src/Hexalith.Platform.TenantRegistry.Host/Hexalith.Platform.TenantRegistry.Host.csproj"
+        project.parent.mkdir(parents=True)
+        for name in (project.name, "Directory.Packages.props"):
+            shutil.copyfile(ROOT / project.parent.relative_to(self.platform) / name, project.parent / name)
+        result = subprocess.run(["dotnet", "msbuild", str(project), "-nologo", "-p:Configuration=Debug", "-p:UseHexalithProjectReferences=false", "-getProperty:CentralPackageTransitivePinningEnabled", "-getItem:PackageVersion"], text=True, capture_output=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        evaluated = json.loads(result.stdout)
+        self.assertEqual(evaluated["Properties"]["CentralPackageTransitivePinningEnabled"], "true")
+        packages = evaluated["Items"]["PackageVersion"]
+        for name, version in (("Hexalith.Commons.UniqueIds", "2.30.7"), ("Hexalith.EventStore.Gateway", "3.128.4")):
+            matches = [item for item in packages if item["Identity"] == name]
+            self.assertEqual(len(matches), 1)
+            self.assertEqual(matches[0]["Version"], version)
+
     def test_runner_assembly_override_does_not_add_a_source_reference(self):
         self.builds(self.workspace / "Hexalith.Builds", "workspace")
         result = self.evaluate(f"-p:BuildsToolingAssemblyPath={self.workspace / 'runner/Hexalith.Builds.Tooling.dll'}")
