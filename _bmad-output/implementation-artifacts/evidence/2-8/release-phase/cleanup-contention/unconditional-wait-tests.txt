@@ -1,0 +1,28 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: "lock") [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(480,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(String scenario)
+        test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs(481,0): at Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(String scenario)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockDeadlineRefusesCleanupUntilExactRetryAsync [FAIL]
+      Shouldly.ShouldAssertException : elapsed.Elapsed
+          should be less than
+      00:00:03
+          but was
+      00:00:04.0033310
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(1124,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockDeadlineRefusesCleanupUntilExactRetryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(1133,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockDeadlineRefusesCleanupUntilExactRetryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '4ae6e0ba4f0d069cb9154b6ce52732d9ecd8fffec55538a78a261d79487f3961')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 362, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 229.446s

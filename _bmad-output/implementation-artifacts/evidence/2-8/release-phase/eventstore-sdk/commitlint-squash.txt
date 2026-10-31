@@ -1,0 +1,7 @@
+⧗   --- input ---
+fix(testing): publish descriptor stream observation helper (#378)
+
+Add a descriptor-bound Redis event-stream reader for module integration suites.
+Refuse foreign tenants before opening persistence and keep native test consumers
+on the shared EventStore testing SDK.
+✔   found 0 problems, 0 warnings

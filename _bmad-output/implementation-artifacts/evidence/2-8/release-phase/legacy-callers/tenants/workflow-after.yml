@@ -1,0 +1,335 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *' # Nightly at 02:00 UTC — runs Performance tests
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  published-catalog-http:
+    name: Published catalog HTTP
+    env:
+      RepositoryCommit: ${{ github.sha }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Initialize only the declared build and linked hosting inputs
+        run: >-
+          git -c submodule.recurse=false submodule update --init --
+          references/Hexalith.Builds references/Hexalith.Platform
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - name: Verify the opt-in hosted package profile
+        run: python3 tests/scripts/test_hosted_package_profile.py
+      - name: Verify catalog archive provenance refusals
+        run: python3 tests/scripts/test_catalog_package_consumer.py
+      - name: Verify ordinary packing refuses stale catalog artifacts
+        run: python3 tests/scripts/test_catalog_artifact_guards.py
+      - name: Build generated HTTP contracts against the published catalog SDK
+        run: >-
+          dotnet build tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release -warnaserror -m:1 -nr:false
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+          -p:HexalithEventStoreFromSource=false -p:HexalithEventStoreVersion=3.129.0
+          -p:HexalithFrontComposerFromSource=false -p:HexalithMemoriesFromSource=false
+      - name: Require every generated HTTP case and catalog refusal control
+        run: >-
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+          -p:HexalithEventStoreFromSource=false -p:HexalithEventStoreVersion=3.129.0
+          -p:HexalithFrontComposerFromSource=false -p:HexalithMemoriesFromSource=false
+          --filter-class Hexalith.Tenants.IntegrationTests.TenantsApiGeneratedControllerTests
+          --minimum-expected-tests 66 --fail-skips on
+      - name: Pack and consume the actual compiled catalog archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          catalog_version="0.0.0-ci.${GITHUB_RUN_ID}"
+          for catalog_package in Contracts Server; do
+            dotnet pack "src/Hexalith.Tenants.${catalog_package}/Hexalith.Tenants.${catalog_package}.csproj" \
+              --configuration Release --no-build --output "${RUNNER_TEMP}/catalog-packages" \
+              -p:Version="$catalog_version" -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+          done
+          python3 scripts/verify-catalog-package-consumer.py "${RUNNER_TEMP}/catalog-packages" \
+            --expected-source-sha "$GITHUB_SHA" --output "${RUNNER_TEMP}/catalog-package-consumer.json"
+
+  authenticated-routes:
+    name: Blocking authenticated live routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SSL_CERT_DIR: /home/runner/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
+      # Qualify request-path projection delivery independently of the pinned background-worker race.
+      EventStore__Projections__WorkersEnabled: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init
+      - name: Select published bootstrap compatibility hosts
+        run: bash scripts/prepare-bootstrap-compatibility.sh
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Trust HTTPS development certificates for live sockets
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3-tools
+          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
+            mkdir -p "$live_nss_directory"
+            if [ ! -f "$live_nss_directory/cert9.db" ]; then
+              certutil -N -d "sql:$live_nss_directory" --empty-password
+            fi
+          done
+          dotnet dev-certs https --trust
+          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
+            live_cert_index=0
+            for live_certificate in "$HOME"/.aspnet/dev-certs/trust/*.pem; do
+              [ -f "$live_certificate" ] || continue
+              # Trust the SDK development server certificate as a peer.
+              certutil -A -d "sql:$live_nss_directory" -n "tenants-live-dev-cert-$live_cert_index" -t 'P,,' -i "$live_certificate"
+              live_cert_index=$((live_cert_index + 1))
+            done
+          done
+      - name: Install and initialize Dapr
+        uses: Hexalith/Hexalith.Builds/Github/dapr-init@fff4a212180d8cd1c5c0759655a9bc4fb6963c45
+        with:
+          version: '1.18.0'
+          runtime-version: '1.18.2'
+      - name: Install pinned browser qualification tools
+        working-directory: tests/performance/tenant-audit
+        run: |
+          npm ci
+          npx --no-install playwright install --with-deps chromium
+      - name: Build live hosts and focused suites against published packages
+        id: live-build
+        shell: bash
+        run: |
+          set -euo pipefail
+          for project in \
+            references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj \
+            references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server.Host/Hexalith.EventStore.Admin.Server.Host.csproj \
+            references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj \
+            samples/Hexalith.Tenants.Sample/Hexalith.Tenants.Sample.csproj \
+            tests/Hexalith.Tenants.AppHost.Tests/Hexalith.Tenants.AppHost.Tests.csproj \
+            tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj; do
+            dotnet build "$project" --configuration Release \
+              -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true \
+              -p:HexalithFrontComposerFromSource=false -p:HexalithMemoriesFromSource=false \
+              -warnaserror -m:1 -nr:false
+          done
+      - name: Verify unique app-channel ownership
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.AppHost.Tests/Hexalith.Tenants.AppHost.Tests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.AppHost.Tests.AppHostSecurityResourceGraphTests
+          --minimum-expected-tests 12 --fail-skips on
+      - name: Verify bounded TLS failure diagnostics
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.AspireTopologyTlsDiagnosticsTests
+          --minimum-expected-tests 5 --fail-skips on
+      - name: Verify bootstrap lifecycle and authority guards
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.AspireTopologyBootstrapTests
+          --minimum-expected-tests 72 --fail-skips on
+      - name: Verify real Dapr HTTPS reads never retry a 503
+        run: |
+          python3 tests/integration/qualify-dapr-read-retries.py --output "${{ runner.temp }}/tenants-dapr-no-retry.json"
+          if python3 tests/integration/qualify-dapr-read-retries.py --mutate-retries --output "${{ runner.temp }}/tenants-dapr-retry-mutation.json"; then
+            echo 'The retries=3 mutation unexpectedly passed.' >&2
+            exit 1
+          fi
+          python3 - "${{ runner.temp }}/tenants-dapr-retry-mutation.json" <<'PY'
+          import json, sys
+          report = json.load(open(sys.argv[1]))
+          retry = next(row for row in report['results'] if row['case'] == 'no retry on 503')
+          assert retry['backendCalls'] == 4 and not retry['pass'], report
+          assert len(report['results']) == 13 and all(row['pass'] for row in report['results'] if row is not retry), report
+          PY
+      - name: Retain the real Dapr retry qualification
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tenants-dapr-read-retry-evidence
+          path: ${{ runner.temp }}/tenants-dapr-*.json
+          if-no-files-found: warn
+      - name: Verify cold bootstrap, six REST reads, conditional responses and cursor recovery
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        env:
+          # This is the first live fixture on a fresh runner: require a newly committed bootstrap.
+          TENANTS_LIVE_REQUIRE_COLD_BOOTSTRAP: 'true'
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.AuthenticatedTenantsRouteTests
+          --minimum-expected-tests 6 --fail-skips on
+      - name: Verify private failure evidence
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.AuthenticatedRouteEvidenceTests
+          --minimum-expected-tests 3 --fail-skips on
+      - name: Verify the hosted persisted-state regression without skips
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-method Hexalith.Tenants.IntegrationTests.AspireTopologyTests.Generated_tenants_api_get_tenant_reads_verified_redis_state_with_projection_authority
+          --minimum-expected-tests 1 --fail-skips on
+      - name: Preserve anonymous UI denial coverage
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.TenantsUiRouteSmokeTests
+          --minimum-expected-tests 6 --fail-skips on
+      - name: Verify authenticated UI, measured responsive modes and contextual audit Back
+        if: ${{ !cancelled() && steps.live-build.outcome == 'success' }}
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          --filter-class Hexalith.Tenants.IntegrationTests.AuthenticatedTenantsUiRouteTests
+          --minimum-expected-tests 3 --fail-skips on
+      - name: Retain support-safe live browser evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: authenticated-live-route-evidence
+          path: /tmp/tenants-live-routes-*/result.json
+          if-no-files-found: warn
+      - name: Retain bounded bootstrap failure categories
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tenants-bootstrap-failure-categories
+          path: ${{ runner.temp }}/tenants-bootstrap-diagnostics/*.json
+          if-no-files-found: ignore
+
+  http-contracts:
+    name: Blocking HTTP contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - name: Build HTTP contracts against published packages
+        run: >
+          dotnet build tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          -warnaserror -m:1 -nr:false
+      - name: Verify generated HTTP ETags and production REST consumers
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          --filter-class Hexalith.Tenants.IntegrationTests.TenantsApiGeneratedControllerTests
+          --minimum-expected-tests 44 --fail-skips on
+      - name: Verify real command status producer and UI proof
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          --filter-method 'Hexalith.Tenants.IntegrationTests.CommandApiRuntimeIntegrationTests.CommandStatusContract*'
+          --minimum-expected-tests 18 --fail-skips on
+      - name: Verify protected read-only project contract
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          --filter-method 'Hexalith.Tenants.IntegrationTests.CommandApiRuntimeIntegrationTests.ProjectContract*'
+          --minimum-expected-tests 35 --fail-skips on
+
+      - name: Verify persisted projection replay integrity
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          --filter-class Hexalith.Tenants.IntegrationTests.ProjectionReplayIntegrityTests
+          --minimum-expected-tests 31 --fail-skips on
+      - name: Verify audit stream persistence and canonical proof
+        # MTP discovers 117 unique rows; direct xUnit includes two duplicate rows (119).
+        run: >
+          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
+          --configuration Release --no-build
+          -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false
+          --filter-class Hexalith.Tenants.IntegrationTests.AuditStreamPersistenceTests
+          --minimum-expected-tests 117 --fail-skips on
+
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9
+    with:
+      solution: Hexalith.Tenants.slnx
+      test-platform: microsoft-testing-platform
+      run-consumer-validation: true
+      # The hook selects published 3.128.4 host source in topology jobs only;
+      # build-and-test and source-reference.yml retain the current source gitlink.
+      package-prepare-script: scripts/prepare-bootstrap-compatibility.sh
+      run-coverage-gate: true
+      # Restore/build/package consumers plus the bounded recovery controls exceed the shared 15-minute default.
+      build-timeout-minutes: 25
+      unit-test-projects: |
+        tests/Hexalith.Tenants.Contracts.Tests
+        tests/Hexalith.Tenants.Client.Tests
+        tests/Hexalith.Tenants.Testing.Tests
+        tests/Hexalith.Tenants.UI.Tests
+        samples/Hexalith.Tenants.Sample.Tests
+      integration-test-projects: |
+        tests/Hexalith.Tenants.AppHost.Tests
+        tests/Hexalith.Tenants.Server.Tests
+      aspire-test-project: tests/Hexalith.Tenants.IntegrationTests
+      aspire-timeout-minutes: 35
+      aspire-continue-on-error: false
+      aspire-browser-project: tests/performance/tenant-audit
+      # Complete non-Performance tier, workers enabled by the generic fixture default.
+      # The focused authenticated-route worker override above does not apply to this reusable job.
+      aspire-fail-skips: true
+      coverage-minimum-line: 80
+      coverage-required-branch: 100
+      coverage-line-scope: |
+        src/Hexalith.Tenants.Contracts/
+        src/Hexalith.Tenants.Client/
+        src/Hexalith.Tenants.Server/
+        src/Hexalith.Tenants.Testing/
+      coverage-isolation-targets: |
+        src/Hexalith.Tenants.Server/Aggregates/TenantAggregate.cs
+        src/Hexalith.Tenants.Server/Aggregates/GlobalAdministratorsAggregate.cs
+        src/Hexalith.Tenants.Server/Validators/ChangeUserRoleValidator.cs
+        src/Hexalith.Tenants.Server/Projections/TenantAuditOwnership.cs

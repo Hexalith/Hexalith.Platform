@@ -1,0 +1,30 @@
+[
+  {
+    "argv": [
+      "dotnet",
+      "msbuild",
+      "src/Hexalith.Parties/Hexalith.Parties.csproj",
+      "-p:Configuration=Release",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-getProperty:Configuration,TargetFramework,HexalithBuildsRoot,Hexalith1BuildPackageProps,Hexalith2BuildPackageProps,Hexalith3BuildPackageProps,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithFrontComposerVersion,HexalithEventStoreFromSource,HexalithTenantsFromSource,HexalithMemoriesFromSource,HexalithCommonsFromSource,HexalithCommonsHttpFromSource,HexalithFrontComposerFromSource,CustomBeforeDirectoryPackagesProps,CustomAfterMicrosoftCommonTargets",
+      "-getItem:ProjectReference,PackageReference,PackageVersion"
+    ],
+    "exitCode": 0,
+    "output": "parties-evaluation.json"
+  },
+  {
+    "argv": [
+      "dotnet",
+      "msbuild",
+      "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj",
+      "-p:Configuration=Release",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-getProperty:Configuration,TargetFramework,HexalithBuildsRoot,Hexalith1BuildPackageProps,Hexalith2BuildPackageProps,Hexalith3BuildPackageProps,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithFrontComposerVersion,HexalithEventStoreFromSource,HexalithTenantsFromSource,HexalithMemoriesFromSource,HexalithCommonsFromSource,HexalithCommonsHttpFromSource,HexalithFrontComposerFromSource,CustomBeforeDirectoryPackagesProps,CustomAfterMicrosoftCommonTargets",
+      "-getItem:ProjectReference,PackageReference,PackageVersion"
+    ],
+    "exitCode": 0,
+    "output": "adapter-evaluation.json"
+  }
+]

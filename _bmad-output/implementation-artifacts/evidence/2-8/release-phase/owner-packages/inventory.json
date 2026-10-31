@@ -1,0 +1,514 @@
+{
+  "story": "2.8",
+  "observedAt": "2026-10-31T18:31:18.091912+00:00",
+  "scope": "Official signed family archives at already published owner tags; package inventory/provenance verification only, no cross-family runtime or image acceptance",
+  "archiveDirectory": "/tmp/story28-owner-packages-nxd1wgiq",
+  "records": [
+    {
+      "owner": "Hexalith.Tenants",
+      "id": "Hexalith.Tenants.Contracts",
+      "version": "6.0.0",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Contracts.6.0.0.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.contracts/6.0.0/hexalith.tenants.contracts.6.0.0.nupkg",
+      "bytes": 60432,
+      "sha256": "6a75fbab7455cae74c00d6d3b9dc5ce123651bbb9c8af90474540b1d7af3101c",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Tenants.Contracts.6.0.0.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.McpCli.Abstractions",
+          "version": "1.1.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.7",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Tenants",
+      "id": "Hexalith.Tenants.Client",
+      "version": "6.0.0",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Client.6.0.0.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.client/6.0.0/hexalith.tenants.client.6.0.0.nupkg",
+      "bytes": 29000,
+      "sha256": "3c20f4ff7e73aada1ad54e186e872751bc1a9b04735d58413611253ff3682ca1",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Tenants.Client.6.0.0.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Tenants.Contracts",
+          "version": "6.0.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Client",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.7",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.McpCli.Abstractions",
+          "version": "1.1.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Tenants",
+      "id": "Hexalith.Tenants.Server",
+      "version": "6.0.0",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Server.6.0.0.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.server/6.0.0/hexalith.tenants.server.6.0.0.nupkg",
+      "bytes": 42441,
+      "sha256": "02a598cf7f28126043d7bd1bd63e43a53346b52bae83a8378b2edcd194ee6817",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Tenants.Server.6.0.0.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Tenants.Contracts",
+          "version": "6.0.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Server",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.7",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Client",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.DomainService",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.ServiceDefaults",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.McpCli.Abstractions",
+          "version": "1.1.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Tenants",
+      "id": "Hexalith.Tenants.Testing",
+      "version": "6.0.0",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Testing.6.0.0.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.testing/6.0.0/hexalith.tenants.testing.6.0.0.nupkg",
+      "bytes": 28623,
+      "sha256": "55e84cfa024827c923fd83706cde1d371d5ab3e82947225aebdd0f921fcd3a99",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Tenants.Testing.6.0.0.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Tenants.Contracts",
+          "version": "6.0.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Tenants.Server",
+          "version": "6.0.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.7",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Client",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.DomainService",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Server",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.McpCli.Abstractions",
+          "version": "1.1.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Tenants",
+      "id": "Hexalith.Tenants.Aspire",
+      "version": "6.0.0",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Aspire.6.0.0.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.aspire/6.0.0/hexalith.tenants.aspire.6.0.0.nupkg",
+      "bytes": 22612,
+      "sha256": "6ea37ae84d361c89885b380dc81db62c431c4d2eae39bda0a5505ab4d1e97f84",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Tenants.Aspire.6.0.0.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.EventStore.Aspire",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.7",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Aspire",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Aspire.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.aspire/3.0.13/hexalith.memories.aspire.3.0.13.nupkg",
+      "bytes": 25799,
+      "sha256": "d04e8a2f5988c3fcb71b9bdd463f5a9f8fbb08a1910a351dcae6a30c9a108483",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Aspire.3.0.13.signature.txt",
+      "hexalithDependencies": []
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Contracts",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Contracts.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.contracts/3.0.13/hexalith.memories.contracts.3.0.13.nupkg",
+      "bytes": 354536,
+      "sha256": "2050c1dd0f43d90fae91d0acf0091a240ac962dcde22ea9c0a79315a1cbb2320",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Contracts.3.0.13.signature.txt",
+      "hexalithDependencies": []
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Client.Rest",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Client.Rest.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.client.rest/3.0.13/hexalith.memories.client.rest.3.0.13.nupkg",
+      "bytes": 54986,
+      "sha256": "e82800fadc7ba96142e3ced26b8b7f2a72ebc8f59e8b9f157541f498d7229d70",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Client.Rest.3.0.13.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Redis",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Redis.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.redis/3.0.13/hexalith.memories.redis.3.0.13.nupkg",
+      "bytes": 18485,
+      "sha256": "3248a12d02d4cfa8e9f80b995b3c19b91c3cdfa17af7db89a78b61b472224916",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Redis.3.0.13.signature.txt",
+      "hexalithDependencies": []
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Cli",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Cli.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.cli/3.0.13/hexalith.memories.cli.3.0.13.nupkg",
+      "bytes": 2751520,
+      "sha256": "6d70e5742585c1398d1d3516cfbd600d672c70a9a020ad0f1db3f7818e1e0715",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Cli.3.0.13.signature.txt",
+      "hexalithDependencies": []
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Mcp",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Mcp.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.mcp/3.0.13/hexalith.memories.mcp.3.0.13.nupkg",
+      "bytes": 50203,
+      "sha256": "8194c10980138bff59fa2df0a730359b2ab65660775449b368239f2e9e9e203c",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Mcp.3.0.13.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Memories.Client.Rest",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Telemetry",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.ServiceDefaults",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.ServiceDefaults.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.servicedefaults/3.0.13/hexalith.memories.servicedefaults.3.0.13.nupkg",
+      "bytes": 36332,
+      "sha256": "97342dc8a3f338cff3923960ee326d2c363a7ef72a7508928b8da146152d6973",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.ServiceDefaults.3.0.13.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Telemetry",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.EventStore",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.EventStore.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstore/3.0.13/hexalith.memories.eventstore.3.0.13.nupkg",
+      "bytes": 91256,
+      "sha256": "acf1904c0294f2391133d225169211e2f98b969ec13be904086011a2ca07deeb",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.EventStore.3.0.13.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.Telemetry",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.Telemetry.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.telemetry/3.0.13/hexalith.memories.telemetry.3.0.13.nupkg",
+      "bytes": 22021,
+      "sha256": "6f8d553f797a13ba0bf4973f8ef4be27f631f1da19f52527fa0f785a4cffecd7",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.Telemetry.3.0.13.signature.txt",
+      "hexalithDependencies": []
+    },
+    {
+      "owner": "Hexalith.Memories",
+      "id": "Hexalith.Memories.EventStoreExtensions",
+      "version": "3.0.13",
+      "archivePath": "/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Memories.EventStoreExtensions.3.0.13.nupkg",
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstoreextensions/3.0.13/hexalith.memories.eventstoreextensions.3.0.13.nupkg",
+      "bytes": 20104,
+      "sha256": "d96f11e844f94ccf2f440c005b511287b1eb34bde654229e09c64d74f34404e1",
+      "metadataIdentityMatches": true,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "sourceCommitMatches": true,
+      "signaturePresent": true,
+      "signatureVerificationExitCode": 0,
+      "signatureEvidence": "Hexalith.Memories.EventStoreExtensions.3.0.13.signature.txt",
+      "hexalithDependencies": [
+        {
+          "id": "Hexalith.Memories.EventStore",
+          "version": "3.0.13",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.DomainService",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    }
+  ],
+  "allIdentitiesMatch": true,
+  "allSourceCommitsMatch": true,
+  "allSignaturesValid": true,
+  "activePinsChanged": false,
+  "hostedAcceptance": false,
+  "candidateAcceptance": false
+}

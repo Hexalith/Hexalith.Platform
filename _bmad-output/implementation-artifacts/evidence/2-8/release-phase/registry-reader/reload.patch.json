@@ -1,0 +1,117 @@
+[
+  {
+    "op": "test",
+    "path": "/metadata/uid",
+    "value": "20bb657c-b622-4e1b-81a2-f97bc353a811"
+  },
+  {
+    "op": "test",
+    "path": "/metadata/resourceVersion",
+    "value": "27899261"
+  },
+  {
+    "op": "test",
+    "path": "/spec/replicas",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/spec/strategy/type",
+    "value": "Recreate"
+  },
+  {
+    "op": "test",
+    "path": "/spec/template/spec/containers/0/image",
+    "value": "ghcr.io/project-zot/zot-linux-amd64@sha256:95a837a0afacf5b7edc0c92493f04beee6891989b8d2fd50a00cf65a1e6d4fd5"
+  },
+  {
+    "op": "test",
+    "path": "/spec/template/spec/containers/0/volumeMounts",
+    "value": [
+      {
+        "mountPath": "/etc/zot/session",
+        "name": "session-keys",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/tmp",
+        "name": "tmp"
+      },
+      {
+        "mountPath": "/etc/zot/config.json",
+        "name": "registry-config",
+        "readOnly": true,
+        "subPath": "config.json"
+      },
+      {
+        "mountPath": "/etc/zot/oidc",
+        "name": "registry-oidc",
+        "readOnly": true
+      },
+      {
+        "mountPath": "/var/lib/zot/distribution",
+        "name": "registry-storage"
+      },
+      {
+        "mountPath": "/etc/zot/htpasswd",
+        "name": "registry-htpasswd",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "op": "test",
+    "path": "/spec/template/spec/volumes",
+    "value": [
+      {
+        "name": "session-keys",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "distribution-registry-session-keys"
+        }
+      },
+      {
+        "emptyDir": {
+          "sizeLimit": "1Gi"
+        },
+        "name": "tmp"
+      },
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "distribution-registry-config"
+        },
+        "name": "registry-config"
+      },
+      {
+        "name": "registry-oidc",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "distribution-registry-oidc-secret"
+        }
+      },
+      {
+        "name": "registry-storage",
+        "persistentVolumeClaim": {
+          "claimName": "distribution-registry-storage"
+        }
+      },
+      {
+        "name": "registry-htpasswd",
+        "secret": {
+          "defaultMode": 292,
+          "secretName": "distribution-registry-htpasswd"
+        }
+      }
+    ]
+  },
+  {
+    "op": "add",
+    "path": "/spec/template/metadata/annotations",
+    "value": {
+      "kubectl.kubernetes.io/restartedAt": "2026-06-17T17:13:01+02:00",
+      "registries.hexalith.com/config-revision": "hardened-v2-story-4-2-phase2",
+      "hexalith.com/ci-reader-config-sha256": "4bc308da5e6495ba9b375797450e0abff89e47a728e2cbb946e0eb827779afca"
+    }
+  }
+]

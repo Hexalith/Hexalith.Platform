@@ -14,7 +14,7 @@ import sys
 import types
 
 
-COMMON_SOURCE_SHA256 = 'c9330eacfe3ad174920d0def0ea1112fd75463dac52556f8ee6d92dfe67662e0'
+COMMON_SOURCE_SHA256 = '3a41b15b273b9cc533b17532c837c4366ac12dcd9206911c4136a4925093bdb1'
 FAILURE = 'telemetry-postgresql-proposal-refused'
 
 
@@ -1278,7 +1278,7 @@ def render_proposal(value):
         },
         'capture': {'state': 'blocked', 'argv': None, 'snapshotId': None,
                     'dumpArgvTemplate': _argv(value, 'pg_dump') + ['--format=custom',
-                        '--lock-wait-timeout=15s', '--file=-', '--snapshot', None],
+                        '--lock-wait-timeout=15s', '--snapshot', None],
                     'coverage': 'whole-database-including-both-observed-schemas',
                     'snapshotHolder': {'argv': _argv(value, 'psql'),
                         'initialStdin': 'BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY;\n'
@@ -1364,7 +1364,7 @@ def snapshot_commands(value, binding):
         require(sorted((x['schema'], x['name']) for x in census) ==
                 sorted((x['schema'], x['name']) for x in value['source']['tables']))
     return {'dumpArgv': _argv(value, 'pg_dump') + ['--format=custom', '--lock-wait-timeout=15s',
-                                                '--file=-', '--snapshot=' + snapshot],
+                                                '--snapshot=' + snapshot],
             'canaryArgv': _argv(value, 'psql'),
             'canaryStdin': 'BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY;\n'
                            "SET TRANSACTION SNAPSHOT '" + snapshot + "';\n" +

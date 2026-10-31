@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Server",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "--configuration",
+      "Debug",
+      "-m:1",
+      "--disable-build-servers",
+      "-p:NuGetAudit=false"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-build-server.log",
+    "exitCode": 0
+  },
+  {
+    "name": "ServiceDefaults",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.ServiceDefaults.Tests/Hexalith.EventStore.ServiceDefaults.Tests.csproj",
+      "--configuration",
+      "Debug",
+      "-m:1",
+      "--disable-build-servers",
+      "-p:NuGetAudit=false"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-build-servicedefaults.log",
+    "exitCode": 0
+  },
+  {
+    "name": "DomainService",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.DomainService.Tests/Hexalith.EventStore.DomainService.Tests.csproj",
+      "--configuration",
+      "Debug",
+      "-m:1",
+      "--disable-build-servers",
+      "-p:NuGetAudit=false"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-build-domainservice.log",
+    "exitCode": 0
+  },
+  {
+    "name": "Contracts",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+      "--configuration",
+      "Debug",
+      "-m:1",
+      "--disable-build-servers",
+      "-p:NuGetAudit=false"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-build-contracts.log",
+    "exitCode": 0
+  }
+]

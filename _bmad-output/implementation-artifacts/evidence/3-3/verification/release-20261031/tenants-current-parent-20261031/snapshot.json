@@ -1,0 +1,140 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants-final",
+  "base": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+  "branch": "fix/development-catalog-owner-qualification",
+  "sdkSourcePin": "b641de5aa2f9fe58e4ade6c42fb938936f879748",
+  "paths": [
+    ".github/workflows/source-reference.yml",
+    "Directory.Build.targets",
+    "docs/development-route-catalog.md",
+    "references/Hexalith.EventStore",
+    "scripts/prepare-source-catalog-profile.py",
+    "scripts/tests/test_source_catalog_profile.py",
+    "src/Hexalith.Tenants.Api/Program.cs",
+    "src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj",
+    "src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json",
+    "src/Hexalith.Tenants.AppHost/Program.cs",
+    "src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs",
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapBoundCommand.cs",
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs",
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapReceipt.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/SourceCatalogBootstrapEvidence.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/SourceCatalogOwnerProfileTests.cs",
+    "tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs",
+    "tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapBoundCommandTests.cs",
+    "tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapReceiptTests.cs",
+    "tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs"
+  ],
+  "files": {
+    ".github/workflows/source-reference.yml": {
+      "sha256": "6262c71c529beb64f113e2dda127539130d6db083ef215f1d0344b692d26040d",
+      "bytes": 8616
+    },
+    "Directory.Build.targets": {
+      "sha256": "b0f8d969c1e139137b17ea5ea7a0dd4d470c553b057da5b9c608407597f73d52",
+      "bytes": 9012
+    },
+    "docs/development-route-catalog.md": {
+      "sha256": "bf8cad3b477468bd2191f1d8bbc52327350c70e2d63d3d2a4a580a2e5e69d930",
+      "bytes": 4789
+    },
+    "scripts/prepare-source-catalog-profile.py": {
+      "sha256": "dd047b51b252c6fa070cd7844e387ef99f2221d7778b19989075720e1f6f6ad6",
+      "bytes": 5894
+    },
+    "scripts/tests/test_source_catalog_profile.py": {
+      "sha256": "18ca89a0803803b52ebacb6112b268187dd1e293f295841b437f75457280ebac",
+      "bytes": 6222
+    },
+    "src/Hexalith.Tenants.Api/Program.cs": {
+      "sha256": "c2fa93538901906e30217a96fe4834ae2774380e897419f3a94b21495f904ba7",
+      "bytes": 7422
+    },
+    "src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj": {
+      "sha256": "02c066a7e1ac3f3c9a995daa75cdf85501751b95684ae0090704fea3793ee94e",
+      "bytes": 6983
+    },
+    "src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json": {
+      "sha256": "6402d831c568355af5e8af2b03d2d2a579c6d1615a9724f8c66519e01c512579",
+      "bytes": 20966
+    },
+    "src/Hexalith.Tenants.AppHost/Program.cs": {
+      "sha256": "c4a3ae8520f6ff09a52446f31b7110e644ad6135a5c0b9fa6f7875a596be5bfa",
+      "bytes": 23742
+    },
+    "src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs": {
+      "sha256": "35234a963cb81592dca6e3614564eca465fb09223bc6bc0e4f782b4a12d47ecc",
+      "bytes": 2885
+    },
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapBoundCommand.cs": {
+      "sha256": "3c0c9aaf72f5dadf6d0ae25a7515334d62b469805606a464cb483c22532de6fd",
+      "bytes": 4583
+    },
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs": {
+      "sha256": "3be550173e066131e703c66443b95b27a6e051a05c5f0985c5171c4a439d27dd",
+      "bytes": 12574
+    },
+    "src/Hexalith.Tenants/Bootstrap/TenantBootstrapReceipt.cs": {
+      "sha256": "ad5a6bfb639281d1a6322e0bc05006af7d74ce7408e9bf5a704cf946f395b79b",
+      "bytes": 4290
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs": {
+      "sha256": "f9d0b17d29b500d06dd9dddf4ab71cd574b741844b837915d32600b0435ff99b",
+      "bytes": 46817
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs": {
+      "sha256": "687cdbed18b95d632ba60e35ab5dee1eb3e02eb8dc44e4bb9bee58bf68485312",
+      "bytes": 2762
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs": {
+      "sha256": "2a3c0145a240fee1792eaf6230cc760529536818e6765802b82209ea252a1df1",
+      "bytes": 22293
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs": {
+      "sha256": "758c77a3e4087196a197b9a5f082ee5fdcd0c5edbb147a887002b70e067310be",
+      "bytes": 6164
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/Fixtures/SourceCatalogBootstrapEvidence.cs": {
+      "sha256": "0122eb22301d9dfa8456c68a7790552fa9c3ff3f383c7d6ac1667e998b3be9ec",
+      "bytes": 6753
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs": {
+      "sha256": "c1ec217400b7f16b9b67bb577f64bf6257083809189553735dad99d63aa36d3a",
+      "bytes": 3413
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/SourceCatalogOwnerProfileTests.cs": {
+      "sha256": "3a8eaabf3a6394de2e537949e2010501d11c336aecafab821b30838d15a34f19",
+      "bytes": 8432
+    },
+    "tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs": {
+      "sha256": "af43a286fc93179e554a92c82af2c60f5abc7d40acbffd82fce42bdacace5970",
+      "bytes": 10501
+    },
+    "tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapBoundCommandTests.cs": {
+      "sha256": "57665462e8598e8fcb5f62573d7b32c4cd4f3bebcda7ccc932490892637ba34b",
+      "bytes": 6825
+    },
+    "tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapReceiptTests.cs": {
+      "sha256": "b9ca4c913eaf6732e5f9d8d543d1d4a763c09cbc5f5d172bbab016576edd7903",
+      "bytes": 4361
+    },
+    "tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs": {
+      "sha256": "370bbd59196cd6b2d8024d9d724a21dad2b3e748119575e47a6a6b96a03fa6ef",
+      "bytes": 52292
+    }
+  },
+  "actualIndex": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.Tenants/worktrees/Hexalith.Tenants-final/index",
+  "indexSha256": "5960d27d4516eaeeba351717e8e5d59f9eee94e43a110c76ce126273b2f49511",
+  "indexUnchanged": true,
+  "patchSha256": "b7809cb6b99942175d9e951f549dd80721966f55868205bd53b7088fb2279f23",
+  "patchBytes": 94541,
+  "patchLines": 1428,
+  "archiveSha256": "1fda5a575afbbc3b729fe6b5aaac462e3543f4f92e6d7a5a94dc5ea1dbc155f6",
+  "timestampUtc": "2026-10-31T21:49:06.377702+00:00",
+  "publicationStatus": "uncommitted source candidate; no remote mutation; source-native hosted build/runtime still mandatory"
+}

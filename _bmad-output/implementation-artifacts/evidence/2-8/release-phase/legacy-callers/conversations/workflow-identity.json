@@ -1,0 +1,38 @@
+{
+  "recordedAtUtc": "2026-10-31T20:09:57.436312+00:00",
+  "owner": "Hexalith/Hexalith.Conversations",
+  "base": "8a26cb03ee1d5413c034eb60aee71618f3ebd31a",
+  "file": ".github/workflows/ci.yml",
+  "before": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+    "sha256": "32ca784e0326aa4f425d05ab899c0a03cecca7dba21889157867887ac9d06ee8",
+    "commitBlob": "de31152457b8aa595fc3564657f956695d215919",
+    "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+  },
+  "after": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "sha256": "004a326949393919777cdbcb707ed0fafb06f21214f1b75814cbe90877c91a47",
+    "normalizedBlob": "28fc458a12dbc28b9bdd596efd6824144361f3fb"
+  },
+  "onlyExactRefReplacement": true,
+  "allOtherBytesEqual": true,
+  "parsedYamlEquivalentExceptReference": true,
+  "allCallerInputsSupportedByPinnedInterface": true,
+  "callerInputs": {
+    "solution": "Hexalith.Conversations.slnx",
+    "module-manifest": "module/hexalith.module-manifest.v2.json",
+    "build-timeout-minutes": "30",
+    "test-platform": "microsoft-testing-platform",
+    "run-consumer-validation": "true",
+    "unit-test-projects": "tests/Hexalith.Conversations.Contracts.Tests\ntests/Hexalith.Conversations.Client.Tests\ntests/Hexalith.Conversations.Tests\ntests/Hexalith.Conversations.Server.Tests\ntests/Hexalith.Conversations.DeletionConformance.Tests\ntests/Hexalith.Conversations.TestSupport.Tests\n",
+    "integration-test-projects": "tests/Hexalith.Conversations.IntegrationTests\n",
+    "aspire-test-project": "tests/Hexalith.Conversations.AppHost.Tests",
+    "aspire-continue-on-error": "false",
+    "aspire-timeout-minutes": "20"
+  },
+  "callerSecretsUnchanged": null,
+  "requiredLegacySecrets": false,
+  "lineEndingsPreserved": true,
+  "candidateAcceptance": false,
+  "callerMergeAuthorizedInThisStage": false
+}

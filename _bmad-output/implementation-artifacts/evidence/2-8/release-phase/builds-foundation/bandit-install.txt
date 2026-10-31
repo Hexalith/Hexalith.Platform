@@ -1,0 +1,26 @@
+Collecting bandit==1.8.6
+  Downloading bandit-1.8.6-py3-none-any.whl.metadata (6.9 kB)
+Collecting PyYAML>=5.3.1 (from bandit==1.8.6)
+  Downloading pyyaml-6.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting stevedore>=1.20.0 (from bandit==1.8.6)
+  Downloading stevedore-5.9.1-py3-none-any.whl.metadata (2.3 kB)
+Collecting rich (from bandit==1.8.6)
+  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting markdown-it-py>=2.2.0 (from rich->bandit==1.8.6)
+  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich->bandit==1.8.6)
+  Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->bandit==1.8.6)
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Downloading bandit-1.8.6-py3-none-any.whl (133 kB)
+Downloading pyyaml-6.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (794 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 794.2/794.2 kB 31.1 MB/s eta 0:00:00
+Downloading stevedore-5.9.1-py3-none-any.whl (54 kB)
+Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 49.6 MB/s eta 0:00:00
+Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Installing collected packages: stevedore, PyYAML, pygments, mdurl, markdown-it-py, rich, bandit
+
+Successfully installed PyYAML-6.0.3 bandit-1.8.6 markdown-it-py-4.2.0 mdurl-0.1.2 pygments-2.21.0 rich-15.0.0 stevedore-5.9.1

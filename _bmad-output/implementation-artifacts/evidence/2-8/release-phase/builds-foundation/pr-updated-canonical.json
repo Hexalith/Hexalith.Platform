@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/148",
+    "number": 148,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": false,
+    "body": "Selected CI suites need durable recovery ownership before allocation and\nattachment withdrawal before resources stop. Persist exact job/run receipts,\nallow same-job CI attachments, and disable CI failure retention across success,\nfailure, cancellation and partial startup.\n\nConfine helper output to checked workspace/TestResults and the recovery receipt\nto fixed RUNNER_TEMP/hexalith-ci-owner.json. Writes use an open directory handle\nand refuse links. Validate declared ASCII profiles and bind every user option\nvalue with --key=value, preserving real signal forwarding and receipt-bound\nfinalization. Remove the remaining source-only guards around the run-scoped\ncatalog APIs already published in EventStore 3.129.0.\n\nValidation: fresh Release build with zero warnings/errors; 23 helper controls\nincluding real-process cancellation and path/argument negatives; 14 affected CI\nlifecycle controls preserving live stop-order and first-outcome assertions;\nPython style, complexity and Bandit checks. The broader 238-case runtime\nbaseline passed at ee6074995b7da585f731f938cc295a6f7d3bf6a3. Lifecycle controls\nsimulate same-job CI identity with existing source fixtures and real local\nchild/stop-observer processes. Local archive verification is a prerequisite\nsource control, and does not establish hosted candidate acceptance.\n\nExisting published EventStore 3.129.0 remains selected. Shared domain-CI\nactivation, caller enrollment, consumer pins and hosted qualification remain\nseparate work. Merge and publication remain held.\n",
+    "title": "fix(module): guarantee disposable CI cleanup",
+    "base": "main",
+    "base_sha": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "head": "prep/story-2-8-foundation",
+    "head_sha": "6eb962e885ec2fff1e7a5ebf629216175d3bd284",
+    "head_repo_id": 952945989,
+    "head_repo_full_name": "Hexalith/Hexalith.Builds",
+    "merge_commit_sha": "64c67649c314e4f3a57dfa7309f3ff238e0c730e",
+    "user": {
+      "login": "jpiquot",
+      "name": "jpiquot",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "id": 6775094
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-10-31T18:28:46Z",
+    "updated_at": "2026-10-31T19:15:33Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 4,
+    "changed_files": 17,
+    "additions": 1626,
+    "deletions": 50,
+    "display_url": "https://github.com/Hexalith/Hexalith.Builds/pull/148",
+    "display_title": "fix(module): guarantee disposable CI cleanup"
+  },
+  "isError": false
+}

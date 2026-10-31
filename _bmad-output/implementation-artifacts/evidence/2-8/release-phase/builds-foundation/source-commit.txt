@@ -1,0 +1,1552 @@
+commit ee6074995b7da585f731f938cc295a6f7d3bf6a3
+Author:     Jérôme Piquot <jpiquot@itaneo.com>
+AuthorDate: Sat Oct 31 19:22:43 2026 +0100
+Commit:     Jérôme Piquot <jpiquot@itaneo.com>
+CommitDate: Sat Oct 31 19:22:43 2026 +0100
+
+    fix(module): clean CI runs and secure packaged hosts
+    
+    Persist exact CI ownership before allocation and withdraw attachments before
+    stopping owned resources on completion, cancellation or partial startup.
+    
+    Enroll the packaged EventStore host in the published security and route-catalog
+    boundaries. Probe its owned app channel and require negative credential checks.
+    
+    Keep shared workflow activation and consumer version pins for later enrollment.
+
+diff --git a/.github/workflows/build-release.yml b/.github/workflows/build-release.yml
+index a6e2d11..9e33e9d 100644
+--- a/.github/workflows/build-release.yml
++++ b/.github/workflows/build-release.yml
+@@ -170,6 +170,9 @@ jobs:
+       shell: pwsh
+       run: pwsh -NoProfile -File ./Tools/test-publish-containers.ps1
+ 
++    - name: Test CI integration lifecycle helper
++      run: python3 -m unittest discover -s Github/run-module-integration/tests -v
++
+     - name: Test module build preparation helper
+       run: python3 -m unittest discover -s Github/prepare-module-build/tests -v
+ 
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 4b3d950..271205f 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -26,7 +26,7 @@ jobs:
+   build-and-test:
+     name: Build and test
+     runs-on: ubuntu-latest
+-    needs: [catalog, contracts, dotnet]
++    needs: [catalog, contracts, dotnet, python-tests]
+     if: always()
+     timeout-minutes: 5
+     steps:
+@@ -35,9 +35,10 @@ jobs:
+           CATALOG_RESULT: ${{ needs.catalog.result }}
+           CONTRACTS_RESULT: ${{ needs.contracts.result }}
+           DOTNET_RESULT: ${{ needs.dotnet.result }}
++          PYTHON_RESULT: ${{ needs.python-tests.result }}
+         shell: bash
+         run: |
+-          [[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" ]]
++          [[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" && "$PYTHON_RESULT" == "success" ]]
+ 
+   dotnet:
+     runs-on: ubuntu-latest
+@@ -279,6 +280,9 @@ jobs:
+         working-directory: Github/publish-containers/tests
+         run: python3 -m unittest discover -v
+ 
++      - name: Test CI integration lifecycle helper
++        run: python3 -m unittest discover -s Github/run-module-integration/tests -v
++
+       - name: Test module build preparation helper
+         run: python3 -m unittest discover -s Github/prepare-module-build/tests -v
+ 
+diff --git a/Github/run-module-integration/run_module_integration.py b/Github/run-module-integration/run_module_integration.py
+new file mode 100644
+index 0000000..90a1296
+--- /dev/null
++++ b/Github/run-module-integration/run_module_integration.py
+@@ -0,0 +1,194 @@
++"""Run blocking declared package integration and recover exact same-job cleanup."""
++from __future__ import annotations
++
++import argparse
++import importlib.util
++import json
++import os
++from pathlib import Path
++import re
++import signal
++import subprocess
++import sys
++
++_spec = importlib.util.spec_from_file_location("prepare_module_build", Path(__file__).parents[1] / "prepare-module-build" / "prepare_module_build.py")
++_prepare = importlib.util.module_from_spec(_spec)
++_spec.loader.exec_module(_prepare)
++read_json = _prepare.read_json
++real_path = _prepare.real_path
++SCHEMA = "hexalith.module.ci-owner-receipt.v1"
++IDENTITY = re.compile(r"[0-9a-f]{32}")
++TOOL = ["dotnet", "tool", "run", "hexalith-module", "--"]
++ARTIFACTS = ("test-result.json", "attachments.json", "attachment-withdrawals.json")
++
++
++def ci_context() -> dict:
++    values = {name: os.environ.get(name, "") for name in ("GITHUB_REPOSITORY", "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_JOB")}
++    if (os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("RUNNER_ENVIRONMENT") != "github-hosted"
++            or os.environ.get("RUNNER_OS") != "Linux" or not all(values.values())
++            or not re.fullmatch(r"[1-9][0-9]*", values["GITHUB_RUN_ATTEMPT"])):
++        raise ValueError("integration requires complete disposable Linux GitHub-hosted job identity")
++    return {"kind": "ci", "repository": values["GITHUB_REPOSITORY"], "workflowRunId": values["GITHUB_RUN_ID"],
++            "workflowAttempt": int(values["GITHUB_RUN_ATTEMPT"]), "jobId": values["GITHUB_JOB"],
++            "runnerKind": "github-hosted", "operatingSystem": "Linux", "disposable": True}
++
++
++def verify_tool(root: Path) -> None:
++    manifest = real_path(root / ".config" / "dotnet-tools.json")
++    document = read_json(manifest.read_text(encoding="utf-8"))
++    tool = document.get("tools", {}).get("hexalith.builds.module.cli", {})
++    version = tool.get("version", "")
++    if (document.get("isRoot") is not True or tool.get("rollForward") is not False or tool.get("commands") != ["hexalith-module"]
++            or not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?", version)):
++        raise ValueError("integration requires an exact local module tool pin")
++    # Preparation already restored the exact tool. Never select a global tool or restore another version at teardown.
++    completed = subprocess.run(TOOL + ["--version"], cwd=root, capture_output=True, text=True, timeout=30, check=False)
++    if completed.returncode or completed.stdout.strip().split("+", 1)[0] != version:
++        raise ValueError("executing module tool differs from the exact local pin")
++
++
++def verify_preparation() -> None:
++    environment = {key: os.environ.get(key, "") for key in _prepare.KEYS}
++    if any(not value for value in environment.values()):
++        raise ValueError("integration requires the verified package/Release build preparation")
++    workspace = Path(environment["CustomAfterMicrosoftCommonProps"]).parent.parent
++    result = {"status": "prepared", "outcome": {"exitCode": "Success"}, "runId": None,
++              "buildPreparation": {"workspace": str(workspace), "mode": "package",
++                                   "mappingHash": environment["HEXALITH_SOURCE_MAPPING_HASH"], "environment": environment}}
++    _prepare.verified_environment(result, workspace)
++
++
++def receipt_owner(receipt: Path, expected_context: dict) -> dict:
++    owner = read_json(real_path(receipt).read_text(encoding="utf-8"))
++    if owner.get("schema") != SCHEMA or owner.get("executionContext") != expected_context:
++        raise ValueError("CI receipt belongs to another repository, run, attempt or job")
++    identities = [owner.get(key) for key in ("runId", "attemptId", "environmentId")]
++    if any(not isinstance(value, str) or not IDENTITY.fullmatch(value) for value in identities) or len(set(identities)) != 3:
++        raise ValueError("CI receipt has invalid exact owner identities")
++    state = Path(owner.get("stateDirectory", ""))
++    if not state.is_absolute() or real_path(state) != real_path(Path(os.environ.get("XDG_DATA_HOME", str(Path.home() / ".local" / "share"))) / "hexalith-builds" / "g4-runs"):
++        raise ValueError("CI receipt uses an unexpected owner metadata root")
++    # When state exists, cross-check its owner identities before invoking any destructive operation.
++    for path in (state / (owner["runId"] + ".json"), state / "diagnostics" / owner["runId"] / "owner.json"):
++        if path.exists():
++            recorded = read_json(real_path(path).read_text(encoding="utf-8"))
++            if any(recorded.get(key) != owner[key] for key in ("runId", "attemptId", "environmentId", "executionContext")):
++                raise ValueError("durable owner metadata differs from the receipt")
++    return owner
++
++
++def write_evidence(directory: Path, filename: str, value: dict) -> None:
++    directory.mkdir(parents=True, exist_ok=True)
++    if directory.is_symlink() or (directory / filename).is_symlink():
++        raise ValueError("integration evidence cannot traverse links")
++    (directory / filename).write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
++
++
++def finalize(root: Path, receipt: Path, evidence: Path, timeout: int = 150, job_status: str = "") -> int:
++    context = ci_context()
++    if not receipt.exists():
++        if receipt.is_symlink():
++            raise ValueError("invalid receipt link")
++        write_evidence(evidence, "cleanup.json", {"status": "not-allocated", "executionContext": context})
++        return 0
++    owner = receipt_owner(receipt, context)
++    verify_tool(root)
++    if job_status not in ("", "success", "failure", "cancelled"):
++        raise ValueError("unsupported CI finalizer job status")
++    environment = os.environ.copy()
++    environment["HEXALITH_CI_JOB_STATUS"] = job_status
++    completed = subprocess.run(TOOL + ["down", "--run-id", owner["runId"], "--output", "json"], cwd=root,
++                               capture_output=True, text=True, timeout=timeout, check=False, stdin=subprocess.DEVNULL, env=environment)
++    result = read_json(completed.stdout)
++    write_evidence(evidence, "cleanup.json", result)
++    # Copy only classified, redacted contract/attachment documents, never endpoint credentials or raw logs.
++    directory = Path(owner["stateDirectory"]) / "diagnostics" / owner["runId"]
++    for filename in ARTIFACTS:
++        path = directory / filename
++        if path.exists():
++            write_evidence(evidence, filename, read_json(real_path(path).read_text(encoding="utf-8")))
++    remaining = result.get("remainingResources")
++    verified = (isinstance(remaining, dict) and remaining.get("unverified") is False
++                and all(remaining.get(key) == [] for key in ("containerIds", "processIds", "workspaceIds", "claimIds", "discoveryFailures")))
++    return 0 if (completed.returncode == 0 and result.get("runId") == owner["runId"]
++                 and result.get("outcome", {}).get("exitCode") == "Success" and verified) else 1
++
++
++def run_integration(root: Path, manifest: str, profiles: list[str], receipt: Path, evidence: Path, timeout: int = 3600) -> int:
++    context = ci_context()
++    verify_tool(root)
++    verify_preparation()
++    relative = Path(manifest)
++    if relative.is_absolute() or not real_path(root / relative).is_relative_to(real_path(root)) or ".." in relative.parts:
++        raise ValueError("integration manifest must stay in the checked-out repository")
++    document = read_json((root / relative).read_text(encoding="utf-8"))
++    declared = {test["name"]: test for module in document.get("modules", []) for test in module.get("tests", [])}
++    if not profiles or len(set(profiles)) != len(profiles) or any(name not in declared or declared[name].get("mode") != "package" for name in profiles):
++        raise ValueError("integration requires nonempty declared package suites")
++    if receipt.exists() or receipt.is_symlink():
++        raise ValueError("each CI integration invocation requires a fresh owner receipt")
++    receipt.parent.mkdir(parents=True, exist_ok=True)
++    write_evidence(evidence, "invocation.json", {"executionContext": context, "profiles": profiles, "classification": "baseline-only"})
++    command = TOOL + ["test", "--manifest", manifest, "--mode", "package", "--ci-owner-receipt", str(receipt), "--output", "json"]
++    for profile in profiles:
++        command += ["--profile", profile]
++    cancelled = False
++    child = None
++    interrupt_forwarded = False
++    def stop(signum, frame):
++        nonlocal cancelled, interrupt_forwarded
++        cancelled = True
++        if child is not None and not interrupt_forwarded and child.poll() is None:
++            # Let the runner commit its first cancellation and use its own bounded resource cleanup.
++            interrupt_forwarded = True
++            child.send_signal(signal.SIGINT)
++    previous = {sig: signal.signal(sig, stop) for sig in (signal.SIGINT, signal.SIGTERM)}
++    outcome = 1
++    cleanup = 1
++    try:
++        child = subprocess.Popen(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL)
++        if cancelled:
++            # A signal can arrive inside Popen before its returned process is assigned above.
++            stop(signal.SIGTERM, None)
++        output, _ = child.communicate(timeout=timeout)
++        result = read_json(output)
++        write_evidence(evidence, "execution.json", result)
++        outcome = child.returncode or (0 if receipt.exists() and result.get("outcome", {}).get("exitCode") == "Success" else 1)
++    except subprocess.TimeoutExpired:
++        stop(signal.SIGTERM, None)
++        try:
++            child.communicate(timeout=120)
++        except subprocess.TimeoutExpired:
++            child.kill()
++            child.communicate(timeout=10)
++        outcome = 124
++    finally:
++        try:
++            cleanup = finalize(root, receipt, evidence, job_status="cancelled" if cancelled else "")
++        finally:
++            for sig, handler in previous.items():
++                signal.signal(sig, handler)
++    return 130 if cancelled else outcome or cleanup
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("operation", choices=("run", "finalize"))
++    parser.add_argument("--job-status", choices=("", "success", "failure", "cancelled"), default="")
++    parser.add_argument("--manifest", default="")
++    parser.add_argument("--profiles", default="")
++    parser.add_argument("--receipt", type=Path, required=True)
++    parser.add_argument("--evidence", type=Path, required=True)
++    args = parser.parse_args()
++    try:
++        if args.operation == "finalize":
++            return finalize(Path.cwd(), args.receipt, args.evidence, job_status=args.job_status)
++        return run_integration(Path.cwd(), args.manifest, args.profiles.split(), args.receipt, args.evidence)
++    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
++        # Errors identify the failing prerequisite; never echo child output or private credentials.
++        print(f"run-module-integration: {type(error).__name__}: {error}", file=sys.stderr)
++        return 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/Github/run-module-integration/tests/test_run_module_integration.py b/Github/run-module-integration/tests/test_run_module_integration.py
+new file mode 100644
+index 0000000..0c35426
+--- /dev/null
++++ b/Github/run-module-integration/tests/test_run_module_integration.py
+@@ -0,0 +1,265 @@
++"""Executable controls for exact ownership, blocking integration and finalization."""
++import importlib.util
++import json
++import os
++from pathlib import Path
++import subprocess
++import signal
++import sys
++import time
++import tempfile
++import unittest
++from unittest.mock import patch
++
++spec = importlib.util.spec_from_file_location("integration", Path(__file__).parents[1] / "run_module_integration.py")
++helper = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(helper)
++CI = {"GITHUB_ACTIONS": "true", "GITHUB_REPOSITORY": "o/r", "GITHUB_RUN_ID": "101", "GITHUB_RUN_ATTEMPT": "2", "GITHUB_JOB": "ci", "RUNNER_ENVIRONMENT": "github-hosted", "RUNNER_OS": "Linux"}
++
++
++class IntegrationTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++        self.environment = patch.dict(os.environ, dict(CI, XDG_DATA_HOME=str(self.root / "data")), clear=False)
++        self.environment.start()
++        self.addCleanup(self.environment.stop)
++        self.state = self.root / "data" / "hexalith-builds" / "g4-runs"
++        self.state.mkdir(parents=True)
++        self.receipt = self.root / "owner.json"
++        self.evidence = self.root / "evidence"
++        self.owner = {"schema": helper.SCHEMA, "runId": "a" * 32, "attemptId": "b" * 32, "environmentId": "c" * 32,
++                      "executionContext": helper.ci_context(), "stateDirectory": str(self.state)}
++        (self.root / "module.json").write_text(json.dumps({"modules": [{"tests": [{"name": "real", "mode": "package"}]}]}))
++
++    def write_receipt(self):
++        self.receipt.write_text(json.dumps(self.owner))
++
++    def down_result(self, remaining=None, exit_code=0):
++        resources = {key: [] for key in ("containerIds", "processIds", "workspaceIds", "claimIds", "discoveryFailures")}
++        resources["unverified"] = False
++        resources.update(remaining or {})
++        return subprocess.CompletedProcess([], exit_code, json.dumps({"runId": self.owner["runId"], "outcome": {"exitCode": "Success" if exit_code == 0 else "TopologyOrLifecycle"}, "remainingResources": resources}), "")
++
++    def test_no_receipt_means_no_allocation_and_does_not_invoke_tool(self):
++        with patch.object(helper.subprocess, "run") as run:
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++            run.assert_not_called()
++        self.assertEqual(json.loads((self.evidence / "cleanup.json").read_text())["status"], "not-allocated")
++
++    def test_foreign_repository_run_attempt_or_job_cannot_cleanup(self):
++        for key, value in (("repository", "other/r"), ("workflowRunId", "99"), ("workflowAttempt", 3), ("jobId", "another")):
++            with self.subTest(key=key), patch.object(helper.subprocess, "run") as run:
++                original = self.owner["executionContext"][key]
++                self.owner["executionContext"][key] = value
++                self.write_receipt()
++                with self.assertRaises(ValueError):
++                    helper.finalize(self.root, self.receipt, self.evidence)
++                run.assert_not_called()
++                self.owner["executionContext"][key] = original
++
++    def test_mismatching_durable_owner_cannot_cleanup(self):
++        self.write_receipt()
++        (self.state / (self.owner["runId"] + ".json")).write_text(json.dumps(dict(self.owner, environmentId="d" * 32)))
++        with self.assertRaises(ValueError), patch.object(helper.subprocess, "run") as run:
++            helper.finalize(self.root, self.receipt, self.evidence)
++        run.assert_not_called()
++
++    def test_cleanup_uses_exact_id_is_retryable_and_retains_only_safe_results(self):
++        self.write_receipt()
++        directory = self.state / "diagnostics" / self.owner["runId"]
++        directory.mkdir(parents=True)
++        (directory / "test-result.json").write_text('{"classification":"baseline-only"}')
++        (directory / "native-endpoint-credentials.json").write_text('private-key-sentinel')
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()) as run:
++            for _ in range(2):
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++            self.assertEqual(run.call_args.args[0], helper.TOOL + ["down", "--run-id", self.owner["runId"], "--output", "json"])
++        self.assertTrue((self.evidence / "test-result.json").exists())
++        self.assertNotIn("private-key-sentinel", str([p.read_text() for p in self.evidence.iterdir()]))
++
++    def test_constructor_time_cancellation_is_forwarded_after_child_assignment(self):
++        forwarded = []
++        class Child:
++            returncode = 130
++            def poll(child):
++                return None
++            def send_signal(child, signum):
++                forwarded.append(signum)
++            def communicate(child, timeout):
++                self.write_receipt()
++                return '{"outcome":{"exitCode":"Cancelled"}}', None
++        def constructing(*args, **kwargs):
++            helper.signal.raise_signal(helper.signal.SIGTERM)
++            return Child()
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen", side_effect=constructing), patch.object(helper, "finalize", return_value=0) as cleanup:
++            self.assertEqual(helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence), 130)
++            self.assertEqual(forwarded, [helper.signal.SIGINT])
++            self.assertEqual(cleanup.call_args.kwargs["job_status"], "cancelled")
++
++    @unittest.skipUnless(os.name == "posix", "The CI helper targets disposable Linux runners.")
++    def test_real_helper_process_forwards_cancellation_and_finalizes_exact_receipt(self):
++        configuration = self.root / ".config"
++        configuration.mkdir()
++        (configuration / "dotnet-tools.json").write_text(json.dumps({"isRoot": True, "tools": {"hexalith.builds.module.cli": {"version": "9.9.9", "rollForward": False, "commands": ["hexalith-module"]}}}))
++        imports = self.root / "prepared" / "source-mapping"
++        imports.mkdir(parents=True)
++        environment = os.environ.copy()
++        for key, filename in helper._prepare.IMPORTS.items():
++            path = imports / filename
++            path.write_text("<Project />")
++            environment[key] = str(path)
++        digest = "d" * 64
++        (imports / "mapping.json").write_text(json.dumps({"Mode": "package", "HasGit": True, "ContentHash": digest}))
++        environment.update(Configuration="Release", HEXALITH_SOURCE_MAPPING_HASH=digest, FAKE_CI_OWNER=json.dumps(self.owner))
++        tools = self.root / "tools"
++        tools.mkdir()
++        executable = tools / "dotnet"
++        executable.write_text("#!" + sys.executable + "\n" + r'''
++import json, os, pathlib, signal, sys, time
++root = pathlib.Path.cwd()
++args = sys.argv[1:]
++if '--version' in args:
++    print('9.9.9')
++    sys.exit(0)
++owner = json.loads(os.environ['FAKE_CI_OWNER'])
++if 'down' in args:
++    assert args[args.index('--run-id') + 1] == owner['runId']
++    (root / 'actual-finalizer.json').write_text(json.dumps({'runId': owner['runId'], 'jobStatus': os.environ['HEXALITH_CI_JOB_STATUS']}))
++    resources = {key: [] for key in ('containerIds', 'processIds', 'workspaceIds', 'claimIds', 'discoveryFailures')}
++    resources['unverified'] = False
++    print(json.dumps({'runId': owner['runId'], 'outcome': {'exitCode': 'Success'}, 'remainingResources': resources}))
++    sys.exit(0)
++assert 'test' in args
++def interrupt(signum, frame):
++    (root / 'actual-child-interrupted').write_text(str(signum))
++    print(json.dumps({'outcome': {'exitCode': 'Cancelled'}}), flush=True)
++    sys.exit(130)
++signal.signal(signal.SIGINT, interrupt)
++pathlib.Path(args[args.index('--ci-owner-receipt') + 1]).write_text(json.dumps(owner))
++(root / 'actual-child-ready').write_text(str(os.getpid()))
++while True:
++    time.sleep(0.01)
++''')
++        executable.chmod(0o700)
++        environment['PATH'] = str(tools) + os.pathsep + environment['PATH']
++        command = [sys.executable, str(Path(helper.__file__).resolve()), 'run', '--manifest', 'module.json', '--profiles', 'real', '--receipt', str(self.receipt), '--evidence', str(self.evidence)]
++        process = subprocess.Popen(command, cwd=self.root, env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
++        child_pid = None
++        try:
++            deadline = time.monotonic() + 10
++            ready = self.root / 'actual-child-ready'
++            while not ready.exists() and process.poll() is None and time.monotonic() < deadline:
++                time.sleep(0.01)
++            self.assertTrue(ready.exists(), 'The real tool child must reach its interruptible boundary.')
++            child_pid = int(ready.read_text())
++            process.send_signal(signal.SIGTERM)
++            output, errors = process.communicate(timeout=10)
++            self.assertEqual(process.returncode, 130, output + errors)
++            self.assertEqual((self.root / 'actual-child-interrupted').read_text(), str(signal.SIGINT))
++            actual = json.loads((self.root / 'actual-finalizer.json').read_text())
++            self.assertEqual(actual, {'runId': self.owner['runId'], 'jobStatus': 'cancelled'})
++            self.assertEqual(json.loads((self.evidence / 'execution.json').read_text())['outcome']['exitCode'], 'Cancelled')
++            self.assertEqual(json.loads((self.evidence / 'cleanup.json').read_text())['remainingResources']['processIds'], [])
++        finally:
++            if process.poll() is None:
++                process.kill()
++            process.communicate(timeout=10)
++            if child_pid is not None and not (self.root / 'actual-child-interrupted').exists():
++                try:
++                    os.kill(child_pid, signal.SIGKILL)
++                except ProcessLookupError:
++                    pass
++
++    def test_actual_job_cancellation_reaches_exact_down_without_rewriting_first_result(self):
++        self.write_receipt()
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()) as run:
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence, job_status="cancelled"), 0)
++            self.assertEqual(run.call_args.kwargs["env"]["HEXALITH_CI_JOB_STATUS"], "cancelled")
++
++    def test_unknown_discovery_or_any_owned_leftover_refuses_completion(self):
++        self.write_receipt()
++        for remaining in ({"unverified": True}, {"processIds": [99]}, {"containerIds": ["owned"]}, {"workspaceIds": ["workspace:owned"]}, {"claimIds": ["claim:owned"]}, {"discoveryFailures": ["docker"]}):
++            with self.subTest(remaining=remaining), patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result(remaining)):
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++
++    def test_missing_or_wrong_mode_suite_refuses_before_process(self):
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen") as process:
++            for profiles in ([], ["unknown"], ["real", "real"]):
++                with self.assertRaises(ValueError):
++                    helper.run_integration(self.root, "module.json", profiles, self.receipt, self.evidence)
++            process.assert_not_called()
++
++    def test_execution_failure_preserved_and_finalized_after_partial_startup(self):
++        class Child:
++            returncode = 17
++            def communicate(child, timeout):
++                self.write_receipt()
++                return json.dumps({"outcome": {"exitCode": "ProductOrTest"}}), None
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen", return_value=Child()), patch.object(helper, "finalize", return_value=1) as cleanup:
++            self.assertEqual(helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence), 17)
++            cleanup.assert_called_once()
++
++    def test_invalid_child_output_still_finalizes(self):
++        class Child:
++            returncode = 1
++            def communicate(child, timeout):
++                self.write_receipt()
++                return "interrupted", None
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen", return_value=Child()), patch.object(helper, "finalize", return_value=0) as cleanup:
++            with self.assertRaises(ValueError):
++                helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence)
++            cleanup.assert_called_once()
++
++    def test_cancellation_during_execution_runs_finalizer_and_preserves_cancel(self):
++        class Child:
++            returncode = 130
++            def poll(child):
++                return None
++            def send_signal(child, signum):
++                self.assertEqual(signum, helper.signal.SIGINT)
++            def communicate(child, timeout):
++                self.write_receipt()
++                helper.signal.raise_signal(helper.signal.SIGTERM)
++                return '{"outcome":{"exitCode":"Cancelled"}}', None
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen", return_value=Child()), patch.object(helper, "finalize", return_value=0) as cleanup:
++            self.assertEqual(helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence), 130)
++            cleanup.assert_called_once()
++
++    def test_missing_package_preparation_refuses_before_process(self):
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "Popen") as process, patch.dict(os.environ, {"Configuration": ""}):
++            with self.assertRaises(ValueError):
++                helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence)
++            process.assert_not_called()
++
++    def test_preparation_binds_release_and_actual_package_mapping(self):
++        workspace = self.root / "prepared"
++        imports = workspace / "source-mapping"
++        imports.mkdir(parents=True)
++        digest = "d" * 64
++        environment = {key: str(imports / filename) for key, filename in helper._prepare.IMPORTS.items()}
++        environment.update(Configuration="Release", HEXALITH_SOURCE_MAPPING_HASH=digest)
++        for path in environment.values():
++            if path.startswith(str(imports)):
++                Path(path).write_text("<Project />")
++        metadata = imports / "mapping.json"
++        metadata.write_text(json.dumps({"Mode": "package", "HasGit": True, "ContentHash": digest}))
++        with patch.dict(os.environ, environment):
++            helper.verify_preparation()
++            metadata.write_text(json.dumps({"Mode": "source", "HasGit": True, "ContentHash": digest}))
++            with self.assertRaises(ValueError):
++                helper.verify_preparation()
++
++    def test_passing_execution_requires_verified_cleanup(self):
++        class Child:
++            returncode = 0
++            def communicate(child, timeout):
++                self.write_receipt()
++                return '{"outcome":{"exitCode":"Success"}}', None
++        with patch.object(helper, "verify_tool"), patch.object(helper, "verify_preparation"), patch.object(helper.subprocess, "Popen", return_value=Child()), patch.object(helper, "finalize", return_value=1):
++            self.assertEqual(helper.run_integration(self.root, "module.json", ["real"], self.receipt, self.evidence), 1)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Tools/G4PackageQualification.functions.ps1 b/Tools/G4PackageQualification.functions.ps1
+index e5daa20..9a32f66 100644
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -361,7 +361,10 @@ function Assert-PackagedSeedSubscriptionEvidence {
+             (-not $declarative -and ($case.subscriptionPubsubName -isnot [string] -or $case.receiverPubsubName -isnot [string]))) {
+             throw 'Packaged seed subscription proof requires exact scalar or null pubsub names.'
+         }
+-        if ($case.discoveryStatusCode -isnot [long] -or $case.discoveryStatusCode -ne $status -or
++        if ($case.actorDiscoveryStatusCode -isnot [long] -or $case.actorDiscoveryStatusCode -ne 200 -or
++            $case.missingChannelStatusCode -isnot [long] -or $case.missingChannelStatusCode -ne 401 -or
++            $case.wrongChannelStatusCode -isnot [long] -or $case.wrongChannelStatusCode -ne 401 -or
++            $case.discoveryStatusCode -isnot [long] -or $case.discoveryStatusCode -ne $status -or
+             $case.projectionSubscriptionCount -isnot [long] -or $case.projectionSubscriptionCount -ne $count -or
+             $case.subscriptionPubsubName -cne $pubsub -or
+             $case.receiverPresent -isnot [bool] -or $case.receiverPresent -ne $true -or
+diff --git a/Tools/PackagedSeedProbe/PackagedSeedProbe.cs b/Tools/PackagedSeedProbe/PackagedSeedProbe.cs
+index 3f326aa..5214b96 100644
+--- a/Tools/PackagedSeedProbe/PackagedSeedProbe.cs
++++ b/Tools/PackagedSeedProbe/PackagedSeedProbe.cs
+@@ -91,11 +91,13 @@ internal static class PackagedSeedProbe
+     public static async Task<(bool Passed, object Observation)> CheckAsync<TEntryPoint>(bool declarative)
+         where TEntryPoint : class
+     {
++        string channelToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
+         WebApplicationFactory<TEntryPoint> sourceFactory = new();
+         await using ConfiguredAsyncDisposable sourceLifetime = sourceFactory.ConfigureAwait(false);
+         WebApplicationFactory<TEntryPoint> factory = sourceFactory.WithWebHostBuilder(builder => builder.UseEnvironment("Development").ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(new Dictionary<string, string?>
+         {
+             ["Dapr:DeclarativeSubscriptions"] = declarative.ToString(),
++            ["APP_API_TOKEN"] = channelToken,
+             ["EventStore:ProjectionChanges:PubSubName"] = "configured-seed-events",
+             ["EventStore:OpenApi:Enabled"] = "false",
+             ["Authentication:JwtBearer:Issuer"] = "hexalith-test",
+@@ -115,7 +117,10 @@ internal static class PackagedSeedProbe
+         await using ConfiguredAsyncDisposable factoryLifetime = factory.ConfigureAwait(false);
+         using HttpClient client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+         using CancellationTokenSource timeout = new(TimeSpan.FromSeconds(30));
+-        using HttpResponseMessage response = await client.GetAsync(new Uri("/dapr/subscribe", UriKind.Relative), timeout.Token).ConfigureAwait(false);
++        using HttpResponseMessage response = await GetWithChannelAsync(client, "/dapr/subscribe", channelToken, timeout.Token).ConfigureAwait(false);
++        using HttpResponseMessage actorDiscovery = await GetWithChannelAsync(client, "/dapr/config", channelToken, timeout.Token).ConfigureAwait(false);
++        using HttpResponseMessage missingChannel = await client.GetAsync(new Uri("/dapr/config", UriKind.Relative), timeout.Token).ConfigureAwait(false);
++        using HttpResponseMessage wrongChannel = await GetWithChannelAsync(client, "/dapr/config", "wrong-" + channelToken, timeout.Token).ConfigureAwait(false);
+         RouteEndpoint receiver = factory.Services.GetRequiredService<EndpointDataSource>().Endpoints.OfType<RouteEndpoint>()
+             .Single(endpoint => endpoint.RoutePattern.RawText == "projections/changed");
+         object[] topics = [.. receiver.Metadata.Where(item => item.GetType().GetInterfaces().Any(type => type.FullName == "Dapr.ITopicMetadata"))];
+@@ -132,14 +137,19 @@ internal static class PackagedSeedProbe
+                 : null;
+         }
+ 
+-        bool passed = declarative
++        bool subscriptionPassed = declarative
+             ? (int)response.StatusCode == 404 && topics.Length == 0
+             : (int)response.StatusCode == 200 && subscriptionCount == 1 && subscriptionPubsub == "configured-seed-events" && topics.Length == 1 && receiverPubsub == "configured-seed-events";
+ 
++        bool passed = subscriptionPassed && (int)actorDiscovery.StatusCode == 200
++            && (int)missingChannel.StatusCode == 401 && (int)wrongChannel.StatusCode == 401;
+         return (passed, new
+         {
+             declarative,
+             discoveryStatusCode = (int)response.StatusCode,
++            actorDiscoveryStatusCode = (int)actorDiscovery.StatusCode,
++            missingChannelStatusCode = (int)missingChannel.StatusCode,
++            wrongChannelStatusCode = (int)wrongChannel.StatusCode,
+             projectionSubscriptionCount = subscriptionCount,
+             subscriptionPubsubName = subscriptionPubsub,
+             receiverPresent = true,
+@@ -149,6 +159,19 @@ internal static class PackagedSeedProbe
+         });
+     }
+ 
++    /// <summary>Sends the probe's own temporary application-channel credential without retaining it.</summary>
++    /// <param name="client">The loaded package host's client.</param>
++    /// <param name="path">The exact host endpoint.</param>
++    /// <param name="channelToken">The probe-owned application-channel credential.</param>
++    /// <param name="cancellationToken">The original bounded probe token.</param>
++    /// <returns>The response, owned by the caller.</returns>
++    private static async Task<HttpResponseMessage> GetWithChannelAsync(HttpClient client, string path, string channelToken, CancellationToken cancellationToken)
++    {
++        using HttpRequestMessage request = new(HttpMethod.Get, new Uri(path, UriKind.Relative));
++        request.Headers.Add("dapr-api-token", channelToken);
++        return await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
++    }
++
+     /// <summary>Extracts and binds one packaged entry point without source-host resolution.</summary>
+     /// <param name="packagePath">The distributable archive.</param>
+     /// <param name="expectedVersion">The expected archive version.</param>
+diff --git a/Tools/test-publish-g4-tool-packages.ps1 b/Tools/test-publish-g4-tool-packages.ps1
+index dcd8b56..42151fb 100644
+--- a/Tools/test-publish-g4-tool-packages.ps1
++++ b/Tools/test-publish-g4-tool-packages.ps1
+@@ -405,8 +405,8 @@ function New-PackageInventory {
+                     package = @{ id = 'Hexalith.Builds.Module.Cli'; version = $PublishedVersion; sha256 = (Get-FileHash -LiteralPath (Join-Path $packageDirectory "Hexalith.Builds.Module.Cli.$PublishedVersion.nupkg") -Algorithm SHA256).Hash }
+                     seed = @{ entry = 'tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll'; sha256 = $seedHash; loadedSha256 = $seedHash }
+                     checks = @(
+-                        @{ declarative = $false; discoveryStatusCode = 200; projectionSubscriptionCount = 1; subscriptionPubsubName = 'configured-seed-events'; receiverPresent = $true; receiverTopicMetadataCount = 1; receiverPubsubName = 'configured-seed-events'; startupIndexWriterAliasRemoved = $true },
+-                        @{ declarative = $true; discoveryStatusCode = 404; projectionSubscriptionCount = 0; subscriptionPubsubName = $null; receiverPresent = $true; receiverTopicMetadataCount = 0; receiverPubsubName = $null; startupIndexWriterAliasRemoved = $true }
++                        @{ declarative = $false; discoveryStatusCode = 200; actorDiscoveryStatusCode = 200; missingChannelStatusCode = 401; wrongChannelStatusCode = 401; projectionSubscriptionCount = 1; subscriptionPubsubName = 'configured-seed-events'; receiverPresent = $true; receiverTopicMetadataCount = 1; receiverPubsubName = 'configured-seed-events'; startupIndexWriterAliasRemoved = $true },
++                        @{ declarative = $true; discoveryStatusCode = 404; actorDiscoveryStatusCode = 200; missingChannelStatusCode = 401; wrongChannelStatusCode = 401; projectionSubscriptionCount = 0; subscriptionPubsubName = $null; receiverPresent = $true; receiverTopicMetadataCount = 0; receiverPubsubName = $null; startupIndexWriterAliasRemoved = $true }
+                     )
+                 } | ConvertTo-Json -Depth 8
+             }
+@@ -768,6 +768,9 @@ try {
+         @{ Change = { param($proof) $proof.checks = @($proof.checks[0], $proof.checks[0]) }; Message = 'both modes exactly once' },
+         @{ Change = { param($proof) $proof.checks = @($proof.checks[0]) }; Message = 'both modes exactly once' },
+         @{ Change = { param($proof) $proof.checks[1].declarative = 'true' }; Message = 'both modes exactly once' },
++        @{ Change = { param($proof) $proof.checks[0].actorDiscoveryStatusCode = '200' }; Message = 'exact typed HTTP' },
++        @{ Change = { param($proof) $proof.checks[0].missingChannelStatusCode = 200 }; Message = 'exact typed HTTP' },
++        @{ Change = { param($proof) $proof.checks[1].wrongChannelStatusCode = 200 }; Message = 'exact typed HTTP' },
+         @{ Change = { param($proof) $proof.checks[0].discoveryStatusCode = '200' }; Message = 'exact typed HTTP' },
+         @{ Change = { param($proof) $proof.checks[1].discoveryStatusCode = 200 }; Message = 'exact typed HTTP' },
+         @{ Change = { param($proof) $proof.checks[0].projectionSubscriptionCount = 2 }; Message = 'exact typed HTTP' },
+diff --git a/Tools/test-self-ci.py b/Tools/test-self-ci.py
+index da58ccb..8180754 100644
+--- a/Tools/test-self-ci.py
++++ b/Tools/test-self-ci.py
+@@ -22,22 +22,23 @@ class RequiredStatusTests(unittest.TestCase):
+         self.assertIsNotNone(match)
+         block = match[1]
+         self.assertIn("    name: Build and test\n", block)
+-        self.assertIn("    needs: [catalog, contracts, dotnet]\n", block)
++        self.assertIn("    needs: [catalog, contracts, dotnet, python-tests]\n", block)
+         self.assertIn("    if: always()\n", block)
+         self.assertIn("CATALOG_RESULT: ${{ needs.catalog.result }}", block)
+         self.assertIn("CONTRACTS_RESULT: ${{ needs.contracts.result }}", block)
+         self.assertIn("DOTNET_RESULT: ${{ needs.dotnet.result }}", block)
++        self.assertIn("PYTHON_RESULT: ${{ needs.python-tests.result }}", block)
+         body = re.search(r"(?ms)^        run: \|\n(.*)", block)
+         self.assertIsNotNone(body)
+         script = textwrap.dedent(body[1])
+-        for catalog, contracts, dotnet in itertools.product(
+-            ("success", "failure", "cancelled", "skipped", ""), repeat=3
++        for catalog, contracts, dotnet, python in itertools.product(
++            ("success", "failure", "cancelled", "skipped", ""), repeat=4
+         ):
+-            with self.subTest(catalog=catalog, contracts=contracts, dotnet=dotnet):
++            with self.subTest(catalog=catalog, contracts=contracts, dotnet=dotnet, python=python):
+                 environment = os.environ.copy()
+-                environment.update(CATALOG_RESULT=catalog, CONTRACTS_RESULT=contracts, DOTNET_RESULT=dotnet)
++                environment.update(CATALOG_RESULT=catalog, CONTRACTS_RESULT=contracts, DOTNET_RESULT=dotnet, PYTHON_RESULT=python)
+                 result = subprocess.run(["bash", "-e", "-c", script], env=environment, check=False)
+-                self.assertEqual(result.returncode == 0, catalog == contracts == dotnet == "success")
++                self.assertEqual(result.returncode == 0, catalog == contracts == dotnet == python == "success")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+index b4b0867..aeef871 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+@@ -29,11 +29,7 @@ builder.Services.AddEventStoreServer(builder.Configuration);
+ builder.Services.AddEventStoreDomainQueryRouting();
+ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
+     _ = Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+-#else
+-    throw new NotSupportedException("Run-scoped route catalogs require the mapped EventStore source build.");
+-#endif
+ }
+ 
+ WebApplication app = builder.Build();
+@@ -44,18 +40,14 @@ app.MapDefaultEndpoints();
+ app.UseRouting();
+ app.UseAuthentication();
+ app.UseRateLimiter();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
+ app.UseEventStoreHttpHostSecurity();
+-#endif
+ app.UseAuthorization();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+     _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
+         app,
+         Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+ }
+-#endif
+ 
+ app.UseCloudEvents();
+ 
+@@ -84,17 +76,9 @@ app.MapErrorReferences();
+ app.MapApiVersionFallback();
+ if (!declarativeSubscriptions)
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
+     _ = app.MapSubscribeHandler().RequireEventStoreChannel();
+-#else
+-    _ = app.MapSubscribeHandler().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
+-#endif
+ }
+ 
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
+ app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+-#else
+-app.MapActorsHandlers().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
+-#endif
+ 
+ await app.RunAsync().ConfigureAwait(false);
+diff --git a/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs b/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs
+index a2e7a9c..b3ca24c 100644
+--- a/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs
++++ b/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs
+@@ -367,6 +367,7 @@ internal static class ModuleCommandApplication
+         Option<string> evidenceOption = new("--evidence");
+         Option<string> candidateOption = new("--candidate-request") { Description = "Signed GitHub gate issuance; requires independently enrolled host authority." };
+         Option<string> runIdOption = new("--run-id");
++        Option<string> ciReceiptOption = new("--ci-owner-receipt") { Description = "External durable ownership receipt for disposable Linux GitHub-hosted package integration." };
+         Option<string> outputOption = new("--output")
+         {
+             DefaultValueFactory = _ => "human",
+@@ -382,6 +383,7 @@ internal static class ModuleCommandApplication
+         if (command == ModuleInvocationCommand.Test)
+         {
+             commandDefinition.Options.Add(candidateOption);
++            commandDefinition.Options.Add(ciReceiptOption);
+         }
+ 
+         if (command == ModuleInvocationCommand.Down)
+@@ -410,6 +412,12 @@ internal static class ModuleCommandApplication
+                 return ToolCommandHost.WriteParseFailureAsync(standardOutput, ParseOutputFormat(parseResult.GetValue(outputOption)));
+             }
+ 
++            CompositionEngineOptions? executionOptions = compositionOptions;
++            if (command == ModuleInvocationCommand.Test && parseResult.GetValue(ciReceiptOption) is { } receiptPath)
++            {
++                executionOptions = (executionOptions ?? CompositionCommandOptions.Create(descriptorChildEntryAssemblyPath!)) with { CiOwnerReceiptPath = receiptPath };
++            }
++
+             Task<int> execution = ModuleCommandExecutionService.ExecuteAsync(
+                 command,
+                 parseResult.GetValue(manifestOption) ?? "unused-manifest-for-exact-run",
+@@ -421,7 +429,7 @@ internal static class ModuleCommandApplication
+                 cancellationToken,
+                 descriptorChildEntryAssemblyPath,
+                 command == ModuleInvocationCommand.Down ? parseResult.GetValue(runIdOption) : null,
+-                compositionOptions,
++                executionOptions,
+                 mode,
+                 parseResult.GetValue(profileOption),
+                 command == ModuleInvocationCommand.Test ? parseResult.GetValue(candidateOption) : null);
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs
+index b289833..add7bd2 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs
+@@ -343,11 +343,6 @@ public static class CompositionAttachAdmission
+ 
+     private static ToolCommandResult? CheckOwnerState(CompositionRunState owner, IReadOnlyList<CompositionAttachment> attachments)
+     {
+-        if (!IsLocal(owner))
+-        {
+-            return Refuse("HXR035", "owner-ci-holds-unsupported", "CI owners do not wait for holds in this version, so an attachment to a CI owner cannot be honored.");
+-        }
+-
+         string? reason = FinishedOwnerReason(owner, attachments);
+         string message = reason == "owner-starting" ? "The owner environment is not ready yet." : "The owner environment is finished, stopped, being cleaned or not failure-retained.";
+         return reason is null ? null : Refuse("HXR035", reason, message);
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs
+index b9e15e0..0338e01 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs
+@@ -88,9 +88,9 @@ public static class CompositionAttachmentStore
+     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "Validate the reason before constructing the serialized attachment change.")]
+     public static Task<IReadOnlyList<CompositionAttachment>> WithdrawAsync(string diagnosticsDirectory, string ownerRunId, string reason, DateTimeOffset now, CancellationToken cancellationToken = default)
+     {
+-        if (reason is not ("owner-cancelled" or "developer-stop"))
++        if (reason is not ("owner-cancelled" or "developer-stop" or "ci-job-completed" or "ci-job-cancelled"))
+         {
+-            throw new ArgumentOutOfRangeException(nameof(reason), reason, "The withdrawal reason must be owner-cancelled or developer-stop.");
++            throw new ArgumentOutOfRangeException(nameof(reason), reason, "The withdrawal reason must identify owner cancellation, developer stop or CI job completion/cancellation.");
+         }
+ 
+         return UpdateWithReportAsync<IReadOnlyList<CompositionAttachment>>(
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs
+new file mode 100644
+index 0000000..cc9d5ab
+--- /dev/null
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs
+@@ -0,0 +1,73 @@
++// <copyright file="CompositionCiOwnerReceipt.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.Tooling.Runtime;
++
++using System.Text.Json;
++
++/// <summary>Durable, metadata-only ownership recovery for a single disposable CI job.</summary>
++/// <param name="Schema">The receipt version.</param>
++/// <param name="RunId">The exact owner run.</param>
++/// <param name="AttemptId">The owner attempt.</param>
++/// <param name="EnvironmentId">The environment identity.</param>
++/// <param name="ExecutionContext">The actual CI repository, run, attempt and job.</param>
++/// <param name="StateDirectory">The durable owner metadata root.</param>
++/// <param name="CreatedAtUtc">The original allocation request time.</param>
++public sealed record CompositionCiOwnerReceipt(string Schema, string RunId, string AttemptId, string EnvironmentId, JsonElement ExecutionContext, string StateDirectory, DateTimeOffset CreatedAtUtc)
++{
++    /// <summary>Gets the supported receipt identifier.</summary>
++    public const string SupportedSchema = "hexalith.module.ci-owner-receipt.v1";
++
++    /// <summary>Persists the exact recovery identities before any run workspace or service is allocated.</summary>
++    /// <param name="path">An external receipt file, outside deleted run workspaces.</param>
++    /// <param name="owner">The newly issued owner state.</param>
++    /// <param name="stateDirectory">The runner metadata root.</param>
++    /// <param name="workspaceRoot">The run workspace root forbidden for this receipt.</param>
++    /// <param name="cancellationToken">The preallocation allowance.</param>
++    /// <returns>The durable publication task.</returns>
++    /// <exception cref="IOException">The receipt is unwritable or already bound to another allocation.</exception>
++    /// <exception cref="InvalidDataException">The context or receipt path is ineligible.</exception>
++    internal static async Task PersistAsync(string path, CompositionRunState owner, string stateDirectory, string workspaceRoot, CancellationToken cancellationToken)
++    {
++        string fullPath = Path.GetFullPath(path);
++        string workspace = Path.GetFullPath(workspaceRoot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
++        JsonElement context = owner.ExecutionContext ?? throw new InvalidDataException("CI recovery requires an actual execution context.");
++        if (owner.SelectedTest?.Mode != "package" || context.GetProperty("kind").GetString() != "ci"
++            || context.GetProperty("runnerKind").GetString() != "github-hosted" || context.GetProperty("operatingSystem").GetString() != "Linux"
++            || !context.GetProperty("disposable").GetBoolean()
++            || fullPath.StartsWith(workspace, StringComparison.Ordinal) || fullPath == workspace.TrimEnd(Path.DirectorySeparatorChar))
++        {
++            throw new InvalidDataException("CI recovery requires disposable Linux GitHub-hosted package integration and a receipt outside run workspaces.");
++        }
++
++        if (!SelectedNativeTestReport.IsOwnedParent(fullPath, Path.GetPathRoot(fullPath)!)
++            || (Path.Exists(fullPath) && !SelectedNativeTestReport.IsOwnedRegularPath(fullPath, Path.GetDirectoryName(fullPath)!)))
++        {
++            throw new IOException("The CI ownership receipt must be a regular file without link traversal.");
++        }
++
++        string directory = Path.GetDirectoryName(fullPath)!;
++        CompositionWorkspace.CreatePrivateDirectory(directory);
++        string lockPath = fullPath + ".lock";
++        if (Path.Exists(lockPath) && !SelectedNativeTestReport.IsOwnedRegularPath(lockPath, directory))
++        {
++            throw new IOException("The CI receipt lock cannot be verified.");
++        }
++
++        FileStream held = new(lockPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
++        await using (held.ConfigureAwait(false))
++        {
++            CompositionCiOwnerReceipt? existing = await CompositionDocumentStore.ReadIfExistsAsync<CompositionCiOwnerReceipt>(fullPath, cancellationToken).ConfigureAwait(false);
++            CompositionCiOwnerReceipt receipt = new(SupportedSchema, owner.RunId, owner.AttemptId!, owner.EnvironmentId!, context, Path.GetFullPath(stateDirectory), owner.CreatedAt!.Value);
++            if (existing is not null && (existing.Schema != SupportedSchema || existing.RunId != receipt.RunId || existing.AttemptId != receipt.AttemptId
++                || existing.EnvironmentId != receipt.EnvironmentId || !JsonElement.DeepEquals(existing.ExecutionContext, context) || existing.StateDirectory != receipt.StateDirectory))
++            {
++                throw new IOException("An ownership receipt cannot be rebound to another allocation.");
++            }
++
++            await CompositionDocumentStore.WriteAsync(fullPath, receipt, cancellationToken).ConfigureAwait(false);
++        }
++    }
++}
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs
+index f78bcee..5f5999c 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs
+@@ -30,7 +30,10 @@ public static class CompositionCommandOptions
+             appHost = FindSourceAppHost(runnerAssembly) ?? packaged;
+         }
+ 
+-        return new CompositionEngineOptions(appHost, runnerAssembly);
++        return new CompositionEngineOptions(appHost, runnerAssembly)
++        {
++            CiJobCancelled = string.Equals(Environment.GetEnvironmentVariable("HEXALITH_CI_JOB_STATUS"), "cancelled", StringComparison.Ordinal),
++        };
+     }
+ 
+     private static string? FindSourceAppHost(string runnerAssembly)
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+index 26290ae..3657e59 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+@@ -23,7 +23,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+ {
+     private static readonly TimeSpan _pollInterval = TimeSpan.FromMilliseconds(500);
+ 
+-    private readonly CompositionEngineOptions _options = options ?? throw new ArgumentNullException(nameof(options));
++    private readonly CompositionEngineOptions _options = ApplyRetentionPolicy(options ?? throw new ArgumentNullException(nameof(options)));
+ 
+     /// <summary>
+     /// Gets the state store used by this engine.
+@@ -956,10 +956,18 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+         return new CompositionDownResult(new ToolCommandResult("failed", ToolOutcome.Passed().Fail(diagnostic.Phase, diagnostic.Category, diagnostic.RuleId, ToolExitCode.TopologyOrLifecycle), [.. bookkeeping, diagnostic]) { RemainingResources = remaining }, remaining);
+     }
+ 
+-    /// <summary>Mirrors admission: only a selected-test owner with a local execution context can ever hold attachments.</summary>
++    /// <summary>Limits failure retention to local owners regardless of caller-supplied retention options.</summary>
++    /// <param name="settings">The requested engine settings.</param>
++    /// <returns>The settings with CI failure retention disabled.</returns>
++    private static CompositionEngineOptions ApplyRetentionPolicy(CompositionEngineOptions settings) =>
++        (settings.ContinuousIntegrationOverride ?? !TestEnvironment.TestEnvironmentDescriptorWriter.IsLocalExecution())
++            ? settings with { RetainOnFailure = false }
++            : settings;
++
++    /// <summary>Mirrors admission for selected local and same-job CI owners.</summary>
+     /// <param name="session">The owned session.</param>
+     /// <returns>Whether attachment withdrawal must precede stopping this session.</returns>
+-    private static bool CanHoldAttachments(CompositionRunSession session) => session.Plan.SelectedTest is not null && session.LocalExecution;
++    private static bool CanHoldAttachments(CompositionRunSession session) => session.Plan.SelectedTest is not null;
+ 
+     private static ToolDiagnostic RecordingFailure() => Diagnostic("HXT008", ToolPhase.Evidence, ToolFailureCategory.EvidencePolicy, "Owned cleanup metadata or diagnostics could not be retained within the stopping budget.", "evidence", null);
+ 
+@@ -1398,11 +1406,15 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+             return new CompositionDownResult(new ToolCommandResult("failed", ToolOutcome.Passed().Fail(invalid.Phase, invalid.Category, invalid.RuleId, ToolExitCode.UsageOrManifest), [invalid]), new CompositionRunResources([], [], true) { DiscoveryFailures = ["ownership"] });
+         }
+ 
+-        // Admission only permits selected-test owners with a recorded local execution context.
+-        bool canHoldAttachments = state?.SelectedTest is not null
+-            && state.ExecutionContext is { ValueKind: System.Text.Json.JsonValueKind.Object } context
+-            && context.TryGetProperty("kind", out System.Text.Json.JsonElement kind)
+-            && kind.ValueKind == System.Text.Json.JsonValueKind.String && kind.GetString() == "local";
++        // Selected owners can admit local or same-job CI attachments. Withdrawal must precede every resource stop.
++        bool supportedContext = state?.ExecutionContext is { ValueKind: System.Text.Json.JsonValueKind.Object } ownerContext
++            && ownerContext.TryGetProperty("kind", out System.Text.Json.JsonElement ownerKind) && ownerKind.ValueKind == System.Text.Json.JsonValueKind.String && ownerKind.GetString() is "local" or "ci";
++        bool canHoldAttachments = state?.SelectedTest is not null && supportedContext;
++        bool ciOwner = state?.ExecutionContext is { ValueKind: System.Text.Json.JsonValueKind.Object } context
++            && context.TryGetProperty("kind", out System.Text.Json.JsonElement kind) && kind.ValueKind == System.Text.Json.JsonValueKind.String && kind.GetString() == "ci";
++        bool ciCancelled = _options.CiJobCancelled || state?.TestRun is null || state.TestRun.TerminalStatus is "cancelled" or "withdrawn";
++        string ciWithdrawalReason = ciCancelled ? "ci-job-cancelled" : "ci-job-completed";
++        string withdrawalReason = ciOwner ? ciWithdrawalReason : "developer-stop";
+         string attemptId = CompositionRunPlanFactory.NewRunId();
+         string directory = DiagnosticsDirectory(runId);
+         if (state is not null)
+@@ -1457,7 +1469,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+         {
+             try
+             {
+-                IReadOnlyList<CompositionAttachment> withdrawn = await CompositionAttachmentStore.WithdrawAsync(directory, runId, "developer-stop", DateTimeOffset.UtcNow, bound).ConfigureAwait(false);
++                IReadOnlyList<CompositionAttachment> withdrawn = await CompositionAttachmentStore.WithdrawAsync(directory, runId, withdrawalReason, DateTimeOffset.UtcNow, bound).ConfigureAwait(false);
+                 bookkeeping.AddRange(CompositionAttachmentStore.WithdrawalDiagnostics(withdrawn));
+             }
+             catch (Exception exception) when (IsTeardownFailure(exception))
+@@ -1973,6 +1985,22 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+             }
+         }
+ 
++        if (!requirePublication && _options.SelectedTest is not null)
++        {
++            try
++            {
++                await CompositionDocumentStore.WriteAsync(Path.Combine(diagnosticsPath, "cleanup-request.json"), new { runId, attemptId = CompositionRunPlanFactory.NewRunId() }, boundToken).ConfigureAwait(false);
++                IReadOnlyList<CompositionAttachment> ended = await CompositionAttachmentStore.WithdrawAsync(diagnosticsPath, runId, status == CompositionRunStatus.Cancelled ? "ci-job-cancelled" : "ci-job-completed", DateTimeOffset.UtcNow, boundToken).ConfigureAwait(false);
++                bookkeeping.AddRange(CompositionAttachmentStore.WithdrawalDiagnostics(ended));
++            }
++            catch (Exception exception) when (IsTeardownFailure(exception))
++            {
++                // Leave ownership and resources retryable when withdrawal could not be committed before stopping.
++                AddRecordingFailure(bookkeeping);
++                return Failed("failed", exitCode, [.. located, .. bookkeeping], runId);
++            }
++        }
++
+         (CompositionRunResources remaining, bool workspaceRemoved) = retained || (!terminalPublished && requirePublication)
+             ? (await ObserveOwnedResourcesAsync(runId, boundToken).ConfigureAwait(false), false)
+             : await TearDownAsync(runId, appHost, boundToken).ConfigureAwait(false);
+@@ -2443,6 +2471,12 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+             EffectiveDeadlineModuleId = deadline.ModuleId,
+             ExecutionContext = _options.SelectedTest is null ? null : System.Text.Json.JsonSerializer.SerializeToElement(TestEnvironment.TestEnvironmentDescriptorWriter.ExecutionContext()),
+         };
++        if (_options.CiOwnerReceiptPath is { } receiptPath)
++        {
++            // The finalizer can recover these exact identities even if cancellation interrupts the following state writes.
++            await CompositionCiOwnerReceipt.PersistAsync(receiptPath, initial, StateStore.Directory, _options.WorkspaceRoot, cancellationToken).ConfigureAwait(false);
++        }
++
+         await StateStore.WriteAsync(initial, cancellationToken).ConfigureAwait(false);
+         CandidateStateIssued = _options.CandidatePolicy is not null;
+         await CompositionDocumentStore.WriteAsync(Path.Combine(directory, "owner.json"), initial, cancellationToken).ConfigureAwait(false);
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
+index eae8875..de61dbc 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
+@@ -15,6 +15,12 @@ using Hexalith.Builds.Tooling.Workspace;
+ /// <param name="DescriptorChildEntryAssemblyPath">The absolute path of the runner assembly hosting the descriptor child command.</param>
+ public sealed record CompositionEngineOptions(string AppHostAssemblyPath, string DescriptorChildEntryAssemblyPath)
+ {
++    /// <summary>Gets the external durable receipt used by the same CI job to recover exact ownership before allocation.</summary>
++    public string? CiOwnerReceiptPath { get; init; }
++
++    /// <summary>Gets a value indicating whether the independent CI finalizer observed actual job cancellation.</summary>
++    public bool CiJobCancelled { get; init; }
++
+     /// <summary>Gets the immutable authenticated candidate decision and producing attempt.</summary>
+     public CandidatePolicy.CandidatePolicyBinding? CandidatePolicy { get; init; }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs
+index b7c66ee..ab2a4a6 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs
+@@ -125,6 +125,7 @@ public static class CompositionRunListing
+     /// <returns>The retention label.</returns>
+     internal static string Retention(CompositionRunState state, IReadOnlyList<CompositionAttachment>? attachments = null) => state.TestRun switch
+     {
++        _ when state.ExecutionContext is { } context && context.ValueKind == System.Text.Json.JsonValueKind.Object && context.TryGetProperty("kind", out System.Text.Json.JsonElement kind) && kind.ValueKind == System.Text.Json.JsonValueKind.String && kind.GetString() == "ci" => "not-retained",
+         _ when attachments?.Any(item => item.Outcome == "failed") == true => state.CleanupDisposition == "complete" ? "released" : "failure-retained",
+         null => "unavailable",
+         _ when state.CleanupDisposition == "complete" && state.TestRun.FailureRetained => "released",
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs
+index f973b28..9174076 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs
+@@ -1371,6 +1371,23 @@ public static class ModuleCommandExecutionService
+             bool cleanupPending = false;
+             bool cancellationWithdrawn = false;
+             string? attachmentDirectory = ownedRunId is null ? null : Path.Combine(options.StateDirectory, "diagnostics", ownedRunId);
++            if (ci && attachmentDirectory is not null)
++            {
++                try
++                {
++                    using CancellationTokenSource withdrawalMetadata = new(TimeSpan.FromSeconds(5));
++                    await engine!.RecordOwnerCancellationAsync(ownedRunId!, withdrawalMetadata.Token).ConfigureAwait(false);
++                    IReadOnlyList<CompositionAttachment> ended = await CompositionAttachmentStore.WithdrawAsync(attachmentDirectory, ownedRunId!, cancellationToken.IsCancellationRequested || withdrawn ? "ci-job-cancelled" : "ci-job-completed", DateTimeOffset.UtcNow, withdrawalMetadata.Token).ConfigureAwait(false);
++                    result = result with { Diagnostics = [.. result.Diagnostics.Where(item => item.RuleId != "HXI011"), .. CompositionAttachmentStore.WithdrawalDiagnostics(ended)] };
++                }
++                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or System.Text.Json.JsonException or InvalidDataException or OperationCanceledException)
++                {
++                    holdsVerified = false;
++                    cleanupPending = true;
++                    result = MergeEvidenceFailure(result, new ToolDiagnostic("HXT008", ToolPhase.Evidence, ToolFailureCategory.EvidencePolicy, "CI attachment withdrawal could not be durably reported; exact cleanup must be retried by the job finalizer.", "evidence"));
++                }
++            }
++
+             if (!ci && attachmentDirectory is not null)
+             {
+                 try
+@@ -1392,7 +1409,7 @@ public static class ModuleCommandExecutionService
+                 }
+             }
+ 
+-            bool retentionEstablished = attachedFailure || record?.FailureRetained == true || (record is null && retain && !passed && !withdrawn);
++            bool retentionEstablished = !ci && (attachedFailure || record?.FailureRetained == true || (record is null && retain && !passed && !withdrawn));
+             bool cleanup = session is not null && !(PersistsAfterExit(command) && passed)
+                 && holdsVerified && !retentionEstablished && record?.CleanupDisposition != "complete";
+             if (cleanup && !ci && record is null)
+diff --git a/test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs b/test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs
+index 07c99df..5e8488c 100644
+--- a/test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs
+@@ -139,18 +139,17 @@ public sealed class AttachAdmissionTests
+         File.Exists(CompositionAttachmentStore.PathFor(Path.Combine(store.Directory, "diagnostics", owner.RunId))).ShouldBeFalse();
+     }
+ 
+-    /// <summary>A CI owner is refused even for a same-job attacher, because CI owners do not wait for holds.</summary>
++    /// <summary>A compatible CI attachment is accepted within its owner job.</summary>
+     /// <returns>The refusal assertion.</returns>
+     [Fact]
+-    public async Task SameJobCiAttachmentIsRefusedAsync()
++    public async Task SameJobCiAttachmentIsAcceptedAsync()
+     {
+         using PlatformManifestTestWorkspace workspace = new();
+         (CompositionRunStateStore store, CompositionRunState owner, string composition) = await ReadyOwnerAsync(workspace, state => state with { ExecutionContext = Ci("job-a") }).ConfigureAwait(true);
+         ToolCommandResult result = await CompositionAttachAdmission.AdmitAsync(store, Request(owner, composition) with { AttacherContext = Ci("job-a") }, DateTimeOffset.UtcNow, TestContext.Current.CancellationToken).ConfigureAwait(true);
+-        result.Attachment.ShouldBeNull();
+-        result.Diagnostics.Single().RuleId.ShouldBe("HXR035");
+-        result.Diagnostics.Single().Field.ShouldBe("owner-ci-holds-unsupported");
+-        File.Exists(CompositionAttachmentStore.PathFor(Path.Combine(store.Directory, "diagnostics", owner.RunId))).ShouldBeFalse();
++        result.Outcome.ExitCode.ShouldBe(ToolExitCode.Success);
++        _ = result.Attachment.ShouldNotBeNull();
++        File.Exists(CompositionAttachmentStore.PathFor(Path.Combine(store.Directory, "diagnostics", owner.RunId))).ShouldBeTrue();
+     }
+ 
+     /// <summary>A finished owner refuses new attaches and names its state, unless it is a ready failure-retained local environment.</summary>
+@@ -532,7 +531,7 @@ public sealed class AttachAdmissionTests
+         using PlatformManifestTestWorkspace workspace = new();
+         (CompositionRunStateStore store, CompositionRunState owner, string composition) = await ReadyOwnerAsync(workspace, state => Finished(state, "failed-retained") with { ExecutionContext = Ci("job-a") }).ConfigureAwait(true);
+         ToolCommandResult result = await CompositionAttachAdmission.AdmitAsync(store, Request(owner, composition) with { AttacherContext = Ci("job-a") }, DateTimeOffset.UtcNow, TestContext.Current.CancellationToken).ConfigureAwait(true);
+-        result.Diagnostics.Single().Field.ShouldBe("owner-ci-holds-unsupported");
++        result.Diagnostics.Single().Field.ShouldBe("owner-failed");
+     }
+ 
+     /// <summary>Any differing CI identity element refuses the attachment as cross-job.</summary>
+@@ -1503,10 +1502,10 @@ public sealed class AttachAdmissionTests
+         reports.Count(item => item.GetProperty("message").GetString()!.Contains(run.Seeded.AttachedRunId, StringComparison.Ordinal)).ShouldBe(1);
+     }
+ 
+-    /// <summary>Only local selected-test owners require durable withdrawal before resource stopping.</summary>
++    /// <summary>Local and CI selected-test owners require durable withdrawal before resource stopping.</summary>
+     /// <param name="context">The recorded owner locality or environment-only category.</param>
+     /// <param name="blockOutcome">Whether the selected-test state write rather than cleanup marker is blocked.</param>
+-    /// <returns>The strict local refusal or best-effort nonattachable cleanup assertions.</returns>
++    /// <returns>The strict attachable-owner refusal or best-effort nonattachable cleanup assertions.</returns>
+     [Theory]
+     [InlineData("local", false)]
+     [InlineData("ci", false)]
+@@ -1520,7 +1519,13 @@ public sealed class AttachAdmissionTests
+         using PlatformManifestTestWorkspace workspace = new();
+         (CompositionRunStateStore store, CompositionRunState original, _) = await ReadyOwnerAsync(workspace).ConfigureAwait(true);
+         string kind = context == "ci" ? "ci" : "local";
+-        CompositionRunState owner = original with { ExecutionContext = context == "missing" ? null : JsonSerializer.SerializeToElement(new { kind }), SelectedTest = context == "environment" ? null : original.SelectedTest };
++        JsonElement? recordedContext = context == "missing" ? null : JsonSerializer.SerializeToElement(new { kind });
++        if (context == "ci")
++        {
++            recordedContext = Ci("job-a");
++        }
++
++        CompositionRunState owner = original with { ExecutionContext = recordedContext, SelectedTest = context == "environment" ? null : original.SelectedTest };
+         await store.WriteAsync(owner, TestContext.Current.CancellationToken).ConfigureAwait(true);
+         CompositionWorkspace.CreatePrivateDirectory(owner.Workspace);
+         string directory = Path.Combine(store.Directory, "diagnostics", owner.RunId);
+@@ -1548,7 +1553,7 @@ public sealed class AttachAdmissionTests
+                 File.Exists(Path.Combine(directory, "cleanup-request.json")).ShouldBeTrue();
+             }
+ 
+-            if (context == "local")
++            if (context is "local" or "ci")
+             {
+                 result.Result.Diagnostics.ShouldContain(item => item.RuleId == "HXR037" && item.Message.Contains("cleanup state", StringComparison.Ordinal));
+                 result.Result.Outcome.RuleId.ShouldBe("HXR037");
+@@ -1660,15 +1665,14 @@ public sealed class AttachAdmissionTests
+     }
+ 
+     /// <summary>
+-    /// A CI owner can never hold attachments, so its live session AppHost stops before cleanup locks or state reads and
+-    /// early cleanup exits, including an exhausted stopping budget, never leave it running.
++    /// A CI owner with unverifiable withdrawal keeps its session until a retry can record withdrawal.
+     /// </summary>
+     /// <param name="exit">The early cleanup exit: an exhausted budget or an unverifiable owner state.</param>
+     /// <returns>The incomplete cleanup, stopped and disposed AppHost and retained workspace assertions.</returns>
+     [Theory]
+     [InlineData("exhausted-budget")]
+     [InlineData("unverifiable-state")]
+-    public async Task CiSessionStopsAppHostOnEarlyCleanupExitsAsync(string exit)
++    public async Task CiSessionPreservesAppHostUntilWithdrawalCanBeVerifiedAsync(string exit)
+     {
+         using PlatformManifestTestWorkspace workspace = new();
+         (CompositionRunStateStore store, CompositionRunState owner, _) = await ReadyOwnerAsync(workspace, state => state with { ExecutionContext = Ci("job-a") }).ConfigureAwait(true);
+@@ -1695,9 +1699,7 @@ public sealed class AttachAdmissionTests
+             CompositionDownResult result = await new CompositionEngine(LocalRunLifecycleFixture.Options(workspace.Root, owner.SelectedTest!)).DownWithinBudgetAsync(session, stopping.Token).ConfigureAwait(true);
+             result.Result.Diagnostics.ShouldContain(item => item.RuleId == "HXR023");
+             result.Result.Diagnostics.ShouldNotContain(item => item.RuleId == "HXR037");
+-            await observer.WaitForExitAsync(TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken).ConfigureAwait(true);
+-            observer.HasExited.ShouldBeTrue();
+-            _ = Should.Throw<InvalidOperationException>(() => appHost.HasExited);
++            observer.HasExited.ShouldBeFalse();
+             Directory.Exists(owner.Workspace).ShouldBeTrue();
+         }
+         finally
+diff --git a/test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs b/test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs
+new file mode 100644
+index 0000000..6d440d0
+--- /dev/null
++++ b/test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs
+@@ -0,0 +1,373 @@
++// <copyright file="CiRunLifecycleTests.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.ModuleTool.Tests;
++
++using System.Diagnostics;
++using System.Text.Json;
++
++using Hexalith.Builds.Tooling.Diagnostics;
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++
++using Shouldly;
++
++using Xunit;
++
++/// <summary>Exercises durable CI ownership recovery and withdrawal before exact resource cleanup.</summary>
++[Collection(nameof(PlatformManifestTestGrouping))]
++public sealed class CiRunLifecycleTests
++{
++    /// <summary>A durable external receipt preserves exact identities before allocation and cannot be rebound.</summary>
++    /// <returns>The recovery binding assertions.</returns>
++    [Fact]
++    public async Task ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (_, CompositionRunState owner) = LocalRunLifecycleFixture.Create(workspace, "package");
++        owner = owner with { ExecutionContext = Context(), RetainOnFailure = false };
++        string receipt = Path.Combine(workspace.Root, "receipt.json");
++        string state = Path.Combine(workspace.Root, "state");
++        await CompositionCiOwnerReceipt.PersistAsync(receipt, owner, state, Path.Combine(workspace.Root, "runs"), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        Directory.Exists(owner.Workspace).ShouldBeFalse();
++        CompositionCiOwnerReceipt recorded = (await CompositionDocumentStore.TryReadAsync<CompositionCiOwnerReceipt>(receipt, TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
++        recorded.RunId.ShouldBe(owner.RunId);
++        recorded.EnvironmentId.ShouldBe(owner.EnvironmentId);
++        recorded.AttemptId.ShouldBe(owner.AttemptId);
++        recorded.ExecutionContext.GetProperty("jobId").GetString().ShouldBe("ci");
++        await CompositionCiOwnerReceipt.PersistAsync(receipt, owner, state, Path.Combine(workspace.Root, "runs"), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        _ = await Should.ThrowAsync<IOException>(() => CompositionCiOwnerReceipt.PersistAsync(receipt, owner with { RunId = CompositionRunPlanFactory.NewRunId() }, state, Path.Combine(workspace.Root, "runs"), TestContext.Current.CancellationToken)).ConfigureAwait(true);
++    }
++
++    /// <summary>Concurrent allocations cannot replace another owner's preallocation recovery identity.</summary>
++    /// <returns>The single-owner durable receipt assertions.</returns>
++    [Fact]
++    public async Task ConcurrentReceiptPublicationIssuesAtMostOneOwnerAsync()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (_, CompositionRunState initial) = LocalRunLifecycleFixture.Create(workspace, "package");
++        CompositionRunState first = initial with { ExecutionContext = Context() };
++        CompositionRunState second = first with { RunId = CompositionRunPlanFactory.NewRunId() };
++        string receipt = Path.Combine(workspace.Root, "receipt.json");
++        async Task<bool> PublishAsync(CompositionRunState owner)
++        {
++            try
++            {
++                await CompositionCiOwnerReceipt.PersistAsync(receipt, owner, Path.Combine(workspace.Root, "state"), Path.Combine(workspace.Root, "runs"), TestContext.Current.CancellationToken).ConfigureAwait(true);
++                return true;
++            }
++            catch (IOException)
++            {
++                return false;
++            }
++        }
++
++        bool[] accepted = await Task.WhenAll(PublishAsync(first), PublishAsync(second)).ConfigureAwait(true);
++        accepted.Count(value => value).ShouldBe(1);
++        CompositionCiOwnerReceipt recorded = (await CompositionDocumentStore.TryReadAsync<CompositionCiOwnerReceipt>(receipt, TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
++        recorded.RunId.ShouldBe(accepted[0] ? first.RunId : second.RunId);
++    }
++
++    /// <summary>Unwritable or workspace-contained receipt destinations refuse before allocating resources.</summary>
++    /// <param name="location">The refused destination.</param>
++    /// <returns>The preallocation assertions.</returns>
++    [Theory]
++    [InlineData("directory")]
++    [InlineData("workspace")]
++    public async Task UnrecoverableReceiptRefusesBeforeAllocationAsync(string location)
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (_, CompositionRunState owner) = LocalRunLifecycleFixture.Create(workspace, "package");
++        owner = owner with { ExecutionContext = Context(), RetainOnFailure = false };
++        string receipt = location == "workspace" ? Path.Combine(owner.Workspace, "receipt.json") : workspace.Root;
++        Task PublishAsync() => CompositionCiOwnerReceipt.PersistAsync(receipt, owner, Path.Combine(workspace.Root, "state"), Path.Combine(workspace.Root, "runs"), TestContext.Current.CancellationToken);
++        if (location == "workspace")
++        {
++            _ = await Should.ThrowAsync<InvalidDataException>(PublishAsync).ConfigureAwait(true);
++        }
++        else
++        {
++            _ = await Should.ThrowAsync<IOException>(PublishAsync).ConfigureAwait(true);
++        }
++
++        Directory.Exists(owner.Workspace).ShouldBeFalse();
++    }
++
++    /// <summary>All CI terminal paths withdraw active holds before exact cleanup, preserve expiry and leave peer owners untouched.</summary>
++    /// <param name="terminal">The first terminal outcome, or partial startup.</param>
++    /// <returns>The withdrawal, first outcome and idempotence assertions.</returns>
++    [Theory]
++    [InlineData("passed")]
++    [InlineData("failed")]
++    [InlineData("cancelled")]
++    [InlineData("partial-startup")]
++    [InlineData("failed-then-job-cancelled")]
++    public async Task CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(string terminal)
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (ModuleTestSelection selected, CompositionRunState original) = LocalRunLifecycleFixture.Create(workspace, "package");
++        selected = selected with { StopTimeoutSeconds = 30 };
++        string runId = CompositionRunPlanFactory.NewRunId();
++        CompositionRunState owner = original with { SelectedTest = selected, RunId = runId, Workspace = Path.Combine(workspace.Root, "runs", runId) };
++        owner = owner with { Status = CompositionRunStatus.Ready, ExecutionContext = Context(), RetainOnFailure = false, ReadinessResults = [new("owned", "process", "Healthy")] };
++        CompositionEngineOptions options = LocalRunLifecycleFixture.Options(workspace.Root, selected) with { RetainOnFailure = true, ContinuousIntegrationOverride = true, CiJobCancelled = terminal == "failed-then-job-cancelled", StopTimeout = TimeSpan.FromSeconds(10) };
++        CompositionEngine engine = new(options);
++        await engine.StateStore.WriteAsync(owner, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        CompositionWorkspace.CreatePrivateDirectory(owner.Workspace);
++        string peer = Path.Combine(options.WorkspaceRoot, CompositionRunPlanFactory.NewRunId());
++        CompositionWorkspace.CreatePrivateDirectory(peer);
++        DateTimeOffset now = DateTimeOffset.UtcNow;
++        CompositionAttachment active = new(CompositionRunPlanFactory.NewRunId(), owner.EnvironmentId!, owner.RunId, CompositionRunPlanFactory.NewRunId(), 14400, now, 14400, now.AddHours(4));
++        string diagnostics = Path.Combine(options.StateDirectory, "diagnostics", owner.RunId);
++        _ = await CompositionAttachmentStore.UpdateAsync<int>(diagnostics, owner.RunId, _ => (0, [active]), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        if (terminal != "partial-startup")
++        {
++            ToolOutcome outcome = terminal switch
++            {
++                "passed" => ToolOutcome.Passed(),
++                "failed" or "failed-then-job-cancelled" => ToolOutcome.Passed().Fail(ToolPhase.Test, ToolFailureCategory.ProductOrTest, "HXT001", ToolExitCode.ProductOrTest),
++                _ => ToolOutcome.Passed().Fail(ToolPhase.Cleanup, ToolFailureCategory.Cancelled, "HXC130", ToolExitCode.Cancelled),
++            };
++            _ = await engine.RecordTestOutcomeAsync(owner.RunId, owner.ReadinessResults, new(terminal switch { "passed" => "completed", "failed-then-job-cancelled" => "failed", _ => terminal }, outcome, []), "unknown", new([], []), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        CompositionDownResult down = await engine.DownAsync(owner.RunId, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        down.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.Success, JsonSerializer.Serialize(down.Result));
++        down.Remaining.IsEmpty.ShouldBeTrue();
++        CompositionAttachment ended = (await CompositionAttachmentStore.ReadAsync(diagnostics, owner.RunId, TestContext.Current.CancellationToken).ConfigureAwait(true)).Single();
++        ended.Outcome.ShouldBe("withdrawn");
++        ended.ExpiresAtUtc.ShouldBe(active.ExpiresAtUtc);
++        ended.EndReason.ShouldBe(terminal is "cancelled" or "partial-startup" or "failed-then-job-cancelled" ? "ci-job-cancelled" : "ci-job-completed");
++        File.Exists(Path.Combine(diagnostics, "attachment-withdrawals.json")).ShouldBeTrue();
++        Directory.Exists(owner.Workspace).ShouldBeFalse();
++        Directory.Exists(peer).ShouldBeTrue();
++        ModuleTestRunRecord first = (await CompositionDocumentStore.TryReadAsync<ModuleTestRunRecord>(Path.Combine(diagnostics, "selected-test.json"), TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
++        first.TerminalStatus.ShouldBe(terminal switch { "partial-startup" => "cancelled", "passed" => "completed", "failed-then-job-cancelled" => "failed", _ => terminal });
++        first.FailureRetained.ShouldBeFalse();
++        (await engine.DownAsync(owner.RunId, TestContext.Current.CancellationToken).ConfigureAwait(true)).Remaining.IsEmpty.ShouldBeTrue();
++        (await CompositionAttachmentStore.ReadAsync(diagnostics, owner.RunId, TestContext.Current.CancellationToken).ConfigureAwait(true)).Single().ShouldBe(ended);
++    }
++
++    /// <summary>Executes the CI service path and observes withdrawal from the first live composed resource at its stop boundary.</summary>
++    /// <param name="scenario">The selected-suite result or actual partial-startup teardown path.</param>
++    /// <returns>The live-process ordering, first outcome and no-retention assertions.</returns>
++    [Theory]
++    [InlineData("passed")]
++    [InlineData("failed")]
++    [InlineData("cancelled")]
++    [InlineData("partial-startup-failed")]
++    [InlineData("partial-startup-cancelled")]
++    public async Task ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(string scenario)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        Dictionary<string, string?> previous = EnterCiContext();
++        try
++        {
++            using PlatformManifestTestWorkspace workspace = new();
++            _ = LocalRunLifecycleFixture.Create(workspace);
++            workspace.Change("modules.0.tests.0.executionTimeoutSeconds", "30");
++            workspace.Change("modules.0.tests.0.stopTimeoutSeconds", "30");
++            string manifest = workspace.Save();
++            ModuleTestSelection selected = ModuleTestSelection.Select(PlatformManifestValidator.Validate([manifest], TestContext.Current.CancellationToken).Declarations!, "verify", manifest, DateTimeOffset.UtcNow).ShouldNotBeNull();
++            bool partial = scenario.StartsWith("partial-startup", StringComparison.Ordinal);
++            bool cancelled = scenario.EndsWith("cancelled", StringComparison.Ordinal);
++            string firstStatus = scenario switch
++            {
++                "passed" => "completed",
++                "cancelled" or "partial-startup-cancelled" => "cancelled",
++                _ => "failed",
++            };
++            ToolExitCode firstExit = scenario switch
++            {
++                "passed" => ToolExitCode.Success,
++                "cancelled" or "partial-startup-cancelled" => ToolExitCode.Cancelled,
++                "partial-startup-failed" => ToolExitCode.TopologyOrLifecycle,
++                _ => ToolExitCode.ProductOrTest,
++            };
++            string nativeMarker = Path.Combine(workspace.Root, "native-started");
++            string observation = Path.Combine(workspace.Root, "first-resource-stop.json");
++            string native = """
++                import os, pathlib, time
++                pathlib.Path(__file__).with_name('native-started').write_text('executed')
++                """;
++            native += scenario == "cancelled" ? "\nwhile True: time.sleep(0.01)\n" : "\npathlib.Path(os.environ['HEXALITH_G4_TEST_REPORT_PATH']).write_text('<TestRun><ResultSummary outcome=\"Completed\"><Counters total=\"1\" passed=\"1\" failed=\"0\" /></ResultSummary></TestRun>')\n";
++            if (scenario == "failed")
++            {
++                native += "raise SystemExit(1)\n";
++            }
++
++            await File.WriteAllTextAsync(Path.Combine(workspace.Root, "runner.py"), native, TestContext.Current.CancellationToken).ConfigureAwait(true);
++            using CancellationTokenSource ownerCancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++            using Process appHost = new();
++            List<Process> observers = [];
++            CompositionRunPlan? issuedPlan = null;
++            CompositionAttachment? accepted = null;
++            CompositionEngineOptions baseOptions = LocalRunLifecycleFixture.Options(workspace.Root, selected) with
++            {
++                WorkspaceRoot = Path.Combine(workspace.Root, "workspace"),
++                ContinuousIntegrationOverride = true,
++                RetainOnFailure = true,
++                StopTimeout = TimeSpan.FromSeconds(30),
++                SourceMapping = new SourceMapping(WorkspaceMode.Source, workspace.Root, "sample", [new("sample", "source", workspace.Root)], false),
++            };
++            CompositionEngineOptions options = baseOptions with
++            {
++                SelectedPlatformStartOverride = async (_, selection, token) =>
++                {
++                    CompositionRunPlan plan = await TestEnvironmentProvisioningFixture.PrepareAsync(CompositionTestFiles.CreatePlan(workspace.Root, CompositionRunPlanFactory.NewRunId()) with { SelectedTest = selection }, manifest, workspace.Root).ConfigureAwait(false);
++                    issuedPlan = plan;
++                    CompositionReadiness ready = TestEnvironmentProvisioningFixture.Observe(new CompositionReadiness(CompositionReadiness.SupportedSchema, plan.RunId, new Uri("http://127.0.0.1:20012/"), null, [new("owned", "process", "Healthy")]), "sample");
++                    string directory = Path.Combine(baseOptions.StateDirectory, "diagnostics", plan.RunId);
++                    CompositionRunState state = CompositionRunPlanFactory.CreateInitialState(plan.RunId, plan.Workspace, selection.ManifestHash, selection.RequestedAtUtc) with
++                    {
++                        AttemptId = plan.AttemptId,
++                        EnvironmentId = plan.EnvironmentId,
++                        SelectedTest = selection,
++                        Status = partial ? CompositionRunStatus.Starting : CompositionRunStatus.Ready,
++                        ExecutionContext = Context(),
++                        ReadinessResults = [.. ready.Resources],
++                        EffectiveDeadlineSeconds = 600,
++                        StartupDeadlineUtc = selection.RequestedAtUtc.AddSeconds(600),
++                    };
++                    CompositionRunStateStore store = new(baseOptions.StateDirectory);
++                    await store.WriteAsync(state, token).ConfigureAwait(false);
++                    if (partial)
++                    {
++                        // Recover every durably recorded hold even when startup has not returned a usable session.
++                        DateTimeOffset now = DateTimeOffset.UtcNow;
++                        accepted = new CompositionAttachment(CompositionRunPlanFactory.NewRunId(), plan.EnvironmentId, plan.RunId, CompositionRunPlanFactory.NewRunId(), 14400, now, 14400, now.AddHours(4));
++                        int recorded = await CompositionAttachmentStore.UpdateAsync<int>(directory, plan.RunId, _ => (0, [accepted]), token).ConfigureAwait(false);
++                        recorded.ShouldBe(0);
++                    }
++                    else
++                    {
++                        ToolCommandResult admission = await CompositionAttachAdmission.AdmitAsync(store, new(plan.RunId, "source", selection.ManifestHash) { AttacherContext = Context(), HoldSeconds = "14400" }, DateTimeOffset.UtcNow, token).ConfigureAwait(false);
++                        accepted = admission.Attachment.ShouldNotBeNull(JsonSerializer.Serialize(admission));
++                    }
++
++                    const string stopObserver = """
++                        import json, os, pathlib, sys
++                        print('ready', flush=True)
++                        sys.stdin.readline()
++                        directory = pathlib.Path(sys.argv[1])
++                        # This process is still alive at its first stop signal. Missing/late publication fails this observer.
++                        report = json.loads((directory / 'attachment-withdrawals.json').read_text())
++                        terminal = json.loads((directory / 'selected-test.json').read_text())
++                        request = json.loads((directory / 'cleanup-request.json').read_text())
++                        pathlib.Path(sys.argv[2]).write_text(json.dumps({'report': report, 'terminal': terminal, 'request': request, 'processId': os.getpid()}))
++                        """;
++                    appHost.StartInfo = CompositionProcess.CreateStartInfo("python3", ["-u", "-c", stopObserver, directory, observation], workspace.Root, new Dictionary<string, string> { [CompositionEnvironment.RunId] = plan.RunId });
++                    appHost.Start().ShouldBeTrue();
++                    observers.Add(Process.GetProcessById(appHost.Id));
++                    (await appHost.StandardOutput.ReadLineAsync(token).ConfigureAwait(false)).ShouldBe("ready");
++                    if (partial)
++                    {
++                        if (cancelled)
++                        {
++                            await ownerCancellation.CancelAsync().ConfigureAwait(false);
++                        }
++
++                        CompositionEngine engine = new(baseOptions with { SelectedTest = selection });
++                        System.Reflection.MethodInfo fail = typeof(CompositionEngine).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Single(method => method.Name == "FailAndTearDownAsync" && method.GetParameters().Length == 8);
++                        ToolDiagnostic cause = new(cancelled ? "HXC130" : "HXR020", ToolPhase.Topology, cancelled ? ToolFailureCategory.Cancelled : ToolFailureCategory.TopologyOrLifecycle, "Controlled partial startup termination.", "apphost");
++                        return await ((Task<CompositionStartResult>)fail.Invoke(engine, [plan.RunId, appHost, selection.ManifestHash, cancelled ? CompositionRunStatus.Cancelled : CompositionRunStatus.Failed, cause, firstExit, selection.RequestedAtUtc, new CompositionEffectiveDeadline(600, false, null, null)])!).ConfigureAwait(false);
++                    }
++
++                    await CompositionDocumentStore.WriteAsync(plan.ReadinessPath, ready, token).ConfigureAwait(false);
++                    return new CompositionStartResult(new("ready", ToolOutcome.Passed(), []), plan.RunId, new CompositionRunSession(plan, ready, "private-ci-fixture-key", appHost) { LocalExecution = false });
++                },
++            };
++            StringWriter output = new();
++            await using System.Runtime.CompilerServices.ConfiguredAsyncDisposable outputLifetime = output.ConfigureAwait(true);
++            Stopwatch elapsed = Stopwatch.StartNew();
++            try
++            {
++                Task<int> running = ModuleCommandExecutionService.ExecuteAsync(ModuleInvocationCommand.Test, manifest, "verify", null, null, ToolOutputFormat.Json, output, ownerCancellation.Token, "child.dll", compositionOptions: options);
++                if (scenario == "cancelled")
++                {
++                    using CancellationTokenSource startup = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++                    startup.CancelAfter(TimeSpan.FromSeconds(10));
++                    while (!File.Exists(nativeMarker))
++                    {
++                        await Task.Delay(10, startup.Token).ConfigureAwait(true);
++                    }
++
++                    observers.ShouldHaveSingleItem().HasExited.ShouldBeFalse();
++                    File.Exists(observation).ShouldBeFalse();
++                    await ownerCancellation.CancelAsync().ConfigureAwait(true);
++                }
++
++                int exit = await running.WaitAsync(TimeSpan.FromSeconds(20), TestContext.Current.CancellationToken).ConfigureAwait(true);
++                exit.ShouldBe((int)firstExit, output.ToString());
++                elapsed.Elapsed.ShouldBeLessThan(TimeSpan.FromSeconds(20));
++                File.Exists(nativeMarker).ShouldBe(!partial);
++                Process stoppedProcess = observers.ShouldHaveSingleItem();
++                await stoppedProcess.WaitForExitAsync(TestContext.Current.CancellationToken).ConfigureAwait(true);
++                using JsonDocument stopped = JsonDocument.Parse(await File.ReadAllTextAsync(observation, TestContext.Current.CancellationToken).ConfigureAwait(true));
++                JsonElement seen = stopped.RootElement;
++                CompositionRunPlan plan = issuedPlan.ShouldNotBeNull();
++                CompositionAttachment hold = accepted.ShouldNotBeNull();
++                seen.GetProperty("processId").GetInt32().ShouldBe(stoppedProcess.Id);
++                seen.GetProperty("request").GetProperty("runId").GetString().ShouldBe(plan.RunId);
++                JsonElement ended = seen.GetProperty("report").GetProperty("attachments").EnumerateArray().ShouldHaveSingleItem();
++                ended.GetProperty("attachedRunId").GetString().ShouldBe(hold.AttachedRunId);
++                ended.GetProperty("outcome").GetString().ShouldBe("withdrawn");
++                ended.GetProperty("endReason").GetString().ShouldBe(cancelled ? "ci-job-cancelled" : "ci-job-completed");
++                ended.GetProperty("expiresAtUtc").GetDateTimeOffset().ShouldBe(hold.ExpiresAtUtc);
++                seen.GetProperty("terminal").GetProperty("terminalStatus").GetString().ShouldBe(firstStatus);
++                seen.GetProperty("terminal").GetProperty("failureRetained").GetBoolean().ShouldBeFalse();
++                string recordPath = Path.Combine(baseOptions.StateDirectory, "diagnostics", plan.RunId, "selected-test.json");
++                ModuleTestRunRecord first = (await CompositionDocumentStore.TryReadAsync<ModuleTestRunRecord>(recordPath, TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
++                first.TerminalStatus.ShouldBe(firstStatus);
++                first.TerminalOutcome.ExitCode.ShouldBe(firstExit);
++                first.TerminalAtUtc.ShouldBe(seen.GetProperty("terminal").GetProperty("terminalAtUtc").GetDateTimeOffset());
++                first.FailureRetained.ShouldBeFalse();
++                first.CleanupDisposition.ShouldBe("complete");
++                first.RemainingResources.IsEmpty.ShouldBeTrue();
++                Directory.Exists(plan.Workspace).ShouldBeFalse();
++            }
++            finally
++            {
++                foreach (Process process in observers)
++                {
++                    CompositionProcess.Kill(process);
++                    process.Dispose();
++                }
++            }
++        }
++        finally
++        {
++            foreach ((string name, string? value) in previous)
++            {
++                Environment.SetEnvironmentVariable(name, value);
++            }
++        }
++    }
++
++    private static Dictionary<string, string?> EnterCiContext()
++    {
++        Dictionary<string, string> values = new(StringComparer.Ordinal)
++        {
++            ["CI"] = "true",
++            ["GITHUB_ACTIONS"] = "true",
++            ["GITHUB_REPOSITORY"] = "o/r",
++            ["GITHUB_RUN_ID"] = "101",
++            ["GITHUB_RUN_ATTEMPT"] = "2",
++            ["GITHUB_JOB"] = "ci",
++            ["RUNNER_ENVIRONMENT"] = "github-hosted",
++            ["RUNNER_OS"] = "Linux",
++        };
++        Dictionary<string, string?> previous = values.Keys.ToDictionary(name => name, Environment.GetEnvironmentVariable, StringComparer.Ordinal);
++        foreach ((string name, string value) in values)
++        {
++            Environment.SetEnvironmentVariable(name, value);
++        }
++
++        return previous;
++    }
++
++    private static JsonElement Context() => JsonSerializer.SerializeToElement(new { kind = "ci", repository = "o/r", workflowRunId = "101", workflowAttempt = 2, jobId = "ci", runnerKind = "github-hosted", operatingSystem = "Linux", disposable = true });
++}

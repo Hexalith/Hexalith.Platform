@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-31T20:47:05.674657+00:00",
+  "source": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "headTreeSameAsPassedPr": true,
+  "run": 41238944762,
+  "job": 124648564218,
+  "conclusion": "failure",
+  "moduleCounts": {
+    "total": 2668,
+    "passed": 2662,
+    "failed": 1,
+    "existingSkipped": 5
+  },
+  "test": "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared:true,beforeLaunch:false)",
+  "assertion": "down expected Success, actual TopologyOrLifecycle HXR037 with HXT008; withdrawal/metadata incomplete and resources unverified",
+  "elapsedSeconds": 1.385,
+  "configuredStopTimeoutSeconds": 5,
+  "diagnosis": "Read-only hypothesis: concurrent startup outcome publication contends with explicit down RecordTestOutcomeAsync(waitForLock:false). Exact thrown cause not exposed in existing diagnostic; reproduction required. No claim of exhausted wall-clock stopping allowance.",
+  "rawLog": "/tmp/story28-builds-572-main-vsvhbf1t.txt",
+  "rawLogSha256": "c6188c5fe0d8df88ee5805311e37495c4a61058bf053f2c4c5970827235a9176",
+  "rerunDispatched": false,
+  "publicationHeld": true,
+  "stopAllowanceCorrection": {
+    "observedAt": "2026-10-31T21:12:02.236703+00:00",
+    "effectiveOverallStopSeconds": 4,
+    "authority": "Selected suite declares stopTimeoutSeconds=4; DownAsync(runId) chooses state.SelectedTest via TeardownBound before considering options.StopTimeout",
+    "configuredProcessStopSeconds": 5,
+    "conclusion": "Observed1.385-second failure is still earlier than the actual selected overall stop deadline; options.StopTimeout is not its authoritative overall deadline."
+  }
+}

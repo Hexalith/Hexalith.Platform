@@ -1,0 +1,31 @@
+X.509 certificate chain validation will use the fallback certificate bundle at '/home/administrator/.dotnet/sdk/10.0.403/trustedroots/codesignctl.pem'.
+X.509 certificate chain validation will use the fallback certificate bundle at '/home/administrator/.dotnet/sdk/10.0.403/trustedroots/timestampctl.pem'.
+
+Verifying Hexalith.Tenants.Aspire.6.0.0
+Content hash: NvcLXQAOf7P95+bnx9tbv3WXNZ5g50NrqyRaGmXFkZbN5ZOW6brw04KEM579MxUWfnKc0W5Letvsa2dxNjNYeg==
+/tmp/story28-owner-packages-nxd1wgiq/Hexalith.Tenants.Aspire.6.0.0.nupkg
+Signature Hash Algorithm: SHA256
+
+Signature type: Repository
+Service index: https://api.nuget.org/v3/index.json
+Owners: Hexalith
+Verifying the repository primary signature with certificate: 
+  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US
+  SHA1 hash: C72FE7739A9EECB8EC1E4F596DB3BB74039B1DE2
+  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D
+  Issued by: CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O="DigiCert, Inc.", C=US
+  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59
+  CRL URL: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crl
+  CRL URL: http://crl4.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crl
+  OCSP URL: http://ocsp.digicert.com
+Timestamp: 10/31/2026 17:35:18
+Verifying repository primary signature's timestamp with timestamping service certificate: 
+  Subject Name: CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1, O="DigiCert, Inc.", C=US
+  SHA1 hash: 51D9ABDA034973D84F4266ACA48248E6B369C439
+  SHA256 hash: 2DA09DA7F4131F9FE72DB6C5E6E9C9656755AF043F1EA742CC0D2120E141EBFC
+  Issued by: CN=DigiCert Trusted G4 TimeStamping RSA4096 SHA256 2025 CA1, O="DigiCert, Inc.", C=US
+  Valid from: 08/05/2026 02:00:00 to 11/05/2037 00:59:59
+  CRL URL: http://crl3.digicert.com/DigiCertTrustedG4TimeStampingRSA4096SHA2562025CA1.crl
+  OCSP URL: http://ocsp.digicert.com
+
+Successfully verified package 'Hexalith.Tenants.Aspire.6.0.0'.

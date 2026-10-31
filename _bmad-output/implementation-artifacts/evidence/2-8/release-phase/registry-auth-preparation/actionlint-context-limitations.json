@@ -1,0 +1,16 @@
+{
+  "originalHead": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+  "trackedBaselineDiagnostics": 6,
+  "preCredentialStagedDiagnostics": 4,
+  "postCredentialDiagnostics": 4,
+  "diagnosticsUnchangedByCredentialPatch": true,
+  "contexts": [
+    "job.workflow_repository",
+    "job.workflow_sha",
+    "job.workflow_ref"
+  ],
+  "officialGitHubCloudDocumentation": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#job-context",
+  "classification": "Installed linter capability gap: current GitHub Cloud supports these job properties, as independently checked by the coordinator. Preserve the existing governance mechanism.",
+  "focusedIgnore": "property \"workflow_(repository|sha|ref)\" is not defined",
+  "focusedResult": "No remaining diagnostics for reusable workflow or E/P callers."
+}

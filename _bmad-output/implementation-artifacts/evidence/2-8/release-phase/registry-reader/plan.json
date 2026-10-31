@@ -1,0 +1,57 @@
+{
+  "preparationOnly": true,
+  "clusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "context": "jpiquot@local",
+  "namespace": "registry-distribution",
+  "configMap": {
+    "name": "distribution-registry-config",
+    "uid": "d00eeb4b-f507-440f-8328-fb838a7d5da3",
+    "resourceVersion": "27899151",
+    "oldSha256": "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317",
+    "newSha256": "4bc308da5e6495ba9b375797450e0abff89e47a728e2cbb946e0eb827779afca"
+  },
+  "secretMetadataOnly": {
+    "name": "distribution-registry-htpasswd",
+    "uid": "dfe9dfb9-0872-4421-a9ea-b9d1a24e0b59",
+    "resourceVersion": "27899149",
+    "keys": [
+      "htpasswd"
+    ]
+  },
+  "deployment": {
+    "name": "distribution-registry",
+    "uid": "20bb657c-b622-4e1b-81a2-f97bc353a811",
+    "resourceVersion": "27899261",
+    "templateSha256": "f2c8c48ee11042922234497d46ac8cec0fae2f9d4e91a4be8cd39f03acfd792d",
+    "replicas": 1,
+    "strategy": "Recreate",
+    "image": "ghcr.io/project-zot/zot-linux-amd64@sha256:95a837a0afacf5b7edc0c92493f04beee6891989b8d2fd50a00cf65a1e6d4fd5"
+  },
+  "pod": {
+    "name": "distribution-registry-5798dc5f94-f7n65",
+    "uid": "e30cbbb4-9ea3-4eba-bf3e-666613dc198f",
+    "replicaSetUid": "45092d03-9ce4-4aed-9db4-15b91da6c92b",
+    "imageID": "ghcr.io/project-zot/zot-linux-amd64@sha256:95a837a0afacf5b7edc0c92493f04beee6891989b8d2fd50a00cf65a1e6d4fd5"
+  },
+  "principal": "ci-reader",
+  "policy": {
+    "users": [
+      "ci-reader"
+    ],
+    "actions": [
+      "read"
+    ]
+  },
+  "anonymousAndExistingPoliciesUnchanged": true,
+  "externalKustomizeSourceLocated": false,
+  "externalSourceUpdated": false,
+  "credentialMaterialReadOrGenerated": false,
+  "clusterOrRegistryMutationPerformed": false,
+  "knownReadProbe": {
+    "repository": "eventstore",
+    "version": "3.130.1",
+    "source": "1de42b706f52af0da6513f0b7663002606d17156",
+    "indexDigest": "sha256:cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+    "amd64Digest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca"
+  }
+}

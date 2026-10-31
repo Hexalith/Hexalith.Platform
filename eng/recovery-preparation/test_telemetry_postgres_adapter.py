@@ -383,7 +383,11 @@ class PlannerTests(unittest.TestCase):
         commands = a.snapshot_commands(v, snapshot_binding(v))
         self.assertIn('--snapshot=00000003-0000001B-1', commands['dumpArgv'])
         self.assertIn('--format=custom', commands['dumpArgv'])
-        self.assertIn('--file=-', commands['dumpArgv'])
+        # Custom-format pg_dump opens every nonempty filename literally,
+        # including '-'. Omission is the stdout contract; no source file.
+        self.assertFalse(any(v=='-f' or v=='--file' or v.startswith('--file=') for v in commands['dumpArgv']))
+        self.assertFalse(any(item=='-f' or item=='--file' or (isinstance(item,str) and item.startswith('--file='))
+                             for item in capture['dumpArgvTemplate']))
         self.assertNotIn('--schema', ' '.join(commands['dumpArgv']))
         self.assertNotIn('--table', ' '.join(commands['dumpArgv']))
         sql = commands['canaryStdin']
@@ -552,6 +556,23 @@ class PlannerTests(unittest.TestCase):
         self.assertEqual(command['stdinContract']['immutableArtifact'], b['artifact'])
         self.assertEqual(command['stdinContract']['sha256'], J)
         self.assertFalse(command['executionAuthorized'])
+
+    def test_fractional_provider_retention_and_capture_expiry_keep_exact_inequalities(self):
+        from datetime import datetime, timedelta
+        value=fixture();binding=restore_binding(value)
+        captured=datetime.fromisoformat('2026-10-23T12:00:01.123456+00:00')
+        stamp=lambda v:v.isoformat().replace('+00:00','Z')
+        record=binding['authenticatedCaptureRecord']
+        record.update(capturedAt=stamp(captured),expiresAt=stamp(captured+timedelta(days=1)))
+        retain=stamp(captured+timedelta(days=30))
+        binding['artifact']['retainUntil']=retain;binding['independentlyReadBack']['retainUntil']=retain
+        a.restore_command(value,binding)
+        record['expiresAt']=stamp(captured+timedelta(days=1,microseconds=1))
+        with self.assertRaises(a.Refusal):a.restore_command(value,binding)
+        record['expiresAt']=stamp(captured+timedelta(days=1))
+        early=stamp(captured+timedelta(days=30,microseconds=-1))
+        binding['artifact']['retainUntil']=early;binding['independentlyReadBack']['retainUntil']=early
+        with self.assertRaises(a.Refusal):a.restore_command(value,binding)
 
     def test_restore_refuses_unknown_or_reused_uids_empty_schema_image_storage_and_artifact_drift(self):
         v = fixture()

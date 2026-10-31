@@ -1,0 +1,84 @@
+{
+  "observedAt": "2026-10-31T20:31:19.644188+00:00",
+  "branch": "fix/story-2-8-sdk-stream-observer",
+  "head": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "status": "",
+  "remotes": "origin\thttps://github.com/Hexalith/Hexalith.EventStore.git (fetch)\norigin\thttps://github.com/Hexalith/Hexalith.EventStore.git (push)\n",
+  "recent": "2ed2f03346d11c925104f4bfc31ac747182a3dc8 build(sdk): reconcile qualified prerequisite baseline\n484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c fix: qualify parties catalog prerequisites\n67bab1f13bd26d7fd7fbe390b57006a537e5c5a2 fix(testing): publish descriptor stream observation helper\n61e6fa853d81cf822d67d6abfd6a130bdbb14ce2 fix(ci): qualify Aspire catalog package dependencies\n",
+  "rules": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.EventStore",
+      "ruleset_id": 14479516
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.EventStore",
+      "ruleset_id": 14479516
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": false,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "squash"
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.EventStore",
+      "ruleset_id": 14479516
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "advisory",
+            "integration_id": 15368
+          },
+          {
+            "context": "ci / build-and-test",
+            "integration_id": 15368
+          },
+          {
+            "context": "ci / tenants-source-mode",
+            "integration_id": 15368
+          },
+          {
+            "context": "codeql / analyze",
+            "integration_id": 15368
+          },
+          {
+            "context": "commitlint / commitlint",
+            "integration_id": 15368
+          },
+          {
+            "context": "dependency-review / dependency-review",
+            "integration_id": 15368
+          },
+          {
+            "context": "live-sidecar",
+            "integration_id": 15368
+          }
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.EventStore",
+      "ruleset_id": 14479516
+    }
+  ]
+}

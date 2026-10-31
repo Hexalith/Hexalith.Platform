@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-10-31T20:30:20.345176+00:00",
+  "finding": "Staged Parties caller removes three old direct-integration projects but does not include them in isolated projects",
+  "projects": [
+    "tests/Hexalith.Parties.Tests",
+    "tests/Hexalith.Parties.Sample.Tests",
+    "tests/Hexalith.Parties.Ci.Tests"
+  ],
+  "disposition": "Preserve actual execution during caller adoption; classify server-free vs declared runner suite; no assertion-only acceptance",
+  "frozenIntentUnchanged": true
+}

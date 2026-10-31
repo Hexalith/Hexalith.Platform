@@ -1,0 +1,40 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+  "head": "fb59abb49341f99c25654ba3c5119e96f3890d28",
+  "command": [
+    "dotnet",
+    "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+    "-method",
+    "*TrackedReusableContent_DoesNotContainUsableSecrets",
+    "-xml",
+    "/tmp/story33-sdk-codeql-repair-scan.xml"
+  ],
+  "scope": "all tracked actualcandidate paths; no untracked paths remain after initial candidate commit",
+  "environment": {},
+  "exitCode": 0,
+  "indexBefore": "7dfe25fbe3495b1ed3dea864fd830ed84d98d468d9dae3692b7a580b20519c96",
+  "indexAfter": "7dfe25fbe3495b1ed3dea864fd830ed84d98d468d9dae3692b7a580b20519c96",
+  "xml": "/tmp/story33-sdk-codeql-repair-scan.xml",
+  "log": "/tmp/story33-sdk-codeql-repair-scan.log",
+  "assemblies": [
+    {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+      "id": "e2c57a7d-8174-4517-a00f-2a51a04b4f7f",
+      "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+      "run-date": "2026-10-31",
+      "run-time": "21:12:35",
+      "start-rtf": "2026-10-31T21:12:35.0148814+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-31T21:12:39.7556340+00:00",
+      "not-run": "0",
+      "passed": "1",
+      "skipped": "0",
+      "time": "4.741",
+      "time-rtf": "00:00:04.7410000",
+      "total": "1"
+    }
+  ]
+}

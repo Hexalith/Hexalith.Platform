@@ -1,0 +1,282 @@
+The '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: False) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(198,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(Boolean exclusive)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: True) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(198,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(Boolean exclusive)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync [FAIL]
+      Shouldly.ShouldAssertException : Directory.Exists(state.Workspace)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(239,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(239,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{}", tracked: False) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{}", tracked: True) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{\"run\":null}", tracked: False) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{\"run\":null}", tracked: True) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{\"run\":[]}", tracked: False) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: "{\"run\":[]}", tracked: True) [FAIL]
+      Shouldly.ShouldAssertException : committed.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunSourceReviewTests.cs(112,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(String bindings, Boolean tracked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True) [FAIL]
+      Shouldly.ShouldAssertException : later.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(223,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(Boolean failureFirst)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync [FAIL]
+      Shouldly.ShouldAssertException : cancelledCleanup
+          should be
+      True
+          but was
+      null
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(790,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(791,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(791,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True) [FAIL]
+      Shouldly.ShouldAssertException : record.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(185,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(Boolean fails)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync [FAIL]
+      Shouldly.ShouldAssertException : result.GetProperty("retention").GetProperty("disposition").GetString()
+          should be
+      "released"
+          but was
+      "not-retained"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   
+      Expected Value | r    e    l    e    a    s    e    d                        
+      Actual Value   | n    o    t    -    r    e    t    a    i    n    e    d    
+      Expected Code  | 114  101  108  101  97   115  101  100                      
+      Actual Code    | 110  111  116  45   114  101  116  97   105  110  101  100  
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(464,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync [FAIL]
+      Shouldly.ShouldAssertException : first.ShouldNotBeNull().FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleReviewTests.cs(208,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.FinalManifestRefusalFinalizesIssuedOwnerAsync(declared: True) [FAIL]
+      Shouldly.ShouldAssertException : terminal.FailureRetained
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(1007,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.FinalManifestRefusalFinalizesIssuedOwnerAsync(Boolean declared)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(declared: True, deletionFails: False) [FAIL]
+      Shouldly.ShouldAssertException : await engine.StateStore.TryReadAsync(runId, TestContext.Current.CancellationToken).ConfigureAwait(true)
+          should not be null but was
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs(250,0): at Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(Boolean declared, Boolean deletionFails)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ListingReconcilesCommittedFailureAfterResultPublicationFailureAsync [FAIL]
+      Shouldly.ShouldAssertException : entry.Retention
+          should be
+      "failure-retained"
+          but was
+      "not-retained"
+          difference
+      Difference     |  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                     | \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   
+      Expected Value | f    a    i    l    u    r    e    -    r    e    t    a    i    n    e    d    
+      Actual Value   | n    o    t    -    r    e    t    a    i    n    e    d                        
+      Expected Code  | 102  97   105  108  117  114  101  45   114  101  116  97   105  110  101  100  
+      Actual Code    | 110  111  116  45   114  101  116  97   105  110  101  100                      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs(92,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ListingReconcilesCommittedFailureAfterResultPublicationFailureAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'df5fec69d2197ddbd552b18282958da49f1cef64ed4f529cd9652a4fa5c3faa2')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 22, Errors: 0, Failed: 17, Skipped: 0, Not Run: 0, Time: 21.324s

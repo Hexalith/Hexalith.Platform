@@ -1,0 +1,128 @@
+[
+  {
+    "name": "ci / TestSupport Windows descendant cleanup",
+    "id": 124645780587,
+    "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780587",
+    "failedSteps": [
+      {
+        "name": "Check out source",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 110,
+        "start_column": null,
+        "end_line": 110,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "The process 'C:\\Program Files\\Git\\bin\\git.exe' failed with exit code 128",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 81,
+        "start_column": null,
+        "end_line": 81,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "invalid path 'module/validation/epic-16-published-artifact-qualification/attempt-20261028-implementation-01/collection-01/isolated/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/repository_signatures_5.0.0.dat'",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "ci / minimal-module platform compatibility",
+    "id": 124645780395,
+    "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780395",
+    "failedSteps": [
+      {
+        "name": "Test missing and unsuccessful result detection",
+        "conclusion": "failure",
+        "number": 6
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 20,
+        "start_column": null,
+        "end_line": 20,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "No files were found with the provided path: TestResults/minimal-module/*. No artifacts will be uploaded.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 30,
+        "start_column": null,
+        "end_line": 30,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 1.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "dependency-review / dependency-review",
+    "id": 124645780211,
+    "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014865/job/124645780211",
+    "failedSteps": [
+      {
+        "name": "Dependency review",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 7,
+        "start_column": null,
+        "end_line": 7,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Dependency review is not supported on this repository. Please ensure that Dependency graph is enabled, see https://github.com/Hexalith/Hexalith.Conversations/settings/security_analysis",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Conversations/blob/21dd4bdc7430e11e348675ca4fa5d1c34131c781/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  }
+]

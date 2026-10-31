@@ -1,0 +1,47 @@
+{
+  "entrypointReaderAbsent": true,
+  "entrypointReaderDeleteExit": 0,
+  "entrypointReaderDeleteState": "completed",
+  "entrypointReaderName": "s426-f7b74e428664-entrypoint-reader",
+  "entrypointReaderStarted": true,
+  "fixtureImageTagsAbsent": true,
+  "fixtureImageTagsRemoved": [
+    {
+      "exitCode": 0,
+      "state": "completed",
+      "tag": "hexalith-s426-fenced:s426-f7b74e428664"
+    },
+    {
+      "exitCode": 0,
+      "state": "completed",
+      "tag": "hexalith-s426-base:s426-f7b74e428664"
+    }
+  ],
+  "fixtureVolumesAbsent": true,
+  "freshCredentialFileAbsent": true,
+  "imageInspectionStates": {
+    "hexalith-s426-base:s426-f7b74e428664": "absent",
+    "hexalith-s426-fenced:s426-f7b74e428664": "absent"
+  },
+  "inspectionStates": {
+    "entrypointReader": "absent",
+    "network": "absent",
+    "node": "absent"
+  },
+  "kindDeleteExit": 0,
+  "kindDeleteState": "completed",
+  "networkAbsent": true,
+  "networkDeleteExit": 0,
+  "networkDeleteState": "completed",
+  "nodeAbsent": true,
+  "passed": true,
+  "unmeasuredDeclarations": {
+    "basis": "procedure issues only exact named removals; not measured",
+    "globalPruneUsed": false,
+    "unrelatedDockerObjectsChanged": false
+  },
+  "volumeInspectionStates": {
+    "0b196be42a8fea39c6a8b7a36bcf29f7e7767368789781f7341c1c6a8c38ef4c": "absent"
+  },
+  "volumeInventoryVerified": true
+}

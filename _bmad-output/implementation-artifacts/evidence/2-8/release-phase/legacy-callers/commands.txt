@@ -1,0 +1,37 @@
+Execution was sequential; each owner used a separate worktree based on fetched origin/main.
+
+For each owner, from its isolated repository:
+npm ci --ignore-scripts
+python3 /tmp/story28-pin-legacy-caller.py <Owner>
+/home/administrator/.local/bin/actionlint -oneline .github/workflows/ci.yml
+./node_modules/.bin/commitlint --version
+./node_modules/.bin/commitlint --edit <evidence>/commit-message.txt --verbose
+./node_modules/.bin/commitlint --edit <evidence>/pr-title.txt --verbose
+./node_modules/.bin/commitlint --edit <evidence>/squash-message.txt --verbose
+git diff --check
+git add -- .github/workflows/ci.yml
+git diff --cached --check
+git commit -F <evidence>/commit-message.txt
+git fetch origin main
+git merge-base --is-ancestor origin/main HEAD
+./node_modules/.bin/commitlint --from origin/main --to HEAD --verbose
+git push --set-upstream origin fix/story-2-8-legacy-ci
+
+PRs were created with the connected GitHub create_pull_request tool using the exact retained validated title/body.
+The temporary Python helper only performs/validates one byte replacement, YAML equivalence and pinned input compatibility; its checks are also recorded in workflow-identity.json.
+No generated helper becomes caller product/test code.
+
+Conversations additionally changed only the matching reference assertion:
+cd tests/tooling
+python3 -m unittest -v test_release_tooling.ReleaseToolingTests.test_ci_and_security_automation_cover_release_boundary
+python3 -m unittest -v test_release_tooling
+Its initial unpublished local commit was amended before the first normal push, after final two-file message/squash validation. No published commit was rewritten and no force push occurred.
+
+Per-owner GitHub read-only API snapshots:
+gh api repos/Hexalith/Hexalith.<Owner>/commits/<Head>/check-runs?per_page=100
+gh api repos/Hexalith/Hexalith.<Owner>/commits/<Head>/status?per_page=100
+gh api repos/Hexalith/Hexalith.<Owner>/actions/runs?head_sha=<Head>&per_page=100
+gh api repos/Hexalith/Hexalith.<Owner>/pulls/<PR>
+gh api repos/Hexalith/Hexalith.<Owner>/rules/branches/main
+
+No application runtime build or hosted integration acceptance was claimed for these mechanical compatibility changes.

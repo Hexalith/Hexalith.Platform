@@ -1,0 +1,42 @@
+  Determining projects to restore...
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 238 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 222 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 212 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 233 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 239 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 272 ms).
+  Restored /tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 293 ms).
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.129.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+  Hexalith.Builds.Tooling -> /tmp/hexalith-story28-cleanup-contention/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  P0Fixture.NativeMetadataProbe -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+  P0Fixture.Inventory -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+  P0Fixture.Inventory.Descriptor -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+  P0Fixture.Orders -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+  P0Fixture.Orders.Descriptor -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+  P0Fixture.Ui -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+  P0Fixture.Ui.Descriptor -> /tmp/hexalith-story28-cleanup-contention/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+  Hexalith.Builds.Module.Cli -> /tmp/hexalith-story28-cleanup-contention/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll
+  Hexalith.Builds.Module.EventStoreHost -> /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Debug/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+  Hexalith.Builds.Module.UiHost -> /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.UiHost/bin/Debug/net10.0/Hexalith.Builds.Module.UiHost.dll
+  Hexalith.Builds.Module.AppHost -> /tmp/hexalith-story28-cleanup-contention/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(972,23): error SA1202: 'public' members should come before 'private' members (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1202.html) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(884,51): error CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(940,36): error VSTHRD003: Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks. [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(949,20): error IDE0390: Method can be made synchronous (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0390) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+
+Build FAILED.
+
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(972,23): error SA1202: 'public' members should come before 'private' members (https://dotnetanalyzers.github.io/StyleCopAnalyzers/SA1202.html) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(884,51): error CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(940,36): error VSTHRD003: Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks. [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(949,20): error IDE0390: Method can be made synchronous (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0390) [/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:01:03.42

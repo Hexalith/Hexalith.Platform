@@ -488,11 +488,73 @@ def validate_backup(args, signed, policy, plan):
                 'protected-workload-source-in-removal-scope')
         expected = {'keycloak': ('postgresql.cnpg.io/v1', 'Cluster', 'keycloak', {'keycloak-postgres'}),
                     'openbao': ('apps/v1', 'StatefulSet', 'openbao', {'hexalith-keys'}),
-                    'memories': ('apps/v1', 'StatefulSet', 'hexalith-memories', {'redis-stack', 'falkordb'})}[system]
+                    'memories': ('apps/v1', 'StatefulSet', 'hexalith-memories',
+                                 {'redis-stack', 'falkordb', 'access-telemetry-postgresql'})}[system]
         observed = [v for v in plan['resources'] if v['uid'] in values.values()]
         require(len(observed) == len(expected[3]) and all(key(v)[:3] == expected[:3] for v in observed)
                 and {v['name'] for v in observed} == expected[3], 'workload-proof-source-drift')
+        if system == 'memories':
+            validate_memories_telemetry(proof, backup_policy, records[BACKUP_FILES[1]], validation, plan,
+                                        min(maximum, policy['maximumRecoveryAgeSeconds']))
     return hashes
+
+
+def validate_memories_telemetry(proof, policy, manifest, validation, plan, maximum_age):
+    """The signed Memories proof must cover the third live durable store explicitly."""
+    reason = 'memories-telemetry-recovery-incomplete'
+    required_stores = ['access-telemetry-postgresql', 'falkordb', 'redis-stack']
+    require(policy['systems']['memories'].get('requiredStores') == required_stores, reason)
+    require(isinstance(proof.get('sourceUid'), dict) and sorted(proof['sourceUid']) == required_stores, reason)
+    telemetry = proof.get('telemetryPostgresql')
+    require(isinstance(telemetry, dict), reason)
+    require(telemetry.get('sourceClusterUid') == plan['sourceClusterUid']
+            and telemetry.get('sourceUid') == proof['sourceUid']['access-telemetry-postgresql'], reason)
+    fresh(telemetry, maximum_age)
+    rpo = telemetry.get('measuredRpo', {})
+    maximum_rpo = policy['systems']['memories'].get('rpoSeconds')
+    require(type(maximum_rpo) is int and 0 < maximum_rpo <= 1800
+            and type(rpo.get('seconds')) is int and 0 <= rpo['seconds'] <= maximum_rpo
+            and rpo.get('withinPolicy') is True, reason)
+    checks = ('snapshotHolderAliveThroughDump', 'sameSnapshotDumpAndCanaries', 'quiescedSequencesStable',
+              'completeObjectCoverage', 'sourceAndTargetCanariesEqual', 'targetRolesNoLoginOrSuperuser',
+              'sourceFenced', 'isolatedTarget', 'sourceResumedAndHealthy', 'targetCleanupComplete',
+              'independentValidatorReadback')
+    require(isinstance(telemetry.get('checks'), dict)
+            and all(telemetry['checks'].get(name) is True for name in checks), reason)
+    targets = telemetry.get('isolatedTargetUids', {})
+    require(isinstance(targets, dict) and set(targets) == {'namespace', 'statefulSet', 'pvc', 'pv'}
+            and all(safe(uid) for uid in targets.values()) and len(set(targets.values())) == 4
+            and not set(targets.values()) & {v['uid'] for v in plan['resources']}, reason)
+    artifact = telemetry.get('artifact', {})
+    require(isinstance(artifact, dict) and set(artifact) == {'key', 'versionId', 'bytes', 'sha256'}
+            and artifact['key'] == 'memories/' + proof['recoveryId'] + '/telemetry-postgresql.dump.age'
+            and safe(artifact['versionId']) and type(artifact['bytes']) is int and artifact['bytes'] > 0
+            and isinstance(artifact['sha256'], str) and HEX.fullmatch(artifact['sha256'])
+            and telemetry.get('artifactEncrypted') is True, reason)
+    matches = [v for v in manifest.get('objects', [])
+               if v.get('key') == artifact['key'] and v.get('versionId') == artifact['versionId']]
+    require(len(matches) == 1, reason)
+    obj = matches[0]
+    require(obj.get('system') == 'memories' and obj.get('readBy') == 'validator'
+            and obj.get('bytes') == obj.get('contentLength') == artifact['bytes']
+            and obj.get('readBackSha256') == artifact['sha256']
+            and obj.get('serverSideEncryption') == 'AES256' and obj.get('objectLockMode') == 'COMPLIANCE'
+            and obj.get('retentionApi') == {'mode': 'COMPLIANCE', 'retainUntil': obj.get('objectLockRetainUntil')}
+            and timestamp(obj.get('objectLockRetainUntil')) >= timestamp(telemetry['capturedAt']) + timedelta(days=30), reason)
+    evidence = telemetry.get('evidence', {})
+    require(isinstance(evidence, dict) and set(evidence) == {
+        'capture', 'isolation', 'comparison', 'restore', 'resume', 'cleanup'}, reason)
+    for binding in evidence.values():
+        require(isinstance(binding, dict) and set(binding) == {'path', 'sha256'}
+                and isinstance(binding['path'], str) and binding['path'].startswith('memories/telemetry/')
+                and not any(part in ('', '.', '..') for part in binding['path'].split('/'))
+                and isinstance(binding['sha256'], str) and HEX.fullmatch(binding['sha256'])
+                and sum(v.get('path') == binding['path'] and v.get('sha256') == binding['sha256']
+                        for v in manifest.get('localEvidence', [])) == 1, reason)
+    require(len({v['path'] for v in evidence.values()}) == len(evidence), reason)
+    checks = [v for v in validation.get('checks', []) if v.get('id') == 'memories-telemetry-postgresql']
+    require(len(checks) == 1 and checks[0].get('status') == 'pass'
+            and checks[0].get('proofSha256') == digest(canonical(telemetry)), reason)
 
 
 def validate_recovery_point(point):

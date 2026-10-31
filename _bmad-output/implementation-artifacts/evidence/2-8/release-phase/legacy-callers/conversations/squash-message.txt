@@ -1,0 +1,19 @@
+fix(ci): pin the legacy domain workflow
+
+The shared workflow rollout adds required integration inputs and registry secrets.
+Conversations still uses the existing caller interface. Pin its domain-ci workflow to
+verified Builds revision 1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9 before the
+shared interface changes. Producer push CI passed on that exact main revision:
+https://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095
+
+Change only jobs.ci.uses and its matching security-tooling expectation. The
+existing test now requires the full approved immutable workflow reference; every
+other security, job and input assertion remains unchanged. Preserve every caller
+input, job, permission, package/tool pin and protection. This compatibility fence supplies no Story 2.8
+integration or candidate acceptance; caller merge and global activation remain
+pending separate normal gates.
+
+Validation: actionlint syntax check, exact single-reference byte comparison,
+parsed YAML equivalence, pinned-interface input compatibility, git diff checks,
+the owning lockfile-pinned commitlint CLI, and all 28 existing release-tooling
+tests (including the exact-reference security control).

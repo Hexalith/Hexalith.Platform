@@ -1,0 +1,90 @@
+{
+  "observedAtUtc": "2026-10-31T22:08:50.427591+00:00",
+  "partiesHead": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+  "catalogBuildsHead": "81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+  "releaseBuilds": {
+    "EventStoreExtensions": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "seconds": 1.12
+    },
+    "Parties": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "seconds": 3.43
+    }
+  },
+  "externalSourceFallback": false,
+  "currentCiRun": {
+    "id": 41224674293,
+    "conclusion": "failure",
+    "cause": "Historical NU1102 before SDK3.130.0 publication; only two narrow current package graphs requalified."
+  },
+  "currentRangeRun": {
+    "id": 41224674137,
+    "conclusion": "failure",
+    "missingGitlinkSignoffs": [
+      {
+        "path": "references/Hexalith.Builds",
+        "selectedSha": "81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.EventStore",
+        "selectedSha": "6bcd40e3158d5b99e8d94cd300575768a6e479ab",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.FrontComposer",
+        "selectedSha": "86e07babdf88329dffc60f0c4fb5b566a35063c4",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.McpCli",
+        "selectedSha": "d7e21771079a2302e7a2e958dccdd12d94f56070",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.Memories",
+        "selectedSha": "2649a946aa55cdd570c9beb15f9c91bc01703a26",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.Platform",
+        "selectedSha": "82c9a31a0565c6dfd47750f5c67c087b487e6300",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      },
+      {
+        "path": "references/Hexalith.Tenants",
+        "selectedSha": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+        "ledgerDisposition": "no matching validated-advance with real owner",
+        "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight."
+      }
+    ]
+  },
+  "releaseFloor": {
+    "tag": "v2.0.0",
+    "objectSha": "3e1dd7cac6ee4db1db48d1bfb478e1b5848f7b8e",
+    "commit": "3e1dd7cac6ee4db1db48d1bfb478e1b5848f7b8e"
+  },
+  "publishedManifestPackageCount": 11,
+  "currentlyPublishedIds": 10,
+  "unpublishedIds": [
+    "Hexalith.Parties.EventStoreExtensions"
+  ],
+  "smallestNextAction": "Owner-reviewed signoff or deliberate reset of seven selected gitlinks via normal source correction, then fresh complete current-main CI and independent range proof before any protected release.",
+  "sourceEdited": false,
+  "sharedDirtySourcePreserved": true,
+  "remoteMutationPerformed": false,
+  "candidateAcceptance": false,
+  "referenceHostedQualification": false,
+  "storyStatus": "in-progress"
+}

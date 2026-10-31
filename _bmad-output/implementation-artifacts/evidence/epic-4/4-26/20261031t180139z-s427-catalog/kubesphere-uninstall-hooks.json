@@ -1,0 +1,12 @@
+{
+  "appVersion": "4.2.1",
+  "chartSha256": "a5c87fe18477bacf9032eb9cf2968b73d73465aa3652b99eede865fe3ba7fbdd",
+  "chartVersion": "1.2.4",
+  "hookScriptSha256": {
+    "ks-core/charts/ks-crds/scripts/post-delete.sh": "c2160b999a22b88f820a95f7d0393ae7d98426fb2b559453951e30ecebf971f9",
+    "ks-core/scripts/post-delete.sh": "44fbf01e226375cf245bce68089293c0f3c2294c6366bdc881b9813e9bfa7baa"
+  },
+  "proposedProcedure": "dependency-first native UID/resourceVersion-bound retirement; no Helm uninstall or hooks; CRDs retained for separate decisions",
+  "reason": "Vendor cleanup includes broad namespace/CRD/finalizer effects; no wildcard retirement scope accepted",
+  "vendorHooksAccepted": false
+}

@@ -297,6 +297,150 @@ public sealed class OpenBaoErasureRootStoreTests
         }
     }
 
+    /// <summary>R11-BH-9: TrimAsync zeroes both native response buffers after success and after a refused trim.</summary>
+    [Theory]
+    [InlineData("success")]
+    [InlineData("trim-refused")]
+    public async Task TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(string outcome)
+    {
+        string variable = "ERC_TRIM_CLEAR_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, "component-test-credential");
+        var observed = new List<(string Name, byte[] Buffer, bool NonzeroInUse)>();
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((request, _) => request.RequestUri!.AbsolutePath.EndsWith("/trim", StringComparison.Ordinal) && outcome == "trim-refused"
+                ? ErasureRootTransportHandler.Json("{\"errors\":[\"permission denied\"]}", HttpStatusCode.Forbidden)
+                : ErasureRootTransportHandler.Json("{\"data\":{\"name\":\"epoch\",\"latest_version\":2}}"));
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable)
+            { ResponseBufferObserver = (name, buffer) => observed.Add((name, buffer, buffer.Any(value => value != 0))) };
+            if (outcome == "success") { await store.TrimAsync("tenant", 2, Token); }
+            else { await Should.ThrowAsync<InvalidOperationException>(() => store.TrimAsync("tenant", 2, Token)); }
+            observed.Select(item => item.Name).ShouldBe(outcome == "success" ? new[] { "trim:config", "trim:trim" } : new[] { "trim:config" });
+            observed.ShouldAllBe(item => item.NonzeroInUse);
+            observed.ShouldAllBe(item => item.Buffer.All(value => value == 0));
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    /// <summary>R11-BH-9: key-metadata reads zero every native response buffer after success and after each refusal.</summary>
+    [Theory]
+    [InlineData("epoch-success")]
+    [InlineData("verify-trim-success")]
+    [InlineData("metadata-refused")]
+    [InlineData("health-refused")]
+    public async Task KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(string outcome)
+    {
+        string variable = "ERC_KEY_CLEAR_" + Guid.NewGuid().ToString("N");
+        Environment.SetEnvironmentVariable(variable, "component-test-credential");
+        var observed = new List<(string Name, byte[] Buffer, bool NonzeroInUse)>();
+        try
+        {
+            using var handler = new ErasureRootTransportHandler((request, _) =>
+            {
+                if (request.RequestUri!.AbsolutePath == "/v1/sys/health")
+                { return ErasureRootTransportHandler.Json("{\"version\":\"2.6.2\",\"initialized\":true,\"sealed\":" + (outcome == "health-refused" ? "true" : "false") + "}"); }
+                return ErasureRootTransportHandler.Json(JsonSerializer.Serialize(new { data = new {
+                    type = "aes256-gcm96", derived = true, exportable = false, allow_plaintext_backup = false, deletion_allowed = outcome == "metadata-refused",
+                    latest_version = 2, min_available_version = 2, min_decryption_version = 2, min_encryption_version = 2,
+                    keys = new Dictionary<string, int> { ["2"] = 123 } } }));
+            });
+            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
+            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable)
+            { ResponseBufferObserver = (name, buffer) => observed.Add((name, buffer, buffer.Any(value => value != 0))) };
+            switch (outcome)
+            {
+                case "epoch-success": (await store.ReadEpochAsync("tenant", Token)).ShouldBe(2); break;
+                case "verify-trim-success": (await store.VerifyTrimAsync("tenant", 2, Token)).ShouldBeTrue(); break;
+                default: await Should.ThrowAsync<InvalidOperationException>(() => store.ReadEpochAsync("tenant", Token)); break;
+            }
+            observed.Select(item => item.Name).ShouldContain("read-key:health");
+            if (outcome == "health-refused") { observed.Select(item => item.Name).ShouldNotContain("read-key:metadata"); }
+            else { observed.Select(item => item.Name).ShouldContain("read-key:metadata"); }
+            observed.ShouldAllBe(item => item.NonzeroInUse);
+            foreach (var item in observed) { item.Buffer.ShouldAllBe(value => value == 0, item.Name); }
+        }
+        finally { Environment.SetEnvironmentVariable(variable, null); }
+    }
+
+    /// <summary>R11-EC-7: production stores built sequentially or concurrently keep their own pinned CA; a later store never adopts or disposes another store's pin.</summary>
+    [Fact]
+    public async Task SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa()
+    {
+        var (leafA, caA) = IssueCa("erc-ca-a");
+        var (leafB, caB) = IssueCa("erc-ca-b");
+        using (leafA)
+        using (leafB)
+        {
+            string token = "erc-ec7-token-" + Guid.NewGuid().ToString("N");
+            string variable = "ERC_EC7_" + Guid.NewGuid().ToString("N");
+            Environment.SetEnvironmentVariable(variable, token);
+            try
+            {
+                // One flow: A, then a synthetic internal-handler store, then B. Disposing the later stores leaves A's pin intact.
+                var serverA = ServeOnce(leafA);
+                var serverB = ServeOnce(leafB);
+                using var storeA = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{serverA.Port}/"), _installation with { TrustedCaCertificatePem = caA }, "env:" + variable, TimeSpan.FromSeconds(5));
+                var synthetic = new OpenBaoErasureRootStore(new HttpClient(new ErasureRootTransportHandler((_, _) => ErasureRootTransportHandler.Json("{}")))
+                    { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) }, _installation, "env:" + variable, ownsHttp: true);
+                var storeB = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{serverB.Port}/"), _installation with { TrustedCaCertificatePem = caB }, "env:" + variable, TimeSpan.FromSeconds(5));
+                await ReadIgnoringTransportAsync(storeB);
+                (await serverB.Received).ShouldContain(token);
+                storeB.Dispose();
+                synthetic.Dispose();
+                await ReadIgnoringTransportAsync(storeA);
+                (await serverA.Received).ShouldContain(token);
+
+                // Concurrent construction: each store accepts only a server issued by its own CA.
+                var runs = Enumerable.Range(0, 8).Select(index => Task.Run(async () =>
+                {
+                    bool useA = index % 2 == 0, matching = index % 4 < 2;
+                    var server = ServeOnce(matching == useA ? leafA : leafB);
+                    using var store = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{server.Port}/"),
+                        _installation with { TrustedCaCertificatePem = useA ? caA : caB }, "env:" + variable, TimeSpan.FromSeconds(5));
+                    await ReadIgnoringTransportAsync(store);
+                    return (Matching: matching, Seen: (await server.Received).Contains(token, StringComparison.Ordinal));
+                }, Token)).ToArray();
+                foreach (var (matching, seen) in await Task.WhenAll(runs)) { seen.ShouldBe(matching); }
+            }
+            finally { Environment.SetEnvironmentVariable(variable, null); }
+        }
+    }
+
+    private static async Task ReadIgnoringTransportAsync(OpenBaoErasureRootStore store)
+    {
+        try { await store.ReadHeadAsync("tenant", Token); }
+        catch (HttpRequestException) { }
+    }
+
+    private static (int Port, Task<string> Received) ServeOnce(X509Certificate2 leaf)
+    {
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        var received = Task.Run(async () =>
+        {
+            try
+            {
+                using var tcp = await listener.AcceptTcpClientAsync(Token);
+                await using var ssl = new SslStream(tcp.GetStream(), false);
+                await ssl.AuthenticateAsServerAsync(new SslServerAuthenticationOptions
+                {
+                    ServerCertificate = leaf,
+                    ClientCertificateRequired = false,
+                    EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                }, Token);
+                var buffer = new byte[8192];
+                int count = await ssl.ReadAsync(buffer, Token);
+                await ssl.WriteAsync("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"u8.ToArray(), Token);
+                return Encoding.ASCII.GetString(buffer, 0, count);
+            }
+            catch (Exception) { return ""; }
+            finally { listener.Stop(); }
+        });
+        return (port, received.WaitAsync(TimeSpan.FromSeconds(10), Token));
+    }
+
     private async Task<string> ExchangeAsync(X509Certificate2 leaf, string pem, string token)
     {
         using var listener = new TcpListener(IPAddress.Loopback, 0);

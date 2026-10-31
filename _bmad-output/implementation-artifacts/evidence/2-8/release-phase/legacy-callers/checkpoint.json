@@ -1,0 +1,1012 @@
+{
+  "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+  "storyStatus": "in-progress",
+  "specSha256": "1fa78d7ee81558454bcc6d28bfacea7596387bc97d092c7e743aa1c470101b20",
+  "frozenIntentSha256": "a043c889c55fbf4c2069ccc738373afbf96ef295eb196c7a082d1fa8eac70e4b",
+  "legacyWorkflow": {
+    "repository": "Hexalith/Hexalith.Builds",
+    "commit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "path": ".github/workflows/domain-ci.yml",
+    "commitBlob": "870b39bbf6c1a09c460842e9b07306a6ac68e37f",
+    "sha256": "510b6e8d868c659846f921ed531d9c582468e718ad2c1caae9f506abd6817d14",
+    "producerPushRun": {
+      "conclusion": "success",
+      "created_at": "2026-10-31T17:48:08Z",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095",
+      "id": 41226277095,
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-10-31T18:21:46Z"
+    }
+  },
+  "callers": {
+    "Commons": {
+      "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+      "pr": {
+        "url": "https://github.com/Hexalith/Hexalith.Commons/pull/51",
+        "number": 51,
+        "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+        "base": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "mergeableState": "clean",
+        "changedFiles": 1,
+        "additions": 1,
+        "deletions": 1
+      },
+      "workflowIdentity": {
+        "recordedAtUtc": "2026-10-31T20:06:26.753858+00:00",
+        "owner": "Hexalith/Hexalith.Commons",
+        "base": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+        "file": ".github/workflows/ci.yml",
+        "before": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+          "sha256": "30cc370e0f76cf7305914779a0c3fd4a0c6141d140751d403d9c9b1765a88867",
+          "commitBlob": "765dd6ccd65ca76c14df591ee5f036c88179fafb",
+          "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+        },
+        "after": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+          "sha256": "87e6ffafb01d7f78a3fd4c47e78c4a8ebc1622115f3b5c5b367dd1d4447070e3",
+          "normalizedBlob": "2aa7d4dc331ad9f46204c7272363e1845d4a848d"
+        },
+        "onlyExactRefReplacement": true,
+        "allOtherBytesEqual": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allCallerInputsSupportedByPinnedInterface": true,
+        "callerInputs": {
+          "solution": "Hexalith.Commons.slnx",
+          "run-consumer-validation": "true",
+          "test-platform": "microsoft-testing-platform",
+          "unit-test-projects": "test/Hexalith.Commons.Tests\ntest/Hexalith.Commons.Aspire.Tests\ntest/Hexalith.Commons.Diagnostics.Tests\ntest/Hexalith.Commons.Http.Tests\ntest/Hexalith.Commons.Publication.Tests\ntest/Hexalith.Commons.Serialization.Tests\ntest/Hexalith.Commons.ServiceDefaults.Tests\ntest/Hexalith.Commons.TenantAccess.Tests\n"
+        },
+        "callerSecretsUnchanged": null,
+        "requiredLegacySecrets": false,
+        "lineEndingsPreserved": true,
+        "candidateAcceptance": false,
+        "callerMergeAuthorizedInThisStage": false
+      },
+      "sourceSha256": {
+        ".github/workflows/ci.yml": {
+          "sha256": "87e6ffafb01d7f78a3fd4c47e78c4a8ebc1622115f3b5c5b367dd1d4447070e3",
+          "commitBlob": "2aa7d4dc331ad9f46204c7272363e1845d4a848d"
+        }
+      },
+      "validation": {
+        "actionlint": "passed without exclusions",
+        "exactWorkflowReferenceOnly": true,
+        "allOtherWorkflowBytesPreserved": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allInputsSupportedByPinnedWorkflow": true,
+        "gitDiffCheck": "passed",
+        "owningLockedCommitlint": "@commitlint/cli@21.2.4",
+        "commitTitleBodySquashAndRange": "passed",
+        "existingReleaseToolingCases": null,
+        "matchingSecurityExpectationOnly": false
+      },
+      "originalCheckoutPreserved": {
+        "head": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+        "branch": "main",
+        "status": "",
+        "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workflowSha256": "30cc370e0f76cf7305914779a0c3fd4a0c6141d140751d403d9c9b1765a88867",
+        "allCapturedDirtyFileHashesMatch": true
+      },
+      "checkSummary": [
+        {
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/runs/124644479279"
+        },
+        {
+          "name": "ci / aspire-tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384788/job/124644296944"
+        },
+        {
+          "name": "ci / performance-tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384788/job/124644296619"
+        },
+        {
+          "name": "Codacy Static Code Analysis",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/runs/124644138248"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237400498/job/124643992675"
+        },
+        {
+          "name": "Cursor Bugbot",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/runs/124643918751"
+        },
+        {
+          "name": "Test NuGet publication verification",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384788/job/124643899458"
+        },
+        {
+          "name": "ci / build-and-test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384788/job/124643899253"
+        },
+        {
+          "name": "dependency-review / dependency-review",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384719/job/124643899149"
+        },
+        {
+          "name": "codeql / analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384730/job/124643899087"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384721/job/124643898984"
+        },
+        {
+          "name": "Cursor Security Agent: Security Reviewer",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/runs/124643896741"
+        },
+        {
+          "name": "Cursor Approval Agent: Pull Request Router",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/runs/124643896049"
+        }
+      ],
+      "statusSummary": [],
+      "workflowRuns": [
+        {
+          "id": 41237400498,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237400498"
+        },
+        {
+          "id": 41237396555,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237396555"
+        },
+        {
+          "id": 41237384788,
+          "name": "CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384788"
+        },
+        {
+          "id": 41237384719,
+          "name": "Dependency Review",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384719"
+        },
+        {
+          "id": 41237384721,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384721"
+        },
+        {
+          "id": 41237384730,
+          "name": "CodeQL",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Commons/actions/runs/41237384730"
+        }
+      ],
+      "globalActivationExecuted": false,
+      "candidateAcceptance": false,
+      "callerMerged": false
+    },
+    "Folders": {
+      "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+      "pr": {
+        "url": "https://github.com/Hexalith/Hexalith.Folders/pull/15",
+        "number": 15,
+        "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+        "base": "765544efc5c8aa395895f3a3d5911d4364658639",
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "mergeableState": "unstable",
+        "changedFiles": 1,
+        "additions": 1,
+        "deletions": 1
+      },
+      "workflowIdentity": {
+        "recordedAtUtc": "2026-10-31T20:08:23.785918+00:00",
+        "owner": "Hexalith/Hexalith.Folders",
+        "base": "765544efc5c8aa395895f3a3d5911d4364658639",
+        "file": ".github/workflows/ci.yml",
+        "before": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+          "sha256": "ab5942869b3b6670d289e4c111ebca319bd6beb769eb60565151ab065ab1185f",
+          "commitBlob": "e56224f1334b0b72c271acaf083f05aaf365ac12",
+          "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+        },
+        "after": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+          "sha256": "d1cd65952c42bf4facee6f21b39b0945986f8fad23132cafc24a8659de992853",
+          "normalizedBlob": "30491018a0d0a7c33a5923c252eac44a3c8b65cc"
+        },
+        "onlyExactRefReplacement": true,
+        "allOtherBytesEqual": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allCallerInputsSupportedByPinnedInterface": true,
+        "callerInputs": {
+          "solution": "Hexalith.Folders.CI.slnx",
+          "build-timeout-minutes": "45",
+          "test-platform": "microsoft-testing-platform",
+          "run-consumer-validation": "true",
+          "run-coverage-gate": "true",
+          "coverage-minimum-line": "75",
+          "coverage-required-branch": "80",
+          "coverage-isolation-targets": "src/Hexalith.Folders/Aggregates/Folder/FolderArchiveTenantGate.cs\n",
+          "coverage-line-scope": "src/Hexalith.Folders.Contracts/\nsrc/Hexalith.Folders/\nsrc/Hexalith.Folders.Client/\nsrc/Hexalith.Folders.Aspire/\nsrc/Hexalith.Folders.Testing/\n",
+          "unit-test-projects": "tests/Hexalith.Folders.Contracts.Tests\ntests/Hexalith.Folders.Tests\ntests/Hexalith.Folders.Cli.Tests\ntests/Hexalith.Folders.EventStore.Tests\ntests/Hexalith.Folders.LoadTests.Tests\ntests/Hexalith.Folders.Mcp.Tests\ntests/Hexalith.Folders.Server.Tests\ntests/Hexalith.Folders.Testing.Tests\ntests/Hexalith.Folders.UI.Tests\ntests/Hexalith.Folders.Workers.Tests\ntests/Hexalith.Folders.AppHost.Tests\nsamples/Hexalith.Folders.Sample.Tests\n",
+          "integration-test-projects": "tests/Hexalith.Folders.IntegrationTests\n"
+        },
+        "callerSecretsUnchanged": null,
+        "requiredLegacySecrets": false,
+        "lineEndingsPreserved": true,
+        "candidateAcceptance": false,
+        "callerMergeAuthorizedInThisStage": false
+      },
+      "sourceSha256": {
+        ".github/workflows/ci.yml": {
+          "sha256": "d1cd65952c42bf4facee6f21b39b0945986f8fad23132cafc24a8659de992853",
+          "commitBlob": "30491018a0d0a7c33a5923c252eac44a3c8b65cc"
+        }
+      },
+      "validation": {
+        "actionlint": "passed without exclusions",
+        "exactWorkflowReferenceOnly": true,
+        "allOtherWorkflowBytesPreserved": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allInputsSupportedByPinnedWorkflow": true,
+        "gitDiffCheck": "passed",
+        "owningLockedCommitlint": "@commitlint/cli@21.2.4",
+        "commitTitleBodySquashAndRange": "passed",
+        "existingReleaseToolingCases": null,
+        "matchingSecurityExpectationOnly": false
+      },
+      "originalCheckoutPreserved": {
+        "head": "fdcf5542e6ec0aabcbc2d7386907e276a4ec1b86",
+        "branch": "main",
+        "status": "",
+        "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workflowSha256": "ab5942869b3b6670d289e4c111ebca319bd6beb769eb60565151ab065ab1185f",
+        "allCapturedDirtyFileHashesMatch": true
+      },
+      "checkSummary": [
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237577634/job/124644481707"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237574125/job/124644469798"
+        },
+        {
+          "name": "ci / aspire-tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644466027"
+        },
+        {
+          "name": "ci / performance-tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644465877"
+        },
+        {
+          "name": "Cursor Bugbot",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644448231"
+        },
+        {
+          "name": "ci / build-and-test",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326439"
+        },
+        {
+          "name": "e2e-gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326396"
+        },
+        {
+          "name": "folders-specialized-gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326316"
+        },
+        {
+          "name": "codeql / analyze",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526574/job/124644326253"
+        },
+        {
+          "name": "accessibility-gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326106"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526461/job/124644325643"
+        },
+        {
+          "name": "dependency-review / dependency-review",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526335/job/124644325008"
+        },
+        {
+          "name": "contract and generated artifact gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526114/job/124644324880"
+        },
+        {
+          "name": "Cursor Security Agent: Security Reviewer",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644324100"
+        },
+        {
+          "name": "Cursor Approval Agent: Pull Request Router",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644323348"
+        }
+      ],
+      "statusSummary": [],
+      "workflowRuns": [
+        {
+          "id": 41237577634,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237577634"
+        },
+        {
+          "id": 41237574125,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237574125"
+        },
+        {
+          "id": 41237526461,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526461"
+        },
+        {
+          "id": 41237526335,
+          "name": "Dependency Review",
+          "status": "completed",
+          "conclusion": "failure",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526335"
+        },
+        {
+          "id": 41237526574,
+          "name": "CodeQL",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526574"
+        },
+        {
+          "id": 41237526114,
+          "name": "contract-spine-gates",
+          "status": "completed",
+          "conclusion": "failure",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526114"
+        },
+        {
+          "id": 41237526500,
+          "name": "CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500"
+        }
+      ],
+      "globalActivationExecuted": false,
+      "candidateAcceptance": false,
+      "callerMerged": false
+    },
+    "Conversations": {
+      "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+      "pr": {
+        "url": "https://github.com/Hexalith/Hexalith.Conversations/pull/11",
+        "number": 11,
+        "head": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+        "base": "8a26cb03ee1d5413c034eb60aee71618f3ebd31a",
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "mergeableState": "unstable",
+        "changedFiles": 2,
+        "additions": 5,
+        "deletions": 2
+      },
+      "workflowIdentity": {
+        "recordedAtUtc": "2026-10-31T20:09:57.436312+00:00",
+        "owner": "Hexalith/Hexalith.Conversations",
+        "base": "8a26cb03ee1d5413c034eb60aee71618f3ebd31a",
+        "file": ".github/workflows/ci.yml",
+        "before": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+          "sha256": "32ca784e0326aa4f425d05ab899c0a03cecca7dba21889157867887ac9d06ee8",
+          "commitBlob": "de31152457b8aa595fc3564657f956695d215919",
+          "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+        },
+        "after": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+          "sha256": "004a326949393919777cdbcb707ed0fafb06f21214f1b75814cbe90877c91a47",
+          "normalizedBlob": "28fc458a12dbc28b9bdd596efd6824144361f3fb"
+        },
+        "onlyExactRefReplacement": true,
+        "allOtherBytesEqual": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allCallerInputsSupportedByPinnedInterface": true,
+        "callerInputs": {
+          "solution": "Hexalith.Conversations.slnx",
+          "module-manifest": "module/hexalith.module-manifest.v2.json",
+          "build-timeout-minutes": "30",
+          "test-platform": "microsoft-testing-platform",
+          "run-consumer-validation": "true",
+          "unit-test-projects": "tests/Hexalith.Conversations.Contracts.Tests\ntests/Hexalith.Conversations.Client.Tests\ntests/Hexalith.Conversations.Tests\ntests/Hexalith.Conversations.Server.Tests\ntests/Hexalith.Conversations.DeletionConformance.Tests\ntests/Hexalith.Conversations.TestSupport.Tests\n",
+          "integration-test-projects": "tests/Hexalith.Conversations.IntegrationTests\n",
+          "aspire-test-project": "tests/Hexalith.Conversations.AppHost.Tests",
+          "aspire-continue-on-error": "false",
+          "aspire-timeout-minutes": "20"
+        },
+        "callerSecretsUnchanged": null,
+        "requiredLegacySecrets": false,
+        "lineEndingsPreserved": true,
+        "candidateAcceptance": false,
+        "callerMergeAuthorizedInThisStage": false
+      },
+      "sourceSha256": {
+        ".github/workflows/ci.yml": {
+          "sha256": "004a326949393919777cdbcb707ed0fafb06f21214f1b75814cbe90877c91a47",
+          "commitBlob": "28fc458a12dbc28b9bdd596efd6824144361f3fb"
+        },
+        "tests/tooling/test_release_tooling.py": {
+          "sha256": "72e645715a364714f298a32d15bb35519d475a53eea73d7acfcd1a22791cba31",
+          "commitBlob": "e753d3e63404dcc58cdbb3ba24cf2d3eb3bb57dc"
+        }
+      },
+      "validation": {
+        "actionlint": "passed without exclusions",
+        "exactWorkflowReferenceOnly": true,
+        "allOtherWorkflowBytesPreserved": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allInputsSupportedByPinnedWorkflow": true,
+        "gitDiffCheck": "passed",
+        "owningLockedCommitlint": "@commitlint/cli@21.2.4",
+        "commitTitleBodySquashAndRange": "passed",
+        "existingReleaseToolingCases": 28,
+        "matchingSecurityExpectationOnly": true
+      },
+      "originalCheckoutPreserved": {
+        "head": "bc8ea08fdb06719a29931e1d3fd53d2338ee6bbf",
+        "branch": "main",
+        "status": "",
+        "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workflowSha256": "862aaa6872e51b2106e4e648340b427d9c47446cdac8b8a1b4081f1939a3eee9",
+        "allCapturedDirtyFileHashesMatch": true
+      },
+      "checkSummary": [
+        {
+          "name": "Cursor Bugbot",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/runs/124645821240"
+        },
+        {
+          "name": "ci / build-and-test",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780671"
+        },
+        {
+          "name": "ci / release-tooling",
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780597"
+        },
+        {
+          "name": "ci / TestSupport Windows descendant cleanup",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780587"
+        },
+        {
+          "name": "ci / admin-web",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780574"
+        },
+        {
+          "name": "ci / conformance",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780553"
+        },
+        {
+          "name": "ci / repository",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780551"
+        },
+        {
+          "name": "ci / minimal-module platform compatibility",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890/job/124645780395"
+        },
+        {
+          "name": "codeql / analyze",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014891/job/124645780328"
+        },
+        {
+          "name": "dependency-review / dependency-review",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014865/job/124645780211"
+        },
+        {
+          "name": "commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014436/job/124645779003"
+        },
+        {
+          "name": "Cursor Approval Agent: Pull Request Router",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/runs/124645777610"
+        },
+        {
+          "name": "Cursor Security Agent: Security Reviewer",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/runs/124645774017"
+        }
+      ],
+      "statusSummary": [],
+      "workflowRuns": [
+        {
+          "id": 41238014890,
+          "name": "CI",
+          "status": "queued",
+          "conclusion": null,
+          "head": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014890"
+        },
+        {
+          "id": 41238014891,
+          "name": "CodeQL",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014891"
+        },
+        {
+          "id": 41238014865,
+          "name": "Dependency Review",
+          "status": "completed",
+          "conclusion": "failure",
+          "head": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014865"
+        },
+        {
+          "id": 41238014436,
+          "name": "Commit message policy",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Conversations/actions/runs/41238014436"
+        }
+      ],
+      "globalActivationExecuted": false,
+      "candidateAcceptance": false,
+      "callerMerged": false
+    },
+    "Tenants": {
+      "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+      "pr": {
+        "url": "https://github.com/Hexalith/Hexalith.Tenants/pull/58",
+        "number": 58,
+        "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+        "base": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "mergeableState": "unstable",
+        "changedFiles": 1,
+        "additions": 1,
+        "deletions": 1
+      },
+      "workflowIdentity": {
+        "recordedAtUtc": "2026-10-31T20:12:15.333916+00:00",
+        "owner": "Hexalith/Hexalith.Tenants",
+        "base": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+        "file": ".github/workflows/ci.yml",
+        "before": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+          "sha256": "9713f827d7f818c05365beac8e2ab0647a96218bcd5a7d27eab84a5f29f4e5af",
+          "commitBlob": "108ecf353c80b7dcfbc13efd96b8b321dd3c3474",
+          "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+        },
+        "after": {
+          "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+          "sha256": "c1d0f459ead0c28317c859e09148eb63b81d7b669308a5783e30c75916ecc87e",
+          "normalizedBlob": "8f92c38870dc02a3d4add676db670308e9e54976"
+        },
+        "onlyExactRefReplacement": true,
+        "allOtherBytesEqual": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allCallerInputsSupportedByPinnedInterface": true,
+        "callerInputs": {
+          "solution": "Hexalith.Tenants.slnx",
+          "test-platform": "microsoft-testing-platform",
+          "run-consumer-validation": "true",
+          "package-prepare-script": "scripts/prepare-bootstrap-compatibility.sh",
+          "run-coverage-gate": "true",
+          "build-timeout-minutes": "25",
+          "unit-test-projects": "tests/Hexalith.Tenants.Contracts.Tests\ntests/Hexalith.Tenants.Client.Tests\ntests/Hexalith.Tenants.Testing.Tests\ntests/Hexalith.Tenants.UI.Tests\nsamples/Hexalith.Tenants.Sample.Tests\n",
+          "integration-test-projects": "tests/Hexalith.Tenants.AppHost.Tests\ntests/Hexalith.Tenants.Server.Tests\n",
+          "aspire-test-project": "tests/Hexalith.Tenants.IntegrationTests",
+          "aspire-timeout-minutes": "35",
+          "aspire-continue-on-error": "false",
+          "aspire-browser-project": "tests/performance/tenant-audit",
+          "aspire-fail-skips": "true",
+          "coverage-minimum-line": "80",
+          "coverage-required-branch": "100",
+          "coverage-line-scope": "src/Hexalith.Tenants.Contracts/\nsrc/Hexalith.Tenants.Client/\nsrc/Hexalith.Tenants.Server/\nsrc/Hexalith.Tenants.Testing/\n",
+          "coverage-isolation-targets": "src/Hexalith.Tenants.Server/Aggregates/TenantAggregate.cs\nsrc/Hexalith.Tenants.Server/Aggregates/GlobalAdministratorsAggregate.cs\nsrc/Hexalith.Tenants.Server/Validators/ChangeUserRoleValidator.cs\nsrc/Hexalith.Tenants.Server/Projections/TenantAuditOwnership.cs\n"
+        },
+        "callerSecretsUnchanged": null,
+        "requiredLegacySecrets": false,
+        "lineEndingsPreserved": true,
+        "candidateAcceptance": false,
+        "callerMergeAuthorizedInThisStage": false
+      },
+      "sourceSha256": {
+        ".github/workflows/ci.yml": {
+          "sha256": "c1d0f459ead0c28317c859e09148eb63b81d7b669308a5783e30c75916ecc87e",
+          "commitBlob": "8f92c38870dc02a3d4add676db670308e9e54976"
+        }
+      },
+      "validation": {
+        "actionlint": "passed without exclusions",
+        "exactWorkflowReferenceOnly": true,
+        "allOtherWorkflowBytesPreserved": true,
+        "parsedYamlEquivalentExceptReference": true,
+        "allInputsSupportedByPinnedWorkflow": true,
+        "gitDiffCheck": "passed",
+        "owningLockedCommitlint": "@commitlint/cli@21.2.4",
+        "commitTitleBodySquashAndRange": "passed",
+        "existingReleaseToolingCases": null,
+        "matchingSecurityExpectationOnly": false
+      },
+      "originalCheckoutPreserved": {
+        "head": "c12761223eafbe863d0a20c946685873173a9da4",
+        "branch": "main",
+        "status": "",
+        "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workflowSha256": "9713f827d7f818c05365beac8e2ab0647a96218bcd5a7d27eab84a5f29f4e5af",
+        "allCapturedDirtyFileHashesMatch": true
+      },
+      "checkSummary": [
+        {
+          "name": "validate-story-gitlinks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854338/job/124645612792"
+        },
+        {
+          "name": "validate-release-artifacts",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854338/job/124645612667"
+        },
+        {
+          "name": "validate-read-only-release-version",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854338/job/124645612596"
+        },
+        {
+          "name": "validate-remove-focus-in-chromium",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854338/job/124645612466"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854800/job/124645336401"
+        },
+        {
+          "name": "Cursor Bugbot",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/runs/124645269069"
+        },
+        {
+          "name": "Published catalog HTTP",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836043/job/124645241016"
+        },
+        {
+          "name": "ci / build-and-test",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836043/job/124645241006"
+        },
+        {
+          "name": "Blocking authenticated live routes",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836043/job/124645240977"
+        },
+        {
+          "name": "Blocking HTTP contracts",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836043/job/124645240808"
+        },
+        {
+          "name": "dependency-review / dependency-review",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836029/job/124645240587"
+        },
+        {
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836016/job/124645240546"
+        },
+        {
+          "name": "codeql / analyze",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836000/job/124645240472"
+        },
+        {
+          "name": "validate-remove-focus-in-chromium",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835791/job/124645240120"
+        },
+        {
+          "name": "validate-release-artifacts",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835791/job/124645240074"
+        },
+        {
+          "name": "validate-story-gitlinks",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835791/job/124645240055"
+        },
+        {
+          "name": "Projection provenance",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835885/job/124645240052"
+        },
+        {
+          "name": "validate-read-only-release-version",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835791/job/124645239854"
+        },
+        {
+          "name": "Cursor Security Agent: Security Reviewer",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/runs/124645239132"
+        },
+        {
+          "name": "Cursor Approval Agent: Pull Request Router",
+          "status": "completed",
+          "conclusion": "neutral",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/runs/124645238731"
+        }
+      ],
+      "statusSummary": [],
+      "workflowRuns": [
+        {
+          "id": 41237854800,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854800"
+        },
+        {
+          "id": 41237854338,
+          "name": "Story Guards",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237854338"
+        },
+        {
+          "id": 41237849656,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237849656"
+        },
+        {
+          "id": 41237849275,
+          "name": "Story Guards",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237849275"
+        },
+        {
+          "id": 41237836000,
+          "name": "CodeQL",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836000"
+        },
+        {
+          "id": 41237835885,
+          "name": "Source-reference integration",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835885"
+        },
+        {
+          "id": 41237836043,
+          "name": "CI",
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836043"
+        },
+        {
+          "id": 41237836016,
+          "name": "Commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836016"
+        },
+        {
+          "id": 41237836029,
+          "name": "Dependency Review",
+          "status": "completed",
+          "conclusion": "success",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237836029"
+        },
+        {
+          "id": 41237835791,
+          "name": "Story Guards",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "head": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+          "event": "pull_request",
+          "url": "https://github.com/Hexalith/Hexalith.Tenants/actions/runs/41237835791"
+        }
+      ],
+      "globalActivationExecuted": false,
+      "candidateAcceptance": false,
+      "callerMerged": false
+    }
+  },
+  "scope": "Four ordinary compatibility PRs. Conversations adds only the matching exact-reference security-test expectation approved in the spec; all other caller behavior and assertions are preserved.",
+  "globalActivationExecuted": false,
+  "callerMergesExecuted": false,
+  "dependencyPinsChanged": false,
+  "newCredentialsProvisioned": false,
+  "candidateAcceptance": false,
+  "pending": "All four PRs await normal owner checks/review; Folders and Conversations have the explicit recorded blockers. No global activation or caller merge is authorized in this stage. No unchanged run was retried and no gate/settings were modified.",
+  "knownBlockers": {
+    "Folders": [
+      "Existing root Builds gitlink15d6a10c54660153cf8c05f24db83215824faf8e is unavailable from origin: not our ref. Multiple unchanged lanes stop before build/test.",
+      "Dependency review reports Dependency graph disabled."
+    ],
+    "Conversations": [
+      "Unchanged Windows checkout rejects an archived HTTP-cache path containing a colon.",
+      "Minimal-module metadata-selection tooling test invokes dotnet msbuild and exits1; its captured child output is not rendered by the existing test.",
+      "Dependency review reports Dependency graph disabled."
+    ]
+  }
+}

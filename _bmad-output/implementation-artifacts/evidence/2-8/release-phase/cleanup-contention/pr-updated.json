@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+    "number": 149,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": false,
+    "body": "Preserve current domain-ci.yml callers and introduce declared package integration\nthrough domain-ci-v2.yml. The legacy workflow and dedicated documentation remain\nbyte-identical to merged foundation 57255b502fdd546bb09851d04fc1830175d897f3.\n\nV2 requires isolated success, declared suites, dedicated pull-only registry secrets,\nexact owner finalization and classified diagnostics. Bind its actual workflow\nidentity and direct integration executor into the authorized closure; reject legacy\nidentities/digests and missing or changed executor source. Remove unused legacy-only\ninputs, preserve direct integration/AppHost refusals, and require HTTPS downloads\nand redirects. Run both validator modes in CI/release and document explicit migration.\n\nWhen explicit down races startup's outcome publication, supported attachment owners\nnow wait for the metadata lock within the original stopping token. Durable withdrawal\nstill precedes resource cleanup; persistent lock failure remains a bounded refusal\nwith exact retry. Owners whose context cannot admit attachments retain their existing\nimmediate bookkeeping/cleanup path. Preserve first outcomes, times and attachment\nexpiry; no stopping allowance is extended. The C# candidate consumer and package\nlayout remain unchanged. The scoped attributes entry preserves authored CRLF in the\nexisting shell controls.\n\nValidation: fresh full Debug project graph builds with zero warnings/errors. On the\nsame binary with complete simulated GitHub context, all 59 local lifecycle cases,\n16 CI lifecycle cases and three existing legacy bookkeeping scenarios pass, with no\nfailures/skips/errors. Deterministic baseline controls passed the four original cases\nand failed both forced contention cases before the fix. Exact commands, source and\nbinary hashes, earlier failed diagnostics and source limits are retained.\n\nUnchanged v2 source controls passed 411 legacy and 254 strict executable assertions,\n95 provenance tests, 56 governed workflow tests, 11 preparation tests and 24 unchanged\nhelper tests. Actionlint and diff checks pass. The earlier 159-case publisher run is\na historical baseline. Local controls and simulated CI supply no hosted reference or\ncandidate acceptance; normal complete exact-head hosted CI remains mandatory.\n\nE/P adoption, registry provisioning, compatible releases and hosted lifecycle\nqualification remain pending. No merge or publication is part of this PR stage.\n",
+    "title": "feat(ci): add versioned integration and bounded cleanup",
+    "base": "main",
+    "base_sha": "57255b502fdd546bb09851d04fc1830175d897f3",
+    "head": "feat/story-2-8-domain-ci-v2",
+    "head_sha": "46365cd94f8501f513f1cc413916ac24737d33e2",
+    "head_repo_id": 952945989,
+    "head_repo_full_name": "Hexalith/Hexalith.Builds",
+    "merge_commit_sha": "63bbc016812146322bf014c5dcdf4789c23b8f11",
+    "user": {
+      "login": "jpiquot",
+      "name": "jpiquot",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "id": 6775094
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-10-31T20:48:21Z",
+    "updated_at": "2026-10-31T21:16:46Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 3,
+    "changed_files": 17,
+    "additions": 1623,
+    "deletions": 305,
+    "display_url": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+    "display_title": "feat(ci): add versioned integration and bounded cleanup"
+  },
+  "isError": false
+}

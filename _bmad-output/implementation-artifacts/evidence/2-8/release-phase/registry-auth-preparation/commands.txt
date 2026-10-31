@@ -1,0 +1,9 @@
+Working directory: /home/administrator/projects/hexalith/platform
+
+python3 -m unittest discover -s references/Hexalith.Builds/Github/run-module-integration/tests -v
+pwsh -NoProfile -File references/Hexalith.Builds/Tools/test-domain-workflow-test-platforms.ps1
+/home/administrator/.local/bin/actionlint -oneline references/Hexalith.Builds/.github/workflows/domain-ci.yml references/Hexalith.EventStore/.github/workflows/ci.yml references/Hexalith.Parties/.github/workflows/ci.yml
+# Raw actionlint reports only the four existing job.workflow_* context capability gaps.
+/home/administrator/.local/bin/actionlint -oneline -ignore 'property "workflow_(repository|sha|ref)" is not defined' references/Hexalith.Builds/.github/workflows/domain-ci.yml references/Hexalith.EventStore/.github/workflows/ci.yml references/Hexalith.Parties/.github/workflows/ci.yml
+
+The source-before credential workflow was reconstructed exactly and checked against the captured SHA-256 before its independent baseline lint. No blanket expression exclusion was used. Original heads, captured unrelated bytes, separate owner host/pin source, caller refs and the clean isolated foundation were checked without reset, checkout or staging in the original repositories.

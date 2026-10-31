@@ -249,13 +249,42 @@ def collection_requirements(name, hops):
                 "requiredChecks": ["compare concrete resource/PVC identities, readiness and data health before/after",
                     "record every workload outcome and approved recovery outcome if needed; retain no credentials or payloads"]}
     if name == "dynamic-storage-proof.json":
-        return {**common, "requiredDynamicStorageClassesFromFreshCensus": None,
+        return {**common, "perHopEvidence": [
+                    {**entry, "requiredDynamicStorageClassesFromFreshCensus": None,
+                     "phases": {phase: {"evidenceSha256": None, "capturedAt": None,
+                                         "verificationResult": "not-run", "providerCleanupEstablished": False}
+                                for phase in ("before-hop", "after-hop-before-uncordon")}}
+                    for entry in per_hop],
+                "requiredDynamicStorageClassesFromFreshCensus": None,
                 "requiredChecks": ["scheduler-managed disposable PVC/pod for every required dynamic StorageClass",
                     "provision, non-secret write, independent read, deletion and direct provider-volume absence",
                     "record PVC/PV UIDs, provider handle, timestamps and command exits",
                     "before hop and after hop while cordoned; approved tolerations and WaitForFirstConsumer scheduling",
                     "explicit Retain-class provider cleanup; preserve all workload PVCs"]}
     return {}
+
+
+def transition_requirements(hop):
+    """Reserve independent transition evidence after each hop's signed gate."""
+    suffix = f"{hop['from']}-to-{hop['to']}"
+    return {
+        "fromMinor": hop["from"], "toMinor": hop["to"],
+        "datedSelectedTargetPatch": hop["targetPatch"], "acceptedTargetPatch": None,
+        "approvedGateRecord": f"hop-gate-{suffix}.json", "approvedGateSha256": None,
+        "approvedSuccessorProcedureSha256": None, "accountableStopRecoveryDecisionSha256": None,
+        "verificationResult": "not-run", "terminalSuccessEstablished": False,
+        "quiesce": {"state": "not-started", "startedAt": None, "finishedAt": None,
+                    "allTrackedWorkflowsTerminal": None, "freshOutageCensusSha256": None,
+                    "ownerApprovedPausedStateExpectationsSha256": None, "evidenceSha256": None},
+        "cordon": {"state": "not-started", "startedAt": None, "finishedAt": None,
+                   "observedUnschedulable": None, "nodeUid": None, "evidenceSha256": None},
+        "drain": {"state": "not-started", "startedAt": None, "finishedAt": None,
+                  "exitCode": None, "approvedExceptions": None, "evidenceSha256": None},
+        "requiredOrder": ["verify this hop's signed-open gate", "terminal approved quiesce and workflows",
+                          "observe node1 spec.unschedulable=true", "terminal drain exit 0",
+                          "begin this hop's control-plane upgrade"],
+        "alreadyPausedWorkloads": "Require fresh approved paused-state evidence; a prior hop's transition is insufficient",
+    }
 
 
 def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=None):
@@ -401,6 +430,9 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
                 "refreshRequirements": list(prerequisites), "freshPrerequisiteRecordHashes": None,
                 "preUpgradeHealth": {"record": "pre-upgrade-health.json", "sha256": None,
                                      "verificationResult": "not-run"},
+                "preHopStorage": {"record": "dynamic-storage-proof.json", "fromMinor": hop["from"],
+                                  "toMinor": hop["to"], "phase": "before-hop", "evidenceSha256": None,
+                                  "verificationResult": "not-run"},
                 "previousHop": None if previous is None else {
                     "outcomeRecord": f"minor-hop-{previous['from']}-to-{previous['to']}.json",
                     "acceptedOutcomeSha256": None, "acceptance": "not-validated",
@@ -412,7 +444,13 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
                 "exactTargetPatch": hop["targetPatch"], "commands": [], "resultingComponentVersions": None,
                 "approvedGateRecord": f"hop-gate-{suffix}.json", "approvedGateSha256": None,
                 "approvedSuccessorMaintenanceSha256": None,
+                "maintenanceTransition": {"record": "maintenance-transition.json", "fromMinor": hop["from"],
+                                          "toMinor": hop["to"], "recordSha256": None, "entrySha256": None,
+                                          "verificationResult": "not-run", "terminalSuccessEstablished": False},
                 "postflightEvidenceHashes": {"post-upgrade-health.json": None, "dynamic-storage-proof.json": None},
+                "postHopStorage": {"record": "dynamic-storage-proof.json", "fromMinor": hop["from"],
+                                   "toMinor": hop["to"], "phase": "after-hop-before-uncordon",
+                                   "evidenceSha256": None, "verificationResult": "not-run"},
                 "preUncordonRequirements": {
                     "instructionsOnly": True, "verificationResult": "not-run", "acceptedEvidenceSha256": None,
                     "uncordonAuthorized": False,
@@ -424,14 +462,17 @@ def prepare(project_root, evidence_root, attempt_id, operator, backup_bundle=Non
             })
         write_record(directory, "maintenance-transition.json", {
             **base, "verificationResult": "not-run",
-            "quiesce": {"state": "not-started", "allTrackedWorkflowsTerminal": None},
-            "cordon": {"state": "not-started", "observedUnschedulable": None},
-            "drain": {"state": "not-started", "exitCode": None, "approvedExceptions": []},
+            "perHopTransitions": [transition_requirements(hop) for hop in hops],
             "collectionRequirements": {
-                "instructionsOnly": True, "approvedSuccessorProcedureSha256": None,
+                "instructionsOnly": True, "freshEvidenceRequiredForEveryHop": True,
+                "approvedSuccessorProcedureSha256": None,
                 "requiredTerminalStates": ["approved application quiesce and every tracked workflow terminal",
                     "independently observed node1 spec.unschedulable=true",
                     "drain terminal exit 0 with exact approved exceptions"],
+                "requiredChecks": ["bind each transition entry to its own signed-open hop gate and exact approved procedure",
+                    "record command/tool versions, exits, independent observations and terminal timestamps in encrypted evidence",
+                    "establish ordered terminal success after that hop gate and before that hop's kubeadm command",
+                    "do not reuse first-hop transitions or storage probes to clear a later hop"],
                 "accountableStopRecoveryDecisionSha256": None,
                 "stopOn": ["pending, failed or ambiguous transition", "any failed or stale hop prerequisite",
                     "unhealthy API, node, CNI, DNS, storage, etcd or protected workload after a hop"],

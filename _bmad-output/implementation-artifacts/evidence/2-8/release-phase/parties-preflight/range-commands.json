@@ -1,0 +1,33 @@
+{
+  "actualPushBefore": "166fd757cd512779c8df8d9c1060eae8c63cfe20",
+  "actualLiveReleaseFloor": {
+    "tag": "v2.0.0",
+    "objectSha": "3e1dd7cac6ee4db1db48d1bfb478e1b5848f7b8e",
+    "commit": "3e1dd7cac6ee4db1db48d1bfb478e1b5848f7b8e"
+  },
+  "ledgerSha256": "936ec1c9c4d4dd75e8fb13245a42bbf42efe3771ea13712702ea90dc6286ed13",
+  "runs": [
+    {
+      "name": "main-push-range",
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--push-range",
+        "166fd757cd512779c8df8d9c1060eae8c63cfe20"
+      ],
+      "exitCode": 1,
+      "output": "main-push-range.txt"
+    },
+    {
+      "name": "release-floor-range",
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--diff",
+        "3e1dd7cac6ee4db1db48d1bfb478e1b5848f7b8e"
+      ],
+      "exitCode": 1,
+      "output": "release-floor-range.txt"
+    }
+  ]
+}

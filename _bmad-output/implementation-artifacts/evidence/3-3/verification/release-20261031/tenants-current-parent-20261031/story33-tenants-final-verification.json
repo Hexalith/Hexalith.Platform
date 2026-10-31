@@ -1,0 +1,103 @@
+{
+  "sourceRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants-final",
+  "sourceBase": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+  "sdkSourcePin": "b641de5aa2f9fe58e4ade6c42fb938936f879748",
+  "packageFloor": "unchanged3.129.0 pending actual protected release",
+  "runs": [
+    {
+      "command": "dotnet build tests/Hexalith.Tenants.Server.Tests/Hexalith.Tenants.Server.Tests.csproj --configuration Debug -m:1 -p:NuGetAudit=false",
+      "logs": [
+        "/tmp/story33-tenants-final-bootstrap-build1.log",
+        "/tmp/story33-tenants-final-bootstrap-build2.log",
+        "/tmp/story33-tenants-final-bootstrap-build3.log"
+      ],
+      "result": "all three clean0warnings/errors"
+    },
+    {
+      "command": "dotnet tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll -class '*TenantBootstrap*' -xml /tmp/story33-tenants-final-bootstrap-run1.xml",
+      "xml": "/tmp/story33-tenants-final-bootstrap-run1.xml",
+      "log": "/tmp/story33-tenants-final-bootstrap-run1.log",
+      "total": 153,
+      "passed": 153,
+      "skipped": 0
+    },
+    {
+      "command": "dotnet tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll -class '*TenantBootstrap*' -xml /tmp/story33-tenants-final-bootstrap-run2.xml",
+      "xml": "/tmp/story33-tenants-final-bootstrap-run2.xml",
+      "log": "/tmp/story33-tenants-final-bootstrap-run2.log",
+      "total": 159,
+      "passed": 159,
+      "skipped": 0
+    },
+    {
+      "command": "dotnet build tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj --configuration Debug -m:1 -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:HexalithFrontComposerFromSource=false -p:HexalithMemoriesFromSource=false -p:NuGetAudit=false",
+      "log": "/tmp/story33-tenants-final-integration-package-build1.log",
+      "result": "clean0warnings/errors",
+      "seconds": 40.08,
+      "scope": "Legacy package-mode integration graph compilation; source-only runtime proof excluded, not package acceptance."
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/tests -p test_source_catalog_profile.py -v",
+      "log": "/tmp/story33-tenants-final-material-run1.log",
+      "result": "failed fixture shape: missing actual Docker volume Name field; preserved"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/tests -p test_source_catalog_profile.py -v",
+      "log": "/tmp/story33-tenants-final-material-run2.log",
+      "total": 2,
+      "passed": 2,
+      "negativeSubcases": 12,
+      "scope": "Captured-Docker boundary tests; no actual Docker commands or topology"
+    },
+    {
+      "command": "dotnet build tests/Hexalith.Tenants.Server.Tests/Hexalith.Tenants.Server.Tests.csproj --configuration Debug -m:1 -p:NuGetAudit=false",
+      "log": "/tmp/story33-tenants-final-bootstrap-build4.log",
+      "result": "failed CS8198 in added Shouldly expression-tree assertion; preserved"
+    },
+    {
+      "command": "dotnet build tests/Hexalith.Tenants.Server.Tests/Hexalith.Tenants.Server.Tests.csproj --configuration Debug -m:1 -p:NuGetAudit=false",
+      "log": "/tmp/story33-tenants-final-bootstrap-build5.log",
+      "result": "clean0warnings/errors"
+    },
+    {
+      "command": "dotnet tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll -class '*TenantBootstrap*' -class '*EventPublicationConfigurationTests' -xml /tmp/story33-tenants-final-bootstrap-run3.xml",
+      "xml": "/tmp/story33-tenants-final-bootstrap-run3.xml",
+      "log": "/tmp/story33-tenants-final-bootstrap-run3.log",
+      "assembly": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "ef833c0d-97b9-40f7-aeec-0fbb01718c2a",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants-final/tests/Hexalith.Tenants.Server.Tests/bin/Debug/net10.0/Hexalith.Tenants.Server.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "21:43:03",
+        "start-rtf": "2026-10-31T21:43:03.6087651+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T21:43:06.6911699+00:00",
+        "not-run": "0",
+        "passed": "183",
+        "skipped": "0",
+        "time": "3.083",
+        "time-rtf": "00:00:03.0830000",
+        "total": "183"
+      }
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/tests -p test_source_catalog_profile.py -v",
+      "log": "/tmp/story33-tenants-final-material-run3.log",
+      "total": 2,
+      "passed": 2,
+      "negativeSubcases": 13,
+      "scope": "Captured Docker ownership boundary only, not actual topology"
+    }
+  ],
+  "staticChecks": {
+    "prepareSourceScript": "Python AST parsed without executing it",
+    "sourceWorkflow": "PyYAML parsed; source-reference development-catalog job present",
+    "workflowBash": "Explicit bash steps parsed with bash -n; no execution"
+  },
+  "runtimeStatus": "Mandatory source-native build/runtime remains unexecuted. Source-only files manually API-checked; hosted standalone build must compile them. No local topology, nested initialization, SDK edits or remote mutation.",
+  "sourceArchive": "/tmp/story33-tenants-final-source-20261031/snapshot.json",
+  "messageReceipt": "/tmp/story33-tenants-final-message-receipt.json"
+}

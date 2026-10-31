@@ -420,3 +420,39 @@ digest and encrypted original list. It receives no deletion authority. All
 persistent Profiles remain inventoried; a changed, duplicated or unknown
 identity-less view closes coverage. This corrects a measured census refusal;
 it supplies no recovery, retirement or upgrade acceptance.
+
+### Complete Memories recovery coverage — 2026-10-31
+
+A current source includes `StatefulSet/hexalith-memories/access-telemetry-postgresql`
+in addition to Redis and FalkorDB. A pair-only historical proof cannot authorize
+retirement. The same original signed `memories/memories-restore-proof.json`
+carries a required `telemetryPostgresql` record; no additional signing identity
+or replacement trust root is introduced. The policy must explicitly list sorted
+`systems.memories.requiredStores` as `access-telemetry-postgresql`, `falkordb`,
+`redis-stack`, with the approved integer `rpoSeconds` at most 1800. The proof's
+`sourceUid` maps all three exact names to their current retained StatefulSet UIDs.
+
+The nested record binds `sourceClusterUid`, `sourceUid`, fresh `capturedAt` and
+`expiresAt`, measured RPO, four distinct `isolatedTargetUids` (namespace,
+statefulSet, pvc, pv) outside the source inventory, and `artifactEncrypted:true`.
+Its `artifact` binds the exact `key`, `versionId`, positive `bytes`, and `sha256`
+of `memories/<recoveryId>/telemetry-postgresql.dump.age`. The original signed
+manifest must contain exactly that version with matching byte length/hash,
+read-only validator readback, AES256, COMPLIANCE and matching retention API
+readback lasting at least 30 days from capture. Manifest-local evidence must
+bind six distinct records under `memories/telemetry/`: capture, isolation,
+comparison, restore, resume and cleanup (`path`/`sha256` for each).
+
+Every nested `checks` value is required to be true:
+`snapshotHolderAliveThroughDump`, `sameSnapshotDumpAndCanaries`,
+`quiescedSequencesStable`, `completeObjectCoverage`,
+`sourceAndTargetCanariesEqual`, `targetRolesNoLoginOrSuperuser`, `sourceFenced`,
+`isolatedTarget`, `sourceResumedAndHealthy`, `targetCleanupComplete` and
+`independentValidatorReadback`. These attest actual qualified execution and
+semantic comparison; creating records or passing offline constructors supplies
+none of those outcomes. The original signed non-dry validation must contain one
+passing `id:memories-telemetry-postgresql` check with `proofSha256` equal to the
+SHA-256 of canonical nested JSON (indented, sorted, trailing newline). Existing
+whole-proof signatures, gate bindings, manifest validation/readbacks and exact
+retirement approval cover this extension transitively. Missing, substituted,
+false, stale or pair-only coverage stops before the first removal request.

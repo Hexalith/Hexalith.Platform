@@ -1,0 +1,64 @@
+{
+  "observedAt": "2026-10-31T18:22:42.094027+00:00",
+  "sourceFilesVerified": 20,
+  "localArchiveSha256": "3c6880be9e319b2955e2889dc12ffe9cd8fca77f57a924203d7a4f4966fa9a6e",
+  "extractedSeedSha256": "25c3092d8275e2134b09d0f8ec13410a4cfaa8e0cb45dbd0683674b95480d3fc",
+  "packageOnlyCredentialAndSubscriptionProof": "Verified archive/loaded seed identity and both dynamic/declarative status/metadata expectations from retained real probe",
+  "runtimeXml": [
+    {
+      "total": 187,
+      "passed": 187,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    }
+  ],
+  "runtimeTotal": 238,
+  "publisherControls": "Explicitly mocked remote functions; no publication claimed",
+  "hostedAcceptance": false,
+  "publishedPackageAcceptance": false,
+  "committedSource": "ee6074995b7da585f731f938cc295a6f7d3bf6a3",
+  "committedBlobSha256": {
+    ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+    ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+    "Github/run-module-integration/run_module_integration.py": "ce2a90aa19fc41d18dd8ec55fd5d073504be15224b724eba92faa901a598197c",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "112d06e2a0ded590e56956489f91d0f76d39b145ff1b3e5241a1de4461fed38b",
+    "Tools/G4PackageQualification.functions.ps1": "e0e986099b3ac6de5d9c37bf2a9737b659c12e1d023e11332d29c7015dca9659",
+    "Tools/PackagedSeedProbe/PackagedSeedProbe.cs": "c2478dbbc54dabf6fcbf22a5e847ec9a1ff0bfffc211feb98e517b57ac8933fb",
+    "Tools/test-publish-g4-tool-packages.ps1": "7b04cd1bdee203c74b2591d109670b1ef21b7d9953cd83fe943c8d8210a7ca0e",
+    "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "9ce9aef9c4b50ccd8cc3156757a9abd595e281ff33b43030bdc92012ee51a297",
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "9f5edafe8fd53ba5296e9ce80a4a142efa8d7bb63dde91d6ff1c8f0cef7594b1",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "491124be44bd64cd2eb352748c2ce5ba82ed9640482e3ed1875dfa81b2953948",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "2ec267ec118937a93c6c95e35bd8512dee01c2f4d70fb1d43d860a60ed87de13",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "4dcc71bf608edf684681eed7afda49541ab0c4aece6bb3a1cca5740fc6c38516",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "8bcf5c172ee8673fe4f2ac90e037bfd25f55500e101b27423070bb411c09266b",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "36c2184d9a648785e2d51b34c59e6ada12207904d8532cfb58d31d50436cbb1d",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "2229a1354c6aa9fe7ec7d5b74ea5526db1a0b18863ee03be848cf6e87d3bca50",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "57ea03912ede4459b9a887d908c64eac5250db62661d1e5aeb58111b70a7d88f",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "45121363bd3b4dc1b83cbd8b8672dcabb6b92691cc3ef8d8efd30b3d0dade0bc",
+    "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "470e221f0e234d0a2a716cdcf36067f7a8f0fbef50ddb013f367951f003b744e",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "af0412f6ce80922820bd062f8aca27188b25af52af0a03f3bd8de175db6b185b"
+  },
+  "incrementalSourceAudit": "15 files match previously audited implementation after line-ending normalization. Read complete incremental diff of package-host/probe/strict qualification and mutation controls; admission test delta adds waitForLock:true to preserve current-base outcome locking.",
+  "initialArchivePhase": "Precommit-source local archive; historical only",
+  "committedArchiveAudit": {
+    "verifiedAt": "2026-10-31T18:29:03.991969+00:00",
+    "sourceCommit": "ee6074995b7da585f731f938cc295a6f7d3bf6a3",
+    "archiveSha256": "4e2098f65debb89aef888c7cf9daab89bd6231f1a2bff747ae64a7c9e8b891e5",
+    "seedSha256": "2651442a24b763350dc27d5b46276ca5c91b9e88e03eb7b8df4b2331f83cbe3f",
+    "proofSha256": "b495e33946b0e09a5428b8c1652481e8db8830c8900ea5f4c990a1db432c5e1c",
+    "verifiedBinaryCount": 5,
+    "runtimeCases": 238,
+    "failed": 0,
+    "skipped": 0,
+    "publishedOrHostedAcceptance": false
+  }
+}

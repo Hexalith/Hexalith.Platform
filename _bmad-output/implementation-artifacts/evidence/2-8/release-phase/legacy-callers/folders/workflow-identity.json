@@ -1,0 +1,39 @@
+{
+  "recordedAtUtc": "2026-10-31T20:08:23.785918+00:00",
+  "owner": "Hexalith/Hexalith.Folders",
+  "base": "765544efc5c8aa395895f3a3d5911d4364658639",
+  "file": ".github/workflows/ci.yml",
+  "before": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+    "sha256": "ab5942869b3b6670d289e4c111ebca319bd6beb769eb60565151ab065ab1185f",
+    "commitBlob": "e56224f1334b0b72c271acaf083f05aaf365ac12",
+    "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+  },
+  "after": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "sha256": "d1cd65952c42bf4facee6f21b39b0945986f8fad23132cafc24a8659de992853",
+    "normalizedBlob": "30491018a0d0a7c33a5923c252eac44a3c8b65cc"
+  },
+  "onlyExactRefReplacement": true,
+  "allOtherBytesEqual": true,
+  "parsedYamlEquivalentExceptReference": true,
+  "allCallerInputsSupportedByPinnedInterface": true,
+  "callerInputs": {
+    "solution": "Hexalith.Folders.CI.slnx",
+    "build-timeout-minutes": "45",
+    "test-platform": "microsoft-testing-platform",
+    "run-consumer-validation": "true",
+    "run-coverage-gate": "true",
+    "coverage-minimum-line": "75",
+    "coverage-required-branch": "80",
+    "coverage-isolation-targets": "src/Hexalith.Folders/Aggregates/Folder/FolderArchiveTenantGate.cs\n",
+    "coverage-line-scope": "src/Hexalith.Folders.Contracts/\nsrc/Hexalith.Folders/\nsrc/Hexalith.Folders.Client/\nsrc/Hexalith.Folders.Aspire/\nsrc/Hexalith.Folders.Testing/\n",
+    "unit-test-projects": "tests/Hexalith.Folders.Contracts.Tests\ntests/Hexalith.Folders.Tests\ntests/Hexalith.Folders.Cli.Tests\ntests/Hexalith.Folders.EventStore.Tests\ntests/Hexalith.Folders.LoadTests.Tests\ntests/Hexalith.Folders.Mcp.Tests\ntests/Hexalith.Folders.Server.Tests\ntests/Hexalith.Folders.Testing.Tests\ntests/Hexalith.Folders.UI.Tests\ntests/Hexalith.Folders.Workers.Tests\ntests/Hexalith.Folders.AppHost.Tests\nsamples/Hexalith.Folders.Sample.Tests\n",
+    "integration-test-projects": "tests/Hexalith.Folders.IntegrationTests\n"
+  },
+  "callerSecretsUnchanged": null,
+  "requiredLegacySecrets": false,
+  "lineEndingsPreserved": true,
+  "candidateAcceptance": false,
+  "callerMergeAuthorizedInThisStage": false
+}

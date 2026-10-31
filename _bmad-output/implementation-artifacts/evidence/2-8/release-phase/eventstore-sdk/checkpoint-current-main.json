@@ -1,0 +1,184 @@
+{
+  "observedAtUtc": "2026-10-31T20:01:40.150792+00:00",
+  "storyStatus": "in-progress",
+  "pr": "https://github.com/Hexalith/Hexalith.EventStore/pull/378",
+  "head": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "parents": [
+    "67bab1f13bd26d7fd7fbe390b57006a537e5c5a2",
+    "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c"
+  ],
+  "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "sourceSha256": {
+    "src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj": {
+      "sha256": "3a667296d87180b2462e306d398d54ea679efd041b7d3f63c3f2f13cb1cf633f",
+      "commitBlob": "38a3b82037f0fa291ec1a97854f5b6b705e6b188",
+      "originalHelperBlobUnchanged": true
+    },
+    "src/Hexalith.EventStore.Testing.Integration/TestEnvironmentStreamReader.cs": {
+      "sha256": "5f1511df780d49ca56821230d9dce650ab2571fbc5f80895ccd6a3a79e6952a8",
+      "commitBlob": "dd52c2bf19be7fe1bba5c3a08dad31388813c1f8",
+      "originalHelperBlobUnchanged": true
+    },
+    "tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorFixtureTests.cs": {
+      "sha256": "89fce978b8c71ec92dfa900af238b8e9f163194f422e542c97bafbe59a80864c",
+      "commitBlob": "cc67ece4bbf3e5aedc48bef0b6736058e1af5871",
+      "originalHelperBlobUnchanged": true
+    }
+  },
+  "independentOwnerFilesPreservedExactly": true,
+  "worktreeClean": true,
+  "buildInputs": {
+    "buildPropsOwner": "Hexalith/Hexalith.Builds",
+    "buildPropsCommit": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+    "buildPropsPath": "Props/Directory.Packages.props",
+    "buildPropsSha256": "878c651bf08af30b99d5c4c17cfaaef767d53767b9085dadd4b4ff26f180d7df",
+    "dependencyMode": "UseHexalithProjectReferences=false; in-repository EventStore project references retained; published cross-repository packages",
+    "scope": "local source compilation and descriptor controls, not publication or hosted module CI qualification"
+  },
+  "verification": {
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "descriptorCasesPassed": 15,
+    "descriptorFailed": 0,
+    "descriptorSkipped": 0,
+    "stagedGuardCheckedFiles": 103,
+    "pinnedCommitlint": "21.2.4",
+    "binarySha256": {
+      "src/Hexalith.EventStore.Testing.Integration/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.dll": "054c2f0888c20892206bd51e6d6e056a0d3f5cce0f0eec73fb6fe30825faa219",
+      "tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll": "57b4a8155172b1144347b3c35bbc181002d2ec331df3752d56ccb493a24c0c28"
+    },
+    "scope": "Exact post-merge local source build using published cross-repository dependencies and owner-pinned Builds props; descriptor controls only. No post-merge archive or hosted candidate acceptance is claimed. Earlier local-artifacts.json is historical at67bab1f."
+  },
+  "strictRequiredChecks": [
+    "advisory",
+    "ci / build-and-test",
+    "ci / tenants-source-mode",
+    "codeql / analyze",
+    "commitlint / commitlint",
+    "dependency-review / dependency-review",
+    "live-sidecar"
+  ],
+  "currentCheckSnapshot": [
+    {
+      "name": "commitlint / commitlint",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236815722/job/124642231413"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236813992/job/124642226854"
+    },
+    {
+      "name": "Cursor Bugbot",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/runs/124642198309"
+    },
+    {
+      "name": "dependency-review / dependency-review",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793722/job/124642173243"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793684/job/124642172596"
+    },
+    {
+      "name": "ci / folded-snapshot-compatibility",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172350"
+    },
+    {
+      "name": "ci / build-and-test",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172319"
+    },
+    {
+      "name": "ci / semantic-release-governance",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172297"
+    },
+    {
+      "name": "ci / contracts",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172253"
+    },
+    {
+      "name": "codeql / analyze",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793456/job/124642172169"
+    },
+    {
+      "name": "ci / checkpointed process packages",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172142"
+    },
+    {
+      "name": "ci / tenants-source-mode",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793431/job/124642172048"
+    },
+    {
+      "name": "published-compatibility",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793296/job/124642171774"
+    },
+    {
+      "name": "payload-protection-lifecycle",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793360/job/124642171720"
+    },
+    {
+      "name": "advisory",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793279/job/124642171678"
+    },
+    {
+      "name": "live-sidecar",
+      "status": "queued",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793296/job/124642171616"
+    },
+    {
+      "name": "payload-protection",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41236793269/job/124642171439"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/runs/124642165197"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/runs/124642164873"
+    }
+  ],
+  "historicalFailure": "Original67bab1f live-sidecar run41224995195 failed six NamedProjectionDispatch cases. This is retained historically; new2ed2f033 run41236793296 is pending against the independently corrected main.",
+  "merged": false,
+  "releaseDispatched": false,
+  "publicationVerified": false,
+  "consumerPinsChanged": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

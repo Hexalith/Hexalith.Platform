@@ -1,0 +1,50 @@
+{
+  "verifiedAt": "2026-10-31T21:16:33.196490+00:00",
+  "sourceBase": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "completeDiffRead": true,
+  "sameFinalSourceAndAll7BinaryHashesVerified": true,
+  "freshFinalCasesPassed": 78,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "xml": {
+    "reproduction-tests.xml": {
+      "total": 6,
+      "passed": 4,
+      "failed": 2,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "sha256": "f3a18b2e1c2227a41adfee3bb0b891a6a2a507224939092893652cb85d4a5ff5"
+    },
+    "unconditional-wait-tests.xml": {
+      "total": 362,
+      "passed": 360,
+      "failed": 2,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "sha256": "ba84d289f443c3d0f9d41ea7d9ae3c70f34137bf02c931051b92dcc6a244849d"
+    },
+    "supported-owner-tests.xml": {
+      "total": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "sha256": "f57d154b7e14cca87ebf1789f796a59cd8b6148499f4dd07071e92e7416d738a"
+    },
+    "legacy-owner-tests.xml": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "sha256": "e3ffa65912e2f0d357fe611212ebc9be0e62021b4066d4d628b4dc29b6e74245"
+    }
+  },
+  "redEvidence": "Unchanged runtime4 original cases pass and2 held-lock cases fail; unconditional wait run360/362 retained and not final credit",
+  "limits": "Local simulated GHA environment; final conditional source only. Hosted exact-head/package/reference acceptance pending."
+}

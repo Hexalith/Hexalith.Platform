@@ -1,0 +1,11 @@
+{
+  "preparedAt": "2026-10-31T21:53:01.154348+00:00",
+  "title": "feat(ci): add versioned integration and preserve cleanup retries",
+  "body": "Add domain-ci-v2.yml for required declared package integration after isolated tests.\nKeep the legacy workflow contract intact. Bind v2 workflow identity and its direct\nexecutor to the exact authorized source; require pull-only registry credentials,\nHTTPS downloads, bounded owner finalization and classified diagnostics. Run both\nworkflow validator modes in producer CI and release.\n\nPreserve current main's documented immediate metadata refusal and explicit same-owner\ncleanup retry, with no production source or stopping-policy change. Add one active-\nattachment control covering retained ownership and holds on refusal, then idempotent\ncleanup with first outcome, timestamps and absolute expiry unchanged.\n\nA fresh Debug graph and all 78 local/CI/legacy controls pass. Complete exact-head\nhosted checks remain required before merge. Reference adoption, qualified releases\nand real hosted lifecycle observations remain separate requirements; source controls\nsupply no candidate acceptance.\n",
+  "expectedHead": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+  "expectedBase": "f6834a33967f8ec905145db14e1a13ffb5468d69",
+  "messageSha256": "dad0fe6871402346a77fb2bca8128496cbc15ad12065a04aa8599f6b0009b0bf",
+  "lintVersion": "21.2.4",
+  "lintExitCode": 0,
+  "mergePrerequisite": "All effective strict current-base required checks and complete exact-head CI pass; no active Builds publication or additional review requirement"
+}

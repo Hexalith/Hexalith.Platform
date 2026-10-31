@@ -1,0 +1,287 @@
+[
+  {
+    "row": "R11-BH-1",
+    "verdict": "false",
+    "finding": "ReadBlockedReplacementAsync returns the retained operation outcome (ActivationBlockedByReplacementKeyCompromise, receipt over the exact phase), not the durable ConsumptionBlocked batch outcome; that stored outcome satisfies UnissuedReplacementProof.",
+    "evidence": [
+      "eventstore src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs:314-317 (returned/retained vs durable outcome)",
+      "eventstore src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs:332 (ReadBlockedReplacementAsync returns new(phase, operation.Outcome))",
+      "eventstore src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs:443-463 (UnissuedReplacementProof)"
+    ],
+    "testing": "Existing test: the guard mirror UnissuedReplacementBlocked commits with the retained stored outcome, and the owner returns the identical outcome after restore.",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootUnissuedReplacementTests.RejectedUnissuedCandidateRetainsIssuedOrdinalExactRestoreLookupAndLaterHealthyProgress"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootUnissuedReplacementTests.RejectedUnissuedCandidateRetainsIssuedOrdinalExactRestoreLookupAndLaterHealthyProgress": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootUnissuedReplacementTests.RejectedUnissuedCandidateRetainsIssuedOrdinalExactRestoreLookupAndLaterHealthyProgress": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootUnissuedReplacementTests.RejectedUnissuedCandidateRetainsIssuedOrdinalExactRestoreLookupAndLaterHealthyProgress": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-2",
+    "verdict": "real",
+    "finding": "Refusal-status half is false: Capture refuses any refusal status other than Blocked/Stale. Currentness half is real: the unissued branch accepted on repeated guard reads plus the journal without the independent current blocked-replacement evidence the issued branch requires. In the shipped Platform composition the evidence journal performs the equivalent check, so the gap was at the component contract.",
+    "evidence": [
+      "eventstore src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs:90 (refusal status)",
+      "baseline eventstore PublishedTrustDeletionConsumptionAuthority.cs:316-328 (unissued branch without VerifyCurrentBlockedReplacementAsync) vs :343-344 (issued branch)",
+      "platform src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs:436-437 (shipped journal blocked-replacement evidence)",
+      "fix: eventstore src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs:327-329"
+    ],
+    "testing": "New test fails before the fix (independent currentness never consulted) and passes after.",
+    "tests": [
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus"
+    ],
+    "beforeFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus": "Fail"
+    },
+    "afterFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-3",
+    "verdict": "false",
+    "finding": "The snapshot persisted before the failed re-validation is the exact independently validated committed original, and every later read revalidates it before use; no unvalidated state is served or derived.",
+    "evidence": [
+      "eventstore src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs:103-114"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests.RecoveredOriginalThatFailsPostPersistValidationStaysExactAndIsNeverServedUnvalidated"
+    ],
+    "beforeFix": {
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests.RecoveredOriginalThatFailsPostPersistValidationStaysExactAndIsNeverServedUnvalidated": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests.RecoveredOriginalThatFailsPostPersistValidationStaysExactAndIsNeverServedUnvalidated": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.EventStore.Server.Tests.Security.InteractionOccurrenceRegistryActorTests.RecoveredOriginalThatFailsPostPersistValidationStaysExactAndIsNeverServedUnvalidated": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-5",
+    "verdict": "false",
+    "finding": "The forwarder routes only to the single owner enrolled for the exact scope and passes its result through; every consumer rejects a foreign ScopeId before deserializing or persisting.",
+    "evidence": [
+      "eventstore src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs:367-377",
+      "eventstore src/Hexalith.EventStore.Contracts/Security/RecoverableAnchoredState.cs:98",
+      "eventstore src/Hexalith.EventStore.Server/Security/DeletionConsumptionActor.cs:360,541",
+      "eventstore src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs:103"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustOwnerStateAuthorityTests.ForeignScopeOwnerOriginalsAreRefusedByEveryConsumerBeforePersistence"
+    ],
+    "beforeFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustOwnerStateAuthorityTests.ForeignScopeOwnerOriginalsAreRefusedByEveryConsumerBeforePersistence": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustOwnerStateAuthorityTests.ForeignScopeOwnerOriginalsAreRefusedByEveryConsumerBeforePersistence": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustOwnerStateAuthorityTests.ForeignScopeOwnerOriginalsAreRefusedByEveryConsumerBeforePersistence": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-6",
+    "verdict": "false",
+    "finding": "The journal client ignores the response TenantId field, but the response is bound to the exact transition by Identity == ScopeId and RequestDigest, and the receiver derives the single tenant from the transition, requires ScopeId to equal published-trust|kind|tenant|identity and requires the caller grant for that tenant.",
+    "evidence": [
+      "platform src/Hexalith.Platform.Protection/DaprErasureRootEvidenceJournal.cs:14",
+      "platform src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs:37,467"
+    ],
+    "testing": "Existing passing test (label override and ScopeId tenant substitution refused).",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.ActualPublishedTrustProtocolScopeAuthenticatesItsExactTenantWithoutAcceptingALabelOverride"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.ActualPublishedTrustProtocolScopeAuthenticatesItsExactTenantWithoutAcceptingALabelOverride": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.ActualPublishedTrustProtocolScopeAuthenticatesItsExactTenantWithoutAcceptingALabelOverride": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootLoop3ReceivingTests.ActualPublishedTrustProtocolScopeAuthenticatesItsExactTenantWithoutAcceptingALabelOverride": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-7",
+    "verdict": "false",
+    "finding": "Erased-original reads apply the owner/occurrence/key-reference/store identity checks at the binding layer, and the native skeleton read binds the caller exact binding before reading writer proof.",
+    "evidence": [
+      "platform src/Hexalith.Platform.Protection/ErasureRootOccurrenceBindings.cs:28-29",
+      "platform src/Hexalith.Platform.Protection/ErasureRootNativeOccurrenceSource.cs:28",
+      "platform src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs:113-115"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.ErasedReadsRefuseEverySubstitutedSourceIdentity"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.ErasedReadsRefuseEverySubstitutedSourceIdentity": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.ErasedReadsRefuseEverySubstitutedSourceIdentity": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.ErasedReadsRefuseEverySubstitutedSourceIdentity": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-8",
+    "verdict": "false",
+    "finding": "UnwrapAsync refuses a holder id already live, completed or archived and commits it through head CAS, so at most one unwrap of a shared erc-write id can return a key; the TryAdd loser branch is unreachable, and no loser commits a native holder.",
+    "evidence": [
+      "platform src/Hexalith.Platform.Protection/ErasureRootOccurrenceKeyProvider.cs:55,64",
+      "platform src/Hexalith.Platform.Protection/ErasureRootCustody.cs:177-181"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootCustodyTests.ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder": "Pass"
+    }
+  },
+  {
+    "row": "R11-EC-1",
+    "verdict": "real",
+    "finding": "With QualificationBindings null, VerifyLifecycle and VerifyReservedManifestAndCopyPolicy dereferenced the bindings through a non-short-circuit &= and threw NullReferenceException instead of returning a denial.",
+    "evidence": [
+      "baseline platform ErasureRootAuthorityOperationHandler.cs:250,254",
+      "fix: platform src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs:250,254"
+    ],
+    "testing": "New test fails before the fix (NullReferenceException, both operations) and passes after.",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyLifecycle\\\")",
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyReservedManifestAndCopyPolicy\\\")"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyReservedManifestAndCopyPolicy\\\")": "Fail",
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyLifecycle\\\")": "Fail"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyReservedManifestAndCopyPolicy\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyLifecycle\\\")": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyReservedManifestAndCopyPolicy\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: \\\"VerifyLifecycle\\\")": "Pass"
+    }
+  },
+  {
+    "row": "R11-EC-3",
+    "verdict": "real",
+    "finding": "For a head mount that already existed, a configuration read without data (empty object, null data or 404) was treated as absent and the enrolled configuration was written over the unverified existing object.",
+    "evidence": [
+      "baseline platform deploy/erasure-root/bootstrap.py:215",
+      "fix: platform deploy/erasure-root/bootstrap.py:216"
+    ],
+    "testing": "New test fails before the fix (a POST to erc-heads/config in all three modes) and passes after.",
+    "tests": [
+      "test_bootstrap.PreexistingHeadConfigReadbackTests.test_preexisting_mount_config_without_data_refuses_before_any_write"
+    ],
+    "beforeFix": "Fail (3 subtests)",
+    "afterFix": "Pass",
+    "finalRun": "Pass"
+  },
+  {
+    "row": "R11-EC-6",
+    "verdict": "false",
+    "finding": "Capture rejects an unissued proof with a nonzero CommittedIssuedGuardRevision, so the authority returns false before the journal, the owner actor throws on capture, and the reducer also requires zero.",
+    "evidence": [
+      "eventstore src/Hexalith.EventStore.Server/Security/DeletionConsumptionIdentity.cs:65",
+      "eventstore src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs:447"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofWithNonzeroIssuedRevisionIsRefusedBeforeTheJournal"
+    ],
+    "beforeFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofWithNonzeroIssuedRevisionIsRefusedBeforeTheJournal": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofWithNonzeroIssuedRevisionIsRefusedBeforeTheJournal": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofWithNonzeroIssuedRevisionIsRefusedBeforeTheJournal": "Pass"
+    }
+  },
+  {
+    "row": "R11-EC-7",
+    "verdict": "false",
+    "finding": "The AsyncLocal handoff is set by the synchronous production factory and consumed and cleared by the first statement of the constructor in the same flow; concurrent flows copy-on-write their own value. Validation callbacks capture the factory local certificate, not the handoff.",
+    "evidence": [
+      "platform src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:21,53,55,61,105-106"
+    ],
+    "testing": "New passing test.",
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa": "Pass"
+    }
+  },
+  {
+    "row": "R11-BH-9 observation point",
+    "verdict": "implemented; completion defect found and fixed",
+    "finding": "Internal ResponseBufferObserver (null by default) observes TrimAsync and key-metadata response buffers. Before the fix, ReadKeyAsync returned a JsonDocument over a retained copy of the metadata response that was never zeroed on success. The read now projects inside ReadKeyAsync, so no copy outlives it and every buffer is zeroed in finally.",
+    "evidence": [
+      "baseline platform OpenBaoErasureRootStore.cs:379-397 (retained copy zeroed only on failure)",
+      "platform src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs:148-153,347,350,378,386 (observation point)"
+    ],
+    "tests": [
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"epoch-success\\\")",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"health-refused\\\")",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"metadata-refused\\\")",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"verify-trim-success\\\")",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"success\\\")",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"trim-refused\\\")"
+    ],
+    "beforeFix": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"epoch-success\\\")": "Fail",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"verify-trim-success\\\")": "Fail",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"metadata-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"health-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"trim-refused\\\")": "Pass"
+    },
+    "afterFix": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"epoch-success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"verify-trim-success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"metadata-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"health-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"trim-refused\\\")": "Pass"
+    },
+    "finalRun": {
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"trim-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"epoch-success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"verify-trim-success\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"metadata-refused\\\")": "Pass",
+      "Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: \\\"health-refused\\\")": "Pass"
+    }
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "observedAtUtc": "2026-10-31T21:56:14.954937+00:00",
+  "query": "repos/Hexalith/Hexalith.Parties/environments/production",
+  "exitCode": 0,
+  "response": {
+    "id": 19131558330,
+    "node_id": "EN_kwDORb3i1M8AAAAEdFRpug",
+    "name": "production",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/environments/production",
+    "html_url": "https://github.com/Hexalith/Hexalith.Parties/deployments/activity_log?environments_filter=production",
+    "created_at": "2026-08-01T16:33:13Z",
+    "updated_at": "2026-08-01T16:33:13Z",
+    "can_admins_bypass": false,
+    "protection_rules": [
+      {
+        "id": 61505985,
+        "node_id": "GA_kwDORb3i1M4DqoHB",
+        "type": "required_reviewers",
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "type": "User",
+            "reviewer": {
+              "login": "jpiquot",
+              "id": 6775094,
+              "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+              "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/jpiquot",
+              "html_url": "https://github.com/jpiquot",
+              "followers_url": "https://api.github.com/users/jpiquot/followers",
+              "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+              "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+              "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+              "repos_url": "https://api.github.com/users/jpiquot/repos",
+              "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+              "type": "User",
+              "user_view_type": "public",
+              "site_admin": false
+            }
+          }
+        ]
+      },
+      {
+        "id": 61505986,
+        "node_id": "GA_kwDORb3i1M4DqoHC",
+        "type": "branch_policy"
+      }
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "stderr": ""
+}

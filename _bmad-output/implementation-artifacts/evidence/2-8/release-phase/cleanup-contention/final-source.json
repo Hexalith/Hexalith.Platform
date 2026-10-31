@@ -1,0 +1,500 @@
+{
+  "recordedAtUtc": "2026-10-31T21:17:52.546031+00:00",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+  "head": "46365cd94f8501f513f1cc413916ac24737d33e2",
+  "parent": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "foundation": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "changedRawSourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "c1c1e2d0be3cd76a1a307859b1884307a03cec840fcd5d829c17b18cd852a672",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "afd52002394d472d524760411c2196994dbb1c9bbaa894f837460a2348024e50"
+  },
+  "changedCommittedSourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "14b20648efb0e5d80cb75b02f15547a291669506531b1b2b9472cfbe7ad9a564",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "46d5078a503e89685d731cd504fd48bdfea9b69b1f61bb62a05df80bac6e8c57"
+  },
+  "allPrCommittedSourceSha256": {
+    ".gitattributes": "a35498f6b9995ea5b8333af04dfa0058858995db55b9284ab8eb66952e6e78d9",
+    ".github/actionlint.yaml": "ae59240217b52a4e4df83e05c475998cbaea4761d420c37fe7b705d166c156ad",
+    ".github/workflows/build-release.yml": "850d83784b030852308c6e2576886938b1fe9b37946146e016dae9235461dcc0",
+    ".github/workflows/ci-cd-standards.md": "c7298f6fce8446df6b828b761f5502d0a4063433644e623b015ff501c5ace2c0",
+    ".github/workflows/ci.yml": "b285683e40f024e956a6dd2ebcefb23253739e9a6a90363795568529b8d1351e",
+    ".github/workflows/domain-ci-v2.md": "1494c8cd19af3be001d6127e71d0fb5cac71fc5470c36c204003d335fb116bfe",
+    ".github/workflows/domain-ci-v2.yml": "31455eb51330127a0f9b7659d0d26dc26f2d35f55a1acd4828eb2738a8dbd92c",
+    "Github/governed-provenance/README.md": "00028f026647fcdd449269e886088c8d632bf8734567b9f3e58fba01b5f24c2a",
+    "Github/governed-provenance/governed_provenance.py": "9ea23bccc2c0464c5a4685eb85a4fcc8d33d7b18db8d6aeb5f89fba6f2b6492f",
+    "Github/governed-provenance/tests/test_candidate_policy.py": "4a84e547662a4b7ba9f541e7a0b1d575980e93eb7d85edf9d164ff3d8be7684d",
+    "Github/governed-provenance/tests/test_governed_provenance.py": "a086ecf0d9e08c78076b64c7e92a14e35ae68d0d2a6dd72a33883e9c1c86689d",
+    "Github/prepare-module-build/tests/test_prepare_module_build.py": "124bd207b953c81471546efa0599c977d9d469ea6a5a25ff6b23873af51c8ec0",
+    "Github/publish-containers/tests/test_governed_release_workflow.py": "61cd994a44f9c83ec13dfd4fb0781bdf73df0bbb65d5f745dc3500a43094d2ba",
+    "README.md": "676deec72151537b64de2bee7706ec92147e4d2ab20b93431dc7fb4a98a7ccc3",
+    "Tools/test-domain-workflow-test-platforms.ps1": "ae2b1a9ed7834b5d1ca81a47c271f01edf16b13975763c5efb67141d263b90dc",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "14b20648efb0e5d80cb75b02f15547a291669506531b1b2b9472cfbe7ad9a564",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "46d5078a503e89685d731cd504fd48bdfea9b69b1f61bb62a05df80bac6e8c57"
+  },
+  "compiledSourceIdentity": "Fresh Debug project-reference graph compiled at 26ba checkout plus exact two uncommitted source hashes; those bytes normalize to committed 46365cd blobs. No copied artifacts or BuildProjectReferences=false lane. Existing catalog packages provide external technical dependencies.",
+  "compiledCheckoutHead": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "binariesSha256": {
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": "001c1837f7a268f0562a1cd63dc0902485f28f8b42cfea51a13497e514195270",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "4c86d1a943133a758c0148ac2739e6c4a44f79f59d30f34552b788fdeb777cc3",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Aspire.dll": "6f343cdd96bee7c787736b56bd2bef4c8981e2737b7914dd5ae1d8a4a80ceacc",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Commons.UniqueIds.dll": "99e3c36fe7e3024fdfa976f2dfedf4b3cf406dab83702caa62a798b36591c26d",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "b92b947effd5e77e75d09242a1b21f56a68cdb46871455d6fa8e4644126da1ed",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll": "ff62a0377a9499faf3a6efd1e6bc743435ae09c1f84324fd6d6792bcd39a3a20",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.dll": "f6fabeba9600e44b6a3d5be56b8a7707438943e2b74bf6a496151e9bb4ee3942"
+  },
+  "testResults": {
+    "supported-owner": {
+      "assemblySummary": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "0aaef5dc-29e1-4c38-abe9-cc292bda1c84",
+        "name": "/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "21:13:51",
+        "start-rtf": "2026-10-31T21:13:51.4602562+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T21:14:59.5347122+00:00",
+        "not-run": "0",
+        "passed": "75",
+        "skipped": "0",
+        "time": "68.077",
+        "time-rtf": "00:01:08.0770000",
+        "total": "75"
+      },
+      "tests": [
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False)",
+          "result": "Pass",
+          "time": "1.956"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: True)",
+          "result": "Pass",
+          "time": "14.115"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")",
+          "result": "Pass",
+          "time": "0.643"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")",
+          "result": "Pass",
+          "time": "0.661"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")",
+          "result": "Pass",
+          "time": "0.686"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")",
+          "result": "Pass",
+          "time": "0.247"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")",
+          "result": "Pass",
+          "time": "0.287"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"passed\\\")",
+          "result": "Pass",
+          "time": "0.319"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed\\\")",
+          "result": "Pass",
+          "time": "0.339"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"cancelled\\\")",
+          "result": "Pass",
+          "time": "0.3"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"partial-startup\\\")",
+          "result": "Pass",
+          "time": "0.247"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed-then-job-cancelled\\\")",
+          "result": "Pass",
+          "time": "0.316"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"directory\\\")",
+          "result": "Pass",
+          "time": "0.012"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"workspace\\\")",
+          "result": "Pass",
+          "time": "0.002"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ConcurrentReceiptPublicationIssuesAtMostOneOwnerAsync",
+          "result": "Pass",
+          "time": "0.012"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync",
+          "result": "Pass",
+          "time": "0.014"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: False)",
+          "result": "Pass",
+          "time": "0.086"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: True)",
+          "result": "Pass",
+          "time": "0.293"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: False)",
+          "result": "Pass",
+          "time": "0.068"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: True)",
+          "result": "Pass",
+          "time": "0.291"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RemovalThenDiscoveryFailurePreservesKnownContainerAsync",
+          "result": "Pass",
+          "time": "1.403"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TerminalRecordingDoesNotReadChildReadinessFifoAsync",
+          "result": "Pass",
+          "time": "0.066"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RetainedSurvivorsAreRecordedAfterStoppingBudgetExpiresAsync",
+          "result": "Pass",
+          "time": "0.168"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExhaustedExecutionLifetimeBeforeNativeReturnRecordsTimeoutCauseAsync",
+          "result": "Pass",
+          "time": "0.15"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockDeadlineRefusesCleanupUntilExactRetryAsync",
+          "result": "Pass",
+          "time": "1.348"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExpiredSharedStoppingTokenReturnsKnownIncompleteCleanupAsync",
+          "result": "Pass",
+          "time": "0.013"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageCommandFailureEstablishesLocalRetentionAsync",
+          "result": "Pass",
+          "time": "0.17"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: False)",
+          "result": "Pass",
+          "time": "0.014"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: True)",
+          "result": "Pass",
+          "time": "0.015"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: False)",
+          "result": "Pass",
+          "time": "0.229"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True)",
+          "result": "Pass",
+          "time": "0.095"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: False)",
+          "result": "Pass",
+          "time": "2.163"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: True)",
+          "result": "Pass",
+          "time": "2.159"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync",
+          "result": "Pass",
+          "time": "0.34"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: False)",
+          "result": "Pass",
+          "time": "0.162"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: True, invalidOwner: False)",
+          "result": "Pass",
+          "time": "0.205"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: True)",
+          "result": "Pass",
+          "time": "0.059"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: False)",
+          "result": "Pass",
+          "time": "0.021"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: True)",
+          "result": "Pass",
+          "time": "0.021"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CorruptClaimDiscoveryStaysIncompleteUntilOwnershipIsRestoredAsync",
+          "result": "Pass",
+          "time": "0.226"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+          "result": "Pass",
+          "time": "0.313"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+          "result": "Pass",
+          "time": "0.406"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False)",
+          "result": "Pass",
+          "time": "0.246"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False)",
+          "result": "Pass",
+          "time": "0.387"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True)",
+          "result": "Pass",
+          "time": "0.472"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True)",
+          "result": "Pass",
+          "time": "0.441"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False, contended: False)",
+          "result": "Pass",
+          "time": "2.03"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True, contended: False)",
+          "result": "Pass",
+          "time": "1.478"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: False)",
+          "result": "Pass",
+          "time": "2.21"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: False)",
+          "result": "Pass",
+          "time": "1.703"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: True)",
+          "result": "Pass",
+          "time": "2.236"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: True)",
+          "result": "Pass",
+          "time": "2.048"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync",
+          "result": "Pass",
+          "time": "0.593"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: False)",
+          "result": "Pass",
+          "time": "1.281"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True)",
+          "result": "Pass",
+          "time": "1.291"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"schema\\\")",
+          "result": "Pass",
+          "time": "0.014"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"run\\\")",
+          "result": "Pass",
+          "time": "0.011"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"workspace\\\")",
+          "result": "Pass",
+          "time": "0.012"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"attempt\\\")",
+          "result": "Pass",
+          "time": "0.01"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"environment\\\")",
+          "result": "Pass",
+          "time": "0.02"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"duplicate\\\")",
+          "result": "Pass",
+          "time": "0.019"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: \\\"owner-as-attempt\\\")",
+          "result": "Pass",
+          "time": "0.011"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExplicitStopAcrossProcessesPreservesFirstFailureAsync",
+          "result": "Pass",
+          "time": "2.035"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"human\\\")",
+          "result": "Pass",
+          "time": "8.688"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"json\\\")",
+          "result": "Pass",
+          "time": "8.466"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: False)",
+          "result": "Pass",
+          "time": "0.082"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: True)",
+          "result": "Pass",
+          "time": "0.078"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: False)",
+          "result": "Pass",
+          "time": "0.096"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: True)",
+          "result": "Pass",
+          "time": "0.072"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SharedStoppingExpiryPreservesTrackedContainerObservationAsync",
+          "result": "Pass",
+          "time": "0.21"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CleanupDeadlinePreservesKnownContainerIdentityAsync",
+          "result": "Pass",
+          "time": "0.678"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"absent\\\")",
+          "result": "Pass",
+          "time": "0.091"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"attempt-only\\\")",
+          "result": "Pass",
+          "time": "0.085"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"environment-only\\\")",
+          "result": "Pass",
+          "time": "0.083"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"both\\\")",
+          "result": "Pass",
+          "time": "0.081"
+        }
+      ]
+    },
+    "legacy-owner": {
+      "assemblySummary": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "39722da7-1e6b-4f63-9683-12693ff9524c",
+        "name": "/tmp/hexalith-story28-cleanup-contention/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "21:14:59",
+        "start-rtf": "2026-10-31T21:14:59.7663378+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T21:15:00.5068078+00:00",
+        "not-run": "0",
+        "passed": "3",
+        "skipped": "0",
+        "time": "0.741",
+        "time-rtf": "00:00:00.7410000",
+        "total": "3"
+      },
+      "tests": [
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"lock\\\")",
+          "result": "Pass",
+          "time": "0.325"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"diagnostics\\\")",
+          "result": "Pass",
+          "time": "0.062"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync(scenario: \\\"startup-diagnostics\\\")",
+          "result": "Pass",
+          "time": "0.265"
+        }
+      ]
+    }
+  },
+  "finalPassed": 78,
+  "finalFailed": 0,
+  "finalSkipped": 0,
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "originalSharedHeadIndexAndCapturedDirtySourceUnchanged": true,
+  "originalPreservationInventory": "../v2-workflow/source-before.json",
+  "legacyWorkflowAndDedicatedDocsByteIdenticalToFoundation": true,
+  "v2ProducerFilesUnchangedFrom26ba": true,
+  "worktreeClean": true,
+  "CSharpLineEndings": "Authored working files retain CRLF; *.cs text eol=crlf normalizes committed blobs. Both raw compile-input and committed blob SHA-256 are recorded.",
+  "storyStatus": "in-progress",
+  "candidateAcceptance": false,
+  "referenceHostedQualification": false,
+  "callerActivation": false,
+  "publicationExecuted": false,
+  "mergeExecuted": false
+}

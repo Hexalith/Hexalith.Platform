@@ -207,12 +207,13 @@ def main(argv=None):
             existing = read_optional(path)
             data = existing.get('data') if isinstance(existing, dict) else None
             # Only this invocation's new mount may move from native KV-v2
-            # defaults to the enrolled configuration. An existing mismatch is
-            # still a conflict and must never be silently overwritten.
+            # defaults (or an absent configuration) to the enrolled
+            # configuration. On an existing mount, a mismatch or an unreadable
+            # configuration without data is a conflict and is never overwritten.
             native_defaults = isinstance(data, dict) and type(data.get('max_versions')) is int \
                 and data['max_versions'] == 0 and data.get('cas_required') is False \
                 and data.get('delete_version_after', '0s') == '0s'
-            if data is None or newly_created and native_defaults:
+            if newly_created and (data is None or native_defaults):
                 call('POST', path, expected)
                 response = call('GET', path)
                 readback = response.get('data') if isinstance(response, dict) else None

@@ -1,0 +1,4 @@
+test(routing): forward bridge payloads as JSON
+
+Parse the explicit qualification bridge payload and forward it with JsonContent.
+Preserve captured SDK wire bytes and fixed non-HTML response headers.

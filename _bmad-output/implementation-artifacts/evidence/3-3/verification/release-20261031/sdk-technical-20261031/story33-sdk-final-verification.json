@@ -1,0 +1,60 @@
+{
+  "sourceRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+  "sourceHead": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "environment": {},
+  "commands": [
+    {
+      "command": "dotnet build tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj --configuration Debug -m:1 --disable-build-servers -p:NuGetAudit=false",
+      "logs": [
+        "/tmp/story33-sdk-final-apphost-build1.log",
+        "/tmp/story33-sdk-final-apphost-build2.log",
+        "/tmp/story33-sdk-final-apphost-build3.log"
+      ],
+      "results": [
+        "failed: two CA1062 checks",
+        "passed: 0 warnings/errors",
+        "passed: 0 warnings/errors"
+      ]
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll -class '*DevelopmentRouteCatalogCustodyTests' -class '*DevelopmentRouteCatalogAspireTests' -class '*DevelopmentActorStateOwnerModelTests' -class '*DevelopmentRouteCatalogOwnerPreparationTests' -xml /tmp/story33-sdk-final-apphost-run1.xml",
+      "log": "/tmp/story33-sdk-final-apphost-run1.log",
+      "xml": "/tmp/story33-sdk-final-apphost-run1.xml",
+      "total": 68,
+      "passed": 55,
+      "failed": 13,
+      "skipped": 0,
+      "classification": "all13 existing owner.lock reopen failures used creation-only UnixCreateMode with FileMode.Open; failed evidence retained; fixed for next run"
+    },
+    {
+      "command": "dotnet build tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj --configuration Debug -m:1 --disable-build-servers -p:NuGetAudit=false",
+      "log": "/tmp/story33-sdk-final-server-build1.log",
+      "result": "passed: 0 warnings/errors"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll -class '*DevelopmentRouteCatalogCustodyTests' -class '*DevelopmentRouteCatalogAspireTests' -class '*DevelopmentActorStateOwnerModelTests' -class '*DevelopmentRouteCatalogOwnerPreparationTests' -xml /tmp/story33-sdk-final-apphost-run2.xml",
+      "log": "/tmp/story33-sdk-final-apphost-run2.log",
+      "xml": "/tmp/story33-sdk-final-apphost-run2.xml",
+      "total": 69,
+      "passed": 69,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -class '*TechnicalHttp*' -class '*BoundOwnerCatalogAdmissionTests' -class '*DomainSidecarCatalogLeaseTests' -class '*CatalogRemoteAdapterCancellationTests' -class '*DevelopmentCatalogSuccessorTests' -class '*DevelopmentGatewayAdminMetadataTests' -method '*InternalIdentityCatalogRequiresExistingOwnerAdmissionAndSignedServiceSurface' -xml /tmp/story33-sdk-final-server-run1.xml",
+      "xml": "/tmp/story33-sdk-final-server-run1.xml",
+      "log": "/tmp/story33-sdk-final-server-run1.log",
+      "total": 0,
+      "result": "filter intersection selected no cases; not accepted as verification"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -class '*TechnicalHttp*' -class '*BoundOwnerCatalogAdmissionTests' -class '*DomainSidecarCatalogLeaseTests' -class '*CatalogRemoteAdapterCancellationTests' -class '*DevelopmentCatalogSuccessorTests' -class '*DevelopmentGatewayAdminMetadataTests' -xml /tmp/story33-sdk-final-server-run2.xml",
+      "xml": "/tmp/story33-sdk-final-server-run2.xml",
+      "log": "/tmp/story33-sdk-final-server-run2.log",
+      "total": 193,
+      "passed": 193,
+      "failed": 0,
+      "skipped": 0
+    }
+  ]
+}

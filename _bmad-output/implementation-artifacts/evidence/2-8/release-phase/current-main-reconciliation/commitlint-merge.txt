@@ -1,0 +1,7 @@
+⧗   --- input ---
+ci: reconcile current cleanup retry controls
+
+Integrate current main and preserve its test-only refusal and exact retry
+contract. Withdraw the provisional outcome-lock wait and keep the strict
+versioned integration producer separate from the legacy caller interface.
+✔   found 0 problems, 0 warnings

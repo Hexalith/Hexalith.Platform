@@ -1,0 +1,216 @@
+{
+  "total": 3,
+  "p": 1,
+  "ps": 100,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 100,
+    "total": 3
+  },
+  "effortTotal": 65,
+  "debtTotal": 65,
+  "issues": [
+    {
+      "key": "AaGTuRbv59eIffKP6bAn",
+      "rule": "githubactions:S6506",
+      "severity": "MAJOR",
+      "component": "Hexalith_Hexalith.Builds:.github/workflows/domain-ci-v2.yml",
+      "project": "Hexalith_Hexalith.Builds",
+      "line": 623,
+      "hash": "3a37754092d1697fa160309484cad345",
+      "textRange": {
+        "startLine": 623,
+        "endLine": 623,
+        "startOffset": 10,
+        "endOffset": 136
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Not enforcing HTTPS here might allow for redirections to insecure websites. Make sure it is safe here.",
+      "effort": "30min",
+      "debt": "30min",
+      "assignee": "jpiquot@github",
+      "tags": [
+        "cryptography",
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-31T20:48:04+0000",
+      "updateDate": "2026-10-31T20:48:36+0000",
+      "type": "VULNERABILITY",
+      "organization": "hexalith-a",
+      "pullRequest": "149",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "Hexalith.Builds",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "ef7489e2-37e1-435f-b00c-6e44cbd79bcd",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaGTuRbv59eIffKP6bAo",
+      "rule": "githubactions:S6506",
+      "severity": "MAJOR",
+      "component": "Hexalith_Hexalith.Builds:.github/workflows/domain-ci-v2.yml",
+      "project": "Hexalith_Hexalith.Builds",
+      "line": 626,
+      "hash": "8b25fc67ee702856880398c7e95b89e8",
+      "textRange": {
+        "startLine": 626,
+        "endLine": 626,
+        "startOffset": 12,
+        "endOffset": 148
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Not enforcing HTTPS here might allow for redirections to insecure websites. Make sure it is safe here.",
+      "effort": "30min",
+      "debt": "30min",
+      "assignee": "jpiquot@github",
+      "tags": [
+        "cryptography",
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-31T20:48:04+0000",
+      "updateDate": "2026-10-31T20:48:36+0000",
+      "type": "VULNERABILITY",
+      "organization": "hexalith-a",
+      "pullRequest": "149",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "Hexalith.Builds",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "ef7489e2-37e1-435f-b00c-6e44cbd79bcd",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaGTuRTn59eIffKP6bAm",
+      "rule": "python:S5778",
+      "severity": "MAJOR",
+      "component": "Hexalith_Hexalith.Builds:Github/governed-provenance/tests/test_governed_provenance.py",
+      "project": "Hexalith_Hexalith.Builds",
+      "line": 596,
+      "hash": "3255648364ff9b6fe2ef3cf9592bf29d",
+      "textRange": {
+        "startLine": 596,
+        "endLine": 596,
+        "startOffset": 8,
+        "endOffset": 92
+      },
+      "flows": [
+        {
+          "locations": [
+            {
+              "component": "Hexalith_Hexalith.Builds:Github/governed-provenance/tests/test_governed_provenance.py",
+              "textRange": {
+                "startLine": 597,
+                "endLine": 599,
+                "startOffset": 22,
+                "endOffset": 14
+              },
+              "msg": "Invocation possibly throwing an exception."
+            }
+          ]
+        },
+        {
+          "locations": [
+            {
+              "component": "Hexalith_Hexalith.Builds:Github/governed-provenance/tests/test_governed_provenance.py",
+              "textRange": {
+                "startLine": 597,
+                "endLine": 599,
+                "startOffset": 44,
+                "endOffset": 13
+              },
+              "msg": "Invocation possibly throwing an exception."
+            }
+          ]
+        }
+      ],
+      "status": "OPEN",
+      "message": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+      "effort": "5min",
+      "debt": "5min",
+      "assignee": "jpiquot@github",
+      "tags": [
+        "pytest",
+        "tests",
+        "unittest"
+      ],
+      "creationDate": "2026-10-31T20:48:04+0000",
+      "updateDate": "2026-10-31T20:48:36+0000",
+      "type": "CODE_SMELL",
+      "organization": "hexalith-a",
+      "pullRequest": "149",
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "Hexalith.Builds",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "ef7489e2-37e1-435f-b00c-6e44cbd79bcd",
+      "lastChangeSource": "ANALYSIS"
+    }
+  ],
+  "components": [
+    {
+      "organization": "hexalith-a",
+      "key": "Hexalith_Hexalith.Builds",
+      "uuid": "AaGTuIk45jDasRjjK_4C",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "Hexalith.Builds",
+      "longName": "Hexalith.Builds",
+      "pullRequest": "149"
+    },
+    {
+      "organization": "hexalith-a",
+      "key": "Hexalith_Hexalith.Builds:Github/governed-provenance/tests/test_governed_provenance.py",
+      "uuid": "AaGTuRHQ59eIffKP6a97",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "test_governed_provenance.py",
+      "longName": "Github/governed-provenance/tests/test_governed_provenance.py",
+      "path": "Github/governed-provenance/tests/test_governed_provenance.py",
+      "pullRequest": "149"
+    },
+    {
+      "organization": "hexalith-a",
+      "key": "Hexalith_Hexalith.Builds:.github/workflows/domain-ci-v2.yml",
+      "uuid": "AaGTuRHQ59eIffKP6bAa",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "domain-ci-v2.yml",
+      "longName": ".github/workflows/domain-ci-v2.yml",
+      "path": ".github/workflows/domain-ci-v2.yml",
+      "pullRequest": "149"
+    }
+  ],
+  "organizations": [
+    {
+      "key": "hexalith-a",
+      "name": "Hexalith"
+    }
+  ],
+  "facets": []
+}

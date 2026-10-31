@@ -1,0 +1,68 @@
+{
+  "checkoutHead": "46365cd94f8501f513f1cc413916ac24737d33e2",
+  "mergeHead": "f6834a33967f8ec905145db14e1a13ffb5468d69",
+  "compiledIndexTree": "e7d8a28a846040882f31dafdb1b876d4def45890",
+  "environment": {
+    "CI": "true",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "41238944762",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "dotnet-tests",
+    "GITHUB_WORKFLOW": "CI",
+    "GITHUB_SHA": "46365cd94f8501f513f1cc413916ac24737d33e2",
+    "GITHUB_REF": "refs/heads/feat/story-2-8-domain-ci-v2",
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "X64",
+    "GITHUB_WORKSPACE": "/tmp/hexalith-story28-cleanup-contention",
+    "RUNNER_ENVIRONMENT": "github-hosted"
+  },
+  "testedRawSourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "2a89f77a81f061763ca07bfe72b9bbe19e414864061cb97febc7527f858f9479",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "f5b9b31a7a3d605556175e08e91d6c3e446de9b4c2a730acd8431f385ca53394",
+    "test/Hexalith.Builds.Module.Tests/ModuleRunnerReviewRegressionTests.cs": "0b58e6666e84ceb1b04f0288c1f98f24e0b695d44cf500fd610fe3f575e58807"
+  },
+  "binariesSha256": {
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": "07a8d3a944fe06a2e998467735310814104a38bf7853febc510a040a99734bb7",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "88d54619c0c3776d9821f2b73445bbc34eac80f0f69f797b5fe4fcd347cf7248",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Aspire.dll": "6f343cdd96bee7c787736b56bd2bef4c8981e2737b7914dd5ae1d8a4a80ceacc",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Commons.UniqueIds.dll": "99e3c36fe7e3024fdfa976f2dfedf4b3cf406dab83702caa62a798b36591c26d",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "4214edb1d04c37958813ce86503e44caa0759c169a52c7462d1b17c924ed9f14",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll": "191ed2cbc8038844dbc996cccabc0851a6afe2cb93b2af3bca27782ccdd88d7d",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.dll": "f6fabeba9600e44b6a3d5be56b8a7707438943e2b74bf6a496151e9bb4ee3942"
+  },
+  "runs": [
+    {
+      "name": "supported-owner",
+      "argv": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-parallelMode",
+        "none",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/current-main-reconciliation/supported-owner-tests.xml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "legacy-owner",
+      "argv": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-parallelMode",
+        "none",
+        "-method",
+        "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests.FailedBookkeepingStillStopsOwnedProcessAsync",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/current-main-reconciliation/legacy-owner-tests.xml"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "sourceLimits": "Fresh complete Debug graph from the resolved pending merge tree; no pre-existing test assembly, copied binary or no-reference-rebuild lane. Complete GitHub context is simulated. No hosted reference, Release/package or candidate acceptance."
+}

@@ -1,0 +1,14 @@
+........................[execution-identity] recovery file path escapes the selected source workspace
+.....[execution-identity] source identity must be an exact lowercase commit SHA
+[execution-identity] source identity must be an exact lowercase commit SHA
+[execution-identity] source identity must be an exact lowercase commit SHA
+........................::error title=Governed provenance rejected::the evaluated closure digest does not match the expected evaluator digest (computed 25595e554b127fbf88712402ed78b216c9d52348657d709b052dab0312d76918, expected cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc); the authorized closure and the executing closure are not the same bytes
+......::error title=Governed provenance rejected::job.workflow_sha does not match the approved builds-execution-sha
+...........................[source-workflow-gates] evidence path escapes the current workspace
+[source-workflow-gates] evidence path escapes the current workspace
+.........
+----------------------------------------------------------------------
+Ran 95 tests in 0.806s
+
+OK
+All required latest exact-source workflow runs and attempts succeeded.

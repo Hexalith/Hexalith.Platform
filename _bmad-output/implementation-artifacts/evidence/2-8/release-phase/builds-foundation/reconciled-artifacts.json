@@ -1,0 +1,64 @@
+{
+  "sourceCommit": "a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+  "sourceTree": "59043eeebe14ca930d592b2f92c0180c514ab182",
+  "currentMain": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+  "reconciliationCommit": "829f1a3d827763e09d437e92274fe790918553e2",
+  "files": {
+    ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+    ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+    "Github/run-module-integration/run_module_integration.py": "a4d0fd045ec16e4838fb952d86154b950a7823b7654918211ac31bbed3222789",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "3906dad5e93e93aa84acb3fda9a0c75aec12924a03754258b9410897c11902eb",
+    "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "e3d0bc592df3f14881a2cf83eff033c3a5c5ec846b0283fa032520c1543d4a1c",
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "2577c12ff64c25df0ef726b527bccde48990bf8413601ecd9fdd148de0f820ed",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "558dfca085e4cb8ee2b46ddbf58a4bbe07f175aacf68c9887b732eed62d87450",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "b655dc657ed1be82d7befeeca006e1d6fd0fde433e0b903ef17ad477b3572ea8",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "02c4ff2bd7526a49867e55071cc15481d43d67e202ce47eb09e06019333f8338",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "7ae5717bade8c9ef9221d2f046f91dd0faca6987110e592361d4044c93a40fbd",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "c9b02b331bc74e440053fe7ee4a951b8045cd50f9beba636784834104af2f455",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "33e936a66b6064dae6e1e862234eb326e5e7715907f563c9b1fa4c1707eb51a3",
+    "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "c10d6309f69d41cafe374e2f6ef438e5ee315aa37d2adf0d7854054e0e4f9a2a",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f"
+  },
+  "preservedOwnerQualification": "Exact1cc94 host security/probe/assertions; only six remaining published catalog guards differ in host Program.",
+  "archive": {
+    "path": "/tmp/hexalith-story28-builds-foundation-reconciled-pack/Hexalith.Builds.Module.Cli.0.0.0-story28-local.nupkg",
+    "version": "0.0.0-story28-local",
+    "sha256": "fdb27e1e422189e2a21cf0e57a975f097926ae3acce49a61256c937496072b65"
+  },
+  "seed": {
+    "entry": "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+    "sha256": "4b2c2ea9b1a970ae8cd09d4680e079c08b9e0c38db65741a285f6ef4b0758d2e",
+    "proof": "packaged-seed-proof-reconciled.json",
+    "proofSha256": "a64c58d699e467800e6a1fea8eb463b68b1da78c12fe393882693ec743999212",
+    "status": "passed"
+  },
+  "embeddedEventStoreFamily": {
+    "Hexalith.EventStore.Admin.Abstractions": "3.129.0",
+    "Hexalith.EventStore.Client": "3.129.0",
+    "Hexalith.EventStore.Contracts": "3.129.0",
+    "Hexalith.EventStore.DomainService": "3.129.0",
+    "Hexalith.EventStore.Gateway": "3.129.0",
+    "Hexalith.EventStore.Server": "3.129.0",
+    "Hexalith.EventStore.ServiceDefaults": "3.129.0"
+  },
+  "assemblyInformationalVersions": {
+    "Hexalith.Builds.Tooling": "1.0.0+a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+    "Hexalith.Builds.Module.Cli": "1.0.0+a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+    "Hexalith.Builds.Module.AppHost": "1.0.0+a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+    "Hexalith.Builds.Module.EventStoreHost": "1.0.0+a03c7bce9a33587207e299c9b022c7d1ab8d3d61"
+  },
+  "verification": {
+    "helperPassed": 22,
+    "ciLifecyclePassed": 14,
+    "artifactValidatorScenarios": 71,
+    "publisherContracts": "passed; remotes and publication commands mocked",
+    "banditFindings": 0,
+    "pythonStyleFindings": 0,
+    "helperComplexityMax": 15
+  },
+  "verificationLimits": "Affected C# controls were compiled at829f1a3d plus four exact source hashes now committed at this sourceCommit; their binaries are separately fingerprinted in hardening-validation.json. Final archive/seed builds embed this clean sourceCommit. The broader238-case runtime baseline remains historical at ee60749. No hosted candidate qualification or publication is claimed.",
+  "candidateAcceptance": false
+}

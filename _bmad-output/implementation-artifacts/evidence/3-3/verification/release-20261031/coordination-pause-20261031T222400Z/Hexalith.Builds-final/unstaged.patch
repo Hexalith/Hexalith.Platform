@@ -1,0 +1,153 @@
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+index e4e847c..6a8abbb 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+@@ -5,8 +5,9 @@
+     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+     <Description>Builds-owned EventStore composition root over the Hexalith.EventStore.Gateway package for G-4 runs.</Description>
+     <BuildsCatalogFromMappedSource Condition="'$(Configuration)' == 'Debug' and Exists('$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj')">true</BuildsCatalogFromMappedSource>
+-    <BuildsCatalogSdkAvailable Condition="'$(BuildsCatalogFromMappedSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))">true</BuildsCatalogSdkAvailable>
+-    <DefineConstants Condition="'$(BuildsCatalogSdkAvailable)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_SDK</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(BuildsCatalogFromMappedSource)' == 'true'">
++    <DefineConstants>$(DefineConstants);HEXALITH_BUILD_TECHNICAL_CATALOG_SDK</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="Hexalith.EventStore.Gateway" Condition="'$(BuildsCatalogFromMappedSource)' != 'true'" />
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+index aeef871..04778cb 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+@@ -44,9 +44,20 @@ app.UseEventStoreHttpHostSecurity();
+ app.UseAuthorization();
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+-    _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
+-        app,
+-        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++#if HEXALITH_BUILD_TECHNICAL_CATALOG_SDK
++    if (Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.IsEnabled(app.Configuration))
++    {
++        _ = Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.UseDevelopmentTechnicalHttpCatalogReceiver(
++            app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++    }
++    else
++#endif
++    {
++        _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
++            app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++    }
+ }
+ 
+ app.UseCloudEvents();
+diff --git a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+index 7ac9032..1a97e55 100644
+--- a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+@@ -310,6 +310,97 @@ public sealed class NativeTestExecutorTests
+         }
+     }
+ 
++    /// <summary>Malformed public routing observations return the existing pre-child refusal instead of escaping the executor.</summary>
++    /// <param name="fault">The malformed proof, or the launched control.</param>
++    /// <returns>The refusal, never-launched child and removable owned workspace assertions.</returns>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("metadata-missing-status")]
++    [InlineData("metadata-wrong-kind")]
++    [InlineData("metadata-overflow")]
++    [InlineData("closure-missing-hosts")]
++    [InlineData("closure-wrong-kind")]
++    [InlineData("preparation-missing-flag")]
++    [InlineData("preparation-wrong-kind")]
++    [InlineData("malformed-json")]
++    public async Task RoutingProofShapeGatesChildExecutionAsync(string fault)
++    {
++        string ownedRoot;
++        using (PlatformManifestTestWorkspace workspace = new())
++        {
++            ownedRoot = workspace.Root;
++            string marker = Path.Combine(workspace.Root, "child-executed");
++            (CompositionRunPlan plan, ModuleTestSelection selection, string manifest) = await PrepareSelectedRunAsync(workspace, _markerRunner).ConfigureAwait(true);
++            string directory = Path.Combine(plan.Workspace, "platform-components", plan.EnvironmentId + "-catalog");
++            _ = Directory.CreateDirectory(directory);
++            foreach (string name in new[] { "catalog.json", "receipt.json", "owner.committed.json" })
++            {
++                await File.WriteAllTextAsync(Path.Combine(directory, name), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            }
++
++            // These offline fields qualify only the pre-child handoff contract, never an active owner cohort.
++            JsonObject closure = new() { ["RunId"] = plan.RunId, ["hosts"] = new JsonArray(new JsonObject { ["ResourceId"] = "owner" }) };
++            JsonObject preparation = new() { ["RunId"] = plan.RunId, ["routingCatalogMetadataObserved"] = true };
++            JsonObject metadata = new() { ["method"] = "GET", ["path"] = "/api/v1/routing/catalog", ["status"] = 200 };
++            if (fault == "metadata-missing-status")
++            {
++                _ = metadata.Remove("status");
++            }
++
++            if (fault == "metadata-wrong-kind")
++            {
++                metadata["status"] = "200";
++            }
++
++            if (fault == "metadata-overflow")
++            {
++                metadata["status"] = long.MaxValue;
++            }
++
++            if (fault == "closure-missing-hosts")
++            {
++                _ = closure.Remove("hosts");
++            }
++
++            if (fault == "closure-wrong-kind")
++            {
++                closure["hosts"] = new JsonObject();
++            }
++
++            if (fault == "preparation-missing-flag")
++            {
++                _ = preparation.Remove("routingCatalogMetadataObserved");
++            }
++
++            if (fault == "preparation-wrong-kind")
++            {
++                preparation["routingCatalogMetadataObserved"] = "true";
++            }
++
++            await File.WriteAllTextAsync(Path.Combine(directory, "selected-closure.json"), closure.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            await File.WriteAllTextAsync(Path.Combine(directory, "preparation.json"), preparation.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            await File.WriteAllTextAsync(Path.Combine(directory, "metadata-http.json"), fault == "malformed-json" ? "{" : metadata.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            string assets = Path.Combine(plan.Workspace, "platform-components", "catalog-reader", "obj");
++            _ = Directory.CreateDirectory(assets);
++            await File.WriteAllTextAsync(Path.Combine(assets, "project.assets.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            using Process process = new();
++            CompositionReadiness readiness = HealthyReadiness(plan) with { RoutingCatalogObservationsRequired = true };
++            NativeTestExecutionResult result = await NativeTestExecutor.ExecuteAsync(new CompositionRunSession(plan, readiness, "private-signing-key-value", process), new PersistedProfileNativeTests("runner.py", "python3"), manifest, TestContext.Current.CancellationToken, selection: selection).ConfigureAwait(true);
++            if (fault == "valid")
++            {
++                File.Exists(marker).ShouldBeTrue();
++                result.Result.Outcome.RuleId.ShouldBe("HXT002", "The marker-only control launches without writing a native report.");
++            }
++            else
++            {
++                AssertNotPassing(result, "HXT009", ToolExitCode.ProductOrTest);
++                File.Exists(marker).ShouldBeFalse();
++            }
++        }
++
++        Directory.Exists(ownedRoot).ShouldBeFalse("Malformed proof reads must release every owned file before cleanup.");
++    }
++
+     private static async Task<(CompositionRunPlan Plan, ModuleTestSelection Selection, string Manifest)> PrepareSelectedRunAsync(PlatformManifestTestWorkspace workspace, string runner)
+     {
+         workspace.Document["modules"]![0]!["tests"] = JsonNode.Parse("""
+@@ -337,4 +428,4 @@ public sealed class NativeTestExecutorTests
+         result.Report.ShouldBeNull();
+         result.ReportBytes.ShouldBeNull();
+     }
+-}
+\ No newline at end of file
++}

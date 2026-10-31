@@ -1,0 +1,17 @@
+{
+  "base": "fb59abb49341f99c25654ba3c5119e96f3890d28",
+  "findings": "/tmp/story33-sdk-pr380-codeql-annotations.json",
+  "files": [
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs",
+      "beforeSha256": "caa86826427d20c6349d4055fe622ceb1b6bc574951667f6e2e2e0bc1e06b4e7",
+      "afterSha256": "addeab11ba8d788bd7f9b3c0c97f6f217d50fe41a94a38a87ee3a4d9bafbabb3"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs",
+      "beforeSha256": "61378555bf646364f47a1944fd66cd6fc055b01e5da7c2a2fab8bedd54809302",
+      "afterSha256": "c7073e7cd0cf961992377e88d002ed3e26668ecb4aa80f6aa1421a05aec6610d"
+    }
+  ],
+  "state": "two narrow CodeQL repairs; no suppression/gate changes; verification pending"
+}

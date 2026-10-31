@@ -1,0 +1,225 @@
+{
+  "record": "EXT-PROTECTION-1",
+  "loop": 10,
+  "runId": "af01b493fa91",
+  "status": "in-progress",
+  "reviewLoopIteration": 10,
+  "scope": "Authorized loop-10 deferred-row verification (2026-10-31) only; not a new review cycle",
+  "recordedUtc": "2026-10-31T17:46:26.609846+00:00",
+  "acceptedTarget": null,
+  "acceptedProfile": null,
+  "acceptedDate": null,
+  "availability": null,
+  "nativeBootstrapIntegrationRerun": false,
+  "nativeFiveCaseRerun": false,
+  "installed41CaseRun": false,
+  "physicalCopyQualification": false,
+  "nativeCoverageNote": "Native results (source-gaps-7b5a4e938648) do not cover source changed here: OpenBaoErasureRootStore.cs, ErasureRootAuthorityOperationHandler.cs, bootstrap.py and PublishedTrustDeletionConsumptionAuthority.cs.",
+  "verdictSummary": {
+    "R11-BH-1": "false",
+    "R11-BH-2": "real",
+    "R11-BH-3": "false",
+    "R11-BH-5": "false",
+    "R11-BH-6": "false",
+    "R11-BH-7": "false",
+    "R11-BH-8": "false",
+    "R11-EC-1": "real",
+    "R11-EC-3": "real",
+    "R11-EC-6": "false",
+    "R11-EC-7": "false",
+    "R11-BH-9 observation point": "implemented; completion defect found and fixed"
+  },
+  "phases": {
+    "phase-a-attempt1-compile-error": {
+      "commands": [
+        {
+          "name": "bootstrap-tests",
+          "exitCode": 1,
+          "startedUtc": "2026-10-31T17:38:49.217441+00:00",
+          "finishedUtc": "2026-10-31T17:38:54.986189+00:00"
+        },
+        {
+          "name": "platform-build",
+          "exitCode": 1,
+          "startedUtc": "2026-10-31T17:38:54.986670+00:00",
+          "finishedUtc": "2026-10-31T17:39:10.328205+00:00"
+        }
+      ],
+      "tests": {}
+    },
+    "phase-a": {
+      "commands": [
+        {
+          "name": "bootstrap-tests",
+          "exitCode": 1,
+          "startedUtc": "2026-10-31T17:39:45.241434+00:00",
+          "finishedUtc": "2026-10-31T17:39:50.448109+00:00"
+        },
+        {
+          "name": "platform-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:39:50.448595+00:00",
+          "finishedUtc": "2026-10-31T17:40:10.672505+00:00"
+        },
+        {
+          "name": "eventstore-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:40:10.932266+00:00",
+          "finishedUtc": "2026-10-31T17:41:10.557834+00:00"
+        },
+        {
+          "name": "platform-tests",
+          "exitCode": 1,
+          "startedUtc": "2026-10-31T17:41:10.986459+00:00",
+          "finishedUtc": "2026-10-31T17:41:19.227465+00:00"
+        },
+        {
+          "name": "eventstore-tests",
+          "exitCode": 1,
+          "startedUtc": "2026-10-31T17:41:19.228401+00:00",
+          "finishedUtc": "2026-10-31T17:41:21.457437+00:00"
+        }
+      ],
+      "tests": {
+        "platform": {
+          "total": 68,
+          "passed": 64,
+          "failed": 4,
+          "errors": 0,
+          "skipped": 0
+        },
+        "eventstore": {
+          "total": 153,
+          "passed": 152,
+          "failed": 1,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    },
+    "phase-b": {
+      "commands": [
+        {
+          "name": "bootstrap-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:42:14.513971+00:00",
+          "finishedUtc": "2026-10-31T17:42:20.957813+00:00"
+        },
+        {
+          "name": "platform-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:42:20.958274+00:00",
+          "finishedUtc": "2026-10-31T17:42:36.114773+00:00"
+        },
+        {
+          "name": "eventstore-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:42:36.241812+00:00",
+          "finishedUtc": "2026-10-31T17:43:07.618008+00:00"
+        },
+        {
+          "name": "platform-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:43:07.904357+00:00",
+          "finishedUtc": "2026-10-31T17:43:12.832737+00:00"
+        },
+        {
+          "name": "eventstore-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:43:12.833517+00:00",
+          "finishedUtc": "2026-10-31T17:43:14.852938+00:00"
+        }
+      ],
+      "tests": {
+        "platform": {
+          "total": 68,
+          "passed": 68,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "eventstore": {
+          "total": 153,
+          "passed": 153,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    },
+    "final": {
+      "commands": [
+        {
+          "name": "bootstrap-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:43:20.506020+00:00",
+          "finishedUtc": "2026-10-31T17:43:24.531789+00:00"
+        },
+        {
+          "name": "platform-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:43:24.532151+00:00",
+          "finishedUtc": "2026-10-31T17:43:39.073311+00:00"
+        },
+        {
+          "name": "eventstore-build",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:43:39.186240+00:00",
+          "finishedUtc": "2026-10-31T17:44:00.175176+00:00"
+        },
+        {
+          "name": "platform-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:44:00.468382+00:00",
+          "finishedUtc": "2026-10-31T17:44:05.092550+00:00"
+        },
+        {
+          "name": "eventstore-tests",
+          "exitCode": 0,
+          "startedUtc": "2026-10-31T17:44:05.093541+00:00",
+          "finishedUtc": "2026-10-31T17:44:10.573911+00:00"
+        }
+      ],
+      "tests": {
+        "platform": {
+          "total": 96,
+          "passed": 96,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "eventstore": {
+          "total": 370,
+          "passed": 370,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    }
+  },
+  "productionFilesChanged": [
+    "platform/deploy/erasure-root/bootstrap.py",
+    "platform/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+    "platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+    "eventstore/src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs"
+  ],
+  "testFilesChanged": [
+    "platform/eng/ext-protection-1/test_bootstrap.py",
+    "platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+    "platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+    "eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs",
+    "eventstore/tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+    "eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs"
+  ],
+  "specInvariantsHold": true,
+  "frozenIntentSha256": "96c592bd1c874a331c90a37e9b1af74c5d2bae7b6f1720401c0aff560c317e86",
+  "frozenIntentMatchesParentAudit": true,
+  "agentsRegisterSha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860",
+  "privateOwnerOperationDeadlineUnchanged": true,
+  "deferred": [
+    "R7-BH-7 generic subprocess capture remains deferred and unchanged"
+  ],
+  "externalRuntimeRoot": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-deferred-rows-af01b493fa91"
+}

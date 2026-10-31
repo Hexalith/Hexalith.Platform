@@ -1,0 +1,200 @@
+{
+  "archiveCreated": false,
+  "cleanup": [
+    {
+      "absenceVerified": true,
+      "kind": "Pod",
+      "uid": "5a98e393-a218-4273-bc0e-696b3d7e507f"
+    },
+    {
+      "absenceVerified": true,
+      "kind": "NetworkPolicy",
+      "uid": "f94e7fff-854c-4843-98c1-14ef8834b2f1"
+    }
+  ],
+  "cleanupPassed": true,
+  "error": null,
+  "helperCreateOutcomesUnverified": 0,
+  "helperCreationIntents": 2,
+  "helperObjectsCreated": 2,
+  "kind": "external-etcd-readonly-helper-result",
+  "metadataObserved": true,
+  "namespacePvcPvIdentitiesAndBindingsUnchanged": true,
+  "requests": [
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumeclaims?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumes?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/nodes/s426-497359af99e9-control-plane",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies",
+      "verb": "create"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods",
+      "verb": "create"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9/log",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumeclaims?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumes?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/nodes/s426-497359af99e9-control-plane",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "delete"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "delete"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-etcd-meta-etcd-497359af99e9",
+      "verb": "get"
+    }
+  ],
+  "snapshotTaken": false,
+  "sourceNodeAndNamespaceUidRevalidated": true,
+  "sourceRecoveryAccepted": false,
+  "summary": {
+    "certificates": {
+      "ca": {
+        "notAfter": "Oct 28 20:33:29 2036 GMT",
+        "notBefore": "Oct 31 20:28:29 2026 GMT"
+      },
+      "client": {
+        "notAfter": "Oct 31 20:33:29 2027 GMT",
+        "notBefore": "Oct 31 20:28:29 2026 GMT"
+      },
+      "server": {
+        "notAfter": "Nov  2 20:37:13 2026 GMT",
+        "notBefore": "Oct 31 20:37:13 2026 GMT",
+        "tlsVersion": "TLSv1.3",
+        "verifiedChainCertificateCount": 2,
+        "verifiedHostnameAndCa": true
+      }
+    },
+    "clusterId": "13691132911332494335",
+    "databaseBytes": 20480,
+    "databaseBytesInUse": 16384,
+    "endpoint": "https://172.18.0.2:12379",
+    "memberId": "16714840396788124112",
+    "memberName": "s427-synthetic",
+    "nodeArchiveMemberCount": 97,
+    "nodeArchiveProfileSupported": true,
+    "peerUrls": [
+      "https://172.18.0.2:12380"
+    ],
+    "revision": 7,
+    "unsupportedArchiveMembers": [],
+    "version": "3.6.5"
+  },
+  "upgradeGate": "closed"
+}

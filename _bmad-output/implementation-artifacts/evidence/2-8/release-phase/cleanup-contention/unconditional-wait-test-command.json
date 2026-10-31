@@ -1,0 +1,67 @@
+{
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests",
+    "-class",
+    "Hexalith.Builds.ModuleTool.Tests.ModuleRunnerReviewRegressionTests",
+    "-parallelMode",
+    "none",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/cleanup-contention/affected-tests.xml"
+  ],
+  "environment": {
+    "CI": "true",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "41238944762",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "dotnet-tests",
+    "GITHUB_WORKFLOW": "CI",
+    "GITHUB_SHA": "26ba857a74d75b184a0340a07f280dca3bb08874",
+    "GITHUB_REF": "refs/heads/feat/story-2-8-domain-ci-v2",
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "X64",
+    "GITHUB_WORKSPACE": "/tmp/hexalith-story28-cleanup-contention",
+    "RUNNER_ENVIRONMENT": "github-hosted"
+  },
+  "classes": [
+    "LocalRunLifecycleTests",
+    "LocalRunLifecycleReviewTests",
+    "LocalRunCommittedReviewTests",
+    "LocalRunSourceReviewTests",
+    "CiRunLifecycleTests",
+    "CompositionEngineTests",
+    "AttachAdmissionTests",
+    "ModuleRunnerReviewRegressionTests"
+  ],
+  "base": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "modifiedSourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "a4951b4d1f216627bd33cddc2d144b3327f5b586236ad899e0737f0c22c12a14",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "41a07ed4ce2e519e52762908b045afb418d3ad8b1dd7720bc17e8eb248e13833"
+  },
+  "binariesSha256": {
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": "5a9663dc9c309c06eb7f8d501b26423a05c1d17b92f035ac0e5313c192123519",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "c970844ab86ce623b3912806ee58f8a798336e23851b3c7d34a468fe984f7d6e",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Aspire.dll": "6f343cdd96bee7c787736b56bd2bef4c8981e2737b7914dd5ae1d8a4a80ceacc",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Commons.UniqueIds.dll": "99e3c36fe7e3024fdfa976f2dfedf4b3cf406dab83702caa62a798b36591c26d",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll": "308004f7cb806115579401df359f24715f9ddd2ef8ca944cf7f456a26bb3986f",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll": "49e150be60206e7212ee53dee7869924afc191df78296d0867b7eb58ab8adba7",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.dll": "f6fabeba9600e44b6a3d5be56b8a7707438943e2b74bf6a496151e9bb4ee3942"
+  },
+  "sourceLimits": "Fresh complete Debug project-reference graph compiled from base26ba plus the two exact changed-source hashes. No copied binary/no-reference-rebuild lane. GitHub identity is simulated; this is not hosted/reference/candidate or package acceptance.",
+  "exitCode": 1
+}

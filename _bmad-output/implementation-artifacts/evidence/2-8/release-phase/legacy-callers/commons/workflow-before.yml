@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  release-verification-tests:
+    name: Test NuGet publication verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tools -p 'test_verify_nuget_release.py' -v
+
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main
+    with:
+      solution: Hexalith.Commons.slnx
+      run-consumer-validation: true
+      test-platform: microsoft-testing-platform
+      unit-test-projects: |
+        test/Hexalith.Commons.Tests
+        test/Hexalith.Commons.Aspire.Tests
+        test/Hexalith.Commons.Diagnostics.Tests
+        test/Hexalith.Commons.Http.Tests
+        test/Hexalith.Commons.Publication.Tests
+        test/Hexalith.Commons.Serialization.Tests
+        test/Hexalith.Commons.ServiceDefaults.Tests
+        test/Hexalith.Commons.TenantAccess.Tests

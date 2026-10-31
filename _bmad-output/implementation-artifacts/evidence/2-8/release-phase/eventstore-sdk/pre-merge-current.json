@@ -1,0 +1,57 @@
+{
+  "verifiedAt": "2026-10-31T21:40:29.007068+00:00",
+  "head": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "mergeableState": "clean",
+  "requiredChecks": {
+    "advisory": {
+      "id": 124642171678,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "ci / build-and-test": {
+      "id": 124642172319,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "ci / tenants-source-mode": {
+      "id": 124642172048,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "codeql / analyze": {
+      "id": 124642172169,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "commitlint / commitlint": {
+      "id": 124655971072,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "dependency-review / dependency-review": {
+      "id": 124642173243,
+      "app": 15368,
+      "conclusion": "success"
+    },
+    "live-sidecar": {
+      "id": 124642171616,
+      "app": 15368,
+      "conclusion": "success"
+    }
+  },
+  "requiredReviews": 0,
+  "allRequiredChecksSuccess": true,
+  "eligible": true,
+  "fullCi": 41236793431,
+  "fullCiConclusion": "success",
+  "activeReleaseRuns": [],
+  "finishedExistingRelease": 41238371177,
+  "publishedVersion": "3.130.0",
+  "publishedSourceTagVerified": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "scopeFilesVerified": 3,
+  "messageSha256": "f310da19ee0f8a56c13329bbb1cb54766bbc7a71edffb3bc7500d63b7318a042",
+  "historicalMatrixFailureRetained": true,
+  "historicalMatrixResult": "No passing compatibility acceptance claimed; not an effective required PR status or release push-proof workflow",
+  "method": "Normal squash with expected head; no bypass/admin/force/protection change; future release separate"
+}

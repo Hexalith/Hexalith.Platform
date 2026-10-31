@@ -1,0 +1,3324 @@
+{
+  "attemptId": "20261031t212131z-s427-node-capture-qual-v4",
+  "encryption": "age",
+  "exports": [
+    {
+      "ciphertextBytes": 16299,
+      "ciphertextSha256": "3d56e8e26f30fce6088e77f2298a16a0a40cd0ddcf58ccec79b95e63011f442a",
+      "file": "executed-driver.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3002,
+      "ciphertextSha256": "19830be8a72148191a08c29406da1fc07f64588c6adc544a6c994f78d164c824",
+      "file": "fixture-001-inspect-image.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 32958,
+      "ciphertextSha256": "1cbe6a3d39fbfeae65344454faa04699c51bdf1e369cefd2771588d0eeddbb89",
+      "file": "fixture-002-read-public-entrypoint.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "612e76182010cc8549e6ec3a4d6d8125077570fe846de6ed5774f276b1d0c893",
+      "file": "fixture-003-tag-local-base.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2386,
+      "ciphertextSha256": "ba0f8d492b305b0209718d2ae51062d7d559d19f50cb3a9f4972ef42e4196409",
+      "file": "fixture-004-build-fenced-image.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 3250,
+      "ciphertextSha256": "da964562401e6cc468fb33801fdfe2e0db0d88f5b5f4e8cca4408698c311bc13",
+      "file": "fixture-005-inspect-fenced-image.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 474,
+      "ciphertextSha256": "c1ffec9424cd1bd0509a8e6c92ff2ebe2b500c6ce13a296ef0c770b15ca979c1",
+      "file": "fixture-006-create-internal-network.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2050,
+      "ciphertextSha256": "7a9be9c6c9b5264b0813c068bf9e2133eeb59c5f27efafc6678a2e73de789678",
+      "file": "kind-create.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1494,
+      "ciphertextSha256": "72662ea14e1bdbdcb283b9f7e55a180dbd5cf67bedf657b225aa883ebaab78cd",
+      "file": "fixture-007-fixture-context.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 490,
+      "ciphertextSha256": "98edd6e3aaaab5cc003c6e06515c1771cf01f03475b43f1aa2f5ec0be5986c3f",
+      "file": "fixture-008-fixture-context-alias.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1006,
+      "ciphertextSha256": "e068c795ab4aec213826ee0c690db61d488b43071e62d7b652e907e476f7138e",
+      "file": "fixture-009-get.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2498,
+      "ciphertextSha256": "e36006b3212c7c642fdd7cddb71745179e8d849fe6bef14a96754b0d22ef36c0",
+      "file": "fixture-010-inspect-network.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 11018,
+      "ciphertextSha256": "5d70a9b44fef6289dcebc360cbf1ac96d89f7e93ef326ec36e3e6f84b88d16b8",
+      "file": "fixture-011-inspect-fixture-node.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "9cf01a832cbcf4511fcdf32edfb056d84e4ca83008a7302218d82f1f2455c9e7",
+      "file": "fixture-012-fixture-service-cidr-route.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "e7d534ec00514cfb728fa5f02200d42b690079d543e1c54bfeffc93a685c5961",
+      "file": "fixture-013-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "47fbf00a408b6fb286181c91f75383ac650178dd5787b18de219914b0bd500fe",
+      "file": "fixture-014-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "93acc69f09039f0ab77e3f01f7c8db05a437fd98443d2f2f4270811726390742",
+      "file": "fixture-015-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 538,
+      "ciphertextSha256": "b0be8eae8406fffadf983ed62b33627b442ac976724e65357316f917576ace05",
+      "file": "fixture-016-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "100dfe3dfd31b56c1228f8246d508d20c47835789a8fe3f4d2f89e15f1a1f242",
+      "file": "fixture-017-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 530,
+      "ciphertextSha256": "97a577d61b73c34ba1d9f2d11657b5d4a4f7e9dbe31ed3ecb07bfae2c9883567",
+      "file": "fixture-018-fence-probe.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1414,
+      "ciphertextSha256": "3ab82bf65a61cff599be563e9847b20f506d46fce6948fea9b800a86ac6b7892",
+      "file": "fixture-019-fixture-version.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 434,
+      "ciphertextSha256": "ba6e01df92cd70419dda1095dfda6a964c7441e5b79b27e1f71d1f0ba2e5955a",
+      "file": "fixture-020-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 430,
+      "ciphertextSha256": "602db48d77c6b83753e38762ea40a8dd12d5ad86d471eb8571ab0729a3c7c73f",
+      "file": "fixture-021-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 510,
+      "ciphertextSha256": "ed740dc67692f4198dd0727e77dd3a55b04d08bd015f03e7d460cf7aa387c3c9",
+      "file": "fixture-022-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 518,
+      "ciphertextSha256": "dc3fe1fa740be0dc92e938be795a04a179ca3fc490c371c79f2adeb7da735210",
+      "file": "fixture-023-crd-established.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 462,
+      "ciphertextSha256": "00d15e312a1d3479a6ad7a31eb2b37e6a73d65180101f49d316909aa10340e67",
+      "file": "fixture-024-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 914,
+      "ciphertextSha256": "e4168b0a2e2b57d42320638e84694df7d71bad122efa7aa4afb7d8eafbc5df5c",
+      "file": "fixture-025-get.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 430,
+      "ciphertextSha256": "34f932ada5c9129b6f75b5c26c611c847d8c1ae3b9f9adab85a5b93a27ed9812",
+      "file": "fixture-026-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 438,
+      "ciphertextSha256": "80aaa2660bb5003e8ff7fc2de8ae17e853981222308946605018ef3990e19d99",
+      "file": "fixture-027-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 434,
+      "ciphertextSha256": "26192e63cf53a16e3dbc92c05317195cf497b9ce38d18816469b62088aa3267e",
+      "file": "fixture-028-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 442,
+      "ciphertextSha256": "b2573c143ea387115d2cf88c7014fd08b1aacbddb967cc1fc663a80bc0d4d25f",
+      "file": "fixture-029-create-synthetic.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 450,
+      "ciphertextSha256": "7d47035aff4da7c4e3918e36aa37cf54c7fed0543fc50412aa05bd16e36217dd",
+      "file": "fixture-030-claim-bound.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "9097ddfb76cf01c17cb245aa47ac8d8b18a47172984bec5d1c20b40e156d1cb7",
+      "file": "fixture-031-synthetic-data.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "cd3d4be92c603e023603d32afaea35593081675e9e2c102b7f8251f236766ad9",
+      "file": "fixture-032-copy-public-etcd.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "2e4eeaacc3dbd1ae9a2502e60731ab752799b2b8187b0f6e120186aa0a48393c",
+      "file": "fixture-033-copy-public-etcdctl.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "723916ea9f0ec0764e81d6b8c5816362300b5714e753747aed1575d08993ec97",
+      "file": "fixture-034-copy-public-etcdutl.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "3e0ed5e356dc1abff392a1c18157ed71145d531f1901fb98af306d9355efa362",
+      "file": "fixture-035-public-etcd-tools-mode.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "3de9d7078ffd8ca3a0e6d6f8e41bab5265c577f0dcb4e21e2c96649420d7cc85",
+      "file": "fixture-036-synthetic-etcd-directory.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1150,
+      "ciphertextSha256": "056ec427f2543736e9d858643254e8e73a09c36e1917833cc5e11b8be066e230",
+      "file": "fixture-037-synthetic-etcd-csr.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 482,
+      "ciphertextSha256": "0e94d74faa500c909b7d2b37606e1a8be4c9b9425e18f02021fb9909bb1c8bfa",
+      "file": "fixture-038-synthetic-etcd-cert.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "8f4b74ac3e9484b612bd73afaa5b34329bd6a0fa32adcba20be25947617baf16",
+      "file": "fixture-039-synthetic-etcd-client-crt.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "1656d31f7f895b8c340a705316fe404144938e48262072677d4a6f3e52ec911f",
+      "file": "fixture-040-synthetic-etcd-client-key.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "7dbfc5af97c4dc465185a974fd789b085951965104bbba1a633b171ae89f7b77",
+      "file": "fixture-041-synthetic-etcd-client-ownership.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "f80dab204450728075786a9d9070f10c422734689b377bf37a82babc3386dcb2",
+      "file": "fixture-042-synthetic-etcd-client-key-mode.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "e710d555709d066cc68dc63eb6ed6b52567c868d468129de6bd271596f741bfe",
+      "file": "fixture-043-start-synthetic-external-etcd.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "8d22c82ac10a87ee1be60311aa41f0832b9ac7d48a18687c89e0c8e5ce0860f3",
+      "file": "fixture-044-synthetic-ssh-directory.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "b01a39e56813f63c577f84b500b730adcd8f0fc59a5c0a0246983c89d3a03761",
+      "file": "fixture-045-synthetic-ssh-private-mode.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "efe024fec4857a36828138572ce037d6984d48a3973ae337907670aa94ba5ae8",
+      "file": "fixture-046-synthetic-host-ssh-key-local.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "8a54b65f5e02efcf5a583eaac16b3a2713338cbf68836254cb26830054a31363",
+      "file": "fixture-047-synthetic-host-ssh-key-import.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 386,
+      "ciphertextSha256": "6e55dc5f48c669669fc464404ddc7db912b063d5cee6eddebc000b251c2f8b1a",
+      "file": "fixture-048-synthetic-host-ssh-key-import.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "95243210b25c1b01b395384cd28d43693a4764707975587a8efc7a943423d851",
+      "file": "fixture-049-synthetic-etcd-canary.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "93effb2a98c5c056367e0fe31e923cc0273daff3f7b36d9bd40718c8ae0decd9",
+      "file": "fixture-050-synthetic-etcd-canary.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "d98bbae9fcb2f0831c6c4fd1103ef95489157b5cbeaa68eed53e269c448422f5",
+      "file": "fixture-051-synthetic-etcd-canary.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "d5d08dcdd12e248c9a08404867cbd309fbed3a7e188fa151694f3c8d0898d831",
+      "file": "fixture-052-synthetic-etcd-key-history.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "f8f15cacfa19206501d03404c84d24df8985cb1d693ad9f266c852a606a21ffd",
+      "file": "fixture-053-synthetic-etcd-transient-key.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 390,
+      "ciphertextSha256": "4fc3ba70a9660d0a76eb61986cab268baa53b2b8833d37482f66c3585ee4b411",
+      "file": "fixture-054-synthetic-etcd-transient-delete.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 830,
+      "ciphertextSha256": "bfa0f0fb6d09b8d327d548e57b2bf0332d3f9ba26ff69c4a49839ff9a4401162",
+      "file": "fixture-055-synthetic-etcd-before.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 406,
+      "ciphertextSha256": "93cfbeab980898bf989ca2cb208d82c7616a46fa55b2586ef2dab7839a3861d7",
+      "file": "fixture-056-synthetic-source-file-stat.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 518,
+      "ciphertextSha256": "23e184b93fcfcfa8422f32aa03df45e4f31b173635c0b70303d1d8eb00f8b9eb",
+      "file": "fixture-057-synthetic-source-file-hash.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 406,
+      "ciphertextSha256": "584cd665871fbbc094b4ed3d71c142469837c083411b47dd4713d5ce4fd328c0",
+      "file": "fixture-058-synthetic-source-file-stat.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 522,
+      "ciphertextSha256": "14eca4ec19ae2607a030a2f2232750e7b3a99f9015068d3cfb50ebf7f6bb3a7c",
+      "file": "fixture-059-synthetic-source-file-hash.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 414,
+      "ciphertextSha256": "4a7fcc61424d3d65c9d75b8a0c39e792167c1b498c6363e7295819cd4127d7d8",
+      "file": "fixture-060-synthetic-source-file-stat.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 522,
+      "ciphertextSha256": "0c35b00605d2d62e202436c0d185cb2039f531e1fa0e6885154301a4490c329a",
+      "file": "fixture-061-synthetic-source-file-hash.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 418,
+      "ciphertextSha256": "e76b4883ce9b1a3c62aa99f0b73d7a5f4c4de850532f6274fa58c94ea2f84d93",
+      "file": "fixture-062-synthetic-source-file-stat.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 506,
+      "ciphertextSha256": "5783b7497ad5fc13f59181c95d549a733cc0f500f8ec7f00d0e7f207a2785610",
+      "file": "fixture-063-synthetic-source-file-hash.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 674,
+      "ciphertextSha256": "abd191464e3b174dd592e6b24f8d608dcaae96a2c5826b9568e1b98552568824",
+      "file": "fixture-064-metadata-import-exact-cri-reference.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8846,
+      "ciphertextSha256": "e99113cf87f972e8327b48ff07b98194e5dac33a4e7d362cc486323bfd8997c1",
+      "file": "fixture-065-metadata-verify-cri-image.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 11706,
+      "ciphertextSha256": "e83ea378322d03654618f1c6e3b6c086dee81ef0c5ddac0e72d863895889345d",
+      "file": "fixture-066-get.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1006,
+      "ciphertextSha256": "fe23780d825ad20b283ef535f00f699456bd59748a32502891b4e53c34daef2d",
+      "file": "fixture-067-get.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 24783,
+      "ciphertextSha256": "ad3ea4e7ab49448f261447f272aebdd296dd765ab52c659571f3d6fef4df9f7d",
+      "file": "etcd-readonly-manifests.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 19007,
+      "ciphertextSha256": "96ebfae1e7eadca3524f6d29551670f30f5dbc0f4000c32e02ba07919be279ed",
+      "file": "etcd-readonly-executed-source.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8410,
+      "ciphertextSha256": "dfc50558cbb7c13d4843b878da3e87361437c108a75729146bb10ee12adffa0f",
+      "file": "metadata-offline-config.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 922,
+      "ciphertextSha256": "250829c3406eff257e28117dafeacc9409b3b9ad65c99e7e9ce12b03217376b9",
+      "file": "metadata-001-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5486,
+      "ciphertextSha256": "f6ee4a3e5990653f26027f6b03943e24a0af1e7e050c14e02207cca58b7df8fc",
+      "file": "metadata-001-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 934,
+      "ciphertextSha256": "46d851f422c8c8a5b7de2ac9a96b2f0e5f00fa0dca2b76bbc038b7491db4aee9",
+      "file": "metadata-002-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2242,
+      "ciphertextSha256": "d74cccef983ec20c82e0f7fc54c616e1d70acf2df66ec2e4cf52bd392250f54c",
+      "file": "metadata-002-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 929,
+      "ciphertextSha256": "70860467268429482a8716943bfa72ffb44478a2c8f166c64a0807e9c2f42b02",
+      "file": "metadata-003-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2610,
+      "ciphertextSha256": "5a174f5f6a7e41bab175037a17ffd88027270835714e2ffb2f1114a4a36f98d9",
+      "file": "metadata-003-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "498122b325fce29ba32d8ae66abf0fde50805c9a3a8ef5d25d1d6791a4285b30",
+      "file": "metadata-004-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "e06618164f99de07d258bc1747600170812c7a97a1eac64bee030ff7b4e53f58",
+      "file": "metadata-004-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "9da4f1bbbd00a1e09a196b7abc9abd448e51141f25cbc5d356b2836bd5120006",
+      "file": "metadata-005-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "60e7eb62308469bc9feebb0674fd2a6e43a2a00549890904b5276bf8155d25f1",
+      "file": "metadata-005-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 992,
+      "ciphertextSha256": "b3e81df2f91319bbfc992f70590996a93d11c5633885643727f033a8a88f501c",
+      "file": "metadata-006-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "b14aa7544c728fed8aac09f15e588c5aab5be4447a87a36d73b634371a7bb374",
+      "file": "metadata-006-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2210,
+      "ciphertextSha256": "6d30081512805d8f973ff8f2717e3a92f95d8d43678aceb659f458caa594b63a",
+      "file": "metadata-007-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2210,
+      "ciphertextSha256": "f73a66f779c133549ab0892fc82611cb1a53ed9c0f99ecaa436be260a46ed480",
+      "file": "metadata-007-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "7f86d0dfe69a189eae8c9c0dfc5794f280e7f47ef08e59cbb9416acc4588f6ac",
+      "file": "metadata-008-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 494,
+      "ciphertextSha256": "c5cb3530dcfbf2d1f183fd011b604e4b0f18f097f53782b840128dc761946c0a",
+      "file": "metadata-008-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 24164,
+      "ciphertextSha256": "ed0c5d00ec1f50aa89b8512792b60bafc47a3d20db52ba5927f5bc45fac7ce0f",
+      "file": "metadata-009-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 33498,
+      "ciphertextSha256": "b9f36e967830bac205c024de9f630dcda5b4d30a873037443cafe8f8c420b821",
+      "file": "metadata-009-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "9e6b6595e10f68cd29ce9f4823d5861229d9ab62932441f684a84aafa5d0cb4a",
+      "file": "metadata-010-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 38934,
+      "ciphertextSha256": "7330bbf389b79dc5db7f05f56caa612aba56e1f975d7d5913ce27b8fabc50991",
+      "file": "metadata-010-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "adbcbb35d83469cb052f679d3db8945a1185e2da115f68da3d9f33f8014c5b6c",
+      "file": "metadata-011-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 38938,
+      "ciphertextSha256": "33ccc52dd5acab112c241719d5f86343afde6b0e6c2f7843ebd7adb5d4e84291",
+      "file": "metadata-011-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 966,
+      "ciphertextSha256": "50107b0fec90efcb870d527e913e79c4a5de34fdbeb63ce6cfd5fdda25373e0a",
+      "file": "metadata-012-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 25278,
+      "ciphertextSha256": "4901615eadcad95cb41e6d9008fdad5c69f4b4ca29b64424745ab3ff63b40e21",
+      "file": "metadata-012-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 922,
+      "ciphertextSha256": "eee277ed1686aef80595499c19bf806e05609f55efce13080fbc7c7cfbb598db",
+      "file": "metadata-013-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5486,
+      "ciphertextSha256": "827ed92eceb36cf715ec9a5329f67c920b0e818db87436c0b5cd35aa0d469b72",
+      "file": "metadata-013-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 934,
+      "ciphertextSha256": "4da5322c76b58584cbb92c5094cf11afe68726b4e22a11c8ed8c9bcecc9afaff",
+      "file": "metadata-014-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2242,
+      "ciphertextSha256": "cf99dc9fd05ee991ddc5bc266a2dc241c4e6fb2320474539e852b99e7ebcca59",
+      "file": "metadata-014-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 929,
+      "ciphertextSha256": "65d212218a2e59432212b124c229ad6a77b46b65c0c69edc9475a0d52302e9c6",
+      "file": "metadata-015-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2610,
+      "ciphertextSha256": "cf1ecb5e2855022d7ebf3a9b8224a7ea3097f8b9844e2641a38f4cb7a03bb2f0",
+      "file": "metadata-015-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "fddd2f128719f8c73626f40f9abf229935a4b4bd4c49cee079e018c3d15e36a7",
+      "file": "metadata-016-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "fe18082c283970dec4fa0122875c9cadef68aa8c44ab64723c14d0f9f10673bd",
+      "file": "metadata-016-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "cf92ee649ff8e009bfce11eb07c28124311d85296baeb943d112bb89df899f13",
+      "file": "metadata-017-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "62714b219a97a1600990005e23efca1e3c1a13f8fe33a6c1795a6052ad503d18",
+      "file": "metadata-017-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "be64e664305370f4fb21deb3dd16e2740c3bc194801dba05d80a52b449bab94d",
+      "file": "metadata-018-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 38938,
+      "ciphertextSha256": "863efef460ca318ae7a4907ccd7294f64ed673b7d8ea2d1d75156f1a5b97c43b",
+      "file": "metadata-018-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1190,
+      "ciphertextSha256": "e6562efdca7f1d94e69836f90b772c1f309e585c5bb9b47cd76e12a6da54acc0",
+      "file": "metadata-019-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 39082,
+      "ciphertextSha256": "fb3b3a1aa5279f0a3f2fbe3a3ab50dd7b9411dc0bcbf3b41dd8839c4ecafd7b1",
+      "file": "metadata-019-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 962,
+      "ciphertextSha256": "b5da018208558b12c9024899cdfa3da69b7cdc97a2f1b4034a493dc44eddd602",
+      "file": "metadata-020-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 494,
+      "ciphertextSha256": "106f313a9f1e5deaec19507d12bf87b9cebf3b6479b37cbaefedf120cfc6ae2f",
+      "file": "metadata-020-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 992,
+      "ciphertextSha256": "81419ef5f73ee8a6efb460caf30621194c8df5ab25d16f35a26fbd6121dc6402",
+      "file": "metadata-021-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2210,
+      "ciphertextSha256": "2410998f6b787a703cec6bc2c95e838be48db9bda4c3d9234f572efb8db2c7e9",
+      "file": "metadata-021-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1220,
+      "ciphertextSha256": "d2e795998d4507e89b6af6b57d01b6ea533a71ecdad29822db750d8c52af46bb",
+      "file": "metadata-022-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2358,
+      "ciphertextSha256": "6255d88e02e4127264e26c84e64646d122fc7b70a74a569285b413a4c8498170",
+      "file": "metadata-022-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 992,
+      "ciphertextSha256": "1b7837f6b5e953e494a0e38f2561c601e986ab61876bbee3a285f1708bc08982",
+      "file": "metadata-023-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "ca059760cd511acfca6e9f793f84cc47249e9bbff33a8f8d86dfecb061eab5c4",
+      "file": "metadata-023-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 27277,
+      "ciphertextSha256": "6ea337c368a5f36b26a26915bcfcf2506dbc0be7c5c5d17b6c91d3d2553a7a1a",
+      "file": "etcd-metadata-private-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 830,
+      "ciphertextSha256": "2de7a86f58282185fb1bc41b5b52a2a581c3b124a80ecda9cd71a0903e523465",
+      "file": "fixture-068-synthetic-etcd-after.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 62805,
+      "ciphertextSha256": "8735241cfa8069c0da83b09f8cc42f13c3f848330c47354a208476dfd06a6372",
+      "file": "exact-capture-manifests.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 23448,
+      "ciphertextSha256": "64f629e052138fd9d49f0712300628e1dbccc9f57af94d32dc6b08e99eb28b55",
+      "file": "exact-capture-config.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 8410,
+      "ciphertextSha256": "e1a10737bacab39c6b8460248c46bc5a60ef0f84e23df33adbb67a6086b321ed",
+      "file": "capture-metadata-offline-config.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 922,
+      "ciphertextSha256": "27ff1a6c225da03d089ce8ddb79d725c42a86676ff89a1a3a554a49cf855ced1",
+      "file": "capture-metadata-001-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5486,
+      "ciphertextSha256": "b85882c2ad7ebf98380adc3fe78560f6025f2393a32d1b290b79569066dd6ec3",
+      "file": "capture-metadata-001-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 934,
+      "ciphertextSha256": "5ff241bc5e7ff5029d7f8c5ea2f0caf2d106638e136f281cbc707fbe95c66d2f",
+      "file": "capture-metadata-002-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2242,
+      "ciphertextSha256": "0a2dc4d7a23d2ae256abc6522a41cf54e121a2f8423144db49b7dfac45ea918d",
+      "file": "capture-metadata-002-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 929,
+      "ciphertextSha256": "dda1073ecfb8f30ea545ef1bd63b7db7501310d96ef8a10048c4547c81937fed",
+      "file": "capture-metadata-003-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2610,
+      "ciphertextSha256": "54d0dd37b115805603bf219afcb81bfb83b83ac422bc0b1b420a291282d76117",
+      "file": "capture-metadata-003-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "8ab154944b1ab2d36eafd170521759b3057efc04d4ef013d73bc69905e748eca",
+      "file": "capture-metadata-004-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "9b5f329ace826d4c7a95bdaeedf92f17a76734fd81aad2be8dd9defc6de0eb98",
+      "file": "capture-metadata-004-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "1bf99135609b1142c6f9a6ddbae97253f1ed5e3f795966de1a28d28636c8ca52",
+      "file": "capture-metadata-005-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "69bce95d01543e21098678c87989f68595271b4fe37dab9cdfb78ab41db5543e",
+      "file": "capture-metadata-005-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 994,
+      "ciphertextSha256": "d1d8b3d41245eb1ece66229617f071f32f1c6753ed734635dc5dd420d72ad033",
+      "file": "capture-metadata-006-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "508cb43b5bf4bd5ab5b2b396128309de14332124ed66217ca2836cbd0267dea5",
+      "file": "capture-metadata-006-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2208,
+      "ciphertextSha256": "237cfb968f4613dcd390da9d05f901de85d043146119b58bbab45ce2315283f0",
+      "file": "capture-metadata-007-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2206,
+      "ciphertextSha256": "7498c8972fa87f7224accd023eca1bf79e4a9e789738870cbe87f39cfc419b63",
+      "file": "capture-metadata-007-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "7663a46d2b7d20e901f7e22a7ea153dc1c4e3bde48923616c94f05b8a4e457c4",
+      "file": "capture-metadata-008-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 498,
+      "ciphertextSha256": "13cc9800c85beda2fd46e1625b6762dfcdd2f33e5e2e71ad9a42832b6d7f9e1f",
+      "file": "capture-metadata-008-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 62188,
+      "ciphertextSha256": "66ab69425cf6e26e77d87556bdbc56e8afa04de6b53fb9587a849cc60257a94a",
+      "file": "capture-metadata-009-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 84514,
+      "ciphertextSha256": "34507663d6a5bcd77d7923ed1f5ebff704b1f5b3e5f7c6d010171630d8ec3d88",
+      "file": "capture-metadata-009-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "c53deaa84661a27a818eae4d43fd7ec2ca05702ee945f83d9460275b506acd69",
+      "file": "capture-metadata-010-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "4fb5101c92a4128b194237d5eec90025bcbc201e7ed2f093bc5e5c0825d646a7",
+      "file": "capture-metadata-010-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "810b23a1a2e8d0fa91bd0bae300861b21b7e65e1ca23becac09bfd6820291e92",
+      "file": "capture-metadata-011-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "240de03242bfd9b276b2d5d81cda83041b81e7fedc7dce513a3deebf84a56be5",
+      "file": "capture-metadata-011-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "6b84ccb829c35fc2463be182005a5f93e1f5492693726498f57f347167ae9a2a",
+      "file": "capture-metadata-012-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "016ac75850bd317711ae7c12ca0930824b14079cbcc0c188e57be4bd2e3516dc",
+      "file": "capture-metadata-012-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "1ecf8ade66e0349a37c6fc82cc58c96aec764a12a4d5aae269ddeef775a0b881",
+      "file": "capture-metadata-013-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "e64cf64fd678a71eafa1672d50c04a0da468885ded3a9f79c2de8dba5702dc96",
+      "file": "capture-metadata-013-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2539,
+      "ciphertextSha256": "cfb93a5d46c698beeb516bf9883d1c660314ef244510cdfd9081d3d87ac3f1fb",
+      "file": "capture-node-capture-public-tool-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 409,
+      "ciphertextSha256": "1066a894f708d820ab5dc1c352224f6e05e46734212b6111d93dac3ffcc3f09b",
+      "file": "capture-node-capture-public-tool-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "123624fe242fbd30a4f1622e40a89295d288cdafdcab15aa1572af415d445197",
+      "file": "capture-metadata-014-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "c5933e89285cf4b2878b8ee3b26b0d17f7067a421ae02bc98f9472525364218d",
+      "file": "capture-metadata-014-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "62c34edb8262c27ff1690338123d671eb5c5b1ae07dc15ccb4bb1e160698e4cb",
+      "file": "capture-metadata-015-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "44124c951fa99587f0c416bf2f382bc93f80c84229a3f2d50c64dc30515f5623",
+      "file": "capture-metadata-015-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "aebce03b57b196cba8e62ce8b6a65d0dd124beba7a76b1dbf77fe0ecbc99ef44",
+      "file": "capture-metadata-016-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "cd32ed747e8735f725bb776e8788f8f60aa2e27a22a4937f086c9a0ebffb8e86",
+      "file": "capture-metadata-016-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "d86984cfded4e2f99d57d8791b2df0eb1833a4e883c6affeb6beab06e53a9565",
+      "file": "capture-metadata-017-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "80a58123484d7c55c7593326f9269278308f48fc0f91892b97fe312a02ed6823",
+      "file": "capture-metadata-017-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "69115df07730f3e862a39338043dd0b2dc104f1646e17ec73ddf67d529642a0b",
+      "file": "capture-metadata-018-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "22f627a1049a1d7362ff9966a14541c8ce919ad262b1ee193824c85d864071ef",
+      "file": "capture-metadata-018-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "8f1dd7f117d7407b744a2514e9a20514ff449cc0c744b56e080b7e905e1d8b53",
+      "file": "capture-metadata-019-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "7d7ae10e5f73df4e82b849239260cec58e3d898cbeb6dbeb16d6666b0eea45e3",
+      "file": "capture-metadata-019-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "e1b70b4fe04befe31010cf9dad4b43a0a75c0960b1565c7dcbebfb8b19ef8860",
+      "file": "capture-metadata-020-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "3f31fe1eeb4c8725e500cfd7a4a39e03e1d01166a7d1ebff0047bebde1d32ff3",
+      "file": "capture-metadata-020-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "578305d515067d801d95d1885b3a8c69614f7a81e7152f5a93afab0ac5cc1fff",
+      "file": "capture-metadata-021-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "b2df7efaca31e40a0bdbfe4ec777d21bf371f2e17ca3053cf35ca8e820f5c89e",
+      "file": "capture-metadata-021-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 32847,
+      "ciphertextSha256": "f395c61052a582f0ea858c8b369711ed2d08127330465778895d2b326230a9e9",
+      "file": "capture-node-capture-local-private-summary.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "5defe6ca8e100407ddc99db057efc6608f81b0d4a3d4ffe93d5eb1f00bce698a",
+      "file": "capture-metadata-022-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "9f121e34e1811b5e5541a1d9bff6419081b63116f0f44f0342e3a5a5ebecbe2c",
+      "file": "capture-metadata-022-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "fc5b9e65d22d5a605aa6e164495ea3b4a864abd7f5a00a81bc8a430510ac02dc",
+      "file": "capture-metadata-023-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "66d8beb45a14cb5d245f718ffb4d84adcdd4c2b06ba6a08922762dd6dacd178a",
+      "file": "capture-metadata-023-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "4f609f9f8399639c0d19eb8ded2c0ffe8666db8b36c2dd706dbc034462d2edd4",
+      "file": "capture-metadata-024-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "71e87a5dfb9459fd332a1550e0378bb58aefac7e1220afcaae2d76e9c0599910",
+      "file": "capture-metadata-024-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "3536439686308998e94bceba421d0eb9d335f45b30da49ed1ba7979466907500",
+      "file": "capture-metadata-025-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "5ce4c5ce67ad438c5c9005dd1f1b7e022739992f38543395879d2ca5db51b07b",
+      "file": "capture-metadata-025-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "604883081abfe957ba70b9aa880d9df92bd163116a7654c245721a4be74a309a",
+      "file": "capture-metadata-026-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "719f2d226cba704aa208ca8d27211290bb05a70643df6baddf53fa562b330e0e",
+      "file": "capture-metadata-026-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "76a2eeeb3a8dd0dcbef26bebd4c2e8ad862cdd799b6a1ac3cb57613b83555ac1",
+      "file": "capture-metadata-027-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "25177ec7dc4ab63757c2bcb13a929760afad1b85bcdb58404c2b2dbc4900a38e",
+      "file": "capture-metadata-027-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 939,
+      "ciphertextSha256": "2accf796b0b91265ecaa3ebb0944425f67a9a54b990bd47ca947507ca2043c60",
+      "file": "capture-metadata-028-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 7466,
+      "ciphertextSha256": "9eef6b9e8c324df39d06420c64919011ad2c1a1070d97a03d0224c64602e436e",
+      "file": "capture-metadata-028-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 924,
+      "ciphertextSha256": "f2132b367746684ca1d09ef65c6fe09b99a2b4cad24a192fe992452808bd44f5",
+      "file": "capture-metadata-029-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1090,
+      "ciphertextSha256": "44d738b2314d663dba88cc00370addf43ed932e11779282245fe8487d906c2ad",
+      "file": "capture-metadata-029-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 922,
+      "ciphertextSha256": "9bd22dcc5fc250e8f83fe661f2aca302dc7c0cd973e27f1e67bfc7ae954d6e57",
+      "file": "capture-metadata-030-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 5486,
+      "ciphertextSha256": "80fcee65d516761afc369099687ea3901b6cec362b796a8d33e579fef1602df9",
+      "file": "capture-metadata-030-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 934,
+      "ciphertextSha256": "e0e0b25653a70c9d7d087677a67016a64775b9c6ecd68eda071f00e10d08806a",
+      "file": "capture-metadata-031-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2242,
+      "ciphertextSha256": "9851ebab72b8410c00dd6b204ce0f4c01260024874dcc3d38ff56124916d74f9",
+      "file": "capture-metadata-031-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 929,
+      "ciphertextSha256": "463741488779477eece97333add0ea31ccdbe0a97603c1bb202baef6d401ba8d",
+      "file": "capture-metadata-032-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2610,
+      "ciphertextSha256": "ed48020d4ac42d85d701c7f6169c6cd79eac8020d04a9b5480aeb8851d6fcd3a",
+      "file": "capture-metadata-032-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "83180215ed6beff936854b6e5dbde84af0944990809563a7ccbcf0f4754b98cf",
+      "file": "capture-metadata-033-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89630,
+      "ciphertextSha256": "e07ba4db23892c6436cccbf53e2133567a5d6a9b1aefed8165cfbad8119f2446",
+      "file": "capture-metadata-033-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1193,
+      "ciphertextSha256": "e320f9f07ea311cc57743b3b2991ea5b10b408d922b278112325c131d2405739",
+      "file": "capture-metadata-034-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89778,
+      "ciphertextSha256": "5ee8afbbd4e9d371dd42e13d578d6c41cbfa389900f29b588314d0292c45b164",
+      "file": "capture-metadata-034-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "cd9d35b9c1e9d0e5ddc4c04643fcb42a513767a5131d97494d1257dbd9aa09ff",
+      "file": "capture-metadata-035-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 89730,
+      "ciphertextSha256": "fadaa6ae7f38899cf12f6e0b64498511e129f9a0f37ba05a71d042eaafd86dff",
+      "file": "capture-metadata-035-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 964,
+      "ciphertextSha256": "11ee4586dea274b7ff2b5aa8d86e4dbe0fca8a68a357ead0e046cef573098cb8",
+      "file": "capture-metadata-036-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 498,
+      "ciphertextSha256": "9bde12e036616b016bead0d798a9cf07a8fa25a7969d329680e99bc54d5e3039",
+      "file": "capture-metadata-036-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 994,
+      "ciphertextSha256": "0e2c559a23ea6eead574cc309bc5e7535bd666f5585d6daec00e94235c89ba85",
+      "file": "capture-metadata-037-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2206,
+      "ciphertextSha256": "df9e3ae47b26fd90ed86b412dbdd170e11bc1864e6db9723fbe3879e44e22aef",
+      "file": "capture-metadata-037-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1223,
+      "ciphertextSha256": "7fb268253d1527c6f47e1efeab1d5786963d72fdb4a0390ad5e70d0337861860",
+      "file": "capture-metadata-038-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 2354,
+      "ciphertextSha256": "8e58394b7f5f003161966e10296097a8488dda5b4d249aa3624b27d2356f70a2",
+      "file": "capture-metadata-038-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 994,
+      "ciphertextSha256": "f29e85257c2410b1e0a062079c532033da2d6df700c570f9b5771591a9d8427c",
+      "file": "capture-metadata-039-intent.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 534,
+      "ciphertextSha256": "b30aaa4c440719a33836c13359f65c2b6dbb3cc2063dffe1231ead170c6eb8ab",
+      "file": "capture-metadata-039-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 42837,
+      "ciphertextSha256": "f3d5889cbaa8b9524805fbfea782f6a928c6e849deaa9b92a3f7ff42976e49c5",
+      "file": "full-capture-caller-result.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 830,
+      "ciphertextSha256": "3410bbe48b4611e980932d6699d6af46e71576f902f108162976078450485d26",
+      "file": "fixture-069-synthetic-etcd-after-capture.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    },
+    {
+      "ciphertextBytes": 1150,
+      "ciphertextSha256": "31ce2d33cf47417a093d3a2de5dd42a4961dc6e527233c5ea7908c3265dc957d",
+      "file": "fixture-070-source-actual-visible-state-comparison.age",
+      "readbackVerified": true,
+      "recipientStanzas": [
+        {
+          "tag": "8XlNQg",
+          "type": "ssh-ed25519"
+        },
+        {
+          "tag": "Xg/FRQ",
+          "type": "ssh-ed25519"
+        }
+      ]
+    }
+  ],
+  "independentReadbackVerified": false,
+  "offNodeCustodyAccepted": false,
+  "plaintextDigests": "private-export-digests.json (private custody only)",
+  "readbackScope": "agent-held second recipient; does not prove off-node custody",
+  "readbackVerified": true,
+  "schemaVersion": 1
+}

@@ -1,0 +1,7 @@
+Native integration suites can inspect their exact synthetic event stream through the
+run-owned Redis endpoint. The SDK helper rejects foreign tenants before opening
+persistence, bounds connection/read work and uses the centrally pinned Redis package.
+
+The three-file prerequisite preserves current owner main and passes all 15 descriptor
+controls with a zero-warning Release build. Caller activation, tool pins, publication
+and hosted topology qualification remain separate steps.

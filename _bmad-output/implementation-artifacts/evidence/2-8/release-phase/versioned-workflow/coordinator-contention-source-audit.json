@@ -1,0 +1,20 @@
+{
+  "reviewedAt": "2026-10-31T21:16:04.199069+00:00",
+  "base": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "worktree": "/tmp/hexalith-story28-cleanup-contention",
+  "patch": "/tmp/story28-contention-root-audit-nxf1x849.patch",
+  "patchSha256": "37bc7576d1b130fbf8634478241e72a7c5bbb3f41d352fdfcfc76f20c1604068",
+  "completeDiffRead": true,
+  "audit": "Only initial selected-outcome commit changes waitForLock from false to canHoldAttachments. Supported selected local/CI owners serialize within original token; unsupported legacy owners keep immediate bookkeeping behavior. Lock is released before provisioning wait. Four existing startup cases/expected assertions retained, two controlled transient-lock cases added, persistent-lock control refuses before resource cleanup then verifies exact idempotent retry with first outcome/status/cause/time and attachment expiry/reason preserved. No new production token/budget or policy/schema change.",
+  "source": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": {
+      "checkoutSha256": "c1c1e2d0be3cd76a1a307859b1884307a03cec840fcd5d829c17b18cd852a672",
+      "normalizedBlob": "f79b46bc1e2de1154943f4609cc75a2aedd5fd42"
+    },
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": {
+      "checkoutSha256": "afd52002394d472d524760411c2196994dbb1c9bbaa894f837460a2348024e50",
+      "normalizedBlob": "da4ad0d718494f255b75befea3e51836c46bd098"
+    }
+  },
+  "qualification": "Local source audit only; hosted exact-head checks and package/reference acceptance remain pending"
+}

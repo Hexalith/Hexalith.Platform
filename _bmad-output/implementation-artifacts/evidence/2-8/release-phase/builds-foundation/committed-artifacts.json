@@ -1,0 +1,80 @@
+{
+  "sourceCommit": "ee6074995b7da585f731f938cc295a6f7d3bf6a3",
+  "sourceTree": "ac3207373df64dce422fe78d8fab7827b59e8876",
+  "base": "2132fe0e276059dcd9fc35a7115fd2a1795ce538",
+  "sourceSha256": {
+    ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+    ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+    "Github/run-module-integration/run_module_integration.py": "ce2a90aa19fc41d18dd8ec55fd5d073504be15224b724eba92faa901a598197c",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "112d06e2a0ded590e56956489f91d0f76d39b145ff1b3e5241a1de4461fed38b",
+    "Tools/G4PackageQualification.functions.ps1": "e0e986099b3ac6de5d9c37bf2a9737b659c12e1d023e11332d29c7015dca9659",
+    "Tools/PackagedSeedProbe/PackagedSeedProbe.cs": "7b11ee75827fc541bf8bfccbf2efa99607577b85864f61f1bd7ccd2a509866e3",
+    "Tools/test-publish-g4-tool-packages.ps1": "7b04cd1bdee203c74b2591d109670b1ef21b7d9953cd83fe943c8d8210a7ca0e",
+    "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "e3d0bc592df3f14881a2cf83eff033c3a5c5ec846b0283fa032520c1543d4a1c",
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "2577c12ff64c25df0ef726b527bccde48990bf8413601ecd9fdd148de0f820ed",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "558dfca085e4cb8ee2b46ddbf58a4bbe07f175aacf68c9887b732eed62d87450",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "b655dc657ed1be82d7befeeca006e1d6fd0fde433e0b903ef17ad477b3572ea8",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "9151df91bf202651fb6ea590c22944237c94821b4ad83251f228af38124bbc9c",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "02c4ff2bd7526a49867e55071cc15481d43d67e202ce47eb09e06019333f8338",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "7ae5717bade8c9ef9221d2f046f91dd0faca6987110e592361d4044c93a40fbd",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "c9b02b331bc74e440053fe7ee4a951b8045cd50f9beba636784834104af2f455",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "33e936a66b6064dae6e1e862234eb326e5e7715907f563c9b1fa4c1707eb51a3",
+    "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "c10d6309f69d41cafe374e2f6ef438e5ee315aa37d2adf0d7854054e0e4f9a2a",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "07af5ce6aa1031a4046075ac2554a43f2c1dbf839ccfd229fa5746fc4954bedb"
+  },
+  "archive": {
+    "path": "/tmp/hexalith-story28-builds-foundation-committed-pack/Hexalith.Builds.Module.Cli.0.0.0-story28-local.nupkg",
+    "sha256": "4e2098f65debb89aef888c7cf9daab89bd6231f1a2bff747ae64a7c9e8b891e5",
+    "version": "0.0.0-story28-local",
+    "scope": "Local committed-source verification archive, not published candidate acceptance"
+  },
+  "packagedSeed": {
+    "entry": "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+    "sha256": "2651442a24b763350dc27d5b46276ca5c91b9e88e03eb7b8df4b2331f83cbe3f",
+    "proofPath": "packaged-seed-proof-committed.json",
+    "proofSha256": "b495e33946b0e09a5428b8c1652481e8db8830c8900ea5f4c990a1db432c5e1c",
+    "status": "passed"
+  },
+  "embeddedEventStoreFamily": {
+    "Hexalith.EventStore.Admin.Abstractions": "3.129.0",
+    "Hexalith.EventStore.Client": "3.129.0",
+    "Hexalith.EventStore.Contracts": "3.129.0",
+    "Hexalith.EventStore.DomainService": "3.129.0",
+    "Hexalith.EventStore.Gateway": "3.129.0",
+    "Hexalith.EventStore.Server": "3.129.0",
+    "Hexalith.EventStore.ServiceDefaults": "3.129.0"
+  },
+  "binaries": {
+    "/tmp/hexalith-story28-builds-foundation/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": {
+      "sha256": "a70cad695de9deef26f7c117c1e6b7a95a262d0f385e69af0143663777c3461d",
+      "assemblyInformationalVersion": "1.0.0+ee6074995b7da585f731f938cc295a6f7d3bf6a3"
+    },
+    "/tmp/hexalith-story28-builds-foundation/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll": {
+      "sha256": "9af772054e4bd6b3e6451fb65c79583d29d151d1784a9546602ba6947f0c828e",
+      "assemblyInformationalVersion": "1.0.0+ee6074995b7da585f731f938cc295a6f7d3bf6a3"
+    },
+    "/tmp/hexalith-story28-builds-foundation/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll": {
+      "sha256": "fc2d28334caa525046972ce81cd2df00ae8e04f551f70de072c8f3efd76b23f2",
+      "assemblyInformationalVersion": "1.0.0+ee6074995b7da585f731f938cc295a6f7d3bf6a3"
+    },
+    "/tmp/hexalith-story28-builds-foundation/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll": {
+      "sha256": "2651442a24b763350dc27d5b46276ca5c91b9e88e03eb7b8df4b2331f83cbe3f",
+      "assemblyInformationalVersion": "1.0.0+ee6074995b7da585f731f938cc295a6f7d3bf6a3"
+    },
+    "/tmp/hexalith-story28-builds-foundation/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": {
+      "sha256": "591011b04b24f31917ce5bfc1fd575acc27e8493e6eead6e1058755f558aba7e",
+      "assemblyInformationalVersion": "1.0.0+ee6074995b7da585f731f938cc295a6f7d3bf6a3"
+    }
+  },
+  "runtimeTests": {
+    "passed": 238,
+    "failed": 0,
+    "skipped": 0,
+    "output": "runtime-tests-committed.txt",
+    "xml": "runtime-tests-committed.xml"
+  },
+  "candidateAcceptance": false,
+  "hostedQualification": false
+}

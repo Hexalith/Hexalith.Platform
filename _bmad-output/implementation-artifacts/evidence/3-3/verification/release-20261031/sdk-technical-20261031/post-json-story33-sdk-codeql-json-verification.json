@@ -1,0 +1,85 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+  "base": "f3025fb2489dc776edb6dc5e1722f7d530b34daf",
+  "indexBefore": "13988653d6c77298189b7ce23af09179bd88717d5048230979ce0f90908ac747",
+  "indexAfter": "13988653d6c77298189b7ce23af09179bd88717d5048230979ce0f90908ac747",
+  "results": [
+    {
+      "name": "wire",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "-class",
+        "*TechnicalHttpInvocationTests",
+        "-xml",
+        "/tmp/story33-sdk-codeql-json-wire.xml"
+      ],
+      "environment": {
+        "ASPNETCORE_URLS": "http://127.0.0.1:0"
+      },
+      "exitCode": 0,
+      "log": "/tmp/story33-sdk-codeql-json-wire.log",
+      "xml": "/tmp/story33-sdk-codeql-json-wire.xml",
+      "assemblies": [
+        {
+          "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+          "id": "9191147e-176c-424f-b021-4aecf0d0cc0a",
+          "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+          "run-date": "2026-10-31",
+          "run-time": "21:25:01",
+          "start-rtf": "2026-10-31T21:25:01.9385623+00:00",
+          "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+          "target-framework": ".NETCoreApp,Version=v10.0",
+          "errors": "0",
+          "failed": "0",
+          "finish-rtf": "2026-10-31T21:25:13.2272697+00:00",
+          "not-run": "0",
+          "passed": "20",
+          "skipped": "0",
+          "time": "11.290",
+          "time-rtf": "00:00:11.2899999",
+          "total": "20"
+        }
+      ]
+    },
+    {
+      "name": "scan",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "-method",
+        "*TrackedReusableContent_DoesNotContainUsableSecrets",
+        "-xml",
+        "/tmp/story33-sdk-codeql-json-scan.xml"
+      ],
+      "environment": {
+        "ASPNETCORE_URLS": "http://127.0.0.1:0"
+      },
+      "exitCode": 0,
+      "log": "/tmp/story33-sdk-codeql-json-scan.log",
+      "xml": "/tmp/story33-sdk-codeql-json-scan.xml",
+      "assemblies": [
+        {
+          "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+          "id": "bfaaa1dc-b0d2-41ac-8406-1ae7d7a82b88",
+          "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+          "run-date": "2026-10-31",
+          "run-time": "21:25:13",
+          "start-rtf": "2026-10-31T21:25:13.6937485+00:00",
+          "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+          "target-framework": ".NETCoreApp,Version=v10.0",
+          "errors": "0",
+          "failed": "0",
+          "finish-rtf": "2026-10-31T21:25:18.3873281+00:00",
+          "not-run": "0",
+          "passed": "1",
+          "skipped": "0",
+          "time": "4.694",
+          "time-rtf": "00:00:04.6940000",
+          "total": "1"
+        }
+      ]
+    }
+  ],
+  "scope": "one testfixture file changed; no production changes after204casepass; actualWire20pluscompletecandidate scanner"
+}

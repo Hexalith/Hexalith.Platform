@@ -1,0 +1,79 @@
+2026-10-31T16:16:32.9155892Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogFixtureToolTests.OwnedInfrastructureSubprocessHasBoundedCancellationAndNormalCompletion(mode: "cancellation") (1s 146ms)
+2026-10-31T16:16:32.9174881Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:16:32.9182793Z   Shouldly.ShouldAssertException : if (File.Exists(state)) (await File.ReadAllTextAsync(state)).Split(' ')[2]
+2026-10-31T16:16:32.9183662Z       should be
+2026-10-31T16:16:32.9190390Z   "Z"
+2026-10-31T16:16:32.9190953Z       but was
+2026-10-31T16:16:32.9191495Z   "R"
+2026-10-31T16:16:32.9191817Z       difference
+2026-10-31T16:16:32.9192583Z   Difference     |  |   
+
+2026-10-31T16:19:29.8335165Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.ReplayRecovery_GenericHandlerReusesOneOriginalManifestAcrossThreeLostDurableResponses(head: 10000) (1m 30s 181ms)
+2026-10-31T16:19:29.8339877Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:19:29.8343992Z   Shouldly.ShouldAssertException : faults.Preparations
+2026-10-31T16:19:29.8344933Z       should be
+2026-10-31T16:19:29.8345546Z   2
+2026-10-31T16:19:29.8346120Z       but was
+2026-10-31T16:19:29.8347749Z   1
+2026-10-31T16:19:29.8352210Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.ReplayRecovery_GenericHandlerReusesOneOriginalManifestAcrossThreeLostDurableResponses(Int32 head) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.ReplayRecovery.cs:68
+2026-10-31T16:19:29.8357331Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+
+2026-10-31T16:19:36.0038060Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorOversizedEnvelopeReturnsTypedPageFailureBeforeAnyEffects (118ms)
+2026-10-31T16:19:36.0046532Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:19:36.0050575Z   Xunit.MicrosoftTestingPlatform.XunitException: Dapr.Actors.ActorMethodInvocationException : Remote Actor Method Exception,  DETAILS: Exception: IOException, Method Name: MoveNext, Line Number: 0, Exception uuid: 73fad23f-b3a4-4ccc-9593-a6822560d91e
+2026-10-31T16:19:36.0053445Z   ---- Dapr.Actors.ActorInvokeException : Buffer limit exceeded.
+2026-10-31T16:19:36.0056324Z     at Dapr.Actors.DaprHttpInteractor.InvokeActorMethodWithRemotingAsync(ActorMessageSerializersManager serializersManager, IActorRequestMessage remotingRequestRequestMessage, CancellationToken cancellationToken)
+2026-10-31T16:19:36.0059372Z     at Dapr.Actors.Communication.Client.ActorRemotingClient.InvokeAsync(IActorRequestMessage remotingRequestMessage, CancellationToken cancellationToken)
+2026-10-31T16:19:36.0062312Z     at Dapr.Actors.Client.ActorProxy.InvokeMethodAsync(Int32 interfaceId, Int32 methodId, String methodName, IActorRequestMessageBody requestMsgBodyValue, CancellationToken cancellationToken)
+2026-10-31T16:19:36.0064652Z     at Dapr.Actors.Client.ActorProxy.ContinueWithResult[TRetval](Int32 interfaceId, Int32 methodId, Task`1 task)
+2026-10-31T16:19:36.0069297Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorOversizedEnvelopeReturnsTypedPageFailureBeforeAnyEffects() in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:131
+
+2026-10-31T16:21:05.9554993Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 9999) (1m 29s 818ms)
+2026-10-31T16:21:05.9558396Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:21:05.9561861Z   Shouldly.ShouldAssertException : await transport.InvokeReplayAsync(catalog, request, action, CancellationToken.None).ConfigureAwait(true)
+2026-10-31T16:21:05.9563444Z       should not be null but was
+2026-10-31T16:21:05.9568136Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:444
+2026-10-31T16:21:05.9572627Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:21:05.9575579Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count)
+2026-10-31T16:21:05.9578289Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:21:05.9580734Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+
+2026-10-31T16:22:35.6064890Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 10000) (1m 29s 652ms)
+2026-10-31T16:22:35.6068929Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:22:35.6075015Z   Shouldly.ShouldAssertException : await transport.InvokeReplayAsync(catalog, request, action, CancellationToken.None).ConfigureAwait(true)
+2026-10-31T16:22:35.6076267Z       should not be null but was
+2026-10-31T16:22:35.6080624Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:444
+2026-10-31T16:22:35.6084605Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:22:35.6087036Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count)
+2026-10-31T16:22:35.6089551Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:22:35.6091170Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+
+2026-10-31T16:24:07.2483448Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9000, delta: 771, pageSize: 256) (1m 12s 709ms)
+2026-10-31T16:24:07.2486704Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:24:07.2489247Z   Shouldly.ShouldAssertException : await transport.InvokeReplayAsync(catalog, request, action, CancellationToken.None).ConfigureAwait(true)
+2026-10-31T16:24:07.2490440Z       should not be null but was
+2026-10-31T16:24:07.2494960Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:444
+2026-10-31T16:24:07.2499053Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:24:07.2503798Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:449
+2026-10-31T16:24:07.2507460Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:24:07.2509020Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+
+2026-10-31T16:25:41.9085054Z failed Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9999, delta: 1, pageSize: 256) (1m 29s 413ms)
+2026-10-31T16:25:41.9088114Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll (net10.0|x64)
+2026-10-31T16:25:41.9089634Z   Shouldly.ShouldAssertException : await transport.InvokeReplayAsync(catalog, request, action, CancellationToken.None).ConfigureAwait(true)
+2026-10-31T16:25:41.9090342Z       should not be null but was
+2026-10-31T16:25:41.9093996Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:444
+2026-10-31T16:25:41.9097738Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:25:41.9102478Z     at Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SeedGuardedBaselineAsync(AggregateIdentity identity, IAggregateActor source, NamedProjectionRouteCatalogEntry catalog, Int32 count) in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NamedProjectionDispatchLiveSidecarTests.SourceGuard.cs:449
+2026-10-31T16:25:41.9106507Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-10-31T16:25:41.9108100Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+
+2026-10-31T17:04:57.3035953Z Test run summary: Failed!
+2026-10-31T17:04:57.3036054Z   total: 293
+2026-10-31T17:04:57.3036154Z   failed: 7
+2026-10-31T17:04:57.3036270Z   succeeded: 282
+2026-10-31T17:04:57.3036412Z   skipped: 4
+2026-10-31T17:04:57.3036527Z   duration: 48m 35s 248ms
+2026-10-31T17:04:57.3036865Z Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)
+2026-10-31T17:04:57.3046877Z ##[error]Process completed with exit code 2.
+2026-10-31T17:04:57.3120268Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

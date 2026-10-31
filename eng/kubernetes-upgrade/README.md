@@ -22,6 +22,13 @@ and includes the runner in final workload outcomes. All 44 local tests pass;
 the new private records remain unsigned, pending and closed. Retained signature
 authentication and remote readback were not repeated in this continuation.
 
+The [2026-10-31 per-hop transition preparation](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-1/20261031t222850z-per-hop-transition-preparation/summary.md)
+separates each hop's terminal transitions and before/after storage evidence.
+All 46 local tests pass. Its 16 private records remain unsigned and closed;
+historical maintenance and all eight retained signed recovery records/signatures
+are unchanged. No operational proof, cryptographic acceptance or remote readback
+was refreshed, and every actual upgrade task remains incomplete.
+
 ## Retained two-hop preparation
 
 The recorder reads `workloadHop.tag` and `workloadTarget.tag` from the
@@ -49,6 +56,18 @@ Every per-hop accepted target and evidence hash starts null; selected dated patc
 and collection instructions establish no live result. The transition record also
 names terminal quiesce/cordon/drain and accountable stop/recovery evidence, leaving
 the exact successor-procedure and recovery-decision hashes null until approved.
+`maintenance-transition.json` reserves a separate `perHopTransitions` entry for
+each minor hop, bound to that hop's signed gate and approved procedure. Each
+`minor-hop` record references its own transition entry and leaves both record
+and entry acceptance hashes null. Record ordered terminal quiesce/workflow,
+cordon observation and drain evidence after the corresponding signed-open gate
+and before that hop's control-plane upgrade. An already paused workload still
+needs fresh approved paused-state evidence for the next hop.
+Storage collection likewise separates `before-hop` and
+`after-hop-before-uncordon` evidence for each hop. The gate references the
+before-hop proof; the hop outcome references its own after-hop proof. All
+timestamps, accepted hashes and live class censuses remain unknown, and provider
+cleanup remains unestablished. A prior hop or phase cannot supply these proofs.
 The preflight and recovery instructions require fresh per-hop identities, matching
 snapshot/configuration bindings, independent immutable readback, isolated comparison
 and signed cleanup. Each hop's pre-uncordon requirements remain `not-run` with
@@ -110,7 +129,7 @@ The storage probe is a cluster mutation even though disposable; execute it only 
 ## Outage, hop and recovery sequence
 
 1. Verify the signed-open per-hop gate immediately before the first package change or outage action. If any prerequisite is absent, stale, ambiguous or failed, stop. Preparation files and checksums do not authorize mutation.
-2. Quiesce Keycloak, OpenBao, Memories and Forgejo through their approved owner procedures, including runner jobs and every tracked workflow. Record every workflow terminal and a successful quiesce in `maintenance-transition.json`. The approved Memories backup playbook alone does not approve the other workloads' upgrade quiescence.
+2. Quiesce Keycloak, OpenBao, Memories and Forgejo through their approved owner procedures, including runner jobs and every tracked workflow. Record every workflow terminal and a successful quiesce in this hop's `maintenance-transition.json` entry, binding its own gate and approved procedure. The approved Memories backup playbook alone does not approve the other workloads' upgrade quiescence.
 3. Cordon `node1` and observe `spec.unschedulable=true`. Drain to exit 0 with only named, approved static-pod/DaemonSet/local-data exceptions. A control-plane mirror pod or DaemonSet exception never excuses an untracked application. Do not automatically use force, bypass disruption budgets or delete local data. Record the exact command, exit and exceptions. Do not start kubeadm apply while quiesce, cordon or drain is pending, failed or ambiguous.
 4. Follow the selected target minor's Kubernetes instructions: upgrade the control plane first, then kubelet/kubectl packages and restart only the required components. Capture exact command/tool versions, exit codes and resulting component versions in `minor-hop-<from>-to-<to>.json`. Preserve sanitized diagnostics on any failure; the recovery owner follows the approved control-plane/etcd/workload recovery procedure.
 5. Before uncordoning, require API readiness, `node1` Ready, CNI/DNS/add-on/operator health, cleared API scan, healthy external etcd, valid skew and the fresh functional storage probe including cleanup. Any unhealthy protected workload also stops the next hop. If another hop is selected, repeat planning and the whole signed gate without skipping a minor; account for the still-paused workload state through its approved procedure.

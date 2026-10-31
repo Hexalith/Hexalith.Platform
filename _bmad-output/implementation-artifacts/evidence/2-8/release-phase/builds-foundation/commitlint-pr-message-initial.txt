@@ -1,0 +1,27 @@
+⧗   --- input ---
+fix(module): clean CI runs and secure packaged hosts
+
+Selected CI suites must end attachments before owned resources stop and must clean up after success,
+failure, cancellation and partial startup. Persist an exact preallocation owner receipt, allow only
+same-job CI attachment admission, withdraw durably before stopping, and disable CI failure retention.
+The helper forwards constructor-time cancellation and verifies exact receipt-bound cleanup; own CI
+and release checks exercise it without activating the shared domain workflow.
+
+The packaged EventStore host skipped HTTP security and route-catalog setup that SDK 3.129.0 already
+provides. Enroll the package host in those published boundaries. The real archive probe supplies its
+own temporary app-channel token and requires valid discovery plus missing/wrong credential refusals,
+while retaining the existing subscription, receiver metadata and archive identity assertions.
+
+Validation: Release compilation with zero warnings/errors; 238 lifecycle/admission/engine/regression
+controls; 15 helper controls; self-CI truth-table checks; publisher contract mutations; real packaged
+seed discovery in configured and declarative modes, actor discovery 200 and credential refusals 401.
+Exact committed source/archive/proof hashes are retained in Platform Story 2.8 release evidence.
+
+Dependency boundary: existing published EventStore 3.129.0 remains selected. No dependency on the
+unpublished stream-reader SDK, family pin change, shared domain-ci activation, caller enrollment or
+hosted candidate acceptance is included. Merge and publication remain a separate approved stage.
+✖   footer's lines must not be longer than 100 characters [footer-max-line-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+

@@ -1,0 +1,17 @@
+@commitlint/cli@21.2.4
+
+⧗   --- input ---
+fix(testing): add descriptor-owned stream observation
+
+Native integration suites can inspect their exact synthetic event stream through the
+run-owned Redis endpoint. The SDK helper rejects foreign tenants before opening
+persistence, bounds connection/read work and uses the centrally pinned Redis package.
+
+The three-file prerequisite preserves current owner main and passes all 15 descriptor
+controls with a zero-warning Release build. Caller activation, tool pins, publication
+and hosted topology qualification remain separate steps.
+✔   found 0 problems, 0 warnings
+
+⧗   --- input ---
+fix(testing): add descriptor-owned stream observation
+✔   found 0 problems, 0 warnings

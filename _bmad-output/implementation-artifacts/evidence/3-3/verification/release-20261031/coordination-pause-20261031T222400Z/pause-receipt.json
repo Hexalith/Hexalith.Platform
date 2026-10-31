@@ -1,0 +1,164 @@
+{
+  "status": "paused; explicit resume required",
+  "utc": "2026-10-31T22:24:00.853796+00:00",
+  "coordinationThread": "01a19065-cca3-7051-801f-fa2e62875924",
+  "pendingMutation": "none",
+  "ownedLiveTopology": "none",
+  "ownedBuilds": "none; own source-mapping build interrupted and not accepted",
+  "remoteWorkflows": "left untouched",
+  "repositories": {
+    "Hexalith.EventStore-final": {
+      "head": "316da6cf7c12582dc4cddeecb6f2f06f64588817",
+      "branch": "fix/development-catalog-owner-qualification",
+      "indexSha256BeforeAndAfter": "92c6b290891b45fc2aaf07802e8e855059288aa87c02dae8acffce837be1f1d1",
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tracked-complete": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "untracked": []
+    },
+    "Hexalith.Tenants-final": {
+      "head": "74e6cb21598fdd14c9aa261f74970f5c5b63f55d",
+      "branch": "fix/development-catalog-owner-qualification",
+      "indexSha256BeforeAndAfter": "19bbae5794701e42ac92257b50d2b3fd952a1e7e0f4110ebaacd473082c300f4",
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tracked-complete": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "untracked": []
+    },
+    "Hexalith.Builds-final": {
+      "head": "57255b502fdd546bb09851d04fc1830175d897f3",
+      "branch": "fix/development-catalog-owner-qualification",
+      "indexSha256BeforeAndAfter": "a05b0b012343b8a7cce8ca4ee145f41991469b14f96084616d12409ae1633bed",
+      "patches": {
+        "staged": {
+          "bytes": 70661,
+          "sha256": "552e3b761bbb242c514da1f1915d828be589b9e1a3bcfb14dc7f6f9164cd187d"
+        },
+        "unstaged": {
+          "bytes": 8914,
+          "sha256": "a50a252e177ceb6f5766cd8cb8165d91b4a0b56eb6abbd8699058ddbcdb873c3"
+        },
+        "tracked-complete": {
+          "bytes": 77737,
+          "sha256": "3cb69032c061c97e507db58fb2c75583cb65bb70030e815a7e21ac9160bcf7c6"
+        }
+      },
+      "untracked": [
+        {
+          "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs",
+          "sha256": "b806087de5797468a6d5be35cdfee672b8efff66580c73ea240eb06083c0fc26"
+        },
+        {
+          "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs",
+          "sha256": "805aec61b7f104ed40e22005a65416ecc13dc544b44c348e30890cba69c7d8ff"
+        },
+        {
+          "path": "test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs",
+          "sha256": "3850ce8188cf0025c2a72c90726599197d7d3b451100a82c7ccfe35388823dd0"
+        }
+      ]
+    },
+    "Hexalith.Platform-final": {
+      "head": "68b785b6a929050771e70d78f83ff10fea3daabc",
+      "branch": "fix/run-scoped-routing-catalog-delivery",
+      "indexSha256BeforeAndAfter": "27466385026d83653a3fb6d564261886180870fb21116bd0cbde34c5195afcc9",
+      "patches": {
+        "staged": {
+          "bytes": 362434,
+          "sha256": "0bd1eb773ddfb1b1763585265e0b16f54b99999078aebaad3f1d9fd2a2d7f1ba"
+        },
+        "unstaged": {
+          "bytes": 350396,
+          "sha256": "ca6047238a8c6c587e5d1e55596f20658eec75164dd8f3085d8237e77a00db33"
+        },
+        "tracked-complete": {
+          "bytes": 57398,
+          "sha256": "19041d14420227fa5b910b100dbc354620d263d22c0b67ee9f27281687ec7241"
+        }
+      },
+      "untracked": [
+        {
+          "path": "eng/Hexalith.Platform.CatalogProof/Hexalith.Platform.CatalogProof.csproj",
+          "sha256": "b4d9a93eff120facfa512e111a8731d1c6a4987523c7b0671923c01447300264"
+        },
+        {
+          "path": "eng/Hexalith.Platform.CatalogProof/Program.cs",
+          "sha256": "d3a0f697ad4d572ac33b0185fe6caaa92001dede2da1d4a26868a5c744ecdb1f"
+        },
+        {
+          "path": "src/Hexalith.Platform.Composition/PlatformCommittedCatalogProof.cs",
+          "sha256": "7172c239b6a5071a6f328b1aa50ad58ccabd2c3d1f9bb6fe0b6c6af00aa82ab4"
+        },
+        {
+          "path": "src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs",
+          "sha256": "95358672d9f02c4121657082487ade9098271eb1f321e1ce6b3daaeb5dae4c14"
+        },
+        {
+          "path": "tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs",
+          "sha256": "8dd73645e7b931e183f96c746b61d53c421c01a77586419f4a6be63c31b20e67"
+        },
+        {
+          "path": "tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs",
+          "sha256": "6476dd07fdf847a8565301a7fb3e1bc7f98f70a463ad3703eca701506e0b3057"
+        },
+        {
+          "path": "tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs",
+          "sha256": "930b18f1ad31c82f94d586b20f6f2317ad5adcb3fefc58be809a8d569a2aebcc"
+        },
+        {
+          "path": "tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs",
+          "sha256": "27e471e16d1912a0a841f88e74e60717c692928179293c91e6c316cbd7c0e0ea"
+        },
+        {
+          "path": "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs",
+          "sha256": "8c4570cf05ad393dda15b638b3fa0e1da87efe0b87a38e8b1bf4d52f4e7b8044"
+        }
+      ]
+    },
+    "Hexalith.Parties-final": {
+      "head": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+      "branch": "fix/development-catalog-owner-qualification",
+      "indexSha256BeforeAndAfter": "26247473dfe90547869ea217787cdd0454b293c156e4193a17bc7a575d921cfa",
+      "patches": {
+        "staged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "unstaged": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tracked-complete": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "untracked": []
+    }
+  },
+  "verification": "latestcompletedmappedbuild2passed;latesttest57/61passedwith4seedloaderfailures;25proofand8preparationcasespassed;build3interruptedNOTpassing",
+  "storyTasks9And10": "open",
+  "baseline": "1316523edfab050e03539a4e6425605245070de9"
+}

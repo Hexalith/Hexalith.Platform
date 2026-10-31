@@ -1,0 +1,1476 @@
+name: Hexalith Domain CI
+
+on:
+  workflow_call:
+    inputs:
+      solution:
+        description: 'Path to the .slnx/.sln solution to restore and build.'
+        required: true
+        type: string
+      module-manifest:
+        description: 'Optional v2 declaration for exact pinned tool package/Release build preparation; requires a qualified producer release.'
+        required: false
+        type: string
+        default: ''
+      dotnet-global-json:
+        description: 'Path to global.json pinning the .NET SDK.'
+        required: false
+        type: string
+        default: 'global.json'
+      packages-lock-file:
+        description: >-
+          Comma-separated hashFiles() patterns for the NuGet cache key. The default
+          covers the module package props, global.json, and the shared package props
+          imported from the Hexalith.Builds submodule; patterns that match nothing
+          are simply ignored.
+        required: false
+        type: string
+        default: 'Directory.Packages.props, global.json, references/Hexalith.Builds/Props/Directory.Packages.props'
+      dapr-version:
+        description: 'Dapr CLI version for integration/aspire tiers.'
+        required: false
+        type: string
+        default: '1.18.0'
+      dapr-runtime-version:
+        description: 'Dapr runtime version for integration/aspire tiers.'
+        required: false
+        type: string
+        default: '1.18.2'
+      test-platform:
+        description: >-
+          Test command contract: vstest uses --logger/--collect; microsoft-testing-platform
+          uses the xUnit v3 MTP reporter, trait-filter, and Microsoft coverage options.
+        required: false
+        type: string
+        default: 'vstest'
+      unit-test-projects:
+        description: 'Newline-separated Tier 1 test project paths (no Dapr).'
+        required: false
+        type: string
+        default: ''
+      integration-test-projects:
+        description: 'Newline-separated Tier 2 test project paths (require Dapr).'
+        required: false
+        type: string
+        default: ''
+      aspire-test-project:
+        description: 'Tier 3 Aspire test project path. When set, enables the aspire and performance jobs.'
+        required: false
+        type: string
+        default: ''
+      aspire-non-performance-filter:
+        description: 'dotnet test --filter for the non-performance Aspire tier.'
+        required: false
+        type: string
+        default: 'Category!=Performance'
+      performance-filter:
+        description: 'dotnet test --filter for the nightly performance tier.'
+        required: false
+        type: string
+        default: 'Category=Performance'
+      aspire-mtp-excluded-trait:
+        description: 'Microsoft.Testing.Platform trait excluded from the non-performance Aspire tier.'
+        required: false
+        type: string
+        default: 'Category=Performance'
+      performance-mtp-trait:
+        description: 'Microsoft.Testing.Platform trait selected by the nightly performance tier.'
+        required: false
+        type: string
+        default: 'Category=Performance'
+      run-consumer-validation:
+        description: 'Run scripts/pack + validate-nuget + validate-consumer package checks.'
+        required: false
+        type: boolean
+        default: false
+      package-prepare-script:
+        description: 'Optional repository-relative bash script preparing package dependencies before restore. Existing build, test and consumer gates remain unchanged.'
+        required: false
+        type: string
+        default: ''
+      run-coverage-gate:
+        description: 'Run scripts/validate-coverage.py over TestResults.'
+        required: false
+        type: boolean
+        default: false
+      coverage-minimum-line:
+        description: 'Minimum line coverage percentage.'
+        required: false
+        type: number
+        default: 80
+      coverage-required-branch:
+        description: 'Required branch coverage percentage.'
+        required: false
+        type: number
+        default: 100
+      coverage-isolation-targets:
+        description: 'Newline-separated files passed as --isolation-auth-target.'
+        required: false
+        type: string
+        default: ''
+      coverage-line-scope:
+        description: >-
+          Newline-separated source path prefixes passed as --line-scope to
+          scripts/validate-coverage.py (the production projects the line gate is
+          scoped to). When empty, the script falls back to its built-in default.
+        required: false
+        type: string
+        default: ''
+      aspire-continue-on-error:
+        description: 'Whether the Aspire tier is non-blocking.'
+        required: false
+        type: boolean
+        default: true
+      aspire-prepare-script:
+        description: 'Optional repository-relative bash script preparing the Aspire tier after Dapr initialization.'
+        required: false
+        type: string
+        default: ''
+      aspire-runner-script:
+        description: 'Optional repository-relative bash script replacing the default Aspire test invocation.'
+        required: false
+        type: string
+        default: ''
+      aspire-prepare-timeout-minutes:
+        required: false
+        type: number
+        default: 30
+      aspire-runner-timeout-minutes:
+        required: false
+        type: number
+        default: 30
+      aspire-evidence-path:
+        description: 'Repository-relative directory for support-safe hook evidence; always uploaded for hook callers.'
+        required: false
+        type: string
+        default: 'TestResults/aspire-hook-evidence'
+      aspire-browser-project:
+        description: 'Opt-in directory containing the pinned Playwright npm lockfile; also installs TLS/browser prerequisites.'
+        required: false
+        type: string
+        default: ''
+      aspire-fail-skips:
+        description: 'Require nonempty Aspire results and reject every skipped test.'
+        required: false
+        type: boolean
+        default: false
+      build-timeout-minutes:
+        required: false
+        type: number
+        default: 15
+      aspire-timeout-minutes:
+        required: false
+        type: number
+        default: 10
+      performance-timeout-minutes:
+        required: false
+        type: number
+        default: 60
+      governed-ci:
+        description: >-
+          Opt into the BUILD-REL-1 / GOV-1 governed CI contract: validate the actual
+          reusable-workflow identity, evaluate the bounded static workflow/composite
+          closure, and emit the provenance the caller needs for its
+          hexalith.dependency-release-handoff.v1 artifact. Leave unset to keep the
+          pre-BUILD-REL-1 CI contract exactly.
+        required: false
+        type: boolean
+        default: false
+      builds-execution-sha:
+        description: 'Exact approved Hexalith.Builds commit resolved for this reusable workflow. Required in governed mode.'
+        required: false
+        type: string
+        default: ''
+      candidate-commit:
+        description: 'Exact candidate commit the governed CI run evaluates. Required in governed mode.'
+        required: false
+        type: string
+        default: ''
+      dependency-policy-repository:
+        description: 'Normalized github.com/owner/repository identity owning the active dependency policy.'
+        required: false
+        type: string
+        default: ''
+      dependency-policy-path:
+        description: 'Repository-relative path of the active dependency policy.'
+        required: false
+        type: string
+        default: ''
+      dependency-policy-commit:
+        description: 'Exact commit of the active dependency policy.'
+        required: false
+        type: string
+        default: ''
+      dependency-policy-sha256:
+        description: 'Exact SHA-256 of the active dependency-policy bytes.'
+        required: false
+        type: string
+        default: ''
+      expected-ci-evaluator-digest:
+        description: 'Expected CI evaluator-authorization digest recorded into the governed provenance.'
+        required: false
+        type: string
+        default: ''
+    outputs:
+      governed-candidate:
+        description: 'Exact candidate commit the governed CI run evaluated.'
+        value: ${{ jobs.build-and-test.outputs.governed-candidate }}
+      governed-provenance-json:
+        description: 'Complete governed-provenance document as compact canonical JSON.'
+        value: ${{ jobs.build-and-test.outputs.governed-provenance-json }}
+      governed-provenance-sha256:
+        description: 'SHA-256 of the emitted governed-provenance document bytes.'
+        value: ${{ jobs.build-and-test.outputs.governed-provenance-sha256 }}
+      governed-closure-digest:
+        description: 'Canonical digest of the evaluated governed reusable/composite closure.'
+        value: ${{ jobs.build-and-test.outputs.governed-closure-digest }}
+      governed-reusable-repository:
+        description: 'Normalized identity of the repository owning the governed reusable workflow.'
+        value: ${{ jobs.build-and-test.outputs.governed-reusable-repository }}
+      governed-reusable-workflow-path:
+        description: 'Repository-relative path of the governed reusable workflow.'
+        value: ${{ jobs.build-and-test.outputs.governed-reusable-workflow-path }}
+      governed-reusable-commit:
+        description: 'Exact commit the governed reusable workflow executed from.'
+        value: ${{ jobs.build-and-test.outputs.governed-reusable-commit }}
+      governed-reusable-blob-sha256:
+        description: 'SHA-256 of the governed domain-ci.yml blob that executed.'
+        value: ${{ jobs.build-and-test.outputs.governed-reusable-blob-sha256 }}
+      governed-actions-json:
+        description: 'Canonical JSON array of the local composite-action sources in the governed closure.'
+        value: ${{ jobs.build-and-test.outputs.governed-actions-json }}
+      governed-external-actions-json:
+        description: 'Canonical JSON array of the pinned external action coordinates in the governed closure.'
+        value: ${{ jobs.build-and-test.outputs.governed-external-actions-json }}
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.build-timeout-minutes }}
+    outputs:
+      governed-candidate: ${{ steps.governed-provenance.outputs.candidate }}
+      governed-provenance-json: ${{ steps.governed-provenance.outputs.provenance-json }}
+      governed-provenance-sha256: ${{ steps.governed-provenance.outputs.provenance-sha256 }}
+      governed-closure-digest: ${{ steps.governed-provenance.outputs.closure-digest }}
+      governed-reusable-repository: ${{ steps.governed-provenance.outputs.reusable-repository }}
+      governed-reusable-workflow-path: ${{ steps.governed-provenance.outputs.reusable-workflow-path }}
+      governed-reusable-commit: ${{ steps.governed-provenance.outputs.reusable-commit }}
+      governed-reusable-blob-sha256: ${{ steps.governed-provenance.outputs.reusable-blob-sha256 }}
+      governed-actions-json: ${{ steps.governed-provenance.outputs.actions-json }}
+      governed-external-actions-json: ${{ steps.governed-provenance.outputs.external-actions-json }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Validate governed CI contract
+        if: ${{ inputs.governed-ci }}
+        shell: bash
+        env:
+          BUILDS_EXECUTION_SHA: ${{ inputs.builds-execution-sha }}
+          CANDIDATE_COMMIT: ${{ inputs.candidate-commit }}
+          EVENT_HEAD_SHA: ${{ github.sha }}
+          POLICY_REPOSITORY: ${{ inputs.dependency-policy-repository }}
+          POLICY_PATH: ${{ inputs.dependency-policy-path }}
+          POLICY_COMMIT: ${{ inputs.dependency-policy-commit }}
+          POLICY_SHA256: ${{ inputs.dependency-policy-sha256 }}
+          EXPECTED_EVALUATOR_DIGEST: ${{ inputs.expected-ci-evaluator-digest }}
+          RESOLVED_WORKFLOW_REPOSITORY: ${{ job.workflow_repository }}
+          RESOLVED_WORKFLOW_SHA: ${{ job.workflow_sha }}
+          RESOLVED_WORKFLOW_REF: ${{ job.workflow_ref }}
+        run: |
+          set -euo pipefail
+          failures=0
+          reject() {
+            echo "$1" >&2
+            failures=$((failures + 1))
+          }
+
+          if [[ ! "$BUILDS_EXECUTION_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            reject "governed CI requires builds-execution-sha to be an exact lowercase 40-character commit SHA."
+          fi
+          if [[ ! "$CANDIDATE_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+            reject "governed CI requires candidate-commit to be an exact lowercase 40-character commit SHA."
+          fi
+          if [[ ! "$POLICY_REPOSITORY" =~ ^github\.com/[a-z0-9._-]+/[a-z0-9._-]+$ ]]; then
+            reject "governed CI requires dependency-policy-repository as a normalized github.com/owner/repository identity."
+          fi
+          if [ -z "${POLICY_PATH//[[:space:]]/}" ] || [[ "$POLICY_PATH" == /* ]]; then
+            reject "governed CI requires dependency-policy-path as a non-empty relative path."
+          fi
+          if [[ ! "$POLICY_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+            reject "governed CI requires dependency-policy-commit to be an exact lowercase 40-character commit SHA."
+          fi
+          if [[ ! "$POLICY_SHA256" =~ ^[0-9a-f]{64}$ ]]; then
+            reject "governed CI requires dependency-policy-sha256 to be an exact lowercase 64-character SHA-256."
+          fi
+          if [[ ! "$EXPECTED_EVALUATOR_DIGEST" =~ ^[0-9a-f]{64}$ ]]; then
+            reject "governed CI requires expected-ci-evaluator-digest to be an exact lowercase 64-character SHA-256."
+          fi
+          if [ "$RESOLVED_WORKFLOW_REPOSITORY" != "Hexalith/Hexalith.Builds" ]; then
+            reject "The governed CI job is not defined by the approved Hexalith.Builds repository."
+          fi
+          if [ "$RESOLVED_WORKFLOW_SHA" != "$BUILDS_EXECUTION_SHA" ]; then
+            reject "Resolved reusable-workflow SHA does not match the approved builds-execution-sha."
+          fi
+          if [[ "$RESOLVED_WORKFLOW_REF" != Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@* ]]; then
+            reject "Resolved job.workflow_ref does not name Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml."
+          fi
+          if [ "$CANDIDATE_COMMIT" != "$EVENT_HEAD_SHA" ]; then
+            reject "governed CI candidate-commit must be the exact commit this CI run evaluates."
+          fi
+
+          checked_out_sha="$(git rev-parse HEAD)"
+          if [ "$checked_out_sha" != "$CANDIDATE_COMMIT" ]; then
+            reject "The checked-out CI source does not match the declared exact candidate."
+          fi
+
+          if [ "$failures" -ne 0 ]; then
+            echo "Rejected $failures governed CI contract violation(s)." >&2
+            exit 1
+          fi
+      - name: Checkout approved Builds actions
+        if: ${{ inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ inputs.builds-execution-sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Evaluate governed workflow provenance
+        id: governed-provenance
+        if: ${{ inputs.governed-ci }}
+        uses: ./.hexalith/builds-execution/Github/governed-provenance
+        with:
+          stage: ci
+          builds-execution-sha: ${{ inputs.builds-execution-sha }}
+          workflow-path: .github/workflows/domain-ci.yml
+          candidate: ${{ inputs.candidate-commit }}
+          dependency-policy-repository: ${{ inputs.dependency-policy-repository }}
+          dependency-policy-path: ${{ inputs.dependency-policy-path }}
+          dependency-policy-commit: ${{ inputs.dependency-policy-commit }}
+          dependency-policy-sha256: ${{ inputs.dependency-policy-sha256 }}
+          expected-evaluator-digest: ${{ inputs.expected-ci-evaluator-digest }}
+          output: .hexalith/ci/governed/ci-workflow-provenance.json
+      # Two forms of the same composite. Governed mode must load Builds-owned composites
+      # from the reusable-workflow commit itself, which only the governed checkout above
+      # provides; a legacy caller never checks Builds out, so it consumes the pinned copy.
+      - name: Initialize root-declared submodules (governed)
+        if: ${{ inputs.governed-ci }}
+        uses: ./.hexalith/builds-execution/Github/initialize-build
+      - name: Initialize root-declared submodules
+        if: ${{ !inputs.governed-ci }}
+        uses: Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: ${{ inputs.dotnet-global-json }}
+      - name: Checkout workflow-owned Builds preparation
+        if: ${{ inputs.module-manifest != '' && !inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ job.workflow_sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Prepare module build
+        if: ${{ inputs.module-manifest != '' }}
+        uses: ./.hexalith/builds-execution/Github/prepare-module-build
+        with:
+          manifest: ${{ inputs.module-manifest }}
+      - name: Cache NuGet packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles(inputs.packages-lock-file) }}
+          restore-keys: nuget-
+      - name: Validate test platform input
+        if: ${{ inputs.test-platform != 'vstest' && inputs.test-platform != 'microsoft-testing-platform' }}
+        shell: bash
+        env:
+          TEST_PLATFORM: ${{ inputs.test-platform }}
+        run: |
+          echo "Unsupported test-platform '$TEST_PLATFORM'. Expected vstest or microsoft-testing-platform." >&2
+          exit 1
+      - name: Prepare package dependencies
+        if: ${{ inputs.package-prepare-script != '' }}
+        timeout-minutes: 31
+        shell: bash
+        env:
+          PACKAGE_PREPARE_SCRIPT: ${{ inputs.package-prepare-script }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$PACKAGE_PREPARE_SCRIPT" =~ ^[A-Za-z0-9_./-]+\.sh$ || "$PACKAGE_PREPARE_SCRIPT" = /* || "$PACKAGE_PREPARE_SCRIPT" =~ (^|/)\.\.?(/|$) || ! -f "$PACKAGE_PREPARE_SCRIPT" ]]; then
+            echo "Package preparation must select an existing repository-relative bash script." >&2
+            exit 1
+          fi
+          checked_path="$PACKAGE_PREPARE_SCRIPT"
+          while [ "$checked_path" != . ]; do
+            if [ -L "$checked_path" ]; then
+              echo "Package preparation forbids symbolic links." >&2
+              exit 1
+            fi
+            checked_path="$(dirname "$checked_path")"
+          done
+          timeout --signal=TERM --kill-after=30s 1800 bash "$PACKAGE_PREPARE_SCRIPT" </dev/null
+      - name: Restore
+        env:
+          SOLUTION: ${{ inputs.solution }}
+        run: dotnet restore "$SOLUTION" -p:Configuration=Release
+      - name: Build
+        env:
+          SOLUTION: ${{ inputs.solution }}
+        run: dotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror
+      - name: Validate package consumer references
+        if: ${{ inputs.run-consumer-validation }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf ./nupkgs
+          python3 scripts/pack-release-packages.py ./nupkgs 0.0.0-ci-test
+          python3 scripts/validate-nuget-packages.py ./nupkgs
+          python3 scripts/validate-consumer-package-references.py ./nupkgs
+      - name: Unit tests (Tier 1, VSTest)
+        id: unit-tests-vstest
+        if: ${{ inputs.unit-test-projects != '' && inputs.test-platform == 'vstest' }}
+        shell: bash
+        env:
+          UNIT_TEST_PROJECTS: ${{ inputs.unit-test-projects }}
+        run: |
+          set -euo pipefail
+          failures=0
+          {
+            echo "## Tier 1 Unit Tests (VSTest)"
+            echo
+            echo "| Project | Status | Exit code |"
+            echo "| --- | --- | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r proj; do
+            [ -z "$proj" ] && continue
+            name=$(basename "$proj")
+            result_file="TestResults/${name}/${name}.trx"
+            rm -f -- "$result_file"
+            mkdir -p "TestResults/${name}"
+            report_marker="TestResults/${name}/.started"
+            touch "$report_marker"
+            summary_proj=${proj//\\/\\\\}
+            summary_proj=${summary_proj//|/\\|}
+            summary_proj=${summary_proj//\`/\\\`}
+            if dotnet test "$proj" --no-build --configuration Release \
+                --logger "trx;LogFileName=${name}.trx" \
+                --results-directory "TestResults/${name}" \
+                --collect:"XPlat Code Coverage" </dev/null; then
+              status=PASS
+              exit_code=0
+            else
+              exit_code=$?
+              annotation_proj=${proj//%/%25}
+              if [ ! -f "$result_file" ]; then
+                annotation_result_file=${result_file//%/%25}
+                printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \
+                  "$annotation_proj" "$exit_code" "$annotation_result_file"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              status=FAIL
+              failures=$((failures + 1))
+              printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"
+            fi
+            # A zero child exit is insufficient: require this invocation's nonzero TRX.
+            # The heredoc also keeps the verifier from consuming the project-list stdin.
+            if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+
+          try:
+              report = pathlib.Path(sys.argv[1])
+              if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:
+                  raise ValueError("stale report")
+              root = ET.parse(report).getroot()
+              ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"
+              if root.tag != ns + "TestRun":
+                  raise ValueError("invalid TRX root")
+              counters = root.find(f"{ns}ResultSummary/{ns}Counters")
+              results = root.findall(f"{ns}Results/{ns}UnitTestResult")
+              if counters is None:
+                  raise ValueError("missing counters")
+              total = int(counters.get("total", "-1"))
+              executed = int(counters.get("executed", "-1"))
+              outcomes = [result.get("outcome") for result in results]
+              if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):
+                  raise ValueError("missing or inconsistent test results")
+              if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):
+                  raise ValueError("invalid result outcome")
+              summary = root.find(f"{ns}ResultSummary")
+              if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:
+                  raise ValueError("invalid result summary")
+              for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):
+                  if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):
+                      raise ValueError("contradictory outcome counters")
+              failures = [int(counters.get(name, "0")) for name in
+                          ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")]
+              if any(value < 0 for value in failures):
+                  raise ValueError("invalid failure counters")
+              if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):
+                  raise ValueError("failed summary or counters with successful exit")
+          except (OSError, ValueError, ET.ParseError):
+              print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)
+              sys.exit(1)
+          PYTRX
+            then
+              annotation_proj=${proj//%/%25}
+              printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"
+              printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+          done <<< "$UNIT_TEST_PROJECTS"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          printf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"
+      - name: Unit tests (Tier 1, Microsoft.Testing.Platform)
+        id: unit-tests-mtp
+        if: ${{ inputs.unit-test-projects != '' && inputs.test-platform == 'microsoft-testing-platform' }}
+        shell: bash
+        env:
+          UNIT_TEST_PROJECTS: ${{ inputs.unit-test-projects }}
+          RUN_COVERAGE_GATE: ${{ inputs.run-coverage-gate }}
+        run: |
+          set -euo pipefail
+          failures=0
+          {
+            echo "## Tier 1 Unit Tests (Microsoft.Testing.Platform)"
+            echo
+            echo "| Project | Status | Exit code |"
+            echo "| --- | --- | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r proj; do
+            [ -z "$proj" ] && continue
+            name=$(basename "$proj")
+            result_file="TestResults/${name}/${name}.trx"
+            rm -f -- "$result_file"
+            mkdir -p "TestResults/${name}"
+            report_marker="TestResults/${name}/.started"
+            touch "$report_marker"
+            summary_proj=${proj//\\/\\\\}
+            summary_proj=${summary_proj//|/\\|}
+            summary_proj=${summary_proj//\`/\\\`}
+            coverage_args=()
+            if [ "$RUN_COVERAGE_GATE" = "true" ]; then
+              coverage_args+=(--coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml)
+            fi
+            if dotnet test "$proj" --no-build --configuration Release \
+                --results-directory "TestResults/${name}" \
+                --report-xunit-trx \
+                --report-xunit-trx-filename "${name}.trx" \
+                "${coverage_args[@]}" </dev/null; then
+              status=PASS
+              exit_code=0
+            else
+              exit_code=$?
+              annotation_proj=${proj//%/%25}
+              if [ "$exit_code" -eq 10 ]; then
+                printf '::error title=Test shard infrastructure failure::%s exited with infrastructure code %d.\n' "$annotation_proj" "$exit_code"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              if [ ! -f "$result_file" ]; then
+                annotation_result_file=${result_file//%/%25}
+                printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \
+                  "$annotation_proj" "$exit_code" "$annotation_result_file"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              status=FAIL
+              failures=$((failures + 1))
+              printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"
+            fi
+            # A zero child exit is insufficient: require this invocation's nonzero TRX.
+            # The heredoc also keeps the verifier from consuming the project-list stdin.
+            if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+
+          try:
+              report = pathlib.Path(sys.argv[1])
+              if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:
+                  raise ValueError("stale report")
+              root = ET.parse(report).getroot()
+              ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"
+              if root.tag != ns + "TestRun":
+                  raise ValueError("invalid TRX root")
+              counters = root.find(f"{ns}ResultSummary/{ns}Counters")
+              results = root.findall(f"{ns}Results/{ns}UnitTestResult")
+              if counters is None:
+                  raise ValueError("missing counters")
+              total = int(counters.get("total", "-1"))
+              executed = int(counters.get("executed", "-1"))
+              outcomes = [result.get("outcome") for result in results]
+              if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):
+                  raise ValueError("missing or inconsistent test results")
+              if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):
+                  raise ValueError("invalid result outcome")
+              summary = root.find(f"{ns}ResultSummary")
+              if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:
+                  raise ValueError("invalid result summary")
+              for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):
+                  if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):
+                      raise ValueError("contradictory outcome counters")
+              failures = [int(counters.get(name, "0")) for name in
+                          ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")]
+              if any(value < 0 for value in failures):
+                  raise ValueError("invalid failure counters")
+              if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):
+                  raise ValueError("failed summary or counters with successful exit")
+          except (OSError, ValueError, ET.ParseError):
+              print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)
+              sys.exit(1)
+          PYTRX
+            then
+              annotation_proj=${proj//%/%25}
+              printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"
+              printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+          done <<< "$UNIT_TEST_PROJECTS"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          printf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"
+      - name: Install and initialize Dapr (governed)
+        if: ${{ inputs.integration-test-projects != '' && inputs.governed-ci }}
+        uses: ./.hexalith/builds-execution/Github/dapr-init
+        with:
+          version: ${{ inputs.dapr-version }}
+          runtime-version: ${{ inputs.dapr-runtime-version }}
+      - name: Install and initialize Dapr
+        if: ${{ inputs.integration-test-projects != '' && !inputs.governed-ci }}
+        uses: Hexalith/Hexalith.Builds/Github/dapr-init@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+        with:
+          version: ${{ inputs.dapr-version }}
+          runtime-version: ${{ inputs.dapr-runtime-version }}
+      - name: Integration tests (Tier 2, VSTest)
+        id: integration-tests-vstest
+        if: ${{ inputs.integration-test-projects != '' && inputs.test-platform == 'vstest' }}
+        shell: bash
+        env:
+          INTEGRATION_TEST_PROJECTS: ${{ inputs.integration-test-projects }}
+        run: |
+          set -euo pipefail
+          failures=0
+          {
+            echo "## Tier 2 Integration Tests (VSTest)"
+            echo
+            echo "| Project | Status | Exit code |"
+            echo "| --- | --- | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r proj; do
+            [ -z "$proj" ] && continue
+            name=$(basename "$proj")
+            result_file="TestResults/${name}/${name}.trx"
+            rm -f -- "$result_file"
+            mkdir -p "TestResults/${name}"
+            report_marker="TestResults/${name}/.started"
+            touch "$report_marker"
+            summary_proj=${proj//\\/\\\\}
+            summary_proj=${summary_proj//|/\\|}
+            summary_proj=${summary_proj//\`/\\\`}
+            if dotnet test "$proj" --no-build --configuration Release \
+                --logger "trx;LogFileName=${name}.trx" \
+                --results-directory "TestResults/${name}" \
+                --collect:"XPlat Code Coverage" </dev/null; then
+              status=PASS
+              exit_code=0
+            else
+              exit_code=$?
+              annotation_proj=${proj//%/%25}
+              if [ ! -f "$result_file" ]; then
+                annotation_result_file=${result_file//%/%25}
+                printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \
+                  "$annotation_proj" "$exit_code" "$annotation_result_file"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              status=FAIL
+              failures=$((failures + 1))
+              printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"
+            fi
+            # A zero child exit is insufficient: require this invocation's nonzero TRX.
+            # The heredoc also keeps the verifier from consuming the project-list stdin.
+            if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+
+          try:
+              report = pathlib.Path(sys.argv[1])
+              if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:
+                  raise ValueError("stale report")
+              root = ET.parse(report).getroot()
+              ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"
+              if root.tag != ns + "TestRun":
+                  raise ValueError("invalid TRX root")
+              counters = root.find(f"{ns}ResultSummary/{ns}Counters")
+              results = root.findall(f"{ns}Results/{ns}UnitTestResult")
+              if counters is None:
+                  raise ValueError("missing counters")
+              total = int(counters.get("total", "-1"))
+              executed = int(counters.get("executed", "-1"))
+              outcomes = [result.get("outcome") for result in results]
+              if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):
+                  raise ValueError("missing or inconsistent test results")
+              if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):
+                  raise ValueError("invalid result outcome")
+              summary = root.find(f"{ns}ResultSummary")
+              if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:
+                  raise ValueError("invalid result summary")
+              for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):
+                  if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):
+                      raise ValueError("contradictory outcome counters")
+              failures = [int(counters.get(name, "0")) for name in
+                          ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")]
+              if any(value < 0 for value in failures):
+                  raise ValueError("invalid failure counters")
+              if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):
+                  raise ValueError("failed summary or counters with successful exit")
+          except (OSError, ValueError, ET.ParseError):
+              print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)
+              sys.exit(1)
+          PYTRX
+            then
+              annotation_proj=${proj//%/%25}
+              printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"
+              printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+          done <<< "$INTEGRATION_TEST_PROJECTS"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          printf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"
+      - name: Integration tests (Tier 2, Microsoft.Testing.Platform)
+        id: integration-tests-mtp
+        if: ${{ inputs.integration-test-projects != '' && inputs.test-platform == 'microsoft-testing-platform' }}
+        shell: bash
+        env:
+          INTEGRATION_TEST_PROJECTS: ${{ inputs.integration-test-projects }}
+          RUN_COVERAGE_GATE: ${{ inputs.run-coverage-gate }}
+        run: |
+          set -euo pipefail
+          failures=0
+          {
+            echo "## Tier 2 Integration Tests (Microsoft.Testing.Platform)"
+            echo
+            echo "| Project | Status | Exit code |"
+            echo "| --- | --- | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r proj; do
+            [ -z "$proj" ] && continue
+            name=$(basename "$proj")
+            result_file="TestResults/${name}/${name}.trx"
+            rm -f -- "$result_file"
+            mkdir -p "TestResults/${name}"
+            report_marker="TestResults/${name}/.started"
+            touch "$report_marker"
+            summary_proj=${proj//\\/\\\\}
+            summary_proj=${summary_proj//|/\\|}
+            summary_proj=${summary_proj//\`/\\\`}
+            coverage_args=()
+            if [ "$RUN_COVERAGE_GATE" = "true" ]; then
+              coverage_args+=(--coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml)
+            fi
+            if dotnet test "$proj" --no-build --configuration Release \
+                --results-directory "TestResults/${name}" \
+                --report-xunit-trx \
+                --report-xunit-trx-filename "${name}.trx" \
+                "${coverage_args[@]}" </dev/null; then
+              status=PASS
+              exit_code=0
+            else
+              exit_code=$?
+              annotation_proj=${proj//%/%25}
+              if [ "$exit_code" -eq 10 ]; then
+                printf '::error title=Test shard infrastructure failure::%s exited with infrastructure code %d.\n' "$annotation_proj" "$exit_code"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              if [ ! -f "$result_file" ]; then
+                annotation_result_file=${result_file//%/%25}
+                printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \
+                  "$annotation_proj" "$exit_code" "$annotation_result_file"
+                printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+                exit "$exit_code"
+              fi
+              status=FAIL
+              failures=$((failures + 1))
+              printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"
+            fi
+            # A zero child exit is insufficient: require this invocation's nonzero TRX.
+            # The heredoc also keeps the verifier from consuming the project-list stdin.
+            if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+
+          try:
+              report = pathlib.Path(sys.argv[1])
+              if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:
+                  raise ValueError("stale report")
+              root = ET.parse(report).getroot()
+              ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"
+              if root.tag != ns + "TestRun":
+                  raise ValueError("invalid TRX root")
+              counters = root.find(f"{ns}ResultSummary/{ns}Counters")
+              results = root.findall(f"{ns}Results/{ns}UnitTestResult")
+              if counters is None:
+                  raise ValueError("missing counters")
+              total = int(counters.get("total", "-1"))
+              executed = int(counters.get("executed", "-1"))
+              outcomes = [result.get("outcome") for result in results]
+              if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):
+                  raise ValueError("missing or inconsistent test results")
+              if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):
+                  raise ValueError("invalid result outcome")
+              summary = root.find(f"{ns}ResultSummary")
+              if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:
+                  raise ValueError("invalid result summary")
+              for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):
+                  if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):
+                      raise ValueError("contradictory outcome counters")
+              failures = [int(counters.get(name, "0")) for name in
+                          ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")]
+              if any(value < 0 for value in failures):
+                  raise ValueError("invalid failure counters")
+              if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):
+                  raise ValueError("failed summary or counters with successful exit")
+          except (OSError, ValueError, ET.ParseError):
+              print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)
+              sys.exit(1)
+          PYTRX
+            then
+              annotation_proj=${proj//%/%25}
+              printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"
+              printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"
+          done <<< "$INTEGRATION_TEST_PROJECTS"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          printf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"
+      - name: Validate coverage gates
+        if: ${{ inputs.run-coverage-gate }}
+        shell: bash
+        env:
+          COVERAGE_ISOLATION_TARGETS: ${{ inputs.coverage-isolation-targets }}
+          COVERAGE_LINE_SCOPE: ${{ inputs.coverage-line-scope }}
+          COVERAGE_MINIMUM_LINE: ${{ inputs.coverage-minimum-line }}
+          COVERAGE_REQUIRED_BRANCH: ${{ inputs.coverage-required-branch }}
+        run: |
+          set -euo pipefail
+          args=(--coverage-root TestResults
+                --minimum-line-coverage "$COVERAGE_MINIMUM_LINE"
+                --required-branch-coverage "$COVERAGE_REQUIRED_BRANCH")
+          while IFS= read -r tgt; do
+            [ -z "$tgt" ] && continue
+            args+=(--isolation-auth-target "$tgt")
+          done <<< "$COVERAGE_ISOLATION_TARGETS"
+          while IFS= read -r prefix; do
+            [ -z "$prefix" ] && continue
+            args+=(--line-scope "$prefix")
+          done <<< "$COVERAGE_LINE_SCOPE"
+          python3 scripts/validate-coverage.py "${args[@]}" --summary-file "$GITHUB_STEP_SUMMARY"
+      - name: Fail on blocking test failures
+        if: always()
+        shell: bash
+        env:
+          TEST_PLATFORM: ${{ inputs.test-platform }}
+          UNIT_TEST_PROJECTS: ${{ inputs.unit-test-projects }}
+          INTEGRATION_TEST_PROJECTS: ${{ inputs.integration-test-projects }}
+          UNIT_VSTEST_FAILURE_COUNT: ${{ steps.unit-tests-vstest.outputs.failure-count }}
+          UNIT_MTP_FAILURE_COUNT: ${{ steps.unit-tests-mtp.outputs.failure-count }}
+          INTEGRATION_VSTEST_FAILURE_COUNT: ${{ steps.integration-tests-vstest.outputs.failure-count }}
+          INTEGRATION_MTP_FAILURE_COUNT: ${{ steps.integration-tests-mtp.outputs.failure-count }}
+        run: |
+          set -euo pipefail
+          if [ "$TEST_PLATFORM" = "vstest" ]; then
+            if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_VSTEST_FAILURE_COUNT" ]; then
+              echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'
+              exit 1
+            fi
+            if [ -n "$INTEGRATION_TEST_PROJECTS" ] && [ -z "$INTEGRATION_VSTEST_FAILURE_COUNT" ]; then
+              echo '::error title=Missing test shard output::Tier 2 VSTest did not report a failure count.'
+              exit 1
+            fi
+          elif [ "$TEST_PLATFORM" = "microsoft-testing-platform" ]; then
+            if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_MTP_FAILURE_COUNT" ]; then
+              echo '::error title=Missing test shard output::Tier 1 Microsoft.Testing.Platform did not report a failure count.'
+              exit 1
+            fi
+            if [ -n "$INTEGRATION_TEST_PROJECTS" ] && [ -z "$INTEGRATION_MTP_FAILURE_COUNT" ]; then
+              echo '::error title=Missing test shard output::Tier 2 Microsoft.Testing.Platform did not report a failure count.'
+              exit 1
+            fi
+          fi
+
+          total_failures=0
+          for failure_count in \
+            "$UNIT_VSTEST_FAILURE_COUNT" \
+            "$UNIT_MTP_FAILURE_COUNT" \
+            "$INTEGRATION_VSTEST_FAILURE_COUNT" \
+            "$INTEGRATION_MTP_FAILURE_COUNT"; do
+            [ -z "$failure_count" ] && continue
+            if [[ ! "$failure_count" =~ ^[0-9]+$ ]]; then
+              printf '::error title=Invalid test shard output::Expected a numeric failure count, received %s.\n' "$failure_count"
+              exit 1
+            fi
+            total_failures=$((total_failures + 10#$failure_count))
+          done
+
+          if [ "$total_failures" -ne 0 ]; then
+            printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\n' "$total_failures"
+            exit 1
+          fi
+      - name: Upload test and coverage evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: blocking-test-results
+          path: |
+            TestResults/**/*.trx
+            TestResults/**/coverage.cobertura.xml
+          retention-days: 7
+
+  aspire-tests:
+    if: ${{ !cancelled() && needs.build-and-test.result == 'success' && inputs.aspire-test-project != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.aspire-timeout-minutes }}
+    needs: build-and-test
+    continue-on-error: ${{ inputs.aspire-continue-on-error }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout approved Builds preparation
+        if: ${{ inputs.module-manifest != '' && inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ inputs.builds-execution-sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Initialize root-declared submodules
+        uses: Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+      - name: Validate Aspire hooks
+        id: validate-aspire-hooks
+        if: ${{ inputs.aspire-prepare-script != '' || inputs.aspire-runner-script != '' }}
+        shell: bash
+        env:
+          ASPIRE_PREPARE_SCRIPT: ${{ inputs.aspire-prepare-script }}
+          ASPIRE_RUNNER_SCRIPT: ${{ inputs.aspire-runner-script }}
+          ASPIRE_EVIDENCE_PATH: ${{ inputs.aspire-evidence-path }}
+          ASPIRE_PREPARE_TIMEOUT: ${{ inputs.aspire-prepare-timeout-minutes }}
+          ASPIRE_RUNNER_TIMEOUT: ${{ inputs.aspire-runner-timeout-minutes }}
+          ASPIRE_JOB_TIMEOUT: ${{ inputs.aspire-timeout-minutes }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PYHOOKS'
+          import os, pathlib, re
+          root = pathlib.Path.cwd().resolve()
+          def relative(name, file=False):
+              value = os.environ[name]
+              if not value and file:
+                  return
+              path = pathlib.PurePosixPath(value)
+              if not re.fullmatch(r'[A-Za-z0-9_./-]+', value) or path.is_absolute() or any(part in ('.', '..') for part in value.split('/')):
+                  raise SystemExit(f'{name} must be a repository-relative path without traversal.')
+              target = root / value
+              if any(part.is_symlink() for part in [target, *target.parents] if part != root and root in part.parents):
+                  raise SystemExit(f'{name} must not traverse symbolic links.')
+              if file and not target.is_file():
+                  raise SystemExit(f'{name} does not name an existing script: {value}')
+          relative('ASPIRE_PREPARE_SCRIPT', True)
+          relative('ASPIRE_RUNNER_SCRIPT', True)
+          relative('ASPIRE_EVIDENCE_PATH')
+          evidence = root / os.environ['ASPIRE_EVIDENCE_PATH']
+          if evidence.exists() and (not evidence.is_dir() or any(evidence.iterdir())):
+              raise SystemExit('ASPIRE_EVIDENCE_PATH must name a fresh empty directory; existing files are unowned and will not be uploaded.')
+          bounds = {}
+          for name, maximum in [('ASPIRE_PREPARE_TIMEOUT', 60), ('ASPIRE_RUNNER_TIMEOUT', 340), ('ASPIRE_JOB_TIMEOUT', 360)]:
+              value = os.environ[name]
+              if not re.fullmatch(r'[1-9][0-9]*', value) or not 1 <= int(value) <= maximum:
+                  raise SystemExit(f'{name} must be an integer from 1 to {maximum} minutes.')
+              bounds[name] = int(value)
+          required = sum(bounds[name] for name, script in [('ASPIRE_PREPARE_TIMEOUT', 'ASPIRE_PREPARE_SCRIPT'), ('ASPIRE_RUNNER_TIMEOUT', 'ASPIRE_RUNNER_SCRIPT')] if os.environ[script])
+          if required + 5 > bounds['ASPIRE_JOB_TIMEOUT']:
+              raise SystemExit('Aspire job timeout must allow hook budgets plus at least five minutes for setup and evidence.')
+          PYHOOKS
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: ${{ inputs.dotnet-global-json }}
+      - name: Checkout workflow-owned Builds preparation
+        if: ${{ inputs.module-manifest != '' && !inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ job.workflow_sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Prepare module build
+        if: ${{ inputs.module-manifest != '' }}
+        uses: ./.hexalith/builds-execution/Github/prepare-module-build
+        with:
+          manifest: ${{ inputs.module-manifest }}
+      - name: Cache NuGet packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles(inputs.packages-lock-file) }}
+          restore-keys: nuget-
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: ${{ inputs.aspire-browser-project != '' }}
+        with:
+          node-version: '24'
+      - name: Trust HTTPS development certificates for live sockets
+        if: ${{ inputs.aspire-test-project != '' || inputs.aspire-browser-project != '' }}
+        run: |
+          # GITHUB_ENV applies only to later steps. Export it now so dev-certs can trust OpenSSL.
+          export SSL_CERT_DIR="${HOME}/.aspnet/dev-certs/trust:/usr/lib/ssl/certs"
+          echo "SSL_CERT_DIR=${SSL_CERT_DIR}" >> "$GITHUB_ENV"
+          sudo apt-get update
+          sudo apt-get install -y libnss3-tools
+          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
+            mkdir -p "$live_nss_directory"
+            if [ ! -f "$live_nss_directory/cert9.db" ]; then
+              certutil -N -d "sql:$live_nss_directory" --empty-password
+            fi
+          done
+          dotnet dev-certs https --trust
+          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
+            live_cert_index=0
+            for live_certificate in "$HOME"/.aspnet/dev-certs/trust/*.pem; do
+              [ -f "$live_certificate" ] || continue
+              # Trust the SDK development server certificate as a peer.
+              certutil -A -d "sql:$live_nss_directory" -n "tenants-live-dev-cert-$live_cert_index" -t 'P,,' -i "$live_certificate"
+              live_cert_index=$((live_cert_index + 1))
+            done
+          done
+      - name: Install pinned browser qualification tools
+        if: ${{ inputs.aspire-browser-project != '' }}
+        working-directory: ${{ inputs.aspire-browser-project }}
+        run: |
+          npm ci --ignore-scripts
+          npx --no-install playwright install --with-deps chromium
+      - name: Prepare package dependencies
+        if: ${{ inputs.package-prepare-script != '' }}
+        timeout-minutes: 31
+        shell: bash
+        env:
+          PACKAGE_PREPARE_SCRIPT: ${{ inputs.package-prepare-script }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$PACKAGE_PREPARE_SCRIPT" =~ ^[A-Za-z0-9_./-]+\.sh$ || "$PACKAGE_PREPARE_SCRIPT" = /* || "$PACKAGE_PREPARE_SCRIPT" =~ (^|/)\.\.?(/|$) || ! -f "$PACKAGE_PREPARE_SCRIPT" ]]; then
+            echo "Package preparation must select an existing repository-relative bash script." >&2
+            exit 1
+          fi
+          checked_path="$PACKAGE_PREPARE_SCRIPT"
+          while [ "$checked_path" != . ]; do
+            if [ -L "$checked_path" ]; then
+              echo "Package preparation forbids symbolic links." >&2
+              exit 1
+            fi
+            checked_path="$(dirname "$checked_path")"
+          done
+          timeout --signal=TERM --kill-after=30s 1800 bash "$PACKAGE_PREPARE_SCRIPT" </dev/null
+      - name: Restore and Build
+        env:
+          SOLUTION: ${{ inputs.solution }}
+        run: |
+          dotnet restore "$SOLUTION"
+          dotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror
+      - name: Install and initialize Dapr
+        uses: Hexalith/Hexalith.Builds/Github/dapr-init@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+        with:
+          version: ${{ inputs.dapr-version }}
+          runtime-version: ${{ inputs.dapr-runtime-version }}
+      - name: Prepare Aspire tier
+        if: ${{ inputs.aspire-prepare-script != '' }}
+        timeout-minutes: ${{ inputs.aspire-prepare-timeout-minutes }}
+        shell: bash
+        env:
+          ASPIRE_PREPARE_SCRIPT: ${{ inputs.aspire-prepare-script }}
+          ASPIRE_PREPARE_TIMEOUT: ${{ inputs.aspire-prepare-timeout-minutes }}
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          TEST_PLATFORM: ${{ inputs.test-platform }}
+          ASPIRE_EVIDENCE_PATH: ${{ inputs.aspire-evidence-path }}
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s "$((ASPIRE_PREPARE_TIMEOUT * 60))" bash "$ASPIRE_PREPARE_SCRIPT" </dev/null
+      - name: Run Aspire hook
+        if: ${{ inputs.aspire-runner-script != '' }}
+        timeout-minutes: ${{ inputs.aspire-runner-timeout-minutes }}
+        shell: bash
+        env:
+          ASPIRE_RUNNER_SCRIPT: ${{ inputs.aspire-runner-script }}
+          ASPIRE_RUNNER_TIMEOUT: ${{ inputs.aspire-runner-timeout-minutes }}
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          TEST_PLATFORM: ${{ inputs.test-platform }}
+          ASPIRE_EVIDENCE_PATH: ${{ inputs.aspire-evidence-path }}
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s "$((ASPIRE_RUNNER_TIMEOUT * 60))" bash "$ASPIRE_RUNNER_SCRIPT" </dev/null
+      # Coverage is not collected here: this tier is advisory (non-blocking by
+      # default) and its coverage is intentionally excluded from the gates.
+      - name: Aspire contract tests (Tier 3, non-Performance, VSTest)
+        if: ${{ inputs.aspire-runner-script == '' && inputs.test-platform == 'vstest' }}
+        shell: bash
+        env:
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          ASPIRE_NON_PERFORMANCE_FILTER: ${{ inputs.aspire-non-performance-filter }}
+        run: >
+          dotnet test "$ASPIRE_TEST_PROJECT"
+          --no-build --configuration Release
+          --filter "$ASPIRE_NON_PERFORMANCE_FILTER"
+          --logger "trx;LogFileName=aspire-results.trx"
+          --results-directory TestResults/aspire
+      - name: Aspire contract tests (Tier 3, non-Performance, Microsoft.Testing.Platform)
+        if: ${{ inputs.aspire-runner-script == '' && inputs.test-platform == 'microsoft-testing-platform' }}
+        shell: bash
+        env:
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          ASPIRE_MTP_EXCLUDED_TRAIT: ${{ inputs.aspire-mtp-excluded-trait }}
+          ASPIRE_FAIL_SKIPS: ${{ inputs.aspire-fail-skips }}
+        run: |
+          set -euo pipefail
+          skip_arguments=()
+          if [ "$ASPIRE_FAIL_SKIPS" = true ]; then
+            skip_arguments+=(--minimum-expected-tests 1 --fail-skips on)
+          fi
+          dotnet test "$ASPIRE_TEST_PROJECT" \
+            --no-build --configuration Release \
+            --filter-not-trait "$ASPIRE_MTP_EXCLUDED_TRAIT" \
+            --results-directory TestResults/aspire \
+            --report-xunit-trx --report-xunit-trx-filename aspire-results.trx \
+            "${skip_arguments[@]}"
+      - name: Require executed Aspire tests without skips
+        if: ${{ inputs.aspire-fail-skips }}
+        shell: bash
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+          reports = list(Path('TestResults/aspire').rglob('*.trx'))
+          if not reports:
+              raise SystemExit('Aspire qualification requires a test result report.')
+          for report in reports:
+              root = ET.parse(report).getroot()
+              ns = '{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}'
+              if root.tag != ns + 'TestRun':
+                  raise SystemExit(f'Aspire qualification requires a valid TRX root: {report}')
+              summary = root.find(ns + 'ResultSummary')
+              counters = summary.find('{*}Counters') if summary is not None else None
+              if summary is None or summary.get('outcome') not in ('Completed', 'Passed') or counters is None:
+                  raise SystemExit(f'Aspire qualification requires a successful summary: {report}')
+              try:
+                  counts = {name: int(value) for name, value in counters.attrib.items()}
+                  passing = counts['passed']
+                  consistent = passing > 0 and counts['total'] == counts['executed'] == passing and counts['failed'] == 0
+              except (ValueError, KeyError):
+                  raise SystemExit(f'Aspire qualification has malformed counters: {report}')
+              failures = ('failed', 'error', 'timeout', 'aborted', 'inconclusive', 'passedButRunAborted', 'notRunnable',
+                          'notExecuted', 'disconnected', 'inProgress', 'pending')
+              results = root.findall('.//{*}UnitTestResult')
+              if (not consistent or any(counts.get(name, 0) != 0 for name in failures)
+                      or any(value < 0 for value in counts.values()) or len(results) != passing
+                      or any(result.get('outcome') != 'Passed' for result in results)
+                      or summary.find('.//{*}ErrorInfo') is not None):
+                  raise SystemExit(f'Aspire qualification rejected nonpassing or inconsistent results: {report}')
+          PYTEST
+      - name: Test summary
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          echo "## Tier 3 Aspire Contract Tests" >> "$GITHUB_STEP_SUMMARY"
+          echo "Status: $JOB_STATUS" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Aspire hook evidence
+        if: ${{ always() && steps.validate-aspire-hooks.outcome == 'success' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aspire-hook-evidence
+          path: ${{ inputs.aspire-evidence-path }}
+          retention-days: 7
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aspire-test-results
+          path: "TestResults/**/*.trx"
+          retention-days: 7
+
+  performance-tests:
+    if: ${{ inputs.aspire-test-project != '' && github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.performance-timeout-minutes }}
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout approved Builds preparation
+        if: ${{ inputs.module-manifest != '' && inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ inputs.builds-execution-sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Initialize root-declared submodules
+        uses: Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: ${{ inputs.dotnet-global-json }}
+      - name: Checkout workflow-owned Builds preparation
+        if: ${{ inputs.module-manifest != '' && !inputs.governed-ci }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: ${{ job.workflow_sha }}
+          path: .hexalith/builds-execution
+          persist-credentials: false
+      - name: Prepare module build
+        if: ${{ inputs.module-manifest != '' }}
+        uses: ./.hexalith/builds-execution/Github/prepare-module-build
+        with:
+          manifest: ${{ inputs.module-manifest }}
+      - name: Cache NuGet packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles(inputs.packages-lock-file) }}
+          restore-keys: nuget-
+      - name: Prepare package dependencies
+        if: ${{ inputs.package-prepare-script != '' }}
+        timeout-minutes: 31
+        shell: bash
+        env:
+          PACKAGE_PREPARE_SCRIPT: ${{ inputs.package-prepare-script }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$PACKAGE_PREPARE_SCRIPT" =~ ^[A-Za-z0-9_./-]+\.sh$ || "$PACKAGE_PREPARE_SCRIPT" = /* || "$PACKAGE_PREPARE_SCRIPT" =~ (^|/)\.\.?(/|$) || ! -f "$PACKAGE_PREPARE_SCRIPT" ]]; then
+            echo "Package preparation must select an existing repository-relative bash script." >&2
+            exit 1
+          fi
+          checked_path="$PACKAGE_PREPARE_SCRIPT"
+          while [ "$checked_path" != . ]; do
+            if [ -L "$checked_path" ]; then
+              echo "Package preparation forbids symbolic links." >&2
+              exit 1
+            fi
+            checked_path="$(dirname "$checked_path")"
+          done
+          timeout --signal=TERM --kill-after=30s 1800 bash "$PACKAGE_PREPARE_SCRIPT" </dev/null
+      - name: Restore and Build
+        env:
+          SOLUTION: ${{ inputs.solution }}
+        run: |
+          dotnet restore "$SOLUTION"
+          dotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror
+      - name: Install and initialize Dapr
+        uses: Hexalith/Hexalith.Builds/Github/dapr-init@e171c5a788eab183b32683431b084198c9b8d373 # BUILD-REL-1
+        with:
+          version: ${{ inputs.dapr-version }}
+          runtime-version: ${{ inputs.dapr-runtime-version }}
+      - name: Performance tests (Tier 3, nightly only, VSTest)
+        if: ${{ inputs.test-platform == 'vstest' }}
+        id: performance-tests-vstest
+        shell: bash
+        env:
+          HEXALITH_EVENTSTORE_RUN_PERFORMANCE_TESTS: '1'
+          HEXALITH_TENANTS_RUN_PERFORMANCE_TESTS: '1'
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          PERFORMANCE_FILTER: ${{ inputs.performance-filter }}
+        run: |
+          set -euo pipefail
+          rm -rf TestResults/performance
+          mkdir -p TestResults/performance
+          dotnet test "$ASPIRE_TEST_PROJECT" \
+            --no-build --configuration Release \
+            --filter "$PERFORMANCE_FILTER" \
+            --logger "trx;LogFileName=perf-results.trx" \
+            --results-directory TestResults/performance
+      - name: Performance tests (Tier 3, nightly only, Microsoft.Testing.Platform)
+        if: ${{ inputs.test-platform == 'microsoft-testing-platform' }}
+        id: performance-tests-mtp
+        shell: bash
+        env:
+          HEXALITH_EVENTSTORE_RUN_PERFORMANCE_TESTS: '1'
+          HEXALITH_TENANTS_RUN_PERFORMANCE_TESTS: '1'
+          ASPIRE_TEST_PROJECT: ${{ inputs.aspire-test-project }}
+          PERFORMANCE_MTP_TRAIT: ${{ inputs.performance-mtp-trait }}
+        run: |
+          set -euo pipefail
+          rm -rf TestResults/performance
+          mkdir -p TestResults/performance
+          dotnet test "$ASPIRE_TEST_PROJECT" \
+            --no-build --configuration Release \
+            --filter-trait "$PERFORMANCE_MTP_TRAIT" \
+            --results-directory TestResults/performance \
+            --report-xunit-trx \
+            --report-xunit-trx-filename perf-results.trx
+      - name: Validate performance test execution
+        if: always()
+        shell: bash
+        env:
+          PERFORMANCE_FILTER: ${{ inputs.test-platform == 'microsoft-testing-platform' && inputs.performance-mtp-trait || inputs.performance-filter }}
+          PERFORMANCE_TEST_STEP_OUTCOME: ${{ inputs.test-platform == 'microsoft-testing-platform' && steps.performance-tests-mtp.outcome || steps.performance-tests-vstest.outcome }}
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import json
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          evidence_directory = Path("TestResults/performance")
+          trx_path = evidence_directory / "perf-results.trx"
+          summary_path = evidence_directory / "performance-test-summary.json"
+          evidence_directory.mkdir(parents=True, exist_ok=True)
+
+          summary = {
+              "schemaVersion": 1,
+              "generatedAtUtc": datetime.datetime.now(datetime.UTC).isoformat(),
+              "repository": os.environ.get("GITHUB_REPOSITORY", ""),
+              "commitSha": os.environ.get("GITHUB_SHA", ""),
+              "ref": os.environ.get("GITHUB_REF", ""),
+              "runId": os.environ.get("GITHUB_RUN_ID", ""),
+              "runAttempt": os.environ.get("GITHUB_RUN_ATTEMPT", ""),
+              "filter": os.environ.get("PERFORMANCE_FILTER", ""),
+              "testStepOutcome": os.environ.get("PERFORMANCE_TEST_STEP_OUTCOME", ""),
+              "trxPath": str(trx_path),
+              "status": "unknown",
+              "counts": {
+                  "total": None,
+                  "executed": None,
+                  "passed": None,
+                  "failed": None,
+                  "skipped": None,
+              },
+          }
+
+          def local_name(element):
+              return element.tag.rsplit("}", 1)[-1]
+
+          def write_evidence():
+              summary_path.write_text(
+                  json.dumps(summary, indent=2, sort_keys=True) + "\n",
+                  encoding="utf-8",
+              )
+
+              github_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+              if github_summary:
+                  counts = summary["counts"]
+                  with Path(github_summary).open("a", encoding="utf-8") as stream:
+                      stream.write("## Scheduled Performance Tests\n\n")
+                      stream.write(f"- Status: `{summary['status']}`\n")
+                      stream.write(f"- Test step: `{summary['testStepOutcome']}`\n")
+                      stream.write(f"- Filter: `{summary['filter']}`\n")
+                      stream.write(f"- TRX: `{summary['trxPath']}`\n")
+                      stream.write(
+                          "- Counts: "
+                          f"total={counts['total']}, executed={counts['executed']}, "
+                          f"passed={counts['passed']}, failed={counts['failed']}, "
+                          f"skipped={counts['skipped']}\n\n"
+                      )
+
+          if not trx_path.is_file():
+              summary["status"] = "missing-trx"
+              write_evidence()
+              print(
+                  f"::error title=Missing performance TRX::Expected {trx_path} "
+                  "but the performance test step produced no result file."
+              )
+              sys.exit(1)
+
+          try:
+              root = ET.parse(trx_path).getroot()
+              counters = next(
+                  (element for element in root.iter() if local_name(element) == "Counters"),
+                  None,
+              )
+              if counters is None:
+                  raise ValueError("TRX does not contain a Counters element")
+
+              counts = {
+                  "total": int(counters.get("total", "0")),
+                  "executed": int(counters.get("executed", "0")),
+                  "passed": int(counters.get("passed", "0")),
+                  "failed": int(counters.get("failed", "0")),
+                  "skipped": sum(
+                      1
+                      for element in root.iter()
+                      if local_name(element) == "UnitTestResult"
+                      and element.get("outcome") == "NotExecuted"
+                  ),
+              }
+              summary["counts"] = counts
+          except (ET.ParseError, OSError, TypeError, ValueError) as error:
+              summary["status"] = "invalid-trx"
+              summary["diagnostic"] = str(error)
+              write_evidence()
+              print(f"::error title=Invalid performance TRX::{error}")
+              sys.exit(1)
+
+          if counts["total"] == 0:
+              summary["status"] = "no-matching-tests"
+              write_evidence()
+              print(
+                  "::error title=No matching performance tests::The performance filter "
+                  "selected zero tests."
+              )
+              sys.exit(1)
+
+          if counts["executed"] == 0:
+              summary["status"] = "all-tests-skipped"
+              write_evidence()
+              print(
+                  "::error title=All performance tests skipped::The performance filter "
+                  f"selected {counts['total']} test(s), but none executed."
+              )
+              sys.exit(1)
+
+          if summary["testStepOutcome"] != "success":
+              summary["status"] = "test-step-failed"
+              write_evidence()
+              print(
+                  "::error title=Performance test step failed::The performance test "
+                  f"step outcome was {summary['testStepOutcome']}."
+              )
+              sys.exit(1)
+
+          if counts["failed"] > 0:
+              summary["status"] = "test-failures"
+              write_evidence()
+              print(
+                  "::error title=Performance test failures::The performance TRX "
+                  f"reports {counts['failed']} failed test(s)."
+              )
+              sys.exit(1)
+
+          summary["status"] = "executed"
+          write_evidence()
+          PY
+      - name: Upload performance test results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: performance-test-results
+          path: TestResults/performance
+          if-no-files-found: error
+          retention-days: 7

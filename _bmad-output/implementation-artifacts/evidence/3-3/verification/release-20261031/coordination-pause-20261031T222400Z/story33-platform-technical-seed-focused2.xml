@@ -1,0 +1,875 @@
+<assemblies schema-version="3" id="64d0bf70-1217-41d9-9927-1b11358c6f4e" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-10-31T22:21:47.8902877+00:00" finish-rtf="2026-10-31T22:21:50.2152522+00:00" timestamp="10/31/2026 23:21:50"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]" id="7a27754a-7851-40b1-990f-5f57308c1442" name="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll" run-date="2026-10-31" run-time="22:21:47" start-rtf="2026-10-31T22:21:47.8902877+00:00" test-framework="xUnit.net v3 4.0.2+0c7aa4991f" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="4" finish-rtf="2026-10-31T22:21:50.2152522+00:00" not-run="0" passed="57" skipped="0" time="2.325" time-rtf="00:00:02.3250000" total="61"><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests (id: 02632c1567fbd0cd5bff9838f1241a0102d5168d2dfbd4af1cabd665ac1a7291)" id="ae362e99-8175-4e4f-b8a8-ce9dccb87395" failed="0" not-run="0" passed="25" skipped="0" time="1.674" time-rtf="00:00:01.6740000" total="25"><test id="6a6c985a-248b-4886-8cca-5f0c7b880090" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;valid\&quot;)" result="Pass" time="0.312" time-rtf="00:00:00.3120000" start-rtf="2026-10-31T22:21:47.9951687+00:00" finish-rtf="2026-10-31T22:21:48.3176167+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="ba06da67-c1ec-4391-8866-b6e2b0c73f24" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;missing-readback-host\&quot;)" result="Pass" time="0.066" time-rtf="00:00:00.0660000" start-rtf="2026-10-31T22:21:48.3177062+00:00" finish-rtf="2026-10-31T22:21:48.3843937+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="2812ac64-9068-4a13-8019-97a7c3b1c183" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;changed-inventory\&quot;)" result="Pass" time="0.054" time-rtf="00:00:00.0540000" start-rtf="2026-10-31T22:21:48.3844592+00:00" finish-rtf="2026-10-31T22:21:48.4394060+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="b449ce8f-a835-4f97-9166-41b285f25fac" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;changed-topology\&quot;)" result="Pass" time="0.049" time-rtf="00:00:00.0490000" start-rtf="2026-10-31T22:21:48.4394603+00:00" finish-rtf="2026-10-31T22:21:48.4891519+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="6d44d134-494d-485f-8a97-49409773b2a6" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;changed-authentication\&quot;)" result="Pass" time="0.045" time-rtf="00:00:00.0450000" start-rtf="2026-10-31T22:21:48.4892097+00:00" finish-rtf="2026-10-31T22:21:48.5348849+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="e3055564-af1a-4601-8b43-eb0e27a68416" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;foreign-readback-attempt\&quot;)" result="Pass" time="0.047" time-rtf="00:00:00.0470000" start-rtf="2026-10-31T22:21:48.5349723+00:00" finish-rtf="2026-10-31T22:21:48.5827178+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="12a981b5-bc72-47b7-a0dc-af159fbe765b" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;foreign-binding\&quot;)" result="Pass" time="0.044" time-rtf="00:00:00.0440000" start-rtf="2026-10-31T22:21:48.5828070+00:00" finish-rtf="2026-10-31T22:21:48.6276553+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="135c6f8f-7622-4ef3-9422-d47d60181af5" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;missing-binding\&quot;)" result="Pass" time="0.047" time-rtf="00:00:00.0470000" start-rtf="2026-10-31T22:21:48.6277493+00:00" finish-rtf="2026-10-31T22:21:48.6748928+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="25d080da-5386-489b-9f43-28ed88351910" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-profile\&quot;)" result="Pass" time="0.052" time-rtf="00:00:00.0520000" start-rtf="2026-10-31T22:21:48.6749863+00:00" finish-rtf="2026-10-31T22:21:48.7280438+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="6389be6e-144f-4ef5-925e-7265c110617e" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-generation\&quot;)" result="Pass" time="0.054" time-rtf="00:00:00.0540000" start-rtf="2026-10-31T22:21:48.7281421+00:00" finish-rtf="2026-10-31T22:21:48.7824371+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="8fffd6d2-9f93-416e-bfd4-a4a0e9ab5e86" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;different-peer-epoch\&quot;)" result="Pass" time="0.063" time-rtf="00:00:00.0630000" start-rtf="2026-10-31T22:21:48.7825575+00:00" finish-rtf="2026-10-31T22:21:48.8462229+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="10f34f7b-17ba-4664-9924-9bc00ac4b0bc" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;extra-readback-host\&quot;)" result="Pass" time="0.058" time-rtf="00:00:00.0580000" start-rtf="2026-10-31T22:21:48.8463373+00:00" finish-rtf="2026-10-31T22:21:48.9054192+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="c359db2a-e916-45aa-972a-0ea277720e37" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;zero-epoch\&quot;)" result="Pass" time="0.055" time-rtf="00:00:00.0550000" start-rtf="2026-10-31T22:21:48.9055359+00:00" finish-rtf="2026-10-31T22:21:48.9611697+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="03a4f1c3-0870-4daf-8e95-f23ffe7b8605" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-activation-host\&quot;)" result="Pass" time="0.057" time-rtf="00:00:00.0570000" start-rtf="2026-10-31T22:21:48.9613178+00:00" finish-rtf="2026-10-31T22:21:49.0187324+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="ac147530-4322-41f1-bd8d-d2f8cfc1b343" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-proof\&quot;)" result="Pass" time="0.074" time-rtf="00:00:00.0740000" start-rtf="2026-10-31T22:21:49.0188505+00:00" finish-rtf="2026-10-31T22:21:49.0935030+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="2f0c85c7-584a-4ebf-a0da-0cb375142705" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;missing-technical\&quot;)" result="Pass" time="0.054" time-rtf="00:00:00.0540000" start-rtf="2026-10-31T22:21:49.0936133+00:00" finish-rtf="2026-10-31T22:21:49.1480912+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="6f3421a7-7b04-4c55-94a9-54d35b62ebf5" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-canonical\&quot;)" result="Pass" time="0.052" time-rtf="00:00:00.0520000" start-rtf="2026-10-31T22:21:49.1482031+00:00" finish-rtf="2026-10-31T22:21:49.2009178+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="c82f390a-3ae9-4e60-8f71-277e552c8b3c" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-root\&quot;)" result="Pass" time="0.055" time-rtf="00:00:00.0550000" start-rtf="2026-10-31T22:21:49.2010499+00:00" finish-rtf="2026-10-31T22:21:49.2570311+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="ec2243a6-c2f2-4228-9186-751a708a718c" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;wrong-attempt\&quot;)" result="Pass" time="0.079" time-rtf="00:00:00.0790000" start-rtf="2026-10-31T22:21:49.2571433+00:00" finish-rtf="2026-10-31T22:21:49.3364679+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="a46784a8-fe93-47dc-8874-b7888ef535b5" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;foreign-cohort\&quot;)" result="Pass" time="0.049" time-rtf="00:00:00.0490000" start-rtf="2026-10-31T22:21:49.3365851+00:00" finish-rtf="2026-10-31T22:21:49.3859370+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="caaddb04-d90c-4d79-b7fe-30a5d9bae59e" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;empty-cohort\&quot;)" result="Pass" time="0.049" time-rtf="00:00:00.0490000" start-rtf="2026-10-31T22:21:49.3860913+00:00" finish-rtf="2026-10-31T22:21:49.4359267+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="1cd0c5c8-ecac-43a5-a990-53da3d6d6113" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;extra-readback\&quot;)" result="Pass" time="0.054" time-rtf="00:00:00.0540000" start-rtf="2026-10-31T22:21:49.4360304+00:00" finish-rtf="2026-10-31T22:21:49.4903063+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="f4f09867-a7df-495c-b249-66e30843f950" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;missing-readback\&quot;)" result="Pass" time="0.049" time-rtf="00:00:00.0490000" start-rtf="2026-10-31T22:21:49.4904101+00:00" finish-rtf="2026-10-31T22:21:49.5400362+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="a5a479fd-cf83-4e1e-ab40-736946c425b7" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;not-serving\&quot;)" result="Pass" time="0.076" time-rtf="00:00:00.0760000" start-rtf="2026-10-31T22:21:49.5402109+00:00" finish-rtf="2026-10-31T22:21:49.6168351+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /><test id="371c156e-5304-4eaf-8a74-1606afd095fe" name="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \&quot;duplicate-readback-host\&quot;)" result="Pass" time="0.08" time-rtf="00:00:00.0800000" start-rtf="2026-10-31T22:21:49.6169501+00:00" finish-rtf="2026-10-31T22:21:49.6974405+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests" method="CompleteRunAndEveryHostIdentityMustAgree" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs" source-line="14" /></collection><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests (id: 46e9eade5a88330aa684cb55e0c4586ec7f970f0a6e29f33ad27c73569d15b59)" id="a7638b6f-dcc3-40a0-9ea9-e1f431908872" failed="0" not-run="0" passed="18" skipped="0" time="0.149" time-rtf="00:00:00.1490000" total="18"><test id="e2c19939-8388-4a6b-8178-66bf20a13d16" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;valid\&quot;)" result="Pass" time="0.114" time-rtf="00:00:00.1140000" start-rtf="2026-10-31T22:21:47.9951610+00:00" finish-rtf="2026-10-31T22:21:48.1215115+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="847da13e-a67c-45c2-ba29-ee91e6ca5604" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;internal-operation\&quot;)" result="Pass" time="0.011" time-rtf="00:00:00.0110000" start-rtf="2026-10-31T22:21:48.1222921+00:00" finish-rtf="2026-10-31T22:21:48.1335256+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="038fa6de-e75d-4da0-9021-33043266ac5d" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;extra-operation-field\&quot;)" result="Pass" time="0.001" time-rtf="00:00:00.0010000" start-rtf="2026-10-31T22:21:48.1335852+00:00" finish-rtf="2026-10-31T22:21:48.1346717+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="ccda66d8-c9d7-4ab7-8195-b195fa88179e" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;extra-key-field\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1347132+00:00" finish-rtf="2026-10-31T22:21:48.1354379+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="04403032-c630-4702-8dd5-0697713512fa" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;extra-root-field\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1354861+00:00" finish-rtf="2026-10-31T22:21:48.1362577+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="ed009cab-5b6f-4bc7-9c5e-29d9f1f5e285" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-message-type\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1363060+00:00" finish-rtf="2026-10-31T22:21:48.1370312+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="96d8f1eb-6530-4caf-9dec-cdd366803b91" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-domain\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1370775+00:00" finish-rtf="2026-10-31T22:21:48.1376822+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="fce741da-642d-4e3e-b567-9be7d00f45d3" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;unauthorized\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1377226+00:00" finish-rtf="2026-10-31T22:21:48.1383041+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="8f0066fa-a0d2-4181-b6e1-3768e54069fa" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-kind\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1383461+00:00" finish-rtf="2026-10-31T22:21:48.1391651+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="03fe1021-708d-4535-98e9-cd0c350e8dee" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-digest\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1392091+00:00" finish-rtf="2026-10-31T22:21:48.1398887+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="787423d2-3283-4252-a88f-bf2c96d4dd67" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-policy\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1399134+00:00" finish-rtf="2026-10-31T22:21:48.1405848+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="5dee4be7-9e9d-490b-95e7-f8f80e74e859" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-result-schema\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1406400+00:00" finish-rtf="2026-10-31T22:21:48.1412770+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="97cac06f-3033-4dae-81d6-7b60c5b25a37" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-schema\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1413168+00:00" finish-rtf="2026-10-31T22:21:48.1420556+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="09cc5415-2a7e-4e0d-8dc2-89c03652b098" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-generation\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1420744+00:00" finish-rtf="2026-10-31T22:21:48.1429659+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="11fd92f5-fb3b-48b1-aa2c-0781bb2f3894" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-root\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1430381+00:00" finish-rtf="2026-10-31T22:21:48.1439552+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="a0544031-48e5-40ed-b86b-c29360bc39ad" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;wrong-contract-version\&quot;)" result="Pass" time="0" time-rtf="00:00:00.0000000" start-rtf="2026-10-31T22:21:48.1440005+00:00" finish-rtf="2026-10-31T22:21:48.1447870+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="78b752f3-166c-4a28-8f1d-214cbdc4e3db" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \&quot;oversized\&quot;)" result="Pass" time="0.019" time-rtf="00:00:00.0190000" start-rtf="2026-10-31T22:21:48.1448441+00:00" finish-rtf="2026-10-31T22:21:48.1642561+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="ObservedMetadataMustMatchTheCanonicalPublicGeneration" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="19" /><test id="718e9a67-34c9-455b-bc6d-7d7e8ec4be0d" name="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.CancelledResponseCannotRetainAnEarlierProof" result="Pass" time="0.004" time-rtf="00:00:00.0040000" start-rtf="2026-10-31T22:21:48.1693912+00:00" finish-rtf="2026-10-31T22:21:48.1738115+00:00" type="Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests" method="CancelledResponseCannotRetainAnEarlierProof" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs" source-line="160" /></collection><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests (id: 98da363b64f73cea0ac4cb94373ef85b8d42adebcc9c572f75b8736c26ddd6eb)" id="461ea6bb-d265-4f20-b1de-ee7a6cd3802c" failed="0" not-run="0" passed="8" skipped="0" time="0.497" time-rtf="00:00:00.4970000" total="8"><test id="a63b3292-bffc-447d-9533-544d90b13990" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: False)" result="Pass" time="0.338" time-rtf="00:00:00.3380000" start-rtf="2026-10-31T22:21:47.9951775+00:00" finish-rtf="2026-10-31T22:21:48.3440298+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="60" /><test id="288ab14e-aba8-4562-92ce-f6b5e255069d" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: True)" result="Pass" time="0.003" time-rtf="00:00:00.0030000" start-rtf="2026-10-31T22:21:48.3441524+00:00" finish-rtf="2026-10-31T22:21:48.3477154+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="60" /><test id="58260131-ce71-4b23-b6ea-f6110337d7dd" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \&quot;foreign-run\&quot;)" result="Pass" time="0.027" time-rtf="00:00:00.0270000" start-rtf="2026-10-31T22:21:48.3488460+00:00" finish-rtf="2026-10-31T22:21:48.3765073+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="RefusesANativeScopeThatDiffersFromTheOwningRunAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="31" /><test id="b80d85c2-c208-4fa3-aef3-87ed984be9d7" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \&quot;foreign-module\&quot;)" result="Pass" time="0.019" time-rtf="00:00:00.0190000" start-rtf="2026-10-31T22:21:48.3765757+00:00" finish-rtf="2026-10-31T22:21:48.3963451+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="RefusesANativeScopeThatDiffersFromTheOwningRunAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="31" /><test id="c2700662-082d-46c9-84f5-82ccecd8d0c4" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \&quot;global-administrators-domain\&quot;)" result="Pass" time="0.019" time-rtf="00:00:00.0190000" start-rtf="2026-10-31T22:21:48.3964013+00:00" finish-rtf="2026-10-31T22:21:48.4159563+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="RefusesANativeScopeThatDiffersFromTheOwningRunAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="31" /><test id="78a8db69-e218-4538-9457-9128a5380c39" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \&quot;missing-synthetic-tenant\&quot;)" result="Pass" time="0.018" time-rtf="00:00:00.0180000" start-rtf="2026-10-31T22:21:48.4160299+00:00" finish-rtf="2026-10-31T22:21:48.4350283+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="RefusesANativeScopeThatDiffersFromTheOwningRunAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="31" /><test id="7a838cb9-e056-48d1-bfa8-003168ae7436" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.EndpointCredentialWriterProducesTheChannelTheBuildsReaderAcceptsAsync" result="Pass" time="0.022" time-rtf="00:00:00.0220000" start-rtf="2026-10-31T22:21:48.4355867+00:00" finish-rtf="2026-10-31T22:21:48.4581792+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="EndpointCredentialWriterProducesTheChannelTheBuildsReaderAcceptsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="113" /><test id="301d3594-ebf1-412c-8584-f704235a1eab" name="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.ElapsedStartupDeadlineCancelsBeforeMintingCredentialsAsync" result="Pass" time="0.051" time-rtf="00:00:00.0509999" start-rtf="2026-10-31T22:21:48.4586102+00:00" finish-rtf="2026-10-31T22:21:48.5100018+00:00" type="Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests" method="ElapsedStartupDeadlineCancelsBeforeMintingCredentialsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs" source-line="88" /></collection><collection name="Platform file entry" id="0cc28c96-083e-42c7-8420-d26266a13b17" failed="4" not-run="0" passed="0" skipped="0" time="0.499" time-rtf="00:00:00.4990000" total="4"><test id="bd3a9c8a-1f79-40c6-b68d-1dcecaf336d8" name="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)" result="Fail" time="0.314" time-rtf="00:00:00.3140000" start-rtf="2026-10-31T22:21:49.7023414+00:00" finish-rtf="2026-10-31T22:21:50.0224018+00:00" type="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests" method="PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs" source-line="27"><failure exception-type="System.Reflection.ReflectionTypeLoadException"><message>System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+</message><stack-trace>   at System.Reflection.RuntimeModule.GetDefinedTypes()
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFeatureProvider.PopulateFeature(IEnumerable`1 parts, ControllerFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateFeature[TFeature](TFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetControllerTypes()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetDescriptors()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.UpdateCollection()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.Initialize()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.GetChangeToken()
+   at Microsoft.Extensions.Primitives.ChangeToken.ChangeTokenRegistration`1..ctor(Func`1 changeTokenProducer, Action`1 changeTokenConsumer, TState state)
+   at Microsoft.Extensions.Primitives.ChangeToken.OnChange(Func`1 changeTokenProducer, Action changeTokenConsumer)
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.Subscribe()
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.GetOrCreateDataSource(IEndpointRouteBuilder endpoints)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.MapControllers(IEndpointRouteBuilder endpoints)
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/src/Hexalith.Platform.EventStoreHost/Program.cs:line 88
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.DeferredHost.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Start(IHost host)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 68
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 112
+--- End of stack trace from previous location ---</stack-trace></failure></test><test id="6c7e5c5c-5f30-44de-b3a3-f3dde57ea6c8" name="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)" result="Fail" time="0.066" time-rtf="00:00:00.0660000" start-rtf="2026-10-31T22:21:50.0228457+00:00" finish-rtf="2026-10-31T22:21:50.0905982+00:00" type="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests" method="PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs" source-line="27"><failure exception-type="System.Reflection.ReflectionTypeLoadException"><message>System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+</message><stack-trace>   at System.Reflection.RuntimeModule.GetDefinedTypes()
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFeatureProvider.PopulateFeature(IEnumerable`1 parts, ControllerFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateFeature[TFeature](TFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetControllerTypes()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetDescriptors()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.UpdateCollection()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.Initialize()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.GetChangeToken()
+   at Microsoft.Extensions.Primitives.ChangeToken.ChangeTokenRegistration`1..ctor(Func`1 changeTokenProducer, Action`1 changeTokenConsumer, TState state)
+   at Microsoft.Extensions.Primitives.ChangeToken.OnChange(Func`1 changeTokenProducer, Action changeTokenConsumer)
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.Subscribe()
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.GetOrCreateDataSource(IEndpointRouteBuilder endpoints)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.MapControllers(IEndpointRouteBuilder endpoints)
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/src/Hexalith.Platform.EventStoreHost/Program.cs:line 88
+   at InvokeStub_Program.&lt;Main&gt;$(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.DeferredHost.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Start(IHost host)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 68
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 112
+--- End of stack trace from previous location ---</stack-trace></failure></test><test id="2985c9a6-fb93-42e5-857d-5512a25c94d1" name="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)" result="Fail" time="0.055" time-rtf="00:00:00.0550000" start-rtf="2026-10-31T22:21:50.0911559+00:00" finish-rtf="2026-10-31T22:21:50.1477922+00:00" type="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests" method="BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs" source-line="32"><failure exception-type="System.Reflection.ReflectionTypeLoadException"><message>System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+</message><stack-trace>   at System.Reflection.RuntimeModule.GetDefinedTypes()
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFeatureProvider.PopulateFeature(IEnumerable`1 parts, ControllerFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateFeature[TFeature](TFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetControllerTypes()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetDescriptors()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.UpdateCollection()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.Initialize()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.GetChangeToken()
+   at Microsoft.Extensions.Primitives.ChangeToken.ChangeTokenRegistration`1..ctor(Func`1 changeTokenProducer, Action`1 changeTokenConsumer, TState state)
+   at Microsoft.Extensions.Primitives.ChangeToken.OnChange(Func`1 changeTokenProducer, Action changeTokenConsumer)
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.Subscribe()
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.GetOrCreateDataSource(IEndpointRouteBuilder endpoints)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.MapControllers(IEndpointRouteBuilder endpoints)
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs:line 66
+   at Program.&lt;Main&gt;(String[] args)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.DeferredHost.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Start(IHost host)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 68
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 112
+--- End of stack trace from previous location ---</stack-trace></failure></test><test id="999f5a9e-d851-4e60-a9e6-99e44aa8284c" name="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)" result="Fail" time="0.064" time-rtf="00:00:00.0640000" start-rtf="2026-10-31T22:21:50.1478795+00:00" finish-rtf="2026-10-31T22:21:50.2131454+00:00" type="Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests" method="BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs" source-line="32"><failure exception-type="System.Reflection.ReflectionTypeLoadException"><message>System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+
+Could not load file or assembly 'Hexalith.EventStore.Contracts, Version=3.129.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+</message><stack-trace>   at System.Reflection.RuntimeModule.GetDefinedTypes()
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFeatureProvider.PopulateFeature(IEnumerable`1 parts, ControllerFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateFeature[TFeature](TFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetControllerTypes()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetDescriptors()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.UpdateCollection()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.Initialize()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.GetChangeToken()
+   at Microsoft.Extensions.Primitives.ChangeToken.ChangeTokenRegistration`1..ctor(Func`1 changeTokenProducer, Action`1 changeTokenConsumer, TState state)
+   at Microsoft.Extensions.Primitives.ChangeToken.OnChange(Func`1 changeTokenProducer, Action changeTokenConsumer)
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.Subscribe()
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.GetOrCreateDataSource(IEndpointRouteBuilder endpoints)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.MapControllers(IEndpointRouteBuilder endpoints)
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs:line 66
+   at Program.&lt;Main&gt;(String[] args)
+   at InvokeStub_Program.&lt;Main&gt;(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.DeferredHost.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Start(IHost host)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+   at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 68
+   at Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.AssertSeedAsync[TEntryPoint](Boolean declarative) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:line 112
+--- End of stack trace from previous location ---</stack-trace></failure></test></collection><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests (id: ff8ec68cd1a9019813a44b21f484d7762266c18f990c1b4506b6f7fd5f49d7a4)" id="fcf63526-22b5-4211-8b43-8d1c45fd8aad" failed="0" not-run="0" passed="6" skipped="0" time="0.117" time-rtf="00:00:00.1170000" total="6"><test id="35cd96ae-03a5-4edd-8417-f475acbccf8d" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;tenants\&quot;, mode: Source)" result="Pass" time="0.105" time-rtf="00:00:00.1050000" start-rtf="2026-10-31T22:21:47.9951824+00:00" finish-rtf="2026-10-31T22:21:48.1130439+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /><test id="e312c543-a1d0-416f-b66a-f250c3d54d3f" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;tenants\&quot;, mode: Package)" result="Pass" time="0.006" time-rtf="00:00:00.0060000" start-rtf="2026-10-31T22:21:48.1161255+00:00" finish-rtf="2026-10-31T22:21:48.1234327+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /><test id="170f1b08-778d-4a81-a99f-fd172b3d3d6f" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;parties\&quot;, mode: Source)" result="Pass" time="0.002" time-rtf="00:00:00.0020000" start-rtf="2026-10-31T22:21:48.1234854+00:00" finish-rtf="2026-10-31T22:21:48.1259049+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /><test id="98038e9d-9ee6-4250-a212-edd057d82b49" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;parties\&quot;, mode: Package)" result="Pass" time="0.002" time-rtf="00:00:00.0020000" start-rtf="2026-10-31T22:21:48.1259418+00:00" finish-rtf="2026-10-31T22:21:48.1287682+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /><test id="f2157617-edd5-44e7-8ae6-46c99e5e8b94" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;memories\&quot;, mode: Source)" result="Pass" time="0.001" time-rtf="00:00:00.0010000" start-rtf="2026-10-31T22:21:48.1288447+00:00" finish-rtf="2026-10-31T22:21:48.1308025+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /><test id="a1c0c990-de83-4109-9b98-621001fb299d" name="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \&quot;memories\&quot;, mode: Package)" result="Pass" time="0.001" time-rtf="00:00:00.0010000" start-rtf="2026-10-31T22:21:48.1308602+00:00" finish-rtf="2026-10-31T22:21:48.1325800+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests" method="ActiveControlSourceDoesNotReplacePublishedPackageInputs" source-file="/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs" source-line="16" /></collection></assembly></assemblies>

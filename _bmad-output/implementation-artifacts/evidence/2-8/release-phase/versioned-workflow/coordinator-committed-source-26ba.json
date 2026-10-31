@@ -1,0 +1,76 @@
+{
+  "verifiedAt": "2026-10-31T20:56:18.753840+00:00",
+  "base": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "head": "26ba857a74d75b184a0340a07f280dca3bb08874",
+  "pr": 149,
+  "priorReviewedSource": "d11e16e79d93d849c99d97d053b4be64c648ee1c",
+  "fileCount": 15,
+  "readCompleteFollowupDiff": true,
+  "followup": "Both Dapr download commands restrict initial and redirected protocols to HTTPS; matching validator controls retained; one exception-producing call in test context. No analyzer suppression or legacy/runtime change.",
+  "sourceFiles": {
+    ".gitattributes": {
+      "gitBlob": "2b9773d0c8dd9044b871019e79e5e5c89b6dbe7a",
+      "sha256": "a35498f6b9995ea5b8333af04dfa0058858995db55b9284ab8eb66952e6e78d9"
+    },
+    ".github/actionlint.yaml": {
+      "gitBlob": "8e076f2d2c4f964a67fb8955982e32aef8804311",
+      "sha256": "ae59240217b52a4e4df83e05c475998cbaea4761d420c37fe7b705d166c156ad"
+    },
+    ".github/workflows/build-release.yml": {
+      "gitBlob": "189b08b390d5b23fb9c4281fee328ea43e6ebc99",
+      "sha256": "850d83784b030852308c6e2576886938b1fe9b37946146e016dae9235461dcc0"
+    },
+    ".github/workflows/ci-cd-standards.md": {
+      "gitBlob": "ee467a03851efd4e983a51b14f2d2c3ec53a328e",
+      "sha256": "c7298f6fce8446df6b828b761f5502d0a4063433644e623b015ff501c5ace2c0"
+    },
+    ".github/workflows/ci.yml": {
+      "gitBlob": "3664172d61c26cac8917b94548e0df6c6800aaf7",
+      "sha256": "b285683e40f024e956a6dd2ebcefb23253739e9a6a90363795568529b8d1351e"
+    },
+    ".github/workflows/domain-ci-v2.md": {
+      "gitBlob": "e263c629eeca0176949f0f70576b5a831909f37e",
+      "sha256": "1494c8cd19af3be001d6127e71d0fb5cac71fc5470c36c204003d335fb116bfe"
+    },
+    ".github/workflows/domain-ci-v2.yml": {
+      "gitBlob": "e0c3e504e5cd01cf8ab227797df9ce868f2ffc4a",
+      "sha256": "31455eb51330127a0f9b7659d0d26dc26f2d35f55a1acd4828eb2738a8dbd92c"
+    },
+    "Github/governed-provenance/README.md": {
+      "gitBlob": "4d6c1df28a46ff98b1d377e854cd1bcb6c507ba6",
+      "sha256": "00028f026647fcdd449269e886088c8d632bf8734567b9f3e58fba01b5f24c2a"
+    },
+    "Github/governed-provenance/governed_provenance.py": {
+      "gitBlob": "c60f7c3849581d09f216d82810e47c5c2f946da8",
+      "sha256": "9ea23bccc2c0464c5a4685eb85a4fcc8d33d7b18db8d6aeb5f89fba6f2b6492f"
+    },
+    "Github/governed-provenance/tests/test_candidate_policy.py": {
+      "gitBlob": "3bfa68d10dc02a1b87eefffbc571eeb0be9effa4",
+      "sha256": "4a84e547662a4b7ba9f541e7a0b1d575980e93eb7d85edf9d164ff3d8be7684d"
+    },
+    "Github/governed-provenance/tests/test_governed_provenance.py": {
+      "gitBlob": "f73e054bae48eb94f3aa4cbd967092d3a6720d9d",
+      "sha256": "a086ecf0d9e08c78076b64c7e92a14e35ae68d0d2a6dd72a33883e9c1c86689d"
+    },
+    "Github/prepare-module-build/tests/test_prepare_module_build.py": {
+      "gitBlob": "8f848af3d79817c7396d1f1e8a58471d03657196",
+      "sha256": "124bd207b953c81471546efa0599c977d9d469ea6a5a25ff6b23873af51c8ec0"
+    },
+    "Github/publish-containers/tests/test_governed_release_workflow.py": {
+      "gitBlob": "1654c9b6a920829887993d93730ac635ea3a45e0",
+      "sha256": "61cd994a44f9c83ec13dfd4fb0781bdf73df0bbb65d5f745dc3500a43094d2ba"
+    },
+    "README.md": {
+      "gitBlob": "31785d12cfa62785d9404c84e5cf9f5999397688",
+      "sha256": "676deec72151537b64de2bee7706ec92147e4d2ab20b93431dc7fb4a98a7ccc3"
+    },
+    "Tools/test-domain-workflow-test-platforms.ps1": {
+      "gitBlob": "b551a6268fa64fb1bfcc05ba45fd35fd2465a1c9",
+      "sha256": "ae2b1a9ed7834b5d1ca81a47c271f01edf16b13975763c5efb67141d263b90dc"
+    }
+  },
+  "localV2Assertions": 254,
+  "normalChecks": "Pending refreshed exact-head results",
+  "publicationDispatched": false,
+  "callerActivation": false
+}

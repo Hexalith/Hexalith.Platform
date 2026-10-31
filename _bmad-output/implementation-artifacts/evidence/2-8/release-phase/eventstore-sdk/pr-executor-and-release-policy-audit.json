@@ -1,0 +1,18 @@
+{
+  "verifiedAt": "2026-10-31T20:53:06.355901+00:00",
+  "head": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "prMergeExecutor": "f7204379cce4783678c1a8b423c9fc51e1d90ba2",
+  "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "tree": "4194080f05165b864060149091ac56c622fee6f3",
+  "prExecutorTreeExactlyMatchesBranch": true,
+  "releaseWorkflowExistingProofRequirements": [
+    "current live-main dispatch",
+    "exact successful ci.yml push run",
+    "exact successful commitlint.yml push run",
+    "protected production environment",
+    "publish-enabled variable",
+    "14-package release inventory and normal publisher gates"
+  ],
+  "historicalPublishedMatrix": "Not an effective required PR status or a release.yml push-proof workflow. Its actual failed/unqualified result remains recorded and supplies no package/candidate qualification. No protection or expectation change.",
+  "sourceCohortReleaseHeld": true
+}

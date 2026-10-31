@@ -1,0 +1,7 @@
+fix(ci): canonicalize exact cleanup identities
+
+Reconstruct the cleanup run id through the UUID type after strict ASCII receipt
+checks. Preserve all 128 bits and leading zeros before binding the option value.
+
+Keep the fixed tool, verb and options with reviewed invocation rationale on the
+argument itself. Add an exact leading-zero cleanup identity control.

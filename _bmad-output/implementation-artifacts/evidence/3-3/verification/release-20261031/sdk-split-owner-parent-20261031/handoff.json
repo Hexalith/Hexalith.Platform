@@ -1,0 +1,46 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+  "base": "b641de5aa2f9fe58e4ade6c42fb938936f879748",
+  "files": {
+    "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwnerPreparationExtensions.cs": "6043ca9f855d29b755c98150612a4cdc3a8232e90987ca6da733668eba2e3c2f",
+    "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogSplitOwnerPreparationTests.cs": "5c4c6fcb2c4d9ab75719c97b9046959a55abea5324bafd6d196e17bfb78a22fe"
+  },
+  "indexSha256": "e18ce00dea213331e6fada646bf528aa9b136491cf41472bfce0edbd5574cde9",
+  "actualIndexUnchanged": true,
+  "patchSha256": "1deef3fa668429166cd14c4f7fe2dda419454646f15336f3cdfe2c932e42c337",
+  "patchBytes": 29196,
+  "patchLines": 376,
+  "runs": [
+    {
+      "command": "dotnet build tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj --configuration Debug -m:1 -p:NuGetAudit=false",
+      "log": "/tmp/story33-sdk-split-owner-build1.log",
+      "result": "clean0warnings/errors"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll -class '*DevelopmentRouteCatalogOwnerPreparationTests' -class '*DevelopmentRouteCatalogSplitOwnerPreparationTests' -parallel none -result-xml /tmp/story33-sdk-split-owner-run1.xml",
+      "log": "/tmp/story33-sdk-split-owner-run1.log",
+      "xml": "/tmp/story33-sdk-split-owner-run1.xml",
+      "assembly": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "21a64ca5-84f6-4d98-a816-638dc462c624",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "22:01:26",
+        "start-rtf": "2026-10-31T22:01:26.7331449+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T22:02:53.6687373+00:00",
+        "not-run": "0",
+        "passed": "30",
+        "skipped": "0",
+        "time": "86.939",
+        "time-rtf": "00:01:26.9389999",
+        "total": "30"
+      }
+    }
+  ],
+  "scanReceipt": "/tmp/story33-sdk-split-owner-scan-20261031/receipt.json",
+  "status": "frozen two-file SDK delta; parent owns index/commit/remote"
+}

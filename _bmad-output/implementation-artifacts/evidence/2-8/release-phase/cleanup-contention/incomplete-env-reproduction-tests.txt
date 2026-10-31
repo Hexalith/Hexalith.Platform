@@ -1,0 +1,18 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: False) [FAIL]
+      System.Threading.Tasks.TaskCanceledException : A task was canceled.
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(877,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(Boolean declared, Boolean beforeLaunch, Boolean contended)
+        --- End of stack trace from previous location ---
+Cancelling... (Press Ctrl+C again to terminate)
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: False) [FAIL]
+      System.Threading.Tasks.TaskCanceledException : A task was canceled.
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs(877,0): at Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(Boolean declared, Boolean beforeLaunch, Boolean contended)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Builds.Module.Tests (ID = '4ae6e0ba4f0d069cb9154b6ce52732d9ecd8fffec55538a78a261d79487f3961')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 4, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 53.775s

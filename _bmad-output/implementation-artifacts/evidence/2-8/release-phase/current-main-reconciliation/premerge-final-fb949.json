@@ -1,0 +1,248 @@
+{
+  "verifiedAt": "2026-10-31T22:08:35.632854+00:00",
+  "head": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+  "base": "f6834a33967f8ec905145db14e1a13ffb5468d69",
+  "tree": "e7d8a28a846040882f31dafdb1b876d4def45890",
+  "mergeableState": "clean",
+  "rules": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": false,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "squash"
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "Codacy Static Code Analysis",
+            "integration_id": 56611
+          },
+          {
+            "context": "SonarCloud Code Analysis",
+            "integration_id": 12526
+          },
+          {
+            "context": "commitlint / commitlint",
+            "integration_id": 15368
+          }
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    }
+  ],
+  "effectiveRequiredChecks": [
+    {
+      "context": "Codacy Static Code Analysis",
+      "app": 56611,
+      "id": 124666670533,
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124666670533"
+    },
+    {
+      "context": "SonarCloud Code Analysis",
+      "app": 12526,
+      "id": 124666365543,
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124666365543"
+    },
+    {
+      "context": "commitlint / commitlint",
+      "app": 15368,
+      "id": 124666279178,
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41244932826/job/124666279178"
+    }
+  ],
+  "allHeadChecks": [
+    {
+      "name": "Build and test",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "CodeQL",
+      "app": 57789,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Codacy Static Code Analysis",
+      "app": 56611,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "SonarCloud Code Analysis",
+      "app": 12526,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Cursor Bugbot",
+      "app": 1210556,
+      "status": "completed",
+      "conclusion": "neutral"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "app": 1210556,
+      "status": "completed",
+      "conclusion": "neutral"
+    },
+    {
+      "name": ".NET tests",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "CodeQL / analyze",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Package catalog contracts",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Python contract tests",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Dependency review / dependency-review",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build and package contracts",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "app": 1210556,
+      "status": "completed",
+      "conclusion": "neutral"
+    }
+  ],
+  "fullExactHeadCi": {
+    "id": 41244914066,
+    "head_sha": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41244914066"
+  },
+  "actualDotnetSummaries": [
+    {
+      "total": 2671,
+      "failed": 0,
+      "succeeded": 2666,
+      "skipped": 5
+    },
+    {
+      "total": 191,
+      "failed": 0,
+      "succeeded": 191,
+      "skipped": 0
+    },
+    {
+      "total": 13,
+      "failed": 0,
+      "succeeded": 1,
+      "skipped": 12
+    }
+  ],
+  "rawLog": {
+    "path": "/tmp/story28-builds-fb949-dotnet.log",
+    "bytes": 58996,
+    "sha256": "6bb59b9ee1332d3a0d632924cd948734fd5d009e3b84603f6549333515152793"
+  },
+  "noActiveBuildsPublication": true,
+  "sourcePreservation": {
+    "productionSrcTree": "0198074af180f592f0d5337fc0238f14fc3e2471",
+    "legacyWorkflowAndDocsUnchanged": true,
+    "incomingSpecUnchanged": true,
+    "changedFiles": [
+      ".gitattributes",
+      ".github/actionlint.yaml",
+      ".github/workflows/build-release.yml",
+      ".github/workflows/ci-cd-standards.md",
+      ".github/workflows/ci.yml",
+      ".github/workflows/domain-ci-v2.md",
+      ".github/workflows/domain-ci-v2.yml",
+      "Github/governed-provenance/README.md",
+      "Github/governed-provenance/governed_provenance.py",
+      "Github/governed-provenance/tests/test_candidate_policy.py",
+      "Github/governed-provenance/tests/test_governed_provenance.py",
+      "Github/prepare-module-build/tests/test_prepare_module_build.py",
+      "Github/publish-containers/tests/test_governed_release_workflow.py",
+      "README.md",
+      "Tools/test-domain-workflow-test-platforms.ps1",
+      "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs"
+    ]
+  },
+  "messageSha256": "dad0fe6871402346a77fb2bca8128496cbc15ad12065a04aa8599f6b0009b0bf",
+  "lintVersion": "21.2.4",
+  "normalMergeOnly": true,
+  "candidateAcceptance": false
+}

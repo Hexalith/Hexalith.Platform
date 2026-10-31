@@ -77,9 +77,11 @@ def integer(value, lower=0, upper=1000000000):
 
 
 def timestamp(value):
-    require(type(value) is str and re.fullmatch(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ', value))
+    require(type(value) is str and re.fullmatch(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?Z', value))
     try:
-        return datetime.strptime(value, '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
+        # Exact known UTC provider/PG precision. Reject >6digits rather than
+        # silently truncating a timestamp used by retention/expiry comparisons.
+        return datetime.fromisoformat(value.replace('Z', '+00:00'))
     except Exception:
         raise Refusal(FAILURE) from None
 

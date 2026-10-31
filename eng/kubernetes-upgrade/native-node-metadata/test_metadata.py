@@ -10,7 +10,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import mock_open, patch
 
 SOURCE = Path(__file__).with_name('metadata.py')
 spec = importlib.util.spec_from_file_location('native_node_metadata', SOURCE)
@@ -51,8 +51,12 @@ class FakeClient:
                 self.node_uid = '33333333-3333-4333-8333-333333333333'
             if self.fault == 'failed-observation':
                 raise ValueError('original-observation-refusal')
+            if self.fault == 'failed-pod-with-no-logs':
+                raise ValueError('secondary-log-refusal')
             return {'kind': 'node-file-metadata-only', 'entries': {'etc/synthetic': {'sha256': 'f' * 64}},
-                    'sourceContentExported': False, 'networkOperations': 0}
+                    'sourceContentExported': False, 'networkOperations': 0,
+                    'processSecurityProfile': {'onlyDacReadSearchEffectivePermittedAndBounded': True,
+                                               'noNewPrivileges': True, 'rootFilesystemReadOnly': True}}
         if verb == 'get':
             return copy.deepcopy(self.objects.get(path))
         if verb == 'create':
@@ -60,6 +64,8 @@ class FakeClient:
             value['metadata'].update(uid='owned-' + body['kind'], resourceVersion='7')
             if body['kind'] == 'Pod':
                 value['status'] = {'phase': 'Succeeded'}
+                if self.fault == 'failed-pod-with-no-logs':
+                    value['status']['phase'] = 'Failed'
                 value['spec']['containers'][0].update(terminationMessagePath='/dev/termination-log',
                                                       terminationMessagePolicy='File')
             else:
@@ -112,6 +118,8 @@ class MetadataTests(unittest.TestCase):
         names = {alias.name for node in imports if isinstance(node, ast.Import) for alias in node.names}
         self.assertFalse(names & {'socket', 'ssl', 'urllib', 'http', 'subprocess', 'ctypes'})
         self.assertEqual(pod['spec']['containers'][0]['command'][-1], m.program())
+        self.assertEqual(pod['spec']['containers'][0]['securityContext']['capabilities'],
+                         {'drop': ['ALL'], 'add': ['DAC_READ_SEARCH']})
 
     def test_unpinned_image_or_unsafe_attempt_is_rejected(self):
         for attempt, image in [('test', 'python:latest'), ('../escape', IMAGE)]:
@@ -137,6 +145,7 @@ class MetadataTests(unittest.TestCase):
                    lambda v: v['spec']['containers'][0].update(args=['unreviewed']),
                    lambda v: v['spec']['containers'][0].update(env=[{'name': 'PYTHONPATH', 'value': 'unreviewed'}]),
                    lambda v: v['spec']['containers'][0]['securityContext'].update(privileged=True),
+                   lambda v: v['spec']['containers'][0]['securityContext']['capabilities']['add'].append('SYS_ADMIN'),
                    lambda v: v['spec']['securityContext'].update(sysctls=[{'name': 'unreviewed', 'value': '1'}]),
                    lambda v: v['spec']['volumes'].append({'name': 'runtime', 'hostPath': {'path': '/var/run/containerd.sock'}}),
                    lambda v: v['spec'].update(hostNetwork=True),
@@ -146,6 +155,25 @@ class MetadataTests(unittest.TestCase):
             attack(value)
             with self.subTest(value=value), self.assertRaises(ValueError):
                 m.assert_owned(value, self.objects[1], 'owned')
+
+    def test_calico_cleared_ips_require_both_empty_and_the_only_container_terminated(self):
+        value = self.observed()
+        value['metadata']['annotations'].update({'cni.projectcalico.org/containerID': 'a' * 64,
+                                                 'cni.projectcalico.org/podIP': '',
+                                                 'cni.projectcalico.org/podIPs': ''})
+        value['status'] = {'phase': 'Succeeded', 'containerStatuses': [
+            {'name': 'metadata', 'state': {'terminated': {'exitCode': 0}}}]}
+        m.assert_owned(value, self.objects[1], 'owned')
+        attacks = [lambda v: v['status'].update(phase='Running'),
+                   lambda v: v['status'].pop('containerStatuses'),
+                   lambda v: v['status']['containerStatuses'][0].update(name='other'),
+                   lambda v: v['metadata']['annotations'].update({'cni.projectcalico.org/podIPs': '10.0.0.1/32'}),
+                   lambda v: v['metadata']['annotations'].update({'cni.projectcalico.org/containerID': ''})]
+        for attack in attacks:
+            observed = copy.deepcopy(value)
+            attack(observed)
+            with self.subTest(observed=observed), self.assertRaises(ValueError):
+                m.assert_owned(observed, self.objects[1], 'owned')
 
     def test_metadata_hashes_contents_without_exporting_them_and_never_follows_links(self):
         tree = self.root / 'source'
@@ -191,6 +219,12 @@ class MetadataTests(unittest.TestCase):
         with patch('os.read', replace), self.assertRaises(ValueError):
             m.collect_metadata(self.root, ['file'], [], require_readonly=False)
 
+    def test_unexpected_effective_capabilities_refuse_before_any_source_file_read(self):
+        profile = 'CapEff:\t0000000000000006\nCapPrm:\t0000000000000004\nCapBnd:\t0000000000000004\nNoNewPrivs:\t1\n'
+        with patch('builtins.open', mock_open(read_data=profile)), patch('os.open', side_effect=AssertionError('source must not open')):
+            with self.assertRaisesRegex(ValueError, 'process-security-profile'):
+                m.collect_metadata(self.root, ['private'], [], require_readonly=False, require_security_profile=True)
+
     def test_success_uses_exact_uid_rv_cleanup_and_preserves_source(self):
         sink = Sink()
         with patch.object(m, 'Client', FakeClient):
@@ -232,6 +266,13 @@ class MetadataTests(unittest.TestCase):
             result = m.collect(self.args, self.objects, sink)
         self.assertEqual(result['error'], 'ValueError:original-observation-refusal')
         self.assertFalse(result['cleanupPassed'])
+
+    def test_failed_pod_without_available_logs_retains_the_observed_semantic_failure(self):
+        FakeClient.fault = 'failed-pod-with-no-logs'
+        with patch.object(m, 'Client', FakeClient):
+            result = m.collect(self.args, self.objects, Sink())
+        self.assertEqual(result['error'], 'ValueError:metadata-helper-failed-or-timeout')
+        self.assertTrue(result['cleanupPassed'])
 
     def test_nonstatic_config_refuses_before_first_network_call(self):
         kubectl, config = self.root / 'kubectl', self.root / 'native'

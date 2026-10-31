@@ -1,0 +1,28 @@
+[93mThe '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+[0m[93mThe '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+[0m
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+[37m  Discovering: Hexalith.EventStore.Server.Tests
+[0m[37m  Discovered:  Hexalith.EventStore.Server.Tests
+[0m[37m  Starting:    Hexalith.EventStore.Server.Tests
+[0m[91m    Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus [FAIL]
+[0m[37m      NSubstitute.Exceptions.ReceivedCallsException : Expected to receive a call matching:
+[0m[37m      	VerifyCurrentBlockedReplacementAsync(any DeletionBlockedReplacementReconciliation, 21, "5E81D4E87658C1651D0447679BB1526288FBE01130033FD80A49416AD4BC4854", any CancellationToken)
+[0m[37m      Actually received no matching calls.
+[0m[37m      
+[0m[90m      Stack Trace:
+[0m[37m           at NSubstitute.Core.ReceivedCallsExceptionThrower.Throw(ICallSpecification callSpecification, IEnumerable`1 matchingCalls, IEnumerable`1 nonMatchingCalls, Quantity requiredQuantity)
+[0m[37m           at NSubstitute.Routing.Handlers.CheckReceivedCallsHandler.Handle(ICall call)
+[0m[37m           at NSubstitute.Routing.Route.Handle(ICall call)
+[0m[37m           at NSubstitute.Core.CallRouter.Route(ICall call)
+[0m[37m           at NSubstitute.Proxies.CastleDynamicProxy.CastleForwardingInterceptor.Intercept(IInvocation invocation)
+[0m[37m           at Castle.DynamicProxy.AbstractInvocation.Proceed()
+[0m[37m           at NSubstitute.Proxies.CastleDynamicProxy.ProxyIdInterceptor.Intercept(IInvocation invocation)
+[0m[37m           at Castle.DynamicProxy.AbstractInvocation.Proceed()
+[0m[37m           at Castle.Proxies.ObjectProxy_4.VerifyCurrentBlockedReplacementAsync(DeletionBlockedReplacementReconciliation request, Int64 guardRevision, String guardStateDigest, CancellationToken cancellationToken)
+[0m[37m        tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs(594,0): at Hexalith.EventStore.Server.Tests.Security.PublishedTrustReplacementAuthorityTests.UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus()
+[0m[37m        --- End of stack trace from previous location ---
+[0m[37m  Finished:    Hexalith.EventStore.Server.Tests (ID = '9655c4385bc738a18eb3843529980b3f6d2ac683a98139a45db231f57f16cbeb')
+[0m[37m=== TEST EXECUTION SUMMARY ===
+[0m[37m   Hexalith.EventStore.Server.Tests  Total: 153, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 1.653s
+[0m[0m

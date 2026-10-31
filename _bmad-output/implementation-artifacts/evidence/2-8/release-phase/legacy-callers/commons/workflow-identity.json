@@ -1,0 +1,32 @@
+{
+  "recordedAtUtc": "2026-10-31T20:06:26.753858+00:00",
+  "owner": "Hexalith/Hexalith.Commons",
+  "base": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+  "file": ".github/workflows/ci.yml",
+  "before": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+    "sha256": "30cc370e0f76cf7305914779a0c3fd4a0c6141d140751d403d9c9b1765a88867",
+    "commitBlob": "765dd6ccd65ca76c14df591ee5f036c88179fafb",
+    "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+  },
+  "after": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "sha256": "87e6ffafb01d7f78a3fd4c47e78c4a8ebc1622115f3b5c5b367dd1d4447070e3",
+    "normalizedBlob": "2aa7d4dc331ad9f46204c7272363e1845d4a848d"
+  },
+  "onlyExactRefReplacement": true,
+  "allOtherBytesEqual": true,
+  "parsedYamlEquivalentExceptReference": true,
+  "allCallerInputsSupportedByPinnedInterface": true,
+  "callerInputs": {
+    "solution": "Hexalith.Commons.slnx",
+    "run-consumer-validation": "true",
+    "test-platform": "microsoft-testing-platform",
+    "unit-test-projects": "test/Hexalith.Commons.Tests\ntest/Hexalith.Commons.Aspire.Tests\ntest/Hexalith.Commons.Diagnostics.Tests\ntest/Hexalith.Commons.Http.Tests\ntest/Hexalith.Commons.Publication.Tests\ntest/Hexalith.Commons.Serialization.Tests\ntest/Hexalith.Commons.ServiceDefaults.Tests\ntest/Hexalith.Commons.TenantAccess.Tests\n"
+  },
+  "callerSecretsUnchanged": null,
+  "requiredLegacySecrets": false,
+  "lineEndingsPreserved": true,
+  "candidateAcceptance": false,
+  "callerMergeAuthorizedInThisStage": false
+}

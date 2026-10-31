@@ -1,0 +1,97 @@
+{
+  "preparedAt": "2026-10-31T22:11:06.269741+00:00",
+  "partiesMain": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+  "requestedReleaseOwner": "jpiquot",
+  "requestedDecision": "Retain these exact already-committed seven source selections and append their matching validated-advance rows. Source selection only; full CI, packages, release and runtime remain independently gated.",
+  "sourceSelectionApproved": true,
+  "ledgerWritten": false,
+  "rows": [
+    {
+      "path": "references/Hexalith.Builds",
+      "selectedSha": "81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/commit/81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+      "commitSubject": "build(g6): approve the SDK 10.0.403 and Dapr 1.19.0 tuple",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T15:04:03Z",
+      "changedFiles": 1,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.EventStore",
+      "selectedSha": "6bcd40e3158d5b99e8d94cd300575768a6e479ab",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/commit/6bcd40e3158d5b99e8d94cd300575768a6e479ab",
+      "commitSubject": "test: await owned subprocess termination",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T17:10:42Z",
+      "changedFiles": 2,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.FrontComposer",
+      "selectedSha": "86e07babdf88329dffc60f0c4fb5b566a35063c4",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.FrontComposer/commit/86e07babdf88329dffc60f0c4fb5b566a35063c4",
+      "commitSubject": "docs: record qualified dependency transition",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T17:11:46Z",
+      "changedFiles": 1,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.McpCli",
+      "selectedSha": "d7e21771079a2302e7a2e958dccdd12d94f56070",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.McpCli/commit/d7e21771079a2302e7a2e958dccdd12d94f56070",
+      "commitSubject": "docs: record the story 4.17 code review",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T15:58:59Z",
+      "changedFiles": 2,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "selectedSha": "2649a946aa55cdd570c9beb15f9c91bc01703a26",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.Memories/commit/2649a946aa55cdd570c9beb15f9c91bc01703a26",
+      "commitSubject": "test: report owned workflow readiness failures",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T17:20:03Z",
+      "changedFiles": 3,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.Platform",
+      "selectedSha": "82c9a31a0565c6dfd47750f5c67c087b487e6300",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/commit/82c9a31a0565c6dfd47750f5c67c087b487e6300",
+      "commitSubject": "build: preserve concurrent platform work",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T16:01:42Z",
+      "changedFiles": 38,
+      "sourceSelectionApproval": true
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "selectedSha": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "ledgerDisposition": "no matching validated-advance with real owner",
+      "releaseAction": "Owner validation/signoff or deliberate reset through normal source gates; no approval inferred from preflight.",
+      "url": "https://github.com/Hexalith/Hexalith.Tenants/commit/9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "commitSubject": "build: preserve concurrent release alignment",
+      "authorLogin": "jpiquot",
+      "authorDate": "2026-10-31T15:48:32Z",
+      "changedFiles": 2,
+      "sourceSelectionApproval": true
+    }
+  ],
+  "approvedBy": "jpiquot via explicit user answer: Approve these seven existing revisions",
+  "approvalRecordedAt": "2026-10-31T22:12:35.074906+00:00",
+  "approvalScope": "Only seven exact existing source selections listed in rows; no test/release/runtime acceptance. Normal ledger PR and all gates required."
+}

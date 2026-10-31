@@ -1,0 +1,67 @@
+{
+  "observedAtUtc": "2026-10-31T22:06:08.937613+00:00",
+  "canonicalPartiesHead": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+  "canonicalPartiesCommitUrl": "https://github.com/Hexalith/Hexalith.Parties/commit/4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+  "cleanPartiesWorktree": "/tmp/hexalith-story28-parties-package/Hexalith.Parties",
+  "cleanCatalogWorktree": "/tmp/hexalith-story28-parties-package/Hexalith.Builds",
+  "catalogBuildsCommit": "81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+  "catalogPropsSha256": "1d4b477b459f89d4b2e5c52a8d5e429d2af6fe3a6cd14c3102c3a544842983e3",
+  "supportedCatalogImport": "Existing Hexalith2BuildPackageProps sibling path; no property shim or source edit.",
+  "sourceSha256": {
+    "AGENTS.md": "7730aba9b2a347d7fb2b8587495ffc45f1a485b7be6bffdc0817b416e4220455",
+    "Directory.Build.props": "9ce552be3a090a606be441c22f03bd445e6c4e4a3a6b4ebdcd98b57691357c0d",
+    "Directory.Build.targets": "6a3474294c46808b0d9fd6b03857a5cc15a1dc462e2e0f4af36bd9a3f83bfd50",
+    "Directory.Packages.props": "0da9f9f44fec3f4f71594d28c18646d5acdab7bc6c49b1709c2811be82ed4b7f",
+    "src/Hexalith.Parties/Hexalith.Parties.csproj": "f73aaaaf8f48095fdbf0e137c24f02f63bccf51eea87c068048812f143f8c715",
+    "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj": "24541a07597a3f500157db461c0f068cc79169a81ebed7874ab03493e4d00000",
+    ".github/workflows/ci.yml": "bb663fad972e4004ec7365d3d5d9cc54817aad1ec3912ef85d1a1e63e50a80d9",
+    ".github/workflows/release.yml": "01f5ccd8e89f2e9e02c7f16a4a1a142c89685d0fd11bd672e319aac8bd587372",
+    ".github/workflows/rc-gate.yml": "88d4de2dbb61559fcd19e460e4c12e34d93c340ce02f646c8eb59d38420bc5a3",
+    "release.config.cjs": "b4e2ad6bea95b84d2a18083e327dca1ec96af932b6b390e9d89c26a9a671849b",
+    "tools/release-packages.json": "a5906a28c49406bb998111cb218b6d6480940fcd8529f348eb90f8effaf7755a",
+    "scripts/pack-release-packages.py": "8ac5b6ac458aa5aae62f2c7291f4d57177a0bede9451412782ddba7eaf411762",
+    "scripts/gitlink-rc-gate.sh": "0e4cf9b81b01ae5bd462d4832b234c3c64e48c32ab810a571530d54f91a21dfc",
+    ".gitlink-signoff.tsv": "936ec1c9c4d4dd75e8fb13245a42bbf42efe3771ea13712702ea90dc6286ed13",
+    "RELEASE-CHECKLIST.md": "b15366a82ed6ec0bf80cf8890fd8b6fb797b42bbd224b6dd45c24639ea7edaa5",
+    "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5"
+  },
+  "allTrackedWorkingBytesMatchHead": true,
+  "sourceMappingFallback": false,
+  "owningCiBuildFlags": [
+    "Configuration=Release",
+    "UseHexalithProjectReferences=false",
+    "UseNuGetDeps=true"
+  ],
+  "packages": {
+    "SDK": "3.130.0",
+    "Tenants": "6.0.0",
+    "Memories": "3.0.13",
+    "FrontComposer": "4.7.4"
+  },
+  "narrowBuilds": {
+    "EventStoreExtensions": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "seconds": 1.12
+    },
+    "Parties": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "seconds": 3.43
+    }
+  },
+  "nestedSubmodulesInitialized": false,
+  "privateSdkDraftsMaterialized": false,
+  "sharedDirtyHeadIndexSourcePreserved": true,
+  "sourceChanged": false,
+  "commitCreated": false,
+  "pushPerformed": false,
+  "releaseDispatched": false,
+  "environmentApproved": false,
+  "registryProvisioned": false,
+  "callerAdopted": false,
+  "candidateAcceptance": false,
+  "storyStatus": "in-progress"
+}

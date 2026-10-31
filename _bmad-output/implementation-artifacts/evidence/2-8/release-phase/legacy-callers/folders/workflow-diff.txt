@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index e56224f1..30491018 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -15,7 +15,7 @@ permissions:
+ 
+ jobs:
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9
+     with:
+       solution: Hexalith.Folders.CI.slnx
+       build-timeout-minutes: 45

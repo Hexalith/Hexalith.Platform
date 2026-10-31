@@ -1,0 +1,23 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "--disable-build-servers",
+    "-p:NuGetAudit=false",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+    "-p:HexalithBuildsRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final",
+    "-p:HexalithTenantsRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants-final",
+    "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties",
+    "-p:HexalithSourceMappingMode=source",
+    "--no-incremental"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final",
+  "log": "/tmp/story33-platform-technical-seed-build3.log",
+  "exitCode": 0
+}

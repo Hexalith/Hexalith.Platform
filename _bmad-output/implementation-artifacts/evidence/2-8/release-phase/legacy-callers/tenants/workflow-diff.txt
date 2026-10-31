@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 108ecf35..8f92c388 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -294,7 +294,7 @@ jobs:
+           --minimum-expected-tests 117 --fail-skips on
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9
+     with:
+       solution: Hexalith.Tenants.slnx
+       test-platform: microsoft-testing-platform

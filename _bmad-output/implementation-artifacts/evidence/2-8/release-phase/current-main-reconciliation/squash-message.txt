@@ -1,0 +1,37 @@
+feat(ci): add versioned integration and preserve cleanup retries
+
+Preserve existing domain-ci.yml callers and introduce declared package integration
+through domain-ci-v2.yml. The legacy workflow and dedicated documentation retain
+their current-main bytes.
+
+V2 requires isolated success, declared suites, dedicated pull-only registry secrets,
+exact owner finalization and classified diagnostics. Bind its actual workflow
+identity and direct integration executor into the authorized closure; reject legacy
+identities/digests and missing or changed executor source. Remove unused legacy-only
+inputs, preserve direct integration/AppHost refusals, and require HTTPS downloads
+and redirects. Run both validator modes in CI/release and document explicit migration.
+
+Reconcile current main f6834a33967f8ec905145db14e1a13ffb5468d69 through a normal branch
+merge. Preserve its test-only startup cancellation correction, both executing
+run-id/session refusal-and-retry controls and its separate specification exactly.
+Production source matches current main: the provisional outcome-lock waiting change
+is withdrawn, and the existing HXR037/HXT008 same-owner retry contract is preserved.
+An additional active-attachment control verifies immediate metadata refusal, owned
+workspace/claims, exact idempotent retry, immutable first outcomes/times and original
+absolute expiry. No production allowance, cleanup, withdrawal or retention changes.
+
+Validation: fresh Debug project graph builds with zero warnings/errors. On one
+same-source binary with complete simulated GitHub identity, all 59 local lifecycle
+cases, 16 CI lifecycle cases and three existing legacy bookkeeping scenarios pass,
+with zero failures/skips/errors. The four original startup cases and both incoming
+live-process refusal/retry cases remain present. Exact source/tree/binary hashes,
+commands, named XML and historical failed/provisional evidence are retained.
+
+The 15 reviewed v2 producer files remain unchanged from 26ba857. Their source controls
+passed 411 legacy and 254 strict assertions, 95 provenance tests, 56 governed workflow
+tests, 11 preparation tests and 24 unchanged helper tests. Actionlint and diff checks
+pass. Local Debug controls and simulated CI supply no hosted reference, Release/package
+or candidate acceptance; complete current-base hosted gates remain mandatory.
+
+E/P adoption, registry provisioning, compatible releases and hosted lifecycle
+qualification remain pending. No PR merge or publication is part of this handoff.
