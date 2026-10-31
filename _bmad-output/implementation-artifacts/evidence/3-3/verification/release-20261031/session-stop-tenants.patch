@@ -1,0 +1,222 @@
+diff --git a/src/Hexalith.Tenants.Api/Program.cs b/src/Hexalith.Tenants.Api/Program.cs
+index 529a3acf..12615171 100644
+--- a/src/Hexalith.Tenants.Api/Program.cs
++++ b/src/Hexalith.Tenants.Api/Program.cs
+@@ -23,13 +23,8 @@ builder.AddServiceDefaults();
+ builder.Services.AddControllers();
+ builder.Services.AddHttpContextAccessor();
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-builder.Services.AddEventStoreDevelopmentRouteCatalogBootstrap(builder.Configuration, async (_, token) =>
+-{
+-    var actual = await DevelopmentRouteCatalogInputs.CaptureAsync(builder.Configuration, "tenants-api",
+-        CompiledRouteCatalogDeclarations.Read([typeof(Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations).Assembly]),
+-        [], [], [], [], token).ConfigureAwait(false);
+-    return actual with { Operations = CompiledRouteCatalogDeclarations.ReadOperations([typeof(Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations).Assembly]) };
+-});
++builder.Services.AddEventStoreDevelopmentGeneratedRestCatalog(builder.Configuration, "tenants-api",
++    typeof(Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations).Assembly);
+ #endif
+ 
+ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+@@ -132,6 +127,7 @@ if (!app.Environment.IsDevelopment())
+ app.UseHttpsRedirection();
+ app.UseRouting();
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++app.UseEventStoreDevelopmentGeneratedRestCatalogReceiver();
+ app.UseEventStoreHttpHostSecurity();
+ #endif
+ app.UseAuthentication();
+diff --git a/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj b/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
+index 73ae0d09..b4aac01d 100644
+--- a/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
++++ b/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
+@@ -24,6 +24,7 @@
+     <ProjectReference Include="$(HexalithEventStoreRoot)\src\Hexalith.EventStore.Aspire\Hexalith.EventStore.Aspire.csproj" IsAspireProjectResource="false" GlobalPropertiesToRemove="Version" Condition="'$(HexalithEventStoreFromSource)' == 'true'" />
+     <PackageReference Include="Hexalith.EventStore.Aspire" Condition="'$(HexalithEventStoreFromSource)' != 'true'" />
+     <ProjectReference Include="..\Hexalith.Tenants.Aspire\Hexalith.Tenants.Aspire.csproj" IsAspireProjectResource="false" />
++    <ProjectReference Include="..\Hexalith.Tenants.Server\Hexalith.Tenants.Server.csproj" IsAspireProjectResource="false" />
+     <ProjectReference Include="$(HexalithMemoriesRoot)\src\Hexalith.Memories.Aspire\Hexalith.Memories.Aspire.csproj" IsAspireProjectResource="false" Condition="'$(HexalithMemoriesFromSource)' == 'true'" />
+     <PackageReference Include="Hexalith.Memories.Aspire" Condition="'$(HexalithMemoriesFromSource)' != 'true'" />
+   </ItemGroup>
+diff --git a/src/Hexalith.Tenants.AppHost/Program.cs b/src/Hexalith.Tenants.AppHost/Program.cs
+index ad4db0ce..1dcba030 100644
+--- a/src/Hexalith.Tenants.AppHost/Program.cs
++++ b/src/Hexalith.Tenants.AppHost/Program.cs
+@@ -334,6 +334,9 @@ else {
+     : null;
+ try
+ {
++    await using DevelopmentRouteCatalogComposition? localCatalog = builder.ExecutionContext.IsRunMode
++        ? TenantsDevelopmentRoutingCatalog.Create(builder, eventStore, tenants, tenantsApi, tenantsUI, stateStoreComponentPath)
++        : null;
+     DistributedApplication application = builder.Build();
+     await using (application.ConfigureAwait(false))
+     {
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+index 3883c5af..0fee6f70 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+@@ -17,6 +17,7 @@ public sealed class BootstrapResourceFailureDiagnosticsTests
+         observed.ExceptionTypes.ShouldContain("System.MissingMethodException");
+         observed.ApiSymbols.ShouldContain("Hexalith.EventStore.Client.Routing.PublicApi.Read");
+         observed.CatalogReasons.ShouldBe(["configuration-missing"]);
++        observed.CapturedLineCount.ShouldBe(2);
+     }
+ 
+     [Fact]
+@@ -44,7 +45,7 @@ public sealed class BootstrapResourceFailureDiagnosticsTests
+         using CancellationTokenSource bound = new(TimeSpan.FromSeconds(2));
+         var observed = await BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token);
+         observed.Count.ShouldBe(3);
+-        observed.Values.ShouldAllBe(value => value.ExceptionTypes.Contains("System.MissingMethodException"));
++        observed.Values.ShouldAllBe(value => value.ExceptionTypes.Contains("System.MissingMethodException") && value.CapturedLineCount > 0);
+         await bound.CancelAsync();
+         await Should.ThrowAsync<OperationCanceledException>(() => BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token));
+     }
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+index 3beeadce..b9b0a6cb 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+@@ -15,7 +15,7 @@ internal static class BootstrapResourceFailureDiagnostics
+     private static readonly string[] Reasons = ["configuration-missing", "owner-trust-refused", "topology-disagreement", "installed-inventory-disagreement", "store-or-transport-unavailable", "catalog-disagreement", "catalog-invalid", "host-validation-unavailable"];
+     private static readonly string[] SensitiveMarkers = ["Bearer ", "Authorization:", "password", "privatekey", "signingkey", "apikey", "api_key", "token="];
+ 
+-    internal sealed record Observation(string[] ExceptionTypes, string[] ApiSymbols, string[] CatalogReasons, bool Truncated);
++    internal sealed record Observation(string[] ExceptionTypes, string[] ApiSymbols, string[] CatalogReasons, bool Truncated, int CapturedLineCount);
+ 
+     internal static Observation Classify(IEnumerable<string> lines)
+     {
+@@ -37,7 +37,7 @@ internal static class BootstrapResourceFailureDiagnostics
+             foreach (Match match in Regex.Matches(line, @"\b(?:System|Microsoft|Hexalith|Dapr)\.[A-Za-z_][A-Za-z0-9_.+`]{1,180}", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)).Cast<Match>().Take(32))
+                 if (symbols.Count < 32) symbols.Add(match.Value);
+         }
+-        return new(exceptions.Order(StringComparer.Ordinal).ToArray(), symbols.Order(StringComparer.Ordinal).ToArray(), reasons.Order(StringComparer.Ordinal).ToArray(), truncated);
++        return new(exceptions.Order(StringComparer.Ordinal).ToArray(), symbols.Order(StringComparer.Ordinal).ToArray(), reasons.Order(StringComparer.Ordinal).ToArray(), truncated, Math.Min(count, 2048));
+     }
+ 
+     internal static Task<IReadOnlyDictionary<string, Observation>> ReadAsync(ResourceLoggerService logger, CancellationToken cancellationToken)
+@@ -73,8 +73,17 @@ internal static class BootstrapResourceFailureDiagnostics
+                 .GetField("_app", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(fixture) as DistributedApplication;
+             if (app is null) return;
+             using CancellationTokenSource bound = new(TimeSpan.FromSeconds(3));
+-            IReadOnlyDictionary<string, Observation> resources = await ReadAsync(app.Services.GetRequiredService<ResourceLoggerService>(), bound.Token);
+-            string json = JsonSerializer.Serialize(new { kind = "owned-bootstrap-failure-categories", fixtureVersion = typeof(AspireTopologyFixtureBase<>).Assembly.GetName().Version?.ToString(), resources });
++            ResourceLoggerService logger = app.Services.GetRequiredService<ResourceLoggerService>();
++            DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
++            // Resolve each logical resource to its allocated DCP instance names through Aspire's
++            // resource overload; a project replica does not write to the logical-name stream.
++            IReadOnlyDictionary<string, Observation> resources = await ReadAsync(
++                name => logger.GetAllAsync(model.Resources.Single(resource => resource.Name == name)), bound.Token);
++            string json = JsonSerializer.Serialize(new
++            {
++                kind = "owned-bootstrap-failure-categories", source = "Aspire.GetAllAsync(IResource)",
++                fixtureVersion = typeof(AspireTopologyFixtureBase<>).Assembly.GetName().Version?.ToString(), resources,
++            });
+             string directory = Path.Combine(temporary, "tenants-bootstrap-diagnostics");
+             Directory.CreateDirectory(directory);
+             await File.WriteAllTextAsync(Path.Combine(directory, Guid.NewGuid().ToString("N") + ".json"), json, bound.Token);
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs b/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
+index cf26205e..913fdf44 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
+@@ -11,6 +11,11 @@ namespace Hexalith.Tenants.IntegrationTests;
+ /// <summary>Captures the owner-source HTTP boundary without a sidecar or network listener.</summary>
+ internal sealed class OwnerSourceCaptureHandler(AuthoritativeEventStream? source = null, RSA? scopeKey = null) : HttpMessageHandler
+ {
++    private OwnerSourceCaptureHandler? _observer;
++
++    /// <summary>Creates a separately owned nonredirecting SDK test transport sharing only recorded observations.</summary>
++    internal OwnerSourceCaptureHandler CreateIndependentTransport() => new(source, scopeKey) { _observer = this };
++
+     internal int ReadCount { get; private set; }
+     internal HttpMethod? Method { get; private set; }
+     internal Uri? Uri { get; private set; }
+@@ -24,6 +29,14 @@ internal sealed class OwnerSourceCaptureHandler(AuthoritativeEventStream? source
+         Headers = request.Headers.ToDictionary(static header => header.Key, static header => header.Value.ToArray(), StringComparer.OrdinalIgnoreCase);
+         Body = await request.Content!.ReadAsStringAsync(cancellationToken);
+         ReadCount++;
++        if (_observer is { } observer)
++        {
++            observer.Method = Method;
++            observer.Uri = Uri;
++            observer.Headers = Headers;
++            observer.Body = Body;
++            observer.ReadCount++;
++        }
+         var read = JsonSerializer.Deserialize<StreamReadRequest>(Body, JsonSerializerOptions.Web)!;
+         if (source is not null)
+         {
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs b/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
+index 343f25b1..5ba01efa 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
+@@ -1,4 +1,8 @@
+ using System.Diagnostics;
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++#endif
+ using Hexalith.EventStore.Client.Streams;
+ using Hexalith.Tenants.Contracts.Events;
+ using Hexalith.Tenants.IntegrationTests.Fixtures;
+@@ -53,6 +57,16 @@ public sealed class TenantOwnerSourceGatewayTests
+                     {
+                         services.RemoveAll<IWorkloadAssertionIssuer>();
+                         services.AddSingleton(issuer);
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++                        // Keep the real invocation guard and its separate no-redirect transport.
++                        // Activation is isolated; the permitted technical target is the SDK's existing workload read.
++                        var owner = TenantOwnerCatalogTestAuthority.CreateSnapshot("tenants");
++                        var selected = new CommittedRouteCatalogSnapshot(RouteCatalogCodec.Encode(owner.Envelope), owner.RootDigest, owner.Epoch,
++                            [new("eventstore", "api/v1/streams/read/workload", "eventstore:stream-read", "gateway")], localAppId: "tenants");
++                        services.RemoveAll<IRouteCatalogAuthority>();
++                        services.AddSingleton(TenantOwnerCatalogTestAuthority.Create(selected));
++                        services.Configure<RouteCatalogHostOptions>(options => options.InvocationTransportFactory = _ => terminal.CreateIndependentTransport());
++#endif
+                         services.AddHttpClient<TenantOwnerSourceGateway>()
+                             .ConfigurePrimaryHttpMessageHandler(() => terminal);
+                     });
+@@ -72,6 +86,10 @@ public sealed class TenantOwnerSourceGatewayTests
+                 terminal.Method.ShouldBe(HttpMethod.Post);
+                 terminal.Uri.ShouldBe(new Uri("http://127.0.0.1:3579/api/v1/streams/read/workload"));
+                 terminal.Headers["dapr-app-id"].ShouldBe(["eventstore"]);
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++                terminal.Headers[RouteCatalogInvocationHandler.RootHeader].ShouldBe([TenantOwnerCatalogTestAuthority.CreateSnapshot("tenants").RootDigest]);
++                terminal.Headers[RouteCatalogInvocationHandler.EpochHeader].ShouldBe(["1"]);
++#endif
+                 if (token is null) terminal.Headers.ContainsKey("dapr-api-token").ShouldBeFalse();
+                 else terminal.Headers["dapr-api-token"].ShouldBe([token]);
+                 terminal.Headers[EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName].ShouldBe([assertion]);
+diff --git a/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs b/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs
+new file mode 100644
+index 00000000..38ed2457
+--- /dev/null
++++ b/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs
+@@ -0,0 +1,27 @@
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++using Hexalith.EventStore.Aspire;
++using Hexalith.EventStore.DomainService;
++using Hexalith.Tenants.Contracts.Routing;
++using Hexalith.Tenants.Server.Routing;
++
++namespace Hexalith.Tenants.AppHost;
++
++/// <summary>Declares the existing owner traffic for the shared SDK's private Development catalog composition.</summary>
++internal static class TenantsDevelopmentRoutingCatalog
++{
++    internal static DevelopmentRouteCatalogComposition Create(IDistributedApplicationBuilder builder,
++        IResourceBuilder<ProjectResource> gateway, IResourceBuilder<ProjectResource> domain,
++        IResourceBuilder<ProjectResource> api, IResourceBuilder<ProjectResource> ui, string stateComponent)
++    {
++        // The former gateway /** POST grant already covered these exact SDK operational routes.
++        // Human bootstrap and API POSTs retain their own existing credentials and authorization.
++        DevelopmentRouteCatalogInvocation[] domainCalls = EventStoreDomainServiceRoutes.Operational
++            .Select(route => new DevelopmentRouteCatalogInvocation(gateway, route.Route, ["POST"])).ToArray();
++        return builder.AddEventStoreDevelopmentRouteCatalog(gateway,
++            [new(domain, typeof(TenantCatalogDeclarations).Assembly, typeof(TenantIntentAdapters).Assembly)],
++            [new(gateway, [new(domain, "/api/v1/commands", ["POST"]), new(domain, "/api/v1/streams/read/workload", ["POST"]),
++                new(api, "/api/v1/commands", ["POST"]), new(api, "/api/v1/queries", ["POST"]), new(api, "/ready", ["GET"])]),
++                new(domain, domainCalls), api.CaptureEventStoreDevelopmentReceiver(ui)], stateComponent);
++    }
++}
