@@ -1764,3 +1764,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
   summary: Parties internal identity commands may be refused under the catalog for lack of an acting subject (A9; medium if true, unverified).
   evidence: `PartiesCatalogDeclarations.cs:97,103,110,111` declare `EstablishHumanActorBinding`, `RebindHumanActorBinding`, `RevokeHumanActorBinding` and `RotatePartyKey` with `Command<T>(true)`, although they are internal workload-only. For plain `/workload` submissions, EventStore `CommandsController.cs:266` sets `AuthenticatedSubject` to the bound principal or actor-binding claim, with no workload fallback. `DeclaredIdempotencyIntentAdapter.cs:104` then throws "An authenticated acting subject is required." Settle this by tracing which endpoint `HttpPartiesIdentityClient.SubmitAsync` posts to, and whether it supplies a bound principal.
+
+## Deferred from: code review 6 of spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition (2026-10-31)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Admit finite-campaign and independent-calibration capacity for the current eight-workload reference graph (low; BH-7).
+  evidence: `eng/helm-qualification/campaign_capacity.py` `configure_application` requires exactly seven workloads and refuses the current graph with `application-graph-drifted` (regression `test_current_eight_workload_graph_requires_new_campaign_capacity_admission`). The `memories/domain` workload is new, so the `applicationPods` budget and the chart's capacity-profile branch have no allocation for it. The capacity tests now use a derived seven-workload fixture. The campaign owner needs a new capacity admission before any campaign can run against the current application.
+  status: open
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: The per-server input scoping deferral (2026-10-22, module-scoped `configurationInputs`) now also covers the internal-only `memories/domain` workload (medium; BH-8).
+  evidence: `PlatformHostedPublishing.Describe` (`src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:23-27`) gives `memories/domain` all Memories inputs, including `Conversation:ProviderApiKey`, `Authentication:JwtBearer:SigningKey` and `Clock:SourceAuthenticationTokens`, although it consumes only `statestore`. This is the same pre-existing declaration shape; the fix remains a declaration-contract change.
+  status: open

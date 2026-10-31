@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'done'
+status: 'in-progress'
 baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
 review_loop_iteration: 1
@@ -177,6 +177,34 @@ Scope: baseline `e39d59b` to the final 4.5 commit `ec54e850`, limited to the Cod
 - `fromJson` returns an Error map on malformed ACL JSON (VG other): false. The DNS validation at `_helpers.tpl:8` blocks the input; the test gap is the VG-1 patch.
 - Local binder error ordering (AA-4): low. Only the first of several simultaneous errors changes, and the fix is a restructure.
 - The archive installed is not the one parity-tested in all modes (AA-5): low. Both are packaged from the inventory-verified chart, and the installed archive runs all three modes live.
+
+### Review Findings — code review 6 (2026-10-31)
+
+Scope: the post-review-5 patch delta `069e550a..8af2e4d2`, limited to the Code Map files (`eng/helm-qualification/**`, `PlatformHostedPublishing.cs`, `PlatformHostedPublishingTests.cs`) and the synchronized `eng/mcpcli-operator-setup/chart/templates` copies. Excluded: `evidence/4-5/` and other stories' hunks in the same or later commits. Layers: Blind Hunter (BH), Edge Case Hunter (EH), Verification Gap (VG) and Acceptance Auditor (AA). Chart claims were re-verified with real Helm 4.2.0. Line references are to `8af2e4d2`. 31 raw findings: 0 decisions, 5 patches, 2 defers and 18 rejected. VG found no untested changed behavior.
+
+- [ ] [Review][Patch] The hosted probe refuses only the exact `deploy` step, so other cluster-changing pipeline steps still run (medium; VG-other, AA-1, BH-1, EH-1, EH-10) [src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:54] — The pinned 13.6.4 CLI also offers `aspire do <step>` and `aspire destroy`. The pinned `Aspire.Hosting` defines a `destroy` step, and `Aspire.Hosting.Kubernetes` 13.6.4-preview.1.26523.11 registers `helm-deploy-*` and `helm-uninstall-*` steps. They reach the probe through `--step` → `Pipeline:Step`, pass the equality check, and then get `AddKubernetesEnvironment` plus eight synthetic workloads against the ambient kube context ("Never … mutate existing clusters"). Accept only an unset step or `publish` (confirm the value the pinned `aspire publish` passes, so the native probe keeps working), and add refusal regressions for `destroy` and a `helm-deploy-*` step.
+- [ ] [Review][Patch] The ConfigMap refusal misses URL-shaped endpoint inputs (medium; AA-2, BH-2, EH-2) [eng/helm-qualification/chart/templates/_helpers.tpl:224] — D3a forbids `configMapKeyRef` for endpoint leaves, but the key test matches only a `connectionstrings__` prefix, an `endpoint` suffix or `__authority`/`__issuer`. Real Helm renders `EmbeddingProviders:Ollama:BaseUrl` and `EmbeddingProviders:Google:ApiBaseUrl`, declared on every Memories workload, from a ConfigMap, while the literal `http://localhost:11434` is refused. Extend the suffix test to `url`, `uri` and `address`, add these keys to `test_connection_strings_accept_only_secret_or_validated_endpoint_references`, and keep the `eng/mcpcli-operator-setup` copy byte-identical.
+- [ ] [Review][Patch] Build-input exclusion now records other projects' build outputs as sources (medium; EH-8) [eng/helm-qualification/qualify.py:326, :335] — Removing the final `bin`/`obj` filter and testing only paths relative to the evaluating project lets a sibling project's output through. The passing `qualification.json` records `references/Hexalith.McpCli/src/Hexalith.McpCli.Analyzers/bin/Debug/netstandard2.0/Hexalith.McpCli.Analyzers.dll`, which `Hexalith.McpCli.Abstractions.csproj:10` includes as a `None` item. On a clean checkout the file is absent at preflight and built during the run, so `verify_source` reports it as added and fails qualification; a concurrent McpCli rebuild with changed sources does the same. Exclude `bin`/`obj` relative to every evaluated project directory in the closure (the Analyzers project is a ProjectReference), keep the ancestor-safe test, and add a sibling-output regression.
+- [ ] [Review][Patch] The chart values comment still describes the old configuration rules (low; BH-14) [eng/helm-qualification/chart/values.yaml:5] — It says configuration accepts "non-secret values, endpoint parameters, or existing ConfigMap keys". Mention the ConnectionStrings `secretKeyRef` option and the ConfigMap ban for ConnectionStrings and endpoint leaves.
+- [ ] [Review][Patch] Start-up cleanup deletes any digit-prefixed log (low; EH-5) [eng/helm-qualification/qualify.py:81] — `[0-9]+-.*[.]log` also matches retained evidence such as `2026-10-31-review.log` in the shared directory. Match only the qualifier's own `{index:03d}-{tool}.log` shape, for example `[0-9]{3,}-[^-]+[.]log`.
+- [x] [Review][Defer] The finite campaign cannot run against the eight-workload graph, and nothing tracks its capacity re-admission (low; BH-7) [eng/helm-qualification/campaign_capacity.py:309] — deferred: separately owned campaign capacity contract. It refuses the current graph by design (`application-graph-drifted`), and the README names the owner action, but no ledger entry tracked the new admission.
+- [x] [Review][Defer] The new internal-only `memories/domain` workload receives every Memories input and Secret (medium; BH-8) [src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:23-27] — deferred: extends the open 2026-10-22 entry (module-scoped `configurationInputs`). `memories/domain` uses only `statestore`, yet gets `Conversation:ProviderApiKey`, the JWT signing key and `Clock:SourceAuthenticationTokens`.
+
+**Rejected (18):**
+- Secret-held connection strings skip TLS and loopback validation (BH-3): false. This is the adopted D2a behavior, and the README assigns Secret contents to the environment writer.
+- Other TLS-weakening provider keys (`disableTls`, non-Redis `enableTLS`, CA overrides) are admitted (BH-4, EH-3): low. Reference providers are Redis (TLS enforced), Vault (`skipVerify` now refused) and OpenAI; broker policy belongs to 4.16/4.17, and the fix adds a denylist.
+- Credential extensions may target sections, dynamic-secret inputs or absent indexes such as `Clock__Sources__9__AuthenticationToken` (BH-5, EH-4): low. Values remain existing Secret references and cannot override runtime settings; a phantom source fails at application startup.
+- The chart does not itself refuse a capacity profile with the eight-workload graph (BH-6): low. Campaign values come from `configure_application`, which refuses the graph, and the guard would add chart branches.
+- EventStore gateway ACL callers grew without a fixed expectation (BH-9): low. The callers come from module declarations, which own ACLs, and a hard-coded copy would duplicate topology.
+- The CommunityToolkit Dapr integration version is not checked (BH-10): false. Every catalog `Directory.Packages.props` is hashed in the source inventory, and the resolved assets files are retained.
+- README "No dependency upgrade is part of this qualification" contradicts the re-pin (BH-11): false. The re-pin records tools already upgraded by another story; this qualification upgraded nothing.
+- Start-up deletes the previous passing evidence before the new run passes (BH-12): false. Review 5 requested this cleanup; a failed run writes a truthful failed record, and the passing record remains in git history.
+- `test_campaign_lifecycle` raises `StopIteration` when no Builds catalog exists and prefers the sibling checkout (BH-13, EH-7): low. It fails loudly, and sibling-first preserves the previous behavior.
+- The checksum test asserts that mismatched bytes remain in the temp path (BH-15): false. `download` raises and qualification aborts; the assertion proves a complete body was served, and the private directory is removed at cleanup.
+- Capacity tests use a seven-workload fixture derived from the current graph instead of a frozen admitted copy (AA-3, BH-16): low. It fails safe, the README documents it, an explicit drift-refusal test exists, and freezing adds a fixture.
+- A real source directory nested under `bin`/`obj` would be dropped from the inventory (EH-6): low. No input project has one, and configurable MSBuild output paths make the narrower test more than a direct correction.
+- Replacing `self.bad` with `assertIn(... stderr)` weakens the capacity refusal tests (EH-9): false. Helm `fail` always aborts the render; the message cannot appear with a successful exit.
+- The campaign drift check counts workloads only, so a substituted seven-workload graph passes (EH-11): low. `campaign_capacity.py` is outside this diff, and the substitution is unlikely.
 
 ## Implementation Notes
 
