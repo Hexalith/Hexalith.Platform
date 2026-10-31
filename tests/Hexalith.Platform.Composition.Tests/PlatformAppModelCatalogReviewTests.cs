@@ -98,6 +98,10 @@ public sealed partial class PlatformAppModelTests
             gateway["EventStore__RouteCatalog__StateKey"].ShouldBe(plan.EnvironmentId + "-catalog-authority");
             gateway["EventStore__IdempotencyAdmission__Enabled"].ShouldBe("true");
             gateway["EventStore__IdempotencyAdmission__ActiveDigestKeyVersion"].ShouldBe("development-v1");
+            gateway["EventStore__IdempotencyAdmission__DigestKeySource"].ShouldBe("Configuration");
+            gateway["EventStore__IdempotencyAdmission__DigestKeySecretStoreName"].ShouldBe("secretstore");
+            gateway["EventStore__IdempotencyAdmission__DigestKeySecretName"].ShouldBe("eventstore-idempotency-ring");
+            gateway["EventStore__IdempotencyAdmission__DigestKeySecretGeneration"].ShouldBe("development-v1");
             Convert.FromBase64String((string)gateway["EventStore__IdempotencyAdmission__DigestKeys__development-v1"]).Length.ShouldBe(32);
             using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalogDirectory, "receipt.json")));
             foreach (string list in new[] { "OwnerAssemblies", "AdapterAssemblies" })

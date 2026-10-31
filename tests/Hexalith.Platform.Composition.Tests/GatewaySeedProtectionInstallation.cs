@@ -3,7 +3,7 @@ namespace Hexalith.Platform.Composition.Tests;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-using Hexalith.Platform.Custody;
+using Hexalith.Platform.Secrets.Runtime;
 using Hexalith.Platform.Protection;
 
 /// <summary>Admits the real host protection registration with a pinned component installation; no native operation is invoked by HTTP metadata tests.</summary>
