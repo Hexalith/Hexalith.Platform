@@ -20,11 +20,6 @@
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
-    <ProjectReference Include="../../references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj" Aliases="tenantdomain" />
-    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj" Aliases="partydomain" />
-    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj" Aliases="memorydomain" />
-    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj" />
-    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj" />
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj" />

@@ -418,7 +418,7 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
+    public async Task SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
@@ -452,9 +452,10 @@ public sealed partial class PlatformAppModelTests
                 ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
             };
             IDistributedApplicationBuilder builder = Builder();
-            Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
-                .Message.ShouldContain("owner SDK");
-            builder.Resources.ShouldBeEmpty();
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure);
+            builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore")
+                .GetProjectMetadata().ProjectPath.ShouldBe(release.EventStoreSeedProject);
+            builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).Count().ShouldBe(7);
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
             IDistributedApplicationBuilder refused = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(refused, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
@@ -467,14 +468,12 @@ public sealed partial class PlatformAppModelTests
     [Theory]
     [InlineData(1, false)]
     [InlineData(0, true)]
-    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
+    public void RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(int exit, bool timedOut)
     {
-        bool inspected = false;
-        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
-        { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
-        var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
-        inspected.ShouldBeFalse();
+        PlatformCompositionOptions options = PackageOptions() with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)) };
+        IDistributedApplicationBuilder builder = Builder();
+        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+        failure.Message.ShouldBe($"{Path.GetRelativePath(Directory.GetCurrentDirectory(), Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"))}: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry.");
         builder.Resources.ShouldBeEmpty();
     }
 

@@ -1,6 +1,0 @@
-# Prepared node-configuration fragment, not a Kubernetes workload or apply input.
-# Merge into the independently managed kubelet configuration on ERC nodes.
-apiVersion: kubelet.config.k8s.io/v1beta1
-kind: KubeletConfiguration
-memorySwap:
-  swapBehavior: NoSwap

@@ -50,9 +50,7 @@ internal sealed class OpenBaoDisposableNativeHandler : HttpMessageHandler
         }
         if (string.IsNullOrWhiteSpace(body)) { status = 204; body = "{}"; }
         string category = path == "/v1/sys/health" ? "health" : path.Contains("/data/tenants/", StringComparison.Ordinal) ? "head"
-            : path.Contains("/keys/", StringComparison.Ordinal) ? path.EndsWith("/rotate", StringComparison.Ordinal) ? "key-rotate"
-                : path.EndsWith("/config", StringComparison.Ordinal) ? "key-config" : path.EndsWith("/trim", StringComparison.Ordinal) ? "key-trim" : "key-metadata"
-            : path.Split('/')[3];
+            : path.Contains("/keys/", StringComparison.Ordinal) ? "key-metadata" : path.Split('/')[3];
         if (result.Code != 0 && category == "head")
         {
             string error = result.Error.ToLowerInvariant();

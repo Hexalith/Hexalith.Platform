@@ -50,7 +50,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string mappingWorkspace = options.RunPlan?.Workspace ?? workspace;
         string output = Path.Combine(build, "output");
         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
-            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
+            "--output", output, "-m:1", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
@@ -60,7 +60,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
-            committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
+            committedPredecessor = options.CommittedRoutingCatalogPath,
             committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
             owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
         }));

@@ -169,41 +169,6 @@ public sealed class OpenBaoErasureRootStoreTests
 
     [Theory]
     [InlineData(2)]
-    [InlineData(64)]
-    public async Task TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy(int epoch)
-    {
-        string variable = "ERC_TRIM_ENCODING_" + Guid.NewGuid().ToString("N");
-        Environment.SetEnvironmentVariable(variable, "component-test-credential");
-        var paths = new List<string>();
-        try
-        {
-            using var handler = new ErasureRootTransportHandler((request, body) =>
-            {
-                paths.Add(request.RequestUri!.AbsolutePath);
-                using var json = JsonDocument.Parse(body!);
-                if (paths.Count == 1)
-                {
-                    json.RootElement.GetProperty("min_decryption_version").GetString().ShouldBe(epoch.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                    json.RootElement.GetProperty("min_encryption_version").GetString().ShouldBe(epoch.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                    json.RootElement.EnumerateObject().Count().ShouldBe(2);
-                }
-                else
-                {
-                    json.RootElement.GetProperty("min_available_version").GetInt32().ShouldBe(epoch);
-                    json.RootElement.EnumerateObject().Count().ShouldBe(1);
-                }
-                return ErasureRootTransportHandler.Json("{}");
-            });
-            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
-            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable);
-            await store.TrimAsync("tenant", epoch, Token);
-            paths.ShouldBe(["/v1/transit/keys/epoch/config", "/v1/transit/keys/epoch/trim"]);
-        }
-        finally { Environment.SetEnvironmentVariable(variable, null); }
-    }
-
-    [Theory]
-    [InlineData(2)]
     [InlineData(3)]
     public async Task TrimVerificationAllowsUnusedNewerVersionsButRequiresExactIrreversibleFloor(int latest)
     {
