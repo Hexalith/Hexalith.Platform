@@ -1,0 +1,16 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj",
+    "-c",
+    "Release",
+    "--no-restore",
+    "-m:1",
+    "-p:UseSharedCompilation=false"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+  "exitCode": 0,
+  "seconds": 5.433,
+  "output": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/eventstore-development-aspire-model-build3.txt"
+}

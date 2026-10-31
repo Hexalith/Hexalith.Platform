@@ -1,0 +1,160 @@
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs b/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
+index 4842974d..1a776e9f 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
+@@ -25,6 +25,7 @@ using Hexalith.EventStore.Contracts.Events;
+ using Hexalith.EventStore.Contracts.Queries;
+ using Hexalith.EventStore.Contracts.Streams;
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++using Hexalith.EventStore.Client.Routing;
+ using Hexalith.EventStore.Contracts.Routing;
+ using Hexalith.EventStore.ServiceDefaults.Routing;
+ using Hexalith.Tenants.Contracts.Routing;
+@@ -101,6 +102,24 @@ public sealed class TenantsApiGeneratedControllerTests
+         gateway.SubmittedQueries.ShouldBeEmpty();
+     }
+ 
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++    [Theory]
++    [InlineData("missing")]
++    [InlineData("unknown")]
++    [InlineData("duplicate")]
++    public async Task Generated_route_refuses_missing_unknown_or_duplicate_signed_surface_before_gateway(string scenario)
++    {
++        CapturingEventStoreGatewayClient gateway = new();
++        await using var factory = new TenantsApiWebApplicationFactory(gateway);
++        using HttpClient client = factory.CreateClient();
++        string[] surfaces = scenario switch { "missing" => [], "unknown" => ["unsupported"], _ => ["ui", "ui"] };
++        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CreateJwt("test-user", "queries:*", surfaces: surfaces));
++        using HttpResponseMessage response = await client.GetAsync("/api/tenants", TestContext.Current.CancellationToken);
++        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
++        gateway.SubmittedQueries.ShouldBeEmpty();
++    }
++#endif
++
+     [Fact]
+     public async Task ListTenants_generated_route_submits_index_query_and_forwards_freshness_headers()
+     {
+@@ -504,7 +523,7 @@ public sealed class TenantsApiGeneratedControllerTests
+             new TenantTelemetry(diagnostics), NullLogger<GetTenantAuditQueryHandler>.Instance);
+         var router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-            CreateQueryCatalogAuthority(),
++            CreateOwnerCatalogAuthority(),
+ #endif
+             new UnexpectedInnerQueryRouter(), new AlwaysSupportedDomainQueryHandlerRegistry(),
+             new DirectDomainQueryInvoker(handler), NullLogger<HandlerAwareQueryRouter>.Instance);
+@@ -1403,7 +1422,8 @@ public sealed class TenantsApiGeneratedControllerTests
+         string subject,
+         string permission,
+         string issuer = JwtIssuer,
+-        string audience = JwtAudience)
++        string audience = JwtAudience,
++        IReadOnlyList<string>? surfaces = null)
+     {
+         var credentials = new SigningCredentials(
+             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSigningKey)),
+@@ -1411,12 +1431,12 @@ public sealed class TenantsApiGeneratedControllerTests
+         var token = new JwtSecurityToken(
+             issuer: issuer,
+             audience: audience,
+-            claims:
+-            [
++            claims: new[]
++            {
+                 new Claim("sub", subject),
+                 new Claim("permissions", JsonSerializer.Serialize(new[] { permission }), JsonClaimValueTypes.JsonArray),
+                 new Claim("tenants", JsonSerializer.Serialize(new[] { "system", "tenant.alpha" }), JsonClaimValueTypes.JsonArray),
+-            ],
++            }.Concat((surfaces ?? ["ui"]).Select(surface => new Claim("eventstore:surface", surface))),
+             notBefore: DateTime.UtcNow.AddMinutes(-1),
+             expires: DateTime.UtcNow.AddMinutes(10),
+             signingCredentials: credentials);
+@@ -1584,23 +1604,22 @@ public sealed class TenantsApiGeneratedControllerTests
+         ];
+ 
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-    /// <summary>Supplies the owner-declared query snapshot for isolated real-handler HTTP proofs.</summary>
+-    private static IRouteCatalogAuthority CreateQueryCatalogAuthority()
++    /// <summary>Supplies the compiled owner catalog for isolated generated HTTP and real-handler proofs.</summary>
++    private static IRouteCatalogAuthority CreateOwnerCatalogAuthority()
+     {
+-        IReadOnlyList<RouteContractDeclaration> declarations = TenantCatalogDeclarations.Queries;
+-        RouteCatalogEnvelope envelope = RouteCatalogCodec.Seal(new RouteCatalogEnvelope(
+-            2, 1, "Development", false,
+-            declarations,
+-            declarations.Select(declaration => new RouteCatalogEntry(
+-                declaration.RouteId, 1, RouteCatalogCodec.ComputeDeclarationDigest(declaration),
+-                "tenants", "query", declaration.ContractVersion, declaration.CredentialKind,
+-                declaration.Operation, false, "*")).ToArray(),
+-            [], "", ""));
++        IReadOnlyList<RouteContractDeclaration> declarations = CompiledRouteCatalogDeclarations.Read([typeof(TenantCatalogDeclarations).Assembly]);
++        RouteCatalogEnvelope envelope = VersionedRouteCatalogBuilder.Build(new(
++            1, "Development", declarations,
++            CompiledRouteCatalogDeclarations.ReadOperations([typeof(TenantCatalogDeclarations).Assembly]),
++            declarations.Select(declaration => new RouteCompositionBinding(
++                declaration.RouteId, "tenants", TenantCatalogDeclarations.ReceiverMethods[declaration.RouteId],
++                declaration.ContractVersion, false, "*")).ToArray(),
++            TenantCatalogDeclarations.Commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, 1)).ToArray()));
+         var snapshot = new CommittedRouteCatalogSnapshot(
+             RouteCatalogCodec.Encode(envelope), RouteCatalogCodec.ComputeRootDigest(envelope),
+             1, localAppId: "eventstore");
+-        // Distributed activation is outside these isolated HTTP proofs. Each real router/controller
+-        // still acquires a lease and validates the canonical owner query and projection selection.
++        // Distributed activation is outside these isolated HTTP proofs. Each generated action and
++        // real router still validates the compiled owner operation, policy and projection selection.
+         IRouteCatalogAuthority authority = Substitute.For<IRouteCatalogAuthority>();
+         authority.AcquireAsync(Arg.Any<CancellationToken>())
+             .Returns(_ => new RouteCatalogDispatchLease(snapshot, () => Task.CompletedTask));
+@@ -1634,12 +1653,9 @@ public sealed class TenantsApiGeneratedControllerTests
+                 services.RemoveAll<IEventStoreGatewayClient>();
+                 services.AddSingleton<IEventStoreGatewayClient>(gateway);
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                if (gateway is HandlerRoutedEventStoreGatewayClient)
+-                {
+-                    services.AddSingleton(CreateQueryCatalogAuthority());
+-                    services.AddScoped<GeneratedRouteCatalogFilter>();
+-                    services.Configure<MvcOptions>(options => options.Filters.AddService<GeneratedRouteCatalogFilter>());
+-                }
++                services.AddSingleton(CreateOwnerCatalogAuthority());
++                services.AddScoped<GeneratedRouteCatalogFilter>();
++                services.Configure<MvcOptions>(options => options.Filters.AddService<GeneratedRouteCatalogFilter>());
+ #endif
+                 configureServices?.Invoke(services);
+             });
+@@ -1670,7 +1686,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                 new FixedTimeProvider(now));
+             _router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateQueryCatalogAuthority(),
++                CreateOwnerCatalogAuthority(),
+ #endif
+                 new UnexpectedInnerQueryRouter(),
+                 new AlwaysSupportedDomainQueryHandlerRegistry(),
+@@ -1682,7 +1698,7 @@ public sealed class TenantsApiGeneratedControllerTests
+         {
+             _router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateQueryCatalogAuthority(),
++                CreateOwnerCatalogAuthority(),
+ #endif
+                 new UnexpectedInnerQueryRouter(),
+                 new AlwaysSupportedDomainQueryHandlerRegistry(), new DirectDomainQueryInvoker(handler),
+@@ -1747,7 +1763,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                 .Returns(RbacValidationResult.Allowed);
+             var controller = new QueriesController(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateQueryCatalogAuthority(),
++                CreateOwnerCatalogAuthority(),
+ #endif
+                 mediator,
+                 eTagService,
+@@ -1760,7 +1776,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                     HttpContext = new DefaultHttpContext
+                     {
+                         User = new ClaimsPrincipal(new ClaimsIdentity(
+-                            [new Claim("sub", "admin.current"), new Claim("role", "global-administrator")],
++                            [new Claim("sub", "admin.current"), new Claim("role", "global-administrator"), new Claim("eventstore:surface", "ui")],
+                             "test")),
+                     },
+                 },

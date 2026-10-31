@@ -1,0 +1,51 @@
+{
+  "run": 41197479204,
+  "job": 124526457172,
+  "commit": "fff6a5cb556ee0012974550c708eb7a871a25001",
+  "method": "Independent parent inspection of completed GitHub Actions job logs through GitHub plugin; only public categories, endpoint identifiers and correlation IDs retained.",
+  "temporaryDiagnostic": {
+    "fixtureVersion": "3.128.4.0",
+    "categoriesEmpty": true,
+    "establishesCause": false
+  },
+  "legacyFixtureLogTail": {
+    "receiver": {
+      "host": "tenants",
+      "category": "Hexalith.EventStore.DomainService.DomainRouteCatalogFilter",
+      "eventId": 5130,
+      "reason": "configuration-missing",
+      "firstHostTimestamp": "2026-10-31T11:41:30.3970000Z",
+      "repeated": true
+    },
+    "bootstrapInvocation": {
+      "host": "eventstore",
+      "category": "Hexalith.EventStore.Server.DomainServices.DaprDomainServiceInvoker",
+      "eventId": 3005,
+      "hostTimestamp": "2026-10-31T11:41:44.7330000Z",
+      "appId": "tenants",
+      "method": "process",
+      "tenantId": "system",
+      "domain": "global-administrators",
+      "correlationId": "01M68W80FVPWMEG1R80XBMPJKK",
+      "exceptionType": "System.Net.Http.HttpRequestException",
+      "downstreamHttpStatus": 503
+    },
+    "commandFailure": {
+      "category": "Hexalith.EventStore.Server.Actors.AggregateActor",
+      "eventId": 2003,
+      "hostTimestamp": "2026-10-31T11:41:44.7360000Z",
+      "correlationId": "01M68W80FVPWMEG1R80XBMPJKK",
+      "commandType": "BootstrapGlobalAdmin",
+      "failureStage": "Processing",
+      "exceptionType": "DomainServiceException"
+    },
+    "secondInvocation": {
+      "hostTimestamp": "2026-10-31T11:43:31.0610000Z",
+      "correlationId": "01M68WB8CESN8VM3C75FKHNWW1",
+      "downstreamHttpStatus": 503,
+      "commandType": "BootstrapGlobalAdmin"
+    }
+  },
+  "classification": "The real Tenants domain receiver refuses for missing catalog configuration. The EventStore bootstrap dispatch reaches that receiver, receives503, and records the BootstrapGlobalAdmin processing infrastructure failure surfaced as bootstrap-command-http-500.",
+  "next": "Bind the real owner local/CI cohort to a genuine supported catalog and coherent published SDK hosts; preserve catalog, workload, channel and originating-proof validation."
+}

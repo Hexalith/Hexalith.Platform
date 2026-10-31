@@ -1,0 +1,54 @@
+Loading API documentation...
+WaitAnnotation Properties
+
+• Package: Aspire.Hosting (https://aspire.dev/reference/api/csharp/aspire.hosting.md)            
+• Type: WaitAnnotation (https://aspire.dev/reference/api/csharp/aspire.hosting/waitannotation.md)
+• Kind: Properties                                                                               
+• Members: 4                                                                                     
+
+Represents a wait relationship between two resources.
+
+ExitCode
+
+• Name: ExitCode                                                                                                                                              
+• Modifiers: get                                                                                                                                              
+• Returns: int                                                                                                                                                
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ApplicationModel/WaitAnnotation.cs#L38)
+
+The exit code that the resource must return for the wait to be satisfied.
+
+public int ExitCode { get; }
+
+Resource
+
+• Name: Resource                                                                                                                                              
+• Modifiers: get                                                                                                                                              
+• Returns: IResource (https://aspire.dev/reference/api/csharp/aspire.hosting/iresource.md)                                                                    
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ApplicationModel/WaitAnnotation.cs#L23)
+
+The resource that will be waited on.
+
+public IResource Resource { get; }
+
+WaitBehavior
+
+• Name: WaitBehavior                                                                                                                                      
+• Modifiers: nullable get; init                                                                                                                           
+• Returns: WaitBehavior? (https://aspire.dev/reference/api/csharp/aspire.hosting/waitbehavior.md)                                                         
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ApplicationModel/WaitAnnotation.cs)
+
+The behavior of the wait. Only applicable when WaitAnnotation.WaitType (https://aspire.dev/reference/api/csharp/aspire.hosting/waitannotation/properties.md#waittype) is WaitType.WaitUntilHealthy (https://aspire.dev/reference/api/csharp/aspire.hosting/waittype/fields.md).
+
+public WaitBehavior? WaitBehavior { get; init; }
+
+WaitType
+
+• Name: WaitType                                                                                                                                              
+• Modifiers: get                                                                                                                                              
+• Returns: WaitType (https://aspire.dev/reference/api/csharp/aspire.hosting/waittype.md)                                                                      
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ApplicationModel/WaitAnnotation.cs#L28)
+
+The type of wait to apply to the dependency resource.
+
+public WaitType WaitType { get; }
+

@@ -1,0 +1,95 @@
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs
+index 1f5681368..2fa064606 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs
+@@ -7,6 +7,7 @@ import { dirname, resolve } from "node:path";
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import { isDeepStrictEqual } from "node:util";
+ import {
++    Agent,
+     Dispatcher,
+     fetch as undiciFetch,
+     getGlobalDispatcher,
+@@ -252,7 +253,6 @@ class SelectedOriginDispatcher extends Dispatcher {
+             throw new Error(`Undici egress blocked before I/O: ${target.href}`);
+         }
+ 
+-        this.delegatedRequests.push(target.href);
+         return this.delegate.dispatch(options, handler);
+     }
+ 
+@@ -319,15 +319,43 @@ const guardedDispatcher = new SelectedOriginDispatcher(
+     blockedRequests,
+ );
+ const externalProbe = "https://api.github.com/semantic-release-egress-probe";
++const agentProbe = "https://api.github.com/semantic-release-agent-egress-probe";
++const originalAgentDispatch = Agent.prototype.dispatch;
++const originalAgentDispatchDescriptor = Object.getOwnPropertyDescriptor(
++    Agent.prototype,
++    "dispatch",
++);
+ let executionError;
+ 
++// The locked GitHub plugin supplies a fresh Agent explicitly, bypassing the
++// global dispatcher. Guard its real dispatch path as well as default fetch.
++Agent.prototype.dispatch = function (options, handler) {
++    const origin = new URL(String(options.origin)).origin;
++    const target = new URL(options.path, `${origin}/`);
++    if (origin !== selectedOrigin) {
++        blockedRequests.push(target.href);
++        throw new Error(`Undici Agent egress blocked before I/O: ${target.href}`);
++    }
++
++    delegatedRequests.push(target.href);
++    return originalAgentDispatch.call(this, options, handler);
++};
+ setGlobalDispatcher(guardedDispatcher);
+ try {
+     await assert.rejects(
+         undiciFetch(externalProbe),
+         "The actual Undici dispatcher guard must block an external probe.",
+     );
+-    assert.deepEqual(blockedRequests, [externalProbe]);
++    const probeAgent = new Agent();
++    try {
++        await assert.rejects(
++            undiciFetch(agentProbe, { dispatcher: probeAgent }),
++            "An explicit plugin-style Agent must block external I/O too.",
++        );
++    } finally {
++        await probeAgent.close();
++    }
++    assert.deepEqual(blockedRequests, [externalProbe, agentProbe]);
+ 
+     for (const [historyIndex, history] of histories.entries()) {
+         const pluginWrapperUrl = pathToFileURL(installedEntry);
+@@ -395,6 +423,11 @@ try {
+     executionError = error;
+ } finally {
+     setGlobalDispatcher(originalDispatcher);
++    if (originalAgentDispatchDescriptor) {
++        Object.defineProperty(Agent.prototype, "dispatch", originalAgentDispatchDescriptor);
++    } else {
++        delete Agent.prototype.dispatch;
++    }
+     await new Promise((resolveClose, rejectClose) => {
+         server.close((error) => (error ? rejectClose(error) : resolveClose()));
+     });
+@@ -407,8 +440,8 @@ assert.deepEqual(
+ );
+ assert.deepEqual(
+     blockedRequests,
+-    [externalProbe],
+-    "Only the intentional external dispatcher probe may reach the egress guard.",
++    [externalProbe, agentProbe],
++    "Only the intentional external dispatcher probes may reach the egress guard.",
+ );
+ if (executionError) {
+     throw executionError;
+@@ -430,5 +463,5 @@ assert.ok(
+     ),
+ );
+ console.log(
+-    `semantic-release GitHub success fixture passed ${histories.length} isolated histories with @semantic-release/github ${installedPackage.version} through ${requests.length} selected-origin requests and blocked 1 external Undici probe`,
++    `semantic-release GitHub success fixture passed ${histories.length} isolated histories with @semantic-release/github ${installedPackage.version} through ${requests.length} selected-origin requests and blocked 2 external Undici probes`,
+ );

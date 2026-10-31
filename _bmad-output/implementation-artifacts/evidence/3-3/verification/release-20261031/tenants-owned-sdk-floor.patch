@@ -1,0 +1,61 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 5df3dc4c..f04ac712 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -12,8 +12,11 @@
+ 
+   <!-- Global command-line properties cannot be raised by the default floor in props.
+        Refuse an older package selection before restore or compilation consumes it. -->
++  <PropertyGroup>
++    <_TenantsNestedReferenceRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)references/'))</_TenantsNestedReferenceRoot>
++  </PropertyGroup>
+   <Target Name="ValidateEventStorePackageFloor" BeforeTargets="CollectPackageReferences;PrepareForBuild"
+-          Condition="'$(HexalithEventStoreFromSource)' != 'true'">
++          Condition="'$(HexalithEventStoreFromSource)' != 'true' and !$(MSBuildProjectFullPath.StartsWith('$(_TenantsNestedReferenceRoot)'))">
+     <Error Condition="'$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.129.0')) or ($([MSBuild]::VersionEquals('$(HexalithEventStoreVersion)', '3.129.0')) and $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^[^+]*-')))"
+            Text="EventStore package selection '$(HexalithEventStoreVersion)' must be at least 3.129.0 for run-scoped catalog activation. Source mappings retain their exact producer identity." />
+   </Target>
+diff --git a/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs b/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
+index 2126e6c6..0ebc59f5 100644
+--- a/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
++++ b/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
+@@ -793,20 +793,29 @@ public class PackageGovernanceTests {
+         bool accepted)
+         => EvaluateEventStoreVersionSelectionAsync(selectedVersion, useSource, selectedVersion, globalOverride: true, accepted);
+ 
++    [Fact]
++    public Task EventStore_package_floor_does_not_override_nested_owner_catalogsAsync()
++        => EvaluateEventStoreVersionSelectionAsync("3.128.4", false, "3.128.4", globalOverride: true, accepted: true, nestedReference: true);
++
+     private static async Task EvaluateEventStoreVersionSelectionAsync(
+         string selectedVersion,
+         bool useSource,
+         string expectedVersion,
+         bool globalOverride,
+-        bool accepted) {
++        bool accepted,
++        bool nestedReference = false) {
+         string repoRoot = FindRepoRoot();
+         string fixtureRoot = Path.Combine(Path.GetTempPath(), $"hexalith-tenants-eventstore-floor-{Guid.NewGuid():N}");
++        string nestedDirectory = Path.Combine(repoRoot, "references", "story33-package-floor-fixture-" + Guid.NewGuid().ToString("N"));
+         string contractsDirectory = Path.Combine(fixtureRoot, "src", "Hexalith.EventStore.Contracts");
+         _ = Directory.CreateDirectory(contractsDirectory);
+ 
+         try {
+             File.WriteAllText(Path.Combine(contractsDirectory, "Hexalith.EventStore.Contracts.csproj"), "<Project />");
+-            string projectPath = Path.Combine(fixtureRoot, "PackageFloor.proj");
++            string projectPath = nestedReference
++                ? Path.Combine(nestedDirectory, "External.proj")
++                : Path.Combine(fixtureRoot, "PackageFloor.proj");
++            if (nestedReference) _ = Directory.CreateDirectory(Path.GetDirectoryName(projectPath)!);
+             new XDocument(new XElement("Project",
+                 new XElement("PropertyGroup",
+                     new XElement("HexalithVersionsLoaded", "true"),
+@@ -883,6 +892,7 @@ public class PackageGovernanceTests {
+         }
+         finally {
+             Directory.Delete(fixtureRoot, recursive: true);
++            if (nestedReference && Directory.Exists(nestedDirectory)) Directory.Delete(nestedDirectory, recursive: true);
+         }
+     }
+ 

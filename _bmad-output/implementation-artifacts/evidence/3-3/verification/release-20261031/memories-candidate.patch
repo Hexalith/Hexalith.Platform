@@ -1,0 +1,78 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index fa2dfc86..c7f8417a 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -1,5 +1,5 @@
+ <Project>
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
+   <PropertyGroup Condition="('$(MSBuildProjectName)' == 'Hexalith.Memories.Server' or '$(MSBuildProjectName)' == 'Hexalith.Memories.Server.Tests') and ('$(HexalithEventStoreFromSource)' == 'true' or $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.128.5')))">
+     <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_MULTI_DOMAIN_WORKLOAD</DefineConstants>
+   </PropertyGroup>
+diff --git a/Hexalith.Memories.slnx b/Hexalith.Memories.slnx
+index 16e124a4..5290e393 100644
+--- a/Hexalith.Memories.slnx
++++ b/Hexalith.Memories.slnx
+@@ -8,6 +8,7 @@
+     <Project Path="src/Hexalith.Memories.Cli/Hexalith.Memories.Cli.csproj" />
+     <Project Path="src/Hexalith.Memories.Client.Rest/Hexalith.Memories.Client.Rest.csproj" />
+     <Project Path="src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj" />
++    <Project Path="src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj" />
+     <Project Path="src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj" />
+     <Project Path="src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj" />
+     <Project Path="src/Hexalith.Memories.Mcp/Hexalith.Memories.Mcp.csproj" />
+diff --git a/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj b/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj
+index 4c80203d..4a0cb32e 100644
+--- a/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj
++++ b/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj
+@@ -1,8 +1,23 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+-  <PropertyGroup><Description>Memories-owned local internal EventStore intent adapter enrollment.</Description><IsPackable>true</IsPackable><IsPublishable>false</IsPublishable></PropertyGroup>
++  <PropertyGroup>
++    <Description>Memories-owned local internal EventStore intent adapter enrollment.</Description>
++    <IsPackable>true</IsPackable>
++    <IsPublishable>false</IsPublishable>
++    <PackageId>Hexalith.Memories.EventStoreExtensions</PackageId>
++    <Authors>ITANEO</Authors>
++    <Company>ITANEO</Company>
++    <PackageLicenseExpression>MIT</PackageLicenseExpression>
++    <PackageProjectUrl>https://github.com/Hexalith/Hexalith.Memories</PackageProjectUrl>
++    <RepositoryUrl>https://github.com/Hexalith/Hexalith.Memories</RepositoryUrl>
++    <PackageTags>hexalith;memories;eventstore;routing;idempotency</PackageTags>
++    <PackageReadmeFile>README.md</PackageReadmeFile>
++  </PropertyGroup>
+   <ItemGroup>
+     <ProjectReference Include="../Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj" Condition="'$(HexalithEventStoreFromSource)' == 'true'" />
+     <PackageReference Include="Hexalith.EventStore.DomainService" Condition="'$(HexalithEventStoreFromSource)' != 'true'" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="README.md" Pack="true" PackagePath="\" />
++  </ItemGroup>
+ </Project>
+diff --git a/tools/release-packages.json b/tools/release-packages.json
+index abd2f538..faaf997d 100644
+--- a/tools/release-packages.json
++++ b/tools/release-packages.json
+@@ -36,6 +36,10 @@
+     {
+       "packageId": "Hexalith.Memories.Telemetry",
+       "project": "src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj"
++    },
++    {
++      "packageId": "Hexalith.Memories.EventStoreExtensions",
++      "project": "src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj"
+     }
+   ],
+   "nonPackableProjects": [
+diff --git a/src/Hexalith.Memories.EventStoreExtensions/README.md b/src/Hexalith.Memories.EventStoreExtensions/README.md
+new file mode 100644
+index 00000000..fc6c8637
+--- /dev/null
++++ b/src/Hexalith.Memories.EventStoreExtensions/README.md
+@@ -0,0 +1,5 @@
++# Hexalith.Memories.EventStoreExtensions
++
++Provides the Memories-owned route and idempotency adapters for the existing internal DomainService commands in local and CI routing catalogs. The gateway discovers this package through its owner adapter declaration.
++
++These policies grant no hosted acceptance and expose no additional public search or ingestion operations.

@@ -1,0 +1,413 @@
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 60b8a098..d2ff6b2e 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -317,6 +317,7 @@ jobs:
+       HEXALITH_RELEASE_REQUIRE_AUTHORITY: 'false'
+       HEXALITH_CONTAINER_PROJECTS: |
+         src/Hexalith.Tenants/Hexalith.Tenants.csproj|tenants
++        src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj|tenants-api
+     steps:
+       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+         with:
+@@ -440,6 +441,7 @@ jobs:
+       HEXALITH_BINFMT_IMAGE: docker.io/tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
+       HEXALITH_CONTAINER_PROJECTS: |
+         src/Hexalith.Tenants/Hexalith.Tenants.csproj|tenants
++        src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj|tenants-api
+     # CI (the verify-source gate above) already tested this exact head, so the release path
+     # runs no test tiers.
+     steps:
+@@ -601,6 +603,14 @@ jobs:
+           HEXALITH_ZOT_API_KEY: ${{ secrets.HEXALITH_ZOT_API_KEY }}
+           HEXALITH_RELEASE_OCI_VALIDATOR: .hexalith/release/oci_registry_validator.py
+         run: bash scripts/verify-release-artifacts.sh
++      - name: Verify published API image content
++        shell: bash
++        env:
++          HEXALITH_ZOT_REGISTRY: ${{ vars.HEXALITH_ZOT_REGISTRY || 'registry.hexalith.com' }}
++          HEXALITH_ZOT_USERNAME: ${{ secrets.HEXALITH_ZOT_USERNAME }}
++          HEXALITH_ZOT_API_KEY: ${{ secrets.HEXALITH_ZOT_API_KEY }}
++          HEXALITH_RELEASE_OCI_VALIDATOR: .hexalith/release/oci_registry_validator.py
++        run: bash scripts/verify-api-release-artifact.sh
+       - name: Upload complete release evidence
+         if: ${{ always() }}
+         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+diff --git a/.github/workflows/source-reference.yml b/.github/workflows/source-reference.yml
+index 733a6569..f6c761d5 100644
+--- a/.github/workflows/source-reference.yml
++++ b/.github/workflows/source-reference.yml
+@@ -42,9 +42,14 @@ jobs:
+           --minimum-expected-tests 4
+           --filter-method Hexalith.Tenants.IntegrationTests.TenantsApiGeneratedControllerTests.GlobalAdministratorsRealHandlerMetadataSurvivesRouterRestClientAndUiGateway
+           --fail-skips on
++      - name: Build source-only catalog contracts serially
++        run: >
++          dotnet build tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
++          --configuration Debug -p:UseHexalithProjectReferences=true -warnaserror
++          -m:1 -nr:false --disable-build-servers
+       - name: Verify source-only catalog operation declarations
+         run: >
+           dotnet test tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+-          --configuration Debug -p:UseHexalithProjectReferences=true
++          --configuration Debug --no-build --no-restore -p:UseHexalithProjectReferences=true
+           --filter-class Hexalith.Tenants.Contracts.Tests.TenantCatalogTests
+           --minimum-expected-tests 1 --fail-skips on
+diff --git a/Directory.Build.props b/Directory.Build.props
+index 624870a5..06962b01 100644
+--- a/Directory.Build.props
++++ b/Directory.Build.props
+@@ -82,9 +82,9 @@
+         <UseNuGetDeps Condition="'$(UseNuGetDeps)' == ''">true</UseNuGetDeps>
+         <HexalithCommonsFromSource Condition="'$(UseHexalithProjectReferences)' == 'true' and Exists('$(HexalithCommonsRoot)\src\libraries\Hexalith.Commons.ServiceDefaults\Hexalith.Commons.ServiceDefaults.csproj')">true</HexalithCommonsFromSource>
+         <HexalithEventStoreFromSource Condition="'$(UseHexalithProjectReferences)' == 'true' and Exists('$(HexalithEventStoreRoot)\src\Hexalith.EventStore.Contracts\Hexalith.EventStore.Contracts.csproj')">true</HexalithEventStoreFromSource>
+-        <!-- Package consumers keep the completion-recovery floor while honoring newer central selections.
++        <!-- Package consumers keep the catalog SDK floor while honoring newer central selections.
+              Source mappings remain authoritative for their exact producer identity. -->
+-        <HexalithEventStoreVersion Condition="'$(HexalithEventStoreFromSource)' != 'true' and ('$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.128.4')) or ($([MSBuild]::VersionEquals('$(HexalithEventStoreVersion)', '3.128.4')) and $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^[^+]*-'))))">3.128.4</HexalithEventStoreVersion>
++        <HexalithEventStoreVersion Condition="'$(HexalithEventStoreFromSource)' != 'true' and ('$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.129.0')) or ($([MSBuild]::VersionEquals('$(HexalithEventStoreVersion)', '3.129.0')) and $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^[^+]*-'))))">3.129.0</HexalithEventStoreVersion>
+         <HexalithFrontComposerSourceConsumer Condition="'$(MSBuildProjectName)' == 'Hexalith.Tenants.UI' or '$(MSBuildProjectName)' == 'Hexalith.Tenants.UI.Tests'">true</HexalithFrontComposerSourceConsumer>
+         <HexalithFrontComposerSourceAvailable Condition="'$(HexalithFrontComposerSourceAvailable)' == '' and Exists('$(HexalithFrontComposerRoot)\src\Hexalith.FrontComposer.Contracts\Hexalith.FrontComposer.Contracts.csproj') and Exists('$(HexalithFrontComposerRoot)\src\Hexalith.FrontComposer.Shell\Hexalith.FrontComposer.Shell.csproj') and Exists('$(HexalithFrontComposerRoot)\src\Hexalith.FrontComposer.Testing\Hexalith.FrontComposer.Testing.csproj')">true</HexalithFrontComposerSourceAvailable>
+         <HexalithFrontComposerSourceAvailable Condition="'$(HexalithFrontComposerSourceAvailable)' == ''">false</HexalithFrontComposerSourceAvailable>
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 3ff7489a..5df3dc4c 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -1,5 +1,5 @@
+ <Project>
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
+ 
+   <!-- Carry the owning EventStore source identity through ordinary local project edges.
+        A source mapping mode, or an active producer mapping, owns dependency versions
+@@ -14,8 +14,8 @@
+        Refuse an older package selection before restore or compilation consumes it. -->
+   <Target Name="ValidateEventStorePackageFloor" BeforeTargets="CollectPackageReferences;PrepareForBuild"
+           Condition="'$(HexalithEventStoreFromSource)' != 'true'">
+-    <Error Condition="'$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.128.4')) or ($([MSBuild]::VersionEquals('$(HexalithEventStoreVersion)', '3.128.4')) and $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^[^+]*-')))"
+-           Text="EventStore package selection '$(HexalithEventStoreVersion)' must be at least 3.128.4 for completion recovery. Source mappings retain their exact producer identity." />
++    <Error Condition="'$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.129.0')) or ($([MSBuild]::VersionEquals('$(HexalithEventStoreVersion)', '3.129.0')) and $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^[^+]*-')))"
++           Text="EventStore package selection '$(HexalithEventStoreVersion)' must be at least 3.129.0 for run-scoped catalog activation. Source mappings retain their exact producer identity." />
+   </Target>
+ 
+   <!--
+Submodule references/Hexalith.Builds 6cc96b4f...2186b9a4 (commits not present)
+diff --git a/scripts/validate-publication-preflight.sh b/scripts/validate-publication-preflight.sh
+index 379be51f..cd91a7d4 100644
+--- a/scripts/validate-publication-preflight.sh
++++ b/scripts/validate-publication-preflight.sh
+@@ -85,6 +85,7 @@ exec "$publication_preflight" \
+   --source-branch "$source_branch" \
+   --source-ci-workflow "$source_ci_workflow" \
+   --container-repository "registry.hexalith.com/tenants" \
++  --container-repository "registry.hexalith.com/tenants-api" \
+   --builds-execution-sha "$builds_execution_sha" \
+   --environment-name "$release_environment" \
+   --package-manifest "$package_manifest" \
+diff --git a/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj b/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+index 1751fd99..5c4e831e 100644
+--- a/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
++++ b/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+@@ -3,8 +3,9 @@
+   <ItemGroup>
+     <ProjectReference Include="..\..\src\Hexalith.Tenants.Contracts\Hexalith.Tenants.Contracts.csproj" />
+     <ProjectReference Include="..\..\src\Hexalith.Tenants.Testing\Hexalith.Tenants.Testing.csproj" />
+-    <!-- Source-only compiled catalog discovery is not part of the published package contract. -->
++    <!-- Compiled catalog discovery uses the same selected owner SDK in both dependency modes. -->
+     <ProjectReference Include="$(HexalithEventStoreRoot)\src\Hexalith.EventStore.ServiceDefaults\Hexalith.EventStore.ServiceDefaults.csproj" Condition="'$(HexalithEventStoreFromSource)' == 'true'" />
++    <PackageReference Include="Hexalith.EventStore.ServiceDefaults" Condition="'$(HexalithEventStoreFromSource)' != 'true' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0'))" />
+   </ItemGroup>
+ 
+   <ItemGroup>
+diff --git a/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs b/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
+index 2d183609..2126e6c6 100644
+--- a/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
++++ b/tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs
+@@ -723,7 +723,7 @@ public class PackageGovernanceTests {
+             foreach (string argument in new[] {
+                 "msbuild", projectPath, "-nologo", "-getItem:ProjectReference",
+                 $"-property:HexalithEventStoreFromSource={fromSource}",
+-                "-property:HexalithEventStoreVersion=test-source-version",
++                "-property:HexalithEventStoreVersion=3.129.1",
+                 $"-property:HexalithSourceMappingHash={mappingHash}",
+                 $"-property:HexalithSourceMappingApplies={mappingApplies}",
+                 $"-property:HexalithSourceMappingMode={mappingMode}",
+@@ -742,7 +742,7 @@ public class PackageGovernanceTests {
+             Dictionary<string, JsonElement> references = evaluation.RootElement.GetProperty("Items").GetProperty("ProjectReference")
+                 .EnumerateArray().ToDictionary(item => item.GetProperty("Identity").GetString()!, StringComparer.Ordinal);
+             references.Count.ShouldBe(2);
+-            string forwarded = forwardsSourceVersion ? ";HexalithEventStoreVersion=test-source-version" : string.Empty;
++            string forwarded = forwardsSourceVersion ? ";HexalithEventStoreVersion=3.129.1" : string.Empty;
+             references["existing.csproj"].GetProperty("AdditionalProperties").GetString().ShouldBe("ExistingProperty=kept" + forwarded);
+             references["existing.csproj"].GetProperty("Private").GetString().ShouldBe("false");
+             string emptyProperties = references["empty.csproj"].TryGetProperty("AdditionalProperties", out JsonElement additional)
+@@ -755,19 +755,19 @@ public class PackageGovernanceTests {
+     }
+ 
+     [Theory]
+-    [InlineData("", false, "3.128.4")]
+-    [InlineData("3.128.2", false, "3.128.4")]
+-    [InlineData("3.128.3", false, "3.128.4")]
+-    [InlineData("3.128.4-preview.1", false, "3.128.4")]
+-    [InlineData("3.128.4", false, "3.128.4")]
+-    [InlineData("3.128.4+metadata-with-dash", false, "3.128.4+metadata-with-dash")]
+-    [InlineData("3.128.4-preview.1+metadata-with-dash", false, "3.128.4")]
+-    [InlineData("3.128.10", false, "3.128.10")]
+-    [InlineData("3.128.5", false, "3.128.5")]
+-    [InlineData("3.129.0-preview.1", false, "3.129.0-preview.1")]
+-    [InlineData("3.128.2", true, "3.128.2")]
++    [InlineData("", false, "3.129.0")]
++    [InlineData("3.128.4", false, "3.129.0")]
++    [InlineData("3.128.10", false, "3.129.0")]
++    [InlineData("3.129.0-preview.1", false, "3.129.0")]
++    [InlineData("3.129.0", false, "3.129.0")]
++    [InlineData("3.129.0+metadata-with-dash", false, "3.129.0+metadata-with-dash")]
++    [InlineData("3.129.0-preview.1+metadata-with-dash", false, "3.129.0")]
++    [InlineData("3.129.10", false, "3.129.10")]
++    [InlineData("3.129.1", false, "3.129.1")]
++    [InlineData("3.130.0-preview.1", false, "3.130.0-preview.1")]
++    [InlineData("3.128.4", true, "3.128.4")]
+     [InlineData("3.128.5", true, "3.128.5")]
+-    [InlineData("3.128.4-preview.1", true, "3.128.4-preview.1")]
++    [InlineData("3.129.0-preview.1", true, "3.129.0-preview.1")]
+     [InlineData("test-source-version", true, "test-source-version")]
+     public Task EventStore_package_floor_preserves_newer_catalog_and_explicit_source_selectionsAsync(
+         string selectedVersion,
+@@ -776,16 +776,16 @@ public class PackageGovernanceTests {
+         => EvaluateEventStoreVersionSelectionAsync(selectedVersion, useSource, expectedVersion, globalOverride: false, accepted: true);
+ 
+     [Theory]
+-    [InlineData("3.128.2", false, false)]
+-    [InlineData("3.128.3", false, false)]
+-    [InlineData("3.128.4-preview.1", false, false)]
+-    [InlineData("3.128.4", false, true)]
+-    [InlineData("3.128.4+metadata-with-dash", false, true)]
+-    [InlineData("3.128.4-preview.1+metadata-with-dash", false, false)]
+-    [InlineData("3.128.10", false, true)]
+-    [InlineData("3.128.5", false, true)]
+-    [InlineData("3.129.0-preview.1", false, true)]
+-    [InlineData("3.128.2", true, true)]
++    [InlineData("3.128.4", false, false)]
++    [InlineData("3.128.10", false, false)]
++    [InlineData("3.129.0-preview.1", false, false)]
++    [InlineData("3.129.0", false, true)]
++    [InlineData("3.129.0+metadata-with-dash", false, true)]
++    [InlineData("3.129.0-preview.1+metadata-with-dash", false, false)]
++    [InlineData("3.129.10", false, true)]
++    [InlineData("3.129.1", false, true)]
++    [InlineData("3.130.0-preview.1", false, true)]
++    [InlineData("3.128.4", true, true)]
+     [InlineData("test-source-version", true, true)]
+     public Task EventStore_package_floor_rejects_older_global_package_overridesAsync(
+         string selectedVersion,
+@@ -866,7 +866,7 @@ public class PackageGovernanceTests {
+             string standardError = await error;
+             if (!accepted) {
+                 process.ExitCode.ShouldNotBe(0, "An older global package override must fail before restore or build.");
+-                (standardOutput + standardError).ShouldContain("must be at least 3.128.4 for completion recovery");
++                (standardOutput + standardError).ShouldContain("must be at least 3.129.0 for run-scoped catalog activation");
+                 return;
+             }
+             process.ExitCode.ShouldBe(0, $"EventStore version evaluation failed. stdout: {standardOutput}{Environment.NewLine}stderr: {standardError}");
+@@ -1267,12 +1267,19 @@ public class PackageGovernanceTests {
+         containerMappings.ShouldAllBe(mapping => mapping.Length == 2, "Each release container mapping must contain exactly one project and repository.");
+         containerMappings.Any(mapping => mapping is ["src/Hexalith.Tenants/Hexalith.Tenants.csproj", "tenants"])
+             .ShouldBeTrue("The server container must remain in the release map.");
++        containerMappings.Any(mapping => mapping is ["src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj", "tenants-api"])
++            .ShouldBeTrue("The catalog cohort requires the actual Tenants API image from the same release.");
++        string[][] publicationMappings = GetYamlLiteralBlockLines(releaseJob, "HEXALITH_CONTAINER_PROJECTS")
++            .Select(mapping => mapping.Split('|', StringSplitOptions.TrimEntries)).ToArray();
++        publicationMappings.Select(mapping => string.Join('|', mapping))
++            .ShouldBe(containerMappings.Select(mapping => string.Join('|', mapping)));
+         containerMappings.Any(mapping => mapping.Length == 2
+                 && (string.Equals(mapping[0], "src/Hexalith.Tenants.UI/Hexalith.Tenants.UI.csproj", StringComparison.Ordinal)
+                     || string.Equals(mapping[1], "tenants-ui", StringComparison.Ordinal)))
+             .ShouldBeFalse("The UI image is environment-composed and must not be published by this release map.");
+         releaseJob.ShouldContain("HEXALITH_ZOT_USERNAME: ${{ secrets.HEXALITH_ZOT_USERNAME }}");
+         releaseJob.ShouldContain("HEXALITH_ZOT_API_KEY: ${{ secrets.HEXALITH_ZOT_API_KEY }}");
++        releaseJob.ShouldContain("run: bash scripts/verify-api-release-artifact.sh");
+         workflow.ShouldNotContain("secrets: inherit");
+         // verify-source already proved this exact head green, so the release path must not rerun
+         // the test tiers.
+diff --git a/scripts/verify-api-release-artifact.sh b/scripts/verify-api-release-artifact.sh
+new file mode 100755
+index 00000000..bc48797f
+--- /dev/null
++++ b/scripts/verify-api-release-artifact.sh
+@@ -0,0 +1,57 @@
++#!/usr/bin/env bash
++# Verify the API image from the normal release without changing historical server recovery.
++set -euo pipefail
++
++repository="${GITHUB_REPOSITORY:-Hexalith/Hexalith.Tenants}"
++source_sha="${GITHUB_SHA:-}"
++source "$(dirname "${BASH_SOURCE[0]}")/partial-release-recovery-common.sh"
++shopt -s nullglob
++for prior in .hexalith/release-evidence/*/tenants-api-destination; do
++  prior="$(recovery_confine_directory "$prior")"
++  rm -f "$prior/verified.json"
++done
++shopt -u nullglob
++[[ "$source_sha" =~ ^[0-9a-f]{40}$ ]] || recovery_fail 'Source SHA must be an exact lowercase commit SHA.'
++[ "$repository" = 'Hexalith/Hexalith.Tenants' ] || recovery_fail 'The API image must belong to Hexalith.Tenants.'
++
++receipt="${HEXALITH_RELEASE_API_OCI_RECEIPT:-}"
++if [ -z "$receipt" ]; then
++  shopt -s nullglob
++  receipts=(.hexalith/release-evidence/*/tenants-api/oci-validation.json)
++  shopt -u nullglob
++  [ "${#receipts[@]}" -eq 1 ] || recovery_fail 'Exactly one API publisher OCI receipt is required.'
++  receipt="${receipts[0]}"
++fi
++recovery_confine_directory "$(dirname "$receipt")" >/dev/null
++[ -f "$receipt" ] || recovery_fail 'The API publisher OCI receipt is missing.'
++shopt -s nullglob
++release_proofs=(.hexalith/release-evidence/*/destinations/verified.json)
++shopt -u nullglob
++if [ -n "${HEXALITH_RELEASE_DESTINATION_EVIDENCE_DIRECTORY:-}" ]; then
++  release_proofs=("$HEXALITH_RELEASE_DESTINATION_EVIDENCE_DIRECTORY/verified.json")
++fi
++[ "${#release_proofs[@]}" -eq 1 ] || recovery_fail 'Exactly one verified normal release result is required.'
++release_proof="${release_proofs[0]}"
++recovery_confine_directory "$(dirname "$release_proof")" >/dev/null
++[ -f "$release_proof" ] || recovery_fail 'The verified normal release result is missing.'
++version="$(jq -er '.version' "$release_proof")"
++[[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || recovery_fail 'The verified release version must be plain SemVer.'
++evidence_directory="$(recovery_confine_directory ".hexalith/release-evidence/$version/tenants-api-destination")"
++manifest=tools/release-packages.json
++recovery_require_separate_evidence "$evidence_directory"
++case "$(realpath -m -- "$release_proof")/" in "$evidence_directory/"*) recovery_fail 'API evidence overlaps the verified release result.' ;; esac
++mkdir -p "$evidence_directory/reviewed"
++rm -f "$evidence_directory/verified.json"
++cp "$release_proof" "$evidence_directory/reviewed/release.json"
++jq -e --arg source "$source_sha" --arg repository "$repository" --arg version "$version" \
++  '.result == "pass" and .source_sha == $source and .repository == $repository and .version == $version' \
++  "$evidence_directory/reviewed/release.json" >/dev/null || recovery_fail 'The verified normal release result does not match the current source.'
++cp "$receipt" "$evidence_directory/reviewed/receipt.json"
++reviewed_hash="$(sha256sum "$evidence_directory/reviewed/receipt.json" "$evidence_directory/reviewed/release.json")"
++HEXALITH_RECOVERY_CONTAINER_REPOSITORY=tenants-api recovery_verify_container \
++  "$evidence_directory/oci" "$evidence_directory/reviewed/receipt.json"
++[ "$(sha256sum "$evidence_directory/reviewed/receipt.json" "$evidence_directory/reviewed/release.json")" = "$reviewed_hash" ] || recovery_fail 'The reviewed API receipt changed during verification.'
++jq -n --arg source "$source_sha" --arg version "$version" \
++  --arg digest "$(jq -r '.index_digest' "$evidence_directory/oci/oci-validation.json")" \
++  '{result: "pass", source_sha: $source, version: $version, index_digest: $digest}' > "$evidence_directory/verified.json"
++echo "Verified immutable Tenants API image v${version} for source ${source_sha}."
+diff --git a/tests/Hexalith.Tenants.Contracts.Tests/ReleaseApiImageVerificationTests.cs b/tests/Hexalith.Tenants.Contracts.Tests/ReleaseApiImageVerificationTests.cs
+new file mode 100644
+index 00000000..adda96f5
+--- /dev/null
++++ b/tests/Hexalith.Tenants.Contracts.Tests/ReleaseApiImageVerificationTests.cs
+@@ -0,0 +1,113 @@
++using System.Diagnostics;
++using System.Text.Json;
++
++using Shouldly;
++
++namespace Hexalith.Tenants.Contracts.Tests;
++
++/// <summary>Executes API release binding and refusal before invoking the OCI validator.</summary>
++public class ReleaseApiImageVerificationTests
++{
++    /// <summary>Requires the same release version, source and immutable image as normal publication.</summary>
++    /// <param name="scenario">The reviewed input or fresh observation mutation.</param>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("missing-api-receipt")]
++    [InlineData("wrong-image")]
++    [InlineData("wrong-release-version")]
++    [InlineData("wrong-release-source")]
++    [InlineData("changed-digest")]
++    public async Task ApiReadbackRequiresTheVerifiedNormalRelease(string scenario)
++    {
++        if (OperatingSystem.IsWindows())
++        {
++            Assert.Skip("Release readback fixtures require bash, jq and python3.");
++        }
++
++        string workspace = Path.Combine(Path.GetTempPath(), "tenants-api-release-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(workspace);
++        try
++        {
++            string release = Path.Combine(workspace, ".hexalith/release-evidence/1.2.3");
++            string receipt = Path.Combine(release, "tenants-api/oci-validation.json");
++            string proof = Path.Combine(release, "destinations/verified.json");
++            string marker = Path.Combine(release, "tenants-api-destination/verified.json");
++            Directory.CreateDirectory(Path.GetDirectoryName(receipt)!);
++            Directory.CreateDirectory(Path.GetDirectoryName(proof)!);
++            Directory.CreateDirectory(Path.GetDirectoryName(marker)!);
++            await File.WriteAllTextAsync(marker, "stale");
++            if (scenario != "missing-api-receipt")
++            {
++                await File.WriteAllTextAsync(receipt, JsonSerializer.Serialize(new
++                {
++                    result = "pass",
++                    image = "registry.example/" + (scenario == "wrong-image" ? "tenants" : "tenants-api") + ":1.2.3",
++                    platforms = new[] { "linux/amd64", "linux/arm64" },
++                    index_digest = "sha256:" + new string('a', 64),
++                    children = new[] { new { provenance_labels = new Dictionary<string, string>
++                    { ["org.opencontainers.image.created"] = "2026-10-31T00:00:00Z" } } },
++                }));
++            }
++            await File.WriteAllTextAsync(proof, JsonSerializer.Serialize(new
++            {
++                result = "pass", repository = "Hexalith/Hexalith.Tenants",
++                version = scenario == "wrong-release-version" ? "1.2.4" : "1.2.3",
++                source_sha = new string(scenario == "wrong-release-source" ? 'b' : 'a', 40),
++            }));
++            string validator = Path.Combine(workspace, "validator.py");
++            await File.WriteAllTextAsync(validator, """
++                import json, os, pathlib, sys
++                args = sys.argv[1:]
++                assert args[args.index('--image') + 1] == 'registry.example/tenants-api:1.2.3'
++                assert args[args.index('--repository') + 1] == 'Hexalith/Hexalith.Tenants'
++                assert args[args.index('--source-sha') + 1] == 'a' * 40
++                assert args[args.index('--version') + 1] == '1.2.3'
++                assert args[args.index('--created') + 1] == '2026-10-31T00:00:00Z'
++                target = pathlib.Path(args[args.index('--evidence-directory') + 1])
++                target.mkdir(parents=True, exist_ok=True)
++                digest = ('b' if os.environ['SCENARIO'] == 'changed-digest' else 'a') * 64
++                (target / 'oci-validation.json').write_text(json.dumps({'index_digest': 'sha256:' + digest}))
++                """);
++            var start = new ProcessStartInfo("bash")
++            {
++                WorkingDirectory = workspace, RedirectStandardOutput = true, RedirectStandardError = true,
++            };
++            start.ArgumentList.Add(Path.Combine(RepositoryRoot(), "scripts/verify-api-release-artifact.sh"));
++            start.Environment["GITHUB_SHA"] = new string('a', 40);
++            start.Environment["GITHUB_REPOSITORY"] = "Hexalith/Hexalith.Tenants";
++            start.Environment["HEXALITH_ZOT_REGISTRY"] = "registry.example";
++            start.Environment["HEXALITH_RELEASE_API_OCI_RECEIPT"] = receipt;
++            start.Environment["HEXALITH_RELEASE_OCI_VALIDATOR"] = validator;
++            start.Environment["SCENARIO"] = scenario;
++            using var process = Process.Start(start)!;
++            Task<string> output = process.StandardOutput.ReadToEndAsync();
++            Task<string> error = process.StandardError.ReadToEndAsync();
++            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
++            try { await process.WaitForExitAsync(timeout.Token); }
++            catch (OperationCanceledException) { process.Kill(entireProcessTree: true); throw; }
++            string diagnostic = await output + await error;
++            if (scenario == "valid")
++            {
++                process.ExitCode.ShouldBe(0, diagnostic);
++                using var verified = JsonDocument.Parse(await File.ReadAllTextAsync(marker));
++                verified.RootElement.GetProperty("version").GetString().ShouldBe("1.2.3");
++                verified.RootElement.GetProperty("source_sha").GetString().ShouldBe(new string('a', 40));
++            }
++            else
++            {
++                process.ExitCode.ShouldNotBe(0, diagnostic);
++                File.Exists(marker).ShouldBeFalse("A refused attempt must revoke its previous successful marker.");
++                if (scenario != "changed-digest")
++                    Directory.Exists(Path.Combine(release, "tenants-api-destination/oci")).ShouldBeFalse("Refusal must precede registry effects.");
++            }
++        }
++        finally { Directory.Delete(workspace, recursive: true); }
++    }
++
++    private static string RepositoryRoot()
++    {
++        for (DirectoryInfo? directory = new(AppContext.BaseDirectory); directory is not null; directory = directory.Parent)
++            if (File.Exists(Path.Combine(directory.FullName, "Hexalith.Tenants.slnx"))) return directory.FullName;
++        throw new InvalidOperationException("The actual Tenants test repository is unavailable.");
++    }
++}

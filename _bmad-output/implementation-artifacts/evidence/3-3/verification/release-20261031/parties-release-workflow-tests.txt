@@ -1,0 +1,218 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Parties.Ci.Tests
+  Discovered:  Hexalith.Parties.Ci.Tests
+  Starting:    Hexalith.Parties.Ci.Tests
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      128
+      
+      Additional Info:
+          The Builds checkout must contain 1745ea0f09df9e518aeea3eeb1a7df836f67e09d: fatal: path '.github/workflows/domain-ci.yml' does not exist in '1745ea0f09df9e518aeea3eeb1a7df836f67e09d'
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(784,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ReadPinnedBuildsWorkflow(String workflow)
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(107,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CurrentSharedValidatorPreservesThePublicationReaderContract [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          E
+      ======================================================================
+      ERROR: test_real_three_argument_consumer_requires_both_canonical_created_labels_across_children (__main__.ExistingPublicationConsumerTests.test_real_three_argument_consumer_requires_both_canonical_created_labels_across_children)
+      ----------------------------------------------------------------------
+      Traceback (most recent call last):
+        File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/oci_validator_consumer_cases.py", line 28, in test_real_three_argument_consumer_requires_both_canonical_created_labels_across_children
+          validator = load('current_shared_validator', BUILDS / 'oci_registry_validator.py')
+        File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/oci_validator_consumer_cases.py", line 21, in load
+          spec.loader.exec_module(module)
+          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+        File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+        File "<frozen importlib._bootstrap_external>", line 892, in get_code
+        File "<frozen importlib._bootstrap_external>", line 950, in get_data
+      FileNotFoundError: [Errno 2] No such file or directory: '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/references/Hexalith.Builds/Github/publish-containers/oci_registry_validator.py'
+      
+      ----------------------------------------------------------------------
+      Ran 1 test in 0.020s
+      
+      FAILED (errors=1)
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(496,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CurrentSharedValidatorPreservesThePublicationReaderContract()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2024-02-29T23:59:59Z", valid: True) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals('', 3.129.0)" cannot be evaluated. Version string was not in a correct format. [/tmp/parties-provenance-16ed4fad0ee448bd868a0f7b75df1093/fixture.proj]
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(560,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2000-02-29T00:00:00Z", valid: True) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals('', 3.129.0)" cannot be evaluated. Version string was not in a correct format. [/tmp/parties-provenance-31bb74c11b2d41a89f2d078440b6a6f0/fixture.proj]
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(560,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2026-04-30T12:34:56Z", valid: True) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals('', 3.129.0)" cannot be evaluated. Version string was not in a correct format. [/tmp/parties-provenance-7acefe5fd58d42c4adba49e1266bdbe3/fixture.proj]
+      
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(560,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2023-02-29T00:00:00Z", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "1900-02-29T00:00:00Z", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2024-04-31T00:00:00Z", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "0000-01-01T00:00:00Z", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "2026-01-01T24:00:00Z", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(created: "", valid: False) [FAIL]
+      Shouldly.ShouldAssertException : diagnostic
+          should contain (case insensitive comparison)
+      "ContainerProvenanceCreated"
+          but was actually
+      "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/Directory.Build.targets(2,18): error MSB4184..."
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(570,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ContainerProvenanceTargetsValidateCalendarAndPreserveExactLabels(String created, Boolean valid)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ReleasePackageManifestDeclaresExactTenPackageInventory [FAIL]
+      Shouldly.ShouldAssertException : policy.RootElement.GetProperty("packageIds").EnumerateArray().Select(package => package.GetString())
+          should be
+      ["Hexalith.Parties.Contracts", "Hexalith.Parties.Client", "Hexalith.Parties.AdminPortal", "Hexalith.Parties.ConsumerPortal", "Hexalith.Parties.Picker", "Hexalith.Parties.Authentication", "Hexalith.Parties.Projections", "Hexalith.Parties.Security", "Hexalith.Parties.Testing", "Hexalith.Parties.Aspire", "Hexalith.Parties.EventStoreExtensions"]
+          but was (case sensitive comparison)
+      ["Hexalith.Parties.Contracts", "Hexalith.Parties.Client", "Hexalith.Parties.AdminPortal", "Hexalith.Parties.ConsumerPortal", "Hexalith.Parties.Picker", "Hexalith.Parties.Authentication", "Hexalith.Parties.Projections", "Hexalith.Parties.Security", "Hexalith.Parties.Testing", "Hexalith.Parties.Aspire"]
+          difference
+      ["Hexalith.Parties.Contracts", "Hexalith.Parties.Client", "Hexalith.Parties.AdminPortal", "Hexalith.Parties.ConsumerPortal", "Hexalith.Parties.Picker", "Hexalith.Parties.Authentication", "Hexalith.Parties.Projections", "Hexalith.Parties.Security", "Hexalith.Parties.Testing", "Hexalith.Parties.Aspire", *]
+      Stack Trace:
+        tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs(588,0): at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ReleasePackageManifestDeclaresExactTenPackageInventory()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Parties.Ci.Tests (ID = '20d2425ca3054686eae05215fe24a31fe57dc82541afb79a659aab686cb2c591')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Ci.Tests  Total: 64, Errors: 0, Failed: 12, Skipped: 0, Not Run: 0, Time: 9.829s

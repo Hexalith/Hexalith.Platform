@@ -1,0 +1,46 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.AppHost.Tests
+  Discovered:  Hexalith.EventStore.AppHost.Tests
+  Starting:    Hexalith.EventStore.AppHost.Tests
+    Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(scenario: "valid") [FAIL]
+      Microsoft.Extensions.Options.OptionsValidationException : Property CliPath: The path to the DCP executable used for Aspire orchestration is required.; Property DashboardPath: The path to the Aspire Dashboard binaries is missing.
+      Stack Trace:
+           at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+           at Microsoft.Extensions.Options.UnnamedOptionsManager`1.get_Value()
+        /_/src/Aspire.Hosting/Dashboard/DashboardServiceHost.cs(142,0): at Aspire.Hosting.Dashboard.DashboardServiceHost.<>c__DisplayClass3_0.<.ctor>g__ConfigureKestrel|0(KestrelServerOptions kestrelOptions)
+           at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+           at Microsoft.Extensions.Options.UnnamedOptionsManager`1.get_Value()
+           at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.CreateServiceContext(IOptions`1 options, ILoggerFactory loggerFactory, DiagnosticSource diagnosticSource, KestrelMetrics metrics, IEnumerable`1 heartbeatHandlers)
+           at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl..ctor(IOptions`1 options, IEnumerable`1 transportFactories, IEnumerable`1 multiplexedFactories, IHttpsConfigurationService httpsConfigurationService, ILoggerFactory loggerFactory, DiagnosticSource diagnosticSource, KestrelMetrics metrics, IEnumerable`1 heartbeatHandlers)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+           at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)
+           at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+           at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+           at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+           at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+           at Microsoft.AspNetCore.Builder.WebApplication.get_ServerFeatures()
+           at Microsoft.AspNetCore.Builder.WebApplication..ctor(IHost host)
+           at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+        /_/src/Aspire.Hosting/Dashboard/DashboardServiceHost.cs(120,0): at Aspire.Hosting.Dashboard.DashboardServiceHost..ctor(DistributedApplicationOptions options, DistributedApplicationModel applicationModel, IConfiguration configuration, DistributedApplicationExecutionContext executionContext, IOptions`1 dcpOptions, ILoggerFactory loggerFactory, IConfigureOptions`1 loggerOptions, ResourceNotificationService resourceNotificationService, ResourceLoggerService resourceLoggerService, ResourceCommandService resourceCommandService, InteractionService interactionService, IInteractionFileUploadStore fileUploadStore, TerminalService terminalService)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+           at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitIEnumerable(IEnumerableCallSite enumerableCallSite, RuntimeResolverContext context)
+           at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+           at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+           at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs(116,0): at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs(175,0): at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+           at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.AppHost.Tests (ID = '58f9bd94b121dc514827672416a35d9fa0403970c9b4367d42f19e710f7d0818')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.AppHost.Tests  Total: 11, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.446s

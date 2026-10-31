@@ -1,0 +1,26 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.Server.Tests
+  Discovered:  Hexalith.EventStore.Server.Tests
+  Starting:    Hexalith.EventStore.Server.Tests
+    Hexalith.EventStore.Server.Tests.Routing.DevelopmentProjectionActorObservationTests.SampleActorQueryUsesCommittedObservedTargetBeforeEffects(fault: "valid") [FAIL]
+      NSubstitute.Exceptions.ReceivedCallsException : Expected to receive exactly 1 call matching:
+      	InvokeAsync("counter:tenant-a:counter-1", "ProjectionActor", any QueryEnvelope, any CancellationToken)
+      Actually received 2 matching calls:
+      	InvokeAsync("counter:tenant-a:counter-1", "ProjectionActor", QueryEnvelope { TenantId = tenant-a, Domain = counter, AggregateId = counter-1, QueryType = get-counter-status, CorrelationId = correlation, UserId = fixture-user, EntityId = counter-1, Payload = [REDACTED 0 bytes] }, System.Threading.CancellationToken)
+      	InvokeAsync("counter:tenant-a:counter-1", "ProjectionActor", QueryEnvelope { TenantId = tenant-a, Domain = counter, AggregateId = counter-1, QueryType = get-counter-status, CorrelationId = correlation, UserId = fixture-user, EntityId = counter-1, Payload = [REDACTED 0 bytes] }, System.Threading.CancellationToken)
+      
+      Stack Trace:
+           at NSubstitute.Core.ReceivedCallsExceptionThrower.Throw(ICallSpecification callSpecification, IEnumerable`1 matchingCalls, IEnumerable`1 nonMatchingCalls, Quantity requiredQuantity)
+           at NSubstitute.Routing.Handlers.CheckReceivedCallsHandler.Handle(ICall call)
+           at NSubstitute.Routing.Route.Handle(ICall call)
+           at NSubstitute.Core.CallRouter.Route(ICall call)
+           at NSubstitute.Proxies.CastleDynamicProxy.CastleForwardingInterceptor.Intercept(IInvocation invocation)
+           at Castle.DynamicProxy.AbstractInvocation.Proceed()
+           at NSubstitute.Proxies.CastleDynamicProxy.ProxyIdInterceptor.Intercept(IInvocation invocation)
+           at Castle.DynamicProxy.AbstractInvocation.Proceed()
+           at Castle.Proxies.ObjectProxy_1.InvokeAsync(String actorId, String actorTypeName, QueryEnvelope envelope, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentProjectionActorObservationTests.cs(109,0): at Hexalith.EventStore.Server.Tests.Routing.DevelopmentProjectionActorObservationTests.SampleActorQueryUsesCommittedObservedTargetBeforeEffects(String fault)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.Server.Tests (ID = '5f78840d25852f4cfdef2b07974774f2ec4723d528f845036be7d352ee1c10fb')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.Server.Tests  Total: 8, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.791s

@@ -1,0 +1,87 @@
+{
+  "commit": "b8f6d298db8c49df88eb36be9a5fb17a77583de6",
+  "base": "ceb7a8496079aca9df3e714314bc4c47549525f6",
+  "publishedBuildsPin": "2186b9a4bc507a116a457c590c80945c2e232cbd",
+  "patchSha256": "bd97c4ad24ba484785469c69ecc78fb89c16a5d254788b9dee605bbf194d4149",
+  "normalPackageOnlyGate": "passed",
+  "candidateStamp": "0.0.0; structural preflight only; never published/restored as delivered",
+  "publisherRecoveryTests": 43,
+  "failed": 0,
+  "skipped": 0,
+  "packages": [
+    {
+      "id": "Hexalith.Memories.Aspire",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Aspire.0.0.0.nupkg",
+      "sha256": "d90bdae2111a319d53e484284955826b2d22c085bf98e4b3768b471762b19fa0",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.Cli",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Cli.0.0.0.nupkg",
+      "sha256": "780639c3856dbca878075b3c04580570883bbe4599faf739ebc486eb3d565f38",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.Client.Rest",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Client.Rest.0.0.0.nupkg",
+      "sha256": "c89edd733c0d53de644db92c16509f65e63f48b89bd08553feaade30621d12fc",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.Contracts",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Contracts.0.0.0.nupkg",
+      "sha256": "09e85641696fbd1192e04949b1657446cb04670e46435fe17a8bd3b9a0c2573c",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.EventStore",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.EventStore.0.0.0.nupkg",
+      "sha256": "b687d969a6c1cdb1687263f6c1ccfb7dfeb9017dba93d3a0557d70d20610b73a",
+      "sdkDependencies": [
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "id": "Hexalith.Memories.EventStoreExtensions",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.EventStoreExtensions.0.0.0.nupkg",
+      "sha256": "d04af1827a8a7e8824667adb3a9088ec314e17f9bd2a6c2981906707d43e4921",
+      "sdkDependencies": [
+        {
+          "id": "Hexalith.EventStore.DomainService",
+          "version": "3.129.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "id": "Hexalith.Memories.Mcp",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Mcp.0.0.0.nupkg",
+      "sha256": "5c9c3d4412be01fe72fa2b1e72a663886ef45be0185a3a049f9db9bb89cd79d1",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.Redis",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Redis.0.0.0.nupkg",
+      "sha256": "e3d839d8157afc14cb290d6740555045f8e3cac28b34c116ed39d0b7a47c6720",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.ServiceDefaults",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.ServiceDefaults.0.0.0.nupkg",
+      "sha256": "9b5341ff6958053fbb140257f76d04982ea058072474fbb32c9ce7c9540e0b9f",
+      "sdkDependencies": []
+    },
+    {
+      "id": "Hexalith.Memories.Telemetry",
+      "path": "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0/Hexalith.Memories.Telemetry.0.0.0.nupkg",
+      "sha256": "0a6ff26829c36f0dc46148fdb56bd59275d39766fb2fad887b00bc8cf6080976",
+      "sdkDependencies": []
+    }
+  ],
+  "operationsRemainInternal": true,
+  "normalReleaseVersionAuthority": "semantic-release against current owner release history; last concurrent release3.0.11"
+}

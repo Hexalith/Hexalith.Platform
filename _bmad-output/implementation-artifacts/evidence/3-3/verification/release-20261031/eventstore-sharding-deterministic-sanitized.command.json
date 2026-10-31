@@ -1,0 +1,18 @@
+{
+  "command": [
+    "dotnet",
+    "tests/Hexalith.EventStore.Sharding.Tests/bin/Release/net10.0/Hexalith.EventStore.Sharding.Tests.dll",
+    "-class",
+    "*BindingTests",
+    "-class",
+    "*FixturePreflightTests",
+    "-class",
+    "*TransportLifecycleTests",
+    "-class",
+    "*ShardActorExpiryTests"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+  "exitCode": 1,
+  "seconds": 0.256,
+  "output": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/eventstore-sharding-deterministic-sanitized.txt"
+}

@@ -1,0 +1,18 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Tenants.IntegrationTests
+  Discovered:  Hexalith.Tenants.IntegrationTests
+  Starting:    Hexalith.Tenants.IntegrationTests
+    Hexalith.Tenants.IntegrationTests.BootstrapResourceFailureDiagnosticsTests.ActualAspireBacklogReadIsFiniteAndCancellationBounded [FAIL]
+      System.InvalidOperationException : Getting all logs requires the ResourceLoggerService instance created by DI.
+      Stack Trace:
+        /_/src/Aspire.Hosting/ApplicationModel/ResourceLoggerService.cs(899,0): at Aspire.Hosting.ApplicationModel.ResourceLoggerService.FakeConsoleLogsService.GetAllLogsAsync(String resourceName, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting/ApplicationModel/ResourceLoggerService.cs(434,0): at Aspire.Hosting.ApplicationModel.ResourceLoggerService.ResourceLoggerState.GetAllAsync(IConsoleLogsService consoleLogsService, CancellationToken cancellationToken)+MoveNext()
+           at Aspire.Hosting.ApplicationModel.ResourceLoggerService.ResourceLoggerState.GetAllAsync(IConsoleLogsService consoleLogsService, CancellationToken cancellationToken)+System.Threading.Tasks.Sources.IValueTaskSource<System.Boolean>.GetResult()
+        tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs(50,0): at Hexalith.Tenants.IntegrationTests.Fixtures.BootstrapResourceFailureDiagnostics.ReadAsync(ResourceLoggerService logger, CancellationToken cancellationToken)
+           at Hexalith.Tenants.IntegrationTests.Fixtures.BootstrapResourceFailureDiagnostics.ReadAsync(ResourceLoggerService logger, CancellationToken cancellationToken)
+        tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs(44,0): at Hexalith.Tenants.IntegrationTests.BootstrapResourceFailureDiagnosticsTests.ActualAspireBacklogReadIsFiniteAndCancellationBounded()
+        tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs(47,0): at Hexalith.Tenants.IntegrationTests.BootstrapResourceFailureDiagnosticsTests.ActualAspireBacklogReadIsFiniteAndCancellationBounded()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Tenants.IntegrationTests (ID = 'd8868c15826b90a4e3a64619ab804e545c6169edba096459cd97abda44020d2d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Tenants.IntegrationTests  Total: 3, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.225s

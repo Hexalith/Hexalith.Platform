@@ -1,0 +1,75 @@
+{
+  "commit": "cbad7e180254cb6227c38f5250fa5abdd359c9a6",
+  "base": "9cc1f9558402e2036c4ed519287d3da8bc517c05",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--from",
+        "HEAD^",
+        "--to",
+        "HEAD"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-commitlint-after-rebase.txt"
+    },
+    {
+      "command": [
+        "git",
+        "fetch",
+        "--no-tags",
+        "origin",
+        "main"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-fetch-final.txt"
+    },
+    {
+      "command": [
+        "git",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "HEAD...FETCH_HEAD"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-divergence-final.txt"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-status-final.txt"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "origin",
+        "HEAD:refs/heads/main"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-push.txt"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore",
+      "exitCode": 0,
+      "outputFile": "eventstore-governance-head.txt"
+    }
+  ],
+  "remoteMutation": "Fast-forward push of reviewed governance fix; owner package release not dispatched"
+}

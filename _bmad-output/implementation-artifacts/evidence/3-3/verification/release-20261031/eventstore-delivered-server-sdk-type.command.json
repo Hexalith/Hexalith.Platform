@@ -1,0 +1,18 @@
+{
+  "command": [
+    "dnx",
+    "dotnet-inspect",
+    "-y",
+    "--",
+    "type",
+    "RunScopedRouteCatalogGateway",
+    "--package",
+    "/home/administrator/projects/hexalith/platform/artifacts/story33-delivered/nuget/eventstore/3.129.0/hexalith.eventstore.server.3.129.0.nupkg",
+    "--json",
+    "--compact"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "exitCode": 0,
+  "seconds": 0.79,
+  "output": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/eventstore-delivered-server-sdk-type.txt"
+}

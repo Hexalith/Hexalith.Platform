@@ -1,0 +1,228 @@
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 3d3a1945..aa8fcdf4 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -328,7 +328,7 @@ jobs:
+           source-branch: main
+           source-ci-workflow: ci.yml
+           package-manifest: tools/release-packages.json
+-          expected-package-count: 10
++          expected-package-count: 11
+           publication-flag: ${{ vars.HEXALITH_RELEASE_PUBLISH_ENABLED }}
+           nuget-user: ${{ vars.NUGET_USER }}
+       - name: Validate changed root gitlinks before publication
+@@ -374,7 +374,7 @@ jobs:
+           HEXALITH_RELEASE_SOURCE_BRANCH: main
+           HEXALITH_RELEASE_SOURCE_CI_WORKFLOW: ci.yml
+           HEXALITH_RELEASE_PACKAGE_MANIFEST: tools/release-packages.json
+-          HEXALITH_RELEASE_EXPECTED_PACKAGE_COUNT: '10'
++          HEXALITH_RELEASE_EXPECTED_PACKAGE_COUNT: '11'
+           HEXALITH_RELEASE_RESERVED_VERSION: ''
+           HEXALITH_RELEASE_AUTHORITY_ISSUE_URL: ''
+           HEXALITH_RELEASE_AUTHORITY_OWNER: ''
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index cd738d04..46a39eda 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -1,5 +1,5 @@
+ <Project>
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
+   <ItemGroup Condition="'$(HexalithSourceMappingMode)' == 'source' and $(MSBuildProjectName.EndsWith('.Tests'))">
+     <!-- Test utilities consume the same exact roots selected by prepare-build. -->
+     <AssemblyMetadata Include="HexalithTestRepositoryRoot" Value="$(MSBuildThisFileDirectory)" />
+diff --git a/Directory.Packages.props b/Directory.Packages.props
+index 9bfeeffc..a360dbd6 100644
+--- a/Directory.Packages.props
++++ b/Directory.Packages.props
+@@ -3,7 +3,7 @@
+     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+     <!-- User-selected EventStore package family; mapped source builds retain tool authority. -->
+-    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.128.4</HexalithEventStoreVersion>
++    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.129.0</HexalithEventStoreVersion>
+     <!-- Latest compatible published Tenants family, before the shared catalog defaults. -->
+     <HexalithTenantsVersion Condition="'$(HexalithTenantsVersion)' == ''">5.11.2</HexalithTenantsVersion>
+     <!-- Shared theme accessibility correction, qualified through the package browser gate. -->
+diff --git a/Hexalith.Parties.slnx b/Hexalith.Parties.slnx
+index 121fbeee..8a76c9ba 100644
+--- a/Hexalith.Parties.slnx
++++ b/Hexalith.Parties.slnx
+@@ -28,6 +28,7 @@
+     <Project Path="src/Hexalith.Parties.Client/Hexalith.Parties.Client.csproj" />
+     <Project Path="src/Hexalith.Parties.ConsumerPortal/Hexalith.Parties.ConsumerPortal.csproj" />
+     <Project Path="src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj" />
++    <Project Path="src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj" />
+     <Project Path="src/Hexalith.Parties.Mcp/Hexalith.Parties.Mcp.csproj" />
+     <Project Path="src/Hexalith.Parties.Picker/Hexalith.Parties.Picker.csproj" />
+     <Project Path="src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj" />
+diff --git a/scripts/pack-release-packages.py b/scripts/pack-release-packages.py
+index 03c9ac54..56dd8d1d 100755
+--- a/scripts/pack-release-packages.py
++++ b/scripts/pack-release-packages.py
+@@ -14,6 +14,7 @@ from msbuild_properties import MsbuildPropertyResolutionError, resolve_hexalith_
+ PACKAGE_PROJECTS = [
+     "src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj",
+     "src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj",
++    "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj",
+     "src/Hexalith.Parties.Client/Hexalith.Parties.Client.csproj",
+     "src/Hexalith.Parties.AdminPortal/Hexalith.Parties.AdminPortal.csproj",
+     "src/Hexalith.Parties.ConsumerPortal/Hexalith.Parties.ConsumerPortal.csproj",
+diff --git a/scripts/validate-nuget-packages.py b/scripts/validate-nuget-packages.py
+index 73e255a8..678b26fb 100755
+--- a/scripts/validate-nuget-packages.py
++++ b/scripts/validate-nuget-packages.py
+@@ -21,6 +21,7 @@ from msbuild_properties import (
+ EXPECTED_PACKAGE_IDS = frozenset(
+     {
+         "Hexalith.Parties.Contracts",
++        "Hexalith.Parties.EventStoreExtensions",
+         "Hexalith.Parties.Client",
+         "Hexalith.Parties.AdminPortal",
+         "Hexalith.Parties.ConsumerPortal",
+@@ -336,7 +337,7 @@ def load_package_inventory(manifest: Path) -> tuple[str, ...]:
+     if (any(not isinstance(package_id, str) for package_id in ids)
+             or len({package_id.casefold() for package_id in ids}) != len(ids)
+             or set(ids) != EXPECTED_PACKAGE_IDS):
+-        raise ValueError("Release package inventory must declare exactly the ten unique Parties package IDs")
++        raise ValueError("Release package inventory must declare exactly the eleven unique Parties package IDs")
+     return tuple(ids)
+ 
+ 
+diff --git a/scripts/validate-publication-preflight.sh b/scripts/validate-publication-preflight.sh
+index bc6a8077..c0c4c146 100755
+--- a/scripts/validate-publication-preflight.sh
++++ b/scripts/validate-publication-preflight.sh
+@@ -14,9 +14,9 @@ contract_directory="${HEXALITH_RELEASE_CONTRACT_DIRECTORY:-$PWD/.hexalith/releas
+ publication_preflight="${HEXALITH_PUBLICATION_PREFLIGHT:-./.hexalith/release/publication_preflight.py}"
+ evidence_directory="${HEXALITH_RELEASE_EVIDENCE_DIRECTORY:-$PWD/.hexalith/release-evidence/$version/preflight}"
+ 
+-# Hexalith.Parties publishes exactly these ten NuGet packages. Keep this declaration
++# Hexalith.Parties publishes exactly these eleven NuGet packages. Keep this declaration
+ # independent from the manifest so an inventory change fails closed until reviewed.
+-readonly expected_package_count=10
++readonly expected_package_count=11
+ 
+ fail() {
+   echo "[publication-preflight] $1" >&2
+diff --git a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+index b377d4d0..b5edfe41 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+@@ -6,7 +6,7 @@ namespace Hexalith.Parties.Ci.Tests;
+ 
+ public sealed class PartiesContainerPublishWorkflowTests
+ {
+-    private const int ExpectedPackageCount = 10;
++    private const int ExpectedPackageCount = 11;
+     private const string BuildsCiSha = "1745ea0f09df9e518aeea3eeb1a7df836f67e09d";
+     private const string BuildsValidationSha = "332b2c144defba546fe0a09626a4a72f2340e22f";
+     private const string BuildsExecutionSha = "11a3a79cfac4bba9548c6364a17a01ee9b561370";
+@@ -137,7 +137,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+         preparation.ShouldContain("source-branch: main\n");
+         preparation.ShouldContain("source-ci-workflow: ci.yml\n");
+         preparation.ShouldContain("package-manifest: tools/release-packages.json\n");
+-        preparation.ShouldContain("expected-package-count: 10\n");
++        preparation.ShouldContain("expected-package-count: 11\n");
+         publisher.ShouldContain("uses: ./.hexalith/builds-execution/Github/publish-containers\n");
+         publisher.ShouldContain($"builds-execution-sha: {BuildsExecutionSha}\n");
+         workflow.ShouldContain("actions/workflows/ci.yml/runs");
+@@ -332,7 +332,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             "HEXALITH_RELEASE_SOURCE_BRANCH: main",
+             "HEXALITH_RELEASE_SOURCE_CI_WORKFLOW: ci.yml",
+             "HEXALITH_RELEASE_PACKAGE_MANIFEST: tools/release-packages.json",
+-            "HEXALITH_RELEASE_EXPECTED_PACKAGE_COUNT: '10'",
++            "HEXALITH_RELEASE_EXPECTED_PACKAGE_COUNT: '11'",
+             "HEXALITH_RELEASE_RESERVED_VERSION: ''",
+             "HEXALITH_RELEASE_AUTHORITY_ISSUE_URL: ''",
+             "HEXALITH_RELEASE_AUTHORITY_OWNER: ''",
+@@ -460,7 +460,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             .Where(element => element.Name.LocalName.StartsWith("Container", StringComparison.Ordinal)));
+         containerConfiguration.ShouldNotContain("Hexalith.EventStore");
+ 
+-        publicationPreflight.ShouldContain("readonly expected_package_count=10");
++        publicationPreflight.ShouldContain("readonly expected_package_count=11");
+         publicationPreflight.ShouldContain(
+             "HEXALITH_RELEASE_SOURCE_CI_WORKFLOW must be exactly ci.yml.");
+         publicationPreflight.ShouldNotContain("commitlint.yml");
+@@ -578,7 +578,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+     }
+ 
+     [Fact]
+-    public void ReleasePackageManifestDeclaresExactTenPackageInventory()
++    public void ReleasePackageManifestDeclaresExactElevenPackageInventory()
+     {
+         using JsonDocument manifest = JsonDocument.Parse(CiTestPaths.ReadRepoFile("tools/release-packages.json"));
+         JsonElement[] packages = manifest.RootElement.GetProperty("packages").EnumerateArray().ToArray();
+@@ -599,6 +599,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             "Hexalith.Parties.Security",
+             "Hexalith.Parties.Testing",
+             "Hexalith.Parties.Aspire",
++            "Hexalith.Parties.EventStoreExtensions",
+         ]);
+         packages.Select(package => package.GetProperty("project").GetString()).ShouldBe(
+         [
+@@ -612,6 +613,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             "src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj",
+             "src/Hexalith.Parties.Testing/Hexalith.Parties.Testing.csproj",
+             "src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj",
++            "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj",
+         ]);
+     }
+ 
+@@ -681,7 +683,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             "registry.hexalith.com/parties-mcp",
+             "registry.hexalith.com/parties-ui",
+         ]);
+-        ArgumentValues(arguments, "--expected-package-count").ShouldBe(["10"]);
++        ArgumentValues(arguments, "--expected-package-count").ShouldBe(["11"]);
+         ArgumentValues(arguments, "--phase").ShouldBe([phase]);
+     }
+ 
+@@ -689,7 +691,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+     [InlineData(null)]
+     [InlineData("")]
+     [InlineData("9")]
+-    [InlineData("11")]
++    [InlineData("12")]
+     public void PublicationPreflightWrapperRejectsPackageCountDriftBeforeSharedPreflight(string? packageCount)
+     {
+         if (OperatingSystem.IsWindows())
+@@ -701,7 +703,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+             RunPublicationPreflightWrapper("verify", packageCount);
+ 
+         exitCode.ShouldNotBe(0);
+-        error.ShouldContain("expected-package-count input must be exactly 10");
++        error.ShouldContain("expected-package-count input must be exactly 11");
+         preflightInvoked.ShouldBeFalse();
+     }
+ 
+diff --git a/tools/nuget-trusted-publishing-policy.json b/tools/nuget-trusted-publishing-policy.json
+index c40e341c..4ddeb064 100644
+--- a/tools/nuget-trusted-publishing-policy.json
++++ b/tools/nuget-trusted-publishing-policy.json
+@@ -22,7 +22,8 @@
+     "Hexalith.Parties.Projections",
+     "Hexalith.Parties.Security",
+     "Hexalith.Parties.Testing",
+-    "Hexalith.Parties.Aspire"
++    "Hexalith.Parties.Aspire",
++    "Hexalith.Parties.EventStoreExtensions"
+   ],
+   "setupUrl": "https://www.nuget.org/account/TrustedPublishing",
+   "documentationUrl": "https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing",
+diff --git a/tools/release-packages.json b/tools/release-packages.json
+index d1913836..459a2f90 100644
+--- a/tools/release-packages.json
++++ b/tools/release-packages.json
+@@ -39,6 +39,10 @@
+     {
+       "id": "Hexalith.Parties.Aspire",
+       "project": "src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj"
++    },
++    {
++      "id": "Hexalith.Parties.EventStoreExtensions",
++      "project": "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj"
+     }
+   ]
+ }

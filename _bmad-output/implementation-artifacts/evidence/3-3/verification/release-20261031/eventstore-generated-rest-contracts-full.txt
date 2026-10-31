@@ -1,0 +1,495 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.Contracts.Tests
+  Discovered:  Hexalith.EventStore.Contracts.Tests
+  Starting:    Hexalith.EventStore.Contracts.Tests
+    Hexalith.EventStore.Contracts.Tests.Packaging.TrustedEffectPackageContractTests.NamedPackagesExposeTrustedEffectContracts [SKIP]
+      EVENTSTORE_PACKAGE_CONTRACT_DIR is not set; no release package inventory was supplied.
+    Hexalith.EventStore.Contracts.Tests.Packaging.PackagedReminderApiTests.PackagedReminderApiRunsWithoutWorksTypes [SKIP]
+      EVENTSTORE_PACKAGE_CONTRACT_DIR is not set; no release package inventory was supplied.
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContainerPublishingGovernanceTests.ReleaseCallerPinsSharedExecutionAndSameRunPublicationAuthorityInputs [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContainerPublishingGovernanceTests.cs(599,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContainerPublishingGovernanceTests.ReleaseCallerPinsSharedExecutionAndSameRunPublicationAuthorityInputs()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.CommitMessagePolicyTests.CopilotInstructionsDelegateCommitlintContractToSharedInstructions [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.AI.Tools source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/CommitMessagePolicyTests.cs(59,0): at Hexalith.EventStore.Contracts.Tests.Packaging.CommitMessagePolicyTests.CopilotInstructionsDelegateCommitlintContractToSharedInstructions()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(metadata: "Version", tracked: False) [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(170,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(String metadata, Boolean tracked)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(metadata: "VersionOverride", tracked: False) [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(170,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(String metadata, Boolean tracked)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(metadata: "Version", tracked: True) [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(170,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(String metadata, Boolean tracked)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(metadata: "VersionOverride", tracked: True) [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(170,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorRejectsExecutableOverrideAsync(String metadata, Boolean tracked)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterRejectsChangedSharedAuthorityAsync(fileName: "validate-consumer-package-authority.ps1") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(105,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterRejectsChangedSharedAuthorityAsync(String fileName)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterRejectsChangedSharedAuthorityAsync(fileName: "validate-central-package-versions.ps1") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(105,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterRejectsChangedSharedAuthorityAsync(String fileName)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.RootPackagePropsDelegatesAllVersionsToSharedCatalogAsync [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(51,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.RootPackagePropsDelegatesAllVersionsToSharedCatalogAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.PackageOwnershipGovernanceTests.TenantsGatewayAndDomainServiceUseComplementaryModeEdges [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Tenants source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackageOwnershipGovernanceTests.cs(115,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackageOwnershipGovernanceTests.TenantsGatewayAndDomainServiceUseComplementaryModeEdges()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorPassesForEveryTrackedMsBuildSurfaceAsync [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(142,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedConsumerAuthorityValidatorPassesForEveryTrackedMsBuildSurfaceAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.Contracts_package_pins_commons_unique_ids_centrally [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(15,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.Contracts_package_pins_commons_unique_ids_centrally()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "NBomber.Http") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "xunit.v3.extensibility.core") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "System.CommandLine") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "ModelContextProtocol") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "Microsoft.Extensions.TimeProvider.Testing") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "NBomber") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(packageId: "Microsoft.Playwright") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(427,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.LoadSharedPackageVersions(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(77,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(String packageId)
+           at InvokeStub_ContractsPackageDependencyTests.SharedCatalogOwnsRequiredPackageExactlyOnce(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "restored") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "missing") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "duplicate") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "extra") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "action") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "version") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "identity-case") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "item-condition") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "group-condition") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "project-condition") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "unexpected-attribute") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "nested-version") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(mutation: "namespace") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(217,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageExceptionRejectsChangedDeclarationAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(mutation: "none") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(21,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(mutation: "raw") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(21,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(mutation: "raw-version") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(21,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(mutation: "effective") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(21,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(mutation: "crlf-authority") [FAIL]
+      System.IO.InvalidDataException : Source path /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Builds does not own its Git worktree; Git discovered /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(222,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyWorktreeRoot(String path)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(71,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyRepositoryRoot(String path, String repositoryName)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(90,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.VerifyDeclaredDependency(String repositoryRoot, String repositoryName, String selectedRoot)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(464,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.VerifyCatalogRepository(String root, String catalogPath)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.cs(451,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.ResolveSharedPackageVersionsPath(String root, XDocument packageVersions)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ContractsPackageDependencyTests.SecurityException.cs(21,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ContractsPackageDependencyTests.AuthorizedRootPackageAdapterPreservesAllOtherAuthorityChecksAsync(String mutation)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_targets_live_project_outside_release_gate [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(667,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_targets_live_project_outside_release_gate()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "full-server-tests") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "category-filter") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "missing-cli-tag") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "missing-runtime-tag") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "runtime-uses-cli-pin") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "missing-legacy-fallback") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "full-history-checkout") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "misplaced-shallow-depth") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "checkout-env-shallow-depth") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "published-shallow-history") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "published-missing-history") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "release-coupling-workflow") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(mutation: "release-coupling-project") [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs(742,0): at Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(String mutation)
+           at InvokeStub_ReleasePackageManifestTests.Live_sidecar_workflow_guardrail_rejects_forbidden_mutations(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.Contracts.Tests.Packaging.CorrectiveOciProvenanceReleaseTests.PublicationAuthorityFixturesPassWithoutSkippedCases [FAIL]
+      System.IO.DirectoryNotFoundException : No initialized declared Hexalith.Builds source exists for /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore. Supply the required workspace dependency or an explicit source override.
+      Stack Trace:
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/PackagingRepositoryPaths.cs(58,0): at Hexalith.EventStore.Contracts.Tests.Packaging.PackagingRepositoryPaths.ResolveDependency(String repositoryRoot, String repositoryName, String sourceOverride)
+        tests/Hexalith.EventStore.Contracts.Tests/Packaging/CorrectiveOciProvenanceReleaseTests.cs(306,0): at Hexalith.EventStore.Contracts.Tests.Packaging.CorrectiveOciProvenanceReleaseTests.PublicationAuthorityFixturesPassWithoutSkippedCases()
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.EventStore.Contracts.Tests (ID = '966d3d1aec0b0d2ce7c2dcdc6bd083b68723726d3ec244e8d92ff8f1a6142092')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.Contracts.Tests  Total: 1409, Errors: 0, Failed: 52, Skipped: 2, Not Run: 0, Time: 62.852s

@@ -1,0 +1,193 @@
+....FF..F......F.......F.F...F.......F...
+======================================================================
+FAIL: test_archive_inspect_failure_fails_member_closed_and_is_redacted (publish_containers_test.PublishContainersTests.test_archive_inspect_failure_fails_member_closed_and_is_redacted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 730, in test_archive_inspect_failure_fails_member_closed_and_is_redacted
+    self.assertEqual([MCP_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE], copy_references(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['reg[147 chars]-test.1'] != ['reg[147 chars]-test.1', 'registry.test/memories-domain-service:1.2.3-test.1']
+
+Second list contains 1 additional elements.
+First extra element 3:
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+  ['registry.test/memories-mcp:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+-  'registry.test/memories-access-telemetry-clock:1.2.3-test.1']
+?                                                              ^
+
++  'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
+?                                                              ^
+
++  'registry.test/memories-domain-service:1.2.3-test.1']
+
+======================================================================
+FAIL: test_archive_reference_mismatch_fails_closed_before_copy (publish_containers_test.PublishContainersTests.test_archive_reference_mismatch_fails_closed_before_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 575, in test_archive_reference_mismatch_fails_closed_before_copy
+    self.assertEqual([MCP_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE], copy_references(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['reg[147 chars]-test.1'] != ['reg[147 chars]-test.1', 'registry.test/memories-domain-service:1.2.3-test.1']
+
+Second list contains 1 additional elements.
+First extra element 3:
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+  ['registry.test/memories-mcp:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+-  'registry.test/memories-access-telemetry-clock:1.2.3-test.1']
+?                                                              ^
+
++  'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
+?                                                              ^
+
++  'registry.test/memories-domain-service:1.2.3-test.1']
+
+======================================================================
+FAIL: test_existing_immutable_tag_with_conflicting_digest_fails_closed (publish_containers_test.PublishContainersTests.test_existing_immutable_tag_with_conflicting_digest_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 855, in test_existing_immutable_tag_with_conflicting_digest_fails_closed
+    self.assertEqual([MCP_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE], copy_references(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['reg[147 chars]-test.1'] != ['reg[147 chars]-test.1', 'registry.test/memories-domain-service:1.2.3-test.1']
+
+Second list contains 1 additional elements.
+First extra element 3:
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+  ['registry.test/memories-mcp:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+-  'registry.test/memories-access-telemetry-clock:1.2.3-test.1']
+?                                                              ^
+
++  'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
+?                                                              ^
+
++  'registry.test/memories-domain-service:1.2.3-test.1']
+
+======================================================================
+FAIL: test_partial_publish_writes_redacted_summary_and_returns_nonzero (publish_containers_test.PublishContainersTests.test_partial_publish_writes_redacted_summary_and_returns_nonzero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 797, in test_partial_publish_writes_redacted_summary_and_returns_nonzero
+    self.assertEqual([SERVER_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE], summary["pushed"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['reg[143 chars]-test.1'] != ['reg[143 chars]-test.1', 'registry.test/memories-domain-service:1.2.3-test.1']
+
+Second list contains 1 additional elements.
+First extra element 3:
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+  ['registry.test/memories:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+-  'registry.test/memories-access-telemetry-clock:1.2.3-test.1']
+?                                                              ^
+
++  'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
+?                                                              ^
+
++  'registry.test/memories-domain-service:1.2.3-test.1']
+
+======================================================================
+FAIL: test_remote_manifest_without_config_digest_fails_closed (publish_containers_test.PublishContainersTests.test_remote_manifest_without_config_digest_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 774, in test_remote_manifest_without_config_digest_fails_closed
+    self.assertEqual([MCP_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE], copy_references(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['reg[147 chars]-test.1'] != ['reg[147 chars]-test.1', 'registry.test/memories-domain-service:1.2.3-test.1']
+
+Second list contains 1 additional elements.
+First extra element 3:
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+  ['registry.test/memories-mcp:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+-  'registry.test/memories-access-telemetry-clock:1.2.3-test.1']
+?                                                              ^
+
++  'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
+?                                                              ^
+
++  'registry.test/memories-domain-service:1.2.3-test.1']
+
+======================================================================
+FAIL: test_rerun_skips_matching_remote_digest_and_retries_only_missing_member (publish_containers_test.PublishContainersTests.test_rerun_skips_matching_remote_digest_and_retries_only_missing_member)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/publish_containers_test.py", line 827, in test_rerun_skips_matching_remote_digest_and_retries_only_missing_member
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [SERVER_IMAGE, MCP_IMAGE, ACCESS_TELEMETRY_IMAGE, ACCESS_TELEMETRY_CLOCK_IMAGE, MCP_IMAGE],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        copy_references(root),
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: Lists differ: ['reg[215 chars]ries-mcp:1.2.3-test.1'] != ['reg[215 chars]ries-domain-service:1.2.3-test.1', 'registry.t[26 chars]t.1']
+
+First differing element 4:
+'registry.test/memories-mcp:1.2.3-test.1'
+'registry.test/memories-domain-service:1.2.3-test.1'
+
+Second list contains 1 additional elements.
+First extra element 5:
+'registry.test/memories-mcp:1.2.3-test.1'
+
+  ['registry.test/memories:1.2.3-test.1',
+   'registry.test/memories-mcp:1.2.3-test.1',
+   'registry.test/memories-access-telemetry:1.2.3-test.1',
+   'registry.test/memories-access-telemetry-clock:1.2.3-test.1',
++  'registry.test/memories-domain-service:1.2.3-test.1',
+   'registry.test/memories-mcp:1.2.3-test.1']
+
+======================================================================
+FAIL: test_cross_origin_upload_locations_are_cancelled_without_forwarding_credentials (registry_authorization_test.RegistryAuthorizationTests.test_cross_origin_upload_locations_are_cancelled_without_forwarding_credentials)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/registry_authorization_test.py", line 194, in test_cross_origin_upload_locations_are_cancelled_without_forwarding_credentials
+    self.assertEqual([None, None, None, None], cancellation_state.delete_authorizations)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [None, None, None, None] != [None, None, None, None, None]
+
+Second list contains 1 additional elements.
+First extra element 4:
+None
+
+- [None, None, None, None]
++ [None, None, None, None, None]
+?                    ++++++
+
+
+======================================================================
+FAIL: test_pack_release_package_only_stops_after_real_package_validation (release_orchestration_test.ReleaseOrchestrationTests.test_pack_release_package_only_stops_after_real_package_validation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/tooling/publish_containers/release_orchestration_test.py", line 328, in test_pack_release_package_only_stops_after_real_package_validation
+    self.assertEqual(["build"] + ["pack"] * 9, dotnet_commands)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['bui[21 chars]'pack', 'pack', 'pack', 'pack', 'pack', 'pack', 'pack'] != ['bui[21 chars]'pack', 'pack', 'pack', 'pack', 'pack', 'pack', 'pack', 'pack']
+
+Second list contains 1 additional elements.
+First extra element 10:
+'pack'
+
+  ['build',
+   'pack',
+   'pack',
+   'pack',
+   'pack',
+   'pack',
+   'pack',
+   'pack',
+   'pack',
++  'pack',
+   'pack']
+
+----------------------------------------------------------------------
+Ran 41 tests in 192.429s
+
+FAILED (failures=8)

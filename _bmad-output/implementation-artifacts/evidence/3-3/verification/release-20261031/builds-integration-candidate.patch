@@ -1,0 +1,519 @@
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index 7a4863b..e86b495 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -6,7 +6,7 @@
+     <HexalithCommonsVersion Condition="'$(HexalithCommonsVersion)' == ''">2.30.7</HexalithCommonsVersion>
+     <HexalithConversationsVersion Condition="'$(HexalithConversationsVersion)' == ''">1.3.1</HexalithConversationsVersion>
+     <HexalithPolymorphicSerializationsVersion Condition="'$(HexalithPolymorphicSerializationsVersion)' == ''">1.19.6</HexalithPolymorphicSerializationsVersion>
+-    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.128.4</HexalithEventStoreVersion>
++    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.129.0</HexalithEventStoreVersion>
+     <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">4.7.2</HexalithFrontComposerVersion>
+     <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">1.3.2</HexalithFoldersVersion>
+     <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == ''">1.1.0</HexalithMcpCliVersion>
+diff --git a/Tools/G4PackageQualification.functions.ps1 b/Tools/G4PackageQualification.functions.ps1
+index 920a920..63c8ed4 100644
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -230,7 +230,7 @@ function Assert-ModuleRunEvidenceContent {
+         [Parameter(Mandatory = $true)][string] $ExpectedRepositoryRevision,
+         [Parameter(Mandatory = $true)][string] $ExpectedRepositoryDirtyMarker,
+         [Parameter(Mandatory = $true)][string] $ExpectedManifestHash,
+-        [string] $ExpectedEventStoreVersion = '3.128.4'
++        [string] $ExpectedEventStoreVersion = '3.129.0'
+     )
+ 
+     $bytes = [IO.File]::ReadAllBytes($FilePath)
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+index fc06c2b..e4e847c 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+@@ -5,7 +5,8 @@
+     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+     <Description>Builds-owned EventStore composition root over the Hexalith.EventStore.Gateway package for G-4 runs.</Description>
+     <BuildsCatalogFromMappedSource Condition="'$(Configuration)' == 'Debug' and Exists('$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj')">true</BuildsCatalogFromMappedSource>
+-    <DefineConstants Condition="'$(BuildsCatalogFromMappedSource)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_MAPPED_SOURCE</DefineConstants>
++    <BuildsCatalogSdkAvailable Condition="'$(BuildsCatalogFromMappedSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))">true</BuildsCatalogSdkAvailable>
++    <DefineConstants Condition="'$(BuildsCatalogSdkAvailable)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_SDK</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="Hexalith.EventStore.Gateway" Condition="'$(BuildsCatalogFromMappedSource)' != 'true'" />
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+index b4b0867..2417691 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+@@ -29,10 +29,10 @@ builder.Services.AddEventStoreServer(builder.Configuration);
+ builder.Services.AddEventStoreDomainQueryRouting();
+ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+     _ = Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+ #else
+-    throw new NotSupportedException("Run-scoped route catalogs require the mapped EventStore source build.");
++    throw new NotSupportedException("Run-scoped route catalogs require the EventStore catalog SDK 3.129.0 or newer.");
+ #endif
+ }
+ 
+@@ -44,11 +44,11 @@ app.MapDefaultEndpoints();
+ app.UseRouting();
+ app.UseAuthentication();
+ app.UseRateLimiter();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ app.UseEventStoreHttpHostSecurity();
+ #endif
+ app.UseAuthorization();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+     _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
+@@ -84,14 +84,14 @@ app.MapErrorReferences();
+ app.MapApiVersionFallback();
+ if (!declarativeSubscriptions)
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+     _ = app.MapSubscribeHandler().RequireEventStoreChannel();
+ #else
+     _ = app.MapSubscribeHandler().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
+ #endif
+ }
+ 
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+ #else
+ app.MapActorsHandlers().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+index 26290ae..2f4031a 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+@@ -1201,14 +1201,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+         // Never reread child-writable entry files during terminal recording or cleanup.
+     }
+ 
+-    private static bool SafeMetadata(System.Text.Json.JsonElement value) => value.ValueKind switch
+-    {
+-        System.Text.Json.JsonValueKind.String => !ManifestSecretDetector.ContainsSecret(value.GetString()!),
+-        System.Text.Json.JsonValueKind.Array => value.EnumerateArray().All(SafeMetadata),
+-        System.Text.Json.JsonValueKind.Object => value.EnumerateObject().All(property => !ManifestSecretDetector.ContainsSecret(property.Name) && SafeMetadata(property.Value)),
+-        System.Text.Json.JsonValueKind.Number or System.Text.Json.JsonValueKind.True or System.Text.Json.JsonValueKind.False or System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => true,
+-        _ => false,
+-    };
++    private static bool SafeMetadata(System.Text.Json.JsonElement value) => SelectedMetadataSafety.IsSafe(value);
+ 
+     private static void CopyDiagnostic(string source, string destination)
+     {
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
+index a330d99..6bc194d 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
+@@ -19,6 +19,9 @@ internal sealed record NativeTestExecutionResult(ToolCommandResult Result, Nativ
+     /// <summary>Gets the bounded inspected detailed native observations, retained beside TRX through existing artifact custody.</summary>
+     internal byte[]? ObservationBytes { get; init; }
+ 
++    /// <summary>Gets bounded public routing files held before the selected child starts.</summary>
++    internal IReadOnlyDictionary<string, byte[]>? RoutingCatalogSnapshot { get; init; }
++
+     /// <summary>Gets the runner-observed terminal cause, independent of later processing time.</summary>
+     internal string? TerminalCause { get; init; }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+index 5403765..08bf6f9 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+@@ -260,6 +260,7 @@ internal static class NativeTestExecutor
+                 await ArchiveAsync(durableEntry, archiveDirectory).ConfigureAwait(false);
+                 await WriteSnapshotAsync(Path.Combine(archiveDirectory, "test-environment.json"), archiveDirectory, descriptorSnapshot, processingToken).ConfigureAwait(false);
+                 await WriteSnapshotAsync(Path.Combine(archiveDirectory, "execution-timing.json"), archiveDirectory, timingBytes, processingToken).ConfigureAwait(false);
++                await ArchiveRoutingAsync(archiveDirectory, archiveDirectory).ConfigureAwait(false);
+             }
+ 
+             await WriteSnapshotAsync(Path.Combine(session.Plan.Workspace, "execution-timing.json"), session.Plan.Workspace, timingBytes, processingToken).ConfigureAwait(false);
+@@ -278,6 +279,16 @@ internal static class NativeTestExecutor
+                 {
+                     await WriteSnapshotAsync(Path.Combine(directory, "functional-observations.json"), ownedRoot, observationBytes, processingToken).ConfigureAwait(false);
+                 }
++
++                await ArchiveRoutingAsync(directory, ownedRoot).ConfigureAwait(false);
++            }
++
++            async Task ArchiveRoutingAsync(string directory, string ownedRoot)
++            {
++                foreach (KeyValuePair<string, byte[]> file in inspected.RoutingCatalogSnapshot ?? new Dictionary<string, byte[]>())
++                {
++                    await WriteSnapshotAsync(Path.Combine(directory, "routing-catalog", file.Key), ownedRoot, file.Value, processingToken).ConfigureAwait(false);
++                }
+             }
+         }
+         catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or OperationCanceledException or NotSupportedException)
+@@ -373,6 +384,7 @@ internal static class NativeTestExecutor
+         await CompositionDocumentStore.WriteAsync(session.Plan.ReadinessPath, session.Readiness, cancellationToken).ConfigureAwait(false);
+         string descriptorPath;
+         byte[] descriptorSnapshot;
++        IReadOnlyDictionary<string, byte[]> routingCatalogSnapshot;
+         try
+         {
+             descriptorPath = await TestEnvironment.TestEnvironmentDescriptorWriter.WriteAsync(session, archiveDirectory, cancellationToken).ConfigureAwait(false);
+@@ -383,6 +395,7 @@ internal static class NativeTestExecutor
+             }
+ 
+             descriptorSnapshot = Encoding.UTF8.GetBytes(validated.Document!.Value.GetRawText());
++            routingCatalogSnapshot = await SelectedRoutingCatalogSnapshot.ReadAsync(session.Plan, descriptorSnapshot, cancellationToken).ConfigureAwait(false);
+             session.EnvironmentBindings = validated.Document.Value.GetProperty("bindings").Clone();
+         }
+         catch (InvalidDataException exception)
+@@ -563,7 +576,7 @@ internal static class NativeTestExecutor
+ 
+         timing = timing with { ActualDurationSeconds = Math.Max(0, (DateTimeOffset.UtcNow - timing.StartedAtUtc).TotalSeconds - System.Diagnostics.Stopwatch.GetElapsedTime(stoppingTimestamp).TotalSeconds) };
+         session.Plan = session.Plan with { ExecutionTiming = timing };
+-        NativeTestExecutionResult inspected = evaluated with { Report = report.Report, ReportBytes = bytes, ObservationBytes = observations, StoppingTimestamp = stoppingTimestamp, TerminalCause = process.TimedOut && !cancelled && !gate.Failed ? "execution-timeout" : null };
++        NativeTestExecutionResult inspected = evaluated with { Report = report.Report, ReportBytes = bytes, ObservationBytes = observations, RoutingCatalogSnapshot = routingCatalogSnapshot, StoppingTimestamp = stoppingTimestamp, TerminalCause = process.TimedOut && !cancelled && !gate.Failed ? "execution-timeout" : null };
+         if (onOutcome is not null)
+         {
+             inspected = inspected with { MetadataRecordingTimestamp = System.Diagnostics.Stopwatch.GetTimestamp() };
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs
+new file mode 100644
+index 0000000..acc3fe5
+--- /dev/null
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs
+@@ -0,0 +1,26 @@
++// <copyright file="SelectedMetadataSafety.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.Tooling.Runtime;
++
++using System.Text.Json;
++
++using Hexalith.Builds.Tooling.Manifest;
++
++/// <summary>Shares the existing credential-free selected metadata policy across held snapshots.</summary>
++internal static class SelectedMetadataSafety
++{
++    /// <summary>Checks every object key and string value before public diagnostic retention.</summary>
++    /// <param name="value">The parsed metadata.</param>
++    /// <returns>Whether the full metadata tree excludes prohibited credential material.</returns>
++    internal static bool IsSafe(JsonElement value) => value.ValueKind switch
++    {
++        JsonValueKind.String => !ManifestSecretDetector.ContainsSecret(value.GetString()!),
++        JsonValueKind.Array => value.EnumerateArray().All(IsSafe),
++        JsonValueKind.Object => value.EnumerateObject().All(property => !ManifestSecretDetector.ContainsSecret(property.Name) && IsSafe(property.Value)),
++        JsonValueKind.Number or JsonValueKind.True or JsonValueKind.False or JsonValueKind.Null or JsonValueKind.Undefined => true,
++        _ => false,
++    };
++}
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs
+new file mode 100644
+index 0000000..8f3df62
+--- /dev/null
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs
+@@ -0,0 +1,133 @@
++// <copyright file="SelectedRoutingCatalogSnapshot.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.Tooling.Runtime;
++
++using System.Collections.Frozen;
++using System.Text.Json;
++
++/// <summary>Holds bounded public routing observations before a native child can change its workspace.</summary>
++internal static class SelectedRoutingCatalogSnapshot
++{
++    /// <summary>Captures only the catalog instance named by the validated descriptor and original run plan.</summary>
++    /// <param name="plan">The original ready run.</param>
++    /// <param name="descriptorSnapshot">The descriptor bytes validated before child launch.</param>
++    /// <param name="cancellationToken">The existing execution cancellation.</param>
++    /// <returns>Credential-free held bytes; empty for compositions without a routing catalog.</returns>
++    /// <exception cref="InvalidDataException">The identity, ownership, bounds or retained content cannot be verified.</exception>
++    internal static async Task<IReadOnlyDictionary<string, byte[]>> ReadAsync(CompositionRunPlan plan, byte[] descriptorSnapshot, CancellationToken cancellationToken)
++    {
++        string instance = plan.EnvironmentId + "-catalog";
++        string directory = Path.Combine(plan.Workspace, "platform-components", instance);
++        Dictionary<string, byte[]> result = new(StringComparer.Ordinal);
++        if (!Directory.Exists(directory))
++        {
++            return result.ToFrozenDictionary(StringComparer.Ordinal);
++        }
++
++        if (!SelectedNativeTestReport.IsOwnedRegularPath(Path.Combine(directory, "catalog.json"), plan.Workspace))
++        {
++            throw new InvalidDataException("The descriptor catalog must be a regular file inside its owned workspace.");
++        }
++
++        using JsonDocument descriptor = JsonDocument.Parse(descriptorSnapshot);
++        JsonElement bindings = descriptor.RootElement.GetProperty("bindings");
++        JsonElement catalog = bindings.GetProperty("environment").GetProperty("catalog");
++        if (bindings.GetProperty("run").GetProperty("environmentId").GetString() != plan.EnvironmentId
++            || catalog.GetProperty("instanceId").GetString() != instance || !CompositionRunPlanFactory.IsRunId(plan.EnvironmentId))
++        {
++            throw new InvalidDataException("Routing observations differ from the validated descriptor instance.");
++        }
++
++        List<(string Source, string Name)> inputs = [];
++        foreach (string name in new[] { "catalog.json", "receipt.json", "metadata-http.json", "preparation.json" })
++        {
++            string path = Path.Combine(directory, name);
++            if (File.Exists(path) || new FileInfo(path).LinkTarget is not null || name is "catalog.json" or "receipt.json")
++            {
++                inputs.Add((path, name));
++            }
++        }
++
++        string[] readbacks = [.. Directory.EnumerateFiles(directory, "*.committed.json", SearchOption.TopDirectoryOnly).Take(65)];
++        if (readbacks.Length > 64)
++        {
++            throw new InvalidDataException("Routing observations exceed the bounded host inventory.");
++        }
++
++        foreach (string path in readbacks)
++        {
++            string name = Path.GetFileName(path);
++            string host = name[..^".committed.json".Length];
++            if (host.Length is < 1 or > 128 || !char.IsAsciiLetterOrDigit(host[0])
++                || host.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not '.' and not '-' and not '_'))
++            {
++                throw new InvalidDataException("Routing readback file identity is invalid.");
++            }
++
++            inputs.Add((path, name));
++        }
++
++        foreach ((string source, string name) in new[]
++        {
++            (Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), "mapping.json"),
++            (Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"), "catalog-versions.json"),
++            (Path.Combine(plan.Workspace, "platform-components", "catalog-reader", "obj", "project.assets.json"), "reader-assets.json"),
++        })
++        {
++            inputs.Add((source, name));
++        }
++
++        int total = 0;
++        foreach ((string source, string name) in inputs)
++        {
++            cancellationToken.ThrowIfCancellationRequested();
++            if (!SelectedNativeTestReport.IsOwnedRegularPath(source, plan.Workspace))
++            {
++                throw new InvalidDataException("Routing observations must be regular files inside the owned workspace.");
++            }
++
++            FileStream stream = SelectedNativeTestReport.OpenWithoutBlocking(source);
++            await using (stream.ConfigureAwait(false))
++            {
++                long length = stream.CanSeek ? stream.Length : 0;
++                if (length is <= 0 or > SelectedNativeTestReport.MaximumBytes || total + length > SelectedNativeTestReport.MaximumBytes)
++                {
++                    throw new InvalidDataException("Routing observations exceed the bounded snapshot contract.");
++                }
++
++                byte[] bytes = new byte[(int)length];
++                await stream.ReadExactlyAsync(bytes, cancellationToken).ConfigureAwait(false);
++                using JsonDocument document = JsonDocument.Parse(bytes);
++                if (name == "catalog-versions.json" && document.RootElement.GetProperty("CatalogCommit").GetString() != catalog.GetProperty("commit").GetString())
++                {
++                    throw new InvalidDataException("Routing source metadata differs from the validated Builds catalog commit.");
++                }
++
++                if (!SelectedMetadataSafety.IsSafe(document.RootElement) || ContainsCredentialField(document.RootElement))
++                {
++                    throw new InvalidDataException("Routing observations contain prohibited retained material.");
++                }
++
++                total += bytes.Length;
++                result.Add(name, bytes);
++            }
++        }
++
++        return result.ToFrozenDictionary(StringComparer.Ordinal);
++    }
++
++    private static bool ContainsCredentialField(JsonElement value) => value.ValueKind switch
++    {
++        JsonValueKind.Object => value.EnumerateObject().Any(property =>
++            (property.Value.ValueKind == JsonValueKind.String && !string.IsNullOrEmpty(property.Value.GetString())
++                && string.Concat(property.Name.Where(char.IsLetterOrDigit)).ToLowerInvariant() is
++                    "token" or "accesstoken" or "refreshtoken" or "password" or "passwd" or "pwd" or "secret"
++                    or "clientsecret" or "apikey" or "privatekey" or "signingkey" or "daprapitoken" or "appapitoken")
++            || ContainsCredentialField(property.Value)),
++        JsonValueKind.Array => value.EnumerateArray().Any(ContainsCredentialField),
++        _ => false,
++    };
++}
+diff --git a/test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs b/test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs
+new file mode 100644
+index 0000000..37e2d0a
+--- /dev/null
++++ b/test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs
+@@ -0,0 +1,166 @@
++// <copyright file="SelectedRoutingCatalogSnapshotTests.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.ModuleTool.Tests;
++
++using System.Security.Cryptography;
++using System.Text.Json;
++
++using Hexalith.Builds.Tooling.Runtime;
++
++using Shouldly;
++
++using Xunit;
++
++/// <summary>Checks pre-child held routing proof ownership without starting infrastructure.</summary>
++public sealed class SelectedRoutingCatalogSnapshotTests
++{
++    /// <summary>Requires the original descriptor identity and safe bounded workspace files.</summary>
++    /// <param name="scenario">The identity, source or storage mutation.</param>
++    /// <returns>The bounded ownership and retained-byte assertions.</returns>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("wrong-environment")]
++    [InlineData("wrong-instance")]
++    [InlineData("wrong-builds-commit")]
++    [InlineData("file-link")]
++    [InlineData("broken-file-link")]
++    [InlineData("directory-link")]
++    [InlineData("oversized")]
++    [InlineData("aggregate-size")]
++    [InlineData("too-many-hosts")]
++    [InlineData("invalid-host-name")]
++    [InlineData("credential")]
++    [InlineData("credential-key")]
++    [InlineData("credential-assignment")]
++    [InlineData("cancelled")]
++    public async Task CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(string scenario)
++    {
++        if (OperatingSystem.IsWindows() && scenario is "file-link" or "broken-file-link" or "directory-link")
++        {
++            return;
++        }
++
++        using NativeEndpointCredentialWorkspace workspace = new();
++        CompositionRunPlan plan = CompositionTestFiles.CreatePlan(workspace.Root);
++        string instance = plan.EnvironmentId + "-catalog";
++        string directory = Path.Combine(plan.Workspace, "platform-components", instance);
++        _ = Directory.CreateDirectory(directory);
++        foreach (string name in new[] { "catalog.json", "receipt.json", "metadata-http.json", "preparation.json", "owner.committed.json" })
++        {
++            await File.WriteAllTextAsync(Path.Combine(directory, name), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        string mapping = Path.Combine(plan.Workspace, "source-mapping");
++        _ = Directory.CreateDirectory(mapping);
++        await File.WriteAllTextAsync(Path.Combine(mapping, "mapping.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        await File.WriteAllTextAsync(Path.Combine(mapping, "catalog-versions.json"), JsonSerializer.Serialize(new { CatalogCommit = new string(scenario == "wrong-builds-commit" ? 'b' : 'a', 40) }), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        string assets = Path.Combine(plan.Workspace, "platform-components", "catalog-reader", "obj");
++        _ = Directory.CreateDirectory(assets);
++        await File.WriteAllTextAsync(Path.Combine(assets, "project.assets.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        string outside = Path.Combine(workspace.Root, "outside.json");
++        await File.WriteAllTextAsync(outside, "{\"outside\":true}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        if (scenario is "file-link" or "broken-file-link")
++        {
++            File.Delete(Path.Combine(directory, "metadata-http.json"));
++            _ = File.CreateSymbolicLink(Path.Combine(directory, "metadata-http.json"), scenario == "broken-file-link" ? outside + ".missing" : outside);
++        }
++
++        if (scenario == "directory-link")
++        {
++            Directory.Delete(directory, recursive: true);
++            string external = Path.Combine(workspace.Root, "outside-directory");
++            _ = Directory.CreateDirectory(external);
++            await File.WriteAllTextAsync(Path.Combine(external, "catalog.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            _ = Directory.CreateSymbolicLink(directory, external);
++        }
++
++        if (scenario == "oversized")
++        {
++            await File.WriteAllTextAsync(Path.Combine(directory, "metadata-http.json"), "{\"padding\":\"" + new string('x', 4194304) + "\"}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        if (scenario == "aggregate-size")
++        {
++            foreach (string name in new[] { "metadata-http.json", "preparation.json" })
++            {
++                await File.WriteAllTextAsync(Path.Combine(directory, name), JsonSerializer.Serialize(new { padding = new string('x', 2097152) }), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            }
++        }
++
++        if (scenario == "too-many-hosts")
++        {
++            for (int index = 0; index < 65; index++)
++            {
++                await File.WriteAllTextAsync(Path.Combine(directory, "owner-" + index + ".committed.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            }
++        }
++
++        if (scenario == "invalid-host-name")
++        {
++            await File.WriteAllTextAsync(Path.Combine(directory, "..committed.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        if (scenario == "credential")
++        {
++            await File.WriteAllTextAsync(Path.Combine(directory, "metadata-http.json"), JsonSerializer.Serialize(new { password = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)) }), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        if (scenario is "credential-key" or "credential-assignment")
++        {
++            string material = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++            object payload = scenario == "credential-key" ? new { privateKey = material } : (object)new { diagnostic = "password=" + material };
++            await File.WriteAllTextAsync(Path.Combine(directory, "metadata-http.json"), JsonSerializer.Serialize(payload), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        }
++
++        byte[] descriptor = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            bindings = new
++            {
++                run = new { environmentId = scenario == "wrong-environment" ? new string('f', 32) : plan.EnvironmentId },
++                environment = new { catalog = new { instanceId = scenario == "wrong-instance" ? "another-catalog" : instance, commit = new string('a', 40) } },
++            },
++        });
++        using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        if (scenario == "cancelled")
++        {
++            await cancellation.CancelAsync().ConfigureAwait(true);
++        }
++
++        if (scenario == "valid")
++        {
++            IReadOnlyDictionary<string, byte[]> captured = await SelectedRoutingCatalogSnapshot.ReadAsync(plan, descriptor, cancellation.Token).ConfigureAwait(true);
++            captured.Count.ShouldBe(8);
++            captured.Keys.ShouldContain("reader-assets.json");
++            captured.Keys.ShouldContain("mapping.json");
++            captured.Keys.ShouldContain("catalog-versions.json");
++            await File.WriteAllTextAsync(Path.Combine(directory, "catalog.json"), "{\"changedByChild\":true}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            Directory.Delete(directory, recursive: true);
++            System.Text.Encoding.UTF8.GetString(captured["catalog.json"]).ShouldBe("{}");
++            captured.Keys.ShouldNotContain(NativeTestHandoff.EndpointCredentialsFileName);
++        }
++        else if (scenario == "cancelled")
++        {
++            _ = await Should.ThrowAsync<OperationCanceledException>(() => SelectedRoutingCatalogSnapshot.ReadAsync(plan, descriptor, cancellation.Token)).ConfigureAwait(true);
++        }
++        else
++        {
++            _ = await Should.ThrowAsync<InvalidDataException>(() => SelectedRoutingCatalogSnapshot.ReadAsync(plan, descriptor, cancellation.Token)).ConfigureAwait(true);
++        }
++
++        (await File.ReadAllTextAsync(outside, TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldBe("{\"outside\":true}");
++    }
++
++    /// <summary>Preserves the existing native handoff for runs that have no routing catalog.</summary>
++    /// <returns>The unchanged empty snapshot.</returns>
++    [Fact]
++    public async Task ACompositionWithoutARoutingCatalogAddsNoSnapshotsAsync()
++    {
++        using NativeEndpointCredentialWorkspace workspace = new();
++        CompositionRunPlan plan = CompositionTestFiles.CreatePlan(workspace.Root);
++        IReadOnlyDictionary<string, byte[]> captured = await SelectedRoutingCatalogSnapshot.ReadAsync(plan, [], TestContext.Current.CancellationToken).ConfigureAwait(true);
++        captured.ShouldBeEmpty();
++    }
++}

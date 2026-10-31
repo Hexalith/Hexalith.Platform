@@ -1,0 +1,139 @@
+{
+  "targetsSha256": "1a018c0a902927f8b7422d73ccd5e7a96c759916088f236b55ee2810cf1c1e7c",
+  "scope": "Executable target-condition unit qualification; ordinary package build and REST regressions separately recorded.",
+  "cases": [
+    {
+      "version": "3.0.3",
+      "fromSource": false,
+      "expected": true,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": ";HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=3.0.3",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "3.0.10",
+      "fromSource": false,
+      "expected": true,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": ";HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=3.0.10",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "3.0.11",
+      "fromSource": false,
+      "expected": true,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": ";HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=3.0.11",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "3.0.12",
+      "fromSource": false,
+      "expected": true,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": ";HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=3.0.12",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "3.0.13",
+      "fromSource": false,
+      "expected": false,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "false",
+        "DefineConstants": ""
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=3.0.13",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "2.27.1",
+      "fromSource": false,
+      "expected": false,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "false",
+        "DefineConstants": ""
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=2.27.1",
+        "-p:HexalithMemoriesFromSource=false"
+      ]
+    },
+    {
+      "version": "99.0.0",
+      "fromSource": true,
+      "expected": true,
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": ";HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "command": [
+        "dotnet",
+        "msbuild",
+        "/tmp/parties-refresh-property-zrflw4f2/Hexalith.Parties.csproj",
+        "-nologo",
+        "-t:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants",
+        "-p:HexalithMemoriesVersion=99.0.0",
+        "-p:HexalithMemoriesFromSource=true"
+      ]
+    }
+  ]
+}

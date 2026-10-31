@@ -1,0 +1,319 @@
+{
+  "purpose": "Compile-only SDK candidate preflight; confers no delivered release acceptance.",
+  "source": "0aa1b0b6fae8ae9efefa6fe1cdb66d6277f1170f",
+  "version": "3.129.0-story33-preflight.1",
+  "published": false,
+  "commands": [
+    {
+      "id": "Hexalith.EventStore.Contracts",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Client",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Server",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.SignalR",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.SignalR/Hexalith.EventStore.SignalR.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Testing",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Testing.Integration",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Aspire",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.ServiceDefaults",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.DomainService",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.RestApi.Generators",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.RestApi.Generators/Hexalith.EventStore.RestApi.Generators.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Gateway",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Admin.Abstractions",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Admin.Cli",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Admin.Cli/Hexalith.EventStore.Admin.Cli.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    },
+    {
+      "id": "Hexalith.EventStore.Admin.Server",
+      "argv": [
+        "dotnet",
+        "pack",
+        "src/Hexalith.EventStore.Admin.Server/Hexalith.EventStore.Admin.Server.csproj",
+        "-c",
+        "Release",
+        "--output",
+        "/tmp/hexalith-story33-release-0_wjbwkj/preflight-feed",
+        "-p:Version=3.129.0-story33-preflight.1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props",
+        "-m:1",
+        "-nr:false",
+        "--disable-build-servers"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "packages": {
+    "Hexalith.EventStore.Testing.Integration.3.129.0-story33-preflight.1.nupkg": "84c656814cefa15f5c638c6922cac2e68b3e83630180ca5818d6d3010b67f5e3",
+    "Hexalith.EventStore.Admin.Abstractions.3.129.0-story33-preflight.1.nupkg": "87bb8f68aefe36855f6c21eb8e787a99a3a3b01dda2f5013176ae525384f763f",
+    "Hexalith.EventStore.Client.3.129.0-story33-preflight.1.nupkg": "1344f740ac344dc8d8c0c5787e6562df9e6ac82ce4928df97b775a8a1c3b0cf0",
+    "Hexalith.EventStore.Server.3.129.0-story33-preflight.1.nupkg": "08e347d1d702f8f4dc01a37eb8e578c288bd9c117fbbcac52d9d12561e26047c",
+    "Hexalith.EventStore.SignalR.3.129.0-story33-preflight.1.nupkg": "353bd9bbf0bf0a06371be23fcb269de3cca85b721064d6098a644febbc823dca",
+    "Hexalith.EventStore.Aspire.3.129.0-story33-preflight.1.nupkg": "ccee3e9031c78d30017d3b2d9b137ab88d96d1689172f802001451c4576a0478",
+    "Hexalith.EventStore.Gateway.3.129.0-story33-preflight.1.nupkg": "e48bed2b5aa006ea94bc1f309d9b2540522e655df83abe908c281248113da900",
+    "Hexalith.EventStore.Admin.Server.3.129.0-story33-preflight.1.nupkg": "c6fcec004f9d26a09213c3c8d7f9450f3132a9f0d36e74e82f7d1fddad97517f",
+    "Hexalith.EventStore.DomainService.3.129.0-story33-preflight.1.nupkg": "1e24afb4c517f4de6465845ce5851f00b9b87092fa8d2cb4e7577e5d24c4b9a7",
+    "Hexalith.EventStore.Contracts.3.129.0-story33-preflight.1.nupkg": "65ffcf790d8db62359b6ab333d4b4def626572e1380a9b5cc0b182cbd6da1e3b",
+    "Hexalith.EventStore.RestApi.Generators.3.129.0-story33-preflight.1.nupkg": "f826904819773b49a7d30533178582327af3cc7f7ec51991ba87b41255ad1251",
+    "Hexalith.EventStore.ServiceDefaults.3.129.0-story33-preflight.1.nupkg": "abebde1d0707ec26e6b14a730adfbe93f5333c00a4723a8c13a24f570958c49e",
+    "Hexalith.EventStore.Testing.3.129.0-story33-preflight.1.nupkg": "61c7aa7b7e7f56a7d07da69d378d5919730960856b7f689720d1dfc8580a86b9",
+    "Hexalith.EventStore.Admin.Cli.3.129.0-story33-preflight.1.nupkg": "89ad7587c4aa95708239d2939b57ee5d90d4e787bcb08799ca910ce9aa1c0812"
+  },
+  "result": "passed"
+}

@@ -1,0 +1,176 @@
+diff --git a/tests/Hexalith.Parties.EventStoreGateway.TestHost/Program.cs b/tests/Hexalith.Parties.EventStoreGateway.TestHost/Program.cs
+index b6c9f485..e7f534df 100644
+--- a/tests/Hexalith.Parties.EventStoreGateway.TestHost/Program.cs
++++ b/tests/Hexalith.Parties.EventStoreGateway.TestHost/Program.cs
+@@ -5,6 +5,7 @@ using Hexalith.EventStore.Middleware;
+ using Hexalith.EventStore.OpenApi;
+ using Hexalith.EventStore.Server.Configuration;
+ using Hexalith.EventStore.ServiceDefaults;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
+ using Hexalith.EventStore.SignalRHub;
+ 
+ using Microsoft.AspNetCore.Server.Kestrel.Core;
+@@ -39,12 +40,10 @@ app.UseExceptionHandler();
+ app.MapDefaultEndpoints();
+ app.UseAuthentication();
+ app.UseRateLimiter();
+-app.UseAuthorization();
+-app.UseCloudEvents();
+-
+ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true))
+ {
+-    _ = app.MapOpenApi();
++    _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
++    _ = app.UseEventStoreHumanSurface("/swagger");
+     _ = app.UseSwaggerUI(options =>
+     {
+         options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
+@@ -52,11 +51,16 @@ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true))
+     });
+ }
+ 
++app.UseEventStoreHttpHostSecurity();
++app.UseAuthorization();
++app.UseCloudEvents();
++
++
+ app.MapControllers();
+ app.MapErrorReferences();
+ app.MapApiVersionFallback();
+-app.MapSubscribeHandler();
+-app.MapActorsHandlers();
++app.MapSubscribeHandler().RequireEventStoreChannel();
++app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+ app.MapApplicationRuntimeProofEndpoints();
+ 
+ SignalROptions? signalROptions = app.Configuration
+diff --git a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+index dae7ab1e..0709184b 100644
+--- a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
++++ b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+@@ -921,7 +921,8 @@ public sealed class PlatformApiPrerequisitesTests
+     {
+         string root = RepositoryRoot.Locate();
+         string expectedVersion = EffectivePackageVersions.ReadProperty(root, "HexalithEventStoreVersion", configuration: configuration);
+-        IReadOnlyDictionary<string, EvaluatedProjectGraph> graphs = ReadExternalRuntimeGraphs(root, ReadExternalRuntimeProjects(root), expectedVersion, configuration);
++        IReadOnlyDictionary<string, EvaluatedProjectGraph> graphs = ReadExternalRuntimeGraphs(root, ReadExternalRuntimeProjects(root), expectedVersion, configuration,
++            $"-p:HexalithEventStoreVersion={expectedVersion}");
+ 
+         graphs.Count.ShouldBeGreaterThan(7, "The runtime preflight must inspect transitive projects as well as both gateway choices and their peers.");
+         graphs.Keys.ShouldContain(path => path.EndsWith("Hexalith.Tenants.csproj", StringComparison.Ordinal));
+@@ -1267,7 +1268,8 @@ public sealed class PlatformApiPrerequisitesTests
+     }
+ 
+     private static IReadOnlyDictionary<string, EvaluatedProjectGraph> ReadExternalRuntimeGraphs(
+-        string root, IEnumerable<string> runtimeProjects, string expectedEventStoreVersion, string configuration = "Release")
++        string root, IEnumerable<string> runtimeProjects, string expectedEventStoreVersion, string configuration = "Release",
++        params string[] commandSelectedProperties)
+     {
+         Dictionary<string, EvaluatedProjectGraph> graphs = new(StringComparer.Ordinal);
+         Queue<string> pending = new(runtimeProjects.Select(path => RepositoryDependencyPaths.Resolve(root, path)));
+@@ -1279,7 +1281,7 @@ public sealed class PlatformApiPrerequisitesTests
+             }
+ 
+             File.Exists(project).ShouldBeTrue($"External runtime project does not exist: {project}");
+-            EvaluatedProjectGraph graph = EvaluateProjectGraphForConfiguration(root, project, configuration, useSource: null);
++            EvaluatedProjectGraph graph = EvaluateProjectGraphForConfiguration(root, project, configuration, useSource: null, commandSelectedProperties);
+             string.IsNullOrWhiteSpace(graph.Properties["TargetFrameworks"])
+                 .ShouldBeTrue($"{project}: unexpanded TargetFrameworks are unsupported by the external runtime preflight; evaluate an explicit inner framework context first");
+             foreach (string selector in RuntimeSourceSelectors)
+diff --git a/tests/Hexalith.Parties.Tests/Gateway/EventStoreGatewayRoutingTests.cs b/tests/Hexalith.Parties.Tests/Gateway/EventStoreGatewayRoutingTests.cs
+index e95d0317..fbc0418c 100644
+--- a/tests/Hexalith.Parties.Tests/Gateway/EventStoreGatewayRoutingTests.cs
++++ b/tests/Hexalith.Parties.Tests/Gateway/EventStoreGatewayRoutingTests.cs
+@@ -5,6 +5,7 @@ using System.Net;
+ using System.Net.Http.Headers;
+ using System.Net.Http.Json;
+ using System.Security.Claims;
++using System.Security.Cryptography;
+ using System.Text;
+ using System.Text.Json;
+ 
+@@ -177,6 +178,27 @@ public sealed class EventStoreGatewayRoutingTests
+         problem.GetProperty("correctiveAction").GetString().ShouldBe(expectedCorrectiveAction);
+     }
+ 
++    [Theory]
++    [InlineData("/swagger/index.html", "anonymous", HttpStatusCode.Unauthorized)]
++    [InlineData("/swagger/index.html", "channel", HttpStatusCode.Unauthorized)]
++    [InlineData("/swagger/index.html", "mixed", HttpStatusCode.Forbidden)]
++    [InlineData("/swagger/index.html", "human", HttpStatusCode.OK)]
++    [InlineData("/openapi/v1.json", "anonymous", HttpStatusCode.Unauthorized)]
++    [InlineData("/openapi/v1.json", "channel", HttpStatusCode.Unauthorized)]
++    [InlineData("/openapi/v1.json", "mixed", HttpStatusCode.Forbidden)]
++    [InlineData("/openapi/v1.json", "human", HttpStatusCode.OK)]
++    public async Task DocumentationSurfacesRetainHumanBoundaryBeforeTerminalInventoryAsync(string path, string credentials, HttpStatusCode expected)
++    {
++        using var factory = new EventStoreGatewayTestFactory(openApiEnabled: true);
++        using HttpClient client = credentials is "human" or "mixed" ? factory.CreateAuthenticatedClient() : factory.CreateClient();
++        if (credentials == "channel")
++            client.DefaultRequestHeaders.Add(Hexalith.EventStore.ServiceDefaults.Authentication.DaprAppChannelToken.HeaderName, Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)));
++        if (credentials == "mixed")
++            client.DefaultRequestHeaders.Add(Hexalith.EventStore.ServiceDefaults.Authentication.EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)));
++        using HttpResponseMessage response = await client.GetAsync(path, TestContext.Current.CancellationToken);
++        response.StatusCode.ShouldBe(expected);
++    }
++
+     [Fact]
+     public async Task PostCommands_NoAuth_Returns401BeforePartyInvocationAsync()
+     {
+@@ -1304,7 +1326,7 @@ public sealed class EventStoreGatewayRoutingTests
+                     services.Remove(descriptor);
+                 }
+ 
+-#if HEXALITH_EVENTSTORE_SOURCE_CATALOG
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+                 // This protocol-only fixture already replaces catalog-enforced entry points
+                 // through their friend seam. Exclude only the corresponding new pipeline gate;
+                 // tenant/RBAC and HTTP security validation continue to run. The Platform suite
+@@ -1335,9 +1357,8 @@ public sealed class EventStoreGatewayRoutingTests
+                         null, null, provider.GetRequiredService<IProjectionUpdateOrchestrator>(),
+                         provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<Hexalith.EventStore.Server.Pipeline.SubmitCommandHandler>>()));
+ #endif
+-                services.RemoveAll<ICommandActivityTracker>();
+-                services.RemoveAll<IStreamActivityTracker>();
+-                services.RemoveAll<ICommandCorrelationIndex>();
++                // Retain the standard SDK activity/correlation registrations; the explicit
++                // friend-only protocol handler above does not substitute runtime admission.
+ 
+                 services.RemoveAll<IProjectionActivationOutbox>();
+                 services.AddSingleton<IProjectionActivationOutbox, NoOpProjectionActivationOutbox>();
+diff --git a/tests/Hexalith.Parties.Tests/Gateway/IsolatedDomainRouteCatalogGuard.cs b/tests/Hexalith.Parties.Tests/Gateway/IsolatedDomainRouteCatalogGuard.cs
+index 6422f664..c07c9f0e 100644
+--- a/tests/Hexalith.Parties.Tests/Gateway/IsolatedDomainRouteCatalogGuard.cs
++++ b/tests/Hexalith.Parties.Tests/Gateway/IsolatedDomainRouteCatalogGuard.cs
+@@ -1,4 +1,4 @@
+-#if HEXALITH_EVENTSTORE_SOURCE_CATALOG
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+ using Hexalith.EventStore.DomainService;
+ using Hexalith.EventStore.ServiceDefaults.Routing;
+ 
+diff --git a/tests/Hexalith.Parties.Tests/Gateway/PartiesProcessTestFactory.cs b/tests/Hexalith.Parties.Tests/Gateway/PartiesProcessTestFactory.cs
+index 1f2b3422..6f961db3 100644
+--- a/tests/Hexalith.Parties.Tests/Gateway/PartiesProcessTestFactory.cs
++++ b/tests/Hexalith.Parties.Tests/Gateway/PartiesProcessTestFactory.cs
+@@ -98,7 +98,7 @@ internal sealed class PartiesProcessTestFactory : WebApplicationFactory<Program>
+ 
+         builder.ConfigureTestServices(services =>
+         {
+-#if HEXALITH_EVENTSTORE_SOURCE_CATALOG
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+             services.AddScoped<Hexalith.EventStore.DomainService.IDomainRouteCatalogGuard, IsolatedDomainRouteCatalogGuard>();
+ #endif
+             // Replace only configuration binders, preserving real authentication
+diff --git a/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs b/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs
+index fc5535bc..de9655a3 100644
+--- a/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs
++++ b/tests/Hexalith.Parties.Tests/HealthChecks/HealthEndpointIntegrationTests.cs
+@@ -377,7 +377,7 @@ public sealed class HealthEndpointIntegrationTests : IDisposable
+ 
+             builder.ConfigureTestServices(services =>
+             {
+-#if HEXALITH_EVENTSTORE_SOURCE_CATALOG
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+                 // This fixture supplies local health dependencies; activation itself is covered
+                 // by the descriptor-only Platform suite and EventStore owner tests.
+                 var catalog = Substitute.For<Hexalith.EventStore.ServiceDefaults.Routing.IRouteCatalogAuthority>();

@@ -1,0 +1,29 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 46a39eda..c5817fca 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -39,9 +39,9 @@
+     <PropertyGroup>
+       <MemoriesSourceRefreshSupported>false</MemoriesSourceRefreshSupported>
+     </PropertyGroup>
+-    <!-- The qualified 3.0.3, 3.0.10 and 3.0.11 packages expose the same explicit revision/refresh protocol.
++    <!-- The qualified 3.0.3, 3.0.10, 3.0.11 and 3.0.12 packages expose the same explicit revision/refresh protocol.
+          Qualify exact package selections; future or older packages remain fail closed. -->
+-    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11'">
++    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12'">
+       <DefineConstants>$(DefineConstants);HEXALITH_MEMORIES_SOURCE_REFRESH</DefineConstants>
+       <MemoriesSourceRefreshSupported>true</MemoriesSourceRefreshSupported>
+     </PropertyGroup>
+diff --git a/Directory.Packages.props b/Directory.Packages.props
+index a360dbd6..7b74c00c 100644
+--- a/Directory.Packages.props
++++ b/Directory.Packages.props
+@@ -9,7 +9,7 @@
+     <!-- Shared theme accessibility correction, qualified through the package browser gate. -->
+     <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">4.7.4</HexalithFrontComposerVersion>
+     <!-- Published recovery/catalog compatibility fixes, before shared defaults. -->
+-    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == ''">3.0.11</HexalithMemoriesVersion>
++    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == ''">3.0.12</HexalithMemoriesVersion>
+     <!-- Define paths of the Hexalith packages props. -->
+     <Hexalith1BuildPackageProps>$(MSBuildThisFileDirectory)references/Hexalith.Builds/Props/Directory.Packages.props</Hexalith1BuildPackageProps>
+     <Hexalith2BuildPackageProps>$(MSBuildThisFileDirectory)../Hexalith.Builds/Props/Directory.Packages.props</Hexalith2BuildPackageProps>

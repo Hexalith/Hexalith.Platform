@@ -1,0 +1,550 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
+using Aspire.Hosting;
+using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
+using Aspire.Hosting.Publishing;
+using Aspire.Hosting.Utils;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace CommunityToolkit.Aspire.Hosting.Dapr;
+
+internal sealed class DaprDistributedApplicationLifecycleHook(IConfiguration configuration, IHostEnvironment environment, ILogger<DaprDistributedApplicationLifecycleHook> logger, IOptions<DaprOptions> options) : IDistributedApplicationEventingSubscriber, IDisposable
+{
+	private readonly DaprOptions _options = options.Value;
+
+	private string? _onDemandResourcesRootPath;
+
+	public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
+	{
+		eventing.Subscribe<BeforeStartEvent>((Func<BeforeStartEvent, CancellationToken, Task>)OnBeforeStartAsync);
+		return Task.CompletedTask;
+	}
+
+	private async Task OnBeforeStartAsync(BeforeStartEvent @event, CancellationToken cancellationToken = default(CancellationToken))
+	{
+		DistributedApplicationModel appModel = @event.Model;
+		string appHostDirectory = GetAppHostDirectory();
+		SetupComponentLifecycle(appModel);
+		IReadOnlyDictionary<string, string> readOnlyDictionary = await StartOnDemandDaprComponentsAsync(appModel, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+		List<ExecutableResource> list = new List<ExecutableResource>();
+		DaprSidecarAnnotation daprSidecarAnnotation = default(DaprSidecarAnnotation);
+		IEnumerable<WaitAnnotation> enumerable = default(IEnumerable<WaitAnnotation>);
+		IEnumerable<DaprComponentValueProviderAnnotation> enumerable2 = default(IEnumerable<DaprComponentValueProviderAnnotation>);
+		IEnumerable<DaprComponentSecretAnnotation> enumerable3 = default(IEnumerable<DaprComponentSecretAnnotation>);
+		IEnumerable<WaitAnnotation> enumerable4 = default(IEnumerable<WaitAnnotation>);
+		foreach (IResource resource in (IEnumerable<IResource>)appModel.Resources)
+		{
+			if (!ResourceExtensions.TryGetLastAnnotation<DaprSidecarAnnotation>(resource, ref daprSidecarAnnotation))
+			{
+				continue;
+			}
+			string text = _options.DaprPath ?? GetDefaultDaprPath() ?? throw new DistributedApplicationException("Unable to locate the Dapr CLI.");
+			IDaprSidecarResource sidecar = daprSidecarAnnotation.Sidecar;
+			if (ResourceExtensions.TryGetAnnotationsOfType<WaitAnnotation>(resource, ref enumerable))
+			{
+				foreach (WaitAnnotation item2 in enumerable)
+				{
+					((Collection<IResourceAnnotation>)(object)((IResource)sidecar).Annotations).Add((IResourceAnnotation)(object)item2);
+				}
+			}
+			DaprSidecarOptions sidecarOptions = ((IEnumerable)((IResource)sidecar).Annotations).OfType<DaprSidecarOptionsAnnotation>().LastOrDefault()?.Options;
+			HashSet<string> hashSet = sidecarOptions?.ResourcesPaths.Select((string path) => NormalizePath(path)).ToHashSet() ?? new HashSet<string>();
+			IEnumerable<DaprComponentReferenceAnnotation> componentReferenceAnnotations = ((IEnumerable)((IResource)sidecar).Annotations).OfType<DaprComponentReferenceAnnotation>();
+			Dictionary<string, IValueProvider> secretValueProviders = new Dictionary<string, IValueProvider>();
+			Dictionary<string, IValueProvider> endpointEnvironmentVars = new Dictionary<string, IValueProvider>();
+			bool flag = false;
+			foreach (DaprComponentReferenceAnnotation item3 in componentReferenceAnnotations)
+			{
+				if (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentValueProviderAnnotation>((IResource)item3.Component, ref enumerable2))
+				{
+					foreach (DaprComponentValueProviderAnnotation item4 in enumerable2)
+					{
+						endpointEnvironmentVars[item4.EnvironmentVariableName] = item4.ValueProvider;
+						flag = true;
+					}
+				}
+				if (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentSecretAnnotation>((IResource)item3.Component, ref enumerable3))
+				{
+					foreach (DaprComponentSecretAnnotation item5 in enumerable3)
+					{
+						secretValueProviders[item5.Key] = (IValueProvider)(object)item5.Value;
+					}
+				}
+				if ((secretValueProviders.Count > 0 || flag) && readOnlyDictionary.TryGetValue("secretstore", out var value))
+				{
+					string directoryName = Path.GetDirectoryName(value);
+					if (directoryName != null)
+					{
+						hashSet.Add(directoryName);
+					}
+				}
+				string value2;
+				if (item3.Component.Options?.LocalPath != null)
+				{
+					string directoryName2 = Path.GetDirectoryName(NormalizePath(item3.Component.Options.LocalPath));
+					if (directoryName2 != null)
+					{
+						hashSet.Add(directoryName2);
+					}
+				}
+				else if (readOnlyDictionary.TryGetValue(((IResource)item3.Component).Name, out value2))
+				{
+					string directoryName3 = Path.GetDirectoryName(value2);
+					if (directoryName3 != null)
+					{
+						hashSet.Add(directoryName3);
+					}
+				}
+			}
+			if (secretValueProviders.Count > 0 || endpointEnvironmentVars.Count > 0)
+			{
+				((Collection<IResourceAnnotation>)(object)((IResource)sidecar).Annotations).Add((IResourceAnnotation)new EnvironmentCallbackAnnotation((Func<EnvironmentCallbackContext, Task>)async delegate(EnvironmentCallbackContext context)
+				{
+					string key;
+					IValueProvider value3;
+					foreach (KeyValuePair<string, IValueProvider> item6 in secretValueProviders)
+					{
+						item6.Deconstruct(out key, out value3);
+						string secretKey = key;
+						string text3 = await value3.GetValueAsync(context.CancellationToken);
+						context.EnvironmentVariables.TryAdd(secretKey, text3 ?? string.Empty);
+					}
+					foreach (KeyValuePair<string, IValueProvider> item7 in endpointEnvironmentVars)
+					{
+						item7.Deconstruct(out key, out value3);
+						string secretKey = key;
+						string text4 = await value3.GetValueAsync(context.CancellationToken);
+						context.EnvironmentVariables.TryAdd(secretKey, text4 ?? string.Empty);
+					}
+				}));
+			}
+			Func<int?, CommandLineArgBuilder> daprAppPortArg = (int? port) => CommandLineArgs.ModelNamedArg("--app-port", port);
+			Func<object, CommandLineArgBuilder> daprGrpcPortArg = (object port) => CommandLineArgs.ModelNamedObjectArg("--dapr-grpc-port", port);
+			Func<object, CommandLineArgBuilder> daprHttpPortArg = (object port) => CommandLineArgs.ModelNamedObjectArg("--dapr-http-port", port);
+			Func<object, CommandLineArgBuilder> daprMetricsPortArg = (object port) => CommandLineArgs.ModelNamedObjectArg("--metrics-port", port);
+			Func<object, CommandLineArgBuilder> daprProfilePortArg = (object port) => CommandLineArgs.ModelNamedObjectArg("--profile-port", port);
+			Func<string?, CommandLineArgBuilder> daprAppChannelAddressArg = (string? address) => CommandLineArgs.ModelNamedArg("--app-channel-address", address);
+			Func<string?, CommandLineArgBuilder> daprAppProtocol = (string? protocol) => CommandLineArgs.ModelNamedArg("--app-protocol", protocol);
+			string appId = sidecarOptions?.AppId ?? resource.Name;
+			GetValueIfSet(sidecarOptions?.DaprMaxBodySize, sidecarOptions?.DaprHttpMaxRequestSize, "Mi");
+			GetValueIfSet(sidecarOptions?.DaprReadBufferSize, sidecarOptions?.DaprHttpReadBufferSize, "Ki");
+			CommandLine daprCommandLine = CommandLineBuilder.Create(text, CommandLineArgs.Command("run"), daprAppPortArg(sidecarOptions?.AppPort), CommandLineArgs.ModelNamedArg("--app-channel-address", sidecarOptions?.AppChannelAddress), CommandLineArgs.ModelNamedArg("--app-health-check-path", sidecarOptions?.AppHealthCheckPath), CommandLineArgs.ModelNamedArg("--app-health-probe-interval", sidecarOptions?.AppHealthProbeInterval), CommandLineArgs.ModelNamedArg("--app-health-probe-timeout", sidecarOptions?.AppHealthProbeTimeout), CommandLineArgs.ModelNamedArg("--app-health-threshold", sidecarOptions?.AppHealthThreshold), CommandLineArgs.ModelNamedArg("--app-id", appId), CommandLineArgs.ModelNamedArg("--app-max-concurrency", sidecarOptions?.AppMaxConcurrency), CommandLineArgs.ModelNamedArg("--app-protocol", sidecarOptions?.AppProtocol), CommandLineArgs.ModelNamedArg("--config", NormalizePath(sidecarOptions?.Config)), CommandLineArgs.ModelNamedArg("--max-body-size", sidecarOptions?.DaprMaxBodySize), CommandLineArgs.ModelNamedArg("--read-buffer-size", sidecarOptions?.DaprReadBufferSize), CommandLineArgs.ModelNamedArg("--dapr-internal-grpc-port", sidecarOptions?.DaprInternalGrpcPort), CommandLineArgs.ModelNamedArg("--dapr-listen-addresses", sidecarOptions?.DaprListenAddresses), CommandLineArgs.Flag("--enable-api-logging", sidecarOptions?.EnableApiLogging), CommandLineArgs.Flag("--enable-app-health-check", sidecarOptions?.EnableAppHealthCheck), CommandLineArgs.Flag("--enable-profiling", sidecarOptions?.EnableProfiling), CommandLineArgs.ModelNamedArg("--log-level", sidecarOptions?.LogLevel), CommandLineArgs.ModelNamedArg("--placement-host-address", sidecarOptions?.PlacementHostAddress), CommandLineArgs.ModelNamedArg("--resources-path", (IEnumerable<string>?)hashSet, false), CommandLineArgs.ModelNamedArg("--run-file", NormalizePath(sidecarOptions?.RunFile)), CommandLineArgs.ModelNamedArg("--runtime-path", NormalizePath(sidecarOptions?.RuntimePath)), CommandLineArgs.ModelNamedArg("--scheduler-host-address", sidecarOptions?.SchedulerHostAddress), CommandLineArgs.ModelNamedArg("--unix-domain-socket", sidecarOptions?.UnixDomainSocket), CommandLineArgs.PostOptionsArgs(CommandLineArgs.Args(sidecarOptions?.Command)));
+			string text2 = ((IResource)sidecar).Name + "-cli";
+			ExecutableResource daprCli = new ExecutableResource(text2, text, appHostDirectory);
+			if (ResourceExtensions.TryGetAnnotationsOfType<WaitAnnotation>(resource, ref enumerable4))
+			{
+				foreach (WaitAnnotation item8 in enumerable4)
+				{
+					((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)(object)item8);
+				}
+			}
+			foreach (DaprComponentReferenceAnnotation item9 in componentReferenceAnnotations)
+			{
+				((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new WaitAnnotation((IResource)item9.Component, (WaitType)0, 0));
+			}
+			((Collection<IResourceAnnotation>)(object)resource.Annotations).Add((IResourceAnnotation)new EnvironmentCallbackAnnotation((Action<EnvironmentCallbackContext>)delegate(EnvironmentCallbackContext context)
+			{
+				if (!context.ExecutionContext.IsPublishMode)
+				{
+					EndpointReference endpoint = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "http");
+					EndpointReference endpoint2 = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "grpc");
+					context.EnvironmentVariables.TryAdd("DAPR_HTTP_PORT", endpoint.Port.ToString(CultureInfo.InvariantCulture));
+					context.EnvironmentVariables.TryAdd("DAPR_GRPC_PORT", endpoint2.Port.ToString(CultureInfo.InvariantCulture));
+					context.EnvironmentVariables.TryAdd("DAPR_GRPC_ENDPOINT", endpoint2);
+					context.EnvironmentVariables.TryAdd("DAPR_HTTP_ENDPOINT", endpoint);
+				}
+			}));
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new EndpointAnnotation(ProtocolType.Tcp, "http", (string)null, "grpc", sidecarOptions?.DaprGrpcPort, (int?)null, (bool?)null, (bool?)null));
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new EndpointAnnotation(ProtocolType.Tcp, "http", (string)null, "http", sidecarOptions?.DaprHttpPort, (int?)null, (bool?)null, (bool?)null));
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new EndpointAnnotation(ProtocolType.Tcp, "http", (string)null, "metrics", sidecarOptions?.MetricsPort, (int?)null, (bool?)null, (bool?)null));
+			if ((sidecarOptions?.EnableProfiling == true) ?? false)
+			{
+				((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new EndpointAnnotation(ProtocolType.Tcp, "http", (string)null, "profile", sidecarOptions?.ProfilePort, (int?)null, (bool?)null, (bool?)null));
+			}
+			if (_options.EnableTelemetry != false)
+			{
+				OtlpConfigurationExtensions.AddOtlpEnvironment((IResource)(object)daprCli, configuration, environment);
+			}
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new CommandLineArgsCallbackAnnotation((Action<IList<object>>)delegate(IList<object> updatedArgs)
+			{
+				updatedArgs.AddRange(daprCommandLine.Arguments);
+				(EndpointReference, string)? endpointReference = GetEndpointReference(sidecarOptions, resource);
+				if (!(sidecarOptions?.AppPort).HasValue && endpointReference.HasValue)
+				{
+					EndpointReference item = endpointReference.GetValueOrDefault().Item1;
+					if (item != null && item.IsAllocated)
+					{
+						updatedArgs.AddRange(daprAppPortArg(endpointReference.Value.Item1.Port)());
+					}
+				}
+				EndpointReference endpoint = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "grpc");
+				EndpointReference endpoint2 = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "http");
+				EndpointReference endpoint3 = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "metrics");
+				updatedArgs.AddRange(daprGrpcPortArg(endpoint.Property((EndpointProperty)5))());
+				updatedArgs.AddRange(daprHttpPortArg(endpoint2.Property((EndpointProperty)5))());
+				updatedArgs.AddRange(daprMetricsPortArg(endpoint3.Property((EndpointProperty)5))());
+				DaprSidecarOptions daprSidecarOptions = sidecarOptions;
+				if ((object)daprSidecarOptions != null && daprSidecarOptions.EnableProfiling == true)
+				{
+					EndpointReference endpoint4 = ResourceExtensions.GetEndpoint((IResourceWithEndpoints)(object)daprCli, "profiling");
+					updatedArgs.AddRange(daprProfilePortArg(endpoint4.Property((EndpointProperty)5))());
+				}
+				if (sidecarOptions?.AppChannelAddress == null && endpointReference.HasValue)
+				{
+					EndpointReference item = endpointReference.GetValueOrDefault().Item1;
+					if (item != null && item.IsAllocated)
+					{
+						updatedArgs.AddRange(daprAppChannelAddressArg(endpointReference.Value.Item1.Host)());
+					}
+				}
+				if (sidecarOptions?.AppProtocol == null && endpointReference.HasValue)
+				{
+					EndpointReference item = endpointReference.GetValueOrDefault().Item1;
+					if (item != null && item.IsAllocated)
+					{
+						updatedArgs.AddRange(daprAppProtocol(endpointReference.Value.Item2)());
+					}
+				}
+			}));
+			((IList<IResourceAnnotation>)((Resource)daprCli).Annotations).AddRange((IEnumerable<IResourceAnnotation>)((IEnumerable)((IResource)sidecar).Annotations).OfType<EnvironmentCallbackAnnotation>());
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)(object)ManifestPublishingCallbackAnnotation.Ignore);
+			((Collection<IResourceAnnotation>)(object)((Resource)daprCli).Annotations).Add((IResourceAnnotation)new ResourceRelationshipAnnotation(resource, "Parent"));
+			((Collection<IResourceAnnotation>)(object)((IResource)sidecar).Annotations).Add((IResourceAnnotation)new ManifestPublishingCallbackAnnotation((Action<ManifestPublishingContext>)delegate(ManifestPublishingContext context)
+			{
+				context.Writer.WriteString("type", "dapr.v0");
+				context.Writer.WriteStartObject("dapr");
+				context.Writer.WriteString("application", resource.Name);
+				context.Writer.TryWriteString("appChannelAddress", sidecarOptions?.AppChannelAddress);
+				context.Writer.TryWriteString("appHealthCheckPath", sidecarOptions?.AppHealthCheckPath);
+				context.Writer.TryWriteNumber("appHealthProbeInterval", sidecarOptions?.AppHealthProbeInterval);
+				context.Writer.TryWriteNumber("appHealthProbeTimeout", sidecarOptions?.AppHealthProbeTimeout);
+				context.Writer.TryWriteNumber("appHealthThreshold", sidecarOptions?.AppHealthThreshold);
+				context.Writer.TryWriteString("appId", appId);
+				context.Writer.TryWriteNumber("appMaxConcurrency", sidecarOptions?.AppMaxConcurrency);
+				context.Writer.TryWriteNumber("appPort", sidecarOptions?.AppPort);
+				context.Writer.TryWriteString("appProtocol", sidecarOptions?.AppProtocol);
+				context.Writer.TryWriteStringArray("command", sidecarOptions?.Command);
+				context.Writer.TryWriteStringArray("components", componentReferenceAnnotations.Select((DaprComponentReferenceAnnotation componentReferenceAnnotation) => ((IResource)componentReferenceAnnotation.Component).Name));
+				context.Writer.TryWriteString("config", context.GetManifestRelativePath(sidecarOptions?.Config));
+				context.Writer.TryWriteNumber("daprGrpcPort", sidecarOptions?.DaprGrpcPort);
+				context.Writer.TryWriteString("daprMaxBodySize", sidecarOptions?.DaprMaxBodySize);
+				context.Writer.TryWriteNumber("daprHttpPort", sidecarOptions?.DaprHttpPort);
+				context.Writer.TryWriteString("daprReadBufferSize", sidecarOptions?.DaprReadBufferSize);
+				context.Writer.TryWriteNumber("daprInternalGrpcPort", sidecarOptions?.DaprInternalGrpcPort);
+				context.Writer.TryWriteString("daprListenAddresses", sidecarOptions?.DaprListenAddresses);
+				context.Writer.TryWriteBoolean("enableApiLogging", sidecarOptions?.EnableApiLogging);
+				context.Writer.TryWriteBoolean("enableAppHealthCheck", sidecarOptions?.EnableAppHealthCheck);
+				context.Writer.TryWriteString("logLevel", sidecarOptions?.LogLevel);
+				context.Writer.TryWriteNumber("metricsPort", sidecarOptions?.MetricsPort);
+				context.Writer.TryWriteString("placementHostAddress", sidecarOptions?.PlacementHostAddress);
+				context.Writer.TryWriteNumber("profilePort", sidecarOptions?.ProfilePort);
+				context.Writer.TryWriteStringArray("resourcesPath", sidecarOptions?.ResourcesPaths.Select((string path) => context.GetManifestRelativePath(path)));
+				context.Writer.TryWriteString("runFile", context.GetManifestRelativePath(sidecarOptions?.RunFile));
+				context.Writer.TryWriteString("runtimePath", context.GetManifestRelativePath(sidecarOptions?.RuntimePath));
+				context.Writer.TryWriteString("schedulerHostAddress", sidecarOptions?.SchedulerHostAddress);
+				context.Writer.TryWriteString("unixDomainSocket", sidecarOptions?.UnixDomainSocket);
+				context.Writer.WriteEndObject();
+			}));
+			_options.PublishingConfigurationAction?.Invoke(resource, sidecarOptions);
+			list.Add(daprCli);
+		}
+		((IList<IResource>)appModel.Resources).AddRange((IEnumerable<IResource>)list);
+		[return: NotNullIfNotNull("path")]
+		string? NormalizePath(string? path)
+		{
+			if (path == null)
+			{
+				return null;
+			}
+			return Path.GetFullPath(Path.Combine(appHostDirectory, path));
+		}
+	}
+
+	private static string? GetValueIfSet(string? newValue, int? obsoleteValue, string notation)
+	{
+		if (newValue != null)
+		{
+			return newValue;
+		}
+		if (obsoleteValue.HasValue)
+		{
+			return $"{obsoleteValue}{notation}";
+		}
+		return null;
+	}
+
+	private string GetAppHostDirectory()
+	{
+		return configuration["AppHost:Directory"] ?? throw new InvalidOperationException("Unable to obtain the application host directory.");
+	}
+
+	private static (EndpointReference appEndpoint, string protocol)? GetEndpointReference(DaprSidecarOptions? sidecarOptions, IResource resource)
+	{
+		IResourceWithEndpoints val = (IResourceWithEndpoints)(object)((resource is IResourceWithEndpoints) ? resource : null);
+		if (val != null)
+		{
+			string text = sidecarOptions?.AppProtocol;
+			string text2 = sidecarOptions?.AppEndpoint;
+			(EndpointReference, string) value;
+			if (text == null)
+			{
+				value = ((text2 != null) ? (ResourceExtensions.GetEndpoint(val, text2), ResourceExtensions.GetEndpoint(val, text2).Scheme) : (ResourceExtensions.GetEndpoint(val, "http"), "http"));
+			}
+			else if (text2 == null)
+			{
+				value = (ResourceExtensions.GetEndpoint(val, text), text);
+			}
+			else
+			{
+				string item = text;
+				string text3 = text2;
+				value = (ResourceExtensions.GetEndpoint(val, text3), item);
+			}
+			return value;
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// Return the first verified dapr path
+	/// </summary>
+	private static string? GetDefaultDaprPath()
+	{
+		foreach (string availablePath in GetAvailablePaths())
+		{
+			if (File.Exists(availablePath))
+			{
+				return availablePath;
+			}
+		}
+		return null;
+		static IEnumerable<string> GetAvailablePaths()
+		{
+			if (OperatingSystem.IsWindows())
+			{
+				string path = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Windows)) ?? "C:";
+				yield return Path.Combine(path, "dapr", "dapr.exe");
+				IEnumerable<string> enumerable = (from path2 in Environment.GetEnvironmentVariable("PATH")?.Split(Path.PathSeparator)
+					select Path.Combine(path2, "dapr.exe")).Where(File.Exists) ?? Array.Empty<string>();
+				foreach (string item in enumerable)
+				{
+					yield return item;
+				}
+			}
+			else
+			{
+				string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+				yield return Path.Combine(folderPath, "dapr", "dapr");
+				yield return "/usr/local/bin/dapr";
+				yield return "/usr/bin/dapr";
+				if (OperatingSystem.IsMacOS())
+				{
+					string environmentVariable = Environment.GetEnvironmentVariable("HOMEBREW_PREFIX");
+					if (environmentVariable != null)
+					{
+						yield return Path.Combine(environmentVariable, "bin", "dapr");
+					}
+				}
+				IEnumerable<string> enumerable2 = (from path2 in Environment.GetEnvironmentVariable("PATH")?.Split(Path.PathSeparator)
+					select Path.Combine(path2, "dapr")).Where(File.Exists) ?? Array.Empty<string>();
+				foreach (string item2 in enumerable2)
+				{
+					yield return item2;
+				}
+			}
+		}
+	}
+
+	private static void SetupComponentLifecycle(DistributedApplicationModel appModel)
+	{
+		//IL_0101: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010b: Expected O, but got Unknown
+		IEnumerable<DaprComponentValueProviderAnnotation> enumerable = default(IEnumerable<DaprComponentValueProviderAnnotation>);
+		foreach (IDaprComponentResource item in ((IEnumerable)appModel.Resources).OfType<IDaprComponentResource>())
+		{
+			HashSet<IResource> hashSet = new HashSet<IResource>();
+			if (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentValueProviderAnnotation>((IResource)item, ref enumerable))
+			{
+				foreach (DaprComponentValueProviderAnnotation item2 in enumerable)
+				{
+					if (item2.ValueProvider is IResourceWithoutLifetime)
+					{
+						continue;
+					}
+					IValueProvider valueProvider = item2.ValueProvider;
+					IResource val = (IResource)(object)((valueProvider is IResource) ? valueProvider : null);
+					if (val != null)
+					{
+						hashSet.Add(val);
+						continue;
+					}
+					IValueProvider valueProvider2 = item2.ValueProvider;
+					IValueWithReferences val2 = (IValueWithReferences)(object)((valueProvider2 is IValueWithReferences) ? valueProvider2 : null);
+					if (val2 == null)
+					{
+						continue;
+					}
+					foreach (IResource item3 in val2.References.OfType<IResource>())
+					{
+						if (!(item3 is IResourceWithoutLifetime))
+						{
+							hashSet.Add(item3);
+						}
+					}
+				}
+			}
+			foreach (IResource item4 in hashSet)
+			{
+				((Collection<IResourceAnnotation>)(object)((IResource)item).Annotations).Add((IResourceAnnotation)new WaitAnnotation(item4, (WaitType)0, 0));
+			}
+		}
+	}
+
+	public void Dispose()
+	{
+		if (_onDemandResourcesRootPath != null)
+		{
+			logger.LogInformation("Stopping Dapr-related resources...");
+			try
+			{
+				Directory.Delete(_onDemandResourcesRootPath, recursive: true);
+			}
+			catch (Exception exception)
+			{
+				logger.LogWarning(exception, "Failed to delete temporary Dapr resources directory: {OnDemandResourcesRootPath}", _onDemandResourcesRootPath);
+			}
+		}
+	}
+
+	private async Task<IReadOnlyDictionary<string, string>> StartOnDemandDaprComponentsAsync(DistributedApplicationModel appModel, CancellationToken cancellationToken)
+	{
+		List<DaprComponentResource> list = (from daprComponentResource in ((IEnumerable)appModel.Resources).OfType<DaprComponentResource>()
+			where daprComponentResource.Options?.LocalPath == null
+			select daprComponentResource).ToList();
+		if (list.Any((DaprComponentResource daprComponentResource) =>
+		{
+			IEnumerable<DaprComponentSecretAnnotation> source = default(IEnumerable<DaprComponentSecretAnnotation>);
+			IEnumerable<DaprComponentValueProviderAnnotation> source2 = default(IEnumerable<DaprComponentValueProviderAnnotation>);
+			return (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentSecretAnnotation>((IResource)(object)daprComponentResource, ref source) && source.Any()) || (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentValueProviderAnnotation>((IResource)(object)daprComponentResource, ref source2) && source2.Any());
+		}))
+		{
+			list.Add(new DaprComponentResource("secretstore", "secretstore"));
+		}
+		Dictionary<string, string> onDemandResourcesPaths = new Dictionary<string, string>();
+		if (list.Any())
+		{
+			logger.LogInformation("Starting Dapr-related resources...");
+			_onDemandResourcesRootPath = Directory.CreateTempSubdirectory("aspire-dapr.").FullName;
+			foreach (DaprComponentResource component in list)
+			{
+				Func<string, Task<string>> contentWriter = async delegate(string content)
+				{
+					logger.LogDebug("Creating on-demand configuration for component '{ComponentName}' with content: {content}.", ((Resource)component).Name, content);
+					string text = Path.Combine(_onDemandResourcesRootPath, ((Resource)component).Name);
+					Directory.CreateDirectory(text);
+					string componentPath = Path.Combine(text, ((Resource)component).Name + ".yaml");
+					await File.WriteAllTextAsync(componentPath, content, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+					return componentPath;
+				};
+				string value = await (component.Type switch
+				{
+					"pubsub" => GetBuildingBlockComponentAsync(component, contentWriter, "pubsub.in-memory", cancellationToken), 
+					"state" => GetBuildingBlockComponentAsync(component, contentWriter, "state.in-memory", cancellationToken), 
+					"secretstore" => GetBuildingBlockComponentAsync(component, contentWriter, "secretstores.local.env", cancellationToken), 
+					_ => GetComponentAsync(component, contentWriter, cancellationToken), 
+				}).ConfigureAwait(continueOnCapturedContext: false);
+				onDemandResourcesPaths.Add(((Resource)component).Name, value);
+			}
+		}
+		return onDemandResourcesPaths;
+	}
+
+	private async Task<string> GetComponentAsync(DaprComponentResource component, Func<string, Task<string>> contentWriter, CancellationToken cancellationToken)
+	{
+		logger.LogInformation("Unvalidated configuration {specType} for component '{ComponentName}'.", component.Type, ((Resource)component).Name);
+		return await contentWriter(await GetDaprComponent(component, component.Type, cancellationToken)).ConfigureAwait(continueOnCapturedContext: false);
+	}
+
+	private async Task<string> GetBuildingBlockComponentAsync(DaprComponentResource component, Func<string, Task<string>> contentWriter, string defaultProvider, CancellationToken cancellationToken)
+	{
+		string appHostRelativePath = GetAppHostRelativePath(component.Type);
+		if (File.Exists(appHostRelativePath))
+		{
+			logger.LogInformation("Using apphost relative path for dapr component '{ComponentName}'.", ((Resource)component).Name);
+			return await contentWriter(await GetDefaultContent(component, appHostRelativePath, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)).ConfigureAwait(continueOnCapturedContext: false);
+		}
+		string defaultComponentPath = GetDefaultComponentPath(component.Type);
+		if (File.Exists(defaultComponentPath))
+		{
+			logger.LogInformation("Using default dapr path for component '{ComponentName}'.", ((Resource)component).Name);
+			return await contentWriter(await GetDefaultContent(component, defaultComponentPath, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)).ConfigureAwait(continueOnCapturedContext: false);
+		}
+		logger.LogInformation("Using in-memory provider for dapr component '{ComponentName}'.", ((Resource)component).Name);
+		string arg = new DaprComponentSchema(((Resource)component).Name, defaultProvider).ToString();
+		return await contentWriter(arg).ConfigureAwait(continueOnCapturedContext: false);
+	}
+
+	private string GetAppHostRelativePath(string componentName)
+	{
+		return Path.Combine(Path.Combine(GetAppHostDirectory(), ".dapr", "components"), componentName + ".yaml");
+	}
+
+	private static string GetDefaultComponentPath(string componentName)
+	{
+		return Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dapr", "components"), componentName + ".yaml");
+	}
+
+	private static async Task<string> GetDefaultContent(DaprComponentResource component, string defaultContentPath, CancellationToken cancellationToken)
+	{
+		string yamlContent = (await File.ReadAllTextAsync(defaultContentPath, cancellationToken).ConfigureAwait(continueOnCapturedContext: false)).Replace("name: " + component.Type, "name: " + ((Resource)component).Name);
+		DaprComponentSchema content = DaprComponentSchema.FromYaml(yamlContent);
+		await ConfigureDaprComponent(component, content, cancellationToken);
+		await content.ResolveAllValuesAsync(cancellationToken);
+		return content.ToString();
+	}
+
+	private static async Task<string> GetDaprComponent(DaprComponentResource component, string type, CancellationToken cancellationToken = default(CancellationToken))
+	{
+		DaprComponentSchema content = new DaprComponentSchema(((Resource)component).Name, type);
+		await ConfigureDaprComponent(component, content, cancellationToken);
+		await content.ResolveAllValuesAsync(cancellationToken);
+		return content.ToString();
+	}
+
+	private static async Task ConfigureDaprComponent(DaprComponentResource component, DaprComponentSchema content, CancellationToken cancellationToken = default(CancellationToken))
+	{
+		IEnumerable<DaprComponentSecretAnnotation> source = default(IEnumerable<DaprComponentSecretAnnotation>);
+		if (ResourceExtensions.TryGetAnnotationsOfType<DaprComponentSecretAnnotation>((IResource)(object)component, ref source) && source.Any())
+		{
+			content.Auth = new DaprComponentAuth
+			{
+				SecretStore = "secretstore"
+			};
+		}
+		IEnumerable<DaprComponentConfigurationAnnotation> enumerable = default(IEnumerable<DaprComponentConfigurationAnnotation>);
+		if (!ResourceExtensions.TryGetAnnotationsOfType<DaprComponentConfigurationAnnotation>((IResource)(object)component, ref enumerable))
+		{
+			return;
+		}
+		foreach (DaprComponentConfigurationAnnotation item in enumerable)
+		{
+			await item.Configure(content, cancellationToken);
+		}
+	}
+}
+You are not using the latest version of the tool, please update.
+Latest version is '11.2.0.10050' (yours is '10.1.0.8386')

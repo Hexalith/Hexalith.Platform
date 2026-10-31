@@ -1,0 +1,2525 @@
+diff --git a/samples/Hexalith.EventStore.Sample.BlazorUI/Program.cs b/samples/Hexalith.EventStore.Sample.BlazorUI/Program.cs
+index ce6d77b58..fd05f8535 100644
+--- a/samples/Hexalith.EventStore.Sample.BlazorUI/Program.cs
++++ b/samples/Hexalith.EventStore.Sample.BlazorUI/Program.cs
+@@ -1,6 +1,7 @@
+ using Hexalith.EventStore.Client.Registration;
+ using Hexalith.EventStore.Sample.BlazorUI.Services;
+ using Hexalith.EventStore.ServiceDefaults;
++using Hexalith.EventStore.ServiceDefaults.Routing;
+ using Hexalith.EventStore.SignalR;
+ 
+ using Microsoft.FluentUI.AspNetCore.Components;
+@@ -20,6 +21,7 @@ builder.Services.AddFluentUIComponents();
+ // The UI host consumes EventStore through the platform gateway client; it exposes no REST endpoints
+ // of its own, so no inbound authentication scheme is registered.
+ builder.Services.AddSampleUiGatewayClient(builder.Configuration);
++builder.Services.AddEventStoreDevelopmentCallerCatalog(builder.Configuration, "sample-blazor-ui");
+ 
+ // EventStore SignalR client — receives real-time "changed" signals
+ builder.Services.AddSingleton(sp => new EventStoreSignalRClientOptions {
+@@ -63,6 +65,7 @@ if (!app.Environment.IsDevelopment()) {
+ }
+ 
+ app.UseHttpsRedirection();
++app.UseEventStoreDevelopmentCallerCatalog();
+ app.UseAntiforgery();
+ 
+ app.MapStaticAssets();
+diff --git a/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs b/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs
+index bac9f35fd..d8339c2ca 100644
+--- a/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs
++++ b/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs
+@@ -4,6 +4,7 @@ using System.Text.Json;
+ using Hexalith.EventStore.Contracts.Projections;
+ using Hexalith.EventStore.Sample.Counter.Events;
+ using Hexalith.EventStore.Sample.Counter.State;
++using Hexalith.EventStore.Sample.Counter.Queries;
+ 
+ namespace Hexalith.EventStore.Sample.Counter.Projections;
+ 
+@@ -35,7 +36,7 @@ public static class CounterProjectionHandler {
+ 
+         return new ProjectionResponse(
+             "counter",
+-            JsonSerializer.SerializeToElement(new { count = state.Count }))
++            JsonSerializer.SerializeToElement(new CounterStatusProjection(state.Count)))
+         {
+             NotificationGroupScope = "counter-status",
+             NotificationMetadata = new Dictionary<string, string>(StringComparer.Ordinal)
+diff --git a/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs b/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs
+index 0e4ca4aff..7e0c739d4 100644
+--- a/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs
++++ b/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs
+@@ -11,7 +11,7 @@ using Hexalith.EventStore.Sample.Greeting.Commands;
+ namespace Hexalith.EventStore.Sample.Counter;
+ 
+ /// <summary>Offline owner inventory. It does not register adapters, enable admission, or provision secrets.</summary>
+-public static class SampleCatalog
++public static partial class SampleCatalog
+ {
+     /// <summary>Gets all actual command policies.</summary>
+     public static IReadOnlyList<CommandIntentDeclaration> Commands { get; } = [.. CounterCatalogDeclarations.Commands, GreetingCatalogDeclarations.Command];
+diff --git a/samples/Hexalith.EventStore.Sample/Program.cs b/samples/Hexalith.EventStore.Sample/Program.cs
+index 5515ecef7..31f69f83f 100644
+--- a/samples/Hexalith.EventStore.Sample/Program.cs
++++ b/samples/Hexalith.EventStore.Sample/Program.cs
+@@ -12,6 +12,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+ builder.AddEventStoreDomainService();
+ builder.Services.AddCounterEventSerialization();
+ builder.Services.AddGreetingEventSerialization();
++builder.Services.AddEventStoreDevelopmentDomainCatalog(builder.Configuration, typeof(SampleCatalog).Assembly);
+ 
+ bool malformedProjectionResponse = builder.Configuration
+     .GetValue<bool>("EventStore:SampleFaults:MalformedProjectResponse");
+diff --git a/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj b/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj
+index 2da543f88..f7da3bd5b 100644
+--- a/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj
++++ b/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj
+@@ -10,6 +10,8 @@
+ 
+   <ItemGroup>
+     <ProjectReference Include="..\Hexalith.EventStore.Contracts\Hexalith.EventStore.Contracts.csproj" />
++    <ProjectReference Include="..\Hexalith.EventStore.Client\Hexalith.EventStore.Client.csproj" />
++    <ProjectReference Include="..\Hexalith.EventStore.ServiceDefaults\Hexalith.EventStore.ServiceDefaults.csproj" />
+   </ItemGroup>
+ 
+   <ItemGroup>
+diff --git a/src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs b/src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs
+index 6e8ecbc6f..da91dbc93 100644
+--- a/src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs
++++ b/src/Hexalith.EventStore.Aspire/HexalithEventStoreExtensions.cs
+@@ -242,6 +242,8 @@ public static class HexalithEventStoreExtensions {
+                 "pubsub.redis",
+                 new DaprComponentOptions { LocalPath = resolvedPubSubComponentPath });
+ 
++        stateStore.Resource.Annotations.Add(new EventStoreRedisBackendAnnotation(resolvedStateStoreComponentPath, LocalDaprRedisHost));
++
+         _ = eventStore.WithEnvironment("EventStore__CommandStatus__StateStoreName", stateStoreComponentName)
+             .WithEnvironment("EventStore__Projections__CheckpointStateStoreName", stateStoreComponentName)
+             .WithEnvironment("EventStore__Projections__ReadModelStateStoreName", stateStoreComponentName)
+diff --git a/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs b/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs
+index 5e6e6aec6..d4daa9a44 100644
+--- a/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs
++++ b/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs
+@@ -7,8 +7,13 @@ public static class DevelopmentIdempotencyBindings
+ {
+     /// <summary>Joins an explicit owner policy to the approved future Development secret references.</summary>
+     public static IdempotencyCatalogEntry Bind(CommandIntentDeclaration declaration, long generation)
++        => Bind(declaration, generation, "eventstore");
++
++    /// <summary>Joins the same owner policy to the actual independently selected Development gateway.</summary>
++    public static IdempotencyCatalogEntry Bind(CommandIntentDeclaration declaration, long generation, string consumerAppId)
+     {
+         ArgumentNullException.ThrowIfNull(declaration);
++        ArgumentException.ThrowIfNullOrWhiteSpace(consumerAppId);
+         RouteCatalogValidator.ValidateDescriptor(declaration.DescriptorSchema);
+         IdempotencyDescriptorField? subject = declaration.DescriptorSchema.Fields.SingleOrDefault(field => field.Name == "acting-subject");
+         if (declaration.RequiresAuthenticatedSubject ? subject?.Type != "string" : subject is not null)
+@@ -23,7 +28,7 @@ public static class DevelopmentIdempotencyBindings
+                 _ => throw new ArgumentException("Unsupported explicit retention tier.", nameof(declaration)),
+             },
+             "development-v1", ["development-v1"], "secretstore", "eventstore-idempotency-ring", "development-v1",
+-            [new("development-v1", "development-v1")], "eventstore", string.Empty);
++            [new("development-v1", "development-v1")], consumerAppId, string.Empty);
+         return entry with { ContentDigest = RouteCatalogCodec.ComputeIdempotencyEntryDigest(entry) };
+     }
+ }
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs
+index fb41bd654..dbe7b324b 100644
+--- a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs
+@@ -3,4 +3,9 @@ namespace Hexalith.EventStore.Contracts.Routing;
+ /// <summary>Independently observed receiver fence and the complete actual endpoint inventory.</summary>
+ /// <param name="FenceVersion">Installed enforcement implementation.</param>
+ /// <param name="Endpoints">Every actual mapped endpoint, including explicitly denied prefix overlaps.</param>
+-public sealed record RouteCatalogReceiverSurface(string FenceVersion, IReadOnlyList<RouteCatalogReceiverEndpoint> Endpoints);
++public sealed record RouteCatalogReceiverSurface(string FenceVersion, IReadOnlyList<RouteCatalogReceiverEndpoint> Endpoints)
++{
++    /// <summary>Gets the separately opted-in generated human GET inventory; absent for finite service dispatch.</summary>
++    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
++    public IReadOnlyList<RouteCatalogGeneratedRestEndpoint>? GeneratedRest { get; init; }
++}
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
+index 94a002eb1..9cd4b69b8 100644
+--- a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
+@@ -40,9 +40,12 @@ public static class RouteCatalogTopologyValidator
+             using JsonDocument component = JsonDocument.Parse(componentBytes);
+             using JsonDocument configuration = JsonDocument.Parse(configurationBytes);
+             JsonElement root = component.RootElement;
++            var componentMetadata = root.GetProperty("spec").GetProperty("metadata").EnumerateArray().ToArray();
++            var prefixes = componentMetadata.Where(p => p.GetProperty("name").GetString() == "keyPrefix").ToArray();
++            string? prefix = prefixes.Length == 1 ? prefixes[0].GetProperty("value").GetString() : null;
++            bool namedAuthority = RouteCatalogAuthorityComponentPolicy.IsDedicatedComponent(root);
+             if (root.GetProperty("kind").GetString() != "Component" || root.GetProperty("spec").GetProperty("type").GetString() != "state.redis"
+-                || root.GetProperty("spec").GetProperty("metadata").EnumerateArray().Count(p => p.GetProperty("name").GetString() == "keyPrefix") != 1
+-                || root.GetProperty("spec").GetProperty("metadata").EnumerateArray().Single(p => p.GetProperty("name").GetString() == "keyPrefix").GetProperty("value").GetString() != "none")
++                || prefixes.Length != 1 || prefix != "none" && !namedAuthority)
+                 throw Failure("unqualified-shared-authority-component");
+             string?[] scopes = [.. root.GetProperty("scopes").EnumerateArray().Select(s => s.GetString())];
+             if (scopes.Any(string.IsNullOrWhiteSpace) || scopes.Distinct(StringComparer.Ordinal).Count() != scopes.Length
+@@ -104,7 +107,11 @@ public static class RouteCatalogTopologyValidator
+                             throw Failure("unqualified-readiness-probe-grant");
+                         continue;
+                     }
++                    // A generated public human query is ingress, with its own SDK filter and
++                    // captured owner schemas. Its forwarding BFF gains no authority-store scope.
++                    if (completeInventory && RouteCatalogGeneratedRestPolicy.AdmitsGrant(envelope, receiver, method, verbs)) continue;
+                     if (!participant) throw Failure("selected-acl-caller-lacks-catalog-enrollment");
++                    if (RouteCatalogGeneratedRestPolicy.AdmitsControlGrant(receiver, method, verbs)) continue;
+                     if (!methods.ContainsKey(canonical) || (canonical != method && (receiver is null
+                         || !methods.Keys.Any(child => child.StartsWith(canonical + "/", StringComparison.Ordinal)))))
+                         throw Failure("undeclared-acl-operation");
+diff --git a/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs b/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs
+index fc00068bd..a3daad8f8 100644
+--- a/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs
++++ b/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs
+@@ -69,6 +69,7 @@ public static class DevelopmentDomainRouteCatalog
+         var targets = new List<RouteCatalogEntry>();
+         foreach (var declaration in declarations)
+         {
++            if (RouteCatalogProjectionActorPolicy.IsQuery(declaration)) continue; // owned contract, executed by the independently observed SDK gateway actor
+             if (declaration.Execution?.TargetKind != "domain-service")
+                 throw new RouteCatalogUnavailableException("This Development enrollment owns domain-service receivers only.");
+             string method = declaration.Kind switch
+diff --git a/src/Hexalith.EventStore.Server/Configuration/ServiceCollectionExtensions.cs b/src/Hexalith.EventStore.Server/Configuration/ServiceCollectionExtensions.cs
+index ade721faa..b5ab9febd 100644
+--- a/src/Hexalith.EventStore.Server/Configuration/ServiceCollectionExtensions.cs
++++ b/src/Hexalith.EventStore.Server/Configuration/ServiceCollectionExtensions.cs
+@@ -87,6 +87,8 @@ public static class EventStoreServerServiceCollectionExtensions {
+         ArgumentNullException.ThrowIfNull(configuration);
+ 
+         _ = Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogServiceCollectionExtensions.AddEventStoreRouteCatalog(services, configuration);
++        if (!string.IsNullOrEmpty(configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
++            _ = Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(services, configuration);
+ 
+         _ = services.AddEventStoreReadModelStore();
+         services.TryAddSingleton<ICommandRouter, CommandRouter>();
+diff --git a/src/Hexalith.EventStore.Server/Queries/QueryRouter.cs b/src/Hexalith.EventStore.Server/Queries/QueryRouter.cs
+index 985f81a04..9dad74625 100644
+--- a/src/Hexalith.EventStore.Server/Queries/QueryRouter.cs
++++ b/src/Hexalith.EventStore.Server/Queries/QueryRouter.cs
+@@ -26,7 +26,7 @@ public partial class QueryRouter : IQueryRouter {
+     /// The DAPR actor type name for projection actors. Application developers register
+     /// their concrete implementation with this name.
+     /// </summary>
+-    public const string ProjectionActorTypeName = "ProjectionActor";
++    public const string ProjectionActorTypeName = Hexalith.EventStore.Contracts.Routing.RouteCatalogProjectionActorPolicy.ActorType;
+ 
+     private readonly IProjectionActorInvoker _invoker;
+     private readonly IProjectionLifecycleGateway? _lifecycleGateway;
+diff --git a/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs b/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs
+index 5a47beb22..d7fd41d87 100644
+--- a/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs
++++ b/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs
+@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Routing;
+ using Microsoft.AspNetCore.Authorization;
+ using Hexalith.EventStore.ServiceDefaults.Authentication;
+ using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Queries;
++using Hexalith.EventStore.Server.Actors;
++using Dapr.Actors.Runtime;
++using Microsoft.Extensions.Options;
+ 
+ namespace Hexalith.EventStore.Server.Routing;
+ 
+@@ -43,6 +47,9 @@ public static class RunScopedRouteCatalogGateway
+         ArgumentNullException.ThrowIfNull(configuration);
+         var section = configuration.GetSection("EventStore:RouteCatalog:DevelopmentBootstrap");
+         if (string.IsNullOrEmpty(section["Directory"])) return services;
++        if (services.Any(descriptor => descriptor.ServiceType == typeof(RunScopedRouteCatalogGatewayRegistration))) return services;
++        services.AddSingleton<RunScopedRouteCatalogGatewayRegistration>();
++        string actualAppId = section["AppId"] ?? "eventstore";
+         var owners = Load(section.GetSection("OwnerAssemblies").Get<string[]>() ?? []);
+         var adapters = Load(section.GetSection("AdapterAssemblies").Get<string[]>() ?? []);
+         if (owners.Length == 0 || adapters.Length == 0) throw new RouteCatalogUnavailableException("Mapped owner schemas and adapter assemblies are required.");
+@@ -58,13 +65,40 @@ public static class RunScopedRouteCatalogGateway
+             var fence = provider.GetRequiredService<FiniteRouteCatalogReceiver>();
+             await fence.WaitForCaptureAsync(token).ConfigureAwait(false);
+             var receiver = fence.Observe();
+-            var actual = await DevelopmentRouteCatalogInputs.CaptureAsync(configuration, "eventstore",
+-                CompiledRouteCatalogDeclarations.Read(owners), [], await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore", token).ConfigureAwait(false), [],
+-                receiver.Endpoints.Where(e => e.Admitted).Select(e => new RouteCatalogAuxiliaryOperation("eventstore", e.Pattern.TrimStart('/'), e.Operation!, "gateway")).ToArray(), token).ConfigureAwait(false);
++            var actual = await DevelopmentRouteCatalogInputs.CaptureAsync(configuration, actualAppId,
++                CompiledRouteCatalogDeclarations.Read(owners), ActorQueryTargets(provider, owners, actualAppId), await RouteCatalogAdmissionObservation.CaptureAsync(provider, actualAppId, token).ConfigureAwait(false), [],
++                receiver.Endpoints.Where(e => e.Admitted).Select(e => new RouteCatalogAuxiliaryOperation(actualAppId, e.Pattern.TrimStart('/'), e.Operation!, "gateway")).ToArray(), token).ConfigureAwait(false);
+             return actual with { ReceiverSurface = receiver, Operations = CompiledRouteCatalogDeclarations.ReadOperations(owners) };
+         }, _ => RouteCatalogCodec.Decode(File.ReadAllBytes(section["CatalogPath"]!), section["RootDigest"]));
+     }
+ 
++    /// <summary>Compares an owned typed query to the actual existing SDK actor registration, independently of a proposal.</summary>
++    internal static IReadOnlyList<RouteCatalogEntry> ActorQueryTargets(IServiceProvider services, IReadOnlyList<Assembly> owners, string actualAppId)
++    {
++        var queries = CompiledRouteCatalogDeclarations.Read(owners).Where(declaration => declaration.Execution?.TargetKind == "projection-actor").ToArray();
++        if (queries.Length == 0) return [];
++        var registered = services.GetRequiredService<IOptions<ActorRuntimeOptions>>().Value.Actors
++            .Where(registration => registration.Type.ActorTypeName == RouteCatalogProjectionActorPolicy.ActorType).ToArray();
++        if (registered.Length != 1 || registered[0].Type.ImplementationType != typeof(EventReplayProjectionActor)
++            || !typeof(IDaprProjectionActor).IsAssignableFrom(registered[0].Type.ImplementationType)
++            || registered[0].Type.ImplementationType.GetMethod(RouteCatalogProjectionActorPolicy.Method, [typeof(QueryEnvelope)])?.ReturnType != typeof(Task<QueryResult>))
++            throw new RouteCatalogUnavailableException("The actual SDK projection actor registration differs from the owner target.");
++        var assemblies = owners.SelectMany(owner => owner.GetReferencedAssemblies().Select(Assembly.Load).Prepend(owner)).Distinct().ToArray();
++        List<RouteCatalogEntry> targets = [];
++        foreach (var query in queries)
++        {
++            var payloads = assemblies.Select(assembly => assembly.GetType(query.Execution!.HandlerType)).Where(type => type is not null).Distinct().ToArray();
++            if (!RouteCatalogProjectionActorPolicy.IsQuery(query) || payloads.Length != 1 || !typeof(IQueryContract).IsAssignableFrom(payloads[0])
++                || payloads[0]!.GetProperty("Domain", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as string != query.Domain
++                || payloads[0]!.GetProperty("QueryType", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as string != query.MessageType
++                || payloads[0]!.GetProperty("ProjectionType", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as string != query.ProjectionType)
++                throw new RouteCatalogUnavailableException("The compiled projection query does not match the actual SDK actor contract.");
++            targets.Add(new(query.RouteId, 1, RouteCatalogCodec.ComputeDeclarationDigest(query), actualAppId, RouteCatalogProjectionActorPolicy.Method,
++                query.ContractVersion, query.CredentialKind, query.Operation, false, "*"));
++        }
++        return targets.AsReadOnly();
++    }
++
+     private static Assembly[] Load(IEnumerable<string> paths) => paths.Select(path =>
+     {
+         if (!Path.IsPathFullyQualified(path) || !File.Exists(path)) throw new RouteCatalogUnavailableException("A mapped owner assembly is unavailable.");
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs
+index 7da98238f..ccbf13661 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs
+@@ -20,6 +20,13 @@ public static class DevelopmentRouteCatalogInputs
+         var section = configuration.GetSection("EventStore:RouteCatalog:DevelopmentBootstrap");
+         string host = section["HostId"] ?? throw new InvalidOperationException("The Development host identity is required.");
+         var component = await File.ReadAllBytesAsync(section["ComponentPath"] ?? throw new InvalidOperationException("The loaded authority component is required."), token).ConfigureAwait(false);
++        if (section["AuthorityRole"] is { Length: > 0 } requiredRole)
++        {
++            using var loaded = JsonDocument.Parse(component);
++            if (requiredRole != RouteCatalogAuthorityComponentPolicy.IsolatedRole
++                || !RouteCatalogAuthorityComponentPolicy.IsDedicatedComponent(loaded.RootElement, configuration["EventStore:RouteCatalog:StateStore"]))
++                throw new RouteCatalogUnavailableException("The actual loaded component lost its dedicated authority role or isolated keyspace.", RouteCatalogRefusalReason.Topology);
++        }
+         var acl = await File.ReadAllBytesAsync(section["AccessControlPath"] ?? throw new InvalidOperationException("The loaded receiver ACL is required."), token).ConfigureAwait(false);
+         // These are observations of effective settings, never configuration layers or credential fingerprints.
+         // In particular no signing key, bearer token, private/public key bytes or secret-map values are serialized.
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogEndpointExtensions.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogEndpointExtensions.cs
+index afda48ea5..2af9ff85b 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogEndpointExtensions.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogEndpointExtensions.cs
+@@ -32,22 +32,22 @@ public static class RouteCatalogEndpointExtensions
+         string activationPolicy = EventStoreWorkloadAuthenticationDefaults.OperationPolicy(WorkloadScheme, EventStoreOperationIdentifiers.RouteCatalogActivate);
+         app.MapGet("/" + ReadbackMethod, async (IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => Results.Ok(await authority.ReadbackAsync(token).ConfigureAwait(false))).ConfigureAwait(false))
+-            .RequireAuthorization(readPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(readPolicy);
+         app.MapPost("/internal/routing/catalog/prepare", async (RouteCatalogActivation candidate, IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => { await authority.PrepareAsync(candidate, token).ConfigureAwait(false); return Results.NoContent(); }).ConfigureAwait(false))
+-            .RequireAuthorization(activationPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(activationPolicy);
+         app.MapPost("/internal/routing/catalog/ready", async (RouteCatalogLifecycleRequest request, IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => Results.Ok(await authority.ReadyAsync(request.Identity, token).ConfigureAwait(false))).ConfigureAwait(false))
+-            .RequireAuthorization(activationPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(activationPolicy);
+         app.MapPost("/internal/routing/catalog/commit", async (RouteCatalogLifecycleRequest request, IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => { await authority.CommitAsync(request.Identity, token).ConfigureAwait(false); return Results.NoContent(); }).ConfigureAwait(false))
+-            .RequireAuthorization(activationPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(activationPolicy);
+         app.MapPost("/internal/routing/catalog/rollback", async (RouteCatalogRollbackRequest request, IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => { await authority.RollbackAsync(request, token).ConfigureAwait(false); return Results.NoContent(); }).ConfigureAwait(false))
+-            .RequireAuthorization(activationPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(activationPolicy);
+         app.MapPost("/internal/routing/catalog/reconcile", async (RouteCatalogQuiescenceRequest request, IRouteCatalogAuthority authority, CancellationToken token) =>
+             await ExecuteAsync(logger, async () => { await authority.ReconcileAsync(request, token).ConfigureAwait(false); return Results.NoContent(); }).ConfigureAwait(false))
+-            .RequireAuthorization(activationPolicy);
++            .WithMetadata(RouteCatalogControlEndpointMetadata.Instance).RequireAuthorization(activationPolicy);
+         return app;
+     }
+ 
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs
+index a7c78610c..e0270018f 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs
+@@ -22,7 +22,8 @@ public sealed class RouteCatalogHostOptions
+     /// return a separately owned handler and contain no application delegating handlers.</summary>
+     public Func<HttpMessageHandler, HttpMessageHandler>? InvocationTransportFactory { get; set; }
+ 
+-    /// <summary>Gets or sets the shared Dapr state component, configured with keyPrefix none.</summary>
++    /// <summary>Gets or sets the shared Dapr authority component. Dedicated authorities use keyPrefix name;
++    /// legacy none components require an independently isolated backend when callers lack business-store access.</summary>
+     public string StateStore { get; set; } = "route-catalog";
+ 
+     /// <summary>Gets or sets the shared profile-specific state key.</summary>
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj b/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj
+index c8e8ddce7..295b13211 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj
++++ b/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj
+@@ -37,6 +37,8 @@
+     <Using Include="Xunit" />
+     <Compile Include="../Hexalith.EventStore.Client.Tests/Projections/RecordingDaprClient.cs" Link="Projections/RecordingDaprClient.cs" />
+     <Compile Include="../Hexalith.EventStore.ServiceDefaults.Tests/Authentication/CommandSourceAuthorityTests.cs" Link="Authentication/CommandSourceAuthorityTests.cs" />
++    <Compile Include="../Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeQuery.cs" Link="Routing/GeneratedRestProbeQuery.cs" />
++    <Compile Include="../Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeDeclarations.cs" Link="Routing/GeneratedRestProbeDeclarations.cs" />
+     <Compile Include="../Hexalith.EventStore.PayloadProtection.Tests/InteractionOccurrenceProtectorFixture.cs" Link="Security/InteractionOccurrenceProtectorFixture.cs" />
+     <Compile Include="../Hexalith.EventStore.PayloadProtection.Tests/InteractionOccurrenceTestKeys.cs" Link="Security/InteractionOccurrenceTestKeys.cs" />
+   </ItemGroup>
+diff --git a/samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusProjection.cs b/samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusProjection.cs
+new file mode 100644
+index 000000000..07e366f4e
+--- /dev/null
++++ b/samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusProjection.cs
+@@ -0,0 +1,7 @@
++using System.Text.Json.Serialization;
++
++namespace Hexalith.EventStore.Sample.Counter.Queries;
++
++/// <summary>The existing counter projection payload exposed by the projection query.</summary>
++/// <param name="Count">The projected counter value.</param>
++public sealed record CounterStatusProjection([property: JsonPropertyName("count")] int Count);
+diff --git a/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.Operations.cs b/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.Operations.cs
+new file mode 100644
+index 000000000..0463a24fb
+--- /dev/null
++++ b/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.Operations.cs
+@@ -0,0 +1,31 @@
++using System.Text.Json;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.Contracts.Projections;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.DomainService;
++using Hexalith.EventStore.Sample.Counter.Commands;
++using Hexalith.EventStore.Sample.Counter.Queries;
++
++[assembly: RouteCatalogAdapterSource(typeof(Hexalith.EventStore.Sample.Counter.SampleCatalog))]
++
++namespace Hexalith.EventStore.Sample.Counter;
++
++/// <summary>Explicit Sample owner schemas and conservative human UI policy for its existing seven operations.</summary>
++public static partial class SampleCatalog
++{
++    /// <summary>The six existing public commands/query are UI-only. Projection remains internal and requires its existing verified service channel.</summary>
++    public static IReadOnlyList<RouteOperationContract> Operations => Routes.Select(route =>
++    {
++        Type request = route.Kind == "projection" ? typeof(ProjectionRequest) : new[] { typeof(SampleCatalog).Assembly, typeof(IncrementCounter).Assembly }
++            .Select(assembly => assembly.GetType(route.Execution!.HandlerType)).Single(type => type is not null)!;
++        Type result = route.Kind switch { "command" => typeof(SubmitCommandResponse), "query" => typeof(CounterStatusProjection), _ => typeof(ProjectionResponse) };
++        return RouteOperationSchema.Create(route, request, result, route.Kind == "projection" ? "internal" : "public", "UI-only", new JsonSerializerOptions(JsonSerializerDefaults.Web));
++    }).ToArray();
++
++    /// <summary>The existing domain methods and SDK ProjectionActor query method, without changing route or actor semantics.</summary>
++    public static IReadOnlyDictionary<string, string> ReceiverMethods => Routes.ToDictionary(route => route.RouteId,
++        route => route.Kind switch { "command" => "process", "query" => RouteCatalogProjectionActorPolicy.Method, _ => "project" }, StringComparer.Ordinal);
++
++    /// <summary>The existing five target-only MessageId-v1/Mutation adapters, exposed through the normal compiled factory contract.</summary>
++    public static IReadOnlyList<IDeclaredIdempotencyIntentAdapter> Create() => CreateAdapters();
++}
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogAspireExtensions.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogAspireExtensions.cs
+new file mode 100644
+index 000000000..aa2f4b408
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogAspireExtensions.cs
+@@ -0,0 +1,237 @@
++using System.Reflection;
++using System.Security.Cryptography;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++using CommunityToolkit.Aspire.Hosting.Dapr;
++using Hexalith.EventStore.Client.Routing;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.DependencyInjection;
++using Aspire.Hosting.Eventing;
++using Aspire.Hosting.Lifecycle;
++using YamlDotNet.Serialization;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>Opt-in, local Development catalog composition using real compiled owners and independently observing SDK hosts.</summary>
++public static class DevelopmentRouteCatalogAspireExtensions
++{
++    /// <summary>Retains a receiver's existing closed allow inventory, binding each explicitly selected caller to its actual resource.</summary>
++    public static DevelopmentRouteCatalogReceiver CaptureEventStoreDevelopmentReceiver(this IResourceBuilder<ProjectResource> project,
++        params IResourceBuilder<ProjectResource>[] callers)
++    {
++        ArgumentNullException.ThrowIfNull(project); ArgumentNullException.ThrowIfNull(callers);
++        var options = Sidecar(project.Resource).Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
++        var acl = ReadYamlOrJson(options.Config ?? throw new InvalidOperationException("An actual receiver configuration is required."))["spec"]!["accessControl"]!;
++        if (acl["defaultAction"]?.GetValue<string>() != "deny") throw new InvalidOperationException("Only an existing closed receiver policy can be retained.");
++        List<DevelopmentRouteCatalogInvocation> invocations = [];
++        foreach (var policy in acl["policies"]!.AsArray())
++        {
++            string callerId = policy!["appId"]!.GetValue<string>();
++            var selected = callers.Where(caller => caller.Resource.Name == callerId || AppId(caller.Resource) == callerId).ToArray();
++            if (selected.Length != 1 || policy["defaultAction"]?.GetValue<string>() != "deny")
++                throw new InvalidOperationException("An existing receiver caller lacks one independently selected resource.");
++            foreach (var grant in policy["operations"]!.AsArray())
++            {
++                if (grant!["action"]?.GetValue<string>() != "allow") throw new InvalidOperationException("Mixed allow/deny rules require an explicit owner traffic declaration.");
++                invocations.Add(new(selected[0], grant["name"]!.GetValue<string>(), grant["httpVerb"]!.AsArray().Select(value => value!.GetValue<string>()).ToArray()));
++            }
++        }
++        return new(project, invocations);
++    }
++
++    /// <summary>Creates a complete canonical generation and binds the exact cohort to run-private authority and finite owner traffic.</summary>
++    /// <remarks>Call after sidecar identity selection and before Build. Dispose the returned ownership after the application.
++    /// Hosted publication is unsupported. This does not grant authority access to human-only proxy callers.</remarks>
++    public static DevelopmentRouteCatalogComposition AddEventStoreDevelopmentRouteCatalog(
++        this IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> gateway,
++        IReadOnlyList<DevelopmentRouteCatalogOwner> owners, IReadOnlyList<DevelopmentRouteCatalogReceiver> receivers,
++        string stateStoreComponentPath, string daprNamespace = "default")
++        => Compose(builder, gateway, owners, receivers, ReadYamlOrJson(stateStoreComponentPath), daprNamespace);
++
++    /// <summary>Uses the backend selected by the actual SDK state-store model, with ordinary modeled late overrides preserved.</summary>
++    public static DevelopmentRouteCatalogComposition AddEventStoreDevelopmentRouteCatalog(
++        this IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> gateway,
++        IReadOnlyList<DevelopmentRouteCatalogOwner> owners, IReadOnlyList<DevelopmentRouteCatalogReceiver> receivers,
++        IResourceBuilder<IDaprComponentResource> stateStore, string daprNamespace = "default")
++    {
++        ArgumentNullException.ThrowIfNull(stateStore);
++        var backend = stateStore.Resource.Annotations.OfType<EventStoreRedisBackendAnnotation>().SingleOrDefault()
++            ?? throw new InvalidOperationException("An SDK-selected state backend or explicit owner component input is required.");
++        if (stateStore.Resource.Type != "state.redis") throw new InvalidOperationException("The selected SDK state backend is not Redis.");
++        JsonObject component = backend.ComponentPath is { } path ? ReadYamlOrJson(path) : new JsonObject
++        {
++            ["kind"] = "Component", ["spec"] = new JsonObject { ["type"] = "state.redis", ["metadata"] = new JsonArray(
++                new JsonObject { ["name"] = "redisHost", ["value"] = backend.DefaultRedisHost }) },
++        };
++        return Compose(builder, gateway, owners, receivers, component, daprNamespace);
++    }
++
++    private static DevelopmentRouteCatalogComposition Compose(IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> gateway,
++        IReadOnlyList<DevelopmentRouteCatalogOwner> owners, IReadOnlyList<DevelopmentRouteCatalogReceiver> receivers,
++        JsonObject stateComponent, string daprNamespace)
++    {
++        ArgumentNullException.ThrowIfNull(builder);
++        ArgumentNullException.ThrowIfNull(gateway);
++        ArgumentNullException.ThrowIfNull(owners);
++        ArgumentNullException.ThrowIfNull(receivers);
++        if (!builder.ExecutionContext.IsRunMode || !builder.Environment.IsDevelopment())
++            throw new InvalidOperationException("Catalog composition requires an explicit Development run.");
++        if (owners.Count == 0 || receivers.Count == 0 || string.IsNullOrWhiteSpace(daprNamespace)
++            || receivers.Select(receiver => receiver.Project.Resource).Distinct().Count() != receivers.Count
++            || !receivers.Any(receiver => ReferenceEquals(receiver.Project.Resource, gateway.Resource))
++            || owners.Any(owner => !receivers.Any(receiver => ReferenceEquals(receiver.Project.Resource, owner.Project.Resource)))
++            || owners.Select(owner => owner.Project.Resource).Distinct().Count() != owners.Count)
++            throw new InvalidOperationException("An exact gateway, owner and receiver cohort is required.");
++        var selected = builder.Resources.OfType<ProjectResource>().Where(project => project.Annotations.OfType<DaprSidecarAnnotation>().Any()).ToArray();
++        var apps = selected.ToDictionary(project => project, project => AppId(project));
++        if (apps.Values.Distinct(StringComparer.Ordinal).Count() != apps.Count
++            || receivers.Any(receiver => !apps.ContainsKey(receiver.Project.Resource))
++            || receivers.SelectMany(receiver => receiver.Invocations).Any(invocation => !apps.ContainsKey(invocation.Caller.Resource)))
++            throw new InvalidOperationException("Every receiver and declared caller must have one actual selected Dapr identity.");
++        var invocations = receivers.ToDictionary(receiver => receiver.Project.Resource, receiver => receiver.Invocations
++            .Select(invocation => new RouteCatalogDeclaredInvocation(apps[invocation.Caller.Resource], invocation.Method, invocation.HttpMethods)).ToArray());
++        if (invocations.Values.Any(grants => grants.Select(grant => (grant.CallerAppId, grant.Method)).Distinct().Count() != grants.Length
++            || grants.Any(grant => string.IsNullOrWhiteSpace(grant.Method) || grant.HttpMethods.Count == 0
++                || grant.HttpMethods.Any(verb => verb is not ("GET" or "POST" or "PUT" or "PATCH" or "DELETE" or "HEAD" or "OPTIONS")))))
++            throw new InvalidOperationException("Duplicate or incomplete owner invocation declarations are not admitted.");
++        string[] hosts = receivers.Select(receiver => receiver.Project.Resource.Name).Order(StringComparer.Ordinal).ToArray();
++        string gatewayAppId = apps[gateway.Resource];
++        var catalog = BuildCatalog(gatewayAppId, owners, apps);
++        string root = RouteCatalogCodec.ComputeRootDigest(catalog);
++        string instance = Guid.NewGuid().ToString("N");
++        string directory = Directory.CreateTempSubdirectory("hexalith-route-catalog-").FullName;
++        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
++        try
++        {
++            Write(directory, "catalog.json", RouteCatalogCodec.Encode(catalog));
++            Write(directory, "receipt.json", JsonSerializer.SerializeToUtf8Bytes(new { instanceId = instance, rootDigest = root }));
++            string componentName = "routing-" + instance;
++            JsonObject component = stateComponent.DeepClone().AsObject();
++            if (component["kind"]?.GetValue<string>() != "Component" || component["spec"]?["type"]?.GetValue<string>() != "state.redis")
++                throw new InvalidOperationException("The actual shared Redis component is required.");
++            var metadata = component["spec"]!["metadata"]!.AsArray();
++            foreach (var item in metadata.Where(item => item?["name"]?.GetValue<string>() is "actorStateStore" or "keyPrefix").ToArray()) metadata.Remove(item);
++            var authority = builder.AddDaprComponent(componentName, "state.redis").WithMetadata("keyPrefix", "name");
++            foreach (var item in metadata)
++            {
++                if (item?["value"] is not JsonValue value || !value.TryGetValue<string>(out string? literal))
++                    throw new InvalidOperationException("Initial Redis metadata must be literal; dynamic or secret values belong to modeled metadata parameters.");
++                authority.WithMetadata(item!["name"]!.GetValue<string>(), literal);
++            }
++            var observer = new DevelopmentRouteCatalogComponentObserver(authority.Resource, receivers.Select(receiver => receiver.Project.Resource).ToArray(), apps,
++                receivers.ToDictionary(receiver => receiver.Project.Resource, receiver => Path.Combine(directory, receiver.Project.Resource.Name + ".configuration.json")));
++            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(observer);
++            string digestKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
++            var key = builder.AddParameter("catalog-" + instance + "-digest-key", () => digestKey, secret: true);
++            foreach (var receiver in receivers)
++            {
++                var project = receiver.Project;
++                var sidecar = Sidecar(project.Resource);
++                var annotation = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
++                JsonObject configuration = ReadYamlOrJson(annotation.Options.Config ?? throw new InvalidOperationException("An actual receiver Dapr configuration is required."));
++                string trustDomain = configuration["spec"]?["accessControl"]?["trustDomain"]?.GetValue<string>()
++                    ?? throw new InvalidOperationException("The receiver must select its Dapr trust domain.");
++                var grants = invocations[project.Resource];
++                configuration["spec"]!["accessControl"] = JsonSerializer.SerializeToNode(new
++                {
++                    defaultAction = "deny", trustDomain,
++                    policies = grants.GroupBy(grant => grant.CallerAppId, StringComparer.Ordinal).Select(group => new
++                    {
++                        appId = group.Key, defaultAction = "deny", trustDomain, @namespace = daprNamespace,
++                        operations = group.Select(grant => new { name = grant.Method, httpVerb = grant.HttpMethods, action = "allow" }).ToArray(),
++                    }).ToArray(),
++                });
++                string aclPath = Write(directory, project.Resource.Name + ".configuration.json", JsonSerializer.SerializeToUtf8Bytes(configuration));
++                sidecar.Annotations[sidecar.Annotations.IndexOf(annotation)] = new DaprSidecarOptionsAnnotation(annotation.Options with { Config = aclPath });
++                builder.CreateResourceBuilder(sidecar).WithReference(authority);
++                project.WithGeneratedEventStoreAppChannelToken();
++                project.WithEnvironment("ASPNETCORE_ENVIRONMENT", Environments.Development).WithEnvironment("DOTNET_ENVIRONMENT", Environments.Development);
++                void Set(string name, string value) => project.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__" + name, value);
++                Set("Directory", directory); Set("HostId", project.Resource.Name); Set("AppId", apps[project.Resource]);
++                Set("CoordinatorHostId", gateway.Resource.Name); Set("AttemptId", instance); Set("InstanceId", instance);
++                Set("AuthorityRole", RouteCatalogAuthorityComponentPolicy.IsolatedRole);
++                Set("CatalogPath", Path.Combine(directory, "catalog.json")); Set("RootDigest", root);
++                project.WithEnvironment(context => context.EnvironmentVariables["EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath"] = observer.ComponentPath
++                    ?? throw new InvalidOperationException("The actual modeled authority has not been rendered."));
++                Set("AccessControlPath", aclPath);
++                Set("DeclaredInvocations", JsonSerializer.Serialize(grants));
++                for (int i = 0; i < hosts.Length; i++) Set("RequiredHostIds__" + i, hosts[i]);
++                string[] selectedApps = apps.Values.Order(StringComparer.Ordinal).ToArray();
++                for (int i = 0; i < selectedApps.Length; i++) Set("SelectedAppIds__" + i, selectedApps[i]);
++                project.WithEnvironment("EventStore__RouteCatalog__StateStore", componentName)
++                    .WithEnvironment("EventStore__RouteCatalog__StateKey", instance + "-authority")
++                    .WithEnvironment("EventStore__DomainService__AppId", apps[project.Resource]);
++                foreach (var wait in project.Resource.Annotations.OfType<WaitAnnotation>().Where(wait => wait.WaitType == WaitType.WaitUntilHealthy
++                    && receivers.Any(peer => ReferenceEquals(peer.Project.Resource, wait.Resource))).ToArray())
++                {
++                    project.Resource.Annotations.Remove(wait);
++                    project.WaitForStart(builder.CreateResourceBuilder(wait.Resource));
++                }
++            }
++            for (int i = 0; i < owners.Count; i++)
++            {
++                gateway.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__OwnerAssemblies__" + i, owners[i].Contracts.Location);
++                gateway.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__AdapterAssemblies__" + i, owners[i].Adapters.Location);
++            }
++            gateway.WithEnvironment("EventStore__IdempotencyAdmission__Enabled", "true")
++                .WithEnvironment("EventStore__IdempotencyAdmission__DigestKeySource", "Configuration")
++                .WithEnvironment("EventStore__IdempotencyAdmission__ActiveDigestKeyVersion", "development-v1")
++                .WithEnvironment("EventStore__IdempotencyAdmission__DigestKeys__development-v1", key)
++                .WithEnvironment("EventStore__IdempotencyAdmission__DigestKeySecretStoreName", "secretstore")
++                .WithEnvironment("EventStore__IdempotencyAdmission__DigestKeySecretName", "eventstore-idempotency-ring")
++                .WithEnvironment("EventStore__IdempotencyAdmission__DigestKeySecretGeneration", "development-v1");
++            return new(directory, root);
++        }
++        catch { Directory.Delete(directory, recursive: true); throw; }
++    }
++
++    private static RouteCatalogEnvelope BuildCatalog(string gatewayAppId, IReadOnlyList<DevelopmentRouteCatalogOwner> owners, IReadOnlyDictionary<ProjectResource, string> apps)
++    {
++        List<RouteContractDeclaration> declarations = []; List<RouteOperationContract> operations = [];
++        List<RouteCompositionBinding> bindings = []; List<IdempotencyCatalogEntry> policies = [];
++        foreach (var owner in owners)
++        {
++            var routes = CompiledRouteCatalogDeclarations.Read([owner.Contracts]);
++            declarations.AddRange(routes); operations.AddRange(CompiledRouteCatalogDeclarations.ReadOperations([owner.Contracts]));
++            foreach (var source in owner.Contracts.GetCustomAttributes<RouteCatalogDeclarationSourceAttribute>())
++            {
++                if (source.SourceType.GetProperty("ReceiverMethods", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IReadOnlyDictionary<string, string> methods
++                    || source.SourceType.GetProperty("Commands", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IEnumerable<CommandIntentDeclaration> commands)
++                    throw new InvalidOperationException("The complete compiled owner receiver and command-policy inventories are required.");
++                foreach (var route in routes.Where(route => methods.ContainsKey(route.RouteId)))
++                {
++                    bool actorQuery = RouteCatalogProjectionActorPolicy.IsQuery(route);
++                    if (actorQuery && methods[route.RouteId] != RouteCatalogProjectionActorPolicy.Method)
++                        throw new InvalidOperationException("The owner actor query differs from its existing SDK method contract.");
++                    bindings.Add(new(route.RouteId, actorQuery ? gatewayAppId : apps[owner.Project.Resource], methods[route.RouteId], route.ContractVersion, false, "*"));
++                }
++                policies.AddRange(commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, 1, gatewayAppId)));
++            }
++        }
++        if (bindings.Count != declarations.Count || declarations.Any(declaration => declaration.Execution?.TargetKind != "domain-service" && !RouteCatalogProjectionActorPolicy.IsQuery(declaration)))
++            throw new InvalidOperationException("Every selected domain-service declaration requires one compiled receiver binding.");
++        return VersionedRouteCatalogBuilder.Build(new(1, "Development", declarations, operations, bindings, policies));
++    }
++
++    private static IDaprSidecarResource Sidecar(ProjectResource project) => project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
++    private static string AppId(ProjectResource project) => Sidecar(project).Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.AppId
++        ?? throw new InvalidOperationException("A selected sidecar lacks its actual AppId.");
++    internal static JsonObject ReadYamlOrJson(string path)
++    {
++        string bytes = File.ReadAllText(Path.GetFullPath(path));
++        object document = new DeserializerBuilder().WithAttemptingUnquotedStringTypeDeserialization().Build().Deserialize<object>(bytes);
++        return JsonNode.Parse(new SerializerBuilder().JsonCompatible().Build().Serialize(document))!.AsObject();
++    }
++    private static string Write(string directory, string name, byte[] bytes)
++    {
++        string path = Path.Combine(directory, name);
++        var options = new FileStreamOptions { Mode = FileMode.CreateNew, Access = FileAccess.Write, Share = FileShare.None };
++        if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
++        using var stream = new FileStream(path, options); stream.Write(bytes); return path;
++    }
++}
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComponentObserver.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComponentObserver.cs
+new file mode 100644
+index 000000000..f5c88f881
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComponentObserver.cs
+@@ -0,0 +1,70 @@
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++using Aspire.Hosting.Eventing;
++using Aspire.Hosting.Lifecycle;
++using CommunityToolkit.Aspire.Hosting.Dapr;
++using Hexalith.EventStore.Contracts.Routing;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>Binds observations to the ordinary toolkit-rendered authority after all modeled backend overrides and before any child starts.</summary>
++internal sealed class DevelopmentRouteCatalogComponentObserver(IDaprComponentResource authority, IReadOnlyList<ProjectResource> participants,
++    IReadOnlyDictionary<ProjectResource, string> selectedAppIds, IReadOnlyDictionary<ProjectResource, string> accessControlPaths) : IDistributedApplicationEventingSubscriber
++{
++    internal string? ComponentPath { get; private set; }
++
++    /// <inheritdoc/>
++    public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
++    {
++        eventing.Subscribe<BeforeStartEvent>(ObserveAsync);
++        return Task.CompletedTask;
++    }
++
++    private async Task ObserveAsync(BeforeStartEvent startup, CancellationToken token)
++    {
++        if (authority.Options?.LocalPath is not null) throw new InvalidOperationException("The dedicated authority must remain an ordinary modeled component.");
++        List<string> loaded = [];
++        foreach (var participant in participants)
++        {
++            var sidecar = participant.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
++            var options = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
++            if (options.AppId != selectedAppIds[participant] || Path.GetFullPath(options.Config!) != accessControlPaths[participant]
++                || sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().Count(reference => ReferenceEquals(reference.Component, authority)) != 1)
++                throw new InvalidOperationException("The selected receiver identity, ACL or authority reference changed after catalog composition.");
++            var executable = startup.Model.Resources.OfType<ExecutableResource>().Single(resource => resource.Name == sidecar.Name + "-cli");
++            List<object> arguments = [];
++            foreach (var callback in executable.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
++                await callback.Callback(new CommandLineArgsCallbackContext(arguments, executable, token)).ConfigureAwait(false);
++            var candidates = arguments.Select((value, index) => (value, index)).Where(item => item.value is "--resources-path")
++                .Select(item => Path.Combine((string)arguments[item.index + 1], authority.Name + ".yaml")).Where(File.Exists)
++                .Select(Path.GetFullPath).Distinct(StringComparer.Ordinal).ToArray();
++            if (candidates.Length != 1) throw new InvalidOperationException("The actual sidecar must load exactly one toolkit-rendered authority component.");
++            loaded.Add(candidates[0]);
++        }
++        if (loaded.Distinct(StringComparer.Ordinal).Count() != 1) throw new InvalidOperationException("The cohort selected different authority component bytes.");
++        string path = loaded[0];
++        var parent = new DirectoryInfo(Path.GetDirectoryName(path)!);
++        if (parent.Name != authority.Name || parent.Parent?.Name.StartsWith("aspire-dapr.", StringComparison.Ordinal) != true
++            || parent.LinkTarget is not null || parent.Parent.LinkTarget is not null || new FileInfo(path).LinkTarget is not null
++            || new FileInfo(path).Length > 1024 * 1024)
++            throw new InvalidOperationException("The authority must be the bounded regular file emitted by the toolkit into its owned temporary resource directory.");
++        JsonObject component = DevelopmentRouteCatalogAspireExtensions.ReadYamlOrJson(path);
++        if (component["kind"]?.GetValue<string>() != "Component" || component["metadata"]?["name"]?.GetValue<string>() != authority.Name
++            || component["spec"]?["type"]?.GetValue<string>() != "state.redis")
++            throw new InvalidOperationException("The rendered component changed its dedicated authority identity.");
++        var metadata = component["spec"]!["metadata"]!.AsArray();
++        foreach (var item in metadata.Where(item => item?["name"]?.GetValue<string>() is "actorStateStore" or "keyPrefix").ToArray()) metadata.Remove(item);
++        metadata.Add(new JsonObject { ["name"] = "keyPrefix", ["value"] = "name" });
++        component["metadata"]!["labels"] ??= new JsonObject();
++        component["metadata"]!["labels"]![RouteCatalogAuthorityComponentPolicy.RoleLabel] = RouteCatalogAuthorityComponentPolicy.IsolatedRole;
++        component["scopes"] = JsonSerializer.SerializeToNode(participants.Select(participant => selectedAppIds[participant]).Order(StringComparer.Ordinal).ToArray());
++        // The toolkit has no public scopes builder. Update only the role/scopes of its actual
++        // modeled output in place; preserve its late-resolved backend/auth metadata and loading path.
++        await File.WriteAllBytesAsync(path, JsonSerializer.SerializeToUtf8Bytes(component), token).ConfigureAwait(false);
++        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite);
++        ComponentPath = path;
++    }
++}
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComposition.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComposition.cs
+new file mode 100644
+index 000000000..2ca82f82f
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComposition.cs
+@@ -0,0 +1,24 @@
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>Owns only the private, per-run catalog coordination and rendered Dapr inputs, disposed after the application.</summary>
++public sealed class DevelopmentRouteCatalogComposition : IAsyncDisposable
++{
++    internal DevelopmentRouteCatalogComposition(string directory, string rootDigest)
++    {
++        Directory = directory;
++        RootDigest = rootDigest;
++    }
++
++    /// <summary>The newly created private directory; it never belongs to a checkout or another run.</summary>
++    public string Directory { get; }
++
++    /// <summary>The canonical complete owner catalog digest selected before any child starts.</summary>
++    public string RootDigest { get; }
++
++    /// <summary>Removes this run's private inputs after its application and sidecars have been disposed.</summary>
++    public ValueTask DisposeAsync()
++    {
++        if (System.IO.Directory.Exists(Directory)) System.IO.Directory.Delete(Directory, recursive: true);
++        return ValueTask.CompletedTask;
++    }
++}
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogInvocation.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogInvocation.cs
+new file mode 100644
+index 000000000..8205cfeed
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogInvocation.cs
+@@ -0,0 +1,7 @@
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>An owner-declared required incoming call, bound to the actual selected caller resource.</summary>
++public sealed record DevelopmentRouteCatalogInvocation(IResourceBuilder<ProjectResource> Caller, string Method, IReadOnlyList<string> HttpMethods);
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwner.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwner.cs
+new file mode 100644
+index 000000000..c3d6302db
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwner.cs
+@@ -0,0 +1,8 @@
++using System.Reflection;
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>The actual selected domain resource and its complete compiled contract and command-adapter owners.</summary>
++public sealed record DevelopmentRouteCatalogOwner(IResourceBuilder<ProjectResource> Project, Assembly Contracts, Assembly Adapters);
+diff --git a/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogReceiver.cs b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogReceiver.cs
+new file mode 100644
+index 000000000..474dd6834
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogReceiver.cs
+@@ -0,0 +1,7 @@
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>An actual catalog participant and the exact incoming transport closure declared by its owning AppHost.</summary>
++public sealed record DevelopmentRouteCatalogReceiver(IResourceBuilder<ProjectResource> Project, IReadOnlyList<DevelopmentRouteCatalogInvocation> Invocations);
+diff --git a/src/Hexalith.EventStore.Aspire/EventStoreRedisBackendAnnotation.cs b/src/Hexalith.EventStore.Aspire/EventStoreRedisBackendAnnotation.cs
+new file mode 100644
+index 000000000..8448ca73c
+--- /dev/null
++++ b/src/Hexalith.EventStore.Aspire/EventStoreRedisBackendAnnotation.cs
+@@ -0,0 +1,6 @@
++using Aspire.Hosting.ApplicationModel;
++
++namespace Hexalith.EventStore.Aspire;
++
++/// <summary>Retains the backend input actually selected by the SDK topology, independently of shadow consumer component templates.</summary>
++internal sealed record EventStoreRedisBackendAnnotation(string? ComponentPath, string DefaultRedisHost) : IResourceAnnotation;
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuthorityComponentPolicy.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuthorityComponentPolicy.cs
+new file mode 100644
+index 000000000..594f07b80
+--- /dev/null
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuthorityComponentPolicy.cs
+@@ -0,0 +1,33 @@
++using System.Text.Json;
++
++namespace Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>The explicit dedicated component role for a shared authority isolated from business state keys.</summary>
++public static class RouteCatalogAuthorityComponentPolicy
++{
++    /// <summary>The nonsecret Dapr component role label.</summary>
++    public const string RoleLabel = "hexalith.io/component-role";
++    /// <summary>The versioned isolated routing authority role.</summary>
++    public const string IsolatedRole = "eventstore-routing-authority-v1";
++
++    /// <summary>Checks the actual loaded dedicated role, shared component-name keyspace and absence of actor ownership.</summary>
++    public static bool IsDedicatedComponent(JsonElement component, string? expectedName = null)
++    {
++        try
++        {
++            var identity = component.GetProperty("metadata");
++            string? name = identity.GetProperty("name").GetString();
++            if (name is not { Length: > 0 and <= 63 } || expectedName is not null && name != expectedName
++                || !char.IsAsciiLetterOrDigit(name[0]) || !char.IsAsciiLetterOrDigit(name[^1])
++                || name.Any(character => character is not (>= 'a' and <= 'z' or >= '0' and <= '9' or '-'))
++                || component.GetProperty("kind").GetString() != "Component" || component.GetProperty("spec").GetProperty("type").GetString() != "state.redis"
++                || identity.GetProperty("labels").GetProperty(RoleLabel).GetString() != IsolatedRole) return false;
++            var metadata = component.GetProperty("spec").GetProperty("metadata").EnumerateArray().ToArray();
++            var prefixes = metadata.Where(item => item.GetProperty("name").GetString() == "keyPrefix").ToArray();
++            return prefixes.Length == 1 && prefixes[0].GetProperty("value").GetString() == "name"
++                && !metadata.Any(item => item.GetProperty("name").GetString() == "actorStateStore"
++                    && !item.GetProperty("value").ToString().Equals("false", StringComparison.OrdinalIgnoreCase));
++        }
++        catch (Exception exception) when (exception is JsonException or InvalidOperationException or KeyNotFoundException) { return false; }
++    }
++}
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestEndpoint.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestEndpoint.cs
+new file mode 100644
+index 000000000..108611f56
+--- /dev/null
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestEndpoint.cs
+@@ -0,0 +1,11 @@
++namespace Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>An independently captured generated public query endpoint, protected by the SDK action filter.</summary>
++/// <param name="Pattern">The actual ASP.NET route template.</param>
++/// <param name="RouteId">The compiled owner query identity.</param>
++/// <param name="DeclarationDigest">The complete compiled owner declaration digest.</param>
++/// <param name="OperationDigest">The compiled public schema and eligibility digest.</param>
++/// <param name="ContractType">The actual generated action's request type.</param>
++/// <param name="Policies">The actual authorization policies, including the real SDK human policy.</param>
++public sealed record RouteCatalogGeneratedRestEndpoint(string Pattern, string RouteId, string DeclarationDigest,
++    string OperationDigest, string ContractType, IReadOnlyList<string> Policies);
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestPolicy.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestPolicy.cs
+new file mode 100644
+index 000000000..90ca53674
+--- /dev/null
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGeneratedRestPolicy.cs
+@@ -0,0 +1,69 @@
++using System.Text.RegularExpressions;
++
++namespace Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>Validates independently observed generated human ingress without changing finite service dispatch.</summary>
++public static class RouteCatalogGeneratedRestPolicy
++{
++    /// <summary>The explicit SDK generated-query fence implementation.</summary>
++    public const string FenceVersion = "eventstore-generated-human-rest-v1";
++
++    /// <summary>Validates a declared GET grant against real typed public queries and their complete owner schemas.</summary>
++    public static bool AdmitsGrant(RouteCatalogEnvelope catalog, RouteCatalogReceiverSurface? receiver, string grant, IReadOnlyList<string> verbs)
++    {
++        ArgumentNullException.ThrowIfNull(catalog);
++        ArgumentNullException.ThrowIfNull(verbs);
++        if (receiver?.FenceVersion != FenceVersion || receiver.GeneratedRest is not { Count: > 0 } generated
++            || catalog.SchemaVersion != 3 || verbs.Count != 1 || verbs[0] != "GET"
++            || string.IsNullOrWhiteSpace(grant) || grant.Length > 512 || grant.Contains('?', StringComparison.Ordinal)
++            || grant.Contains('#', StringComparison.Ordinal) || grant.Contains('\\', StringComparison.Ordinal)) return false;
++        string[] segments = grant.Trim('/').Split('/');
++        if (segments.Length is < 2 or > 32 || segments[^1] == "**" || segments.TakeWhile(segment => segment is not ("*" or "**")).Count() < 2
++            || segments.Any(segment => segment.Length == 0 || segment is "." or ".."
++                || segment.Contains('*', StringComparison.Ordinal) && segment is not ("*" or "**"))) return false;
++        var admitted = new List<RouteCatalogGeneratedRestEndpoint>();
++        foreach (var endpoint in generated)
++        {
++            RouteContractDeclaration? declaration = catalog.Declarations.SingleOrDefault(value => value.RouteId == endpoint.RouteId);
++            RouteOperationContract? operation = catalog.Operations!.SingleOrDefault(value => value.RouteId == endpoint.RouteId);
++            if (declaration is not { Kind: "query", Execution: not null } || operation is not { Ingress: "public" }
++                || endpoint.ContractType != declaration.Execution.HandlerType
++                || endpoint.DeclarationDigest != RouteCatalogCodec.ComputeDeclarationDigest(declaration)
++                || operation.Digest != RouteCatalogCodec.ComputeOperationContractDigest(operation)
++                || endpoint.OperationDigest != operation.Digest || !endpoint.Policies.Contains("EventStoreHuman", StringComparer.Ordinal)
++                || !receiver.Endpoints.Any(actual => actual.Pattern == endpoint.Pattern && !actual.Anonymous && actual.Admitted
++                    && actual.Methods.SequenceEqual(["GET"], StringComparer.Ordinal)
++                    && actual.Policies.SequenceEqual(endpoint.Policies, StringComparer.Ordinal))) return false;
++            admitted.Add(endpoint);
++        }
++        if (admitted.Select(value => value.Pattern).Distinct(StringComparer.OrdinalIgnoreCase).Count() != admitted.Count) return false;
++        string expression = "^/" + string.Join('/', segments.Select(segment => segment switch
++        {
++            "*" => "[^/]+", "**" => ".*", _ => Regex.Escape(segment),
++        })) + "(?:/.*)?$";
++        // Match route structure, never caller data. Runtime admission uses the actual selected
++        // endpoint object, human JWT and SDK action filter rather than this transport prefix.
++        bool Reachable(string pattern) => Regex.IsMatch(
++            Regex.Replace(pattern, @"\{[^{}]+\}", "owned-segment", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)),
++            expression, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.NonBacktracking, TimeSpan.FromMilliseconds(100));
++        return admitted.Any(endpoint => Reachable(endpoint.Pattern))
++            && receiver.Endpoints.Where(endpoint => endpoint.Admitted && Reachable(endpoint.Pattern)).All(endpoint =>
++                admitted.Any(typed => typed.Pattern == endpoint.Pattern) && endpoint.Operation == "generated-human-query");
++    }
++
++    /// <summary>Preserves exact SDK catalog callbacks under their existing participant and workload guards.</summary>
++    public static bool AdmitsControlGrant(RouteCatalogReceiverSurface? receiver, string method, IReadOnlyList<string> verbs)
++    {
++        ArgumentNullException.ThrowIfNull(verbs);
++        if (receiver?.FenceVersion != FenceVersion || verbs.Count != 1) return false;
++        string? operation = method == "internal/routing/catalog-generation" && verbs[0] == "GET"
++            ? Authorization.EventStoreOperationIdentifiers.RouteCatalogRead
++            : verbs[0] == "POST" && method is "internal/routing/catalog/prepare" or "internal/routing/catalog/ready"
++                or "internal/routing/catalog/commit" or "internal/routing/catalog/rollback" or "internal/routing/catalog/reconcile"
++                ? Authorization.EventStoreOperationIdentifiers.RouteCatalogActivate : null;
++        return operation is not null && receiver.Endpoints.Any(endpoint => endpoint.Pattern == "/" + method && endpoint.Admitted
++            && !endpoint.Anonymous && !endpoint.IsPattern && endpoint.Operation == operation
++            && endpoint.Methods.SequenceEqual(verbs, StringComparer.Ordinal)
++            && endpoint.Policies.SequenceEqual(["EventStoreRouteCatalogWorkload:" + operation], StringComparer.Ordinal));
++    }
++}
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogProjectionActorPolicy.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogProjectionActorPolicy.cs
+new file mode 100644
+index 000000000..1b7b58719
+--- /dev/null
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogProjectionActorPolicy.cs
+@@ -0,0 +1,21 @@
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Queries;
++
++namespace Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>The existing SDK projection-query actor contract, independently bound to the gateway's actual registration.</summary>
++public static class RouteCatalogProjectionActorPolicy
++{
++    /// <summary>The existing runtime actor type name.</summary>
++    public const string ActorType = "ProjectionActor";
++    /// <summary>The existing generic query method.</summary>
++    public const string Method = nameof(IProjectionActor.QueryAsync);
++    /// <summary>Only an explicit typed projection query may bind this existing SDK actor family.</summary>
++    public static bool IsQuery(RouteContractDeclaration declaration)
++    {
++        ArgumentNullException.ThrowIfNull(declaration);
++        return declaration.Kind == "query"
++            && declaration.Execution is { TargetKind: "projection-actor", ActorType: ActorType, QueryKind: "projection" }
++            && declaration.Operation == EventStoreOperationIdentifiers.ProjectionQuery;
++    }
++}
+diff --git a/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGatewayRegistration.cs b/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGatewayRegistration.cs
+new file mode 100644
+index 000000000..bb17ee0c6
+--- /dev/null
++++ b/src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGatewayRegistration.cs
+@@ -0,0 +1,4 @@
++namespace Hexalith.EventStore.Server.Routing;
++
++/// <summary>Prevents duplicate explicit Development gateway enrollment from composed host registrations.</summary>
++internal sealed class RunScopedRouteCatalogGatewayRegistration;
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogCallerExtensions.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogCallerExtensions.cs
+new file mode 100644
+index 000000000..963f2a45d
+--- /dev/null
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogCallerExtensions.cs
+@@ -0,0 +1,48 @@
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++
++namespace Hexalith.EventStore.ServiceDefaults.Routing;
++
++/// <summary>Explicit enrollment for a selected caller that owns no domain handlers and receives only SDK catalog controls.</summary>
++public static class DevelopmentRouteCatalogCallerExtensions
++{
++    /// <summary>Observes real auth, selected topology and actual endpoint metadata without inventing executable owner declarations.</summary>
++    public static IServiceCollection AddEventStoreDevelopmentCallerCatalog(this IServiceCollection services, IConfiguration configuration, string appId)
++    {
++        ArgumentNullException.ThrowIfNull(services); ArgumentNullException.ThrowIfNull(configuration); ArgumentException.ThrowIfNullOrWhiteSpace(appId);
++        if (string.IsNullOrEmpty(configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"])) return services;
++        if (configuration["EventStore:RouteCatalog:DevelopmentBootstrap:AuthorityRole"] != RouteCatalogAuthorityComponentPolicy.IsolatedRole)
++            throw new RouteCatalogUnavailableException("Caller-only enrollment requires a dedicated, independently isolated authority component.");
++        string actualAppId = configuration["EventStore:RouteCatalog:DevelopmentBootstrap:AppId"] ?? appId;
++        return services.AddEventStoreDevelopmentRouteCatalogBootstrap(configuration, async (provider, token) =>
++        {
++            var fence = provider.GetRequiredService<FiniteRouteCatalogReceiver>();
++            await fence.WaitForCaptureAsync(token).ConfigureAwait(false);
++            var surface = fence.Observe();
++            var actual = await DevelopmentRouteCatalogInputs.CaptureAsync(configuration, actualAppId, [], [], [], [],
++                surface.Endpoints.Where(endpoint => endpoint.Admitted).Select(endpoint => new RouteCatalogAuxiliaryOperation(actualAppId,
++                    endpoint.Pattern.TrimStart('/'), endpoint.Operation!, "catalog-control")).ToArray(), token).ConfigureAwait(false);
++            return actual with { Operations = [], ReceiverSurface = surface };
++        });
++    }
++
++    /// <summary>Captures the real caller host using unchanged finite-v1 controls; ordinary UI routing and outbound credential channels stay intact.</summary>
++    public static WebApplication UseEventStoreDevelopmentCallerCatalog(this WebApplication app)
++        => FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app, endpoint =>
++        {
++            if (endpoint.Metadata.GetMetadata<RouteCatalogControlEndpointMetadata>() is null) return null;
++            string method = endpoint.RoutePattern.RawText?.Trim('/') ?? string.Empty;
++            string? operation = method == RouteCatalogEndpointExtensions.ReadbackMethod ? EventStoreOperationIdentifiers.RouteCatalogRead
++                : new[] { "prepare", "ready", "commit", "rollback", "reconcile" }.Any(stage => method == "internal/routing/catalog/" + stage)
++                    ? EventStoreOperationIdentifiers.RouteCatalogActivate : null;
++            string policy = EventStoreWorkloadAuthenticationDefaults.OperationPolicy(RouteCatalogEndpointExtensions.WorkloadScheme, operation ?? string.Empty);
++            return operation is not null && endpoint.Metadata.GetOrderedMetadata<IAuthorizeData>().Select(data => data.Policy).SequenceEqual([policy], StringComparer.Ordinal)
++                ? operation : null;
++        });
++}
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogExtensions.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogExtensions.cs
+new file mode 100644
+index 000000000..a52aa3b1f
+--- /dev/null
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogExtensions.cs
+@@ -0,0 +1,36 @@
++using System.Reflection;
++
++using Microsoft.AspNetCore.Builder;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++
++namespace Hexalith.EventStore.ServiceDefaults.Routing;
++
++/// <summary>Explicitly enrolls generated public human GET hosts in the owning Development composition.</summary>
++public static class GeneratedRestRouteCatalogExtensions
++{
++    /// <summary>Captures actual generated endpoint metadata and complete compiled owner schemas for activation.</summary>
++    public static IServiceCollection AddEventStoreDevelopmentGeneratedRestCatalog(this IServiceCollection services,
++        IConfiguration configuration, string appId, params Assembly[] contractOwners)
++    {
++        ArgumentNullException.ThrowIfNull(services);
++        ArgumentNullException.ThrowIfNull(configuration);
++        ArgumentException.ThrowIfNullOrWhiteSpace(appId);
++        ArgumentNullException.ThrowIfNull(contractOwners);
++        if (string.IsNullOrEmpty(configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"])) return services;
++        string actualAppId = configuration["EventStore:RouteCatalog:DevelopmentBootstrap:AppId"] ?? appId;
++        services.AddSingleton<GeneratedRestRouteCatalogReceiver>();
++        return services.AddEventStoreDevelopmentRouteCatalogBootstrap(configuration, async (provider, token) =>
++        {
++            var receiver = provider.GetRequiredService<GeneratedRestRouteCatalogReceiver>();
++            await receiver.WaitForCaptureAsync(token).ConfigureAwait(false);
++            var actual = await DevelopmentRouteCatalogInputs.CaptureAsync(configuration, actualAppId,
++                CompiledRouteCatalogDeclarations.Read(contractOwners), [], [], [], [], token).ConfigureAwait(false);
++            return actual with { ReceiverSurface = receiver.Observe(), Operations = CompiledRouteCatalogDeclarations.ReadOperations(contractOwners) };
++        });
++    }
++
++    /// <summary>Fences app-channel deliveries before generated actions while preserving ordinary human HTTP.</summary>
++    public static WebApplication UseEventStoreDevelopmentGeneratedRestCatalogReceiver(this WebApplication app)
++        => GeneratedRestRouteCatalogReceiver.UseDevelopmentGeneratedRestCatalogReceiver(app);
++}
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogReceiver.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogReceiver.cs
+new file mode 100644
+index 000000000..89bb9ead9
+--- /dev/null
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRestRouteCatalogReceiver.cs
+@@ -0,0 +1,204 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++
++using Microsoft.AspNetCore.Authentication;
++using Microsoft.AspNetCore.Authentication.JwtBearer;
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Authorization.Infrastructure;
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Http;
++using Microsoft.AspNetCore.Mvc;
++using Microsoft.AspNetCore.Mvc.Controllers;
++using Microsoft.AspNetCore.Routing;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Options;
++
++namespace Hexalith.EventStore.ServiceDefaults.Routing;
++
++/// <summary>Fences opted-in Dapr human ingress to actual generated public GET actions and the SDK catalog filter.</summary>
++public sealed class GeneratedRestRouteCatalogReceiver
++{
++    private readonly Dictionary<RouteEndpoint, string> _captured = new(ReferenceEqualityComparer.Instance);
++    private readonly Dictionary<RouteEndpoint, string> _technical = new(ReferenceEqualityComparer.Instance);
++    private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
++    private Func<IEnumerable<Endpoint>>? _endpoints;
++    private IServiceProvider? _services;
++
++    /// <summary>Installs a separate generated-query fence without changing finite service dispatch.</summary>
++    public static WebApplication UseDevelopmentGeneratedRestCatalogReceiver(WebApplication app)
++    {
++        ArgumentNullException.ThrowIfNull(app);
++        if (string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"])) return app;
++        if (!app.Environment.IsDevelopment() || string.IsNullOrEmpty(app.Configuration[DaprAppChannelToken.ConfigurationKey]))
++            throw new RouteCatalogUnavailableException("Generated Development ingress requires its owning profile and actual app-channel token.");
++        var fence = app.Services.GetRequiredService<GeneratedRestRouteCatalogReceiver>();
++        fence._services = app.Services;
++        app.Use(next =>
++        {
++            ICollection<EndpointDataSource> sources = ((IEndpointRouteBuilder)app).DataSources;
++            foreach (EndpointDataSource source in sources.ToArray())
++            {
++                sources.Remove(source);
++                sources.Add(new FiniteRouteCatalogEndpointDataSource(source));
++            }
++            fence._endpoints = () => sources.SelectMany(source => source.Endpoints);
++            return next;
++        });
++        app.Use(async (context, next) =>
++        {
++            if (!context.Request.Headers.ContainsKey(DaprAppChannelToken.HeaderName))
++            {
++                await next(context).ConfigureAwait(false);
++                return;
++            }
++            if (!DaprAppChannelToken.IsAdmitted(DaprAppChannelToken.Verify(context.Request, app.Configuration, app.Environment)))
++            {
++                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
++                return;
++            }
++            if (context.GetEndpoint() is RouteEndpoint technical && fence._ready.Task.IsCompletedSuccessfully
++                && fence._technical.TryGetValue(technical, out string? capturedTechnical)
++                && fence.DescribeTechnical(technical) is { } currentTechnical && currentTechnical == capturedTechnical
++                && (!capturedTechnical.StartsWith("probe:", StringComparison.Ordinal) || HttpMethods.IsGet(context.Request.Method)))
++            {
++                // Only captured exact probes and SDK-mapped callbacks reach their existing
++                // anonymous-probe or workload authorization boundary. No human policy substitutes for it.
++                await next(context).ConfigureAwait(false);
++                return;
++            }
++            if (context.GetEndpoint() is not RouteEndpoint selected || !HttpMethods.IsGet(context.Request.Method)
++                || !fence._ready.Task.IsCompletedSuccessfully || !fence._captured.TryGetValue(selected, out string? fingerprint)
++                || fence.Describe(selected) is not { } actual || Fingerprint(actual) != fingerprint)
++            {
++                context.Response.StatusCode = StatusCodes.Status403Forbidden;
++                return;
++            }
++            AuthenticateResult human = await context.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme).ConfigureAwait(false);
++            if (!human.Succeeded || human.Principal is null)
++            {
++                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
++                return;
++            }
++            AuthorizationResult admitted = await context.RequestServices.GetRequiredService<IAuthorizationService>()
++                .AuthorizeAsync(human.Principal, context, EventStoreHttpHostSecurityExtensions.HumanPolicy).ConfigureAwait(false);
++            if (!admitted.Succeeded || RouteCatalogSurfacePolicy.Surface(human.Principal) is null)
++            {
++                context.Response.StatusCode = StatusCodes.Status403Forbidden;
++                return;
++            }
++            // The installed real SDK action filter acquires the current committed lease and
++            // validates the actual resolved tenant, full declaration, schemas and eligibility.
++            await next(context).ConfigureAwait(false);
++        });
++        app.Lifetime.ApplicationStarted.Register(() =>
++        {
++            try
++            {
++                foreach (RouteEndpoint endpoint in fence.Current())
++                {
++                    if (fence.Describe(endpoint) is { } description) fence._captured.Add(endpoint, Fingerprint(description));
++                    if (fence.DescribeTechnical(endpoint) is { } technical) fence._technical.Add(endpoint, technical);
++                }
++                if (fence._captured.Count == 0) throw new RouteCatalogUnavailableException("No qualified generated public query receiver is installed.");
++                fence._ready.TrySetResult();
++            }
++            catch (Exception failure) { fence._ready.TrySetException(failure); throw; }
++        });
++        return app;
++    }
++
++    /// <summary>Waits for the independently captured real endpoint source.</summary>
++    public Task WaitForCaptureAsync(CancellationToken cancellationToken) => _ready.Task.WaitAsync(cancellationToken);
++
++    /// <summary>Recaptures actual metadata, retaining admission only for unchanged endpoint identities.</summary>
++    public RouteCatalogReceiverSurface Observe()
++    {
++        if (!_ready.Task.IsCompletedSuccessfully) throw new RouteCatalogUnavailableException("The generated receiver has not captured its real endpoint inventory.");
++        List<RouteCatalogGeneratedRestEndpoint> generated = [];
++        List<RouteCatalogReceiverEndpoint> endpoints = [];
++        foreach (RouteEndpoint endpoint in Current())
++        {
++            var description = Describe(endpoint);
++            bool admitted = description is not null && _captured.TryGetValue(endpoint, out string? prior) && Fingerprint(description) == prior;
++            bool technical = _technical.TryGetValue(endpoint, out string? capturedTechnical) && DescribeTechnical(endpoint) == capturedTechnical;
++            string pattern = Pattern(endpoint);
++            string[] methods = endpoint.Metadata.GetMetadata<IHttpMethodMetadata>()?.HttpMethods.Order(StringComparer.Ordinal).ToArray() ?? [];
++            string[] policies = Policies(endpoint);
++            if (admitted) generated.Add(description!);
++            string? operation = admitted ? "generated-human-query" : technical && endpoint.Metadata.GetMetadata<RouteCatalogControlEndpointMetadata>() is not null
++                ? pattern == "/" + RouteCatalogEndpointExtensions.ReadbackMethod ? EventStoreOperationIdentifiers.RouteCatalogRead : EventStoreOperationIdentifiers.RouteCatalogActivate : null;
++            endpoints.Add(new(pattern, methods, operation, policies,
++                endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null, endpoint.RoutePattern.Parameters.Count > 0, admitted || technical && operation is not null));
++        }
++        return new(RouteCatalogGeneratedRestPolicy.FenceVersion, endpoints.OrderBy(value => value.Pattern, StringComparer.Ordinal).ToArray())
++        {
++            GeneratedRest = generated.OrderBy(value => value.Pattern, StringComparer.Ordinal).ToArray(),
++        };
++    }
++
++    private IEnumerable<RouteEndpoint> Current() => (_endpoints?.Invoke() ?? throw new RouteCatalogUnavailableException("The generated endpoint source is unavailable."))
++        .Select(endpoint => endpoint as RouteEndpoint ?? throw new RouteCatalogUnavailableException("Unknown generated endpoint source."));
++
++    private RouteCatalogGeneratedRestEndpoint? Describe(RouteEndpoint endpoint)
++    {
++        var metadata = endpoint.Metadata.GetMetadata<RouteCatalogEndpointAttribute>();
++        var action = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
++        string[] policies = Policies(endpoint);
++        IServiceProvider services = _services ?? throw new RouteCatalogUnavailableException("The generated receiver services are unavailable.");
++        var effectivePolicy = services.GetRequiredService<IOptions<AuthorizationOptions>>().Value.GetPolicy(EventStoreHttpHostSecurityExtensions.HumanPolicy);
++        if (metadata is not { Kind: "query" } || action is null || endpoint.RoutePattern.Parameters.Any(parameter => parameter.IsCatchAll) || endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null
++            || endpoint.Metadata.GetMetadata<IHttpMethodMetadata>()?.HttpMethods.SequenceEqual(["GET"], StringComparer.Ordinal) != true
++            || !policies.SequenceEqual([EventStoreHttpHostSecurityExtensions.HumanPolicy], StringComparer.Ordinal)
++            || endpoint.Metadata.GetOrderedMetadata<IAuthorizeData>().Any(data => !string.IsNullOrEmpty(data.Roles) || !string.IsNullOrEmpty(data.AuthenticationSchemes))
++            || effectivePolicy?.AuthenticationSchemes.SequenceEqual([JwtBearerDefaults.AuthenticationScheme], StringComparer.Ordinal) != true
++            || effectivePolicy.Requirements.Count != 2 || !effectivePolicy.Requirements.Any(requirement => requirement is EventStoreHumanCredentialRequirement)
++            || !effectivePolicy.Requirements.Any(requirement => requirement is DenyAnonymousAuthorizationRequirement)
++            || !action.FilterDescriptors.Any(filter => filter.Filter is ServiceFilterAttribute service && service.ServiceType == typeof(GeneratedRouteCatalogFilter))
++            || !services.GetRequiredService<IServiceProviderIsService>().IsService(typeof(GeneratedRouteCatalogFilter))) return null;
++        string? domain = metadata.ContractType.GetProperty("Domain")?.GetValue(null) as string;
++        string? discriminator = metadata.ContractType.GetProperty("QueryType")?.GetValue(null) as string;
++        var declarations = CompiledRouteCatalogDeclarations.Read([metadata.ContractType.Assembly]);
++        var declaration = declarations.SingleOrDefault(value => value.Kind == "query" && value.Domain == domain && value.MessageType == discriminator);
++        if (declaration is not { Execution: not null } || declaration.Execution.HandlerType != metadata.ContractType.FullName) return null;
++        var operation = CompiledRouteCatalogDeclarations.ReadOperations([metadata.ContractType.Assembly]).SingleOrDefault(value => value.RouteId == declaration.RouteId);
++        if (operation is not { Ingress: "public" }) return null;
++        return new(Pattern(endpoint), declaration.RouteId, RouteCatalogCodec.ComputeDeclarationDigest(declaration),
++            operation.Digest, metadata.ContractType.FullName!, policies);
++    }
++
++    private string? DescribeTechnical(RouteEndpoint endpoint)
++    {
++        string path = Pattern(endpoint);
++        string[] methods = endpoint.Metadata.GetMetadata<IHttpMethodMetadata>()?.HttpMethods.Order(StringComparer.Ordinal).ToArray() ?? [];
++        string[] policies = Policies(endpoint);
++        if (endpoint.RoutePattern.Parameters.Count != 0) return null;
++        bool anonymous = endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null;
++        // MapHealthChecks intentionally has no verb metadata. Its exact captured probe
++        // still requires GET at the request boundary; this does not admit other anonymous routes.
++        if ((methods.Length == 0 || methods.SequenceEqual(["GET"], StringComparer.Ordinal))
++            && EventStoreHttpEndpointInventory.IsProbe(path) && anonymous && policies.Length == 0)
++            return "probe:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { path, methods, policies, anonymous })));
++        if (methods.Length != 1) return null;
++        if (anonymous || endpoint.Metadata.GetMetadata<RouteCatalogControlEndpointMetadata>() is null
++            || !RouteCatalogEndpointExtensions.IsControlMethod(path.TrimStart('/'), new HttpMethod(methods[0]))) return null;
++        string operation = path == "/" + RouteCatalogEndpointExtensions.ReadbackMethod ? EventStoreOperationIdentifiers.RouteCatalogRead : EventStoreOperationIdentifiers.RouteCatalogActivate;
++        string policy = EventStoreWorkloadAuthenticationDefaults.OperationPolicy(RouteCatalogEndpointExtensions.WorkloadScheme, operation);
++        var effective = _services!.GetRequiredService<IOptions<AuthorizationOptions>>().Value.GetPolicy(policy);
++        if (!policies.SequenceEqual([policy], StringComparer.Ordinal)
++            || effective?.AuthenticationSchemes.SequenceEqual([RouteCatalogEndpointExtensions.WorkloadScheme], StringComparer.Ordinal) != true
++            || effective.Requirements.Count != 3 || !effective.Requirements.Any(requirement => requirement is DenyAnonymousAuthorizationRequirement)
++            || !effective.Requirements.OfType<ClaimsAuthorizationRequirement>().Any(requirement => requirement.ClaimType == EventStoreWorkloadAuthenticationDefaults.WorkloadClaimType)
++            || !effective.Requirements.OfType<ClaimsAuthorizationRequirement>().Any(requirement => requirement.ClaimType == EventStoreWorkloadAuthenticationDefaults.OperationClaimType
++                && requirement.AllowedValues?.SequenceEqual([operation], StringComparer.Ordinal) == true)) return null;
++        return Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { path, methods, policies, anonymous, operation })));
++    }
++
++    private static string Pattern(RouteEndpoint endpoint) => "/" + (endpoint.RoutePattern.RawText ?? throw new RouteCatalogUnavailableException("A generated endpoint lacks its actual route template.")).Trim('/');
++    private static string[] Policies(RouteEndpoint endpoint) => endpoint.Metadata.GetOrderedMetadata<IAuthorizeData>().Select(value => value.Policy ?? string.Empty).Order(StringComparer.Ordinal).ToArray();
++    private static string Fingerprint(RouteCatalogGeneratedRestEndpoint endpoint) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(endpoint)));
++}
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogControlEndpointMetadata.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogControlEndpointMetadata.cs
+new file mode 100644
+index 000000000..69d921cd7
+--- /dev/null
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogControlEndpointMetadata.cs
+@@ -0,0 +1,8 @@
++namespace Hexalith.EventStore.ServiceDefaults.Routing;
++
++/// <summary>Identifies SDK-mapped catalog callbacks independently of a caller-supplied policy name.</summary>
++internal sealed class RouteCatalogControlEndpointMetadata
++{
++    /// <summary>The SDK-owned endpoint marker.</summary>
++    internal static RouteCatalogControlEndpointMetadata Instance { get; } = new();
++}
+diff --git a/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogModelStateStore.cs b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogModelStateStore.cs
+new file mode 100644
+index 000000000..35a877789
+--- /dev/null
++++ b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogModelStateStore.cs
+@@ -0,0 +1,24 @@
++using System.Globalization;
++using System.Text.Json;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++namespace Hexalith.EventStore.AppHost.Tests.Configuration;
++
++/// <summary>Serialized CAS test cell for model-input activation checks; it never contacts Redis or starts a process.</summary>
++internal sealed class DevelopmentCatalogModelStateStore(RouteCatalogStateCoordinates coordinates) : IRouteCatalogStateStore
++{
++    private byte[] _state = JsonSerializer.SerializeToUtf8Bytes(RouteCatalogActivationState.Empty);
++    private long _version;
++    public RouteCatalogStateCoordinates Coordinates { get; } = coordinates;
++    public Task<(RouteCatalogActivationState State, string ETag)> ReadAsync(CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        return Task.FromResult((JsonSerializer.Deserialize<RouteCatalogActivationState>(_state)!, _version.ToString(CultureInfo.InvariantCulture)));
++    }
++    public Task<bool> CompareExchangeAsync(RouteCatalogActivationState state, string etag, CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        if (etag != _version.ToString(CultureInfo.InvariantCulture)) return Task.FromResult(false);
++        _state = JsonSerializer.SerializeToUtf8Bytes(state); _version++; return Task.FromResult(true);
++    }
++}
+diff --git a/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeCommand.cs b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeCommand.cs
+new file mode 100644
+index 000000000..f1b30145c
+--- /dev/null
++++ b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeCommand.cs
+@@ -0,0 +1,12 @@
++using Hexalith.EventStore.Contracts.Commands;
++
++namespace Hexalith.EventStore.AppHost.Tests.Configuration;
++
++/// <summary>Typed compiled owner input for the model-only composition proof.</summary>
++public sealed record DevelopmentCatalogProbeCommand(string AggregateId) : ICommandContract
++{
++    /// <summary>The owner's declared operation discriminator.</summary>
++    public static string CommandType => "record-probe";
++    /// <summary>The owner's declared domain.</summary>
++    public static string Domain => "catalog-probe";
++}
+diff --git a/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeDeclarations.cs b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeDeclarations.cs
+new file mode 100644
+index 000000000..f90b0b964
+--- /dev/null
++++ b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogProbeDeclarations.cs
+@@ -0,0 +1,29 @@
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.DomainService;
++
++[assembly: RouteCatalogDeclarationSource(typeof(Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentCatalogProbeDeclarations))]
++[assembly: RouteCatalogAdapterSource(typeof(Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentCatalogProbeDeclarations))]
++
++namespace Hexalith.EventStore.AppHost.Tests.Configuration;
++
++/// <summary>Complete compiled declarations, schemas, policies, receiver methods and adapters for a model proof.</summary>
++public static class DevelopmentCatalogProbeDeclarations
++{
++    /// <summary>The explicit owner command and descriptor policy.</summary>
++    public static IReadOnlyList<CommandIntentDeclaration> Commands { get; } = [new(new("catalog-probe-record", "command", DevelopmentCatalogProbeCommand.Domain,
++        DevelopmentCatalogProbeCommand.CommandType, null, "v1", 1, "workload", EventStoreOperationIdentifiers.DomainServiceProcess, null, [],
++        new(typeof(DevelopmentCatalogProbeCommand).FullName!, "exact", [DevelopmentCatalogProbeCommand.CommandType], "domain-service", null, [])),
++        "catalog-probe-adapter", "record-probe", "catalog-probe-policy-v1", new("catalog-probe-descriptor", 1, [new("target", "string")]), IdempotencyReplayRetentionTier.Mutation, false)];
++    /// <summary>Every callable owner operation.</summary>
++    public static IReadOnlyList<RouteContractDeclaration> Routes => Commands.Select(command => command.Route).ToArray();
++    /// <summary>Actual typed schemas and public eligibility.</summary>
++    public static IReadOnlyList<RouteOperationContract> Operations { get; } = [RouteOperationSchema.Create(Routes[0], typeof(DevelopmentCatalogProbeCommand),
++        typeof(string), "public", "agent-eligible", new(System.Text.Json.JsonSerializerDefaults.Web))];
++    /// <summary>Complete actual receiver method inventory.</summary>
++    public static IReadOnlyDictionary<string, string> ReceiverMethods { get; } = new Dictionary<string, string> { [Routes[0].RouteId] = "process" };
++    /// <summary>The same real owner policy exposed through the normal SDK adapter factory.</summary>
++    public static IReadOnlyList<IDeclaredIdempotencyIntentAdapter> Create() => [new DeclaredIdempotencyIntentAdapter<DevelopmentCatalogProbeCommand>(Commands[0],
++        command => new Dictionary<string, object?> { ["target"] = command.AggregateId })];
++}
+diff --git a/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs
+new file mode 100644
+index 000000000..f7da4c339
+--- /dev/null
++++ b/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs
+@@ -0,0 +1,256 @@
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using global::Aspire.Hosting;
++using global::Aspire.Hosting.ApplicationModel;
++using global::Aspire.Hosting.Eventing;
++using global::Aspire.Hosting.Lifecycle;
++using CommunityToolkit.Aspire.Hosting.Dapr;
++using Hexalith.EventStore.Aspire;
++using Hexalith.EventStore.Client.Routing;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.DomainService;
++using Hexalith.EventStore.Server.Configuration;
++using Hexalith.EventStore.Server.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Options;
++
++namespace Hexalith.EventStore.AppHost.Tests.Configuration;
++
++/// <summary>Checks actual Aspire annotations and rendered inputs without starting a shared Dapr topology.</summary>
++public sealed class DevelopmentRouteCatalogAspireTests
++{
++    /// <summary>Preserves owner route bytes and binds existing caller declarations without introducing a caller or grant.</summary>
++    [Theory(Timeout = 30000)]
++    [InlineData("valid")]
++    [InlineData("missing-caller")]
++    [InlineData("default-open")]
++    [InlineData("deny-override")]
++    public async Task ExistingReceiverCaptureRetainsExactClosedOwnerGrantAsync(string scenario)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        string directory = Directory.CreateTempSubdirectory("catalog-existing-policy-").FullName;
++        string path = Path.Combine(directory, "api.json");
++        byte[] original = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            spec = new { accessControl = new { defaultAction = scenario == "default-open" ? "allow" : "deny", trustDomain = "public",
++                policies = new[] { new { appId = "ui", defaultAction = "deny", operations = new[] {
++                    new { name = "/api/tenants/**/users", action = scenario == "deny-override" ? "deny" : "allow", httpVerb = new[] { "GET" } } } } } } },
++        });
++        try
++        {
++            await File.WriteAllBytesAsync(path, original, TestContext.Current.CancellationToken);
++            var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { DisableDashboard = true });
++            IResourceBuilder<ProjectResource> Project(string name, string id) => builder.AddProject<EventStoreProjectMetadata>(name)
++                .WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = id, Config = path }));
++            var api = Project("api", "api-owned"); var ui = Project("ui", "ui-owned");
++            if (scenario == "valid")
++            {
++                var captured = api.CaptureEventStoreDevelopmentReceiver(ui).Invocations.ShouldHaveSingleItem();
++                captured.Caller.ShouldBeSameAs(ui); captured.Method.ShouldBe("/api/tenants/**/users"); captured.HttpMethods.ShouldBe(["GET"]);
++            }
++            else Should.Throw<InvalidOperationException>(() => api.CaptureEventStoreDevelopmentReceiver(scenario == "missing-caller" ? [] : [ui]));
++            (await File.ReadAllBytesAsync(path, TestContext.Current.CancellationToken)).ShouldBe(original);
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++
++    /// <summary>Uses the physical sidecar identities consistently while retaining noncohort readiness and private ownership.</summary>
++    [Theory(Timeout = 30000)]
++    [InlineData("valid")]
++    [InlineData("sdk-backend")]
++    [InlineData("production")]
++    [InlineData("empty-owners")]
++    [InlineData("missing-gateway")]
++    [InlineData("duplicate-receiver")]
++    [InlineData("unselected-caller")]
++    [InlineData("duplicate-grant")]
++    public async Task ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(string scenario)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        string input = Path.Combine(Path.GetTempPath(), "catalog-model-input-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(input);
++        string config = Path.Combine(input, "configuration.yaml"); string state = Path.Combine(input, "state.yaml");
++        await File.WriteAllTextAsync(config, "apiVersion: dapr.io/v1alpha1\nkind: Configuration\nmetadata:\n  name: catalog-model\nspec:\n  mtls:\n    enabled: true\n  accessControl:\n    defaultAction: deny\n    trustDomain: public\n", TestContext.Current.CancellationToken);
++        await File.WriteAllTextAsync(state, "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: statestore\nspec:\n  type: state.redis\n  version: v1\n  metadata:\n    - name: redisHost\n      value: localhost:16379\n    - name: actorStateStore\n      value: 'true'\n    - name: keyPrefix\n      value: appid\n", TestContext.Current.CancellationToken);
++        string? privateDirectory = null;
++        try
++        {
++            var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { DisableDashboard = true, AllowUnsecuredTransport = true });
++            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(input, "model-only-dcp-not-started");
++            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(input, "model-only-dashboard-not-started");
++            builder.Environment.EnvironmentName = "Development";
++            IResourceBuilder<ProjectResource> Project(string name, string appId) => builder.AddProject<EventStoreProjectMetadata>(name)
++                .WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = appId, Config = config }));
++            HexalithEventStoreResources? sdk = null;
++            var gateway = scenario == "sdk-backend" ? builder.AddProject<EventStoreProjectMetadata>("eventstore") : Project("eventstore", "eventstore-owned-session");
++            if (scenario == "sdk-backend")
++            {
++                sdk = builder.AddHexalithEventStore(gateway, null);
++                var sidecar = Sidecar(gateway); var original = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
++                sidecar.Annotations[sidecar.Annotations.IndexOf(original)] = new DaprSidecarOptionsAnnotation(original.Options with { AppId = "eventstore-owned-session", Config = config });
++            }
++            var domain = Project("domain", "domain-owned-session");
++            var proxy = Project("ui", "ui-owned-session"); var infrastructure = builder.AddRedis("cache");
++            domain.WaitFor(gateway).WaitFor(infrastructure); proxy.WaitFor(domain);
++            DevelopmentRouteCatalogOwner[] owners = [new(domain, typeof(DevelopmentCatalogProbeDeclarations).Assembly, typeof(DevelopmentCatalogProbeDeclarations).Assembly)];
++            DevelopmentRouteCatalogInvocation[] grants = [new(gateway, "process", ["POST"])];
++            if (scenario == "production") builder.Environment.EnvironmentName = "Production";
++            if (scenario == "empty-owners") owners = [];
++            if (scenario == "unselected-caller") grants = [new(builder.AddProject<EventStoreProjectMetadata>("no-sidecar"), "process", ["POST"])];
++            if (scenario == "duplicate-grant") grants = [grants[0], grants[0]];
++            DevelopmentRouteCatalogReceiver[] receivers = [new(gateway, []), new(domain, grants)];
++            if (scenario == "missing-gateway") receivers = [receivers[1]];
++            if (scenario == "duplicate-receiver") receivers = [.. receivers, receivers[1]];
++            if (scenario is not ("valid" or "sdk-backend"))
++            {
++                Should.Throw<InvalidOperationException>(() => builder.AddEventStoreDevelopmentRouteCatalog(gateway, owners, receivers, state, "owned-session"));
++                builder.Resources.OfType<ParameterResource>().ShouldBeEmpty();
++                return;
++            }
++            await using (var catalog = sdk is not null ? builder.AddEventStoreDevelopmentRouteCatalog(gateway, owners, receivers, sdk.StateStore, "owned-session")
++                : builder.AddEventStoreDevelopmentRouteCatalog(gateway, owners, receivers, state, "owned-session"))
++            {
++                privateDirectory = catalog.Directory;
++                RouteCatalogEnvelope decoded = RouteCatalogCodec.Decode(await File.ReadAllBytesAsync(Path.Combine(catalog.Directory, "catalog.json"), TestContext.Current.CancellationToken), catalog.RootDigest);
++                decoded.Routes.ShouldHaveSingleItem().AppId.ShouldBe("domain-owned-session");
++                var policy = decoded.Idempotency.ShouldHaveSingleItem(); policy.ConsumerAppId.ShouldBe("eventstore-owned-session");
++                policy.ContentDigest.ShouldBe(RouteCatalogCodec.ComputeIdempotencyEntryDigest(policy));
++                DevelopmentIdempotencyBindings.Bind(DevelopmentCatalogProbeDeclarations.Commands[0], 1).ConsumerAppId.ShouldBe("eventstore");
++                var modeledAuthority = builder.Resources.OfType<DaprComponentResource>().Single(resource => resource.Name.StartsWith("routing-", StringComparison.Ordinal));
++                modeledAuthority.Options?.LocalPath.ShouldBeNull();
++                var endpoint = infrastructure.Resource.Annotations.OfType<EndpointAnnotation>().Single(annotation => annotation.Name == "tcp");
++                endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", 46379);
++                var password = builder.AddParameter("late-private-redis-password", string.Empty, secret: true);
++                builder.CreateResourceBuilder<IDaprComponentResource>(modeledAuthority.Name)
++                    .WithMetadata("redisHost", ReferenceExpression.Create($"{infrastructure.GetEndpoint("tcp").Property(EndpointProperty.HostAndPort)}"))
++                    .WithMetadata("redisPassword", password.Resource).WithMetadata("keyPrefix", "none").WithMetadata("actorStateStore", "true");
++                await using var application = builder.Build();
++                var eventing = application.Services.GetRequiredService<IDistributedApplicationEventing>();
++                foreach (var subscriber in application.Services.GetServices<IDistributedApplicationEventingSubscriber>().Where(subscriber =>
++                    subscriber.GetType().Name == "DaprDistributedApplicationLifecycleHook" || subscriber is DevelopmentRouteCatalogComponentObserver))
++                    await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
++                await eventing.PublishAsync(new BeforeStartEvent(application.Services, application.Services.GetRequiredService<DistributedApplicationModel>()), TestContext.Current.CancellationToken);
++                var observedAuthority = application.Services.GetServices<IDistributedApplicationEventingSubscriber>().OfType<DevelopmentRouteCatalogComponentObserver>().Single();
++                string authorityPath = observedAuthority.ComponentPath.ShouldNotBeNull();
++                using var component = JsonDocument.Parse(await File.ReadAllBytesAsync(authorityPath, TestContext.Current.CancellationToken));
++                component.RootElement.GetProperty("scopes").EnumerateArray().Select(value => value.GetString()).Order(StringComparer.Ordinal)
++                    .ShouldBe(["domain-owned-session", "eventstore-owned-session"]);
++                var actualMetadata = component.RootElement.GetProperty("spec").GetProperty("metadata").EnumerateArray().ToArray();
++                actualMetadata.Single(item => item.GetProperty("name").GetString() == "keyPrefix").GetProperty("value").GetString().ShouldBe("name");
++                actualMetadata.ShouldNotContain(item => item.GetProperty("name").GetString() == "actorStateStore");
++                string redisReference = actualMetadata.Single(item => item.GetProperty("name").GetString() == "redisHost").GetProperty("secretKeyRef").GetProperty("name").GetString()!;
++                File.ReadAllText(authorityPath).ShouldNotContain("localhost:16379");
++                File.ReadAllText(authorityPath).ShouldNotContain("localhost:6379");
++                int allocatedPort = 48000;
++                foreach (var executable in application.Services.GetRequiredService<DistributedApplicationModel>().Resources.OfType<ExecutableResource>())
++                {
++                    foreach (var listener in executable.Annotations.OfType<EndpointAnnotation>()) listener.AllocatedEndpoint = new AllocatedEndpoint(listener, "127.0.0.1", allocatedPort++);
++                    if (executable.Name != "eventstore-dapr-cli") continue;
++                    Dictionary<string, object> effective = [];
++                    foreach (var callback in executable.Annotations.OfType<EnvironmentCallbackAnnotation>())
++                        await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, executable, effective, TestContext.Current.CancellationToken));
++                    effective[redisReference].ShouldBe("127.0.0.1:46379");
++                }
++                using var acl = JsonDocument.Parse(await File.ReadAllBytesAsync(Sidecar(domain).Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config!, TestContext.Current.CancellationToken));
++                var incoming = acl.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies").EnumerateArray().Single();
++                incoming.GetProperty("appId").GetString().ShouldBe("eventstore-owned-session"); incoming.GetProperty("namespace").GetString().ShouldBe("owned-session");
++                incoming.GetProperty("operations").EnumerateArray().Single().GetProperty("name").GetString().ShouldBe("process");
++                acl.RootElement.GetProperty("spec").GetProperty("mtls").GetProperty("enabled").GetBoolean().ShouldBeTrue();
++                domain.Resource.Annotations.OfType<WaitAnnotation>().Single(wait => ReferenceEquals(wait.Resource, gateway.Resource)).WaitType.ShouldBe(WaitType.WaitUntilStarted);
++                domain.Resource.Annotations.OfType<WaitAnnotation>().Single(wait => ReferenceEquals(wait.Resource, infrastructure.Resource)).WaitType.ShouldBe(WaitType.WaitUntilHealthy);
++                proxy.Resource.Annotations.OfType<WaitAnnotation>().Single().WaitType.ShouldBe(WaitType.WaitUntilHealthy);
++                Dictionary<string, IConfigurationRoot> configurations = [];
++                IReadOnlyList<IdempotencyCatalogEntry> installedAdmission = [];
++                RouteCatalogStateCoordinates? actualCoordinates = null;
++                foreach (var project in new[] { gateway, domain })
++                {
++                    Dictionary<string, object> environment = [];
++                    foreach (var callback in project.Resource.Annotations.OfType<EnvironmentCallbackAnnotation>())
++                        await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project.Resource, environment, TestContext.Current.CancellationToken));
++                    environment["ASPNETCORE_ENVIRONMENT"].ShouldBe("Development");
++                    environment["EventStore__RouteCatalog__DevelopmentBootstrap__AppId"].ShouldBe(project == gateway ? "eventstore-owned-session" : "domain-owned-session");
++                    environment["APP_API_TOKEN"].ShouldBeOfType<ParameterResource>().Secret.ShouldBeTrue();
++                    environment["EventStore__RouteCatalog__DevelopmentBootstrap__ComponentPath"].ShouldBe(authorityPath);
++                    Dictionary<string, string?> effective = [];
++                    foreach (var item in environment)
++                        effective[item.Key.Replace("__", ":", StringComparison.Ordinal)] = item.Value is ParameterResource value
++                            ? await value.GetValueAsync(TestContext.Current.CancellationToken) : item.Value.ToString();
++                    // DCP allocation is modeled above. Resolve this one actual sidecar HTTP
++                    // coordinate without waiting on unrelated dashboard/gRPC expressions.
++                    effective["DAPR_HTTP_ENDPOINT"] = "http://127.0.0.1:" + effective["DAPR_HTTP_PORT"];
++                    var configuration = new ConfigurationBuilder().AddInMemoryCollection(effective).Build();
++                    configurations[project.Resource.Name] = configuration;
++                    if (project == gateway)
++                    {
++                        var services = new ServiceCollection(); services.AddLogging(); services.AddSingleton(builder.Environment); services.AddEventStoreServer(configuration);
++                        services.AddEventStoreRunScopedCatalogGateway(configuration); // historical explicit call remains idempotent
++                        services.Count(descriptor => descriptor.ServiceType == typeof(IIdempotencyIntentAdapter)).ShouldBe(1);
++                        using var provider = services.BuildServiceProvider();
++                        var installed = await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore-owned-session", TestContext.Current.CancellationToken);
++                        installed.ShouldHaveSingleItem().ContentDigest.ShouldBe(policy.ContentDigest);
++                        installed[0].ConsumerAppId.ShouldBe("eventstore-owned-session");
++                        installedAdmission = installed;
++                        actualCoordinates = provider.GetRequiredService<IRouteCatalogStateStore>().Coordinates;
++                    }
++                }
++                await AssertActualRenderedMutationRefusedAsync(authorityPath, decoded, configurations, installedAdmission,
++                    actualCoordinates.ShouldNotBeNull(), builder.Environment);
++                Sidecar(proxy).Annotations.OfType<DaprComponentReferenceAnnotation>().ShouldBeEmpty();
++                gateway.Resource.Annotations.OfType<EnvironmentCallbackAnnotation>().ShouldNotBeEmpty();
++                if (!OperatingSystem.IsWindows()) (File.GetUnixFileMode(catalog.Directory) & (UnixFileMode.GroupRead | UnixFileMode.OtherRead)).ShouldBe((UnixFileMode)0);
++            }
++            Directory.Exists(privateDirectory).ShouldBeFalse();
++            Directory.Exists(input).ShouldBeTrue();
++        }
++        finally { Directory.Delete(input, recursive: true); }
++    }
++
++    private static IDaprSidecarResource Sidecar(IResourceBuilder<ProjectResource> project) => project.Resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
++
++    private static async Task AssertActualRenderedMutationRefusedAsync(string path, RouteCatalogEnvelope catalog,
++        IReadOnlyDictionary<string, IConfigurationRoot> configurations, IReadOnlyList<IdempotencyCatalogEntry> admission,
++        RouteCatalogStateCoordinates coordinates, Microsoft.Extensions.Hosting.IHostEnvironment environment)
++    {
++        var declarations = DevelopmentCatalogProbeDeclarations.Routes;
++        async Task<RouteCatalogHostObservation> Capture(string host)
++        {
++            var configuration = configurations[host];
++            string app = configuration["EventStore:RouteCatalog:DevelopmentBootstrap:AppId"]!;
++            RouteCatalogEntry[] targets = host == "domain" ? declarations.Select(declaration => new RouteCatalogEntry(declaration.RouteId, 1,
++                RouteCatalogCodec.ComputeDeclarationDigest(declaration), app, DevelopmentCatalogProbeDeclarations.ReceiverMethods[declaration.RouteId],
++                declaration.ContractVersion, declaration.CredentialKind, declaration.Operation, false, "*")).ToArray() : [];
++            var observed = await DevelopmentRouteCatalogInputs.CaptureAsync(configuration, app, declarations, targets, host == "eventstore" ? admission : [], [], [], TestContext.Current.CancellationToken);
++            return observed with { AuthorityCoordinates = coordinates, Operations = DevelopmentCatalogProbeDeclarations.Operations };
++        }
++        var gateway = await Capture("eventstore"); var domain = await Capture("domain");
++        var identity = ObservedRouteCatalogHost.Identity(gateway);
++        var options = Options.Create(new RouteCatalogHostOptions { Identity = identity, Profile = "Development", DevelopmentFixture = true });
++        var store = new DevelopmentCatalogModelStateStore(coordinates);
++        var authority = new RouteCatalogAuthority(store, new DevelopmentRouteCatalogTrustValidator(options, environment), options,
++            new ObservedRouteCatalogHost(_ => Capture("eventstore")));
++        var candidate = new RouteCatalogActivation("model-rendered-input", RouteCatalogCodec.Encode(catalog), RouteCatalogCodec.ComputeRootDigest(catalog), null,
++            [identity, ObservedRouteCatalogHost.Identity(domain)], "Development-fixture", string.Empty);
++        candidate = candidate with { TrustProof = RouteCatalogActivationBinding.ComputeDigest(candidate) };
++        await authority.PrepareAsync(candidate, TestContext.Current.CancellationToken);
++        await authority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++        byte[] original = await File.ReadAllBytesAsync(path, TestContext.Current.CancellationToken);
++        foreach (string fault in new[] { "backend", "prefix", "scope" })
++        {
++            JsonObject changed = JsonNode.Parse(original)!.AsObject();
++            var metadata = changed["spec"]!["metadata"]!.AsArray();
++            if (fault == "backend") metadata.Single(item => item!["name"]!.GetValue<string>() == "redisHost")!["secretKeyRef"]!["name"] = "different-effective-backend";
++            if (fault == "prefix") metadata.Single(item => item!["name"]!.GetValue<string>() == "keyPrefix")!["value"] = "none";
++            if (fault == "scope") changed["scopes"]!.AsArray().Add("unrelated-caller");
++            string before = (await store.ReadAsync(TestContext.Current.CancellationToken)).ETag;
++            try
++            {
++                await File.WriteAllBytesAsync(path, JsonSerializer.SerializeToUtf8Bytes(changed), TestContext.Current.CancellationToken);
++                await Should.ThrowAsync<RouteCatalogUnavailableException>(() => authority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken));
++                (await store.ReadAsync(TestContext.Current.CancellationToken)).ETag.ShouldBe(before);
++            }
++            finally { await File.WriteAllBytesAsync(path, original, TestContext.Current.CancellationToken); }
++        }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Sample.Tests/CounterProjectionSchemaTests.cs b/tests/Hexalith.EventStore.Sample.Tests/CounterProjectionSchemaTests.cs
+new file mode 100644
+index 000000000..1ec65faf9
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Sample.Tests/CounterProjectionSchemaTests.cs
+@@ -0,0 +1,21 @@
++using System.Text.Json;
++using Hexalith.EventStore.Sample.Counter.Queries;
++using Shouldly;
++
++namespace Hexalith.EventStore.Sample.Tests;
++
++/// <summary>Preserves the original projection bytes when its existing result receives an explicit schema type.</summary>
++public sealed class CounterProjectionSchemaTests
++{
++    /// <summary>The named owner result has exactly the anonymous count-only wire shape under both actual/default and Web schema settings.</summary>
++    [Theory]
++    [InlineData(-1)]
++    [InlineData(0)]
++    [InlineData(1)]
++    [InlineData(int.MaxValue)]
++    public void TypedCounterResultPreservesExistingProjectionBytes(int count)
++    {
++        foreach (var options in new[] { new JsonSerializerOptions(), new JsonSerializerOptions(JsonSerializerDefaults.Web) })
++            JsonSerializer.SerializeToUtf8Bytes(new CounterStatusProjection(count), options).ShouldBe(JsonSerializer.SerializeToUtf8Bytes(new { count }, options));
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentCallerEnrollmentTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentCallerEnrollmentTests.cs
+new file mode 100644
+index 000000000..2259fd51d
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentCallerEnrollmentTests.cs
+@@ -0,0 +1,152 @@
++using System.Net;
++using System.Security.Cryptography;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using Hexalith.EventStore.Client.Registration;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Hosting;
++using Microsoft.AspNetCore.Http;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.DependencyInjection.Extensions;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Logging;
++using Microsoft.Extensions.Options;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Caller-only registration, independent observation and actual HTTP transport over the unchanged baseline catalog.</summary>
++public sealed class DevelopmentCallerEnrollmentTests
++{
++    /// <summary>Enrollment owns no executable declarations; actual authority/transport checks refuse scope drift before socket effects.</summary>
++    [Theory]
++    [InlineData(2, "valid")]
++    [InlineData(2, "unenrolled")]
++    [InlineData(2, "cross-run")]
++    [InlineData(2, "tampered-input")]
++    [InlineData(2, "redirect")]
++    [InlineData(3, "valid")]
++    [InlineData(3, "unenrolled")]
++    [InlineData(3, "cross-run")]
++    [InlineData(3, "tampered-input")]
++    [InlineData(3, "redirect")]
++    public async Task ActualCallerRegistrationRetainsAuthorityAndNoRedirectBoundary(int schemaVersion, string scenario)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        string directory = Directory.CreateTempSubdirectory("catalog-caller-proof-").FullName;
++        try
++        {
++            var fixture = new RouteCatalogTestFixture(new("routing-caller-proof", "caller-proof", "http://127.0.0.1:3500/"));
++            var catalog = schemaVersion == 3 ? GeneratedRestProbeDeclarations.Catalog() : fixture.Envelope;
++            string[] required = schemaVersion == 3 ? ["domain", "caller-ui"] : [.. fixture.Observations.Select(observation => observation.HostId), "caller-ui"];
++            string[] apps = schemaVersion == 3 ? ["domain", "caller-ui"] : [.. fixture.Observations.Select(observation => observation.AppId), "caller-ui"];
++            byte[] component = JsonSerializer.SerializeToUtf8Bytes(new
++            {
++                kind = "Component", metadata = new { name = fixture.Store.Coordinates.StateStore,
++                    labels = new Dictionary<string, string> { [RouteCatalogAuthorityComponentPolicy.RoleLabel] = RouteCatalogAuthorityComponentPolicy.IsolatedRole } },
++                spec = new { type = "state.redis", metadata = new[] { new { name = "keyPrefix", value = "name" } } }, scopes = apps,
++            });
++            byte[] acl = JsonSerializer.SerializeToUtf8Bytes(new { spec = new { accessControl = new { defaultAction = "deny", trustDomain = "public", policies = Array.Empty<object>() } } });
++            string componentPath = Path.Combine(directory, "loaded-component.json"), aclPath = Path.Combine(directory, "loaded-acl.json");
++            await File.WriteAllBytesAsync(componentPath, component, TestContext.Current.CancellationToken);
++            await File.WriteAllBytesAsync(aclPath, acl, TestContext.Current.CancellationToken);
++            var target = catalog.Routes.First(route => catalog.Declarations.Any(declaration => declaration.RouteId == route.RouteId
++                && declaration.Kind == "query" && declaration.Execution!.TargetKind == "domain-service"));
++            int effects = 0, redirected = 0;
++            var sinkBuilder = WebApplication.CreateBuilder(); sinkBuilder.Logging.ClearProviders(); sinkBuilder.WebHost.UseUrls("http://127.0.0.1:0");
++            await using var sink = sinkBuilder.Build();
++            sink.MapPost("/" + target.Method, (HttpContext context) =>
++            {
++                effects++;
++                context.Request.Headers[RouteCatalogInvocationHandler.RootHeader].ToString().ShouldBe(RouteCatalogCodec.ComputeRootDigest(catalog));
++                context.Request.Headers[RouteCatalogInvocationHandler.EpochHeader].ToString().ShouldBe("1");
++                return scenario == "redirect" ? Results.Redirect("/redirected") : Results.NoContent();
++            });
++            sink.MapPost("/redirected", () => { redirected++; return Results.NoContent(); });
++            await sink.StartAsync(TestContext.Current.CancellationToken);
++            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
++            builder.Logging.ClearProviders(); builder.WebHost.UseUrls("http://127.0.0.1:0");
++            var section = builder.Configuration.GetSection("EventStore:RouteCatalog:DevelopmentBootstrap");
++            section["Directory"] = directory; section["HostId"] = "caller-ui"; section["AppId"] = "caller-ui";
++            section["CoordinatorHostId"] = schemaVersion == 3 ? "domain" : "eventstore"; section["AttemptId"] = "caller-registration";
++            section["AuthorityRole"] = RouteCatalogAuthorityComponentPolicy.IsolatedRole;
++            section["ComponentPath"] = componentPath; section["AccessControlPath"] = aclPath;
++            for (int index = 0; index < required.Length; index++) section["RequiredHostIds:" + index] = required[index];
++            builder.Configuration["EventStore:RouteCatalog:StateStore"] = fixture.Store.Coordinates.StateStore;
++            builder.Configuration["EventStore:RouteCatalog:StateKey"] = fixture.Store.Coordinates.StateKey;
++            builder.Configuration["APP_API_TOKEN"] = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++            var existingHosted = builder.Services.Where(descriptor => descriptor.ServiceType == typeof(IHostedService)).ToHashSet();
++            builder.Services.AddEventStoreDevelopmentCallerCatalog(builder.Configuration, "caller-ui");
++            // This unit driver executes the real lifecycle explicitly against a serialized CAS cell.
++            // Background distributed coordination and Redis are qualified by disposable owner CI.
++            foreach (var hosted in builder.Services.Where(descriptor => descriptor.ServiceType == typeof(IHostedService) && !existingHosted.Contains(descriptor)).ToArray()) builder.Services.Remove(hosted);
++            builder.Services.RemoveAll<IRouteCatalogStateStore>(); builder.Services.AddSingleton<IRouteCatalogStateStore>(fixture.Store);
++            builder.Services.AddHttpClient("caller", client => client.BaseAddress = new Uri(sink.Urls.Single()))
++                .AddEventStoreDaprServiceInvocation(target.AppId, Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)));
++            await using var caller = builder.Build();
++            caller.UseRouting(); caller.UseEventStoreDevelopmentCallerCatalog(); caller.MapGet("/", () => Results.Ok("caller-ui")); caller.MapDefaultEndpoints();
++            await caller.StartAsync(TestContext.Current.CancellationToken);
++            var surface = caller.Services.GetRequiredService<FiniteRouteCatalogReceiver>().Observe();
++            surface.Endpoints.Where(endpoint => endpoint.Admitted).ShouldAllBe(endpoint => endpoint.Pattern.StartsWith("/internal/routing/", StringComparison.Ordinal));
++            var auxiliary = surface.Endpoints.Where(endpoint => endpoint.Admitted).Select(endpoint => new RouteCatalogAuxiliaryOperation("caller-ui",
++                endpoint.Pattern.TrimStart('/'), endpoint.Operation!, "catalog-control")).ToArray();
++            RouteCatalogHostObservation[] observations = schemaVersion == 3
++                ? [new("domain", "domain", CompiledRouteCatalogDeclarations.Read([typeof(GeneratedRestProbeDeclarations).Assembly]),
++                    GeneratedRestProbeDeclarations.Routes.Select(declaration => new RouteCatalogEntry(declaration.RouteId, 1,
++                        RouteCatalogCodec.ComputeDeclarationDigest(declaration), "domain", "query", declaration.ContractVersion,
++                        declaration.CredentialKind, declaration.Operation, false, "*")).ToArray(), required, [component, acl],
++                    JsonSerializer.SerializeToUtf8Bytes(new { ownedSocketFixture = true, executableOwner = typeof(GeneratedRestProbeDeclarations).FullName }),
++                    [], [], [], fixture.Store.Coordinates, Operations: CompiledRouteCatalogDeclarations.ReadOperations([typeof(GeneratedRestProbeDeclarations).Assembly]))]
++                : fixture.Observations.Select(observation => observation with { RequiredHostIds = required, TopologyDocuments = [component, observation.TopologyDocuments[1]] }).ToArray();
++            var observedHosts = observations.Select(ObservedRouteCatalogHost.Identity).ToArray();
++            string digest = new('0', 64);
++            var provisional = new RouteCatalogActivation("caller-registration", RouteCatalogCodec.Encode(catalog), RouteCatalogCodec.ComputeRootDigest(catalog), null,
++                [.. observedHosts, new("caller-ui", "caller-ui", digest, digest, digest)], "Development-fixture", string.Empty, auxiliary);
++            var observer = caller.Services.GetRequiredService<IRouteCatalogHostObserver>();
++            var actualCaller = await observer.ObserveAsync(provisional, fixture.Store.Coordinates, TestContext.Current.CancellationToken);
++            caller.Services.GetRequiredService<IOptions<RouteCatalogHostOptions>>().Value.Identity = actualCaller;
++            var candidate = provisional with { RequiredHosts = [.. observedHosts, actualCaller] };
++            candidate = candidate with { TrustProof = RouteCatalogActivationBinding.ComputeDigest(candidate) };
++            var environment = Substitute.For<IHostEnvironment>(); environment.EnvironmentName.Returns("Development");
++            var authorities = observedHosts.Select(host =>
++            {
++                var options = Options.Create(new RouteCatalogHostOptions { Identity = host, Profile = "Development", DevelopmentFixture = true });
++                return new RouteCatalogAuthority(fixture.Store, new DevelopmentRouteCatalogTrustValidator(options, environment), options,
++                    new ObservedRouteCatalogHost(_ => Task.FromResult(observations.Single(observation => observation.HostId == host.HostId))));
++            }).ToArray();
++            await authorities[0].PrepareAsync(candidate, TestContext.Current.CancellationToken);
++            foreach (var authority in authorities) await authority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++            var actualAuthority = caller.Services.GetRequiredService<IRouteCatalogAuthority>();
++            await actualAuthority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++            await authorities[0].CommitAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++            if (scenario == "unenrolled") caller.Services.GetRequiredService<IOptions<RouteCatalogHostOptions>>().Value.Identity = null;
++            if (scenario == "cross-run") fixture.Store.Coordinates = fixture.Store.Coordinates with { StateKey = "another-run" };
++            if (scenario == "tampered-input")
++            {
++                var changed = JsonNode.Parse(component)!.AsObject(); changed["metadata"]!["labels"]!["public-observation"] = "changed-after-activation";
++                await File.WriteAllBytesAsync(componentPath, JsonSerializer.SerializeToUtf8Bytes(changed), TestContext.Current.CancellationToken);
++            }
++            using var client = caller.Services.GetRequiredService<IHttpClientFactory>().CreateClient("caller");
++            if (scenario is "valid" or "redirect")
++            {
++                using var response = await client.PostAsync("/" + target.Method, new StringContent("{}"), TestContext.Current.CancellationToken);
++                response.StatusCode.ShouldBe(scenario == "redirect" ? HttpStatusCode.Found : HttpStatusCode.NoContent); effects.ShouldBe(1);
++            }
++            else
++            {
++                await Should.ThrowAsync<RouteCatalogUnavailableException>(() => client.PostAsync("/" + target.Method, new StringContent("{}"), TestContext.Current.CancellationToken));
++                effects.ShouldBe(0);
++            }
++            redirected.ShouldBe(0);
++            (await fixture.Store.ReadAsync(TestContext.Current.CancellationToken)).State.Leases.ShouldBeEmpty();
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentGatewayIdentityTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentGatewayIdentityTests.cs
+new file mode 100644
+index 000000000..07034a924
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentGatewayIdentityTests.cs
+@@ -0,0 +1,91 @@
++using System.Text.Json;
++
++using Dapr.Actors.Client;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Sample.Counter;
++using Hexalith.EventStore.Server.Actors;
++using Hexalith.EventStore.Server.Commands;
++using Hexalith.EventStore.Server.Configuration;
++using Hexalith.EventStore.Server.Pipeline;
++using Hexalith.EventStore.Server.Pipeline.Commands;
++using Hexalith.EventStore.Server.Projections;
++using Hexalith.EventStore.Server.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.Tenants.Server.Routing;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Logging.Abstractions;
++using Microsoft.Extensions.Options;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Exercises independently observed admission, actual activation and dispatch under default and selected physical gateway identities.</summary>
++public sealed class DevelopmentGatewayIdentityTests
++{
++    /// <summary>A mapped Dapr gateway must agree with the actual installed admission policy before effects.</summary>
++    [Theory]
++    [InlineData("eventstore")]
++    [InlineData("eventstore-owned-session")]
++    public async Task PhysicalGatewayIdentityBindsObservedPoliciesAndCommittedDispatch(string physicalAppId)
++    {
++        ArgumentException.ThrowIfNullOrWhiteSpace(physicalAppId);
++        var fixture = new RouteCatalogTestFixture();
++        var services = new ServiceCollection();
++        RouteCatalogAdmissionFixture.Configure(services, [.. SampleCatalog.CreateAdapters(), .. TenantIntentAdapters.Create()]);
++        using var provider = services.BuildServiceProvider();
++        var actualAdmission = await RouteCatalogAdmissionObservation.CaptureAsync(provider, physicalAppId, TestContext.Current.CancellationToken);
++        var envelope = RouteCatalogCodec.Seal(fixture.Envelope with
++        {
++            Routes = fixture.Envelope.Routes.Select(route => route.AppId == "eventstore" ? route with { AppId = physicalAppId } : route).ToArray(),
++            Idempotency = actualAdmission,
++        });
++        string[] appIds = fixture.Observations.Select(observation => observation.AppId == "eventstore" ? physicalAppId : observation.AppId).ToArray();
++        var component = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            kind = "Component", metadata = new { name = fixture.Store.Coordinates.StateStore },
++            spec = new { type = "state.redis", metadata = new[] { new { name = "keyPrefix", value = "none" } } }, scopes = appIds,
++        });
++        var observations = fixture.Observations.Select(observation => observation with
++        {
++            AppId = observation.AppId == "eventstore" ? physicalAppId : observation.AppId,
++            Targets = observation.Targets.Select(target => target.AppId == "eventstore" ? target with { AppId = physicalAppId } : target).ToArray(),
++            AdmissionPolicies = observation.AppId == "eventstore" ? actualAdmission : [],
++            TopologyDocuments = [component, observation.TopologyDocuments[1]],
++        }).ToArray();
++        var hosts = observations.Select(ObservedRouteCatalogHost.Identity).ToArray();
++        var environment = Substitute.For<IHostEnvironment>(); environment.EnvironmentName.Returns("Development");
++        var authorities = hosts.Select(host =>
++        {
++            var options = Options.Create(new RouteCatalogHostOptions { Identity = host, Profile = "Development", DevelopmentFixture = true });
++            return new RouteCatalogAuthority(fixture.Store, new DevelopmentRouteCatalogTrustValidator(options, environment), options,
++                new ObservedRouteCatalogHost(_ => Task.FromResult(observations.Single(observation => observation.HostId == host.HostId))));
++        }).ToArray();
++        var candidate = new RouteCatalogActivation("physical-gateway", RouteCatalogCodec.Encode(envelope), RouteCatalogCodec.ComputeRootDigest(envelope), null,
++            hosts, "Development-fixture", string.Empty);
++        candidate = candidate with { TrustProof = RouteCatalogActivationBinding.ComputeDigest(candidate) };
++        await authorities[0].PrepareAsync(candidate, TestContext.Current.CancellationToken);
++        foreach (var authority in authorities) await authority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++        await authorities[0].CommitAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++        (await authorities[0].ReadbackAsync(TestContext.Current.CancellationToken)).RequiredHosts.ShouldBe(hosts);
++        var command = new SubmitCommand("01M61800000000000000000001", "tenant-a", "counter", "counter-1", "increment-counter",
++            "{\"counterId\":\"counter-1\"}"u8.ToArray(), "01M61800000000000000000002", "fixture-user");
++        var actors = Substitute.For<IActorProxyFactory>(); var keys = Substitute.For<IIdempotencyDigestKeyProvider>();
++        var admissionOptions = Options.Create(new IdempotencyAdmissionOptions { Enabled = true, ActiveDigestKeyVersion = "development-v1" });
++        IdempotencyAdmissionCoordinator Coordinator(string identity) => new(authorities[0], actors, new IdempotencyKeyProtector(keys),
++            Substitute.For<IIdempotencyIntentAdapterRegistry>(), admissionOptions: admissionOptions,
++            catalogOptions: Options.Create(new RouteCatalogHostOptions { Identity = hosts[0] with { AppId = identity } }));
++        (await Coordinator(physicalAppId).AdmitAsync(command, TestContext.Current.CancellationToken)).ShouldBeNull();
++        await Should.ThrowAsync<RouteCatalogUnavailableException>(() => Coordinator("wrong-consumer").AdmitAsync(command, TestContext.Current.CancellationToken));
++        actors.ReceivedCalls().ShouldBeEmpty(); keys.ReceivedCalls().ShouldBeEmpty();
++        var router = Substitute.For<ICommandRouter>();
++        router.RouteCommandAsync(Arg.Any<SubmitCommand>(), Arg.Any<CancellationToken>()).Returns(new CommandProcessingResult(true));
++        var handler = new SubmitCommandHandler(authorities[0], Substitute.For<ICommandStatusStore>(), Substitute.For<ICommandArchiveStore>(), router,
++            null, null, new NoOpProjectionUpdateOrchestrator(), NullLogger<SubmitCommandHandler>.Instance);
++        (await handler.Handle(command, TestContext.Current.CancellationToken)).MessageId.ShouldBe(command.MessageId);
++        await router.Received(1).RouteCommandAsync(Arg.Any<SubmitCommand>(), Arg.Any<CancellationToken>());
++        (await fixture.Store.ReadAsync(TestContext.Current.CancellationToken)).State.Leases.ShouldBeEmpty();
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentProjectionActorObservationTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentProjectionActorObservationTests.cs
+new file mode 100644
+index 000000000..9a164f9fa
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentProjectionActorObservationTests.cs
+@@ -0,0 +1,121 @@
++using System.Text.Json;
++using Dapr.Actors.Runtime;
++using Hexalith.EventStore.Client.Routing;
++using Hexalith.EventStore.Contracts.Queries;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Sample.Counter;
++using Hexalith.EventStore.Server.Actors;
++using Hexalith.EventStore.Server.Configuration;
++using Hexalith.EventStore.Server.Pipeline.Queries;
++using Hexalith.EventStore.Server.Projections;
++using Hexalith.EventStore.Server.Queries;
++using Hexalith.EventStore.Server.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Logging.Abstractions;
++using Microsoft.Extensions.Options;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Independently observes the existing SDK actor registration and exercises the real router against complete Sample schemas.</summary>
++public sealed class DevelopmentProjectionActorObservationTests
++{
++    /// <summary>A name alone cannot substitute a missing or different SDK actor implementation.</summary>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("missing")]
++    [InlineData("different-implementation")]
++    public void ActorTargetsRequireTheActualSdkRegistration(string state)
++    {
++        ArgumentNullException.ThrowIfNull(state);
++        var services = new ServiceCollection(); services.AddLogging(); services.AddEventStoreServer(new ConfigurationBuilder().Build());
++        using var provider = services.BuildServiceProvider();
++        var options = provider.GetRequiredService<IOptions<ActorRuntimeOptions>>().Value;
++        if (state != "valid") options.Actors.Remove(options.Actors.Single(registration => registration.Type.ActorTypeName == RouteCatalogProjectionActorPolicy.ActorType).Type);
++        if (state == "different-implementation") options.Actors.RegisterActor<GlobalPositionActor>(RouteCatalogProjectionActorPolicy.ActorType);
++        if (state == "valid")
++        {
++            var actual = RunScopedRouteCatalogGateway.ActorQueryTargets(provider, [typeof(SampleCatalog).Assembly], "gateway-owned").ShouldHaveSingleItem();
++            actual.AppId.ShouldBe("gateway-owned"); actual.Method.ShouldBe(nameof(IProjectionActor.QueryAsync)); actual.RouteId.ShouldBe("counter-status-query");
++        }
++        else Should.Throw<RouteCatalogUnavailableException>(() => RunScopedRouteCatalogGateway.ActorQueryTargets(provider, [typeof(SampleCatalog).Assembly], "gateway-owned"));
++    }
++
++    /// <summary>Complete owner schemas retain actual actor routing and all prior refusal boundaries after genuine authority activation.</summary>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("unknown-query")]
++    [InlineData("projection-override")]
++    [InlineData("actor-override")]
++    [InlineData("changed-registration")]
++    public async Task SampleActorQueryUsesCommittedObservedTargetBeforeEffects(string fault)
++    {
++        ArgumentNullException.ThrowIfNull(fault);
++        const string gatewayApp = "gateway-owned";
++        var services = new ServiceCollection(); services.AddLogging(); services.AddEventStoreServer(new ConfigurationBuilder().Build());
++        RouteCatalogAdmissionFixture.Configure(services, SampleCatalog.CreateAdapters());
++        using var provider = services.BuildServiceProvider();
++        var declarations = CompiledRouteCatalogDeclarations.Read([typeof(SampleCatalog).Assembly]);
++        var operations = CompiledRouteCatalogDeclarations.ReadOperations([typeof(SampleCatalog).Assembly]);
++        var admission = await RouteCatalogAdmissionObservation.CaptureAsync(provider, gatewayApp, TestContext.Current.CancellationToken);
++        var actorTargets = RunScopedRouteCatalogGateway.ActorQueryTargets(provider, [typeof(SampleCatalog).Assembly], gatewayApp);
++        var domainTargets = declarations.Where(declaration => declaration.Execution!.TargetKind == "domain-service").Select(declaration =>
++            new RouteCatalogEntry(declaration.RouteId, 1, RouteCatalogCodec.ComputeDeclarationDigest(declaration), "sample-owned",
++                SampleCatalog.ReceiverMethods[declaration.RouteId], declaration.ContractVersion, declaration.CredentialKind, declaration.Operation, false, "*")).ToArray();
++        var catalog = VersionedRouteCatalogBuilder.Build(new(1, "Development", declarations, operations,
++            actorTargets.Concat(domainTargets).Select(target => new RouteCompositionBinding(target.RouteId, target.AppId, target.Method, target.ContractVersion, false, "*")).ToArray(), admission));
++        var store = new RouteCatalogTestStateStore(); string[] hosts = ["gateway", "sample"];
++        byte[] component = JsonSerializer.SerializeToUtf8Bytes(new { kind = "Component", metadata = new { name = store.Coordinates.StateStore },
++            spec = new { type = "state.redis", metadata = new[] { new { name = "keyPrefix", value = "none" } } }, scopes = new[] { gatewayApp, "sample-owned" } });
++        byte[] acl = JsonSerializer.SerializeToUtf8Bytes(new { spec = new { accessControl = new { defaultAction = "deny", trustDomain = "public" } } });
++        RouteCatalogHostObservation Gateway() => new("gateway", gatewayApp, declarations,
++            RunScopedRouteCatalogGateway.ActorQueryTargets(provider, [typeof(SampleCatalog).Assembly], gatewayApp), hosts, [component, acl],
++            "sdk-actor-fixture"u8.ToArray(), admission, [], [], store.Coordinates, Operations: operations);
++        var domain = new RouteCatalogHostObservation("sample", "sample-owned", declarations, domainTargets, hosts, [component, acl],
++            "compiled-sample-fixture"u8.ToArray(), [], [], [], store.Coordinates, Operations: operations);
++        var observed = new[] { Gateway(), domain }; var identities = observed.Select(ObservedRouteCatalogHost.Identity).ToArray();
++        var environment = Substitute.For<IHostEnvironment>(); environment.EnvironmentName.Returns("Development");
++        var authorities = identities.Select(identity =>
++        {
++            var options = Options.Create(new RouteCatalogHostOptions { Identity = identity, Profile = "Development", DevelopmentFixture = true });
++            return new RouteCatalogAuthority(store, new DevelopmentRouteCatalogTrustValidator(options, environment), options,
++                new ObservedRouteCatalogHost(_ => Task.FromResult(identity.HostId == "gateway" ? Gateway() : domain)));
++        }).ToArray();
++        var candidate = new RouteCatalogActivation("sample-actor", RouteCatalogCodec.Encode(catalog), RouteCatalogCodec.ComputeRootDigest(catalog), null, identities, "Development-fixture", string.Empty);
++        candidate = candidate with { TrustProof = RouteCatalogActivationBinding.ComputeDigest(candidate) };
++        await authorities[0].PrepareAsync(candidate, TestContext.Current.CancellationToken);
++        foreach (var authority in authorities) await authority.ReadyAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++        await authorities[0].CommitAsync(candidate.AttemptId, TestContext.Current.CancellationToken);
++        var invoker = Substitute.For<IProjectionActorInvoker>();
++        invoker.InvokeAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<QueryEnvelope>(), Arg.Any<CancellationToken>())
++            .Returns(QueryResult.FromPayload(JsonSerializer.SerializeToElement(new { count = 3 }), "counter"));
++        var router = new QueryRouter(invoker, NullLogger<QueryRouter>.Instance, Substitute.For<IProjectionLifecycleGateway>(), catalogAuthority: authorities[0]);
++        var request = new SubmitQuery("tenant-a", "counter", "counter-1", "get-counter-status", [], "correlation", "fixture-user", EntityId: "counter-1");
++        if (fault == "unknown-query") request = request with { QueryType = "not-declared" };
++        if (fault == "projection-override") request = request with { ProjectionType = "other" };
++        if (fault == "actor-override") request = request with { ProjectionActorType = "other" };
++        if (fault == "changed-registration")
++        {
++            var actors = provider.GetRequiredService<IOptions<ActorRuntimeOptions>>().Value.Actors;
++            actors.Remove(actors.Single(registration => registration.Type.ActorTypeName == RouteCatalogProjectionActorPolicy.ActorType).Type);
++        }
++        if (fault == "valid")
++        {
++            (await router.RouteQueryAsync(request, TestContext.Current.CancellationToken)).Payload!.Value.GetProperty("count").GetInt32().ShouldBe(3);
++            // Absent lifecycle metadata retains the existing single bounded retry;
++            // both actual invocations must retain the same committed actor identity.
++            await invoker.Received(2).InvokeAsync("counter:tenant-a:counter-1", RouteCatalogProjectionActorPolicy.ActorType,
++                Arg.Any<QueryEnvelope>(), Arg.Any<CancellationToken>());
++        }
++        else
++        {
++            await Should.ThrowAsync<RouteCatalogUnavailableException>(() => router.RouteQueryAsync(request, TestContext.Current.CancellationToken));
++            invoker.ReceivedCalls().ShouldBeEmpty();
++        }
++        (await store.ReadAsync(TestContext.Current.CancellationToken)).State.Leases.ShouldBeEmpty();
++    }
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeController.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeController.cs
+new file mode 100644
+index 000000000..c741cfd02
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeController.cs
+@@ -0,0 +1,32 @@
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Mvc;
++
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Exercises the exact typed metadata and SDK validation callback emitted on generated actions.</summary>
++[ApiController]
++[Authorize(Policy = EventStoreHttpHostSecurityExtensions.HumanPolicy)]
++public sealed class GeneratedRestProbeController(GeneratedRestProbeState state) : ControllerBase
++{
++    /// <summary>Reads one resolved tenant under the real generated-action catalog callback.</summary>
++    [HttpGet("/api/probe/{tenantId}")]
++    [RouteCatalogEndpoint(typeof(GeneratedRestProbeQuery), "query")]
++    public IActionResult Get(string tenantId)
++    {
++        if (!RouteCatalogGeneratedAction.ValidateTenant(HttpContext.Items, typeof(GeneratedRestProbeQuery), "query", tenantId)) return StatusCode(503);
++        state.Record(tenantId);
++        return Ok("observed");
++    }
++
++    /// <summary>An untyped neighboring GET must never inherit a Dapr grant.</summary>
++    [HttpGet("/api/untyped/{tenantId}")]
++    public IActionResult Untyped(string tenantId) { state.Record(tenantId); return Ok("untyped"); }
++
++    /// <summary>Non-query typed actions must never inherit the generated GET fence.</summary>
++    [HttpPost("/api/command/{tenantId}")]
++    [RouteCatalogEndpoint(typeof(GeneratedRestProbeQuery), "command")]
++    public IActionResult Command(string tenantId) { state.Record(tenantId); return Ok("command"); }
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeDeclarations.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeDeclarations.cs
+new file mode 100644
+index 000000000..2fda6afae
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeDeclarations.cs
+@@ -0,0 +1,29 @@
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Routing;
++
++[assembly: RouteCatalogDeclarationSource(typeof(Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest.GeneratedRestProbeDeclarations))]
++
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Compiled owner declarations and schemas independently read by both host and authority fixture.</summary>
++public static class GeneratedRestProbeDeclarations
++{
++    /// <summary>The complete test owner's callable query inventory.</summary>
++    public static IReadOnlyList<RouteContractDeclaration> Routes { get; } =
++    [new("generated-probe-read", "query", GeneratedRestProbeQuery.Domain, GeneratedRestProbeQuery.QueryType,
++        GeneratedRestProbeQuery.ProjectionType, "v1", null, "workload", EventStoreOperationIdentifiers.DomainServiceQuery, null, [],
++        new(typeof(GeneratedRestProbeQuery).FullName!, "exact", [GeneratedRestProbeQuery.QueryType], "domain-service", "projection", []))];
++
++    /// <summary>Constructs the canonical fixture generation from the same complete compiled owner declarations.</summary>
++    public static RouteCatalogEnvelope Catalog()
++    {
++        RouteContractDeclaration declaration = Routes.Single();
++        return RouteCatalogCodec.Seal(new(3, 1, "Development", false, [declaration],
++            [new(declaration.RouteId, 1, RouteCatalogCodec.ComputeDeclarationDigest(declaration), "domain", "query", "v1", declaration.CredentialKind,
++                declaration.Operation, false, "*", Operations.Single().Digest)], [], string.Empty, string.Empty, Operations, []));
++    }
++
++    /// <summary>The real request/result schemas and intentionally UI-only policy.</summary>
++    public static IReadOnlyList<RouteOperationContract> Operations { get; } =
++        [RouteOperationSchema.Create(Routes[0], typeof(GeneratedRestProbeQuery), typeof(string), "public", "UI-only", new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web))];
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeQuery.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeQuery.cs
+new file mode 100644
+index 000000000..324419ad0
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeQuery.cs
+@@ -0,0 +1,12 @@
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>The actual typed query used by the generated HTTP boundary proof.</summary>
++public sealed record GeneratedRestProbeQuery
++{
++    /// <summary>The owner domain.</summary>
++    public static string Domain => "generated-probe";
++    /// <summary>The stable query discriminator.</summary>
++    public static string QueryType => "read-probe";
++    /// <summary>The actual projection identity.</summary>
++    public static string ProjectionType => "probe";
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeState.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeState.cs
+new file mode 100644
+index 000000000..d52c51658
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestProbeState.cs
+@@ -0,0 +1,11 @@
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Retains actual handler effects so refused requests must leave persisted fixture state unchanged.</summary>
++public sealed class GeneratedRestProbeState
++{
++    private readonly System.Collections.Concurrent.ConcurrentQueue<string> _tenants = new();
++    /// <summary>The persisted successful request scopes.</summary>
++    public IReadOnlyList<string> Tenants => _tenants.ToArray();
++    /// <summary>Records a real admitted action effect.</summary>
++    public void Record(string tenant) => _tenants.Enqueue(tenant);
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogPolicyTests.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogPolicyTests.cs
+new file mode 100644
+index 000000000..0c3c87e01
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogPolicyTests.cs
+@@ -0,0 +1,81 @@
++using System.Text.Json;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Shouldly;
++
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Independent owner-schema, topology admission and observation-identity checks for the opt-in family.</summary>
++public sealed class GeneratedRestRouteCatalogPolicyTests
++{
++    /// <summary>Requires every reachable admitted endpoint to have the same full compiled public query identity.</summary>
++    [Theory]
++    [InlineData("valid", true)]
++    [InlineData("bounded-prefix", true)]
++    [InlineData("wildcard-only", false)]
++    [InlineData("broad-prefix", false)]
++    [InlineData("deep-catchall", false)]
++    [InlineData("wrong-verb", false)]
++    [InlineData("unknown-target", false)]
++    [InlineData("missing-typed", false)]
++    [InlineData("wrong-fence", false)]
++    [InlineData("declaration-digest", false)]
++    [InlineData("operation-digest", false)]
++    [InlineData("request-type", false)]
++    [InlineData("schema-change", false)]
++    [InlineData("untyped-overlap", false)]
++    [InlineData("anonymous", false)]
++    [InlineData("missing-policy", false)]
++    public void GrantsRequireActualTypedQueryInventory(string fault, bool expected)
++    {
++        ArgumentNullException.ThrowIfNull(fault);
++        RouteCatalogEnvelope catalog = GeneratedRestProbeDeclarations.Catalog();
++        var declaration = catalog.Declarations.Single(); var operation = catalog.Operations!.Single();
++        string[] policies = [EventStoreHttpHostSecurityExtensions.HumanPolicy];
++        var typed = new RouteCatalogGeneratedRestEndpoint("/api/probe/{tenantId}", declaration.RouteId,
++            RouteCatalogCodec.ComputeDeclarationDigest(declaration), operation.Digest, typeof(GeneratedRestProbeQuery).FullName!, policies);
++        var actual = new RouteCatalogReceiverEndpoint(typed.Pattern, ["GET"], "generated-human-query", policies, false, true, true);
++        if (fault == "declaration-digest") typed = typed with { DeclarationDigest = new string('0', 64) };
++        if (fault == "operation-digest") typed = typed with { OperationDigest = new string('0', 64) };
++        if (fault == "request-type") typed = typed with { ContractType = typeof(string).FullName! };
++        if (fault == "anonymous") actual = actual with { Anonymous = true };
++        if (fault == "missing-policy") actual = actual with { Policies = ["same-looking-policy"] };
++        if (fault == "schema-change")
++        {
++            var changed = operation with { RequestSchema = JsonSerializer.SerializeToElement(new { type = "string" }) };
++            changed = changed with { Digest = RouteCatalogCodec.ComputeOperationContractDigest(changed) };
++            catalog = catalog with { Operations = [changed] };
++        }
++        List<RouteCatalogReceiverEndpoint> endpoints = [actual];
++        if (fault == "untyped-overlap") endpoints.Add(actual with { Pattern = "/api/probe/{tenantId}/untyped" });
++        var receiver = new RouteCatalogReceiverSurface(fault == "wrong-fence" ? FiniteRouteCatalogReceiver.Version : RouteCatalogGeneratedRestPolicy.FenceVersion, endpoints)
++        { GeneratedRest = fault == "missing-typed" ? [] : [typed] };
++        string grant = fault switch
++        {
++            "valid" => "/api/probe/*", "wildcard-only" => "/**", "broad-prefix" => "/api/**",
++            "deep-catchall" => "/api/probe/**", "unknown-target" => "/api/unrelated/*", _ => "/api/probe",
++        };
++        RouteCatalogGeneratedRestPolicy.AdmitsGrant(catalog, receiver, grant, [fault == "wrong-verb" ? "POST" : "GET"]).ShouldBe(expected);
++    }
++
++    /// <summary>The independently captured typed schema identity participates in the existing topology digest.</summary>
++    [Fact]
++    public void TypedObservationChangesCannotReuseAnExistingHostIdentity()
++    {
++        var catalog = GeneratedRestProbeDeclarations.Catalog(); var declaration = catalog.Declarations.Single();
++        var typed = new RouteCatalogGeneratedRestEndpoint("/api/probe/{tenantId}", declaration.RouteId,
++            RouteCatalogCodec.ComputeDeclarationDigest(declaration), catalog.Operations!.Single().Digest,
++            typeof(GeneratedRestProbeQuery).FullName!, [EventStoreHttpHostSecurityExtensions.HumanPolicy]);
++        var surface = new RouteCatalogReceiverSurface(RouteCatalogGeneratedRestPolicy.FenceVersion, []) { GeneratedRest = [typed] };
++        var observation = new RouteCatalogHostObservation("generated-api", "generated-api", catalog.Declarations, [], ["generated-api"],
++            [JsonSerializer.SerializeToUtf8Bytes(new { publicComponent = "fixture" }), JsonSerializer.SerializeToUtf8Bytes(new { publicAcl = "fixture" })],
++            JsonSerializer.SerializeToUtf8Bytes(new { issuer = "generated-rest-fixture" }), [], [], [], ReceiverSurface: surface, Operations: catalog.Operations)
++        { AuthorityCoordinates = new("catalog-state", "catalog-generation", "http://127.0.0.1:3500") };
++        string original = ObservedRouteCatalogHost.Identity(observation).TopologyDigest;
++        foreach (var changed in new[] { typed with { OperationDigest = new string('0', 64) }, typed with { ContractType = typeof(string).FullName! }, typed with { Pattern = "/api/another/{tenantId}" } })
++            ObservedRouteCatalogHost.Identity(observation with { ReceiverSurface = surface with { GeneratedRest = [changed] } }).TopologyDigest.ShouldNotBe(original);
++    }
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogReceiverTests.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogReceiverTests.cs
+new file mode 100644
+index 000000000..ddbb0fe17
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogReceiverTests.cs
+@@ -0,0 +1,168 @@
++using System.Net;
++using System.Net.Http.Headers;
++using System.IdentityModel.Tokens.Jwt;
++using System.Security.Claims;
++using System.Security.Cryptography;
++using System.Text;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.ServiceDefaults;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Microsoft.AspNetCore.Authentication.JwtBearer;
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Hosting;
++using Microsoft.AspNetCore.Http;
++using Microsoft.AspNetCore.Hosting.Server;
++using Microsoft.AspNetCore.Hosting.Server.Features;
++using Microsoft.AspNetCore.Mvc;
++using Microsoft.AspNetCore.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Logging;
++using Microsoft.Extensions.Options;
++using Microsoft.IdentityModel.Tokens;
++
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Real HTTP, JWT and SDK generated-filter proofs; distributed activation has its independent authority suite.</summary>
++public sealed class GeneratedRestRouteCatalogReceiverTests
++{
++    /// <summary>Admits the lawful parameterized human read and refuses credential, policy and neighboring-handler alternatives before effects.</summary>
++    [Theory]
++    [InlineData("valid", 200)]
++    [InlineData("anonymous", 401)]
++    [InlineData("agent", 403)]
++    [InlineData("service", 403)]
++    [InlineData("missing-surface", 403)]
++    [InlineData("duplicate-surface", 403)]
++    [InlineData("unknown-surface", 403)]
++    [InlineData("mixed-workload", 403)]
++    [InlineData("wrong-channel", 401)]
++    [InlineData("untyped", 403)]
++    [InlineData("typed-command", 403)]
++    [InlineData("metadata-change", 403)]
++    [InlineData("filter-change", 403)]
++    [InlineData("policy-replacement", 403)]
++    [InlineData("health", 200)]
++    [InlineData("ready", 200)]
++    [InlineData("alive", 200)]
++    [InlineData("probe-wrong-verb", 403)]
++    [InlineData("probe-descendant", 403)]
++    [InlineData("catalog-valid", 200)]
++    [InlineData("catalog-anonymous", 401)]
++    [InlineData("catalog-human", 401)]
++    public async Task ActualHumanDaprGetRetainsTypedPolicyAndEffects(string scenario, int expected)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        string directory = Path.Combine(Path.GetTempPath(), "generated-rest-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(directory);
++        string key = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++        string channel = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++        try
++        {
++            WebApplicationBuilder builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = Environments.Development });
++            builder.Logging.ClearProviders(); builder.WebHost.UseUrls("http://127.0.0.1:0");
++            builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"] = directory;
++            builder.Configuration[DaprAppChannelToken.ConfigurationKey] = channel;
++            builder.Configuration["Authentication:JwtBearer:Issuer"] = "generated-rest-fixture";
++            builder.Configuration["Authentication:JwtBearer:Audience"] = "generated-rest-fixture";
++            builder.Configuration["Authentication:JwtBearer:SigningKey"] = key;
++            builder.Configuration["Authentication:JwtBearer:RequireHttpsMetadata"] = "false";
++            builder.Configuration["Authentication:JwtBearer:AllowInsecureSymmetricKey"] = "true";
++            builder.Services.AddEventStoreHttpHostSecurity();
++            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new()
++            {
++                ValidateIssuer = true, ValidIssuer = "generated-rest-fixture", ValidateAudience = true, ValidAudience = "generated-rest-fixture",
++                ValidateIssuerSigningKey = true, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
++                ValidateLifetime = true, ClockSkew = TimeSpan.Zero,
++            });
++            builder.Services.AddAuthentication().AddEventStoreWorkloadScheme(RouteCatalogEndpointExtensions.WorkloadScheme, "Authentication:RouteCatalogWorkload",
++                (options, _) => { options.Audience = "generated-rest-fixture"; options.AllowedCallers = ["eventstore"]; });
++            builder.Services.AddEventStoreWorkloadPolicies(RouteCatalogEndpointExtensions.WorkloadScheme,
++                [EventStoreOperationIdentifiers.RouteCatalogRead, EventStoreOperationIdentifiers.RouteCatalogActivate]);
++            builder.Services.AddSingleton<GeneratedRestRouteCatalogReceiver>();
++            builder.Services.AddSingleton<GeneratedRestProbeState>();
++            builder.Services.AddHealthChecks();
++            builder.Services.AddScoped<GeneratedRouteCatalogFilter>();
++            builder.Services.AddControllers(options => options.Filters.AddService<GeneratedRouteCatalogFilter>()).AddApplicationPart(typeof(GeneratedRestProbeController).Assembly);
++            RouteContractDeclaration declaration = GeneratedRestProbeDeclarations.Routes.Single();
++            RouteCatalogEnvelope catalog = GeneratedRestProbeDeclarations.Catalog();
++            var snapshot = new CommittedRouteCatalogSnapshot(RouteCatalogCodec.Encode(catalog), RouteCatalogCodec.ComputeRootDigest(catalog), 1, localAppId: "generated-api");
++            var authority = Substitute.For<IRouteCatalogAuthority>();
++            authority.AcquireAsync(Arg.Any<CancellationToken>()).Returns(_ => new RouteCatalogDispatchLease(snapshot, () => Task.CompletedTask));
++            authority.ReadbackAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(new RouteCatalogGenerationReadback(1, 1, snapshot.RootDigest,
++                catalog.RouteFacetDigest, catalog.IdempotencyFacetDigest, "Development", [], true)));
++            builder.Services.AddSingleton(authority);
++            await using WebApplication app = builder.Build();
++            app.UseRouting(); app.UseAuthentication();
++            app.UseEventStoreDevelopmentGeneratedRestCatalogReceiver();
++            app.UseEventStoreHttpHostSecurity(); app.UseAuthorization(); app.MapControllers();
++            app.MapDefaultEndpoints();
++            app.MapEventStoreRouteCatalog();
++            await app.StartAsync(TestContext.Current.CancellationToken).ConfigureAwait(true);
++            var receiver = app.Services.GetRequiredService<GeneratedRestRouteCatalogReceiver>();
++            receiver.Observe().GeneratedRest.ShouldHaveSingleItem().DeclarationDigest.ShouldBe(RouteCatalogCodec.ComputeDeclarationDigest(declaration));
++            if (scenario is "metadata-change" or "filter-change" or "policy-replacement")
++            {
++                RouteEndpoint selected = ((IEndpointRouteBuilder)app).DataSources.SelectMany(source => source.Endpoints).OfType<RouteEndpoint>().Single(endpoint => endpoint.RoutePattern.RawText?.TrimStart('/') == "api/probe/{tenantId}");
++                if (scenario == "metadata-change") selected.Metadata.GetOrderedMetadata<IAuthorizeData>().First().Policy = "changed-policy";
++                else if (scenario == "filter-change") selected.Metadata.GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()!.FilterDescriptors.Clear();
++                else app.Services.GetRequiredService<IOptions<AuthorizationOptions>>().Value.AddPolicy(EventStoreHttpHostSecurityExtensions.HumanPolicy,
++                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAssertion(_ => true).Build());
++            }
++            using var client = new HttpClient(new SocketsHttpHandler { UseProxy = false }) { BaseAddress = new Uri(app.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single()) };
++            client.DefaultRequestHeaders.Add(DaprAppChannelToken.HeaderName, scenario == "wrong-channel" ? Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)) : channel);
++            if (scenario is not ("anonymous" or "catalog-anonymous" or "catalog-valid"))
++            {
++                List<Claim> claims = [new("sub", "generated-user"), new("eventstore:tenant", "tenant-one")];
++                if (scenario != "missing-surface") claims.Add(new("eventstore:surface", scenario is "agent" or "service" ? scenario : scenario == "unknown-surface" ? "other" : "ui"));
++                if (scenario == "duplicate-surface") claims.Add(new("eventstore:surface", "ui"));
++                var jwt = new JwtSecurityToken("generated-rest-fixture", "generated-rest-fixture", claims, expires: DateTime.UtcNow.AddMinutes(2), signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256));
++                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", new JwtSecurityTokenHandler().WriteToken(jwt));
++            }
++            if (scenario == "mixed-workload") client.DefaultRequestHeaders.Add(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)));
++            if (scenario == "catalog-valid")
++            {
++                var token = new SecurityTokenDescriptor
++                {
++                    Issuer = "generated-rest-fixture", Audience = "generated-rest-fixture", IssuedAt = DateTime.UtcNow,
++                    Expires = DateTime.UtcNow.AddMinutes(2), Claims = new Dictionary<string, object>
++                    {
++                        [EventStoreWorkloadAuthenticationDefaults.CallerClaimType] = "eventstore",
++                        [EventStoreWorkloadAuthenticationDefaults.OperationClaimType] = EventStoreOperationIdentifiers.RouteCatalogRead,
++                        ["eventstore:surface"] = "service",
++                    }, SigningCredentials = new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256),
++                };
++                client.DefaultRequestHeaders.Add(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, new Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler().CreateToken(token));
++            }
++            using HttpResponseMessage response = scenario.StartsWith("catalog-", StringComparison.Ordinal)
++                ? await client.GetAsync("/" + RouteCatalogEndpointExtensions.ReadbackMethod, TestContext.Current.CancellationToken).ConfigureAwait(true)
++                : scenario is "health" or "ready" or "alive"
++                ? await client.GetAsync("/" + scenario, TestContext.Current.CancellationToken).ConfigureAwait(true)
++                : scenario == "probe-wrong-verb"
++                ? await client.PostAsync("/ready", null, TestContext.Current.CancellationToken).ConfigureAwait(true)
++                : scenario == "probe-descendant"
++                ? await client.GetAsync("/ready/child", TestContext.Current.CancellationToken).ConfigureAwait(true)
++                : scenario == "typed-command"
++                ? await client.PostAsync("/api/command/tenant-one", null, TestContext.Current.CancellationToken).ConfigureAwait(true)
++                : await client.GetAsync(scenario == "untyped" ? "/api/untyped/tenant-one" : "/api/probe/tenant-one", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            response.StatusCode.ShouldBe((HttpStatusCode)expected);
++            if (scenario == "catalog-valid")
++            {
++                using System.Text.Json.JsonDocument readback = System.Text.Json.JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken).ConfigureAwait(true));
++                readback.RootElement.GetProperty("rootDigest").GetString().ShouldBe(snapshot.RootDigest);
++                readback.RootElement.GetProperty("serving").GetBoolean().ShouldBeTrue();
++            }
++            app.Services.GetRequiredService<GeneratedRestProbeState>().Tenants.ShouldBe(scenario == "valid" ? ["tenant-one"] : Array.Empty<string>());
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogTopologyTests.cs b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogTopologyTests.cs
+new file mode 100644
+index 000000000..05af5e0a0
+--- /dev/null
++++ b/tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogTopologyTests.cs
+@@ -0,0 +1,99 @@
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Shouldly;
++
++namespace Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest;
++
++/// <summary>Exercises the complete topology boundary with selected proxies outside the authority cohort.</summary>
++public sealed class GeneratedRestRouteCatalogTopologyTests
++{
++    /// <summary>Dedicated shared authorities isolate business keys while legacy none remains explicitly compatible.</summary>
++    [Theory]
++    [InlineData("name", true)]
++    [InlineData("none", true)]
++    [InlineData("appid", false)]
++    [InlineData("namespace", false)]
++    [InlineData("missing-role", false)]
++    [InlineData("actor-true", false)]
++    [InlineData("actor-one", false)]
++    [InlineData("actor-false", true)]
++    [InlineData("scope", false)]
++    [InlineData("empty-name", false)]
++    [InlineData("malformed-name", false)]
++    [InlineData("duplicate-prefix", false)]
++    public void CompleteTopologyQualifiesSharedAuthorityKeyspaceAndRole(string scenario, bool admitted)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        string digest = new('a', 64);
++        RouteCatalogHostIdentity[] hosts = [new("domain", "domain", digest, digest, digest)];
++        var component = new JsonObject
++        {
++            ["kind"] = "Component",
++            ["metadata"] = new JsonObject { ["name"] = scenario == "empty-name" ? "" : scenario == "malformed-name" ? "invalid/name" : "routing-owned",
++                ["labels"] = new JsonObject { [RouteCatalogAuthorityComponentPolicy.RoleLabel] = scenario == "missing-role" ? "unknown" : RouteCatalogAuthorityComponentPolicy.IsolatedRole } },
++            ["spec"] = new JsonObject { ["type"] = "state.redis", ["metadata"] = new JsonArray(new JsonObject
++                { ["name"] = "keyPrefix", ["value"] = scenario is "none" or "appid" or "namespace" ? scenario : "name" }) },
++            ["scopes"] = new JsonArray(scenario == "scope" ? "unrelated" : "domain"),
++        };
++        if (scenario.StartsWith("actor-", StringComparison.Ordinal)) component["spec"]!["metadata"]!.AsArray().Add(new JsonObject
++            { ["name"] = "actorStateStore", ["value"] = scenario == "actor-true" ? "true" : scenario == "actor-one" ? "1" : "false" });
++        if (scenario == "duplicate-prefix") component["spec"]!["metadata"]!.AsArray().Add(new JsonObject { ["name"] = "keyPrefix", ["value"] = "name" });
++        byte[] acl = JsonSerializer.SerializeToUtf8Bytes(new { spec = new { accessControl = new { defaultAction = "deny", trustDomain = "public" } } });
++        Action validate = () => RouteCatalogTopologyValidator.ValidateDevelopment(JsonSerializer.SerializeToUtf8Bytes(component), acl,
++            GeneratedRestProbeDeclarations.Catalog(), hosts, "domain");
++        if (admitted) Should.NotThrow(validate); else Should.Throw<RouteCatalogValidationException>(validate);
++    }
++
++    /// <summary>Only independently declared, actually typed human GET ingress exempts a selected proxy from enrollment.</summary>
++    [Theory]
++    [InlineData("typed-get", true)]
++    [InlineData("post", false)]
++    [InlineData("service", false)]
++    [InlineData("control", false)]
++    [InlineData("missing-typed", false)]
++    [InlineData("tampered-typed", false)]
++    [InlineData("undeclared", false)]
++    [InlineData("enrolled-control", true)]
++    public void CompleteTopologyRetainsSelectedCallerEnrollmentBoundary(string scenario, bool admitted)
++    {
++        ArgumentNullException.ThrowIfNull(scenario);
++        RouteCatalogEnvelope catalog = GeneratedRestProbeDeclarations.Catalog();
++        var declaration = catalog.Declarations.Single();
++        var typed = new RouteCatalogGeneratedRestEndpoint("/api/probe/{tenantId}", declaration.RouteId,
++            RouteCatalogCodec.ComputeDeclarationDigest(declaration), catalog.Operations!.Single().Digest,
++            typeof(GeneratedRestProbeQuery).FullName!, [EventStoreHttpHostSecurityExtensions.HumanPolicy]);
++        string control = RouteCatalogEndpointExtensions.ReadbackMethod;
++        string policy = EventStoreWorkloadAuthenticationDefaults.OperationPolicy(RouteCatalogEndpointExtensions.WorkloadScheme, EventStoreOperationIdentifiers.RouteCatalogRead);
++        var receiver = new RouteCatalogReceiverSurface(RouteCatalogGeneratedRestPolicy.FenceVersion,
++            [new(typed.Pattern, ["GET"], "generated-human-query", typed.Policies, false, true, true),
++                new("/" + control, ["GET"], EventStoreOperationIdentifiers.RouteCatalogRead, [policy], false, false, true)])
++        {
++            GeneratedRest = scenario == "missing-typed" ? [] : [scenario == "tampered-typed" ? typed with { OperationDigest = new string('0', 64) } : typed],
++        };
++        string caller = scenario == "enrolled-control" ? "gateway" : "ui";
++        string method = scenario is "control" or "enrolled-control" ? control : scenario == "service" ? "query" : "/api/probe/*";
++        string verb = scenario is "post" or "service" ? "POST" : "GET";
++        string digest = new('a', 64);
++        RouteCatalogHostIdentity[] hosts = [new("generated-api", "generated-api", digest, digest, digest), new("gateway", "gateway", digest, digest, digest)];
++        byte[] component = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            kind = "Component", spec = new { type = "state.redis", metadata = new[] { new { name = "keyPrefix", value = "none" } } },
++            scopes = hosts.Select(host => host.AppId).ToArray(),
++        });
++        byte[] acl = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            spec = new { accessControl = new { defaultAction = "deny", trustDomain = "public",
++                policies = new[] { new { appId = caller, defaultAction = "deny", operations = new[] { new { name = method, action = "allow", httpVerb = new[] { verb } } } } } } },
++        });
++        Action validate = () => RouteCatalogTopologyValidator.ValidateDevelopment(component, acl, catalog, hosts, "generated-api", [], receiver,
++            ["generated-api", "gateway", "ui"], scenario == "undeclared" ? [] : [new(caller, method, [verb])]);
++        if (admitted) Should.NotThrow(validate);
++        else Should.Throw<RouteCatalogValidationException>(validate);
++    }
++}

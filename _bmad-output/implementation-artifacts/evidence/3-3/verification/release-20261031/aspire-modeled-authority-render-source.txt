@@ -1,0 +1,69 @@
+# Aspire.Hosting.DaprMetadataResourceBuilderExtensions.WithMetadata
+
+## Custom Attributes
+
+| Name | Value |
+| ---- | ----- |
+| AspireExportIgnore |  |
+
+## Decompiled Source
+
+```csharp
+public static Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource> WithMetadata(this Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource> builder, string name, Aspire.Hosting.ApplicationModel.IValueProvider valueProvider)
+{
+    ___c__DisplayClass1_0 V_0 = new();
+    V_0.name = name;
+    V_0.envVarName = string.Concat(builder.Resource.Name, "_", V_0.name).ToUpperInvariant().Replace("-", "_");
+    builder.WithAnnotation<DaprComponentValueProviderAnnotation>(new DaprComponentValueProviderAnnotation(V_0.name, V_0.envVarName, valueProvider), (ResourceAnnotationMutationBehavior)0);
+    return builder.WithAnnotation<DaprComponentConfigurationAnnotation>(new DaprComponentConfigurationAnnotation(new Func<DaprComponentSchema, CancellationToken, Task>(V_0.__WithMetadata_b__0)), (ResourceAnnotationMutationBehavior)0);
+}
+```
+
+## IL
+
+```il
+IL_0000: newobj       Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::.ctor()
+IL_0005: stloc.0
+IL_0006: ldloc.0
+IL_0007: ldarg.1
+IL_0008: stfld        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::name
+IL_000D: ldloc.0
+IL_000E: ldarg.0
+IL_000F: callvirt     Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource>::get_Resource()
+IL_0014: callvirt     Aspire.Hosting.ApplicationModel.IResource::get_Name()
+IL_0019: ldstr        "_"
+IL_001E: ldloc.0
+IL_001F: ldfld        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::name
+IL_0024: call         System.String::Concat(string, string, string)
+IL_0029: callvirt     System.String::ToUpperInvariant()
+IL_002E: ldstr        "-"
+IL_0033: ldstr        "_"
+IL_0038: callvirt     System.String::Replace(string, string)
+IL_003D: stfld        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::envVarName
+IL_0042: ldarg.0
+IL_0043: ldloc.0
+IL_0044: ldfld        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::name
+IL_0049: ldloc.0
+IL_004A: ldfld        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::envVarName
+IL_004F: ldarg.2
+IL_0050: newobj       CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentValueProviderAnnotation::.ctor(string, string, Aspire.Hosting.ApplicationModel.IValueProvider)
+IL_0055: ldc.i4.0
+IL_0056: callvirt     Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource>::WithAnnotation(TM0, Aspire.Hosting.ApplicationModel.ResourceAnnotationMutationBehavior)<CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentValueProviderAnnotation>
+IL_005B: pop
+IL_005C: ldarg.0
+IL_005D: ldloc.0
+IL_005E: ldftn        Aspire.Hosting.DaprMetadataResourceBuilderExtensions.<>c__DisplayClass1_0::<WithMetadata>b__0(CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentSchema, System.Threading.CancellationToken)
+IL_0064: newobj       System.Func<CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentSchema, System.Threading.CancellationToken, System.Threading.Tasks.Task>::.ctor(object, nint)
+IL_0069: newobj       CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentConfigurationAnnotation::.ctor(System.Func<CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentSchema, System.Threading.CancellationToken, System.Threading.Tasks.Task>)
+IL_006E: ldc.i4.0
+IL_006F: callvirt     Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource>::WithAnnotation(TM0, Aspire.Hosting.ApplicationModel.ResourceAnnotationMutationBehavior)<CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentConfigurationAnnotation>
+IL_0074: ret
+```
+
+## Signature
+
+| Signature | Digest | Canonical Signature | Description |
+| --------- | ------ | ------------------- | ----------- |
+| `public static Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource> WithMetadata(this Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource> builder, string name, Aspire.Hosting.ApplicationModel.IValueProvider valueProvider)` | `0132cd9872` | `M:Aspire.Hosting.DaprMetadataResourceBuilderExtensions.WithMetadata(Aspire.Hosting.ApplicationModel.IResourceBuilder<CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource>,string,Aspire.Hosting.ApplicationModel.IValueProvider)` | Adds a value provider as metadata to the Dapr component that will be resolved at runtime. |
+
+Type: Aspire.Hosting.DaprMetadataResourceBuilderExtensions | Package: CommunityToolkit.Aspire.Hosting.Dapr | Version: 13.6.2-beta.959 | TFM: net10.0 | Library: lib/net10.0/CommunityToolkit.Aspire.Hosting.Dapr.dll | Source: NuGet

@@ -1,0 +1,167 @@
+{
+  "repository": "Hexalith/Hexalith.EventStore",
+  "commit": "c02afa0fce310ccdb696232f18829df96cba088e",
+  "nestedCheckout": false,
+  "files": [
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/CloseCounter.cs",
+      "bytes": 1107,
+      "sha256": "d826fd07905b56391e3081ee6613f589c010f0d08ff03f7a64e06ac651e7a9f2"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/DecrementCounter.cs",
+      "bytes": 988,
+      "sha256": "cbc3fa33efa7eaa9fb8e9f34dc075b820fb013f03532c00e8c546c22da1f8147"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/IncrementCounter.cs",
+      "bytes": 988,
+      "sha256": "6e376a70de9f6fddab0c43ca2cd9edef6e9f1863f9ce15478bdb36a7e849934f"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/ResetCounter.cs",
+      "bytes": 973,
+      "sha256": "b882c54525fee543e6e749d256dce1b85f404ebb6ca03436209440f5363f1891"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/CounterCatalogDeclarations.cs",
+      "bytes": 2326,
+      "sha256": "37d82351c1b6d16978bc2b8daac6e6b589e8b917f6ba83864b4ea928aa004340"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/GetCounterStatusQuery.cs",
+      "bytes": 934,
+      "sha256": "39f5a51fc3af5ef26cae8576795af7fbfaef9e80941d43a09f7f4a7d37ed0755"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.Contracts/Hexalith.EventStore.Sample.Contracts.csproj",
+      "bytes": 261,
+      "sha256": "ffc9e6cb8b3b239ff330ceca94ef0b54a6bdc9d976a582faa7b2670bcb05d1df"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+      "bytes": 1901,
+      "sha256": "367d3be8ae627a597feccbb58d33f6ca0c302538d8954661a101ee0052673460"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/CounterEventSerialization.cs",
+      "bytes": 3690,
+      "sha256": "859a0bc721e3225190a05349e7e6cf2750a299af92ac240099bba3f6b15092b4"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Events/CounterCannotGoNegative.cs",
+      "bytes": 269,
+      "sha256": "5fd59867b55479fb07168cdc05c47d3141b02fe69c8c00eeb90a9b573be968d4"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+      "bytes": 337,
+      "sha256": "ac41379a560a3c90a4b2101e6935305d4cfb3424e2a91865f1e9f398cbe1da2f"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+      "bytes": 242,
+      "sha256": "173d7f98451b631949bbca7ad3dfa524f08a27538851a8598b9e4f2c93f8388f"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+      "bytes": 242,
+      "sha256": "3d9be7af5c4a63bd2b003eaf7879860b2310020f5a4ce0e30ab73e554b0a89ca"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+      "bytes": 231,
+      "sha256": "7461fe7ed810466f01a86cf2ab4699833be62d8113500d5d068aaa35a035b4d7"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+      "bytes": 811,
+      "sha256": "9c9f07b0501991875c5e2d83b605fc4654b6753af7069455c99debc9ff255898"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+      "bytes": 2794,
+      "sha256": "be38fdcb337c4ba66a304239bfd013d25a45b400ac93684484c03b68fc14349c"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+      "bytes": 2032,
+      "sha256": "26874b06552a0bc5d2f1b3ac13cc11359b884affe6cb11eac9800db60d4f2f11"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+      "bytes": 1744,
+      "sha256": "075b65b9c65fe0259a4b779dabc7a1153a7a3057170f15947f38cfd587bf644e"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+      "bytes": 153,
+      "sha256": "5241c316deb78642ef0f5fd09487eb09ad4c01d7b96eb4d9bc64175c78677f17"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/Events/GreetingSent.cs",
+      "bytes": 223,
+      "sha256": "6205c96483d6b8ba728b1f9aa25def334c038766638b8f8eb6d49689f305150c"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+      "bytes": 1215,
+      "sha256": "2ab7b81476f001460df417764863f8280b4ca5bc6d8f722ddba6d01134ea77f4"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+      "bytes": 1130,
+      "sha256": "7f65dd55e2165451e53b8088e9028a745b61a6ebc9bb167043643c558d450891"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/GreetingEventSerialization.cs",
+      "bytes": 1273,
+      "sha256": "3227f9952a43846a29b016d44b06c2267037be37235c5da979904b50641d3664"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Greeting/State/GreetingState.cs",
+      "bytes": 648,
+      "sha256": "eb1a08bd2aa4fa0693d78db6e9d7edf699321c0c737f658eab4c65299b689654"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Hexalith.EventStore.Sample.csproj",
+      "bytes": 1040,
+      "sha256": "7197111075a3d70c4d8fdd86e640797080a19985a9e74c3ef3382f883cfd2efb"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Hexalith.EventStore.Sample.csproj.lscache",
+      "bytes": 18565,
+      "sha256": "930a3c0733ee2bcee71f7cbe2ecbb7d2069b00dbad1c5a1bc91df7fabf927428"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Program.cs",
+      "bytes": 2272,
+      "sha256": "391d2c826430dad45f4c5852a5d43872e7339803b5bae2683537e7aa649e1415"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/Properties/launchSettings.json",
+      "bytes": 616,
+      "sha256": "1cefa2384de4dcb82f87b063419cf3577ee4b2c5e85ea821e62a9d08a4803f58"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+      "bytes": 119,
+      "sha256": "817db0bf2ecca78364c41dbaf7949bf2504cf47a1c3d0d54f3be8178fefc030b"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample/appsettings.json",
+      "bytes": 194,
+      "sha256": "d2499cddd93c3fd97cfd42e03b03bc3c45faa982f256f202d02d8a9c9cf71f97"
+    },
+    {
+      "path": "src/Hexalith.EventStore/appsettings.json",
+      "bytes": 1381,
+      "sha256": "103e849f6c08a236f5516c37dc424a5e702dfa219f4a20c83c68caa78ee0abb8"
+    },
+    {
+      "path": "src/Hexalith.EventStore/appsettings.Development.json",
+      "bytes": 1104,
+      "sha256": "59f955a2076aa6acb1944c1e604c27a5ad06d221a23a8570716b5e1e9bdab119"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+Loading API documentation...
+BeforeStartEvent Constructors
+
+• Package: Aspire.Hosting (https://aspire.dev/reference/api/csharp/aspire.hosting.md)                
+• Type: BeforeStartEvent (https://aspire.dev/reference/api/csharp/aspire.hosting/beforestartevent.md)
+• Kind: Constructors                                                                                 
+• Members: 1                                                                                         
+
+This event is published before the application starts.
+
+BeforeStartEvent(IServiceProvider, DistributedApplicationModel)
+
+• Name: Constructor(IServiceProvider, DistributedApplicationModel)                                                                                                  
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ApplicationModel/BeforeStartEvent.cs#L30-L40)
+
+This event is published before the application starts.
+
+public class BeforeStartEvent
+{
+    public BeforeStartEvent(
+        IServiceProvider services,
+        DistributedApplicationModel model)
+    {
+        // ...
+    }
+}
+
+Parameters
+
+• services (IServiceProvider)                                                                                                      
+  The IServiceProvider instance.                                                                                                   
+• model (DistributedApplicationModel (https://aspire.dev/reference/api/csharp/aspire.hosting/distributedapplicationmodel.md))      
+  The DistributedApplicationModel (https://aspire.dev/reference/api/csharp/aspire.hosting/distributedapplicationmodel.md) instance.
+
+Remarks
+
+Subscribing to this event is analogous to implementing the IDistributedApplicationLifecycleHook.BeforeStartAsync(DistributedApplicationModel, CancellationToken) (https://aspire.dev/reference/api/csharp/aspire.hosting/idistributedapplicationlifecyclehook/methods.md#beforestartasync-distributedapplicationmodel-cancellationtoken) method. This event provides access to the IServiceProvider interface to resolve dependencies including DistributedApplicationModel (https://aspire.dev/reference/api/csharp/aspire.hosting/distributedapplicationmodel.md) service which is passed in as an argument in IDistributedApplicationLifecycleHook.BeforeStartAsync(DistributedApplicationModel, CancellationToken) (https://aspire.dev/reference/api/csharp/aspire.hosting/idistributedapplicationlifecyclehook/methods.md#beforestartasync-distributedapplicationmodel-cancellationtoken).
+
+Examples
+
+Subscribe to the event and resolve the distributed application model.
+
+var builder = DistributedApplication.CreateBuilder(args);
+builder.Eventing.Subscribe<BeforeStartEvent>(async (@event, cancellationToken) => {
+  var appModel = @event.Services.GetRequiredService<DistributedApplicationModel>();
+  // Mutate the distributed application model.
+});
+

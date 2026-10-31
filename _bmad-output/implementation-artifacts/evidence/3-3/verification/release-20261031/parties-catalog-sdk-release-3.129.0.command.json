@@ -1,0 +1,16 @@
+{
+  "command": [
+    "dotnet",
+    "msbuild",
+    "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj",
+    "-nologo",
+    "-p:Configuration=Release",
+    "-p:HexalithVersionsLoaded=true",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithEventStoreVersion=3.129.0",
+    "-getProperty:DefineConstants,HexalithEventStoreFromSource"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties",
+  "exitCode": 0,
+  "scope": "MSBuild evaluation only; not package restore/build acceptance"
+}

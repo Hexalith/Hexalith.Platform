@@ -1,0 +1,27 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.AppHost.Tests
+  Discovered:  Hexalith.EventStore.AppHost.Tests
+  Starting:    Hexalith.EventStore.AppHost.Tests
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Starting Dapr-related resources...
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Unvalidated configuration state.redis for component 'routing-fd74ddb336b645668147d2de64f7a6c4'.
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Using in-memory provider for dapr component 'secretstore'.
+Cancelling... (Press Ctrl+C again to terminate)
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Stopping Dapr-related resources...
+    Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(scenario: "valid") [FAIL]
+      System.Threading.Tasks.TaskCanceledException : A task was canceled.
+      Stack Trace:
+        /_/src/Aspire.Hosting/ApplicationModel/EndpointReference.cs(374,0): at Aspire.Hosting.ApplicationModel.EndpointReferenceExpression.<>c__DisplayClass10_0.<<GetValueAsync>g__ResolveValueWithAllocatedAddress|0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting/ApplicationModel/EndpointReference.cs(368,0): at Aspire.Hosting.ApplicationModel.EndpointReferenceExpression.GetValueAsync(ValueProviderContext context, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting/ApplicationModel/ReferenceExpression.cs(207,0): at Aspire.Hosting.ApplicationModel.ReferenceExpression.GetValueAsync(ValueProviderContext context, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs(167,0): at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs(188,0): at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+           at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.AppHost.Tests (ID = '58f9bd94b121dc514827672416a35d9fa0403970c9b4367d42f19e710f7d0818')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.AppHost.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 195.919s

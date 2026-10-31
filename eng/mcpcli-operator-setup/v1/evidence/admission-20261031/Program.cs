@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Reflection;
+using System.Text.Json;
+using Hexalith.EventStore.Extensions;
+using Hexalith.EventStore.Server.Commands;
+using Hexalith.EventStore.Server.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+var services = new ServiceCollection();
+services.AddLogging();
+services.AddSingleton<IConfiguration>(configuration);
+services.AddEventStore();
+services.AddEventStoreServer(configuration);
+var registrations = services.Where(d => d.ServiceType.FullName == "Hexalith.EventStore.DomainService.IIdempotencyIntentAdapter").ToArray();
+using var provider = services.BuildServiceProvider();
+var registry = provider.GetRequiredService<IIdempotencyIntentAdapterRegistry>();
+var field = registry.GetType().GetField("_adapters", BindingFlags.Instance | BindingFlags.NonPublic)!;
+var adapters = (IDictionary)field.GetValue(registry)!;
+Console.WriteLine(JsonSerializer.Serialize(new { adapterRegistrationCount = registrations.Length, resolvedAdapterCount = adapters.Count, registryType = registry.GetType().FullName, serverAssembly = typeof(IdempotencyIntentAdapterRegistry).Assembly.Location, hostStarted = false, commandSubmitted = false }));
+if (registrations.Length != 0 || adapters.Count != 0) return 2;
+return 0;

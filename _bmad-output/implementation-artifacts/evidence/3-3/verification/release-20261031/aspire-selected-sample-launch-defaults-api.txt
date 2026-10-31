@@ -1,0 +1,28 @@
+# Aspire.Hosting.ApplicationModel.ProjectLaunchDefaultsAnnotation
+
+Marks a resource as launched through the .NET SDK, so that Aspire treats it like a C# project.
+
+Package: Aspire.Hosting | Version: 13.6.4 | TFM: net8.0 | Library: lib/net8.0/Aspire.Hosting.dll | Source: NuGet
+
+## Constructors
+
+| Name |
+| ---- |
+| .ctor |
+
+## Interfaces
+
+| Interface |
+| --------- |
+| Aspire.Hosting.ApplicationModel.IResourceAnnotation |
+
+## Properties
+
+| Name | Return Type | Accessors |
+| ---- | ----------- | --------- |
+| DefaultHttpsEndpoint | Aspire.Hosting.ApplicationModel.EndpointAnnotation? | get |
+
+Tips:
+member ProjectLaunchDefaultsAnnotation --package Aspire.Hosting .ctor:1   # view member detail (source, IL)
+type ProjectLaunchDefaultsAnnotation --package Aspire.Hosting --tree      # view type tree
+member -m ProjectLaunchDefaultsAnnotation..ctor --package Aspire.Hosting  # dotted member syntax

@@ -1,0 +1,43 @@
+Loading API documentation...
+ProjectResourceOptions Properties
+
+• Package: Aspire.Hosting (https://aspire.dev/reference/api/csharp/aspire.hosting.md)                            
+• Type: ProjectResourceOptions (https://aspire.dev/reference/api/csharp/aspire.hosting/projectresourceoptions.md)
+• Kind: Properties                                                                                               
+• Members: 3                                                                                                     
+
+Various properties to modify the behavior of the project resource.
+
+ExcludeKestrelEndpoints
+
+• Name: ExcludeKestrelEndpoints                                                                                                                  
+• Modifiers: get; set                                                                                                                            
+• Returns: bool                                                                                                                                  
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ProjectResourceOptions.cs)
+
+If set, ignore endpoints coming from Kestrel configuration.
+
+public bool ExcludeKestrelEndpoints { get; set; }
+
+ExcludeLaunchProfile
+
+• Name: ExcludeLaunchProfile                                                                                                                     
+• Modifiers: get; set                                                                                                                            
+• Returns: bool                                                                                                                                  
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ProjectResourceOptions.cs)
+
+If set, no launch profile will be used, and LaunchProfileName will be ignored.
+
+public bool ExcludeLaunchProfile { get; set; }
+
+LaunchProfileName
+
+• Name: LaunchProfileName                                                                                                                        
+• Modifiers: nullable get; set                                                                                                                   
+• Returns: string?                                                                                                                               
+• Source: GitHub (https://github.com/microsoft/aspire/blob/f4c27f2d43ddc1cacd0dd083b30d1fea1cee7a62/src/Aspire.Hosting/ProjectResourceOptions.cs)
+
+The launch profile to use. If null then the default launch profile will be used.
+
+public string? LaunchProfileName { get; set; }
+

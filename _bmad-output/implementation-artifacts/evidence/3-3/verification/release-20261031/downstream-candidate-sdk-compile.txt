@@ -1,0 +1,117 @@
+{"owner": "Hexalith.Tenants", "command": ["dotnet", "build", "src/Hexalith.Tenants/Hexalith.Tenants.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Hexalith.Tenants.Contracts.csproj (in 250 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Server/Hexalith.Tenants.Server.csproj (in 255 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj (in 255 ms).
+  Hexalith.Tenants.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/bin/Release/net10.0/Hexalith.Tenants.Contracts.dll
+  Hexalith.Tenants.Server -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Server/bin/Release/net10.0/Hexalith.Tenants.Server.dll
+  Hexalith.Tenants -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants/bin/Release/net10.0/Hexalith.Tenants.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.58
+{"owner": "Hexalith.Tenants", "command": ["dotnet", "build", "src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj (in 204 ms).
+  1 of 2 projects are up-to-date for restore.
+  Hexalith.Tenants.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/bin/Release/net10.0/Hexalith.Tenants.Contracts.dll
+  Hexalith.Tenants.Api -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Api/bin/Release/net10.0/Hexalith.Tenants.Api.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.61
+{"owner": "Hexalith.Parties", "command": ["dotnet", "build", "src/Hexalith.Parties/Hexalith.Parties.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj (in 264 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj (in 264 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj (in 264 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj (in 264 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj (in 268 ms).
+  Hexalith.Parties.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Authentication -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Authentication/bin/Release/net10.0/Hexalith.Parties.Authentication.dll
+  Hexalith.Parties.Projections -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Projections/bin/Release/net10.0/Hexalith.Parties.Projections.dll
+  Hexalith.Parties.Security -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties.Security/bin/Release/net10.0/Hexalith.Parties.Security.dll
+  Hexalith.Parties -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties/src/Hexalith.Parties/bin/Release/net10.0/Hexalith.Parties.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:08.93
+{"owner": "Hexalith.Memories", "command": ["dotnet", "build", "src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj (in 96 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj (in 96 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/Hexalith.Memories.AccessTelemetry.Contracts.csproj (in 230 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj (in 236 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/Hexalith.Memories.ServiceDefaults.csproj (in 236 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj (in 239 ms).
+  Hexalith.Memories.AccessTelemetry.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Contracts.dll
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Release/net10.0/Hexalith.Memories.Contracts.dll
+  Hexalith.Memories.EventStore -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/bin/Release/net10.0/Hexalith.Memories.EventStore.dll
+  Hexalith.Memories.Telemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/bin/Release/net10.0/Hexalith.Memories.Telemetry.dll
+  Hexalith.Memories.ServiceDefaults -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/bin/Release/net10.0/Hexalith.Memories.ServiceDefaults.dll
+  Hexalith.Memories.Server -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Release/net10.0/Hexalith.Memories.Server.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:14.04
+{"owner": "Hexalith.Memories", "command": ["dotnet", "build", "src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj (in 187 ms).
+  2 of 3 projects are up-to-date for restore.
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Release/net10.0/Hexalith.Memories.Contracts.dll
+  Hexalith.Memories.EventStore -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/bin/Release/net10.0/Hexalith.Memories.EventStore.dll
+  Hexalith.Memories.DomainService -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.DomainService/bin/Release/net10.0/Hexalith.Memories.DomainService.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.54
+{"owner": "Hexalith.Memories", "command": ["dotnet", "build", "src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj (in 177 ms).
+  4 of 5 projects are up-to-date for restore.
+  Hexalith.Memories.AccessTelemetry.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Contracts.dll
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Release/net10.0/Hexalith.Memories.Contracts.dll
+  Hexalith.Memories.Telemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/bin/Release/net10.0/Hexalith.Memories.Telemetry.dll
+  Hexalith.Memories.ServiceDefaults -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/bin/Release/net10.0/Hexalith.Memories.ServiceDefaults.dll
+  Hexalith.Memories.AccessTelemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.94
+{"owner": "Hexalith.Memories", "command": ["dotnet", "build", "src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj (in 173 ms).
+  4 of 5 projects are up-to-date for restore.
+  Hexalith.Memories.AccessTelemetry.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Contracts.dll
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Release/net10.0/Hexalith.Memories.Contracts.dll
+  Hexalith.Memories.Telemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/bin/Release/net10.0/Hexalith.Memories.Telemetry.dll
+  Hexalith.Memories.ServiceDefaults -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/bin/Release/net10.0/Hexalith.Memories.ServiceDefaults.dll
+  Hexalith.Memories.AccessTelemetry.Clock -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Clock.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.66
+{"owner": "Hexalith.Builds", "command": ["dotnet", "build", "src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj", "-c", "Release", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true", "-p:HexalithEventStoreVersion=3.129.0-story33-preflight.1", "-p:HexalithBuildPackageVersions1=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:Hexalith1BuildPackageProps=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/Props/Directory.Packages.props", "-p:RestoreConfigFile=/tmp/hexalith-story33-release-0_wjbwkj/preflight.NuGet.Config", "-p:GeneratePackageOnBuild=false", "-m:1", "-nr:false", "--disable-build-servers"]}
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 225 ms).
+  Hexalith.Builds.Module.EventStoreHost -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.52

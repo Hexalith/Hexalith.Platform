@@ -1,0 +1,54 @@
+{"argv": ["pwsh", "-NoLogo", "-NoProfile", "-File", "tools/pack-release.ps1", "-Version", "3.0.11", "-PackageOnly", "-OutputDirectory", "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/3.0.11"], "ordinaryCache": "/tmp/hexalith-story33-release-0_wjbwkj/ordinary-package-cache", "originalPinnedCatalog": "/tmp/hexalith-story33-release-0_wjbwkj/owner-pinned-catalogs/Memories/Props/Directory.Packages.props", "publication": false}
+Release package validation passed.
+Building solution with Version=3.0.11
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Redis/Hexalith.Memories.Redis.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Web/Hexalith.Memories.Web.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Client.Rest/Hexalith.Memories.Client.Rest.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Cli/Hexalith.Memories.Cli.csproj (in 328 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/Hexalith.Memories.ServiceDefaults.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Mcp/Hexalith.Memories.Mcp.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj (in 327 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Contracts.Tests/Hexalith.Memories.Contracts.Tests.csproj (in 375 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DerivedStores.Tests/Hexalith.Memories.DerivedStores.Tests.csproj (in 373 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.AccessTelemetry.Tests/Hexalith.Memories.AccessTelemetry.Tests.csproj (in 373 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Benchmarks/Hexalith.Memories.Benchmarks.csproj (in 374 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Aspire/Hexalith.Memories.Aspire.csproj (in 391 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj (in 3 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/Hexalith.Memories.AccessTelemetry.Contracts.csproj (in 2 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.TestHelpers/Hexalith.Memories.TestHelpers.csproj (in 9 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj (in 13 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj (in 1 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.SpecimenHost/Hexalith.Memories.Web.SpecimenHost.csproj (in 12 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Mcp.Tests/Hexalith.Memories.Mcp.Tests.csproj (in 14 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Server.Tests/Hexalith.Memories.Server.Tests.csproj (in 394 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/Hexalith.Memories.EventStore.Tests.csproj (in 16 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj (in 37 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Cli.Tests/Hexalith.Memories.Cli.Tests.csproj (in 9 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/MigrateEmbeddingVectors/MigrateEmbeddingVectors.csproj (in 23 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Specimens/Hexalith.Memories.Web.Specimens.csproj (in 59 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DomainService.Tests/Hexalith.Memories.DomainService.Tests.csproj (in 16 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj (in 41 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj (in 44 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Tests/Hexalith.Memories.Web.Tests.csproj (in 85 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AppHost/Hexalith.Memories.AppHost.csproj (in 559 ms).
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605: Warning As Error: Detected package downgrade: StackExchange.Redis from 3.4.29 to 3.4.20. Reference the package directly from the project to select a different version.  [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605:  Hexalith.Memories.IntegrationTests -> Hexalith.Memories.AppHost -> Hexalith.EventStore.Aspire 3.129.0 -> StackExchange.Redis (>= 3.4.29)  [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605:  Hexalith.Memories.IntegrationTests -> StackExchange.Redis (>= 3.4.20) [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+  Failed to restore /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj (in 586 ms).
+
+Build FAILED.
+
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605: Warning As Error: Detected package downgrade: StackExchange.Redis from 3.4.29 to 3.4.20. Reference the package directly from the project to select a different version.  [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605:  Hexalith.Memories.IntegrationTests -> Hexalith.Memories.AppHost -> Hexalith.EventStore.Aspire 3.129.0 -> StackExchange.Redis (>= 3.4.29)  [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj : error NU1605:  Hexalith.Memories.IntegrationTests -> StackExchange.Redis (>= 3.4.20) [/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/Hexalith.Memories.slnx]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:03.85
+Exception: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/pack-release.ps1:54
+Line |
+  54 |          throw "dotnet build failed for Hexalith.Memories.slnx."
+     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | dotnet build failed for Hexalith.Memories.slnx.

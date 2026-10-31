@@ -1,0 +1,88 @@
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index 7a4863b..e86b495 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -6,7 +6,7 @@
+     <HexalithCommonsVersion Condition="'$(HexalithCommonsVersion)' == ''">2.30.7</HexalithCommonsVersion>
+     <HexalithConversationsVersion Condition="'$(HexalithConversationsVersion)' == ''">1.3.1</HexalithConversationsVersion>
+     <HexalithPolymorphicSerializationsVersion Condition="'$(HexalithPolymorphicSerializationsVersion)' == ''">1.19.6</HexalithPolymorphicSerializationsVersion>
+-    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.128.4</HexalithEventStoreVersion>
++    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">3.129.0</HexalithEventStoreVersion>
+     <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">4.7.2</HexalithFrontComposerVersion>
+     <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">1.3.2</HexalithFoldersVersion>
+     <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == ''">1.1.0</HexalithMcpCliVersion>
+diff --git a/Tools/G4PackageQualification.functions.ps1 b/Tools/G4PackageQualification.functions.ps1
+index 920a920..63c8ed4 100644
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -230,7 +230,7 @@ function Assert-ModuleRunEvidenceContent {
+         [Parameter(Mandatory = $true)][string] $ExpectedRepositoryRevision,
+         [Parameter(Mandatory = $true)][string] $ExpectedRepositoryDirtyMarker,
+         [Parameter(Mandatory = $true)][string] $ExpectedManifestHash,
+-        [string] $ExpectedEventStoreVersion = '3.128.4'
++        [string] $ExpectedEventStoreVersion = '3.129.0'
+     )
+ 
+     $bytes = [IO.File]::ReadAllBytes($FilePath)
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+index fc06c2b..e4e847c 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+@@ -5,7 +5,8 @@
+     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+     <Description>Builds-owned EventStore composition root over the Hexalith.EventStore.Gateway package for G-4 runs.</Description>
+     <BuildsCatalogFromMappedSource Condition="'$(Configuration)' == 'Debug' and Exists('$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj')">true</BuildsCatalogFromMappedSource>
+-    <DefineConstants Condition="'$(BuildsCatalogFromMappedSource)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_MAPPED_SOURCE</DefineConstants>
++    <BuildsCatalogSdkAvailable Condition="'$(BuildsCatalogFromMappedSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))">true</BuildsCatalogSdkAvailable>
++    <DefineConstants Condition="'$(BuildsCatalogSdkAvailable)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_SDK</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="Hexalith.EventStore.Gateway" Condition="'$(BuildsCatalogFromMappedSource)' != 'true'" />
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+index b4b0867..2417691 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+@@ -29,10 +29,10 @@ builder.Services.AddEventStoreServer(builder.Configuration);
+ builder.Services.AddEventStoreDomainQueryRouting();
+ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+     _ = Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+ #else
+-    throw new NotSupportedException("Run-scoped route catalogs require the mapped EventStore source build.");
++    throw new NotSupportedException("Run-scoped route catalogs require the EventStore catalog SDK 3.129.0 or newer.");
+ #endif
+ }
+ 
+@@ -44,11 +44,11 @@ app.MapDefaultEndpoints();
+ app.UseRouting();
+ app.UseAuthentication();
+ app.UseRateLimiter();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ app.UseEventStoreHttpHostSecurity();
+ #endif
+ app.UseAuthorization();
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+     _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
+@@ -84,14 +84,14 @@ app.MapErrorReferences();
+ app.MapApiVersionFallback();
+ if (!declarativeSubscriptions)
+ {
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+     _ = app.MapSubscribeHandler().RequireEventStoreChannel();
+ #else
+     _ = app.MapSubscribeHandler().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
+ #endif
+ }
+ 
+-#if HEXALITH_EVENTSTORE_MAPPED_SOURCE
++#if HEXALITH_EVENTSTORE_CATALOG_SDK
+ app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+ #else
+ app.MapActorsHandlers().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);

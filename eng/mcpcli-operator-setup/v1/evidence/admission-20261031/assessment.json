@@ -1,0 +1,237 @@
+{
+  "schema": "mcpcli-keyed-admission-assessment/v1",
+  "observedAt": "2026-10-31T09:10:04.616723+00:00",
+  "status": "configuration-only-keyed-repair-not-apply-ready",
+  "applyReady": false,
+  "mutationsPrepared": false,
+  "scope": "Caller-supplied keyed admission only. The accepted README example omits its optional key and is not blocked by this adapter finding.",
+  "findings": [
+    "Enabled=false by default and absent admission settings make the configuration-backed digest provider unavailable. Effective validator permits configuration keys only in Development/Test/Testing and requires one strong base64-decoded key of at least32 bytes per active/reader version.",
+    "Provider is registered singleton and captures IOptions.Value in its constructor. A ConfigMap update alone is not a proven reload mechanism; replacement would be required for cached configuration.",
+    "Actual image registry requires registered trusted intent adapters. Image-wide scan finds only the open generic DeclaredIdempotencyIntentAdapter<T> and its interface; exact image revision Program does not compose a concrete adapter.",
+    "Network-isolated effective Gateway/server DI composition resolves zero adapter registrations and zero registry adapters, without starting a host or invoking a command. Enabling keys alone cannot register the missing CreatePartyComposite adapter."
+  ],
+  "offlineHarness": {
+    "commands": [
+      {
+        "argv": [
+          "unshare",
+          "--user",
+          "--map-root-user",
+          "--net",
+          "dotnet",
+          "restore",
+          "Inspect.csproj",
+          "--configfile",
+          "NuGet.Config",
+          "-p:NuGetAudit=false"
+        ],
+        "exitCode": 0
+      },
+      {
+        "argv": [
+          "unshare",
+          "--user",
+          "--map-root-user",
+          "--net",
+          "dotnet",
+          "build",
+          "Inspect.csproj",
+          "--no-restore",
+          "--configuration",
+          "Release",
+          "-m:1"
+        ],
+        "exitCode": 0,
+        "result": "0 warnings;0 errors"
+      },
+      {
+        "argv": [
+          "unshare",
+          "--user",
+          "--map-root-user",
+          "--net",
+          "dotnet",
+          "/tmp/mcpcli-417-admission-assessment-20261031/bin/Release/net10.0/Inspect.dll"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"adapterRegistrationCount\":0,\"resolvedAdapterCount\":0,\"registryType\":\"Hexalith.EventStore.Server.Commands.IdempotencyIntentAdapterRegistry\",\"serverAssembly\":\"/tmp/mcpcli-417-admission-assessment-20261031/bin/Release/net10.0/Hexalith.EventStore.Server.dll\",\"hostStarted\":false,\"commandSubmitted\":false}\n"
+      }
+    ],
+    "result": {
+      "adapterRegistrationCount": 0,
+      "resolvedAdapterCount": 0,
+      "registryType": "Hexalith.EventStore.Server.Commands.IdempotencyIntentAdapterRegistry",
+      "serverAssembly": "/tmp/mcpcli-417-admission-assessment-20261031/bin/Release/net10.0/Hexalith.EventStore.Server.dll",
+      "hostStarted": false,
+      "commandSubmitted": false
+    },
+    "sourceHashes": {
+      "Inspect.csproj": "70bb69716b1fef8d15851e8177f0682ab2f5d8582a8ebf7903c9711d1f46120b",
+      "Program.cs": "22b360d6a0af158b44a09242a7fb1c1067186f16b47cd38328711806c6524397",
+      "NuGet.Config": "9508cae5f76364f56e80eb97cb16493977243cf38e5cca6284e3d74f83b20a2c"
+    },
+    "executableSha256": "a76460a23591a9b167e369492c45c3cf69904ed459d4fc42166bd69e5633b4a7"
+  },
+  "staticInspections": [
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Server.dll",
+        "Hexalith.EventStore.Server.Commands.IdempotencyIntentAdapterRegistry",
+        "-m",
+        "Resolve",
+        "--all",
+        "-S",
+        "Decompiled Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "stdout": "public virtual Hexalith.EventStore.Server.Commands.TrustedIdempotencyDescriptor Resolve(Hexalith.EventStore.Server.Pipeline.Commands.SubmitCommand command)\n{\n    ArgumentNullException.ThrowIfNull(command, \"command\");\n    ValueTuple<IIdempotencyIntentAdapter, RouteContractDeclaration, string, string, string, string, int, ValueTuple<IdempotencyReplayRetentionTier>> registration = _adapters.Values.SingleOrDefault<ValueTuple<IIdempotencyIntentAdapter, RouteContractDeclaration, string, string, string, string, int, ValueTuple<IdempotencyReplayRetentionTier>>>(value =>\n    {\n        RouteContractDeclaration route = value.Item2;\n        return route is not null && route.Domain == command.Domain && CommandDiscriminatorCompatibility.Matches(route, command.CommandType);\n    });\n\n    if (registration.Item1 is null && (!_adapters.TryGetValue(command.CommandType, out registration) || registration.Item2 is not null))\n    {\n        throw new InvalidOperationException(\"No trusted idempotency adapter is registered for the command type.\");\n    }\n\n    IdempotencyCanonicalIntent S_258 = registration.Item1.CreateIntent(new IdempotencyIntentCommand(command.CommandType, command.Tenant, command.Domain, command.AggregateId, command.Payload, command.Extensions) { AuthenticatedSubject = command.AuthenticatedSubject });\n    if (S_258 is null)\n    {\n        throw new InvalidOperationException(\"The trusted idempotency adapter returned no canonical intent.\");\n    }\n\n    IdempotencyCanonicalIntent intent = S_258;\n    ValidateIntent(intent);\n\n    if (registration.Item2 is not null && intent.PolicyVersion != registration.Item6)\n    {\n        throw new InvalidOperationException(\"The trusted canonical intent disagrees with its declared policy version.\");\n    }\n\n    return new TrustedIdempotencyDescriptor(registration.Item4, registration.Item5, registration.Item7, _encoder.Encode(registration.Item4, registration.Item5, registration.Item7, registration.Rest.Item1, intent), registration.Rest.Item1);\n}",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Server.dll",
+        "Hexalith.EventStore.Server.Configuration.EventStoreServerServiceCollectionExtensions",
+        "-m",
+        "AddEventStoreServer",
+        "--all",
+        "-S",
+        "Decompiled Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "stdout": "public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddEventStoreServer(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration)\n{\n    IServiceCollection S_0;\n\n    ___c__DisplayClass2_0 V_0 = new();\n    V_0.configuration = configuration;\n    ArgumentNullException.ThrowIfNull(services, \"services\");\n    ArgumentNullException.ThrowIfNull(V_0.configuration, \"configuration\");\n    services.AddEventStoreReadModelStore(null);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ICommandRouter, CommandRouter>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IIdempotencyDigestKeyProvider>(S_0, new Func<IServiceProvider, IIdempotencyDigestKeyProvider>(___c.___9.__AddEventStoreServer_b__2_0));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IdempotencyKeyProtector>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IdempotencyExecutionContextProtector>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<SourceProofBootstrapAuthority>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<CanonicalIdempotencyIntentEncoder>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IIdempotencyIntentAdapterRegistry, IdempotencyIntentAdapterRegistry>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ITrustedEffectAdmissionPolicy, TrustedEffectAdmissionPolicy>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ITrustedEffectRouter, TrustedEffectRouter>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ITrustedEffectGatewayProof, TrustedEffectGatewayProof>(services);\n    OptionsBuilderConfigurationExtensions.BindConfiguration<TrustedEffectAuthorityOptions>(OptionsServiceCollectionExtensions.AddOptions<TrustedEffectAuthorityOptions>(services), \"EventStore:TrustedEffects:Authority\", null);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ITrustedEffectCommandAuthority, ConfiguredTrustedEffectCommandAuthority>(services);\n    S_0 = services;\n    Func<IServiceProvider, IHostedService> S_2 = serviceProvider =>\n    {\n        ServiceProviderServiceExtensions.GetRequiredService<IIdempotencyIntentAdapterRegistry>(serviceProvider);\n        return NoOpHostedService.Instance;\n    };\n    ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(S_0, S_2);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IIdempotencyAdmissionCoordinator, IdempotencyAdmissionCoordinator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IdempotencyTenantLifecyclePurger>(services);\n    ServiceCollectionDescriptorExtensions.TryAddScoped<IProjectionActorInvoker, DefaultProjectionActorInvoker>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddScoped<QueryRouter>(S_0, provider => new QueryRouter(ServiceProviderServiceExtensions.GetRequiredService<IProjectionActorInvoker>(provider), ServiceProviderServiceExtensions.GetRequiredService<ILogger<QueryRouter>>(provider), ServiceProviderServiceExtensions.GetRequiredService<IProjectionLifecycleGateway>(provider), ServiceProviderServiceExtensions.GetRequiredService<IProjectionSourceGuardDelivery>(provider)));\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddScoped<IQueryRouter>(S_0, provider => ServiceProviderServiceExtensions.GetRequiredService<QueryRouter>(provider));\n    ServiceCollectionDescriptorExtensions.TryAddScoped<IETagService, DaprETagService>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IDomainServiceResolver, DomainServiceResolver>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IDomainServiceInvoker, DaprDomainServiceInvoker>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IAggregateStateReconstructor, DaprAggregateStateReconstructor>(services);\n    ServiceCollectionDescriptorExtensions.TryAddEnumerable(services, ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, DomainServiceHttpClientBuilderFilter>());\n    S_0 = services;\n    IConfiguration S_5 = V_0.configuration;\n    S_0.AddEventStoreWorkloadAssertionIssuer(S_5, new Action<WorkloadAssertionIssuerOptions>(___c.___9.__AddEventStoreServer_b__2_4));\n    services.RequireEventStoreWorkloadIssuerClientCredentials();\n    ServiceCollectionDescriptorExtensions.TryAddEnumerable(services, ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, DomainServiceWorkloadAssertionHttpClientBuilderFilter>());\n    HttpClientFactoryServiceCollectionExtensions.AddHttpClient(services);\n    S_0 = services;\n    HttpClientFactoryServiceCollectionExtensions.AddHttpClient(S_0, \"domain-service-invocation\", new Action<HttpClient>(___c.___9.__AddEventStoreServer_b__2_5));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IEventPayloadProtectionService, NoOpEventPayloadProtectionService>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IGlobalPositionAllocator, DaprGlobalPositionAllocator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ISnapshotManager, SnapshotManager>(services);\n    ServiceCollectionHostedServiceExtensions.AddHostedService<FoldedSnapshotQualificationHostedService>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ITopicNameValidator, TopicNameValidator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IProjectionUpdateOrchestrator, ProjectionUpdateOrchestrator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IProjectionPollerDeliveryGateway, ProjectionUpdateOrchestrator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IProjectionRebuildOrchestrator, ProjectionUpdateOrchestrator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<INamedProjectionDispatchCoordinator, NamedProjectionDispatchCoordinator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<DaprProjectionDeliveryRetryScheduler>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryRetryScheduler>(S_0, sp => ServiceProviderServiceExtensions.GetRequiredService<DaprProjectionDeliveryRetryScheduler>(sp));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionActivationOutbox, DaprProjectionActivationOutbox>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<NamedProjectionRouteCatalog>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<INamedProjectionRouteCatalog>(S_0, sp => ServiceProviderServiceExtensions.GetRequiredService<NamedProjectionRouteCatalog>(sp));\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IEventPublisher, EventPublisher>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<IDeadLetterPublisher, DeadLetterPublisher>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionChangeNotifier, DaprProjectionChangeNotifier>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionChangedBroadcaster, NoOpProjectionChangedBroadcaster>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionCheckpointTracker, ProjectionCheckpointTracker>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionCheckpointEraser>(S_0, sp => (IProjectionCheckpointEraser)ServiceProviderServiceExtensions.GetRequiredService<IProjectionCheckpointTracker>(sp));\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryCheckpointStore>(S_0, sp => (IProjectionDeliveryCheckpointStore)ServiceProviderServiceExtensions.GetRequiredService<IProjectionCheckpointTracker>(sp));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryStateStore, DaprProjectionDeliveryStateStore>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryIdempotencyCoordinator, ProjectionDeliveryIdempotencyCoordinator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryHistoryReader, EventStoreProjectionDeliveryHistoryReader>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionSelectedOwnerProofGateway, DaprProjectionSelectedOwnerProofGateway>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionSourceGuardDelivery, ProjectionSourceGuardDelivery>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ProjectionSourceGuardHistoryReader>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ProjectionSourceGuardFinalizer>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ProjectionSourceGuardTailDelivery>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ProjectionSourceGuardQualification>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionSourceGuardTransport, DaprProjectionSourceGuardTransport>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryReconciler, ProjectionDeliveryReconciler>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionDeliveryCutover, ProjectionDeliveryCutover>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionLifecycleGateway, DaprProjectionLifecycleGateway>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionRebuildWriteGateway, DaprProjectionRebuildWriteGateway>(services);\n    OptionsBuilderExtensions.ValidateOnStart<SharedProjectionSourceCaptureOptions>(OptionsBuilderConfigurationExtensions.Bind<SharedProjectionSourceCaptureOptions>(OptionsServiceCollectionExtensions.AddOptions<SharedProjectionSourceCaptureOptions>(services), V_0.configuration.GetSection(\"EventStore:SharedProjectionSourceCapture\")));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ISharedProjectionSourceWriteFence, DaprSharedProjectionSourceWriteFence>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<ISharedProjectionRebuildGateway, DaprSharedProjectionRebuildGateway>(services);\n    ServiceCollectionDescriptorExtensions.TryAddTransient<ISharedProjectionSourceRebuildOperator, SharedProjectionSourceBeginProducer>(services);\n    S_0 = services;\n    Func<IServiceProvider, IProjectionSlotRegistry> S_13 = new Func<IServiceProvider, IProjectionSlotRegistry>(ProjectionSlotServiceCollectionExtensions.BuildSlotRegistry);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionSlotRegistry>(S_0, S_13);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionReadModelAddressFactory, ProjectionReadModelAddressFactory>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionRebuildCheckpointStore, ProjectionRebuildCheckpointStore>(services);\n    S_0 = services;\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionRebuildCheckpointEraser>(S_0, sp => (IProjectionRebuildCheckpointEraser)ServiceProviderServiceExtensions.GetRequiredService<IProjectionRebuildCheckpointStore>(sp));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionEraseCoordinator, ProjectionEraseCoordinator>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IProjectionPollerTickSource, PeriodicProjectionPollerTickSource>(services);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<TimeProvider>(services, TimeProvider.System);\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IValidateOptions<IdempotencyRetentionOptions>, ValidateIdempotencyRetentionOptions>(services);\n    OptionsBuilderExtensions.ValidateOnStart<IdempotencyRetentionOptions>(OptionsBuilderConfigurationExtensions.Bind<IdempotencyRetentionOptions>(OptionsServiceCollectionExtensions.AddOptions<IdempotencyRetentionOptions>(services), V_0.configuration.GetSection(\"EventStore:Idempotency\")));\n    ServiceCollectionDescriptorExtensions.TryAddEnumerable(services, ServiceDescriptor.Singleton<IValidateOptions<IdempotencyAdmissionOptions>, ValidateIdempotencyAdmissionOptions>());\n    OptionsBuilderExtensions.ValidateOnStart<IdempotencyAdmissionOptions>(OptionsBuilderConfigurationExtensions.Bind<IdempotencyAdmissionOptions>(OptionsServiceCollectionExtensions.AddOptions<IdempotencyAdmissionOptions>(services), V_0.configuration.GetSection(\"EventStore:IdempotencyAdmission\")));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IValidateOptions<ProjectionChangeNotifierOptions>, ValidateProjectionChangeNotifierOptions>(services);\n    OptionsBuilderExtensions.ValidateOnStart<DomainServiceOptions>(OptionsBuilderConfigurationExtensions.Bind<DomainServiceOptions>(OptionsServiceCollectionExtensions.AddOptions<DomainServiceOptions>(services), V_0.configuration.GetSection(\"EventStore:DomainServices\")).Validate(options => options.InvocationTimeoutSeconds > 0 && options.InvocationTimeoutSeconds <= 3600, $\"{\"InvocationTimeoutSeconds\"} must be between 1 and {3600} seconds.\"));\n    OptionsBuilderExtensions.ValidateOnStart<ProjectionChangeNotifierOptions>(OptionsBuilderConfigurationExtensions.Bind<ProjectionChangeNotifierOptions>(OptionsServiceCollectionExtensions.AddOptions<ProjectionChangeNotifierOptions>(services), V_0.configuration.GetSection(\"EventStore:ProjectionChanges\")));\n    OptionsBuilderConfigurationExtensions.Bind<EventPublisherOptions>(OptionsServiceCollectionExtensions.AddOptions<EventPublisherOptions>(services), V_0.configuration.GetSection(\"EventStore:Publisher\"));\n    OptionsBuilderConfigurationExtensions.Bind<EventDrainOptions>(OptionsServiceCollectionExtensions.AddOptions<EventDrainOptions>(services), V_0.configuration.GetSection(\"EventStore:Drain\"));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IValidateOptions<BackpressureOptions>, ValidateBackpressureOptions>(services);\n    OptionsBuilderExtensions.ValidateOnStart<BackpressureOptions>(OptionsBuilderConfigurationExtensions.Bind<BackpressureOptions>(OptionsServiceCollectionExtensions.AddOptions<BackpressureOptions>(services), V_0.configuration.GetSection(\"EventStore:Backpressure\")));\n    ServiceCollectionDescriptorExtensions.TryAddSingleton<IValidateOptions<CommandConcurrencyOptions>, ValidateCommandConcurrencyOptions>(services);\n    OptionsBuilderExtensions.ValidateOnStart<CommandConcurrencyOptions>(OptionsBuilderConfigurationExtensions.Bind<CommandConcurrencyOptions>(OptionsServiceCollectionExtensions.AddOptions<CommandConcurrencyOptions>(services), V_0.configuration.GetSection(\"EventStore:CommandConcurrency\")));\n    OptionsBuilderExtensions.ValidateOnStart<EventStoreActorOptions>(OptionsBuilderConfigurationExtensions.Bind<EventStoreActorOptions>(OptionsServiceCollectionExtensions.AddOptions<EventStoreActorOptions>(services), V_0.configuration.GetSection(\"EventStore:Actors\")).Validate(o => !string.IsNullOrWhiteSpace(o.AggregateActorTypeName), \"Aggregate actor type name must be configured.\"));\n    OptionsBuilderExtensions.ValidateOnStart<SnapshotOptions>(OptionsBuilderConfigurationExtensions.Bind<SnapshotOptions>(OptionsServiceCollectionExtensions.AddOptions<SnapshotOptions>(services), V_0.configuration.GetSection(\"EventStore:Snapshots\")).Validate(o =>\n    {\n        o.Validate();\n        return true;\n    }, \"Snapshot configuration is invalid. All intervals must be >= 10.\"));\n    OptionsBuilderExtensions.ValidateOnStart<ProjectionOptions>(OptionsBuilderConfigurationExtensions.Bind<ProjectionOptions>(OptionsServiceCollectionExtensions.AddOptions<ProjectionOptions>(services), V_0.configuration.GetSection(\"EventStore:Projections\")).Validate(o =>\n    {\n        o.Validate();\n        return true;\n    }, \"Projection configuration is invalid. All intervals must be >= 0 and domain keys must be non-empty.\"));\n    OptionsBuilderExtensions.ValidateOnStart<ProjectionDispatchOptions>(OptionsBuilderConfigurationExtensions.Bind<ProjectionDispatchOptions>(OptionsServiceCollectionExtensions.AddOptions<ProjectionDispatchOptions>(services), V_0.configuration.GetSection(\"EventStore:ProjectionDispatch\")).Validate(o =>\n    {\n        o.Validate();\n        return true;\n    }, \"Projection dispatch configuration is invalid.\"));\n    OptionsBuilderExtensions.ValidateOnStart<ProjectionDeliveryIdempotencyOptions>(OptionsBuilderConfigurationExtensions.Bind<ProjectionDeliveryIdempotencyOptions>(OptionsServiceCollectionExtensions.AddOptions<ProjectionDeliveryIdempotencyOptions>(services), V_0.configuration.GetSection(\"EventStore:ProjectionDeliveryIdempotency\")).Validate(o =>\n    {\n        o.Validate();\n        return true;\n    }, \"Projection delivery idempotency configuration is invalid.\"));\n    HealthChecksBuilderAddCheckExtensions.AddCheck<ProjectionDeliveryWriterProtocolHealthCheck>(HealthCheckServiceCollectionExtensions.AddHealthChecks(services), \"projection-delivery-writer-protocol\", new Nullable<HealthStatus>((HealthStatus)0), [\"ready\"]);\n    HealthChecksBuilderAddCheckExtensions.AddCheck<ProjectionDeliveryUnresolvedHealthCheck>(HealthCheckServiceCollectionExtensions.AddHealthChecks(services), \"projection-delivery-unresolved-conflict\", new Nullable<HealthStatus>((HealthStatus)0), [\"ready\"]);\n    ServiceCollectionHostedServiceExtensions.AddHostedService<ProjectionDiscoveryHostedService>(services);\n\n    if (ConfigurationBinder.GetValue<bool>(V_0.configuration, \"EventStore:Projections:WorkersEnabled\", true))\n    {\n        S_0 = services;\n        S_2 = new Func<IServiceProvider, IHostedService>(___c.___9.__AddEventStoreServer_b__2_17);\n        ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(S_0, S_2);\n        S_0 = services;\n        S_2 = new Func<IServiceProvider, IHostedService>(___c.___9.__AddEventStoreServer_b__2_18);\n        ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(S_0, S_2);\n        S_0 = services;\n        S_2 = new Func<IServiceProvider, IHostedService>(___c.___9.__AddEventStoreServer_b__2_19);\n        ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(S_0, S_2);\n        S_0 = services;\n        S_2 = new Func<IServiceProvider, IHostedService>(___c.___9.__AddEventStoreServer_b__2_20);\n        ServiceCollectionServiceExtensions.AddSingleton<IHostedService>(S_0, S_2);\n    }\n    services.AddActors(new Action<ActorRuntimeOptions>(V_0.__AddEventStoreServer_b__21), (ServiceLifetime)0);\n    return services;\n}",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "30",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "member",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Server.dll",
+        "Hexalith.EventStore.Server.Configuration.ValidateIdempotencyAdmissionOptions",
+        "-m",
+        "Validate",
+        "--all",
+        "-S",
+        "Decompiled Source",
+        "--print",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "stdout": "public virtual Microsoft.Extensions.Options.ValidateOptionsResult Validate(string? name, Hexalith.EventStore.Server.Configuration.IdempotencyAdmissionOptions options)\n{\n    ___c__DisplayClass2_0 V_0 = new();\n    V_0.options = options;\n    ArgumentNullException.ThrowIfNull(V_0.options, \"options\");\n\n    if (!Enum.IsDefined<IdempotencyDigestKeySource>(V_0.options.DigestKeySource))\n    {\n        return ValidateOptionsResult.Fail(\"The idempotency digest-key source is invalid.\");\n    }\n\n    if (!V_0.options.Enabled)\n    {\n        return ValidateOptionsResult.Success;\n    }\n\n    if (string.IsNullOrWhiteSpace(V_0.options.ActiveDigestKeyVersion))\n    {\n        return ValidateOptionsResult.Fail(\"Enabled idempotency admission requires one active digest-key version.\");\n    }\n\n    V_0.versions = new HashSet<string>(StringComparer.Ordinal) { V_0.options.ActiveDigestKeyVersion };\n    if (V_0.options.ReaderDigestKeyVersions.Any(new Func<string, bool>(V_0.__Validate_b__0)))\n    {\n        return ValidateOptionsResult.Fail(\"Retained idempotency reader versions must be named, distinct, and exclude the active version.\");\n    }\n\n    if (V_0.options.DigestKeySource == IdempotencyDigestKeySource.DaprSecret)\n    {\n        if (V_0.versions.Contains(\"generation\"))\n        {\n            return ValidateOptionsResult.Fail(\"The secret map key 'generation' is reserved and cannot be an active or reader digest-key version.\");\n        }\n        if (!string.IsNullOrWhiteSpace(V_0.options.DigestKeySecretStoreName) && !string.IsNullOrWhiteSpace(V_0.options.DigestKeySecretName) && !string.IsNullOrWhiteSpace(V_0.options.DigestKeySecretGeneration) && V_0.options.DigestKeys.Count <= 0)\n        {\n            return ValidateOptionsResult.Success;\n        }\n        return ValidateOptionsResult.Fail(\"Secret-backed idempotency admission requires store, map, and generation metadata and forbids inline keys.\");\n    }\n\n    if (environment is not null)\n    {\n        if (HostEnvironmentEnvExtensions.IsDevelopment(environment))\n        {\n            if (V_0.options.DigestKeys.Count != V_0.versions.Count || V_0.versions.Any(new Func<string, bool>(V_0.__Validate_b__1)))\n            {\n                return ValidateOptionsResult.Fail(\"Configured idempotency admission requires exactly one strong key for every active and reader version.\");\n            }\n            return ValidateOptionsResult.Success;\n        }\n        if (HostEnvironmentEnvExtensions.IsEnvironment(environment, \"Test\"))\n        {\n            if (V_0.options.DigestKeys.Count != V_0.versions.Count || V_0.versions.Any(new Func<string, bool>(V_0.__Validate_b__1)))\n            {\n                return ValidateOptionsResult.Fail(\"Configured idempotency admission requires exactly one strong key for every active and reader version.\");\n            }\n            return ValidateOptionsResult.Success;\n        }\n        if (HostEnvironmentEnvExtensions.IsEnvironment(environment, \"Testing\"))\n        {\n            if (V_0.options.DigestKeys.Count != V_0.versions.Count || V_0.versions.Any(new Func<string, bool>(V_0.__Validate_b__1)))\n            {\n                return ValidateOptionsResult.Fail(\"Configured idempotency admission requires exactly one strong key for every active and reader version.\");\n            }\n            return ValidateOptionsResult.Success;\n        }\n    }\n    return ValidateOptionsResult.Fail(\"Configuration-backed idempotency digest keys are permitted only in Development or test environments.\");\n}",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "timeout",
+        "40",
+        "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+        "implements",
+        "Hexalith.EventStore.DomainService.IIdempotencyIntentAdapter",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.ServiceDefaults.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.DomainService.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.Commons.UniqueIds.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Admin.Abstractions.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Server.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Client.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Gateway.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Contracts.dll",
+        "--library",
+        "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.dll",
+        "--all",
+        "--json",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "stdout": "[\n  {\n    \"type\": \"Hexalith.EventStore.DomainService.DeclaredIdempotencyIntentAdapter\\u003CT\\u003E\",\n    \"namespace\": \"Hexalith.EventStore.DomainService\",\n    \"kind\": \"class\",\n    \"relationship\": \"implements\",\n    \"library\": \"Hexalith.EventStore.DomainService\",\n    \"source\": \"Hexalith.EventStore.DomainService.dll\"\n  },\n  {\n    \"type\": \"Hexalith.EventStore.DomainService.IDeclaredIdempotencyIntentAdapter\",\n    \"namespace\": \"Hexalith.EventStore.DomainService\",\n    \"kind\": \"interface\",\n    \"relationship\": \"implements\",\n    \"library\": \"Hexalith.EventStore.DomainService\",\n    \"source\": \"Hexalith.EventStore.DomainService.dll\"\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "717a06e16c3afd81b904eaf4de646b74b13262d2:src/Hexalith.EventStore/Program.cs"
+      ],
+      "exitCode": 0,
+      "stdoutFile": "image-revision-Program.cs",
+      "sha256": "062b3467a2877dbb23cc9324b50b63608da879c2652e11274cc24446a0d4570e"
+    }
+  ],
+  "artifactHashes": {
+    "Hexalith.EventStore.ServiceDefaults.dll": "af77b623bf99ac06bf1a3ee5bab050210e616640853c12f1082ac3aa21c32ad8",
+    "Hexalith.EventStore.DomainService.dll": "456793b63efeca3ae8557c1f81eded692c4be6f07456582b05d4c81e9757ef0b",
+    "Hexalith.Commons.UniqueIds.dll": "73db021277a5c3cc2af66a0ac117d108ec2b9f1708199984880772a575018b8e",
+    "Hexalith.EventStore.Admin.Abstractions.dll": "e84e9840633277c8f5a73e7e8d43867cff2ab7fe5e121915122c76a013292f96",
+    "Hexalith.EventStore.Server.dll": "88bd4bf5ecaed72bc74712e3e57eaea9cb79722fd0797f1ff66cbf7f5653f813",
+    "Hexalith.EventStore.Client.dll": "51d6cdda355d21696fb58e3e7acdce1edd55f69efef3f22590a46cebb679577f",
+    "Hexalith.EventStore.Gateway.dll": "3ea3b9dc297c5ffdce7c7b5f654ef8d943d2fbbd83fe8a287e79e44daffdd714",
+    "Hexalith.EventStore.Contracts.dll": "32c64b83eef3a84ebf333b035d771830fcea30d9f0886d9d9d596b3259aa33b8",
+    "Hexalith.EventStore.dll": "2c78b1f4e0c95504a29ece45cb6950cc482ee16f76d46fc554652732acc9e936"
+  },
+  "approvedRunnerUnchanged": {
+    "prepare.py": "a92fa353e079dab490b29342886b4ddb11f58682b1aad4d34f72d4546d19e937",
+    "phases.py": "20b07d174a6f5751b3fbad33e44d5f90da82b2f77b94f71dec4eda1d2470dccb"
+  },
+  "livePreconditions": {
+    "namespace": "mcpcli-417-20261031-155f9b6d",
+    "gatewayJobUid": "28e35ef6-189a-443a-8faf-5e576768293f",
+    "gatewayPod": "eventstore-l6rpl",
+    "gatewayPodUid": "1daa2ee7-b949-41f2-b41c-4ce33e902e25",
+    "operatorTokenExpiresAt": "2026-10-31T09:54:53Z",
+    "reviewExpiresAt": "2026-11-01T07:37:50Z"
+  },
+  "requiredOwnerDecision": "A compatible owner-approved composition/artifact registering the exact trusted CreateParty adapter is needed to enable keyed admission. The current unchanged-image boundary prevents an apply-ready key-only repair.",
+  "separateHumanAction": "A distinct fresh human-approved test following the existing README optional-key argument contract can be considered with fresh identifiers. It is not a replay/recovery of the original keyed attempt, and was not submitted here.",
+  "preservedOutcome": {
+    "partyId": "party-417-desktop-20261031-1",
+    "idempotencyKey": "01M68JJB7QJS46XXDT4AQCDRT3",
+    "correlationId": "01M68JJNZN338R4KCQNC8T9EFX",
+    "result": "unknown;503 admission failure retained without replay"
+  },
+  "limits": [
+    "No live namespace,Job,Secret,ConfigMap,Redis/domain/writer/tenant/member state,original journal or forward was changed.",
+    "No digest material generated because the image/composition prerequisite is unresolved; no incomplete mutation script or ineffective restart is offered.",
+    "No Party command or query was submitted by this assessment. A legacy500 read-model reason does not prove actor placement failure.",
+    "The caller key is optional for this operation; neither key removal nor a new key authorizes resubmitting the uncertain attempt."
+  ]
+}

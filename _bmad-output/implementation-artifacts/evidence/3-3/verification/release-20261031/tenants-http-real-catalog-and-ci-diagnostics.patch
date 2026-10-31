@@ -1,0 +1,456 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 52d65043..22ba7e49 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -174,6 +174,13 @@ jobs:
+           name: authenticated-live-route-evidence
+           path: /tmp/tenants-live-routes-*/result.json
+           if-no-files-found: warn
++      - name: Retain bounded bootstrap failure categories
++        if: always()
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++        with:
++          name: tenants-bootstrap-failure-categories
++          path: ${{ runner.temp }}/tenants-bootstrap-diagnostics/*.json
++          if-no-files-found: ignore
+ 
+   http-contracts:
+     name: Blocking HTTP contracts
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/CommandApiRuntimeIntegrationTests.cs b/tests/Hexalith.Tenants.IntegrationTests/CommandApiRuntimeIntegrationTests.cs
+index eafde150..297299b1 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/CommandApiRuntimeIntegrationTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/CommandApiRuntimeIntegrationTests.cs
+@@ -1,4 +1,8 @@
+ using Hexalith.EventStore.Client.Streams;
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++#endif
+ #pragma warning disable CA2007
+ 
+ using System.IdentityModel.Tokens.Jwt;
+@@ -227,6 +231,34 @@ public partial class CommandApiRuntimeIntegrationTests {
+         store.Count.ShouldBe(2);
+     }
+ 
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++    /// <summary>Retains real generation admission before projection business-store access.</summary>
++    [Theory]
++    [InlineData("missing-root")]
++    [InlineData("wrong-root")]
++    [InlineData("wrong-epoch")]
++    public async Task ProjectContractRejectsUncommittedGenerationBeforeStoreAccess(string scenario)
++    {
++        IReadModelStore store = Substitute.For<IReadModelStore>();
++        await using var factory = new CommandApiWebApplicationFactory(projectionStore: store);
++        using HttpClient client = factory.CreateClient();
++        if (scenario is "missing-root" or "wrong-root")
++        {
++            client.DefaultRequestHeaders.Remove(RouteCatalogInvocationHandler.RootHeader);
++            if (scenario == "wrong-root") client.DefaultRequestHeaders.Add(RouteCatalogInvocationHandler.RootHeader, new string('0', 64));
++        }
++        else
++        {
++            client.DefaultRequestHeaders.Remove(RouteCatalogInvocationHandler.EpochHeader);
++            client.DefaultRequestHeaders.Add(RouteCatalogInvocationHandler.EpochHeader, "2");
++        }
++        store.ClearReceivedCalls();
++        using HttpResponseMessage response = await client.PostAsJsonAsync("/project", new ProjectionRequest("system", "tenants", "uncommitted", []));
++        response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
++        store.ReceivedCalls().ShouldBeEmpty();
++    }
++#endif
++
+     /// <summary>Checks workload and channel admission while preserving the persisted read-model contents.</summary>
+     /// <param name="scenario">The credential boundary to exercise.</param>
+     /// <param name="authorized">Whether the projection request should be admitted.</param>
+@@ -2668,7 +2700,7 @@ public partial class CommandApiRuntimeIntegrationTests {
+         IEnumerable<Claim>? claims = null) {
+         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey ?? JwtSigningKey));
+         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+-        var tokenClaims = new List<Claim> { new("sub", userId) };
++        var tokenClaims = new List<Claim> { new("sub", userId), new("eventstore:surface", "ui") };
+         if (claims is null) {
+             tokenClaims.Add(new Claim("eventstore:tenant", "system"));
+         }
+@@ -2692,7 +2724,7 @@ public partial class CommandApiRuntimeIntegrationTests {
+     private static string CreateJwtWithoutSub(IEnumerable<Claim>? claims = null) {
+         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSigningKey));
+         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+-        var tokenClaims = new List<Claim>();
++        var tokenClaims = new List<Claim> { new("eventstore:surface", "ui") };
+         if (claims is not null) {
+             tokenClaims.AddRange(claims);
+         }
+@@ -2862,6 +2894,7 @@ public partial class CommandApiRuntimeIntegrationTests {
+             Expires = now.AddMinutes(4),
+             Claims = new Dictionary<string, object>(StringComparer.Ordinal)
+             {
++                ["eventstore:surface"] = "service",
+                 [EventStoreWorkloadAuthenticationDefaults.CallerClaimType] = caller,
+                 [EventStoreWorkloadAuthenticationDefaults.OperationClaimType] = operations ?? new[]
+                 {
+@@ -2895,6 +2928,9 @@ public partial class CommandApiRuntimeIntegrationTests {
+         bool useLegacyStatusAdapter = true,
+         IReadModelStore? projectionStore = null,
+         MutableGlobalAdministratorSource? administratorSource = null) : WebApplicationFactory<TenantBootstrapOptions> {
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++        private readonly CommittedRouteCatalogSnapshot _catalog = TenantOwnerCatalogTestAuthority.CreateSnapshot(WorkloadAudience);
++#endif
+         /// <summary>Gets the isolated store so read-only projection contracts can verify its persisted end state.</summary>
+         public InMemoryReadModelStore ReadModelStore { get; } = new();
+ 
+@@ -2905,6 +2941,10 @@ public partial class CommandApiRuntimeIntegrationTests {
+         protected override void ConfigureClient(HttpClient client) {
+             ArgumentNullException.ThrowIfNull(client);
+             base.ConfigureClient(client);
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++            client.DefaultRequestHeaders.Add(RouteCatalogInvocationHandler.RootHeader, _catalog.RootDigest);
++            client.DefaultRequestHeaders.Add(RouteCatalogInvocationHandler.EpochHeader, _catalog.Epoch.ToString(System.Globalization.CultureInfo.InvariantCulture));
++#endif
+             if (presentWorkloadAssertion) {
+                 client.DefaultRequestHeaders.Add(DaprAppChannelToken.HeaderName, WorkloadChannelToken);
+                 client.DefaultRequestHeaders.Add(
+@@ -2917,6 +2957,14 @@ public partial class CommandApiRuntimeIntegrationTests {
+             .UseSetting("EventStore:DomainService:AppId", WorkloadAudience)
+             .UseSetting(DaprAppChannelToken.ConfigurationKey, WorkloadChannelToken)
+             .ConfigureServices(services => {
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++            services.RemoveAll<IRouteCatalogAuthority>();
++            services.AddSingleton(TenantOwnerCatalogTestAuthority.Create(_catalog));
++            // This isolated receiver has the same explicit target as the compiled owner bindings.
++            // Distributed activation and attestation are exercised by the normal package profile.
++            services.Configure<RouteCatalogHostOptions>(options => options.Identity = new RouteCatalogHostIdentity(
++                WorkloadAudience, WorkloadAudience, _catalog.RootDigest, _catalog.RootDigest, _catalog.RootDigest));
++#endif
+             // Projection membership is independently seeded from the native source used by administrator verification.
+             InMemoryReadModelStore store = ReadModelStore;
+             store.SeedRaw(
+@@ -2968,6 +3016,7 @@ public partial class CommandApiRuntimeIntegrationTests {
+             var identity = new ClaimsIdentity(
+             [
+                 new Claim("sub", "test-user"),
++                new Claim("eventstore:surface", "ui"),
+                 new Claim("eventstore:tenant", "system"),
+             ],
+             SchemeName);
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
+index f9ffb0d6..05e0531f 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
+@@ -57,7 +57,11 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+         await CompleteBootstrapAsync(CommandApiClient, token,
+             (cursor, cancellationToken) => client.GetGlobalAdministratorsAsync(
+                 new GetGlobalAdministratorsQuery { PageSize = 100, Cursor = cursor }, null, cancellationToken),
+-            () => base.DisposeAsync(),
++            async () =>
++            {
++                await BootstrapResourceFailureDiagnostics.CaptureAsync(this);
++                await base.DisposeAsync();
++            },
+             string.Equals(Environment.GetEnvironmentVariable("TENANTS_LIVE_REQUIRE_COLD_BOOTSTRAP"), "true", StringComparison.OrdinalIgnoreCase),
+             timeout.Token);
+     }
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantGatewayTestHost.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantGatewayTestHost.cs
+index 89352a60..053e00ab 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantGatewayTestHost.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantGatewayTestHost.cs
+@@ -89,6 +89,9 @@ internal sealed class TenantGatewayTestHost(
+         // The gateway owns authentication, authorization, validation, controllers, and the
+         // real SubmitCommandHandler. Only its external routing and persistence seams are doubled.
+         builder.Services.AddEventStore();
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++        builder.Services.AddSingleton(TenantOwnerCatalogTestAuthority.Create());
++#endif
+         builder.Services.AddControllers().AddApplicationPart(typeof(CommandsController).Assembly);
+         builder.Services.AddValidatorsFromAssembly(typeof(TenantSubmitCommandValidator).Assembly);
+         builder.Services.AddValidatorsFromAssembly(typeof(TenantAggregate).Assembly);
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs b/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
+index 1a776e9f..e58e0ba2 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/TenantsApiGeneratedControllerTests.cs
+@@ -25,10 +25,7 @@ using Hexalith.EventStore.Contracts.Events;
+ using Hexalith.EventStore.Contracts.Queries;
+ using Hexalith.EventStore.Contracts.Streams;
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-using Hexalith.EventStore.Client.Routing;
+-using Hexalith.EventStore.Contracts.Routing;
+ using Hexalith.EventStore.ServiceDefaults.Routing;
+-using Hexalith.Tenants.Contracts.Routing;
+ #endif
+ using Hexalith.EventStore.Controllers;
+ using Hexalith.EventStore.DomainService;
+@@ -523,7 +520,7 @@ public sealed class TenantsApiGeneratedControllerTests
+             new TenantTelemetry(diagnostics), NullLogger<GetTenantAuditQueryHandler>.Instance);
+         var router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-            CreateOwnerCatalogAuthority(),
++            TenantOwnerCatalogTestAuthority.Create(),
+ #endif
+             new UnexpectedInnerQueryRouter(), new AlwaysSupportedDomainQueryHandlerRegistry(),
+             new DirectDomainQueryInvoker(handler), NullLogger<HandlerAwareQueryRouter>.Instance);
+@@ -1603,29 +1600,6 @@ public sealed class TenantsApiGeneratedControllerTests
+                 new SetGlobalAdministrator("user.beta")),
+         ];
+ 
+-#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-    /// <summary>Supplies the compiled owner catalog for isolated generated HTTP and real-handler proofs.</summary>
+-    private static IRouteCatalogAuthority CreateOwnerCatalogAuthority()
+-    {
+-        IReadOnlyList<RouteContractDeclaration> declarations = CompiledRouteCatalogDeclarations.Read([typeof(TenantCatalogDeclarations).Assembly]);
+-        RouteCatalogEnvelope envelope = VersionedRouteCatalogBuilder.Build(new(
+-            1, "Development", declarations,
+-            CompiledRouteCatalogDeclarations.ReadOperations([typeof(TenantCatalogDeclarations).Assembly]),
+-            declarations.Select(declaration => new RouteCompositionBinding(
+-                declaration.RouteId, "tenants", TenantCatalogDeclarations.ReceiverMethods[declaration.RouteId],
+-                declaration.ContractVersion, false, "*")).ToArray(),
+-            TenantCatalogDeclarations.Commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, 1)).ToArray()));
+-        var snapshot = new CommittedRouteCatalogSnapshot(
+-            RouteCatalogCodec.Encode(envelope), RouteCatalogCodec.ComputeRootDigest(envelope),
+-            1, localAppId: "eventstore");
+-        // Distributed activation is outside these isolated HTTP proofs. Each generated action and
+-        // real router still validates the compiled owner operation, policy and projection selection.
+-        IRouteCatalogAuthority authority = Substitute.For<IRouteCatalogAuthority>();
+-        authority.AcquireAsync(Arg.Any<CancellationToken>())
+-            .Returns(_ => new RouteCatalogDispatchLease(snapshot, () => Task.CompletedTask));
+-        return authority;
+-    }
+-#endif
+ 
+     private sealed class TenantsApiWebApplicationFactory(
+         IEventStoreGatewayClient gateway,
+@@ -1653,7 +1627,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                 services.RemoveAll<IEventStoreGatewayClient>();
+                 services.AddSingleton<IEventStoreGatewayClient>(gateway);
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                services.AddSingleton(CreateOwnerCatalogAuthority());
++                services.AddSingleton(TenantOwnerCatalogTestAuthority.Create());
+                 services.AddScoped<GeneratedRouteCatalogFilter>();
+                 services.Configure<MvcOptions>(options => options.Filters.AddService<GeneratedRouteCatalogFilter>());
+ #endif
+@@ -1686,7 +1660,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                 new FixedTimeProvider(now));
+             _router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateOwnerCatalogAuthority(),
++                TenantOwnerCatalogTestAuthority.Create(),
+ #endif
+                 new UnexpectedInnerQueryRouter(),
+                 new AlwaysSupportedDomainQueryHandlerRegistry(),
+@@ -1698,7 +1672,7 @@ public sealed class TenantsApiGeneratedControllerTests
+         {
+             _router = new HandlerAwareQueryRouter(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateOwnerCatalogAuthority(),
++                TenantOwnerCatalogTestAuthority.Create(),
+ #endif
+                 new UnexpectedInnerQueryRouter(),
+                 new AlwaysSupportedDomainQueryHandlerRegistry(), new DirectDomainQueryInvoker(handler),
+@@ -1763,7 +1737,7 @@ public sealed class TenantsApiGeneratedControllerTests
+                 .Returns(RbacValidationResult.Allowed);
+             var controller = new QueriesController(
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+-                CreateOwnerCatalogAuthority(),
++                TenantOwnerCatalogTestAuthority.Create(),
+ #endif
+                 mediator,
+                 eTagService,
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantOwnerCatalogTestAuthority.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantOwnerCatalogTestAuthority.cs
+new file mode 100644
+index 00000000..67dd6d84
+--- /dev/null
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/TenantOwnerCatalogTestAuthority.cs
+@@ -0,0 +1,41 @@
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++using Hexalith.EventStore.Client.Routing;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.Tenants.Contracts.Routing;
++
++using NSubstitute;
++
++namespace Hexalith.Tenants.IntegrationTests.Fixtures;
++
++/// <summary>Supplies the compiled owner catalog for isolated HTTP and real-handler proofs.</summary>
++internal static class TenantOwnerCatalogTestAuthority
++{
++    internal static IRouteCatalogAuthority Create() => Create(CreateSnapshot("eventstore"));
++
++    internal static CommittedRouteCatalogSnapshot CreateSnapshot(string localAppId)
++    {
++        IReadOnlyList<RouteContractDeclaration> declarations = CompiledRouteCatalogDeclarations.Read([typeof(TenantCatalogDeclarations).Assembly]);
++        RouteCatalogEnvelope envelope = VersionedRouteCatalogBuilder.Build(new(
++            1, "Development", declarations,
++            CompiledRouteCatalogDeclarations.ReadOperations([typeof(TenantCatalogDeclarations).Assembly]),
++            declarations.Select(declaration => new RouteCompositionBinding(
++                declaration.RouteId, "tenants", TenantCatalogDeclarations.ReceiverMethods[declaration.RouteId],
++                declaration.ContractVersion, false, "*")).ToArray(),
++            TenantCatalogDeclarations.Commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, 1)).ToArray()));
++        return new CommittedRouteCatalogSnapshot(
++            RouteCatalogCodec.Encode(envelope), RouteCatalogCodec.ComputeRootDigest(envelope),
++            1, localAppId: localAppId);
++    }
++
++    internal static IRouteCatalogAuthority Create(CommittedRouteCatalogSnapshot snapshot)
++    {
++        // Distributed activation is outside these isolated HTTP proofs. Each generated action and
++        // real router still validates the compiled owner operation, policy and projection selection.
++        IRouteCatalogAuthority authority = Substitute.For<IRouteCatalogAuthority>();
++        authority.AcquireAsync(Arg.Any<CancellationToken>())
++            .Returns(_ => new RouteCatalogDispatchLease(snapshot, () => Task.CompletedTask));
++        return authority;
++    }
++}
++#endif
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+new file mode 100644
+index 00000000..3883c5af
+--- /dev/null
++++ b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+@@ -0,0 +1,51 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++
++using Aspire.Hosting.ApplicationModel;
++using Hexalith.Tenants.IntegrationTests.Fixtures;
++using Microsoft.Extensions.Logging;
++using Shouldly;
++
++namespace Hexalith.Tenants.IntegrationTests;
++
++public sealed class BootstrapResourceFailureDiagnosticsTests
++{
++    [Fact]
++    public void CategoriesRetainPublicFailureIdentityWithoutRawMessages()
++    {
++        var observed = BootstrapResourceFailureDiagnostics.Classify(["System.MissingMethodException: Method not found: Hexalith.EventStore.Client.Routing.PublicApi.Read", "Route catalog refusal: Reason=configuration-missing"]);
++        observed.ExceptionTypes.ShouldContain("System.MissingMethodException");
++        observed.ApiSymbols.ShouldContain("Hexalith.EventStore.Client.Routing.PublicApi.Read");
++        observed.CatalogReasons.ShouldBe(["configuration-missing"]);
++    }
++
++    [Fact]
++    public void CredentialBearingLinesAndOversizedInputCannotBeRetained()
++    {
++        string credential = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++        var observed = BootstrapResourceFailureDiagnostics.Classify(["System.InvalidOperationException: Authorization: Bearer " + credential, "System.InvalidOperationException: password=" + credential, new string('x', 8193)]);
++        observed.ExceptionTypes.ShouldBeEmpty();
++        observed.ApiSymbols.ShouldBeEmpty();
++        observed.Truncated.ShouldBeTrue();
++        JsonSerializer.Serialize(observed).ShouldNotContain(credential);
++    }
++
++    [Fact]
++    public async Task ActualAspireLogReaderClassifiesCompletedStreamsAndHonorsCancellation()
++    {
++        using ResourceLoggerService logger = new();
++        foreach (string resource in new[] { "eventstore", "tenants", "tenants-api" })
++        {
++            logger.GetLogger(resource).LogError(new MissingMethodException("Hexalith.EventStore.Client.Routing.PublicApi.Read"), "bootstrap failed");
++            logger.Complete(resource);
++        }
++        // A standalone logger has no disk-backed GetAllAsync service until an AppHost starts.
++        // Completed real Aspire streams exercise the same bounded consumer without starting resources.
++        using CancellationTokenSource bound = new(TimeSpan.FromSeconds(2));
++        var observed = await BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token);
++        observed.Count.ShouldBe(3);
++        observed.Values.ShouldAllBe(value => value.ExceptionTypes.Contains("System.MissingMethodException"));
++        await bound.CancelAsync();
++        await Should.ThrowAsync<OperationCanceledException>(() => BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token));
++    }
++}
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+new file mode 100644
+index 00000000..3beeadce
+--- /dev/null
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+@@ -0,0 +1,89 @@
++using System.Reflection;
++using System.Text.Json;
++using System.Text.RegularExpressions;
++
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++
++using Microsoft.Extensions.DependencyInjection;
++
++namespace Hexalith.Tenants.IntegrationTests.Fixtures;
++
++/// <summary>Classifies owned bootstrap failures before cleanup, without retaining resource log text or credentials.</summary>
++internal static class BootstrapResourceFailureDiagnostics
++{
++    private static readonly string[] Reasons = ["configuration-missing", "owner-trust-refused", "topology-disagreement", "installed-inventory-disagreement", "store-or-transport-unavailable", "catalog-disagreement", "catalog-invalid", "host-validation-unavailable"];
++    private static readonly string[] SensitiveMarkers = ["Bearer ", "Authorization:", "password", "privatekey", "signingkey", "apikey", "api_key", "token="];
++
++    internal sealed record Observation(string[] ExceptionTypes, string[] ApiSymbols, string[] CatalogReasons, bool Truncated);
++
++    internal static Observation Classify(IEnumerable<string> lines)
++    {
++        HashSet<string> exceptions = new(StringComparer.Ordinal);
++        HashSet<string> symbols = new(StringComparer.Ordinal);
++        HashSet<string> reasons = new(StringComparer.Ordinal);
++        bool truncated = false;
++        int count = 0;
++        foreach (string line in lines)
++        {
++            if (++count > 2048) { truncated = true; break; }
++            if (line.Length > 8192) { truncated = true; continue; }
++            if (SensitiveMarkers.Any(marker => line.Contains(marker, StringComparison.OrdinalIgnoreCase))) continue;
++            Match[] found = Regex.Matches(line, @"\b(?:System|Microsoft|Hexalith|Dapr)(?:\.[A-Za-z_][A-Za-z0-9_+`]*?)*(?:Exception|Error)\b", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)).Cast<Match>().ToArray();
++            string[] categories = Reasons.Where(reason => line.Contains(reason, StringComparison.Ordinal)).ToArray();
++            if (found.Length == 0 && categories.Length == 0) continue;
++            foreach (Match match in found.Take(16)) if (exceptions.Count < 16) exceptions.Add(match.Value);
++            foreach (string reason in categories) reasons.Add(reason);
++            foreach (Match match in Regex.Matches(line, @"\b(?:System|Microsoft|Hexalith|Dapr)\.[A-Za-z_][A-Za-z0-9_.+`]{1,180}", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)).Cast<Match>().Take(32))
++                if (symbols.Count < 32) symbols.Add(match.Value);
++        }
++        return new(exceptions.Order(StringComparer.Ordinal).ToArray(), symbols.Order(StringComparer.Ordinal).ToArray(), reasons.Order(StringComparer.Ordinal).ToArray(), truncated);
++    }
++
++    internal static Task<IReadOnlyDictionary<string, Observation>> ReadAsync(ResourceLoggerService logger, CancellationToken cancellationToken)
++        => ReadAsync(logger.GetAllAsync, cancellationToken);
++
++    internal static async Task<IReadOnlyDictionary<string, Observation>> ReadAsync(
++        Func<string, IAsyncEnumerable<IReadOnlyList<LogLine>>> read, CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        Dictionary<string, Observation> observations = new(StringComparer.Ordinal);
++        foreach (string resource in new[] { "eventstore", "tenants", "tenants-api" })
++        {
++            List<string> lines = [];
++            await foreach (IReadOnlyList<LogLine> batch in read(resource).WithCancellation(cancellationToken))
++            {
++                lines.AddRange(batch.Select(line => line.Content).Take(2049 - lines.Count));
++                if (lines.Count > 2048) break;
++            }
++            observations.Add(resource, Classify(lines));
++        }
++        return observations;
++    }
++
++    internal static async Task CaptureAsync(AspireTopologyFixture fixture)
++    {
++        // The frozen legacy 3.128.4 fixture exposes no public application handle. Read its
++        // pinned private handle solely for diagnostics; no configuration or service is changed.
++        if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true"
++            || Environment.GetEnvironmentVariable("RUNNER_TEMP") is not { Length: > 0 } temporary) return;
++        try
++        {
++            DistributedApplication? app = typeof(AspireTopologyFixtureBase<Projects.Hexalith_Tenants_AppHost>)
++                .GetField("_app", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(fixture) as DistributedApplication;
++            if (app is null) return;
++            using CancellationTokenSource bound = new(TimeSpan.FromSeconds(3));
++            IReadOnlyDictionary<string, Observation> resources = await ReadAsync(app.Services.GetRequiredService<ResourceLoggerService>(), bound.Token);
++            string json = JsonSerializer.Serialize(new { kind = "owned-bootstrap-failure-categories", fixtureVersion = typeof(AspireTopologyFixtureBase<>).Assembly.GetName().Version?.ToString(), resources });
++            string directory = Path.Combine(temporary, "tenants-bootstrap-diagnostics");
++            Directory.CreateDirectory(directory);
++            await File.WriteAllTextAsync(Path.Combine(directory, Guid.NewGuid().ToString("N") + ".json"), json, bound.Token);
++            Console.Error.WriteLine("TENANTS_BOOTSTRAP_DIAGNOSTICS " + json);
++        }
++        catch (Exception exception)
++        {
++            // Observability must never replace the bootstrap failure or prevent its owned cleanup.
++            Console.Error.WriteLine("TENANTS_BOOTSTRAP_DIAGNOSTICS_UNAVAILABLE " + exception.GetType().Name);
++        }
++    }
++}

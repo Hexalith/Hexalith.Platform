@@ -1,0 +1,27 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.ProviderVerification.Tests
+  Discovered:  Hexalith.EventStore.ProviderVerification.Tests
+  Starting:    Hexalith.EventStore.ProviderVerification.Tests
+    Hexalith.EventStore.ProviderVerification.Tests.RealKestrelPactTests.ProductionPipeline_AcceptedPactRequiresMatchingPerRunCredential(useMatchingCredential: True, expectedResultCode: "interaction.passed") [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.FrontComposer/tests/Hexalith.FrontComposer.Shell.Tests/Pact/frontcomposer-eventstore-command-dispatch.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.ReadAllBytesAsync(String path, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.ProviderVerification.Tests/RealKestrelPactTests.cs(139,0): at Hexalith.EventStore.ProviderVerification.Tests.RealKestrelPactTests.ProductionPipeline_AcceptedPactRequiresMatchingPerRunCredential(Boolean useMatchingCredential, String expectedResultCode)
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.ProviderVerification.Tests.RealKestrelPactTests.ProductionPipeline_AcceptedPactRequiresMatchingPerRunCredential(useMatchingCredential: False, expectedResultCode: "interaction.contract-failed") [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.FrontComposer/tests/Hexalith.FrontComposer.Shell.Tests/Pact/frontcomposer-eventstore-command-dispatch.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.ReadAllBytesAsync(String path, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.ProviderVerification.Tests/RealKestrelPactTests.cs(139,0): at Hexalith.EventStore.ProviderVerification.Tests.RealKestrelPactTests.ProductionPipeline_AcceptedPactRequiresMatchingPerRunCredential(Boolean useMatchingCredential, String expectedResultCode)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.ProviderVerification.Tests (ID = '60a312a6a2fffbfaaf5438bf0bb92c4d484b7fcd5a6de343048f886fa1aed3bd')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.ProviderVerification.Tests  Total: 10, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 1.517s

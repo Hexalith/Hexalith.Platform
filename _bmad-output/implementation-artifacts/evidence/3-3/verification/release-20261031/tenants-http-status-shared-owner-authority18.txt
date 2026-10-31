@@ -1,0 +1,637 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Tenants.IntegrationTests
+  Discovered:  Hexalith.Tenants.IntegrationTests
+  Starting:    Hexalith.Tenants.IntegrationTests
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTRMWBMCN33E19ZC98TZN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 21.8451ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTRMWBMCN33E19ZC98TZN - 200 - application/json;+charset=utf-8 97.6685ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTRMWBMCN33E19ZC98TZN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.8212ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTRMWBMCN33E19ZC98TZN - 200 - application/json;+charset=utf-8 5.0064ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTS86KW9MMAWW6BCDFHFE - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.4224ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTS86KW9MMAWW6BCDFHFE - 200 - application/json;+charset=utf-8 10.6797ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTS86KW9MMAWW6BCDFHFE - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2193ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTS86KW9MMAWW6BCDFHFE - 200 - application/json;+charset=utf-8 2.3245ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSBDP5WCY813CAM6NXFC - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.456ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSBDP5WCY813CAM6NXFC - 200 - application/json;+charset=utf-8 9.2371ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSBDP5WCY813CAM6NXFC - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.4178ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSBDP5WCY813CAM6NXFC - 200 - application/json;+charset=utf-8 2.5882ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSEMVFK4F1QHM29R9VWN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1051ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSEMVFK4F1QHM29R9VWN - 200 - application/json;+charset=utf-8 8.4303ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSEMVFK4F1QHM29R9VWN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.3171ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSEMVFK4F1QHM29R9VWN - 200 - application/json;+charset=utf-8 2.9948ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSHAD4ZZBE0385M4FFWH - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1417ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSHAD4ZZBE0385M4FFWH - 200 - application/json;+charset=utf-8 8.1435ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSHAD4ZZBE0385M4FFWH - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2143ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSHAD4ZZBE0385M4FFWH - 200 - application/json;+charset=utf-8 2.1089ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSM75P3DT4WK97VA7RT5 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.93ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSM75P3DT4WK97VA7RT5 - 200 - application/json;+charset=utf-8 8.1104ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSM75P3DT4WK97VA7RT5 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2614ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSM75P3DT4WK97VA7RT5 - 200 - application/json;+charset=utf-8 2.4934ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSPKCWZTZRMADR5S3VG9 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1398ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSPKCWZTZRMADR5S3VG9 - 200 - application/json;+charset=utf-8 8.7596ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSPKCWZTZRMADR5S3VG9 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2563ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSPKCWZTZRMADR5S3VG9 - 200 - application/json;+charset=utf-8 2.3410ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTST7V7CFV8DKPZQHTZ5C - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.8974ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTST7V7CFV8DKPZQHTZ5C - 200 - application/json;+charset=utf-8 10.7624ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTST7V7CFV8DKPZQHTZ5C - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.401ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTST7V7CFV8DKPZQHTZ5C - 200 - application/json;+charset=utf-8 2.7537ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSX06PP2K8WYFVB7BPDN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.9158ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSX06PP2K8WYFVB7BPDN - 200 - application/json;+charset=utf-8 7.9064ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSX06PP2K8WYFVB7BPDN - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2767ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSX06PP2K8WYFVB7BPDN - 200 - application/json;+charset=utf-8 2.3075ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSZWX1ZNSAW4ZP5Z34WC - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1512ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSZWX1ZNSAW4ZP5Z34WC - 200 - application/json;+charset=utf-8 8.8468ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSZWX1ZNSAW4ZP5Z34WC - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.3306ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTSZWX1ZNSAW4ZP5Z34WC - 200 - application/json;+charset=utf-8 2.6800ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT2EX1QY4WVY6V149YZK - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.8527ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT2EX1QY4WVY6V149YZK - 200 - application/json;+charset=utf-8 8.9095ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT2EX1QY4WVY6V149YZK - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2987ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT2EX1QY4WVY6V149YZK - 200 - application/json;+charset=utf-8 2.3344ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT5SFP8KRSABC17KX9PB - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.2108ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT5SFP8KRSABC17KX9PB - 200 - application/json;+charset=utf-8 8.5727ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT5SFP8KRSABC17KX9PB - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2337ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT5SFP8KRSABC17KX9PB - 200 - application/json;+charset=utf-8 2.3080ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT8DC13SZY69X6895WAX - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1282ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT8DC13SZY69X6895WAX - 200 - application/json;+charset=utf-8 8.6222ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT8DC13SZY69X6895WAX - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2723ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTT8DC13SZY69X6895WAX - 200 - application/json;+charset=utf-8 2.3714ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTBEPA49AX041BQ49J3T - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.2951ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTBEPA49AX041BQ49J3T - 200 - application/json;+charset=utf-8 9.7509ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTBEPA49AX041BQ49J3T - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.274ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTBEPA49AX041BQ49J3T - 200 - application/json;+charset=utf-8 2.5298ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTDZGE78EVKJZPS76DS8 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.8896ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTDZGE78EVKJZPS76DS8 - 200 - application/json;+charset=utf-8 8.9295ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTDZGE78EVKJZPS76DS8 - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.2928ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTDZGE78EVKJZPS76DS8 - 200 - application/json;+charset=utf-8 2.5194ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTH0M91YMJV50GX6DF8Z - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.1519ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTH0M91YMJV50GX6DF8Z - 200 - application/json;+charset=utf-8 8.6158ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTH0M91YMJV50GX6DF8Z - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.3436ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTH0M91YMJV50GX6DF8Z - 200 - application/json;+charset=utf-8 3.0502ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTKW8N0Q163P33GGMZXD - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 1.2418ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTKW8N0Q163P33GGMZXD - 200 - application/json;+charset=utf-8 9.0516ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTKW8N0Q163P33GGMZXD - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.3426ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTKW8N0Q163P33GGMZXD - 200 - application/json;+charset=utf-8 2.6527ms
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/administrator/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+warn: Hexalith.EventStore.Configuration.DaprRateLimitConfigSync[0]
+      DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.
+      System.NullReferenceException: Object reference not set to an instance of an object.
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)
+         at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTQ0CJ26CFQMH8Z0B45R - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.9526ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTQ0CJ26CFQMH8Z0B45R - 200 - application/json;+charset=utf-8 8.3511ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTQ0CJ26CFQMH8Z0B45R - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[102]
+      Route matched with {action = "GetStatus", controller = "CommandStatus"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetStatus(System.String, System.Threading.CancellationToken) on controller Hexalith.EventStore.Controllers.CommandStatusController (Hexalith.EventStore.Gateway).
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Hexalith.EventStore.Models.CommandStatusResponse'.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[105]
+      Executed action Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway) in 0.3121ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Hexalith.EventStore.Controllers.CommandStatusController.GetStatus (Hexalith.EventStore.Gateway)'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/api/v1/commands/status/01M68VTTQ0CJ26CFQMH8Z0B45R - 200 - application/json;+charset=utf-8 2.4867ms
+  Finished:    Hexalith.Tenants.IntegrationTests (ID = 'd8868c15826b90a4e3a64619ab804e545c6169edba096459cd97abda44020d2d')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Tenants.IntegrationTests  Total: 18, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 2.284s

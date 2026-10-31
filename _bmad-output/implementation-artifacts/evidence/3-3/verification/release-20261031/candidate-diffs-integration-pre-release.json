@@ -1,0 +1,54 @@
+[
+  {
+    "owner": "Builds",
+    "base": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/builds-integration-candidate.patch",
+    "sha256": "dbd4cf2f6d1d78ec4df59fedb108b6e51761d4b367a048e3e5efaf784b0ba141",
+    "bytes": 30905,
+    "sourceHashes": {
+      "Props/Directory.Packages.props": "dea4fdfd354556f82506decf61c1eda7ae595caf58ec63433b6458f38648d937",
+      "Tools/G4PackageQualification.functions.ps1": "d06dc4784b71125b4e187ca9556a6499c1abbe3405e80023e346b26f01b26e5a",
+      "src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj": "3b253a315672c267c17cc05ba4b58d1868235573573562b574e1cf4f1d861a76",
+      "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "bee65788ff8b035bb34878acd6f68234c8e9e5a0c1f04baa43d5f7cba8b42af4",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "9e9dd148dbf70f499042dba1795f63a2ab0eda0dd520b5cd07b019ae61e62f13",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs": "b3b7e5913dbd1537f745e4a8788783c0a67c47dfd9344a8c0e13951dfaeb324e",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "ebde0e214a472864dcb87c42bbacfa3abbd54a4fa46aaf544bbf78113dd7547c",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs": "b806087de5797468a6d5be35cdfee672b8efff66580c73ea240eb06083c0fc26",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs": "b7ff31b824b735b68e1f638b7f06cccdbeffd4ab8f36ca9439a8b2ce9569b0dd",
+      "test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs": "b49328710a3e9c22fce8622d17c8962be73b522d6e6dcd1210814f06885e1b32"
+    }
+  },
+  {
+    "owner": "Platform",
+    "base": "75bceb22abc60d22d0c4e6f3d7c86795f3e51cc1",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/platform-integration-candidate.patch",
+    "sha256": "daf28e3d13b0830d6ca31e4ee030cb301aa7ce59fcedce407969fdeca31a35f3",
+    "bytes": 125193,
+    "sourceHashes": {
+      "_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md": "5aac94caf36eb366432e2c48fb1b4a5cac3f97e4e4644c2ef1c204ffb598ade6",
+      "eng/tuple-ci-suites.json": "351c1a927784fe26e1c61d0dadb2bf5dea0e6e21845488dd184550988849e1cb",
+      "src/Hexalith.Platform.CatalogBuilder/Program.cs": "7defa81f90e2def8161ac4138d7cd9349f4e028050214a8db3ab7ffe44bea317",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "1cf855f016d41e23a9cba07a82592b47c486a2b6fffacc76a15c7d8d27a4461b",
+      "src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs": "0d9754ffc3654672618a8a4cb47eb0ee0028a6b08c23adfc5fd962797c19e6df",
+      "src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs": "087a12fd2408b11951b1cf3d150d1c8ee15c09d3922e77405ab1d5ff7f20e7d4",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs": "d93256f52eeed25d25e4b5904ca707cb3854ec7fe670133efedcd6a21e3fdd40",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs": "b09669c11b37ff8790a53b51a099772ae6d3e8e38bf4fff2b0e76bd1a47b6b91",
+      "src/Hexalith.Platform.EventStoreHost/Program.cs": "dd3b18f234dd6394dc4de445d85436627f46e5b6e5222285c4392c40d1709d4f",
+      "tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs": "a40e8f52de96c84e271db27399e9461ae3c6aa95a6c4a6fb0a496123dbd58c71",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj": "40820b20cfb2071d3bf4381743fd33fb01991743b9d0019ebc780ae30fc8829f",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "bdeedfd3ac73b8f88269d70167e528e256b162a1c4a2dda2dbd68832f5915fbe",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "5597dede20360ac5d8ef55aecb8716aa0a3273ad55c77d2b30bdb0643c5d30ca",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs": "1cecffefe7aab7c5f8ed227ebeb9ff3158a8a7c81eeaa443b2eabb8cbd7f930b",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs": "e1dbd716c8b389098fc2d0889a2b9c4010354eaa0fdda1a456a833b045ceb602",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs": "95358672d9f02c4121657082487ade9098271eb1f321e1ce6b3daaeb5dae4c14",
+      "tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs": "8dd73645e7b931e183f96c746b61d53c421c01a77586419f4a6be63c31b20e67",
+      "tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs": "6476dd07fdf847a8565301a7fb3e1bc7f98f70a463ad3703eca701506e0b3057",
+      "tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs": "574bf0d7ad7be585df2b711bf311f3d3ca61378b0e0daeb472e75962d9ec3332",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs": "86fedc6b1ec471fa687062019ea533a06f9ed8205100434b77b9e509a9a6c396",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs": "930b18f1ad31c82f94d586b20f6f2317ad5adcb3fefc58be809a8d569a2aebcc",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs": "4d6c18cabbca8c2bc73789263f9c92ffd4c50744064545754207922f7a4b0567",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs": "8c4570cf05ad393dda15b638b3fa0e1da87efe0b87a38e8b1bf4d52f4e7b8044",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs": "5d7fc092853bfb52a7dd3a3e24636f7ed09d130a855d83e02146752e5a77b56a"
+    }
+  }
+]

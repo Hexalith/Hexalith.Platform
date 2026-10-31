@@ -1,0 +1,21 @@
+{
+  "command": [
+    "env",
+    "NUGET_PACKAGES=/tmp/hexalith-story33-release-0_wjbwkj/ordinary-package-cache",
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "-c",
+    "Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:GeneratePackageOnBuild=false",
+    "-m:1",
+    "-nr:false",
+    "--disable-build-servers"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties",
+  "exitCode": 0,
+  "seconds": 4.732,
+  "output": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/parties-package-host-framework-policy-build.txt"
+}

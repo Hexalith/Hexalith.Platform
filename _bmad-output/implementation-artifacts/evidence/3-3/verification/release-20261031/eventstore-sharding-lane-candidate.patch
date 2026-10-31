@@ -1,0 +1,24 @@
+diff --git a/docs/ci.md b/docs/ci.md
+index ddb6fcb83..f43845535 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -77,6 +77,7 @@ place for run output.
+ | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |
+ | Advisory browser/governance suites | `tests/Hexalith.EventStore.Admin.UI.E2E`, `tests/Hexalith.EventStore.DeferredWorkGovernance.Tests` | Separate `Advisory Tests` workflow. It installs Playwright Chromium for the browser suite and runs with `continue-on-error`, preserving push/PR signal without making semantic-release depend on these suites. |
+ | Full Aspire E2E | `tests/Hexalith.EventStore.IntegrationTests` | Deferred until a reliable Aspire-in-CI topology exists. |
++| Isolated synthetic sharding | `tests/Hexalith.EventStore.Sharding.Tests` | Deferred CI automation; the operator opt-in Debug lane and its owned `Sharding.TestHost` fixture are documented in `tests/Hexalith.EventStore.Sharding.Tests/README.md`. Synthetic observations do not qualify a production provider profile or release gate. |
+ 
+ The qualified lifecycle profile keeps Dapr's default 4 MiB gRPC request limit.
+ Each transaction admits at most 512 operations and 2 MiB of charged data: value,
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+index 7029f5b11..9455950ad 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+@@ -1089,6 +1089,7 @@ public sealed class ReleasePackageManifestTests
+             ["tests/Hexalith.EventStore.PublishedCompatibility.Tests/Consumers/Domain"] = "tests/Hexalith.EventStore.PublishedCompatibility.Tests",
+             ["tests/Hexalith.EventStore.PublishedCompatibility.Tests/Consumers/Host"] = "tests/Hexalith.EventStore.PublishedCompatibility.Tests",
+             ["tests/Hexalith.EventStore.PublishedCompatibility.Tests/Consumers/Probe"] = "tests/Hexalith.EventStore.PublishedCompatibility.Tests",
++            ["tests/Hexalith.EventStore.Sharding.TestHost"] = "tests/Hexalith.EventStore.Sharding.Tests",
+         };
+ 
+         string[] ignoredProjects = ["tests/Hexalith.EventStore.Client.TestContracts", "tests/Hexalith.EventStore.TestSubscriber"];

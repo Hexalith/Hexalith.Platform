@@ -1,0 +1,37 @@
+# CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentResource
+
+Represents a Dapr component resource.
+
+Package: CommunityToolkit.Aspire.Hosting.Dapr | Version: 13.6.2-beta.959 | TFM: net10.0 | Library: lib/net10.0/CommunityToolkit.Aspire.Hosting.Dapr.dll | Source: NuGet
+
+## Baseclass
+
+| Type |
+| ---- |
+| Aspire.Hosting.ApplicationModel.Resource |
+
+## Constructors
+
+| Name |
+| ---- |
+| .ctor |
+
+## Interfaces
+
+| Interface |
+| --------- |
+| Aspire.Hosting.ApplicationModel.IResource |
+| Aspire.Hosting.ApplicationModel.IResourceWithWaitSupport |
+| CommunityToolkit.Aspire.Hosting.Dapr.IDaprComponentResource |
+
+## Properties
+
+| Name | Return Type | Accessors |
+| ---- | ----------- | --------- |
+| Options | CommunityToolkit.Aspire.Hosting.Dapr.DaprComponentOptions? | get, set |
+| Type | string | get |
+
+Tips:
+member DaprComponentResource --package CommunityToolkit.Aspire.Hosting.Dapr .ctor:1   # view member detail (source, IL)
+type DaprComponentResource --package CommunityToolkit.Aspire.Hosting.Dapr --tree      # view type tree
+member -m DaprComponentResource..ctor --package CommunityToolkit.Aspire.Hosting.Dapr  # dotted member syntax

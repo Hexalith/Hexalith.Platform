@@ -1,0 +1,451 @@
+﻿{
+  "consumer": {
+    "name": "Hexalith.FrontComposer.Shell"
+  },
+  "provider": {
+    "name": "Hexalith.EventStore"
+  },
+  "interactions": [
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command dispatch accepted preserves generated message identity",
+      "providerStates": [
+        {
+          "name": "command-accepted"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 202,
+        "headers": {
+          "Content-Type": "application/json",
+          "Location": "https://eventstore.test/api/v1/commands/status/01HXCNTRCT0000000000000000",
+          "Retry-After": "1"
+        },
+        "body": {
+          "content": {
+            "correlationId": "01HXCNTRCT0000000000000000",
+            "messageId": "01HXCNTRCT0000000000000000"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "matchingRules": {
+          "header": {
+            "Location": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^https?://[^/]\u002B/api/v1/commands/status/01HXCNTRCT0000000000000000$"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandResult.Status=Accepted; CommandResult.MessageId preserved"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command validation failure is classified",
+      "providerStates": [
+        {
+          "name": "command-validation-failure"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/problem\u002Bjson"
+        },
+        "body": {
+          "content": {
+            "status": 400
+          },
+          "contentType": "application/problem\u002Bjson",
+          "encoded": false
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandValidationException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command auth failure requires redirect",
+      "providerStates": [
+        {
+          "name": "command-unauthorized"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "AuthRedirectRequiredException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command forbidden warning is classified",
+      "providerStates": [
+        {
+          "name": "command-forbidden"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 403,
+        "headers": {
+          "Content-Type": "application/problem\u002Bjson"
+        },
+        "body": {
+          "content": {
+            "status": 403
+          },
+          "contentType": "application/problem\u002Bjson",
+          "encoded": false
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandWarningException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command missing aggregate warning is classified",
+      "providerStates": [
+        {
+          "name": "command-not-found"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "Content-Type": "application/problem\u002Bjson"
+        },
+        "body": {
+          "content": {
+            "status": 404
+          },
+          "contentType": "application/problem\u002Bjson",
+          "encoded": false
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandWarningException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command conflict rejection is classified",
+      "providerStates": [
+        {
+          "name": "command-conflict"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 409,
+        "headers": {
+          "Content-Type": "application/problem\u002Bjson"
+        },
+        "body": {
+          "content": {
+            "status": 409
+          },
+          "contentType": "application/problem\u002Bjson",
+          "encoded": false
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandRejectedException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command rate limit warning is classified",
+      "providerStates": [
+        {
+          "name": "command-rate-limited"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 429,
+        "headers": {
+          "Content-Type": "application/problem\u002Bjson",
+          "Retry-After": "5"
+        },
+        "body": {
+          "content": {
+            "status": 429
+          },
+          "contentType": "application/problem\u002Bjson",
+          "encoded": false
+        }
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "CommandWarningException"
+      }
+    },
+    {
+      "type": "Synchronous/HTTP",
+      "description": "command unexpected server failure is classified",
+      "providerStates": [
+        {
+          "name": "command-unexpected-5xx"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/commands",
+        "headers": {
+          "Authorization": "Bearer FC_CONTRACT_TOKEN",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "content": {
+            "messageId": "01HXCNTRCT0000000000000000",
+            "tenant": "tenant-contract-a",
+            "domain": "orders",
+            "aggregateId": "order-1",
+            "commandType": "Hexalith.FrontComposer.Shell.Tests.Pact.EventStorePactContractTests\u002BShipOrderCommand",
+            "payload": {
+              "tenantId": "tenant-contract-a",
+              "aggregateId": "order-1",
+              "quantity": 3
+            },
+            "correlationId": null,
+            "extensions": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        }
+      },
+      "response": {
+        "status": 500,
+        "headers": {}
+      },
+      "metadata": {
+        "generatedSource": "samples/Counter/Counter.Domain/ShipOrderCommand metadata",
+        "adapterPath": "src/Hexalith.FrontComposer.Shell/Infrastructure/EventStore/EventStoreCommandClient.cs",
+        "owningAcceptanceCriteria": "AC2, AC3, AC4, AC14, AC17, AC22, AC23",
+        "classifierExpectation": "HttpRequestException"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "4.0"
+    },
+    "pactNet": {
+      "version": "5.0.1"
+    },
+    "frontComposerStory": "10-3-consumer-driven-contract-tests-pact",
+    "generatedBy": "EventStorePactContractTests"
+  }
+}

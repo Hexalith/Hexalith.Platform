@@ -1,0 +1,107 @@
+{"argv": ["pwsh", "-NoLogo", "-NoProfile", "-File", "tools/pack-release.ps1", "-Version", "0.0.0-story33-release-preflight.2", "-PackageOnly", "-OutputDirectory", "/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2"], "ordinaryCache": "/tmp/hexalith-story33-release-0_wjbwkj/ordinary-package-cache", "originalPinnedCatalog": "/tmp/hexalith-story33-release-0_wjbwkj/owner-release-catalogs/Memories/Props/Directory.Packages.props", "publication": false}
+Release package validation passed.
+Building solution with Version=0.0.0-story33-release-preflight.2
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/Hexalith.Memories.EventStore.Tests.csproj (in 365 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/Hexalith.Memories.ServiceDefaults.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj (in 361 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Tests/Hexalith.Memories.Web.Tests.csproj (in 361 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Client.Rest/Hexalith.Memories.Client.Rest.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Web/Hexalith.Memories.Web.csproj (in 361 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Contracts.Tests/Hexalith.Memories.Contracts.Tests.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.AccessTelemetry.Tests/Hexalith.Memories.AccessTelemetry.Tests.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DomainService.Tests/Hexalith.Memories.DomainService.Tests.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.TestHelpers/Hexalith.Memories.TestHelpers.csproj (in 362 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/MigrateEmbeddingVectors/MigrateEmbeddingVectors.csproj (in 405 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Aspire/Hexalith.Memories.Aspire.csproj (in 422 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj (in 5 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Server.Tests/Hexalith.Memories.Server.Tests.csproj (in 416 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj (in 13 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/Hexalith.Memories.AccessTelemetry.Contracts.csproj (in 13 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj (in 21 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.SpecimenHost/Hexalith.Memories.Web.SpecimenHost.csproj (in 11 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj (in 34 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Cli/Hexalith.Memories.Cli.csproj (in 25 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Redis/Hexalith.Memories.Redis.csproj (in 3 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Specimens/Hexalith.Memories.Web.Specimens.csproj (in 27 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Cli.Tests/Hexalith.Memories.Cli.Tests.csproj (in 19 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj (in 21 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj (in 11 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DerivedStores.Tests/Hexalith.Memories.DerivedStores.Tests.csproj (in 25 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Mcp/Hexalith.Memories.Mcp.csproj (in 83 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AppHost/Hexalith.Memories.AppHost.csproj (in 87 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Mcp.Tests/Hexalith.Memories.Mcp.Tests.csproj (in 74 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Benchmarks/Hexalith.Memories.Benchmarks.csproj (in 77 ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/Hexalith.Memories.IntegrationTests.csproj (in 109 ms).
+  Hexalith.Memories.AccessTelemetry.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Contracts/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Contracts.dll
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Release/net10.0/Hexalith.Memories.Contracts.dll
+  Hexalith.Memories.Telemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Telemetry/bin/Release/net10.0/Hexalith.Memories.Telemetry.dll
+  Hexalith.Memories.ServiceDefaults -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.ServiceDefaults/bin/Release/net10.0/Hexalith.Memories.ServiceDefaults.dll
+  Hexalith.Memories.AccessTelemetry.Clock -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry.Clock/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Clock.dll
+  Hexalith.Memories.AccessTelemetry -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AccessTelemetry/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.dll
+  Hexalith.Memories.Client.Rest -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Client.Rest/bin/Release/net10.0/Hexalith.Memories.Client.Rest.dll
+  Hexalith.Memories.Mcp -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Mcp/bin/Release/net10.0/Hexalith.Memories.Mcp.dll
+  Hexalith.Memories.EventStore -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStore/bin/Release/net10.0/Hexalith.Memories.EventStore.dll
+  Hexalith.Memories.Server -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Server/bin/Release/net10.0/Hexalith.Memories.Server.dll
+  Hexalith.Memories.AppHost -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.AppHost/bin/Release/net10.0/Hexalith.Memories.AppHost.dll
+  Hexalith.Memories.Aspire -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Aspire/bin/Release/net10.0/Hexalith.Memories.Aspire.dll
+  Hexalith.Memories.Cli -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Cli/bin/Release/net10.0/Hexalith.Memories.Cli.dll
+  Hexalith.Memories.DomainService -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.DomainService/bin/Release/net10.0/Hexalith.Memories.DomainService.dll
+  Hexalith.Memories.EventStoreExtensions -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/bin/Release/net10.0/Hexalith.Memories.EventStoreExtensions.dll
+  Hexalith.Memories.Redis -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Redis/bin/Release/net10.0/Hexalith.Memories.Redis.dll
+  Hexalith.Memories.Web -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Web/bin/Release/net10.0/Hexalith.Memories.Web.dll
+  Hexalith.Memories.AccessTelemetry.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.AccessTelemetry.Tests/bin/Release/net10.0/Hexalith.Memories.AccessTelemetry.Tests.dll
+  Hexalith.Memories.TestHelpers -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.TestHelpers/bin/Release/net10.0/Hexalith.Memories.TestHelpers.dll
+  Hexalith.Memories.Benchmarks -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Benchmarks/bin/Release/net10.0/Hexalith.Memories.Benchmarks.dll
+  Hexalith.Memories.Cli.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Cli.Tests/bin/Release/net10.0/Hexalith.Memories.Cli.Tests.dll
+  Hexalith.Memories.Contracts.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Contracts.Tests/bin/Release/net10.0/Hexalith.Memories.Contracts.Tests.dll
+  Hexalith.Memories.DerivedStores.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DerivedStores.Tests/bin/Release/net10.0/Hexalith.Memories.DerivedStores.Tests.dll
+  Hexalith.Memories.DomainService.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.DomainService.Tests/bin/Release/net10.0/Hexalith.Memories.DomainService.Tests.dll
+  Hexalith.Memories.EventStore.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/bin/Release/net10.0/Hexalith.Memories.EventStore.Tests.dll
+  Hexalith.Memories.IntegrationTests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.IntegrationTests/bin/Release/net10.0/Hexalith.Memories.IntegrationTests.dll
+  Hexalith.Memories.Mcp.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Mcp.Tests/bin/Release/net10.0/Hexalith.Memories.Mcp.Tests.dll
+  MigrateEmbeddingVectors -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/MigrateEmbeddingVectors/bin/Release/net10.0/MigrateEmbeddingVectors.dll
+  Hexalith.Memories.Server.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Server.Tests/bin/Release/net10.0/Hexalith.Memories.Server.Tests.dll
+  Hexalith.Memories.Web.Specimens -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Specimens/bin/Release/net10.0/Hexalith.Memories.Web.Specimens.dll
+  Hexalith.Memories.Web.SpecimenHost -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.SpecimenHost/bin/Release/net10.0/Hexalith.Memories.Web.SpecimenHost.dll
+  Hexalith.Memories.Web.Tests -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tests/Hexalith.Memories.Web.Tests/bin/Release/net10.0/Hexalith.Memories.Web.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:01:06.01
+Packing Hexalith.Memories.Aspire
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Aspire.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Contracts
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Contracts.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Client.Rest
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Client.Rest.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Redis
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Redis.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Cli
+  Hexalith.Memories.Cli -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/src/Hexalith.Memories.Cli/bin/Release/net10.0/publish/
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Cli.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Mcp
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Mcp.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.ServiceDefaults
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.ServiceDefaults.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.EventStore
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.EventStore.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.Telemetry
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.Telemetry.0.0.0-story33-release-preflight.2.nupkg'.
+Packing Hexalith.Memories.EventStoreExtensions
+  Successfully created package '/tmp/hexalith-story33-release-0_wjbwkj/release-candidate-packages/Memories/0.0.0-story33-release-preflight.2/Hexalith.Memories.EventStoreExtensions.0.0.0-story33-release-preflight.2.nupkg'.
+Exception: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/validate-release-packages.ps1:459
+Line |
+ 459 |          throw "Package 'Hexalith.Memories.ServiceDefaults' contains u …
+     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Package 'Hexalith.Memories.ServiceDefaults' contains unexpected
+     | prerelease dependencies hidden by its scoped NU5104 suppression:
+     | Hexalith.Memories.Contracts, Hexalith.Memories.Telemetry
+Exception: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Memories/tools/pack-release.ps1:67
+Line |
+  67 |          throw "Generated package validation failed."
+     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Generated package validation failed.

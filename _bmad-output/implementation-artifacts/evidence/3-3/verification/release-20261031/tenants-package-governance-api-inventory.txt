@@ -1,0 +1,52 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Tenants.Contracts.Tests
+  Discovered:  Hexalith.Tenants.Contracts.Tests
+  Starting:    Hexalith.Tenants.Contracts.Tests
+    Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(fromSource: "false", mappingHash: "", mappingApplies: "", mappingMode: "", forwardsSourceVersion: False) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Source version forwarding evaluation failed. stdout: 
+      stderr: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals(test-source-version, 3.129.0)" cannot be evaluated. Version string was not in a correct format.
+      
+      Stack Trace:
+        tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs(739,0): at Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(String fromSource, String mappingHash, String mappingApplies, String mappingMode, Boolean forwardsSourceVersion)
+           at InvokeStub_PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(fromSource: "false", mappingHash: "mapping-hash", mappingApplies: "true", mappingMode: "", forwardsSourceVersion: False) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Source version forwarding evaluation failed. stdout: 
+      stderr: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals(test-source-version, 3.129.0)" cannot be evaluated. Version string was not in a correct format.
+      
+      Stack Trace:
+        tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs(739,0): at Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(String fromSource, String mappingHash, String mappingApplies, String mappingMode, Boolean forwardsSourceVersion)
+           at InvokeStub_PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(fromSource: "", mappingHash: "", mappingApplies: "", mappingMode: "", forwardsSourceVersion: False) [FAIL]
+      Shouldly.ShouldAssertException : process.ExitCode
+          should be
+      0
+          but was
+      1
+      
+      Additional Info:
+          Source version forwarding evaluation failed. stdout: 
+      stderr: /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/Directory.Build.targets(2,18): error MSB4184: The expression "[MSBuild]::VersionGreaterThanOrEquals(test-source-version, 3.129.0)" cannot be evaluated. Version string was not in a correct format.
+      
+      Stack Trace:
+        tests/Hexalith.Tenants.Contracts.Tests/PackageGovernanceTests.cs(739,0): at Hexalith.Tenants.Contracts.Tests.PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(String fromSource, String mappingHash, String mappingApplies, String mappingMode, Boolean forwardsSourceVersion)
+           at InvokeStub_PackageGovernanceTests.EventStore_source_version_forwarding_defers_only_to_an_active_producer_mapping(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Tenants.Contracts.Tests (ID = 'c2e1391b8de0ab0b0ac6e12a876c2bf1f2947c46bdda4e554ed47c2b859c255f')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Tenants.Contracts.Tests  Total: 277, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 19.297s

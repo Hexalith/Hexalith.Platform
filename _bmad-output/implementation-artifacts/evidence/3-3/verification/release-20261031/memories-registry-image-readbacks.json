@@ -1,0 +1,112 @@
+[
+  {
+    "image": "registry.hexalith.com/memories:3.0.12",
+    "manifestDigest": "sha256:2220c0ef16d961c1895c7c4fbbca3e9ab24644e5e45fc68e212e21655a3e86bb",
+    "configDigest": "sha256:0e16322d434a04d535daffb003c7561a88ff3942e65a3a27bd89499dde29a67b",
+    "labels": {
+      "net.dot.runtime.majorminor": "10.0",
+      "net.dot.sdk.version": "10.0.403",
+      "org.opencontainers.artifact.created": "2026-10-31T10:37:10.9029990Z",
+      "org.opencontainers.image.authors": "Hexalith.Memories.Server",
+      "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c",
+      "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "org.opencontainers.image.created": "2026-10-31T10:37:10.9029990Z",
+      "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.version": "3.0.12"
+    },
+    "architecture": "amd64",
+    "os": "linux",
+    "sourceRevisionLabel": null,
+    "normalPublicationRun": 41192867112,
+    "sourceCommit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7"
+  },
+  {
+    "image": "registry.hexalith.com/memories-domain-service:3.0.12",
+    "manifestDigest": "sha256:ae43ed4bece0cbc3edac53699bd0e7ebe5379e65d0304fa9caaec2c77477b8eb",
+    "configDigest": "sha256:ecec3843fe663485428d9feb7f5f0878999209d2c66a8eb82dc97f3600b7105e",
+    "labels": {
+      "net.dot.runtime.majorminor": "10.0",
+      "net.dot.sdk.version": "10.0.403",
+      "org.opencontainers.artifact.created": "2026-10-31T10:37:30.5256270Z",
+      "org.opencontainers.image.authors": "Hexalith.Memories.DomainService",
+      "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c",
+      "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "org.opencontainers.image.created": "2026-10-31T10:37:30.5256270Z",
+      "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.version": "3.0.12"
+    },
+    "architecture": "amd64",
+    "os": "linux",
+    "sourceRevisionLabel": null,
+    "normalPublicationRun": 41192867112,
+    "sourceCommit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7"
+  },
+  {
+    "image": "registry.hexalith.com/memories-access-telemetry:3.0.12",
+    "manifestDigest": "sha256:de0978a483deb7640224e54311813958be96c786643100566ae065216e98389f",
+    "configDigest": "sha256:29afe19d83921107d95676ff7ab3388a617a1b2a0844586237c18ac939fc687a",
+    "labels": {
+      "net.dot.runtime.majorminor": "10.0",
+      "net.dot.sdk.version": "10.0.403",
+      "org.opencontainers.artifact.created": "2026-10-31T10:37:26.1430421Z",
+      "org.opencontainers.image.authors": "Hexalith.Memories.AccessTelemetry",
+      "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c",
+      "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "org.opencontainers.image.created": "2026-10-31T10:37:26.1430421Z",
+      "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.version": "3.0.12"
+    },
+    "architecture": "amd64",
+    "os": "linux",
+    "sourceRevisionLabel": null,
+    "normalPublicationRun": 41192867112,
+    "sourceCommit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7"
+  },
+  {
+    "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.12",
+    "manifestDigest": "sha256:1620beda36f09c55cb0ae8e9557d19410c1d18ac399a84fa80f33a1cf9e5bbaf",
+    "configDigest": "sha256:ea98f6072673895321f883fdeb9977adda483a2ab555e237925890b3d83e3ad0",
+    "labels": {
+      "net.dot.runtime.majorminor": "10.0",
+      "net.dot.sdk.version": "10.0.403",
+      "org.opencontainers.artifact.created": "2026-10-31T10:37:28.3340264Z",
+      "org.opencontainers.image.authors": "Hexalith.Memories.AccessTelemetry.Clock",
+      "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c",
+      "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "org.opencontainers.image.created": "2026-10-31T10:37:28.3340264Z",
+      "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.version": "3.0.12"
+    },
+    "architecture": "amd64",
+    "os": "linux",
+    "sourceRevisionLabel": null,
+    "normalPublicationRun": 41192867112,
+    "sourceCommit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7"
+  },
+  {
+    "image": "registry.hexalith.com/memories-mcp:3.0.12",
+    "manifestDigest": "sha256:a1943701ad9785afdd0bac718c581633fa15dcc49e5ad84fc3be26940966c2f0",
+    "configDigest": "sha256:5f7ab6b52aa55ea6d28b8f9dd042d2189957ad98b26fe0b817e1227aade6c209",
+    "labels": {
+      "net.dot.runtime.majorminor": "10.0",
+      "net.dot.sdk.version": "10.0.403",
+      "org.opencontainers.artifact.created": "2026-10-31T10:37:23.7799260Z",
+      "org.opencontainers.artifact.description": "MCP Server surface for Hexalith.Memories (LLM agent interface \u2014 Phase 1.5). Exposes\r\n      search_memory / ingest_content / traverse_relations / get_case_info tools over the Streamable\r\n      HTTP transport defined by the Model Context Protocol. Story 10.1.",
+      "org.opencontainers.image.authors": "ITANEO",
+      "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c",
+      "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet:10.0-alpine",
+      "org.opencontainers.image.created": "2026-10-31T10:37:23.7799260Z",
+      "org.opencontainers.image.description": "MCP Server surface for Hexalith.Memories (LLM agent interface \u2014 Phase 1.5). Exposes\r\n      search_memory / ingest_content / traverse_relations / get_case_info tools over the Streamable\r\n      HTTP transport defined by the Model Context Protocol. Story 10.1.",
+      "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.licenses": "MIT",
+      "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories",
+      "org.opencontainers.image.version": "3.0.12"
+    },
+    "architecture": "amd64",
+    "os": "linux",
+    "sourceRevisionLabel": null,
+    "normalPublicationRun": 41192867112,
+    "sourceCommit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7"
+  }
+]

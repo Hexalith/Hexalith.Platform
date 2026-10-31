@@ -1,0 +1,46 @@
+diff --git a/.github/workflows/source-reference.yml b/.github/workflows/source-reference.yml
+index 733a6569..f6c761d5 100644
+--- a/.github/workflows/source-reference.yml
++++ b/.github/workflows/source-reference.yml
+@@ -42,9 +42,14 @@ jobs:
+           --minimum-expected-tests 4
+           --filter-method Hexalith.Tenants.IntegrationTests.TenantsApiGeneratedControllerTests.GlobalAdministratorsRealHandlerMetadataSurvivesRouterRestClientAndUiGateway
+           --fail-skips on
++      - name: Build source-only catalog contracts serially
++        run: >
++          dotnet build tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
++          --configuration Debug -p:UseHexalithProjectReferences=true -warnaserror
++          -m:1 -nr:false --disable-build-servers
+       - name: Verify source-only catalog operation declarations
+         run: >
+           dotnet test tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+-          --configuration Debug -p:UseHexalithProjectReferences=true
++          --configuration Debug --no-build --no-restore -p:UseHexalithProjectReferences=true
+           --filter-class Hexalith.Tenants.Contracts.Tests.TenantCatalogTests
+           --minimum-expected-tests 1 --fail-skips on
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 3ff7489a..d468d0d3 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -1,5 +1,5 @@
+ <Project>
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))"><DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants></PropertyGroup>
+ 
+   <!-- Carry the owning EventStore source identity through ordinary local project edges.
+        A source mapping mode, or an active producer mapping, owns dependency versions
+diff --git a/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj b/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+index 1751fd99..5c4e831e 100644
+--- a/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
++++ b/tests/Hexalith.Tenants.Contracts.Tests/Hexalith.Tenants.Contracts.Tests.csproj
+@@ -3,8 +3,9 @@
+   <ItemGroup>
+     <ProjectReference Include="..\..\src\Hexalith.Tenants.Contracts\Hexalith.Tenants.Contracts.csproj" />
+     <ProjectReference Include="..\..\src\Hexalith.Tenants.Testing\Hexalith.Tenants.Testing.csproj" />
+-    <!-- Source-only compiled catalog discovery is not part of the published package contract. -->
++    <!-- Compiled catalog discovery uses the same selected owner SDK in both dependency modes. -->
+     <ProjectReference Include="$(HexalithEventStoreRoot)\src\Hexalith.EventStore.ServiceDefaults\Hexalith.EventStore.ServiceDefaults.csproj" Condition="'$(HexalithEventStoreFromSource)' == 'true'" />
++    <PackageReference Include="Hexalith.EventStore.ServiceDefaults" Condition="'$(HexalithEventStoreFromSource)' != 'true' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0'))" />
+   </ItemGroup>
+ 
+   <ItemGroup>

@@ -1,0 +1,40 @@
+diff --git a/tests/Hexalith.Memories.Server.Tests/Deployment/AppHostSecurityConfigurationTests.cs b/tests/Hexalith.Memories.Server.Tests/Deployment/AppHostSecurityConfigurationTests.cs
+index fe9324e5..94265cc8 100644
+--- a/tests/Hexalith.Memories.Server.Tests/Deployment/AppHostSecurityConfigurationTests.cs
++++ b/tests/Hexalith.Memories.Server.Tests/Deployment/AppHostSecurityConfigurationTests.cs
+@@ -188,15 +188,21 @@ public sealed class AppHostSecurityConfigurationTests
+     }
+ 
+     [Fact]
+-    public void RootDirectoryPackages_DoesNotOverrideEventStoreVersion()
++    public void RootDirectoryPackages_RequiresDeliveredCatalogSdkWithoutLoweringNewerSelections()
+     {
+         string rootCatalog = ReadRepoFile("Directory.Packages.props");
+ 
+         rootCatalog.ShouldContain(
+             "references/Hexalith.Builds/Props/Directory.Packages.props",
+             Case.Sensitive);
+-        rootCatalog.ShouldNotContain("HexalithEventStoreVersion", Case.Sensitive);
+-        rootCatalog.ShouldNotContain("Hexalith.EventStore", Case.Sensitive);
++        XDocument owningCatalog = XDocument.Parse(rootCatalog);
++        XElement floor = owningCatalog.Descendants("HexalithEventStoreVersion").Single();
++        floor.Value.ShouldBe("3.129.0");
++        ((string?)floor.Attribute("Condition")).ShouldBe(
++            "'$(HexalithEventStoreFromSource)' != 'true' and ('$(HexalithEventStoreVersion)' == '' or $([MSBuild]::VersionLessThan('$(HexalithEventStoreVersion)', '3.129.0')))");
++        XElement update = owningCatalog.Descendants("PackageVersion").Single();
++        ((string?)update.Attribute("Update")).ShouldBe("Hexalith.EventStore.*");
++        ((string?)update.Attribute("Version")).ShouldBe("$(HexalithEventStoreVersion)");
+     }
+ 
+     [Fact]
+@@ -301,7 +307,9 @@ public sealed class AppHostSecurityConfigurationTests
+         candidates.ShouldContain(catalogPath, "The evaluated catalog must come from an owning tracked import; path overrides are refused.");
+         XDocument catalog = XDocument.Load(catalogPath);
+         string declaredVersion = catalog.Descendants("HexalithEventStoreVersion").Single().Value;
+-        evaluatedVersion.ShouldBe(declaredVersion, "An evaluated version override must not replace the tracked catalog pin.");
++        string floor = owningCatalog.Descendants("HexalithEventStoreVersion").Single().Value;
++        string requiredVersion = Version.Parse(declaredVersion) < Version.Parse(floor) ? floor : declaredVersion;
++        evaluatedVersion.ShouldBe(requiredVersion, "An evaluated version override must not replace the tracked catalog pin and owner SDK minimum.");
+         evaluatedClientVersion.ShouldBe(evaluatedVersion, "The evaluated Client item must use the same exact central version.");
+         return catalog;
+     }

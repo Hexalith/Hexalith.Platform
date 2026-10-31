@@ -1,0 +1,351 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(observedPath)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          The scoped child must launch and record its decoded identity.
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(231,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "valid") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(marker)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(198,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(String mutation)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "valid") [FAIL]
+      Shouldly.ShouldAssertException : File.Exists(marker)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(301,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "missing") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(334,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AssertNotPassing(NativeTestExecutionResult result, String ruleId, ToolExitCode exitCode)
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(308,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "group-readable") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(334,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AssertNotPassing(NativeTestExecutionResult result, String ruleId, ToolExitCode exitCode)
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(308,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "foreign-run") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(334,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AssertNotPassing(NativeTestExecutionResult result, String ruleId, ToolExitCode exitCode)
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(308,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "endpoints-without-path") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.EvidenceSchemaOrPolicy
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(334,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AssertNotPassing(NativeTestExecutionResult result, String ruleId, ToolExitCode exitCode)
+        test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs(308,0): at Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.NextEntryDoesNotInheritFunctionalObservationsAsync [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(75,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.NextEntryDoesNotInheritFunctionalObservationsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchArchivesEachEntriesInspectedFunctionalObservationsAsync [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT009"},"diagnostics":[{"ruleId":"HXT009","phase":"Test","category":"ProductOrTest","message":"A Platform native composition requires its routing observations.","field":"nativeTests","hint":"Inspect the native test project and its platform configuration locally.","source":null,"location":null,"row":null},{"ruleId":"HXI002","phase":"Test","category":"None","message":"Batch entries attempted: first; failed: first; not attempted: second.","field":"profiles","hint":null,"source":null,"location":null,"row":null}],"runId":"0123456789abcdef0123456789abcdef","remainingResources":{"containerIds":[],"processIds":[],"unverified":false,"isEmpty":false,"workspaceIds":["workspace:0123456789abcdef0123456789abcdef"],"claimIds":[],"discoveryFailures":[],"resourceIds":["workspace:0123456789abcdef0123456789abcdef"]},"testResultPath":"/tmp/hexalith-g4-unit-615b8033a1ac445ba0c8ee63ebe73858/state/diagnostics/0123456789abcdef0123456789abcdef/test-result.json"}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(301,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchArchivesEachEntriesInspectedFunctionalObservationsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(327,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.BatchArchivesEachEntriesInspectedFunctionalObservationsAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(refusesBeforeLaunch: False) [FAIL]
+      Shouldly.ShouldAssertException : output.ToString()
+          should contain (case insensitive comparison)
+      "attempted: first, second; failed: second; not attempted: third"
+          but was actually
+      "{"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","..."
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(48,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(55,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(refusesBeforeLaunch: True) [FAIL]
+      Shouldly.ShouldAssertException : output.ToString()
+          should contain (case insensitive comparison)
+      "attempted: first, second; failed: second; not attempted: third"
+          but was actually
+      "{"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","..."
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(48,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(55,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.FailedBatchIdentifiesAttemptedAndNotAttemptedEntriesAsync(Boolean refusesBeforeLaunch)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "workspace-entry") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-root") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entries") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-entry") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(target: "durable-file") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(277,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ArchiveRejectsChildCreatedParentAndFileLinksAsync(String target)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync [FAIL]
+      Shouldly.ShouldAssertException : exit
+          should be
+      0
+          but was
+      4
+      
+      Additional Info:
+          {"status":"failed","outcome":{"exitCode":"ProductOrTest","phase":"Test","category":"ProductOrTest","ruleId":"HXT009"},"diagnostics":[{"ruleId":"HXT009","phase":"Test","category":"ProductOrTest","message":"A Platform native composition requires its routing observations.","field":"nativeTests","hint":"Inspect the native test project and its platform configuration locally.","source":null,"location":null,"row":null},{"ruleId":"HXI002","phase":"Test","category":"None","message":"Batch entries attempted: first; failed: first; not attempted: second.","field":"profiles","hint":null,"source":null,"location":null,"row":null}],"runId":"0123456789abcdef0123456789abcdef","remainingResources":{"containerIds":[],"processIds":[],"unverified":false,"isEmpty":false,"workspaceIds":["workspace:0123456789abcdef0123456789abcdef"],"claimIds":[],"discoveryFailures":[],"resourceIds":["workspace:0123456789abcdef0123456789abcdef"]},"testResultPath":"/tmp/hexalith-g4-unit-5ae812babbcf4af5904dac20cede450d/state/diagnostics/0123456789abcdef0123456789abcdef/test-result.json"}
+      
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(65,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(67,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.ReadyBatchHandsValidatedDescriptorsToSequentialChildrenAfterStartupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "changed") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      
+      Additional Info:
+          {"Status":"failed","Outcome":{"ExitCode":4,"Phase":5,"Category":5,"RuleId":"HXT009"},"Diagnostics":[{"RuleId":"HXT009","Phase":5,"Category":5,"Message":"A Platform native composition requires its routing observations.","Field":"nativeTests","Hint":"Inspect the native test project and its platform configuration locally.","Source":null,"Location":null,"Row":null}]}
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(368,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(replacement: "fifo") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      
+      Additional Info:
+          {"Status":"failed","Outcome":{"ExitCode":4,"Phase":5,"Category":5,"RuleId":"HXT009"},"Diagnostics":[{"RuleId":"HXT009","Phase":5,"Category":5,"Message":"A Platform native composition requires its routing observations.","Field":"nativeTests","Hint":"Inspect the native test project and its platform configuration locally.","Source":null,"Location":null,"Row":null}]}
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningTests.cs(368,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.DescriptorArchiveUsesTheValidatedPreLaunchSnapshotAsync(String replacement)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(executor: "vstest") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(179,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(String executor)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(executor: "mtp") [FAIL]
+      Shouldly.ShouldAssertException : result.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.ProductOrTest
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/TestEnvironmentProvisioningReviewTests.cs(179,0): at Hexalith.Builds.ModuleTool.Tests.TestEnvironmentProvisioningTests.SelectedDotnetChildrenUsePrivateArtifactsAsync(String executor)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'd431be427e4ba96e9ed110b4f18b5c2c7b7ed13cc750344573e7fa7d4f851f19')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 101, Errors: 0, Failed: 21, Skipped: 0, Not Run: 0, Time: 8.276s

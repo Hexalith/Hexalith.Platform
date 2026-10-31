@@ -1,0 +1,15 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.ServiceDefaults.Tests
+  Discovered:  Hexalith.EventStore.ServiceDefaults.Tests
+  Starting:    Hexalith.EventStore.ServiceDefaults.Tests
+    Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest.GeneratedRestRouteCatalogReceiverTests.ActualHumanDaprGetRetainsTypedPolicyAndEffects(scenario: "metadata-change", expected: 403) [FAIL]
+      System.InvalidOperationException : Sequence contains no matching element
+      Stack Trace:
+           at System.Linq.ThrowHelper.ThrowNoMatchException()
+           at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+        tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogReceiverTests.cs(89,0): at Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest.GeneratedRestRouteCatalogReceiverTests.ActualHumanDaprGetRetainsTypedPolicyAndEffects(String scenario, Int32 expected)
+        tests/Hexalith.EventStore.ServiceDefaults.Tests/GeneratedRest/GeneratedRestRouteCatalogReceiverTests.cs(107,0): at Hexalith.EventStore.ServiceDefaults.Tests.GeneratedRest.GeneratedRestRouteCatalogReceiverTests.ActualHumanDaprGetRetainsTypedPolicyAndEffects(String scenario, Int32 expected)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.ServiceDefaults.Tests (ID = '67e5314f89efbcd01bf949b43d52c9bc0ced140d1ef33dc7fc0efa3760678d21')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.ServiceDefaults.Tests  Total: 12, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.618s

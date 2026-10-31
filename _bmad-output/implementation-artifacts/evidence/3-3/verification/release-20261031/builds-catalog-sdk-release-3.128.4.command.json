@@ -1,0 +1,14 @@
+{
+  "command": [
+    "dotnet",
+    "msbuild",
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj",
+    "-nologo",
+    "-p:Configuration=Release",
+    "-p:HexalithEventStoreVersion=3.128.4",
+    "-getProperty:DefineConstants,BuildsCatalogFromMappedSource,BuildsCatalogSdkAvailable"
+  ],
+  "cwd": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds",
+  "exitCode": 0,
+  "scope": "MSBuild evaluation only; not package compilation"
+}

@@ -1,0 +1,1465 @@
+diff --git a/_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md b/_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md
+index 70a9561c..86fe641b 100644
+--- a/_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md
++++ b/_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md
+@@ -2,7 +2,7 @@
+ title: '3.3 Generate the run-scoped routing catalog'
+ type: 'feature'
+ created: '2026-10-30'
+-status: 'done'
++status: 'in-progress'
+ baseline_commit: '1316523edfab050e03539a4e6425605245070de9'
+ route: 'dispatch'
+ review_loop_iteration: 0
+@@ -67,8 +67,8 @@ context:
+ - [x] `references/Hexalith.Parties/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs` and `src/Hexalith.Parties.EventStoreExtensions/{PartiesCatalogAdapters.cs,Hexalith.Parties.EventStoreExtensions.csproj}` within that owner -- declare complete actual routes/results and explicit local intent adapters; add missing legacy query request contracts while preserving wire names. Keep identity/custody and retry paths intact.
+ - [x] `references/Hexalith.Memories/src/Hexalith.Memories.EventStore/Routing/MemoriesCatalogDeclarations.cs`, `src/Hexalith.Memories.EventStoreExtensions/{MemoriesCatalogAdapters.cs,Hexalith.Memories.EventStoreExtensions.csproj}` and `module/hexalith.module-manifest.v2.json` within that owner -- preserve command CLR identities, declare schemas/internal workload policies and enroll the existing DomainService receiver; add its runtime adapters without creating new query transports.
+ - [x] `src/Hexalith.Platform.Composition/{PlatformRoutingCatalog,PlatformCatalogContractBinding,PlatformCompositionOptions,PlatformAppModel,PlatformGatewayConfiguration}.cs` and `Hexalith.Platform.Composition.csproj` -- resolve only mapped Contracts projects/packages, generate atomically in the private run workspace, reuse descriptor instance identity and wire exact bytes. Add the private reader project `src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj`; no operation-name list in Platform.
+-- [x] `src/Hexalith.Platform.Composition/{PlatformRoutingCatalogBootstrap,PlatformRoutingCatalogComponentRenderer}.cs` and `src/Hexalith.Platform.EventStoreHost/Program.cs` -- provision disposable digest keys, exact adapter registrations, run-specific authority component/key and actual host observers. Prepare, ready-validate every required host and commit using existing authority; readiness waits for agreement. CI uses Release packages with an explicitly Development runtime, never production fixture trust.
+-- [x] `references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs` -- bind the same owner runtime in the package seed without changing the descriptor format or its package-catalog meaning.
++- [ ] `src/Hexalith.Platform.Composition/{PlatformRoutingCatalogBootstrap,PlatformRoutingCatalogComponentRenderer}.cs` and `src/Hexalith.Platform.EventStoreHost/Program.cs` -- provision disposable digest keys, exact adapter registrations, run-specific authority component/key and actual host observers. Prepare, ready-validate every required host and commit using existing authority; readiness waits for agreement. CI must use Release packages with an explicitly Development runtime, never production fixture trust. **Source implementation is complete; ordinary package/CI activation remains undelivered under Review 2 D1 until the owner SDK/adapters ship and Builds pins move.**
++- [ ] `references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs` -- bind the same owner runtime in the package seed without changing the descriptor format or its package-catalog meaning. **Mapped source binding exists; the delivered package branch still requires the released owner SDK and a Builds pin update.**
+ - [x] `references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Routing/RouteCatalogV3Tests.cs`, `references/Hexalith.Tenants/tests/Hexalith.Tenants.Contracts.Tests/TenantCatalogTests.cs`, `references/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs`, `references/Hexalith.Memories/tests/Hexalith.Memories.EventStore.Tests/MemoriesCatalogTests.cs` and `tests/Hexalith.Platform.Composition.Tests/{PlatformRoutingCatalogTests,PlatformRoutingCatalogIntegrationTests}.cs` -- cover the matrix, v1/v2 golden bytes, policy/schema tampering, historical coexistence, surfaces, generated/command/query ingress, independent runs and actual sidecar activation. Refusals precede effects.
+ 
+ **Acceptance Criteria:**
+@@ -79,6 +79,10 @@ context:
+ 
+ ## Implementation Notes
+ 
++- **Release scope authorization (2026-10-31):** The user explicitly authorized completing the prerequisite owner releases, Builds pin updates and package/CI verification: "Yes, complete the prerequisite releases and package/CI verification." This authorizes the remote release operations required for tasks 9–10 in addition to local implementation. Prepare and verify exact release candidates through each owner's existing publication workflow; preserve unrelated workspace changes, the approved frozen block and the original baseline. The current package/CI boundary below remains open until those releases and ordinary package qualification succeed.
++- **Current delivered boundary (Review 2, D1, 2026-10-31):** Package/CI catalog activation is undelivered. The earlier private package receipts below describe historical qualification artifacts, including a private Builds host revision that is absent from delivered owner history; they do not establish acceptance for the current pins. Composition now refuses catalog-bearing package graphs before image probes or resource creation, naming the owner SDK/adapters and Builds pin prerequisites. This story remains `in-progress` until those owner packages ship, the Builds pins move, and the ordinary package lane passes. The source host guards its unpublished HTTP-security APIs so the existing package boundary remains explicit.
++- **Review 2, D2:** Selected callers with grants into the catalog cohort must already be enrolled. An unenrolled caller such as Timesheets is refused during composition before reader generation. Declaration-driven owner and participant discovery remains story 3.6 work.
++
+ - EventStore now owns schema 3 operation schemas, explicit eligibility, independent operation digests and non-executable retained idempotency history. The v1/v2 golden cases remain unchanged. Owner declarations and adapters cover Tenants, Parties and the existing Memories DomainService receiver; Memories REST/MCP search gained no gateway operations.
+ - Platform generates the canonical catalog before resource startup and binds independent host observations to its private instance and shared authority. The selected Parties closure produces 69 operations (44 public, 25 internal). A real source cohort committed the same generation/root on all six participants and all eight hosts passed readiness; signed agent metadata returned the matching public request/result schemas.
+ - Source verification can explicitly launch sequentially built owner outputs with `Platform:UsePrebuiltProjects`. Normal source Debug builds remain available. The run-plan writer cutover uses the remaining declared startup deadline; callers without a run plan retain the existing two-minute default and the existing API.
+@@ -87,9 +91,9 @@ context:
+ - Private Development bootstrap attempts are immutable. Restarting a participant against the same completed attempt is unsupported and refuses the existing observation file without changing the authority epoch or committed root. Start a fresh run for a fresh participant cohort; this MVP does not claim same-run hot restart support.
+ - Native source run `6f1e6db8095797772cedbe0380577a5d` established a genuine ready descriptor in 218.596 seconds, with 22 healthy resources and six committed catalog participants. The descriptor names environment `c9c058580d1bbc9536e85d9affb808f0` plus `-catalog`; `catalog.commit` remains the Builds catalog revision. Its [source/native receipt](evidence/3-3/verification/resume-20261030/native-6f1e6db8095797772cedbe0380577a5d/source-readiness-receipt.json) identifies the actual tested source and binaries. Supported `down` removed every owned resource.
+ - Necessary runtime prerequisites preserve existing policies: finite HTTP observers cache the actual endpoints used for routing; Tenants API installs its shared human credential policy; Tenants metadata reads use the existing bound workload gateway; preparation presents the existing Memories app-channel credential. No new credential grant was added by story 3.3. Concurrent story 2.9 handoff changes are preserved and separately identified by source hashes.
+-- Ordinary Release/package activation is established in a private committed authority with real next owner revisions, unchanged declaration bytes, 23 freshly built packages and seven local runtime images. [Authority](evidence/3-3/verification/resume-20261030/package/private-authority.json), [packages](evidence/3-3/verification/resume-20261030/package/fresh-package-receipt.json) and [images](evidence/3-3/verification/resume-20261030/package/image-results.json) record exact identities. Production catalog pins are unchanged; all artifact pushes stayed in the owned loopback registry. These are local Development results and grant no hosted acceptance.
+-- Final package run `bbe72c24968a7d674910976671cc656b` reached readiness in 84.068 seconds with all 22 resources healthy and six serving readbacks. Its [ready receipt](evidence/3-3/verification/resume-20261030/package/native-bbe72c24968a7d674910976671cc656b/readiness-receipt.json) binds the genuine descriptor to the final admitted private authority. The earlier matching package run's [HTTP/schema checks](evidence/3-3/verification/resume-20261030/package/native-dd8da429233af5aa3d6217b447cc03db/binding-verification.json) verify all 44 public schemas against the same 69-operation root and unchanged immutable owner artifacts. The final run's processes were already absent when refreshing HTTP, so that earlier result is reused explicitly. Supported cleanup is complete.
+-- The broader native consumer suite remains non-passing and belongs to story 2.9 migration. The source run isolated its bearer-only Memories request boundary; the same valid human token succeeds only through the existing authorized private channel. Story 3.3 establishes the real catalog-bound ready descriptor and preserves the owner policies. The package seed is the ordinary Builds EventStoreHost with unconditional SDK binding; source-only native owner preparation is distinct from package cohort readiness.
++- **Historical private package experiment, not delivered qualification:** a private authority used next owner revisions, unchanged declaration bytes, 23 freshly built packages and seven local runtime images. [Authority](evidence/3-3/verification/resume-20261030/package/private-authority.json), [packages](evidence/3-3/verification/resume-20261030/package/fresh-package-receipt.json) and [images](evidence/3-3/verification/resume-20261030/package/image-results.json) record exact identities. Production catalog pins are unchanged; all artifact pushes stayed in the owned loopback registry. These are local Development results and grant no hosted acceptance.
++- Historical private package run `bbe72c24968a7d674910976671cc656b` reached readiness in 84.068 seconds with all 22 resources healthy and six serving readbacks. Its [ready receipt](evidence/3-3/verification/resume-20261030/package/native-bbe72c24968a7d674910976671cc656b/readiness-receipt.json) binds the genuine descriptor to the final admitted private authority. The earlier matching package run's [HTTP/schema checks](evidence/3-3/verification/resume-20261030/package/native-dd8da429233af5aa3d6217b447cc03db/binding-verification.json) verify all 44 public schemas against the same 69-operation root and unchanged immutable owner artifacts. The final run's processes were already absent when refreshing HTTP, so that earlier result is reused explicitly. Supported cleanup is complete.
++- The broader native consumer suite remains non-passing and belongs to story 2.9 migration. The source run isolated its bearer-only Memories request boundary; the same valid human token succeeds only through the existing authorized private channel. Story 3.3 establishes the real catalog-bound ready descriptor and preserves the owner policies. That private experiment used a Builds EventStoreHost revision with unconditional SDK binding; it is absent from delivered Builds history. The delivered package branch refuses pending the published owner SDK. Source-only native owner preparation remains distinct from package cohort readiness.
+ 
+ ## Spec Change Log
+ 
+@@ -126,16 +130,92 @@ Schema 3 keeps executable declarations/routes separate from retained historical
+ - Run the existing `HEXALITH_PLATFORM_LIVE_SMOKE=1` reference readiness lane and real-sidecar catalog activation tests; retain generation/readback, HTTP and descriptor evidence.
+ - Qualify Release/package consumption using matching owner packages in an isolated feed/mapping. Old published packages, source substitutes or synthetic fixtures cannot establish package acceptance; record any undelivered boundary and keep the story open.
+ 
+-Recorded commands and outputs are retained in [evidence/3-3/verification/resume-20261030](evidence/3-3/verification/resume-20261030). The [existing reference readiness lane](evidence/3-3/verification/resume-20261030/ReferenceReadiness-timeout-retry.txt) passed in 114.478 seconds after explicit sequential owner builds and exact AppHost cleanup. Its explicit CLI start allowance accommodates the real cold catalog-reader build. The [actual source-sidecar activation](evidence/3-3/verification/resume-20261030/PlatformRoutingCatalogIntegrationTests-repaired.txt) passed with all eight hosts ready, six committed readbacks and signed public HTTP schema metadata. The genuine source descriptor and matching Release/package descriptor above establish the previously missing handoff and package boundaries; earlier failed attempts remain retained as historical evidence.
++Recorded commands and outputs are retained in [evidence/3-3/verification/resume-20261030](evidence/3-3/verification/resume-20261030). The [existing reference readiness lane](evidence/3-3/verification/resume-20261030/ReferenceReadiness-timeout-retry.txt) passed in 114.478 seconds after explicit sequential owner builds and exact AppHost cleanup. Its explicit CLI start allowance accommodates the real cold catalog-reader build. The [actual source-sidecar activation](evidence/3-3/verification/resume-20261030/PlatformRoutingCatalogIntegrationTests-repaired.txt) passed with all eight hosts ready, six committed readbacks and signed public HTTP schema metadata. Those historical source/private-package descriptors recorded handoff experiments. Review 2 D1 establishes that the private package artifacts do not qualify the currently delivered owner pins; ordinary package/CI acceptance remains open. Earlier failed attempts remain retained as historical evidence.
+ 
+ Owner verification passed: EventStore schema/history/goldens 15, Tenants/Parties/Memories catalogs one each, real finite receiver 12 and actual Tenants API security two. The final isolated canonical checks passed two; strict loopback registry policy checks passed 15. Earlier unchanged matrix checks retain passing surface policy 18, registered ingress four, bootstrap four, topology isolation three, writer startup/health three, ACL preservation one and actual package-admission refusal one. The [matrix receipt](evidence/3-3/verification/resume-20261030/matrix-receipt.json) maps each boundary to its evidence. The complete affected class ran 178 cases (five stale fixture expectations, four gated live skips); all five corrected cases then passed a focused rerun in 126.898 seconds. This establishes an aggregate 174 passing cases plus four explicit live gates, with the required live lanes independently passed. The [source receipt](evidence/3-3/verification/resume-20261030/final-source-receipt.json) distinguishes current shared content from exact historical native and immutable private package snapshots.
+ 
+ The initial broad AppModel run exposed catalog setup and stale receiver-count expectations. Repairs keep real catalog construction and execution: explicit source mappings, actual reader inputs in synthetic graph fixtures, and the seventh host's component scopes. Synthetic graph fixtures remain explicitly separate from the admitted all-package runtime cohort. Gateway-only infrastructure has no enrolled business operations and does not claim a business catalog; nonempty owner closures retain fail-closed generation and activation.
+ 
+-The approved frozen block and original baseline are unchanged. Tasks 8 and 9 now have genuine source/native and admitted package evidence. All implementation tasks and their aggregate verification are complete. Same-attempt participant restart remains an explicit tested MVP limitation.
++The approved frozen block and original baseline are unchanged. The earlier pass retained source/native evidence and private package experiments for tasks 8 and 9; Review 2 D1 leaves their delivered package boundary open. The earlier implementation pass reported completion against its retained source and private package experiments. Review 2 reopens the delivered package/CI tasks and acceptance; they remain incomplete under D1. Same-attempt participant restart remains an explicit tested MVP limitation.
+ 
+ ### Parent implementation verification audit
+ 
+-The parent captured the complete baseline diff, including untracked files, and inspected the story's production changes, owner runtime changes, tests and matrix receipts. The original 90-file routing audit retains 88 identical files; the changed bootstrap and finite receiver were inspected against their new tests and runtime receipts. All 219 source hashes in the final receipt matched the workspace at verification. Every frozen matrix row has executed passing coverage, including the separately executed live lanes; the four gated class skips are not used as matrix evidence. The five focused corrections reconcile the collecting class's failures without claiming that its original command passed. Formal review is complete; verified patches and the seven deferred items are recorded in the triage log.
+-
+-The parent completed post-review verification in [parent-final/verification.json](evidence/3-3/verification/resume-20261030/parent-final/verification.json): all four owner builds and Platform build passed; 47 executed cases passed with no failures or skips, including real source HTTP/catalog activation and reference readiness. Review items B2–B6, E1 and P1 are resolved. The final ordinary package run `91021c1904c986041184792bc4b61ca1` reached readiness in 52.472 seconds with 22 healthy resources, six matching readbacks and authenticated HTTP comparison of all 44 public schemas. Actual Docker observations verified five participant containers had only the shared writable catalog plus their own read-only component/ACL files and the explicit host UID/GID. Supported cleanup reported no owned resources; the loopback registry was removed. Seven unrelated or concurrent findings are recorded in deferred work; the native consumer suite remains a separate story 2.9 limitation.
++The parent captured the complete baseline diff, including untracked files, and inspected the story's production changes, owner runtime changes, tests and matrix receipts. The original 90-file routing audit retains 88 identical files; the changed bootstrap and finite receiver were inspected against their new tests and runtime receipts. All 219 source hashes in the final receipt matched the workspace at verification. Every frozen matrix row has executed passing coverage, including the separately executed live lanes; the four gated class skips are not used as matrix evidence. The five focused corrections reconcile the collecting class's failures without claiming that its original command passed. The first review pass completed; its verified patches and seven deferred items are recorded in the triage log. The second review and delivered package/CI boundary are tracked below.
++
++The parent completed post-review verification in [parent-final/verification.json](evidence/3-3/verification/resume-20261030/parent-final/verification.json): all four owner builds and Platform build passed; 47 executed cases passed with no failures or skips, including real source HTTP/catalog activation and reference readiness. Review items B2–B6, E1 and P1 are resolved. The historical private package run `91021c1904c986041184792bc4b61ca1` reached readiness in 52.472 seconds with 22 healthy resources, six matching readbacks and authenticated HTTP comparison of all 44 public schemas. Actual Docker observations verified five participant containers had only the shared writable catalog plus their own read-only component/ACL files and the explicit host UID/GID. Supported cleanup reported no owned resources; the loopback registry was removed. Seven unrelated or concurrent findings are recorded in deferred work; the native consumer suite remains a separate story 2.9 limitation.
++
++### Review Findings
++
++Code review 2 (2026-10-31). Scope: Platform baseline `1316523e`..`8af2e4d2` story files, plus the routing and catalog files in the EventStore, Tenants, Parties, Memories and Builds submodules over the same pin range (96 files, +3,737/−136). Layers: Blind Hunter, Edge Case Hunter, Verification Gap and Acceptance Auditor. Findings were verified against the current checkout. Identifiers: B = Blind Hunter, E = Edge Case Hunter, V = Verification Gap, A = Acceptance Auditor.
++
++- [x] [Review][Patch] (D1 resolved 2026-10-31: refuse package-mode catalog compositions at compose time, naming the unreleased owner-SDK boundary; guard the Platform host's source-only HTTP-security calls like the Builds host, falling back to `SidecarChannelPolicy`; record package/CI acceptance as an undelivered boundary and keep the story open until owner packages ship and Builds pins are bumped) Package/CI catalog activation is not deliverable with the delivered owner code — high (A1, E4, B1, E24, V-other). `PlatformRoutingCatalogBootstrap.Create` (`src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:121`) generates a catalog and injects `CatalogPath`/`Directory` for every eventstore+domain graph, in any mode. In package/Release mode, two hosts then fail. The delivered Builds seed throws `NotSupportedException` (`references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs:35`; Builds `6cee7b0`). The Platform host throws in its `#else` branch. The Platform host also calls `UseEventStoreHttpHostSecurity`, `RequireEventStoreChannel`, `HumanPolicy` and `UseEventStoreHumanSurface` without guards (`src/Hexalith.Platform.EventStoreHost/Program.cs:48-80`); none of these exist in the pinned 3.128.4 packages. The package qualification cited above used a private Builds commit `9d3d720`, in which the host called the SDK unconditionally. That commit is absent from Builds history, so the delivered code does not support the package-run claims in the Implementation Notes. Context: the whole Release build of the solution already fails earlier, in `Hexalith.Platform.Custody`, against 3.128.4. The Builds non-mapped branch would also fail at startup once an EventStore package registers the HTTP-security startup validator.
++- [x] [Review][Patch] (D2 resolved 2026-10-31: fail fast at compose time when a selected caller with gateway grants, such as Timesheets, is not an enrolled catalog participant; declaration-driven owner/participant discovery moves to story 3.6) Catalog participants and owners are hard-coded rather than declaration-driven, and enabling Timesheets now fails activation — medium (A3, A6). Owners are taken only from `ServerId == "domain"`; assembly names come from module-specific conventions (`PlatformCatalogContractBinding.cs:12-19`); participants are fixed to `tenants-api`/`memories` (`PlatformRoutingCatalogBootstrap.cs:123-124`). Timesheets is a selected caller with eventstore ACL grants but is not a participant. `RouteCatalogTopologyValidator.cs:107` therefore refuses `selected-acl-caller-lacks-catalog-enrollment`, so the existing Development Timesheets opt-in can no longer become ready. Folders and Projects (story 3.6) will need Platform code edits.
++- [x] [Review][Patch] (D3 resolved 2026-10-31: accept the per-Compose reader build, which the spec requires before resources start; add `-nodeReuse:false --disable-build-servers` to it; defer caching) Every Compose with eventstore+domain runs a synchronous `dotnet build` of the catalog reader — medium (B3). This applies to tests that only inspect the model too: there is no cache and no skip, the timeout is up to 5 minutes plus 1, and the build has `-m:1` but no `-nodeReuse:false`/`--disable-build-servers` (`src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs:52-54`). It slows the Composition suite and every AppHost cold start.
++- [x] [Review][Patch] Generated-ingress eligibility refusal returns 503 (unavailable) while command and query ingress return 403 — medium (A13) [references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRouteCatalogFilter.cs:75]
++- [x] [Review][Patch] No normally run test checks that each owner's CatalogBuilder bindings (AppId/Method/ContractVersion/idempotency) match the real host's `DevelopmentDomainRouteCatalog.Targets` and gateway admission; only the gated live smoke test covers this — medium (V1) [src/Hexalith.Platform.CatalogBuilder/Program.cs:26]
++- [x] [Review][Patch] `DevelopmentDomainRouteCatalog.Targets` refusals (undeclared command, query or projection; wrong verb or policy) have no tests — medium (V2) [references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/DevelopmentDomainRouteCatalog.cs:41]
++- [x] [Review][Patch] The domain guard's schema-3 rules (service surface required, step-up refused) are never exercised; every guard test uses schema 2 — medium (V3) [references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/DomainRouteCatalogGuard.cs:23]
++- [x] [Review][Patch] `RouteCatalogEligibilityBehavior` internal-workload exemption and verified-origin confirmation path are untested — medium (V4) [references/Hexalith.EventStore/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs:37]
++- [x] [Review][Patch] `ValidateFiniteReceiver`, `/*` prefix grants and the five topology refusal codes are never executed by tests — medium (V5) [references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs:113]
++- [x] [Review][Patch] Schema-3 rule `internal-operation-is-public` has no refusal case — medium (V6) [references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogValidator.cs:127]
++- [x] [Review][Patch] Catalog cohort waits are checked by resource name only: no test checks `WaitUntilStarted`, or that participants have no waits on non-participants, so a revert to `WaitFor` would deadlock undetected — medium (V7, B13; also open in the story 2.9 deferred ledger) [src/Hexalith.Platform.Composition/PlatformAppModel.cs:379]
++- [x] [Review][Patch] Bootstrap gateway trust and allowed-domain keys, idempotency and assembly lists, the rendered `routing-catalog.yaml`, and the `native-scope.json`/`selected-closure.json` producer→consumer contract are unchecked — medium (V8, V-other) [src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:26]
++- [x] [Review][Patch] `GatewaySeedSubscriptionTests` fails all four cases and still expects unauthenticated `/dapr/subscribe` to return 200, so the seed hosts' new channel and OpenAPI protections have no passing test — medium (V9, V-other) [tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs:60]
++- [x] [Review][Patch] Swagger UI is registered after `UseEventStoreHttpHostSecurity`, so `/swagger` returns 404 (EventStore's own host registers it before) — low (B2, E6) [src/Hexalith.Platform.EventStoreHost/Program.cs:58]
++- [x] [Review][Patch] The "tampered predecessor" test omits the root digest, so it is refused as `missing-committed-root-or-bytes` before any decode and would pass even if tamper detection were broken — low (B12, A5) [tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs:42]
++- [x] [Review][Patch] `duplicate-owner-operation` does not name the duplicated route or module, so the "Invalid enrollment" matrix row's identification requirement is unmet — low (A7) [references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/VersionedRouteCatalogBuilder.cs:18]
++- [x] [Review][Patch] `PlatformRoutingCatalogTests.Root` ignores the `PlatformTestRepositoryRoot` metadata that `PlatformAppModelTests.Root` honours; use one helper — low (B14) [tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs:138]
++- [x] [Review][Patch] A relative `CommittedRoutingCatalogPath` is resolved against the reader's working directory; apply `Path.GetFullPath` — low (E9) [src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs:63]
++- [x] [Review][Defer] Parties internal identity commands (`EstablishHumanActorBinding`, `RebindHumanActorBinding`, `RevokeHumanActorBinding`, `RotatePartyKey`) require an acting subject — medium if true, unverified (A9) [references/Hexalith.Parties/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs:97] — deferred: settle it by tracing `HttpPartiesIdentityClient.SubmitAsync`'s endpoint. For plain `/workload` submissions, `CommandsController.cs:266` sets `AuthenticatedSubject` with no workload fallback, so `DeclaredIdempotencyIntentAdapter.cs:104` would refuse these commands under the catalog. The `bound/workload` endpoint, with its principal, would not refuse them.
++
++**Rejected (36 entries, 43 raw findings):**
++- B4 `false`: the reader is compiled by the ungated `ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances` test.
++- B5/E11 `low`: a missing receiver key surfaces as `KeyNotFoundException` naming the route id in `generation.log`. Missing adapters and changed assemblies are refused at activation by independent observation.
++- B6/E12 `low`: same-attempt restart is the documented, tested MVP limitation (prior B1). A crashed participant is bounded by the runner deadline, and Aspire identifies it.
++- B7/E7 `low`: Platform always sets both `Directory` and `CatalogPath`, so a split configuration is only reachable by hand.
++- B8/E8 `low`: EventStore routes each domain to one service, and owners bind all commands to `process`.
++- B9/E18 `false`: `UsePrebuiltProjects` comes only from the file-entry configuration; `ComposeRun` and retention never set it, and publish mode is refused.
++- B10/E5 `false`: the container case was fixed after the reviewed snapshot by `5b50eae3`.
++- B11 `false`: retained history is meant to persist until an authorized contraction, which this story excludes.
++- B13 (remaining) `low`: environment-id characters, the run-plan mismatch, `MarkFailed`, metadata `Forbid`/503 and assembly-load tests are diagnostics-level gaps.
++- B15 `low`: the opt-in live lane deliberately retains evidence, and the `describe` environment is fully redacted.
++- B16 `low`: Development placeholders apply with the lifecycle disabled.
++- B17 `low`: per-run disposable local keys follow the existing environment-variable signing-key pattern.
++- B18/E17 `false`: all owner and adapter assemblies come from one reader output directory; each owner has a single `Create`.
++- B19 `low`: no route has a mid-segment parameter, and the runtime fence refuses it anyway.
++- A2/E2 `false`: `PlatformServerBindings.Resolve` already refuses package-origin servers in Source mode, before generation.
++- A4 `reject`: the code configures EventStore's existing bound-workload proofs scoped to declared domains. The discrepancy is the spec's "no new credential grant" note, and fixing it would mean editing the spec.
++- A5 (remaining) `low`: local/CI runs have no committed predecessor; builder retention is covered by the EventStore V3 tests.
++- A8 `low`: the extra agent-eligible entry is GetParty's existing `PartyDetail` wire alias, with the same request type.
++- A10 `low`: labels on internal operations are inert, because the surface policy admits only public operations for ui/agent.
++- A11 `low`: the spec requires explicit adapters, and any drift is refused at activation.
++- A12 `low`: the receipt is consumed only by the Development bootstrap of the same run.
++- A13 (remaining) `false`: skipping waits on non-participants is deliberate deadlock avoidance; the memories transport is already fixed.
++- E1 `false`: domain servers outside the enrolled owners are refused earlier, and fail-closed generation is intended.
++- E3 `false`: Builds' central package versions declare all six owner catalog packages.
++- E10 `false`: the workspace is private to one run.
++- E13 `low`: orphan `.tmp` files are left only in a private, failed attempt.
++- E14 `low`: no fence-less participant has inbound grants.
++- E15 `false`: `_surface` is published after `_allowed` is filled, and requests check `_surface` first.
++- E16 `low`: no owner declares a step-up internal projection.
++- E19 `low`: the non-Linux container-user policy is pre-existing and shared with sentry and placement.
++- E20 `low`: this is story 2.9 code, and source entries carry paths.
++- E21 `false`: no caller reads both re-exporting sample assemblies.
++- E22 `low`: unverified package-mode test-compile risk in Parties.
++- E23 `low`: no workspace consumer constructs the records, and central pinning prevents mixed versions.
++- V10 `low`: an opt-in verification-lane flag; also open in the story 2.9 ledger.
++- V11 `low`: diagnostics-only marker.
++
++### Review 2 implementation verification (2026-10-31)
++
++All 18 accepted review patches are implemented. The delivered package/CI boundary remains incomplete: the source bootstrap and mapped Builds host work, while catalog-bearing package compositions refuse before image probes, reader generation or resource creation. Tasks 9 and 10 remain unchecked until the owner SDK/adapters are published, Builds pins are updated, and ordinary package/CI qualification succeeds. AC2 is established for the source lane only; its CI/package requirement is open. AC1, AC3 and AC4 have source verification and do not confer package or hosted acceptance.
++
++The mapped Debug Platform build and five individual owner test-project builds passed. The final focused runs executed **85 passing cases, zero failures**: EventStore server 40, schema/history/goldens 19, Tenants/Parties/Memories one each, seed HTTP four, composition/bootstrap seven, canonical/owner-parity and cleanup ten, actual catalog sidecars one, and reference readiness one. The catalog class's one explicit live gate was separately executed and passed. Two zero-case filter invocations, the initial baseline failure, and earlier fixture failures remain retained and are excluded from this result.
++
++The normally run owner-parity check compares private reader bindings against each real Tenants, Parties and Memories host's installed `DevelopmentDomainRouteCatalog.Targets`, then compares installed gateway adapter admission digests. Seed tests retain the production protection-registration guard using a pinned component installation and verify channel-only subscriptions, human-only OpenAPI/Swagger and mixed-credential refusal. Generated eligibility denial now returns 403 before effects. New owner tests execute schema-3 internal/step-up/surface/origin and finite-prefix topology refusals. The bootstrap test verifies cohort `WaitUntilStarted` annotations, absence of waits on non-participants, exact keys, assembly inventories, authority component scopes, and native producer-to-consumer rejection before credentials or network effects.
++
++The real source run [`catalog-live-8d48f5506c9943fa83f4864790eace2c`](evidence/3-3/verification/catalog-live-8d48f5506c9943fa83f4864790eace2c) passed in 167.157 seconds including sequential owner builds. Six committed readbacks and authenticated HTTP comparison of all 44 public schemas match root `d37f1374ca52911215f3a4a0bf4e94e6e487fb28b7ea530c59ea393bfc077966`. Its recorded gateway is the actual mapped EventStore source host. The reference readiness lane passed in 135.109 seconds after seven mapped owner builds. Both used supported cleanup; a final exact-target Aspire check reported no running AppHost. The original baseline had started the isolated app but ended with `cutover-timeout;health-HTTP-503`; that failed attempt remains evidence and is not rewritten as passing.
++
++[Verification receipts and exact commands](evidence/3-3/verification/review2-20261031/verification.json) distinguish the source compilation mapping from each live lane's resolved mapping, requested/effective roots, historical failed attempts and current passing results. These are working-tree Debug/source checks, not committed candidate, delivered package or hosted acceptance. Concurrent unrelated changes and external commits were preserved. The original baseline commit and approved frozen block are unchanged.
++
++Parent follow-up audit verified all 23 current source hashes, the unchanged frozen block, the 18 completed review patches, raw successful commands for 85 executed cases, and passing coverage of every frozen matrix row. The [parent audit](evidence/3-3/verification/review2-20261031/parent-audit.json) records the complete temporary baseline diff capture and the inspected current patch diff; its scope excludes exhaustive review of unrelated concurrent changes. Tasks 9–10 and the package/CI part of AC2 remain open, so this build stays at implementation verification and has not advanced to final review or completion.
+diff --git a/eng/tuple-ci-suites.json b/eng/tuple-ci-suites.json
+index f5b6a0b7..54e6ff78 100644
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -22,6 +22,15 @@
+         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+       ],
+       "requiredCount": 2
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
++        "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
++      ],
++      "requiredCount": 24
+     }
+   ]
+ }
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Program.cs b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+index b99da772..02d25307 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Program.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+@@ -1,3 +1,4 @@
++using System.Security.Cryptography;
+ using System.Reflection;
+ using System.Text.Json;
+ 
+@@ -46,4 +47,13 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
+ {
+     instanceId = input.GetProperty("instanceId").GetString(), rootDigest = RouteCatalogCodec.ComputeRootDigest(catalog),
+     ownerAssemblies = owners, adapterAssemblies = adapters,
++    sourceMappingHash = input.GetProperty("sourceMappingHash").GetString(),
++    mode = input.GetProperty("mode").GetString(),
++    loadedArtifacts = owners.Concat(adapters).Append(typeof(RouteCatalogCodec).Assembly.Location).Distinct(StringComparer.Ordinal).Select(path => new
++    {
++        path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
++        assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,
++        informationalVersion = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => !assembly.IsDynamic && assembly.Location == path)
++            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
++    }).ToArray(),
+ }));
+diff --git a/src/Hexalith.Platform.Composition/PlatformAppModel.cs b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+index 9fe43168..33ff16e8 100644
+--- a/src/Hexalith.Platform.Composition/PlatformAppModel.cs
++++ b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+@@ -121,6 +121,7 @@ public static class PlatformAppModel
+         var declarations = PlatformDeclarationSet.Load(options);
+         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
+         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
++        _ = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
+         {
+             IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
+diff --git a/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs b/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
+index b46af492..2fb6dc15 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
+@@ -18,7 +18,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
+             string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
+             string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
+             string? version = null;
+-            bool fromSource = selected.Origin == "source";
++            bool fromSource = options.Mapping.Mode == WorkspaceMode.Source && selected.Origin == "source";
+             string Reference(string assembly)
+             {
+                 if (!fromSource && options.Mapping.Mode != WorkspaceMode.Source) return assembly;
+diff --git a/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs b/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
+index 93f1220f..e359d427 100644
+--- a/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
++++ b/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
+@@ -84,7 +84,9 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+         foreach (string host in closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()!))
+         {
+             var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(await ReadRequiredAsync(Path.Combine(catalogDirectory, host + ".committed.json"), cancellationToken).ConfigureAwait(false));
+-            if (readback is not { Serving: true } || readback.RootDigest != scope.RoutingCatalogRoot)
++            if (readback is not { Serving: true } || readback.RootDigest != scope.RoutingCatalogRoot
++                || readback.Generation != catalog.Generation || readback.Profile != catalog.Profile
++                || readback.RouteFacetDigest != catalog.RouteFacetDigest || readback.IdempotencyFacetDigest != catalog.IdempotencyFacetDigest)
+                 throw new InvalidOperationException("A real catalog participant did not commit the selected native scope.");
+         }
+         await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
+@@ -100,6 +102,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             ["command:submit", "query:read"], true, remaining) { Surface = "ui" }, now);
+         string nativeProbe = CompositionTokenFactory.Create(signingKey, new("g4-native-tests", scope.Tenants, scope.Domains,
+             ["command:submit", "query:read"], false, remaining) { Surface = "agent" }, now);
++        using var catalogHttp = Client(Endpoint(services, "eventstore"), nativeProbe);
++        await PlatformRoutingCatalogMetadata.ObserveAsync(catalogHttp, catalog, scope.RoutingCatalogRoot, catalogDirectory, cancellationToken).ConfigureAwait(false);
+         using var gatewayHttp = Client(Endpoint(services, "eventstore"), operatorToken);
+         var gateway = new EventStoreGatewayClient(gatewayHttp, Options.Create(new EventStoreGatewayClientOptions { BaseAddress = gatewayHttp.BaseAddress! }));
+         var receipts = new List<CommandStatusQueryResponse>();
+@@ -145,6 +149,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             nativeGlobalAdministrator = false, nativeRole = nameof(TenantRole.TenantReader),
+             nativeSurface = "agent", consumedTenantsQuery = tenantQuery.RouteId, nativeDomains = scope.Domains,
+             commands = receipts.Select(receipt => new { receipt.MessageId, receipt.Domain, receipt.AggregateId, receipt.Status, receipt.CommittedEventSequence, receipt.EventCount }).ToArray(),
++            routingCatalogMetadataObserved = true,
+             tenantsNativeQueryObserved = true, memoriesRegistryObserved = nameof(Hexalith.Memories.Contracts.V1.TenantStatus.Active), observedAtUtc = DateTimeOffset.UtcNow,
+         }), cancellationToken).ConfigureAwait(false);
+         await WriteEndpointCredentialsAsync(credentialPath, plan, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+index cff564b1..913f362d 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+@@ -50,7 +50,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+         string mappingWorkspace = options.RunPlan?.Workspace ?? workspace;
+         string output = Path.Combine(build, "output");
+         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
+-            "--output", output, "-m:1", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
++            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
+         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
+         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
+         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
+@@ -60,7 +60,8 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
+         {
+             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+-            committedPredecessor = options.CommittedRoutingCatalogPath,
++            sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
++            committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
+             committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
+             owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
+         }));
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
+index 67970e8b..e50d7a48 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
+@@ -4,6 +4,7 @@ using System.Security.Cryptography;
+ using System.Text.Json;
+ using Aspire.Hosting;
+ using Aspire.Hosting.ApplicationModel;
++using Hexalith.Builds.Tooling.Workspace;
+ 
+ /// <summary>Binds independently observing hosts to the already generated catalog and existing EventStore activation authority.</summary>
+ internal sealed class PlatformRoutingCatalogBootstrap
+@@ -114,14 +115,32 @@ internal sealed class PlatformRoutingCatalogBootstrap
+ 
+     internal static string AuthorityName(string instance) => "routing-" + instance.ToLowerInvariant();
+ 
+-    internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
+-        PlatformDaprBindings dapr, string rendered)
++    /// <summary>Refuses unavailable package runtimes and selected callers without catalog enrollment before any composition effects.</summary>
++    internal static IReadOnlyList<PlatformServerBinding> ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
++        PlatformDaprBindings dapr)
+     {
+         // A gateway-only infrastructure graph has no enrolled business operations.
+-        if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return null;
+-        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
++        if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
++        if (options.Mapping.Mode != WorkspaceMode.Source)
++            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
+         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
+             || server.ResourceId is "tenants-api" or "memories").ToArray();
++        var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
++        var enrolledApps = participants.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
++        foreach (var receiver in participants)
++        foreach (var grant in dapr.DeclaredInvocations(receiver.AppId))
++            if (selectedApps.Contains(grant.CallerAppId) && !enrolledApps.Contains(grant.CallerAppId)
++                && !(grant.Method.Trim('/') is "ready" or "health" or "alive" && grant.HttpMethods.SequenceEqual(["GET"], StringComparer.Ordinal)))
++                throw new InvalidDataException($"Selected caller '{grant.CallerAppId}' has a gateway/participant grant to '{receiver.AppId}/{grant.Method}' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.");
++        return participants;
++    }
++
++    internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
++        PlatformDaprBindings dapr, string rendered)
++    {
++        var participants = ResolveParticipants(options, servers, dapr);
++        if (participants.Count == 0) return null;
++        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
+         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
+         return new(options, participants, catalog, rendered, dapr, servers);
+     }
+diff --git a/src/Hexalith.Platform.EventStoreHost/Program.cs b/src/Hexalith.Platform.EventStoreHost/Program.cs
+index 995c915a..78e4ba53 100644
+--- a/src/Hexalith.Platform.EventStoreHost/Program.cs
++++ b/src/Hexalith.Platform.EventStoreHost/Program.cs
+@@ -45,25 +45,37 @@ app.MapDefaultEndpoints();
+ app.UseRouting();
+ app.UseAuthentication();
+ app.UseRateLimiter();
+-app.UseEventStoreHttpHostSecurity();
+-app.UseAuthorization();
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+-if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+-    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+-        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+-#endif
+-app.UseCloudEvents();
+-
+ // OpenAPI/Swagger UI (gated by configuration, H13)
+ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
+     _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
+     _ = app.UseEventStoreHumanSurface("/swagger");
++#else
++    _ = app.MapOpenApi().RequireAuthorization();
++    _ = app.UseWhen(context => context.Request.Path.StartsWithSegments("/swagger"), branch => branch.Use(async (context, next) =>
++    {
++        if (context.User.Identity?.IsAuthenticated != true) { context.Response.StatusCode = 401; return; }
++        await next(context);
++    }));
++#endif
+     _ = app.UseSwaggerUI(options => {
+         options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
+         options.RoutePrefix = "swagger";
+     });
+ }
+ 
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
++app.UseEventStoreHttpHostSecurity();
++#endif
++app.UseAuthorization();
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
++if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
++    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
++        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++#endif
++app.UseCloudEvents();
++
++
+ bool declarativeSubscriptions = app.Configuration.GetValue<bool>("Dapr:DeclarativeSubscriptions");
+ app.MapControllers().Add(endpoint =>
+ {
+@@ -76,8 +88,13 @@ app.MapControllers().Add(endpoint =>
+ });
+ app.MapErrorReferences();
+ app.MapApiVersionFallback();
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
+ if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
+ app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
++#else
++if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
++app.MapActorsHandlers().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
++#endif
+ app.MapApplicationRuntimeProofEndpoints();
+ 
+ // SignalR hub for real-time projection change notifications (conditional)
+diff --git a/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs b/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs
+index 805d0b66..89ce4bbf 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs
+@@ -5,6 +5,12 @@ namespace Hexalith.Platform.Composition.Tests;
+ 
+ using System.Net;
+ using System.Text.Json;
++using System.Net.Http.Headers;
++using System.Security.Claims;
++using System.Text;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Microsoft.IdentityModel.JsonWebTokens;
++using Microsoft.IdentityModel.Tokens;
+ using Dapr;
+ using Hexalith.EventStore.Indexes;
+ using Microsoft.AspNetCore.Hosting;
+@@ -15,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
+ using Microsoft.Extensions.Hosting;
+ using Shouldly;
+ 
++[Collection("Platform file entry")]
+ public sealed class GatewaySeedSubscriptionTests
+ {
+     [Theory]
+@@ -29,14 +36,16 @@ public sealed class GatewaySeedSubscriptionTests
+ 
+     private static async Task AssertSeedAsync<TEntryPoint>(bool declarative) where TEntryPoint : class
+     {
++        using var installation = new GatewaySeedProtectionInstallation();
+         WebApplicationFactory<TEntryPoint> factory = new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
+         {
+             builder.UseEnvironment("Development");
+-            builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(new Dictionary<string, string?>
++            builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(installation.Configuration).AddInMemoryCollection(new Dictionary<string, string?>
+             {
++                ["APP_API_TOKEN"] = "seed-channel-token",
+                 ["Dapr:DeclarativeSubscriptions"] = declarative.ToString(),
+                 ["EventStore:ProjectionChanges:PubSubName"] = "configured-seed-events",
+-                ["EventStore:OpenApi:Enabled"] = "false",
++                ["EventStore:OpenApi:Enabled"] = "true",
+                 ["Authentication:JwtBearer:Issuer"] = "hexalith-test",
+                 ["Authentication:JwtBearer:Audience"] = "hexalith-eventstore",
+                 ["Authentication:JwtBearer:SigningKey"] = "test-only-seed-subscription-signing-key-at-least-32-bytes",
+@@ -57,6 +66,9 @@ public sealed class GatewaySeedSubscriptionTests
+         });
+         await using var factoryLifetime = factory.ConfigureAwait(true);
+         using HttpClient client = factory.CreateClient();
++        using var anonymous = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken);
++        anonymous.StatusCode.ShouldBe(declarative ? HttpStatusCode.NotFound : HttpStatusCode.Unauthorized);
++        client.DefaultRequestHeaders.Add("dapr-api-token", "seed-channel-token");
+         using HttpResponseMessage response = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(true);
+         RouteEndpoint receiver = factory.Services.GetRequiredService<EndpointDataSource>().Endpoints.OfType<RouteEndpoint>().Single(endpoint => endpoint.RoutePattern.RawText == "projections/changed");
+         if (declarative)
+@@ -72,5 +84,31 @@ public sealed class GatewaySeedSubscriptionTests
+             projection.EnumerateObject().Single(property => property.Name.Equals("pubsubname", StringComparison.OrdinalIgnoreCase)).Value.GetString().ShouldBe("configured-seed-events");
+             receiver.Metadata.GetMetadata<ITopicMetadata>()!.PubsubName.ShouldBe("configured-seed-events");
+         }
++        client.DefaultRequestHeaders.Remove("dapr-api-token");
++        using var anonymousSwagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
++        using var anonymousOpenApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken);
++        bool platform = typeof(TEntryPoint).Assembly.GetName().Name == "Hexalith.Platform.EventStoreHost";
++        anonymousSwagger.StatusCode.ShouldBe(platform ? HttpStatusCode.Unauthorized : HttpStatusCode.NotFound);
++        anonymousOpenApi.StatusCode.ShouldBe(platform ? HttpStatusCode.Unauthorized : HttpStatusCode.NotFound);
++        string token = new JsonWebTokenHandler().CreateToken(new SecurityTokenDescriptor
++        {
++            Issuer = "hexalith-test", Audience = "hexalith-eventstore", Expires = DateTime.UtcNow.AddMinutes(5),
++            SigningCredentials = new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("test-only-seed-subscription-signing-key-at-least-32-bytes")), SecurityAlgorithms.HmacSha256),
++            Subject = new ClaimsIdentity([new("sub", "seed-human"), new(RouteCatalogSurfacePolicy.ClaimType, "ui")]),
++        });
++        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
++        using var bearerSubscription = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken);
++        bearerSubscription.StatusCode.ShouldBe(declarative ? HttpStatusCode.NotFound : HttpStatusCode.Unauthorized);
++        if (platform)
++        {
++            using var swagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
++            swagger.StatusCode.ShouldBe(HttpStatusCode.OK);
++            (await swagger.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldContain("swagger-ui");
++            using var openApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken);
++            openApi.StatusCode.ShouldBe(HttpStatusCode.OK);
++            client.DefaultRequestHeaders.Add(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, "unverified-workload-proof");
++            using var mixed = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
++            mixed.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
++        }
+     }
+ }
+diff --git a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+index 9018058b..5ee5d234 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++++ b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+@@ -20,6 +20,11 @@
+     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+   </ItemGroup>
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
++    <ProjectReference Include="../../references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj" Aliases="tenantdomain" />
++    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj" Aliases="partydomain" />
++    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj" Aliases="memorydomain" />
++    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj" />
++    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj" />
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
+index 9414e88b..1bb64a1b 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
+@@ -418,7 +418,7 @@ public sealed partial class PlatformAppModelTests
+     }
+ 
+     [Fact]
+-    public async Task SignedPackageCompositionUsesSeedAndRefusesCatalogMappingDriftAsync()
++    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
+     {
+         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
+         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
+@@ -452,10 +452,9 @@ public sealed partial class PlatformAppModelTests
+                 ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
+             };
+             IDistributedApplicationBuilder builder = Builder();
+-            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure);
+-            builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore")
+-                .GetProjectMetadata().ProjectPath.ShouldBe(release.EventStoreSeedProject);
+-            builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).Count().ShouldBe(7);
++            Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
++                .Message.ShouldContain("owner SDK");
++            builder.Resources.ShouldBeEmpty();
+             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
+             IDistributedApplicationBuilder refused = Builder();
+             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(refused, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
+@@ -468,12 +467,14 @@ public sealed partial class PlatformAppModelTests
+     [Theory]
+     [InlineData(1, false)]
+     [InlineData(0, true)]
+-    public void RegistryRefusalIsAtomicAndIdentifiesTheOwnerServerImage(int exit, bool timedOut)
++    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
+     {
+-        PlatformCompositionOptions options = PackageOptions() with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)) };
+-        IDistributedApplicationBuilder builder = Builder();
+-        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+-        failure.Message.ShouldBe($"{Path.GetRelativePath(Directory.GetCurrentDirectory(), Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"))}: tenants/domain: image 'registry.hexalith.com/tenants:5.8.0' is unavailable from its released registry.");
++        bool inspected = false;
++        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
++        { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
++        var builder = Builder();
++        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
++        inspected.ShouldBeFalse();
+         builder.Resources.ShouldBeEmpty();
+     }
+ 
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+index a7772f90..ae3c8892 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+@@ -22,19 +22,7 @@ using YamlDotNet.RepresentationModel;
+ [Collection("Platform file entry")]
+ public sealed partial class PlatformAppModelTests : IDisposable
+ {
+-    private static string Root
+-    {
+-        get
+-        {
+-            string? declared = typeof(PlatformAppModelTests).Assembly.GetCustomAttributes<System.Reflection.AssemblyMetadataAttribute>()
+-                .SingleOrDefault(metadata => metadata.Key == "PlatformTestRepositoryRoot")?.Value;
+-            if (declared is not null) return Path.GetFullPath(declared);
+-            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
+-            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
+-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
+-            return directory!.FullName;
+-        }
+-    }
++    private static string Root => PlatformTestRepository.Root;
+ 
+     private PlatformPackageFixture? _packageFixture;
+ 
+@@ -104,70 +92,15 @@ public sealed partial class PlatformAppModelTests : IDisposable
+     }
+ 
+     [Fact]
+-    public async Task PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
++    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+     {
+-        List<string> inspected = [];
+-        PlatformCompositionOptions options = PackageGraphOptions() with
++        var options = PackageGraphOptions() with
+         {
+-            Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-scoped-token", ["tenants/domain/Tenants:AppChannelToken"] = "domain-scoped-token" },
+-            ImageProbeRunner = (process, timeout, _) =>
+-            {
+-                process.FileName.ShouldBe("docker");
+-                process.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
+-                timeout.ShouldBe(TimeSpan.FromSeconds(20));
+-                inspected.Add(process.ArgumentList[2]);
+-                return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
+-            },
++            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
+         };
+-        IDistributedApplicationBuilder builder = Builder();
+-        PlatformAppModel.Compose(builder, options);
+-        IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
+-        servers.Length.ShouldBe(7);
+-        servers.OfType<ProjectResource>().Single().Name.ShouldBe("eventstore");
+-        servers.OfType<ProjectResource>().Single().GetProjectMetadata().ProjectPath.ShouldBe(options.EventStoreSeedProject);
+-        servers.OfType<ContainerResource>().Count().ShouldBe(6);
+-        inspected.Order().ShouldBe(servers.Select(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.Image).OfType<string>().Order());
+-        foreach (IResource server in servers)
+-        {
+-            PlatformServerBinding binding = server.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+-            server.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
+-            DaprSidecarOptions sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+-            sidecar.AppId.ShouldBe(binding.AppId);
+-            sidecar.DaprHttpPort.GetValueOrDefault().ShouldBeGreaterThan(0);
+-            sidecar.DaprGrpcPort.GetValueOrDefault().ShouldBeGreaterThan(0);
+-            sidecar.DaprInternalGrpcPort.GetValueOrDefault().ShouldBeGreaterThan(0);
+-            sidecar.MetricsPort.GetValueOrDefault().ShouldBeGreaterThan(0);
+-            Dictionary<string, object> environment = new();
+-            foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
+-                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, environment, TestContext.Current.CancellationToken));
+-            environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true", binding.AppId);
+-            foreach (KeyValuePair<string, string> input in binding.Environment)
+-                if (input.Key is "ConnectionStrings__redis" or "ConnectionStrings__falkordb") environment[input.Key].ShouldBeOfType<ReferenceExpression>();
+-                else if (input.Key == "AccessTelemetryLifecycle__AttestationVerificationKey") environment[input.Key].ShouldBeOfType<string>().ShouldNotBeNullOrWhiteSpace();
+-                else if (input.Key is "Authentication__DaprInternal__Audience" or "EventStore__CommandGateway__Audience") environment[input.Key].ShouldBe("eventstore");
+-                else if (input.Key == "Authentication__Workload__Audience") environment[input.Key].ShouldBe(binding.AppId);
+-                else environment[input.Key].ShouldBe(input.Value);
+-            if (server.Name == "tenants-api") { environment["DAPR_API_TOKEN"].ShouldBe("api-scoped-token"); environment.ShouldNotContainKey("APP_API_TOKEN"); }
+-            if (server.Name == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-scoped-token");
+-            if (server.Name == "eventstore")
+-            {
+-                const string registration = "EventStore__DomainServices__Registrations__wildcard_tenants_v1__";
+-                environment[registration + "AppId"].ShouldBe("tenants");
+-                environment[registration + "MethodName"].ShouldBe("process");
+-                environment[registration + "TenantId"].ShouldBe("*");
+-                environment[registration + "Domain"].ShouldBe("tenants");
+-                environment[registration + "Version"].ShouldBe("v1");
+-            }
+-            if (server is ContainerResource container)
+-            {
+-                ContainerImageAnnotation image = container.Annotations.OfType<ContainerImageAnnotation>().Single();
+-                (image.Image + ":" + image.Tag).ShouldBe(binding.Image);
+-                container.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "http").TargetPort.ShouldBe(8080);
+-            }
+-        }
+-        DaprSidecarOptions[] sidecars = servers.Select(server => server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options).ToArray();
+-        sidecars.SelectMany(sidecar => new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort }).Distinct().Count().ShouldBe(servers.Length * 4);
+-        builder.Resources.ShouldNotContain(resource => resource.Name.Contains("admin") || resource.Name.Contains("mcp") || resource.Name == "eventstore-2");
++        var builder = Builder();
++        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
++        builder.Resources.ShouldBeEmpty();
+     }
+ 
+     [Fact]
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs
+index 906692eb..7837f1b8 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs
+@@ -33,6 +33,8 @@ public class PlatformRoutingCatalogIntegrationTests
+             ["Platform__DeclarationPath"] = options.DeclarationPaths.Single(),
+             ["Platform__UsePrebuiltProjects"] = "true",
+         };
++        File.WriteAllBytes(Path.Combine(evidence, "runtime-selection.json"), JsonSerializer.SerializeToUtf8Bytes(new
++        { gatewayProject = PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "eventstore").ProjectPath, mappingHash = options.Mapping.ContentHash }));
+         string apphost = Path.Combine(root, "apphost.cs");
+         bool started = false;
+         try
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs
+index 1754c47f..8912da7f 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs
+@@ -39,11 +39,18 @@ public class PlatformRoutingCatalogTests
+             using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
+             receipt.RootElement.GetProperty("instanceId").GetString().ShouldBe(catalog.InstanceId);
+         }
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
++        await PlatformCatalogOwnerParity.AssertAsync(generated[0], servers);
++#endif
+         string committed = Path.Combine(workspace, "tampered-predecessor.json");
+-        File.WriteAllText(committed, "{}");
++        File.WriteAllText(committed, File.ReadAllText(generated[0].CatalogPath).Replace("agent-eligible", "UI-only", StringComparison.Ordinal));
+         byte[] original = File.ReadAllBytes(generated[0].CatalogPath);
+         Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.Generate(options with
+-        { EnvironmentId = "catalog-run-one", CatalogGeneration = 2, CommittedRoutingCatalogPath = committed }, servers, Path.Combine(workspace, "catalog-run-one")));
++        { EnvironmentId = "catalog-run-one", CatalogGeneration = 2, CommittedRoutingCatalogPath = Path.GetRelativePath(Environment.CurrentDirectory, committed), CommittedRoutingCatalogRootDigest = generated[0].RootDigest }, servers, Path.Combine(workspace, "catalog-run-one")));
++        string refusal = File.ReadAllText(Path.Combine(workspace, "catalog-run-one", "catalog-reader", "generation.log"));
++        refusal.ShouldNotContain("missing-committed-root-or-bytes");
++        refusal.ShouldNotContain("Could not find");
++        refusal.ShouldContain("digest-mismatch");
+         File.ReadAllBytes(generated[0].CatalogPath).ShouldBe(original);
+         Directory.GetDirectories(Path.Combine(workspace, "catalog-run-one"), "catalog-pending-*").ShouldBeEmpty();
+     }
+@@ -135,14 +142,5 @@ public class PlatformRoutingCatalogTests
+         };
+     }
+ 
+-    internal static string Root
+-    {
+-        get
+-        {
+-            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
+-            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
+-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
+-            return directory!.FullName;
+-        }
+-    }
++    internal static string Root => PlatformTestRepository.Root;
+ }
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs
+new file mode 100644
+index 00000000..184d1570
+--- /dev/null
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs
+@@ -0,0 +1,84 @@
++namespace Hexalith.Platform.Composition;
++
++using System.Net;
++using System.Text.Json;
++
++using Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>Observes public catalog metadata through the existing run credential and canonical owner schemas.</summary>
++internal static class PlatformRoutingCatalogMetadata
++{
++    /// <summary>Requires the serving public metadata to match this run's complete canonical generation.</summary>
++    internal static async Task ObserveAsync(HttpClient gateway, RouteCatalogEnvelope catalog, string rootDigest,
++        string catalogDirectory, CancellationToken cancellationToken)
++    {
++        string proof = Path.Combine(catalogDirectory, "metadata-http.json");
++        File.Delete(proof);
++        using HttpResponseMessage response = await gateway.GetAsync("/api/v1/routing/catalog", HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
++        if (response.StatusCode != HttpStatusCode.OK)
++        {
++            throw new InvalidOperationException("The existing native credential could not observe public catalog metadata.");
++        }
++
++        await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
++        using var buffer = new MemoryStream();
++        byte[] block = new byte[8192];
++        int read;
++        while ((read = await stream.ReadAsync(block, cancellationToken).ConfigureAwait(false)) > 0)
++        {
++            if (buffer.Length + read > 4194304)
++            {
++                throw new InvalidOperationException("Public catalog metadata exceeds the bounded observation contract.");
++            }
++
++            await buffer.WriteAsync(block.AsMemory(0, read), cancellationToken).ConfigureAwait(false);
++        }
++
++        using JsonDocument metadata = JsonDocument.Parse(buffer.ToArray());
++        JsonElement body = metadata.RootElement;
++        if (!HasFields(body, ["schemaVersion", "generation", "rootDigest", "operations"]))
++        {
++            throw new InvalidOperationException("Public catalog metadata contains an unexpected field inventory.");
++        }
++
++        RouteOperationContract[] expected = catalog.Operations!.Where(operation => operation.Ingress == "public").ToArray();
++        JsonElement[] actual = body.GetProperty("operations").EnumerateArray().ToArray();
++        if (catalog.SchemaVersion != 3 || catalog.Profile != "Development" || expected.Length == 0
++            || body.GetProperty("schemaVersion").GetInt32() != catalog.SchemaVersion
++            || body.GetProperty("generation").GetInt64() != catalog.Generation
++            || body.GetProperty("rootDigest").GetString() != rootDigest
++            || !actual.Select(operation => operation.GetProperty("routeId").GetString()).Order(StringComparer.Ordinal)
++                .SequenceEqual(expected.Select(operation => operation.RouteId).Order(StringComparer.Ordinal), StringComparer.Ordinal))
++        {
++            throw new InvalidOperationException("Public metadata differs from this run's canonical catalog identity or public inventory.");
++        }
++
++        foreach (RouteOperationContract operation in expected)
++        {
++            JsonElement observed = actual.Single(candidate => candidate.GetProperty("routeId").GetString() == operation.RouteId);
++            RouteContractDeclaration declaration = catalog.Declarations.Single(candidate => candidate.RouteId == operation.RouteId);
++            if (!HasFields(observed, ["routeId", "contractVersion", "eligibility", "digest", "requestSchema", "resultSchema", "kind", "domain", "messageType"])
++                || observed.GetProperty("contractVersion").GetString() != operation.ContractVersion
++                || observed.GetProperty("eligibility").GetString() != operation.Eligibility
++                || observed.GetProperty("digest").GetString() != operation.Digest
++                || observed.GetProperty("kind").GetString() != declaration.Kind
++                || observed.GetProperty("domain").GetString() != declaration.Domain
++                || observed.GetProperty("messageType").GetString() != declaration.MessageType
++                || !JsonElement.DeepEquals(operation.RequestSchema, observed.GetProperty("requestSchema"))
++                || !JsonElement.DeepEquals(operation.ResultSchema, observed.GetProperty("resultSchema")))
++            {
++                throw new InvalidOperationException("Public operation policy, declaration or schemas differ from the compiled owner catalog.");
++            }
++        }
++
++        await File.WriteAllBytesAsync(proof, JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            method = "GET", path = "/api/v1/routing/catalog", status = (int)response.StatusCode,
++            authentication = "existing native agent credential; bearer omitted", body,
++        }), cancellationToken).ConfigureAwait(false);
++    }
++
++    private static bool HasFields(JsonElement value, IReadOnlyList<string> fields) => value.ValueKind == JsonValueKind.Object
++        && value.EnumerateObject().Select(property => property.Name).Order(StringComparer.Ordinal)
++            .SequenceEqual(fields.Order(StringComparer.Ordinal), StringComparer.Ordinal);
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs b/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs
+new file mode 100644
+index 00000000..6c739bcc
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs
+@@ -0,0 +1,15 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++/// <summary>Returns owned metadata bytes while observing the existing authenticated request.</summary>
++/// <param name="response">The owned response.</param>
++/// <param name="observe">The request assertion.</param>
++internal sealed class CatalogMetadataResponseHandler(HttpResponseMessage response, Action<HttpRequestMessage> observe) : HttpMessageHandler
++{
++    /// <inheritdoc />
++    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        observe(request);
++        return Task.FromResult(response);
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs b/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs
+new file mode 100644
+index 00000000..cdc75da3
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs
+@@ -0,0 +1,34 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++/// <summary>Starts an actual asynchronous read that completes only through caller cancellation.</summary>
++/// <param name="started">The signal that response-body reading began.</param>
++internal sealed class CatalogMetadataStallingStream(TaskCompletionSource started) : Stream
++{
++    /// <inheritdoc />
++    public override bool CanRead => true;
++    /// <inheritdoc />
++    public override bool CanSeek => false;
++    /// <inheritdoc />
++    public override bool CanWrite => false;
++    /// <inheritdoc />
++    public override long Length => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
++    /// <inheritdoc />
++    public override void Flush() => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override void SetLength(long value) => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
++    /// <inheritdoc />
++    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
++    {
++        started.TrySetResult();
++        await Task.Delay(Timeout.Infinite, cancellationToken);
++        return 0;
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs b/tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs
+new file mode 100644
+index 00000000..144f654a
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs
+@@ -0,0 +1,69 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Security.Cryptography;
++using System.Security.Cryptography.X509Certificates;
++using System.Text.Json;
++using Hexalith.Platform.Secrets.Runtime;
++using Hexalith.Platform.Protection;
++
++/// <summary>Admits the real host protection registration with a pinned component installation; no native operation is invoked by HTTP metadata tests.</summary>
++internal sealed class GatewaySeedProtectionInstallation : IDisposable
++{
++    private readonly string _directory = Path.Combine(Path.GetTempPath(), "gateway-seed-installation-" + Guid.NewGuid().ToString("N"));
++    private readonly string _variable = "HEXALITH_SEED_NATIVE_" + Guid.NewGuid().ToString("N").ToUpperInvariant();
++
++    private readonly Dictionary<string, string?> _previous = new(StringComparer.Ordinal);
++
++    internal IReadOnlyDictionary<string, string?> Configuration { get; }
++
++    internal GatewaySeedProtectionInstallation()
++    {
++        Directory.CreateDirectory(_directory);
++        using var signing = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        using var caKey = RSA.Create(2048);
++        var request = new CertificateRequest("CN=Gateway Seed Component CA", caKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
++        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
++        using var ca = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(1));
++        var inventory = Write("inventory.json", "{\"runtime\":{\"currentInventoryAuthorityReference\":\"inventory-authority\"}}"u8.ToArray());
++        var copy = Write("copy.json", "{}"u8.ToArray());
++        string credential = Path.Combine(_directory, "authority-bearer");
++        File.WriteAllText(credential, "component-private-bearer");
++        var authority = new IndependentDaprAuthorityBinding("private-authority", "file:" + credential, signing.ExportSubjectPublicKeyInfoPem(), "component", "tenant-a", "1");
++        var installation = new ErasureRootHostInstallation(new ErasureRootInstallation("seed-component", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" })
++            { TrustedCaCertificatePem = ca.ExportCertificatePem() }, "https://seed-native.invalid/", "env:" + _variable,
++            new() { ["tenant-a"] = "registry-1" }, authority, authority, authority, authority, authority,
++            [new("tenant-a", "DeletionBatchCapabilitySigningKey", "key-1", "issuer", "audience", "anchor", "1", signing.ExportSubjectPublicKeyInfo(), 1, false)],
++            inventory.Path, inventory.Hash, copy.Path, copy.Hash);
++        var pinned = Write("installation.json", JsonSerializer.SerializeToUtf8Bytes(installation));
++        Environment.SetEnvironmentVariable(_variable, "component-native-bearer");
++        Configuration = new Dictionary<string, string?>
++        {
++            ["EventStore:PayloadProtection:Enabled"] = "true",
++            ["EventStore:PayloadProtection:InstallationFile"] = pinned.Path,
++            ["EventStore:PayloadProtection:InstallationSha256"] = pinned.Hash,
++            ["EventStore:PayloadProtection:QualificationObserver"] = "true",
++        };
++        // The production entry point validates this installation before deferred WebApplicationFactory
++        // configuration callbacks run. Supply the same pinned inputs at CreateBuilder time.
++        foreach (var (name, value) in Configuration)
++        {
++            string variable = name.Replace(":", "__", StringComparison.Ordinal);
++            _previous[variable] = Environment.GetEnvironmentVariable(variable);
++            Environment.SetEnvironmentVariable(variable, value);
++        }
++    }
++
++    private (string Path, string Hash) Write(string name, byte[] bytes)
++    {
++        string path = Path.Combine(_directory, name);
++        File.WriteAllBytes(path, bytes);
++        return (path, Convert.ToHexString(SHA256.HashData(bytes)));
++    }
++
++    public void Dispose()
++    {
++        foreach (var (name, value) in _previous) Environment.SetEnvironmentVariable(name, value);
++        Environment.SetEnvironmentVariable(_variable, null);
++        Directory.Delete(_directory, true);
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs
+new file mode 100644
+index 00000000..74866415
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs
+@@ -0,0 +1,147 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Security.Cryptography;
++using System.Text.Json;
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++using Hexalith.EventStore.Contracts.Routing;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Shouldly;
++
++public sealed partial class PlatformAppModelTests
++{
++    [Fact]
++    public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
++    {
++        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
++        var builder = Builder();
++        builder.Environment.EnvironmentName = Environments.Development;
++        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
++        failure.Message.ShouldContain("owner SDK");
++        failure.Message.ShouldContain("Builds catalog pins");
++        builder.Resources.ShouldBeEmpty();
++    }
++
++    [Fact]
++    public void SelectedTimesheetsCallerRefusesBeforeCatalogGeneration()
++    {
++        var options = Options() with { TimesheetsEnabled = true };
++        var builder = Builder();
++        builder.Environment.EnvironmentName = Environments.Development;
++        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
++        failure.Message.ShouldContain("timesheets");
++        failure.Message.ShouldContain("lacks catalog enrollment");
++        builder.Resources.ShouldBeEmpty();
++    }
++
++    [Fact]
++    public async Task CatalogBootstrapBindsActualKeysPoliciesFilesAndCohortStartWaitsAsync()
++    {
++        string workspace = Path.Combine(Path.GetTempPath(), "catalog-bootstrap-contract-" + Guid.NewGuid().ToString("N"));
++        try
++        {
++            var options = await PlatformRoutingCatalogTests.OptionsAsync(includeParties: true);
++            var mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
++            DateTimeOffset now = DateTimeOffset.UtcNow;
++            var plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [], mapping,
++                options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location) with
++            {
++                SelectedTest = new("parties", "platform-source", "dotnet", "tests/native", new string('a', 64), new string('b', 64), 120, 10, now, now.AddMinutes(2), now.AddMinutes(2), "source"),
++            };
++            await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
++            var builder = Builder();
++            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"));
++            var resources = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
++            var environments = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
++            foreach (var resource in resources)
++            {
++                Dictionary<string, object> environment = [];
++                foreach (var callback in resource.Annotations.OfType<EnvironmentCallbackAnnotation>())
++                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken));
++                environments[resource.Name] = environment;
++            }
++            const string prefix = "EventStore__RouteCatalog__DevelopmentBootstrap__";
++            var gateway = environments["eventstore"];
++            string catalogDirectory = (string)gateway[prefix + "Directory"];
++            var envelope = RouteCatalogCodec.Decode(File.ReadAllBytes((string)gateway[prefix + "CatalogPath"]), (string)gateway[prefix + "RootDigest"]);
++            string[] participants = resources.Where(resource => environments[resource.Name].ContainsKey(prefix + "HostId")).Select(resource => resource.Name).Order().ToArray();
++            participants.ShouldBe(new[] { "eventstore", "memories", "memories-domain-service", "parties", "tenants", "tenants-api" });
++            foreach (var resource in resources.Where(resource => participants.Contains(resource.Name)))
++            {
++                var environment = environments[resource.Name];
++                environment.Where(pair => pair.Key.StartsWith(prefix + "RequiredHostIds__", StringComparison.Ordinal)).Select(pair => (string)pair.Value).Order().ShouldBe(participants);
++                environment[prefix + "InstanceId"].ShouldBe(plan.EnvironmentId + "-catalog");
++                environment[prefix + "RootDigest"].ShouldBe(gateway[prefix + "RootDigest"]);
++                foreach (var wait in resource.Annotations.OfType<WaitAnnotation>().Where(wait => resources.Contains(wait.Resource)))
++                {
++                    participants.ShouldContain(wait.Resource.Name, resource.Name);
++                    wait.WaitType.ShouldBe(WaitType.WaitUntilStarted, resource.Name + " -> " + wait.Resource.Name);
++                }
++            }
++            resources.Single(resource => resource.Name == "tenants").Annotations.OfType<WaitAnnotation>()
++                .ShouldContain(wait => wait.Resource.Name == "eventstore" && wait.WaitType == WaitType.WaitUntilStarted);
++            string authority = PlatformRoutingCatalogBootstrap.AuthorityName(plan.EnvironmentId + "-catalog");
++            using var component = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(workspace, "platform-components", "routing-catalog.yaml")));
++            component.RootElement.GetProperty("metadata").GetProperty("name").GetString().ShouldBe(authority);
++            component.RootElement.GetProperty("scopes").EnumerateArray().Select(value => value.GetString()).Order()
++                .ShouldBe(resources.Where(resource => participants.Contains(resource.Name)).Select(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.AppId).Order());
++            component.RootElement.GetProperty("spec").GetProperty("type").GetString().ShouldBe("state.redis");
++            component.RootElement.GetProperty("spec").GetProperty("metadata").EnumerateArray().Single(value => value.GetProperty("name").GetString() == "keyPrefix")
++                .GetProperty("value").GetString().ShouldBe("none");
++            gateway["EventStore__RouteCatalog__StateStore"].ShouldBe(authority);
++            gateway["EventStore__RouteCatalog__StateKey"].ShouldBe(plan.EnvironmentId + "-catalog-authority");
++            gateway["EventStore__IdempotencyAdmission__Enabled"].ShouldBe("true");
++            gateway["EventStore__IdempotencyAdmission__ActiveDigestKeyVersion"].ShouldBe("development-v1");
++            gateway["EventStore__IdempotencyAdmission__DigestKeySource"].ShouldBe("Configuration");
++            gateway["EventStore__IdempotencyAdmission__DigestKeySecretStoreName"].ShouldBe("secretstore");
++            gateway["EventStore__IdempotencyAdmission__DigestKeySecretName"].ShouldBe("eventstore-idempotency-ring");
++            gateway["EventStore__IdempotencyAdmission__DigestKeySecretGeneration"].ShouldBe("development-v1");
++            Convert.FromBase64String((string)gateway["EventStore__IdempotencyAdmission__DigestKeys__development-v1"]).Length.ShouldBe(32);
++            using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalogDirectory, "receipt.json")));
++            foreach (string list in new[] { "OwnerAssemblies", "AdapterAssemblies" })
++            {
++                string receiptName = char.ToLowerInvariant(list[0]) + list[1..];
++                gateway.Where(pair => pair.Key.StartsWith(prefix + list + "__", StringComparison.Ordinal)).Select(pair => (string)pair.Value).Order()
++                    .ShouldBe(receipt.RootElement.GetProperty(receiptName).EnumerateArray().Select(value => value.GetString()).Order());
++            }
++            foreach (var (resource, appId, keyName, allowedPrefix) in new[]
++            {
++                ("tenants", "tenants", "Authentication__BoundStreamRead__PrivateKey", "Authentication__BoundStreamRead__AllowedDomains__"),
++                ("memories", "memories", "EventStore__CommandGateway__BoundCommand__PrivateKeyPkcs8Base64", "Authentication__BoundCommand__AllowedDomains__"),
++            })
++            {
++                using var key = RSA.Create();
++                key.ImportPkcs8PrivateKey(Convert.FromBase64String((string)environments[resource][keyName]), out _);
++                Convert.ToBase64String(key.ExportSubjectPublicKeyInfo()).ShouldBe((string)gateway["Authentication__BoundStreamRead__PublicKeys__" + appId]);
++                var domains = envelope.Declarations.Where(declaration => envelope.Routes.Any(route => route.RouteId == declaration.RouteId
++                    && (route.AppId == appId || appId == "memories" && route.AppId.StartsWith("memories-", StringComparison.Ordinal))))
++                    .Select(declaration => declaration.Domain).Distinct().Order();
++                ((string)gateway[allowedPrefix + appId]).Split(',').Order().ShouldBe(domains);
++            }
++            var scope = JsonSerializer.Deserialize<CompositionNativeTestScope>(File.ReadAllBytes(Path.Combine(catalogDirectory, "native-scope.json")))!;
++            scope.RunId.ShouldBe(plan.RunId); scope.ModuleId.ShouldBe("parties");
++            scope.RoutingCatalogRoot.ShouldBe((string)gateway[prefix + "RootDigest"]);
++            scope.Domains.ShouldBe(["party"]);
++            scope.Tenants.ShouldBe([plan.TenantNamespace, "system"]);
++            using var closure = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalogDirectory, "selected-closure.json")));
++            closure.RootElement.GetProperty("RunId").GetString().ShouldBe(plan.RunId);
++            closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()).Order().ShouldBe(participants);
++            closure.RootElement.GetProperty("callerClosure").EnumerateArray().Select(value => value.GetString()).ShouldBe(plan.Modules.Select(module => module.ModuleId));
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
++            string firstHost = closure.RootElement.GetProperty("hosts")[0].GetProperty("ResourceId").GetString()!;
++            File.WriteAllBytes(Path.Combine(catalogDirectory, firstHost + ".committed.json"), JsonSerializer.SerializeToUtf8Bytes(new
++            { Serving = true, RootDigest = new string('0', 64), Generation = envelope.Generation, Epoch = 1 }));
++            using var provider = builder.Services.BuildServiceProvider();
++            var preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().Single();
++            var refusal = await Should.ThrowAsync<InvalidOperationException>(() => preparation.PrepareAsync(provider, TestContext.Current.CancellationToken));
++            refusal.Message.ShouldBe("A real catalog participant did not commit the selected native scope.");
++            preparation.NativeTestScope.ShouldBeNull();
++            File.Exists(Path.Combine(workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
++#endif
++        }
++        finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, true); }
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs
+new file mode 100644
+index 00000000..343f01b3
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs
+@@ -0,0 +1,83 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Text.Json;
++
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Builds.Tooling.Workspace;
++
++using Shouldly;
++
++/// <summary>Distinguishes native test control source from package runtime catalog inputs.</summary>
++public sealed class PlatformCatalogContractBindingTests
++{
++    /// <summary>Uses owner projects only when the command selected source mode.</summary>
++    /// <param name="module">The enrolled catalog owner.</param>
++    /// <param name="mode">The single command-selected mapping mode.</param>
++    [Theory]
++    [InlineData("tenants", WorkspaceMode.Source)]
++    [InlineData("tenants", WorkspaceMode.Package)]
++    [InlineData("parties", WorkspaceMode.Source)]
++    [InlineData("parties", WorkspaceMode.Package)]
++    [InlineData("memories", WorkspaceMode.Source)]
++    [InlineData("memories", WorkspaceMode.Package)]
++    public void ActiveControlSourceDoesNotReplacePublishedPackageInputs(string module, WorkspaceMode mode)
++    {
++        string workspace = Path.Combine(Path.GetTempPath(), "catalog-control-source-" + Guid.NewGuid().ToString("N"));
++        string repository = PlatformServerBindings.Repository(module);
++        string owner = Path.Combine(workspace, repository);
++        string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
++        string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
++        const string version = "9.8.7";
++        try
++        {
++            foreach (string assembly in new[] { contract, adapter })
++            {
++                string directory = Path.Combine(owner, "src", assembly);
++                Directory.CreateDirectory(directory);
++                File.WriteAllText(Path.Combine(directory, assembly + ".csproj"),
++                    """<Project><Target Name="SourceControlMustNotBuild" BeforeTargets="Build"><Error Text="Native control source is not a package runtime input." /></Target></Project>""");
++            }
++
++            string catalog = Path.Combine(workspace, "references", "Hexalith.Builds", "Props");
++            Directory.CreateDirectory(catalog);
++            File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"),
++                "<Project><PropertyGroup><Hexalith" + repository["Hexalith.".Length..] + "Version>" + version
++                + "</Hexalith" + repository["Hexalith.".Length..] + "Version></PropertyGroup></Project>");
++            var mapping = new SourceMapping(mode, workspace, repository,
++                [new SourceMappingEntry(repository, "source", owner)], false);
++            string mappingHash = mapping.ContentHash;
++            var options = new PlatformCompositionOptions { PlatformRoot = workspace, Mapping = mapping };
++            var declaration = new PlatformModuleDeclaration(Path.Combine(owner, "module.json"),
++                JsonSerializer.SerializeToElement(new { identity = new { moduleId = module } }));
++            var server = new PlatformServerBinding(declaration, "domain", module, module,
++                null, "registry.example/" + module + ":" + version, "/ready", new Dictionary<string, string>(), []);
++
++            PlatformCatalogContractBinding binding = PlatformCatalogContractBinding.Resolve(options, [server]).Single();
++
++            if (mode == WorkspaceMode.Package)
++            {
++                binding.ContractReference.ShouldBe(contract);
++                binding.AdapterReference.ShouldBe(adapter);
++                binding.PackageVersion.ShouldBe(version);
++                Path.IsPathFullyQualified(binding.ContractReference).ShouldBeFalse();
++                Path.IsPathFullyQualified(binding.AdapterReference).ShouldBeFalse();
++            }
++            else
++            {
++                binding.ContractReference.ShouldBe(Path.Combine(owner, "src", contract, contract + ".csproj"));
++                binding.AdapterReference.ShouldBe(Path.Combine(owner, "src", adapter, adapter + ".csproj"));
++                binding.PackageVersion.ShouldBeNull();
++            }
++
++            options.Mapping.ShouldBeSameAs(mapping);
++            options.Mapping.ContentHash.ShouldBe(mappingHash);
++        }
++        finally
++        {
++            if (Directory.Exists(workspace))
++            {
++                Directory.Delete(workspace, recursive: true);
++            }
++        }
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs
+new file mode 100644
+index 00000000..37f43a99
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs
+@@ -0,0 +1,81 @@
++#if HEXALITH_PLATFORM_SOURCE_CATALOG
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Reflection;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.DomainService;
++using Hexalith.EventStore.Server.Commands;
++using Hexalith.EventStore.Server.Configuration;
++using Hexalith.EventStore.Server.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Microsoft.AspNetCore.Hosting;
++using Microsoft.AspNetCore.Mvc.Testing;
++using Microsoft.AspNetCore.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.DependencyInjection.Extensions;
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Options;
++using Shouldly;
++
++/// <summary>Compares private reader output with real owner host registrations and installed gateway admission adapters without sidecars.</summary>
++internal static class PlatformCatalogOwnerParity
++{
++    internal static async Task AssertAsync(PlatformRoutingCatalog catalog, IReadOnlyList<PlatformServerBinding> servers)
++    {
++        foreach (var server in servers.Where(server => server.ServerId == "domain"))
++        {
++            var assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(server.ProjectPath)!));
++            var entry = assembly.EntryPoint!.DeclaringType!;
++            await (Task)typeof(PlatformCatalogOwnerParity).GetMethod(nameof(AssertHostAsync), BindingFlags.Static | BindingFlags.NonPublic)!
++                .MakeGenericMethod(entry).Invoke(null, [catalog, server])!;
++        }
++        var services = new ServiceCollection();
++        foreach (string path in catalog.AdapterAssemblies)
++        foreach (var source in Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(path))).GetCustomAttributes<RouteCatalogAdapterSourceAttribute>())
++        {
++            var adapters = (IEnumerable<IDeclaredIdempotencyIntentAdapter>)source.SourceType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)!.Invoke(null, null)!;
++            foreach (var adapter in adapters) services.AddSingleton<IIdempotencyIntentAdapter>(adapter);
++        }
++        services.AddSingleton<IOptions<IdempotencyAdmissionOptions>>(Options.Create(new IdempotencyAdmissionOptions
++        {
++            Enabled = true, ActiveDigestKeyVersion = "development-v1", DigestKeySource = IdempotencyDigestKeySource.Configuration,
++            DigestKeySecretStoreName = "secretstore", DigestKeySecretName = "eventstore-idempotency-ring", DigestKeySecretGeneration = "development-v1",
++            DigestKeys = new(StringComparer.Ordinal) { ["development-v1"] = Convert.ToBase64String(new byte[32]) },
++        }));
++        services.AddSingleton<IIdempotencyDigestKeyProvider, ConfigurationIdempotencyDigestKeyProvider>();
++        using var provider = services.BuildServiceProvider();
++        _ = new IdempotencyIntentAdapterRegistry(NSubstitute.Substitute.For<IRouteCatalogAuthority>(), provider.GetServices<IIdempotencyIntentAdapter>(), new CanonicalIdempotencyIntentEncoder());
++        var observed = await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore", TestContext.Current.CancellationToken);
++        observed.Select(entry => entry.ContentDigest).Order().ShouldBe(catalog.Envelope.Idempotency.Select(entry => entry.ContentDigest).Order());
++    }
++
++    private static async Task AssertHostAsync<T>(PlatformRoutingCatalog catalog, PlatformServerBinding server) where T : class
++    {
++        await using var factory = new WebApplicationFactory<T>().WithWebHostBuilder(builder =>
++        {
++            builder.UseEnvironment("Development");
++            foreach (var (name, value) in new Dictionary<string, string?>
++            {
++                ["APP_API_TOKEN"] = "owner-parity-channel-token",
++                ["EventStore:DomainService:AppId"] = server.AppId,
++                ["EventStore:DomainService:ServiceVersion"] = "v1",
++                ["Authentication:JwtBearer:Issuer"] = "owner-parity",
++                ["Authentication:JwtBearer:Audience"] = "owner-parity",
++                ["Authentication:JwtBearer:SigningKey"] = "owner-parity-signing-key-at-least-thirty-two-bytes",
++                ["Tenants:BootstrapGlobalAdminEnabled"] = "false",
++            }) builder.UseSetting(name, value);
++            // This component test executes the actual host's registrations and endpoint mappings.
++            // Startup workers require live sidecars and are covered separately by the live lane.
++            builder.ConfigureServices(services => services.RemoveAll<IHostedService>());
++        });
++        using var client = factory.CreateClient();
++        using var scope = factory.Services.CreateScope();
++        var expected = catalog.Envelope.Routes.Where(route => route.AppId == server.AppId).ToArray();
++        var declarations = catalog.Envelope.Declarations.Where(declaration => expected.Any(route => route.RouteId == declaration.RouteId)).ToArray();
++        var actual = DevelopmentDomainRouteCatalog.Targets(scope.ServiceProvider,
++            factory.Services.GetRequiredService<EndpointDataSource>().Endpoints, declarations);
++        actual.OrderBy(route => route.RouteId).ShouldBe(expected.Select(route => route with { OperationContractDigest = null }).OrderBy(route => route.RouteId));
++    }
++}
++#endif
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs
+new file mode 100644
+index 00000000..41471904
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs
+@@ -0,0 +1,188 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Net;
++using System.Net.Http.Headers;
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++
++using Hexalith.EventStore.Contracts.Routing;
++
++using Shouldly;
++
++/// <summary>Checks canonical public-schema observations through an unchanged native credential.</summary>
++public sealed class PlatformRoutingCatalogMetadataTests
++{
++    /// <summary>Refuses stale, different, internal or oversized metadata and revokes a previous proof.</summary>
++    /// <param name="scenario">The response mutation.</param>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("wrong-root")]
++    [InlineData("wrong-generation")]
++    [InlineData("wrong-schema")]
++    [InlineData("wrong-result-schema")]
++    [InlineData("wrong-policy")]
++    [InlineData("wrong-digest")]
++    [InlineData("wrong-contract-version")]
++    [InlineData("wrong-kind")]
++    [InlineData("wrong-domain")]
++    [InlineData("wrong-message-type")]
++    [InlineData("extra-root-field")]
++    [InlineData("extra-key-field")]
++    [InlineData("extra-operation-field")]
++    [InlineData("internal-operation")]
++    [InlineData("unauthorized")]
++    [InlineData("oversized")]
++    public async Task ObservedMetadataMustMatchTheCanonicalPublicGeneration(string scenario)
++    {
++        string directory = Path.Combine(Path.GetTempPath(), "catalog-http-proof-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(directory);
++        string proof = Path.Combine(directory, "metadata-http.json");
++        await File.WriteAllTextAsync(proof, "stale", TestContext.Current.CancellationToken);
++        try
++        {
++            JsonElement request = JsonSerializer.SerializeToElement(new { type = "object", properties = new { identity = new { type = "string" } } });
++            JsonElement result = JsonSerializer.SerializeToElement(new { type = "array", items = new { type = "string" } });
++            RouteOperationContract[] operations =
++            [
++                new("public-route", "v1", "public", "agent-eligible", request, result, new string('b', 64)),
++                new("internal-route", "v1", "internal", "UI-only", request, result, new string('c', 64)),
++            ];
++            RouteContractDeclaration[] declarations =
++            [
++                new("public-route", "query", "fixture", "FixtureQuery", null, "v1", null, "workload", "query:read", null, []),
++                new("internal-route", "command", "fixture", "FixtureCommand", null, "v1", 1, "workload", "command:submit", null, []),
++            ];
++            var catalog = new RouteCatalogEnvelope(3, 7, "Development", true, declarations, [], [], new string('d', 64), new string('e', 64), operations);
++            string root = new('a', 64);
++            JsonObject metadata = JsonSerializer.SerializeToNode(new
++            {
++                schemaVersion = 3, generation = 7, rootDigest = root,
++                operations = new[] { new { routeId = "public-route", contractVersion = "v1", eligibility = "agent-eligible", digest = operations[0].Digest,
++                    requestSchema = request, resultSchema = result, kind = "query", domain = "fixture", messageType = "FixtureQuery" } },
++            })!.AsObject();
++            if (scenario == "wrong-root")
++            {
++                metadata["rootDigest"] = new string('f', 64);
++            }
++            if (scenario == "wrong-generation")
++            {
++                metadata["generation"] = 8;
++            }
++            if (scenario == "wrong-schema")
++            {
++                metadata["operations"]![0]!["requestSchema"]!["type"] = "string";
++            }
++            if (scenario == "wrong-result-schema")
++            {
++                metadata["operations"]![0]!["resultSchema"]!["type"] = "object";
++            }
++            if (scenario == "wrong-policy")
++            {
++                metadata["operations"]![0]!["eligibility"] = "UI-only";
++            }
++            if (scenario == "wrong-digest")
++            {
++                metadata["operations"]![0]!["digest"] = new string('f', 64);
++            }
++            if (scenario == "wrong-contract-version")
++            {
++                metadata["operations"]![0]!["contractVersion"] = "v2";
++            }
++            if (scenario == "wrong-kind")
++            {
++                metadata["operations"]![0]!["kind"] = "command";
++            }
++            if (scenario == "wrong-domain")
++            {
++                metadata["operations"]![0]!["domain"] = "different-owner";
++            }
++            if (scenario == "wrong-message-type")
++            {
++                metadata["operations"]![0]!["messageType"] = "DifferentQuery";
++            }
++            if (scenario == "extra-root-field")
++            {
++                metadata["retainedIdempotency"] = new JsonArray();
++            }
++            if (scenario == "extra-key-field")
++            {
++                metadata["signingKey"] = "[redacted]";
++            }
++            if (scenario == "extra-operation-field")
++            {
++                metadata["operations"]![0]!["internalTarget"] = "unexpected";
++            }
++            if (scenario == "internal-operation") metadata["operations"]!.AsArray().Add(new JsonObject
++            {
++                ["routeId"] = "internal-route", ["requestSchema"] = JsonNode.Parse(request.GetRawText()), ["resultSchema"] = JsonNode.Parse(result.GetRawText()),
++            });
++            if (scenario == "oversized")
++            {
++                metadata["padding"] = new string('x', 4194304);
++            }
++            string credential = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
++            using var response = new HttpResponseMessage(scenario == "unauthorized" ? HttpStatusCode.Unauthorized : HttpStatusCode.OK)
++            {
++                Content = new StringContent(metadata.ToJsonString(), Encoding.UTF8, "application/json"),
++            };
++            using var handler = new CatalogMetadataResponseHandler(response, message =>
++            {
++                message.Method.ShouldBe(HttpMethod.Get);
++                message.RequestUri!.AbsolutePath.ShouldBe("/api/v1/routing/catalog");
++                (message.Headers.Authorization?.Scheme == "Bearer" && message.Headers.Authorization.Parameter == credential).ShouldBeTrue();
++            });
++            using var client = new HttpClient(handler) { BaseAddress = new Uri("http://127.0.0.1:1") };
++            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", credential);
++            if (scenario == "valid")
++            {
++                await PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken);
++                using JsonDocument observed = JsonDocument.Parse(await File.ReadAllBytesAsync(proof, TestContext.Current.CancellationToken));
++                JsonElement body = observed.RootElement.GetProperty("body");
++                body.GetProperty("rootDigest").GetString().ShouldBe(root);
++                JsonElement.DeepEquals(body.GetProperty("operations")[0].GetProperty("requestSchema"), request).ShouldBeTrue();
++                (await File.ReadAllTextAsync(proof, TestContext.Current.CancellationToken)).ShouldNotContain(credential);
++            }
++            else
++            {
++                await Should.ThrowAsync<InvalidOperationException>(() => PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken));
++                File.Exists(proof).ShouldBeFalse();
++            }
++        }
++        finally
++        {
++            Directory.Delete(directory, recursive: true);
++        }
++    }
++
++    /// <summary>Uses the caller's finite cancellation while reading a stalled response and revokes stale proof.</summary>
++    [Fact]
++    public async Task CancelledResponseCannotRetainAnEarlierProof()
++    {
++        string directory = Path.Combine(Path.GetTempPath(), "catalog-http-cancel-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(directory);
++        string proof = Path.Combine(directory, "metadata-http.json");
++        await File.WriteAllTextAsync(proof, "stale", TestContext.Current.CancellationToken);
++        using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        try
++        {
++            var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
++            using var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new CatalogMetadataStallingStream(started)) };
++            using var handler = new CatalogMetadataResponseHandler(response, _ => { });
++            using var client = new HttpClient(handler) { BaseAddress = new Uri("http://127.0.0.1:1"), Timeout = Timeout.InfiniteTimeSpan };
++            var catalog = new RouteCatalogEnvelope(3, 7, "Development", true, [], [], [], new string('d', 64), new string('e', 64), []);
++            Task observing = PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, new string('a', 64), directory, cancellation.Token);
++            await started.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
++            cancellation.Cancel();
++            await Should.ThrowAsync<OperationCanceledException>(async () => await observing.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken));
++            File.Exists(proof).ShouldBeFalse();
++        }
++        finally
++        {
++            cancellation.Cancel();
++            Directory.Delete(directory, recursive: true);
++        }
++    }
++
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs
+new file mode 100644
+index 00000000..f83986e6
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs
+@@ -0,0 +1,22 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Reflection;
++
++/// <summary>Resolves the effective repository root recorded in the collecting binary.</summary>
++internal static class PlatformTestRepository
++{
++    /// <summary>Gets the build-declared root, then the requested override, then the nearest repository ancestor.</summary>
++    internal static string Root
++    {
++        get
++        {
++            string? declared = typeof(PlatformTestRepository).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
++                .SingleOrDefault(metadata => metadata.Key == "PlatformTestRepositoryRoot")?.Value;
++            if (declared is not null) return Path.GetFullPath(declared);
++            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
++            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
++            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
++            return directory?.FullName ?? throw new InvalidOperationException("The Platform test repository root is unavailable.");
++        }
++    }
++}

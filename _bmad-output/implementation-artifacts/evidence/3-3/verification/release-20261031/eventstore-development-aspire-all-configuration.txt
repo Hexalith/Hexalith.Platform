@@ -1,0 +1,276 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.AppHost.Tests
+  Discovered:  Hexalith.EventStore.AppHost.Tests
+  Starting:    Hexalith.EventStore.AppHost.Tests
+    Hexalith.EventStore.AppHost.Tests.Configuration.HexalithEventStoreSecurityExtensionsTests.WithEventStoreClientCredentials_OneArgumentOverloadBindsTheProvisionedRealmIdentity [FAIL]
+      System.IO.DirectoryNotFoundException : Could not find a part of the path '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json'.
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+           at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+           at System.IO.File.ReadAllText(String path, Encoding encoding)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/HexalithEventStoreSecurityExtensionsTests.cs(258,0): at Hexalith.EventStore.AppHost.Tests.Configuration.HexalithEventStoreSecurityExtensionsTests.WithEventStoreClientCredentials_OneArgumentOverloadBindsTheProvisionedRealmIdentity()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsApiLaunchProfileProvidesDevelopmentHttpAndHttpsEndpoints [FAIL]
+      Shouldly.ShouldAssertException : Path.Combine(
+                  RepositoryProjectPaths.GetRepositoryRoot(),
+                  "references",
+                  "Hexalith.Tenants",
+                  "src",
+                  "Hexalith.Tenants.Api",
+                  "Properties",
+                  "launchSettings.json");
+      
+              File.Exists(path)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/TenantsApiLaunchSettingsTests.cs(27,0): at Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsApiLaunchProfileProvidesDevelopmentHttpAndHttpsEndpoints()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.AppHostModel_DefaultRunMode_RegistersResolvedTenantsHostsExactlyOnceWithExistingWiring [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/TenantsApiLaunchSettingsTests.cs(133,0): at Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.AppHostModel_DefaultRunMode_RegistersResolvedTenantsHostsExactlyOnceWithExistingWiring()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_WhenEitherHostIsMissing_FailsWithRootSubmoduleDiagnostic(missingHost: "domain-service") [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/TenantsApiLaunchSettingsTests.cs(257,0): at Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_WhenEitherHostIsMissing_FailsWithRootSubmoduleDiagnostic(String missingHost)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_WhenEitherHostIsMissing_FailsWithRootSubmoduleDiagnostic(missingHost: "api") [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/TenantsApiLaunchSettingsTests.cs(257,0): at Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_WhenEitherHostIsMissing_FailsWithRootSubmoduleDiagnostic(String missingHost)
+           at InvokeStub_TenantsApiLaunchSettingsTests.TenantsProjectPaths_WhenEitherHostIsMissing_FailsWithRootSubmoduleDiagnostic(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_ResolveUsesRootDeclaredSubmodule [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/TenantsApiLaunchSettingsTests.cs(282,0): at Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests.TenantsProjectPaths_ResolveUsesRootDeclaredSubmodule()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Starting Dapr-related resources...
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Using default dapr path for component 'pubsub'.
+    Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenHostileCallerEnvironmentIsSeeded_RestoresEveryExactValue [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AspireSecurityResourceNamingTests.cs(330,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenHostileCallerEnvironmentIsSeeded_RestoresEveryExactValue()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenSecurityDisabled_HasNoSecurityResourceOrDependencyEdges [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AspireSecurityResourceNamingTests.cs(179,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenSecurityDisabled_HasNoSecurityResourceOrDependencyEdges()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenSecurityEnabled_UsesSecurityResourceAndDependencyEdges [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AspireSecurityResourceNamingTests.cs(93,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AspireSecurityResourceNamingTests.AppHostModel_WhenSecurityEnabled_UsesSecurityResourceAndDependencyEdges()
+        --- End of stack trace from previous location ---
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Starting Dapr-related resources...
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Using default dapr path for component 'pubsub'.
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostTrustBoundaryModelTests.RunModel_WithKeycloak_WiresTheInternalTrustBoundary [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostTrustBoundaryModelTests.cs(41,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostTrustBoundaryModelTests.RunModel_WithKeycloak_WiresTheInternalTrustBoundary()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostTrustBoundaryModelTests.RunModel_WithoutKeycloak_DomainServicesValidateTheSymmetricContract [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostTrustBoundaryModelTests.cs(90,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostTrustBoundaryModelTests.RunModel_WithoutKeycloak_DomainServicesValidateTheSymmetricContract()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithoutKeycloak_ExposesOnlyATokenCommand_ThatAuthorizesAProtectedRequest [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostAuthenticationModelTests.cs(359,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithoutKeycloak_ExposesOnlyATokenCommand_ThatAuthorizesAProtectedRequest()
+        --- End of stack trace from previous location ---
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Starting Dapr-related resources...
+info: CommunityToolkit.Aspire.Hosting.Dapr.DaprDistributedApplicationLifecycleHook[0]
+      Using default dapr path for component 'pubsub'.
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_SeparatesUiIdentities_MarksSecrets_AndCleansRealmOnDisposal [FAIL]
+      System.InvalidOperationException : Plain local Aspire run requires both Hexalith.Tenants host projects before any resources can start. Initialize the root Tenants submodule with 'git submodule update --init references/Hexalith.Tenants'. Missing project(s): '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj', '/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/references/Hexalith.Tenants/src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj'
+      Stack Trace:
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(56,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Validate()
+        src/Hexalith.EventStore.AppHost/TenantsProjectPaths.cs(36,0): at Hexalith.EventStore.AppHost.TenantsProjectPaths.Resolve()
+        src/Hexalith.EventStore.AppHost/Program.cs(204,0): at Program.<Main>$(String[] args)
+           at Program.<Main>(String[] args)
+           at InvokeStub_Program.<Main>(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(132,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.EntryPointInvoker.InvokeAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationEntryPointInvoker.cs(39,0): at Aspire.Hosting.Testing.DistributedApplicationEntryPointInvoker.<>c__DisplayClass0_0.<<ResolveEntryPoint>b__0>d.MoveNext()
+        --- End of stack trace from previous location ---
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(409,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.InvokeEntryPoint(Func`3 factory)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationFactory.cs(50,0): at Aspire.Hosting.Testing.DistributedApplicationFactory.ResolveBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(476,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.SuspendingDistributedApplicationFactory.CreateBuilderAsync(CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(196,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(201,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsyncCore(Type entryPoint, String[] args, DistributedApplicationTestingBuilderOptions testingOptions, Action`2 configureBuilder, CancellationToken cancellationToken)
+        /_/src/Aspire.Hosting.Testing/DistributedApplicationTestingBuilder.cs(180,0): at Aspire.Hosting.Testing.DistributedApplicationTestingBuilder.CreateAsync(Type entryPoint, String[] args, Action`2 configureBuilder, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostAuthenticationModelTests.cs(74,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_SeparatesUiIdentities_MarksSecrets_AndCleansRealmOnDisposal()
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostAuthenticationModelTests.cs(177,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_SeparatesUiIdentities_MarksSecrets_AndCleansRealmOnDisposal()
+        --- End of stack trace from previous location ---
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithLocalKeycloakContractMismatch_FailsDuringConstruction(key: "Authentication__JwtBearer__Audience", value: "other-api", expectedMessage: "exactly the 'hexalith-eventstore' audience") [FAIL]
+      Shouldly.ShouldAssertException : await Should.ThrowAsync<Exception>(DistributedApplicationTestingBuilder.CreateAsync<Projects.Hexalith_EventStore_AppHost>());
+      
+                  exception.ToString()
+          should contain (case insensitive comparison)
+      "exactly the 'hexalith-eventstore' audience"
+          but was actually
+      "System.InvalidOperationException: Plain local Aspire run requires both Hexalith.Tenants host project..."
+      Stack Trace:
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostAuthenticationModelTests.cs(201,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithLocalKeycloakContractMismatch_FailsDuringConstruction(String key, String value, String expectedMessage)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithLocalKeycloakContractMismatch_FailsDuringConstruction(key: "Authentication__JwtBearer__AllowedAlgorithms__0", value: "ES256", expectedMessage: "exactly the RS256 signing algorithm") [FAIL]
+      Shouldly.ShouldAssertException : await Should.ThrowAsync<Exception>(DistributedApplicationTestingBuilder.CreateAsync<Projects.Hexalith_EventStore_AppHost>());
+      
+                  exception.ToString()
+          should contain (case insensitive comparison)
+      "exactly the RS256 signing algorithm"
+          but was actually
+      "System.InvalidOperationException: Plain local Aspire run requires both Hexalith.Tenants host project..."
+      Stack Trace:
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/AppHostAuthenticationModelTests.cs(201,0): at Hexalith.EventStore.AppHost.Tests.Configuration.AppHostAuthenticationModelTests.RunModel_WithLocalKeycloakContractMismatch_FailsDuringConstruction(String key, String value, String expectedMessage)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.EventStore.AppHost.Tests (ID = '58f9bd94b121dc514827672416a35d9fa0403970c9b4367d42f19e710f7d0818')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.AppHost.Tests  Total: 191, Errors: 0, Failed: 15, Skipped: 0, Not Run: 0, Time: 1.669s

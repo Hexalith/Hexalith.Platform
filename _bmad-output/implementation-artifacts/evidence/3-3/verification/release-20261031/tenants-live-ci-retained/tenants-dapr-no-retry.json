@@ -1,0 +1,103 @@
+{
+  "runtime": "1.18.2",
+  "mutation": false,
+  "namespace": "tenants-retries-c506ee6ac9c0",
+  "productionAclSha256": "21dc7d747d9465d4f3e93c7c5ad66431dd55574d1a62a478f5cc12171dee666b",
+  "results": [
+    {
+      "case": "tenants-ui cannot load Memories capabilities",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "tenants-api cannot load Memories capabilities",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "authorized /api/tenants",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "authorized /api/tenants/tenant.alpha",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "authorized /api/tenants/tenant.alpha/users",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "authorized /api/tenants/tenant.alpha/audit",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "authorized /api/users/user.alpha/tenants",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "authorized /api/global-administrators",
+      "status": 200,
+      "expected": 200,
+      "diagnostic": "",
+      "pass": true
+    },
+    {
+      "case": "conditional304",
+      "status": 304,
+      "expected": 304,
+      "pass": true
+    },
+    {
+      "case": "denied caller",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "denied verb",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "no retry on 503",
+      "status": 503,
+      "backendCalls": 1,
+      "expected": 503,
+      "pass": true
+    },
+    {
+      "case": "denied unrelated path",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    }
+  ],
+  "backendCounts": {
+    "('GET', '/dapr/config')": 1,
+    "('GET', '/api/tenants')": 1,
+    "('GET', '/api/tenants/tenant.alpha')": 2,
+    "('GET', '/api/tenants/tenant.alpha/users')": 1,
+    "('GET', '/api/tenants/tenant.alpha/audit')": 1,
+    "('GET', '/api/users/user.alpha/tenants')": 1,
+    "('GET', '/api/global-administrators')": 1,
+    "('GET', '/api/tenants/failure')": 1
+  }
+}

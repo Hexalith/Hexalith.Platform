@@ -1,0 +1,52 @@
+[
+  {
+    "owner": "Tenants",
+    "base": "7441ca48ca33878716883dca8259e7b85f4a785e",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/tenants-candidate-current.patch",
+    "sha256": "5ff9042ec06721e7034df6ef02a6288d67ee1b1c9b4c029d4711678124454c81",
+    "bytes": 20327,
+    "untrackedFiles": [
+      "scripts/verify-api-release-artifact.sh",
+      "tests/Hexalith.Tenants.Contracts.Tests/ReleaseApiImageVerificationTests.cs"
+    ]
+  },
+  {
+    "owner": "Parties",
+    "base": "9e29b203e1c5af9d92ef8172a507843e6cb0e068",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/parties-candidate-current.patch",
+    "sha256": "30aa66dbbd5886c4e051873a0adb15014885aae54b58759f5a3acff453b4848e",
+    "bytes": 12804,
+    "untrackedFiles": []
+  },
+  {
+    "owner": "Memories",
+    "base": "fe8d36446d8081f60806cc15353aa7ca288e9035",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/memories-candidate-current.patch",
+    "sha256": "22207e554782dfe3ee01f2cd10d8e9f06e2d5457c3d667cd051f27c6e034fe0e",
+    "bytes": 31545,
+    "untrackedFiles": [
+      "src/Hexalith.Memories.EventStoreExtensions/README.md"
+    ]
+  },
+  {
+    "owner": "Builds",
+    "base": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/builds-candidate-current.patch",
+    "sha256": "1b79bab4f658f8df999f4d40259ca6fe35d0d95d1b2b49ad2c048fbbb4025446",
+    "bytes": 5729,
+    "untrackedFiles": []
+  },
+  {
+    "owner": "Platform",
+    "base": "75bceb22abc60d22d0c4e6f3d7c86795f3e51cc1",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/3-3/verification/release-20261031/platform-candidate-current.patch",
+    "sha256": "c0eb3a9a677351bdbb7925626d50b2c1445d0d1648e10f2e412db85a6591e3cf",
+    "bytes": 95146,
+    "untrackedFiles": [
+      "tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs"
+    ]
+  }
+]

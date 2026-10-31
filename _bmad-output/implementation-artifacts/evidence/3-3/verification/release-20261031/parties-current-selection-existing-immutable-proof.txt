@@ -1,0 +1,20 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Parties.Tests
+  Discovered:  Hexalith.Parties.Tests
+  Starting:    Hexalith.Parties.Tests
+    Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals [FAIL]
+      Shouldly.ShouldAssertException : DescribeIdentityGap(checkout, expectedIdentity)
+          should be empty but was
+      "mismatched dependency identity: expected 9b78aa008cfc62cd88ad0ea4b39b1f07311956ce, actual 51d4395016dfe8be3a01bd3369a9a45d65b9557d"
+      
+      Additional Info:
+          references/Hexalith.AI.Tools
+      Stack Trace:
+        tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs(2728,0): at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.AssertGitlinkAndCheckout(String root, String relativePath, String expectedIdentity)
+        tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs(2699,0): at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.AssertSelectedSourceObservation(String root, String relativePath, String expectedIdentity)
+        tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs(786,0): at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Parties.Tests (ID = 'b151b60b7e9328f17d298af91981ac5ad0d7fb7c14e43383f5ea274c27037cca')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.967s

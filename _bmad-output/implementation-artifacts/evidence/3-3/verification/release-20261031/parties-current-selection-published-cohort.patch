@@ -1,0 +1,14 @@
+diff --git a/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md b/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
+index 022672f5..b37c1361 100644
+--- a/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
++++ b/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
+@@ -55,7 +55,8 @@ gitlinks on 2026-10-31. Root adoption and qualification still require their
+ own committed evidence. The unchanged exact-selection gate requires committed
+ root gitlinks and matching clean checkouts; staged entries or working-tree
+ HEADs alone cannot satisfy it.
+-EventStore package `3.128.4` remains selected; Tenants is explicitly `5.11.2`.
++EventStore package `3.129.0` and Memories package `3.0.12` are selected;
++Tenants remains explicitly `5.11.2`. These are published package selections.
+ Selection does not revalidate historical parity receipts or grant owner approval,
+ package publication, deployment, data-custody or rollback qualification.
+ The module tool remains the source-root and dependency-mode authority. Fresh

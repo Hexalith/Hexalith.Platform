@@ -1,0 +1,16 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.AppHost.Tests
+  Discovered:  Hexalith.EventStore.AppHost.Tests
+  Starting:    Hexalith.EventStore.AppHost.Tests
+    Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(scenario: "valid") [FAIL]
+      Microsoft.Extensions.Options.OptionsValidationException : Configuration-backed idempotency digest keys are permitted only in Development or test environments.
+      Stack Trace:
+           at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+           at Microsoft.Extensions.Options.UnnamedOptionsManager`1.get_Value()
+        src/Hexalith.EventStore.Server/Routing/RouteCatalogAdmissionObservation.cs(23,0): at Hexalith.EventStore.Server.Routing.RouteCatalogAdmissionObservation.CaptureAsync(IServiceProvider services, String consumerAppId, CancellationToken cancellationToken)
+        tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs(99,0): at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+           at Hexalith.EventStore.AppHost.Tests.Configuration.DevelopmentRouteCatalogAspireTests.ActualResourcesOwnCanonicalCatalogFiniteAclAndPrivateAuthorityAsync(String scenario)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.EventStore.AppHost.Tests (ID = '58f9bd94b121dc514827672416a35d9fa0403970c9b4367d42f19e710f7d0818')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.AppHost.Tests  Total: 7, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.477s

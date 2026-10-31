@@ -1,0 +1,77 @@
+Starting Aspire AppHost in the background...
+❌ Failed to start the AppHost.
+ℹ️ Recent AppHost startup output:
+NativeCertificateToolRunner: Failed to trust the certificate in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium 
+family of browsers. This likely indicates that the database already contains an entry for the certificate under a different name. Please remove it and try 
+again.
+NativeCertificateToolRunner: The certificate is only partially trusted - some clients will not accept it.
+NativeCertificateToolRunner: The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+NativeCertificateToolRunner: The certificate is not trusted in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family
+of browsers.
+  Determining projects to restore...
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-published-4.39.0/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 291 
+ms).
+  Restored /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj (in 301 ms).
+  1 of 3 projects are up-to-date for restore.
+  Hexalith.Tenants.Aspire -> /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.Aspire/bin/Debug/net10.0/Hexalith.Tenants.Aspire.dll
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.128.4, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 
+for net10.0.
+  Hexalith.Builds.Tooling -> 
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-published-4.39.0/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.Tenants.AppHost -> 
+/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/bin/Debug/net10.0/Hexalith.Tenants.AppHost.dll
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:35.51
+dbug: Aspire.Hosting.DistributedApplication[0]
+      Dashboard endpoint 'http' configured: http://localhost:15337
+dbug: Aspire.Hosting.DistributedApplication[0]
+      Dashboard endpoint 'otlp-grpc' configured: http://localhost:19357
+dbug: Microsoft.Extensions.Hosting.Internal.Host[1]
+      Hosting starting
+dbug: Aspire.Hosting.DeveloperCertificateService[0]
+      Developer certificate HTTPS/TLS termination support: True
+fail: Microsoft.Extensions.Hosting.Internal.Host[11]
+      Hosting failed to start
+      Microsoft.Extensions.Options.OptionsValidationException: The 'applicationUrl' setting must be an https address unless the 
+'ASPIRE_ALLOW_UNSECURED_TRANSPORT' environment variable is set to true. This configuration is commonly set in the launch profile. See 
+https://aka.ms/aspire/allowunsecuredtransport for more details.
+         at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+         at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+         at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+         at System.Lazy`1.CreateValue()
+         at Microsoft.Extensions.Options.OptionsCache`1.GetOrAdd[TArg](String name, Func`3 createOptions, TArg factoryArgument)
+         at Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.<>c__DisplayClass0_1`1.<ValidateOnStart>b__1()
+         at Microsoft.Extensions.Options.StartupValidator.Validate()
+      --- End of stack trace from previous location ---
+         at Microsoft.Extensions.Options.StartupValidator.Validate()
+         at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+dbug: Aspire.Hosting.FileSystemService[0]
+      Allocated temporary directory: /tmp/aspire-dcpeSJRqD
+dbug: Aspire.Hosting.FileSystemService[0]
+      Cleaning up 1 remaining temporary files/directories
+dbug: Aspire.Hosting.FileSystemService[0]
+      Cleaned up temporary directory: /tmp/aspire-dcpeSJRqD
+Unhandled exception. Microsoft.Extensions.Options.OptionsValidationException: The 'applicationUrl' setting must be an https address unless the 
+'ASPIRE_ALLOW_UNSECURED_TRANSPORT' environment variable is set to true. This configuration is commonly set in the launch profile. See 
+https://aka.ms/aspire/allowunsecuredtransport for more details.
+   at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Microsoft.Extensions.Options.OptionsCache`1.GetOrAdd[TArg](String name, Func`3 createOptions, TArg factoryArgument)
+   at Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.<>c__DisplayClass0_1`1.<ValidateOnStart>b__1()
+   at Microsoft.Extensions.Options.StartupValidator.Validate()
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Options.StartupValidator.Validate()
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Aspire.Hosting.DistributedApplication.RunAsync(CancellationToken cancellationToken) in /_/src/Aspire.Hosting/DistributedApplication.cs:line 558
+   at Program.<Main>$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/Program.cs:line 340
+   at Program.<Main>$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/Program.cs:line 341
+   at Program.<Main>$(String[] args) in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants/src/Hexalith.Tenants.AppHost/Program.cs:line 350
+   at Program.<Main>(String[] args)
+❌ AppHost process exited with code 134.
+📄 See logs at /home/administrator/.aspire/logs/cli_20261031T110717_48e3548f.log
+🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261031T110717502_detach-child_13cdcc47f8104d8e91f84a118f3a8bf0.log
