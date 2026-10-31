@@ -1,0 +1,66 @@
+{
+  "schema": "mcpcli-mapped-gateway-assessment/v1",
+  "status": "compiled-mapped-source-host-only",
+  "mapping": {
+    "Properties": {
+      "BuildsCatalogFromMappedSource": "true",
+      "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_MAPPED_SOURCE;DEBUG"
+    },
+    "Items": {
+      "ProjectReference": [
+        {
+          "Identity": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+          "Targets": "",
+          "OutputItemType": "",
+          "ReferenceSourceTarget": "ProjectReference",
+          "GlobalPropertiesToRemove": ";WebPublishProfileFile",
+          "FullPath": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+          "RootDir": "/",
+          "Filename": "Hexalith.EventStore.Gateway",
+          "Extension": ".csproj",
+          "RelativeDir": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/",
+          "Directory": "home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-10-30 10:50:04.0718026",
+          "CreatedTime": "2026-10-30 10:50:04.0718026",
+          "AccessedTime": "2026-10-30 10:50:10.2561603",
+          "DefiningProjectFullPath": "/tmp/mcpcli-417-builds-mapped-source/Hexalith.Builds.Module.EventStoreHost.csproj",
+          "DefiningProjectDirectory": "/tmp/mcpcli-417-builds-mapped-source/",
+          "DefiningProjectName": "Hexalith.Builds.Module.EventStoreHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "localRestoreExitCode": 0,
+    "serializedDebugPublishExitCode": 0,
+    "compilerChecksBypassed": false,
+    "mappedHostCompilerMarkers": {
+      "AddEventStoreRunScopedCatalogGateway": true,
+      "UseFiniteDevelopmentRouteCatalogReceiver": true,
+      "UseEventStoreHttpHostSecurity": true,
+      "RequireEventStoreChannel": true,
+      "EventStoreActorCallbackEndpointMetadata": true,
+      "CatalogPath": true,
+      "Run-scoped route catalogs require the mapped EventStore source build.": false
+    },
+    "resolvedSourceFiles": 2007,
+    "publishedFiles": 83
+  },
+  "compiledHost": {
+    "path": "/tmp/mcpcli-417-builds-mapped-source/publish/Hexalith.Builds.Module.EventStoreHost.dll",
+    "sha256": "520a7d8f5aa3b93c4570ab39c42a297c8a4768ad8c8ef696d763be41f319e8b0"
+  },
+  "sourceInputReceiptSha256": "1c88e0f2cabe75dbd1de42c52f1144ec12afb7c2d6654035814ad55b0069c867",
+  "payloadReceiptSha256": "56033123cd48ea04d9f8a34f64a895bd3c0ba4c4e565c7775c38677b419c204f",
+  "baseInventorySha256": "4c9c38187ae6a1d55062a7b444c34617446a19297ea3f75f692a041f5cb62653",
+  "archive": "No archive attempted for the mapped payload: inventory has no explicit ASP.NET base image; the unchanged SDK container path already failed its isolated ASP.NET registry manifest fetch in builds-seed-20261030. Local SDK/application layers are recorded as possible source material, without asserting an independently qualified base.",
+  "supportConclusion": "The owning Debug/source condition compiled direct run-scoped catalog gateway, finite receiver and channel-security calls; the package-branch catalog refusal string is absent. Compilation and metadata establish these calls are present, not installed readiness or behavior.",
+  "scope": "Builds-owned host copy plus the declared EventStore Gateway source closure. External dependencies retain their cached package pins. No Platform.Custody reference, source patch, manual symbol injection or workload-closure reduction.",
+  "limits": [
+    "No services were started and no endpoint, bootstrap, read/write authorization or persisted state was exercised.",
+    "No remote reads, container/image publication, Secret retrieval or application writes occurred. Parent owns all authorized remote inspection.",
+    "A compatible image, base/input qualification, concrete deployment review and actual client/timing acceptance remain separate."
+  ]
+}

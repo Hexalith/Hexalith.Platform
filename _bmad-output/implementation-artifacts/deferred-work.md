@@ -1661,6 +1661,13 @@
   summary: Settle whether a later candidate's environment-layer attempt removes objects declared only by an additive unadopted candidate that needed no reset (medium if true, unverified).
   evidence: Build review EC4. The architecture's Staging reset row and policy decision 5 skip resets for proven baseline-readable additive writes, and only a reset candidate's declared-only environment-layer objects are removed by the later candidate's environment-layer attempt. If an additive candidate's declared-only objects remain, a later candidate could pass staging while relying on objects production lacks. Settle in Story 5.10, or in the architecture, by confirming whether environment-layer application prunes objects the applied release does not declare.
 
+## Deferred from: code review 5 of spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition (2026-10-30)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Bound the post-kill `communicate()` in the Helm qualifier's command runner (medium if true, unverified).
+  evidence: BH-13/EH-10. After a timeout or interruption, `eng/helm-qualification/qualify.py` `run()` calls `os.killpg(...)` and then `process.communicate()` with no timeout. A descendant that left the command's process group while still holding stdout/stderr would block the qualifier indefinitely, contradicting "Every wait is bounded". No such descendant has been observed (MSBuild node reuse is disabled; the passing run completed). Settle by timing out a native build under the qualifier and inspecting `ps -o pid,pgid,sid,comm` for out-of-group pipe holders; if found, bound the second `communicate` and close the pipes.
+  status: open
+
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
   summary: Fresh hosted OpenBao bootstrap rejects a just-created KV mount default configuration.
   evidence: B7: ensure_config refuses existing defaults; distinguish a mount created in this invocation. Official API: https://openbao.org/docs/api/secret/kv/kv-v2/ . Concurrent hosted custody work, outside routing catalog activation.

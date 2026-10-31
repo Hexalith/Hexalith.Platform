@@ -1,0 +1,42 @@
+{
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "argv": [
+    "timeout",
+    "300",
+    "dotnet",
+    "publish",
+    "/tmp/mcpcli-417-builds-mapped-source/Hexalith.Builds.Module.EventStoreHost.csproj",
+    "--no-restore",
+    "--no-build",
+    "--configuration",
+    "Debug",
+    "-m:1",
+    "-t:PublishContainer",
+    "-p:Configuration=Debug",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:NuGetAudit=false",
+    "-p:UseArtifactsOutput=true",
+    "-p:ArtifactsPath=/tmp/mcpcli-417-builds-mapped-output",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:UseAppHost=false",
+    "-p:ContainerRegistry=",
+    "-p:ContainerRepository=mcpcli-417-builds-eventstore",
+    "-p:ContainerImageTag=operator-setup",
+    "-p:ContainerArchiveOutputPath=/tmp/mcpcli-417-mapped-archive-20261030/eventstore.tar.gz",
+    "-p:ContainerBaseImage=mcr.microsoft.com/dotnet/aspnet@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+    "-p:ContainerGenerateLabelsImageBaseDigest=true",
+    "--output",
+    "/tmp/mcpcli-417-builds-mapped-source/publish"
+  ],
+  "environment": {
+    "NUGET_PACKAGES": "/tmp/mcpcli-417-builds-mapped-cache",
+    "DOCKER_CONFIG": "/tmp/mcpcli-417-mapped-archive-20261030/anonymous-docker",
+    "HTTP_PROXY": "http://127.0.0.1:37317",
+    "HTTPS_PROXY": "http://127.0.0.1:37317",
+    "NO_PROXY": "127.0.0.1,localhost",
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+  },
+  "network": "Public MCR and its Microsoft CDN endpoints only, via an allowlisted CONNECT proxy; anonymous auths; no restore/build/push"
+}

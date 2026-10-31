@@ -1,0 +1,83 @@
+{
+  "schema": "mcpcli-local-mapped-host-archive/v1",
+  "status": "validated-local-archive-only",
+  "archive": "/tmp/mcpcli-417-mapped-archive-20261030/eventstore.tar.gz",
+  "archiveSha256": "9f4d265003aec0f0d8e7615966c464c48d98ea3bd118a497f5a4ea98e05c453b",
+  "archiveBytes": 107174400,
+  "archiveFormat": "Docker save archive",
+  "configurationSha256": "c4851d8e067e3ca47ab6c7a5e2159fa84de456d02727b28646ee44c87232ac7c",
+  "layers": [
+    "7a48b8f0e5c73d0cc2a85b008978396aa19d253dc1b96fdb0b769ee6dcbeca4a/layer.tar",
+    "aa37eb26c52c0ddbcd32254925809fbdc9658dfd60665475f5a8bdbecc5d516e/layer.tar",
+    "1f8c14bc5847dd84261170b482818d3a7edbc43ea9063ce4930da58b358fa5d0/layer.tar",
+    "d12f340d58c7c1903446a5acf78dd98e4662adae061cc5e9f4500c9c9e98d160/layer.tar",
+    "f3c239e1a8382a39fd721de7ad1bd27a5821274273b253a7e6cf50c2cac1200b/layer.tar",
+    "017220401ab5b691e12f8739a2b64a7f360cef11b805a2fa57a90af907173c18/layer.tar",
+    "9f7502aa23a480f288768ae62c0f684e4bdf6b6a7298b4afd62a802afb65deca/layer.tar"
+  ],
+  "base": {
+    "repository": "mcr.microsoft.com/dotnet/aspnet",
+    "tagObserved": "10.0",
+    "indexDigest": "sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee",
+    "linuxAmd64Digest": "sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+    "configDigest": "sha256:cfeca9a55d0f8353620d75e8ccb882f000d314e8ce43290014d4467827de8747",
+    "layerDigests": [
+      "sha256:7a48b8f0e5c73d0cc2a85b008978396aa19d253dc1b96fdb0b769ee6dcbeca4a",
+      "sha256:aa37eb26c52c0ddbcd32254925809fbdc9658dfd60665475f5a8bdbecc5d516e",
+      "sha256:1f8c14bc5847dd84261170b482818d3a7edbc43ea9063ce4930da58b358fa5d0",
+      "sha256:d12f340d58c7c1903446a5acf78dd98e4662adae061cc5e9f4500c9c9e98d160",
+      "sha256:f3c239e1a8382a39fd721de7ad1bd27a5821274273b253a7e6cf50c2cac1200b",
+      "sha256:017220401ab5b691e12f8739a2b64a7f360cef11b805a2fa57a90af907173c18"
+    ]
+  },
+  "baseDigestLabel": "sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+  "baseNameLabel": "mcr.microsoft.com/dotnet/aspnet@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+  "entrypoint": [
+    "dotnet",
+    "/app/Hexalith.Builds.Module.EventStoreHost.dll"
+  ],
+  "command": null,
+  "user": "1654",
+  "architecture": "amd64",
+  "os": "linux",
+  "exposedPorts": [
+    "8080/tcp"
+  ],
+  "archivedCompiledHostSha256": "520a7d8f5aa3b93c4570ab39c42a297c8a4768ad8c8ef696d763be41f319e8b0",
+  "compiledCapabilities": {
+    "AddEventStoreRunScopedCatalogGateway": true,
+    "UseFiniteDevelopmentRouteCatalogReceiver": true,
+    "UseEventStoreHttpHostSecurity": true,
+    "RequireEventStoreChannel": true,
+    "EventStoreActorCallbackEndpointMetadata": true,
+    "CatalogPath": true
+  },
+  "sourceInputReceipt": "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/evidence/builds-mapped-source-20261030/source-inputs.json",
+  "sourceInputReceiptSha256": "1c88e0f2cabe75dbd1de42c52f1144ec12afb7c2d6654035814ad55b0069c867",
+  "publishedPayloadReceiptSha256": "56033123cd48ea04d9f8a34f64a895bd3c0ba4c4e565c7775c38677b419c204f",
+  "hostSourceIdentityReceiptSha256": "b5c036b809590473eb805fa60e7f15ebc206579b7004877c85bf12466b42491e",
+  "networkAccess": [
+    {
+      "host": "mcr.microsoft.com",
+      "port": 443,
+      "allowed": true
+    },
+    {
+      "host": "mcr.microsoft.com",
+      "port": 443,
+      "allowed": true
+    },
+    {
+      "host": "mcr.microsoft.com",
+      "port": 443,
+      "allowed": true
+    },
+    {
+      "host": "westeurope.data.mcr.microsoft.com",
+      "port": 443,
+      "allowed": true
+    }
+  ],
+  "publication": "None. SDK wrote a local archive; no Docker load, registry push, tag/release publication or application invocation.",
+  "limits": "Compiled and archived capabilities only; no installed readiness, bootstrap, domain behavior, live Party result or actual client/timing acceptance."
+}
