@@ -1,0 +1,7 @@
+Aspire’s Development catalog composition adds real Client and ServiceDefaults dependencies. The synthetic release archives now declare those edges and test each one’s removal and version drift through both unchanged production validators.
+
+The dated qualification audit links the complete production candidate: https://github.com/Hexalith/Hexalith.EventStore/compare/ad383a96394307154b0026643245fdbb9a24dd4e...5e3c2f0e60b114cdaab52594ccbb254829d40e0f. That initial direct push produced a server-reported protection bypass and did not satisfy the PR rule. This PR preserves that fact and requires the normal current-base checks and squash merge before publication.
+
+Validation: the complete ReleasePackageManifestTests class passes 137 cases with zero failures or skips, including eight new dependency controls. The original production candidate has 402 passing affected cases plus two passing scanner executions; the original normal Contracts CI failure remains retained. The local governance fixture override is limited to one byte-identical dapr-init action from the published Builds checkout.
+
+SDK publication, downstream owner releases and ordinary Platform package qualification remain separate required gates. See docs/operations/development-catalog-release-qualification.md for the full source, policy and bypass audit.
