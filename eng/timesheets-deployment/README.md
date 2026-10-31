@@ -238,7 +238,7 @@ cmp eng/timesheets-deployment/plan.json /tmp/timesheets-enrollment-reproduced.js
 git diff --check
 ```
 
-Use the repository-pinned SDK 10.0.402. The C# checks invoke the existing Builds
+Use the repository-pinned SDK 10.0.403. The C# checks invoke the existing Builds
 embedded v2 schema validator and dependency selection without composing or
 starting resources. Python adds candidate policy and safe-file checks; it does
 not claim to replace that schema validator. Reproduction requires unchanged
