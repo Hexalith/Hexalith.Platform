@@ -77,6 +77,8 @@ def validate_fixture(settings):
 def validate_manifests(documents,namespace):
  require({d['metadata']['name'] for d in documents if d['kind']=='Job'}==set(APPS) and
   [d['metadata']['name'] for d in documents if d['kind']=='Pod']==['redis'],'exact-three-application-jobs-required')
+ configurations=[d for d in documents if d['kind']=='Configuration']
+ require(len(configurations)==1 and configurations[0]['spec'].get('mtls',{}).get('enabled') is True,'dapr-mtls-required')
  for doc in documents:
   meta=doc['metadata'];kind=doc['kind']
   require(kind=='Namespace' and meta['name']==namespace or meta.get('namespace')==namespace,'external-resource-refused')
@@ -103,6 +105,20 @@ def validate_manifests(documents,namespace):
     require(not any('value' in e and any(k in e['name'].lower() for k in ('signingkey','token','password')) for e in c.get('env',[])),'literal-credential-refused')
    if meta['name'] in APPS:
     require(spec['containers'][0]['readinessProbe']['httpGet']['path']=='/ready','owner-readiness-required')
+    annotations=doc['spec']['template']['metadata'].get('annotations',{});env={e['name']:e for e in spec['containers'][0]['env']};app=meta['name']
+    require(annotations.get('dapr.io/sidecar-listen-addresses')=='127.0.0.1' and ('DAPR_HTTP_ENDPOINT' not in env or env['DAPR_HTTP_ENDPOINT'].get('value') in
+     ('http://localhost:3500','http://127.0.0.1:3500')) and ('DAPR_HTTP_PORT' not in env or env['DAPR_HTTP_PORT'].get('value')=='3500'),'private-loopback-api-required')
+    require(annotations.get('dapr.io/app-token-secret')=='mcpcli-'+app+'-app' and
+     env.get('APP_API_TOKEN',{}).get('valueFrom',{}).get('secretKeyRef')=={'name':'mcpcli-'+app+'-app','key':'token'},'app-channel-token-required')
+    require(env.get('Authentication__JwtBearer__SigningKey',{}).get('valueFrom',{}).get('secretKeyRef')=={'name':'mcpcli-jwt','key':'signing-key'} and
+     env.get('Authentication__JwtBearer__Issuer',{}).get('value')=='mcpcli-live-tests' and
+     env.get('Authentication__JwtBearer__Audience',{}).get('value')=='hexalith-eventstore','gateway-jwt-required')
+    if app=='eventstore':require('dapr.io/api-token-secret' not in annotations and 'DAPR_API_TOKEN' not in env and
+     not spec['containers'][0].get('envFrom'),'gateway-loopback-tokenless-api-required')
+    else:require(annotations.get('dapr.io/api-token-secret')=='mcpcli-'+app+'-api' and
+     env.get('DAPR_API_TOKEN',{}).get('valueFrom',{}).get('secretKeyRef')=={'name':'mcpcli-'+app+'-api','key':'token'},'domain-api-token-required')
+ gateway_service=next(d for d in documents if d['kind']=='Service' and d['metadata']['name']=='eventstore-dapr')
+ require(not any(p.get('targetPort') in (3500,50001) or p.get('port') in (3500,50001) for p in gateway_service['spec']['ports']),'gateway-api-service-exposure-refused')
 
 
 def prepare(private_root,output,now=None,auth=None):
@@ -131,7 +147,7 @@ def prepare(private_root,output,now=None,auth=None):
  secret('mcpcli-jwt',{'signing-key':signing})
  for app in APPS:
   secret('mcpcli-'+app+'-app',{'token':secrets.token_urlsafe(48)})
-  secret('mcpcli-'+app+'-api',{'token':secrets.token_urlsafe(48)})
+  if app!='eventstore':secret('mcpcli-'+app+'-api',{'token':secrets.token_urlsafe(48)})
  secret('mcpcli-redis',{'password':password,'users.acl':'user default on #'+hashlib.sha256(password.encode()).hexdigest()+' ~* &* +@all\n'})
  secret('mcpcli-pull', {'.dockerconfigjson':json.dumps(auth if auth is not None else registry_auth())})
  private_manifest=private_root/'private-inputs.json';private_write(private_manifest,json.dumps({'files':values,'secrets':secret_files},indent=2)+'\n')
@@ -186,7 +202,9 @@ def prepare(private_root,output,now=None,auth=None):
   if app=='tenants':env.update(Tenants__BootstrapGlobalAdminEnabled='true',Tenants__BootstrapGlobalAdminUserId='mcpcli-live-admin',Tenants__DaprConfigPath='/etc/components/accesscontrol.json')
   if app=='parties':env.update(Tenants__Enabled='false',Parties__MemoriesSearch__Enabled='false')
   environment=[{'name':k,'value':v} for k,v in env.items()]
-  for name,secret_name,key in [('Authentication__JwtBearer__SigningKey','mcpcli-jwt','signing-key'),('APP_API_TOKEN','mcpcli-'+app+'-app','token'),('DAPR_API_TOKEN','mcpcli-'+app+'-api','token')]:
+  bindings=[('Authentication__JwtBearer__SigningKey','mcpcli-jwt','signing-key'),('APP_API_TOKEN','mcpcli-'+app+'-app','token')]
+  if app!='eventstore':bindings.append(('DAPR_API_TOKEN','mcpcli-'+app+'-api','token'))
+  for name,secret_name,key in bindings:
    environment.append({'name':name,'valueFrom':{'secretKeyRef':{'name':secret_name,'key':key}}})
   pod=resource('Pod',app,spec={'restartPolicy':'Never','serviceAccountName':'mcpcli-v1','nodeSelector':{'kubernetes.io/arch':'amd64'},'imagePullSecrets':[{'name':'mcpcli-pull'}],
    'securityContext':{'runAsNonRoot':True,'runAsUser':1654,'runAsGroup':1654,'seccompProfile':{'type':'RuntimeDefault'}},
@@ -197,8 +215,9 @@ def prepare(private_root,output,now=None,auth=None):
    'volumes':[{'name':'tmp','emptyDir':{'sizeLimit':'128Mi'}},{'name':'components','configMap':{'name':'component-files'}}]+([{'name':'gateway','configMap':{'name':'gateway-settings'}}] if app=='eventstore' else [])})
   pod['metadata']['labels'].update(app=app,**{'dapr.io/app-id':app})
   pod['metadata']['annotations']={'dapr.io/enabled':'true','dapr.io/app-id':app,'dapr.io/app-port':'8080','dapr.io/config':'mcpcli-v1-access',
-   'dapr.io/app-token-secret':'mcpcli-'+app+'-app','dapr.io/api-token-secret':'mcpcli-'+app+'-api','dapr.io/sidecar-listen-addresses':'127.0.0.1',
+   'dapr.io/app-token-secret':'mcpcli-'+app+'-app','dapr.io/sidecar-listen-addresses':'127.0.0.1',
    'dapr.io/sidecar-cpu-request':'50m','dapr.io/sidecar-cpu-limit':'500m','dapr.io/sidecar-memory-request':'64Mi','dapr.io/sidecar-memory-limit':'256Mi'}
+  if app!='eventstore':pod['metadata']['annotations']['dapr.io/api-token-secret']='mcpcli-'+app+'-api'
   documents.remove(pod)
   job=resource('Job',app,spec={'backoffLimit':0,'completions':1,'parallelism':1,'podReplacementPolicy':'Failed',
    'podFailurePolicy':JOB_FAILURE_POLICY,'template':{'metadata':{k:pod['metadata'][k] for k in ('labels','annotations')},'spec':pod['spec']}})
@@ -207,7 +226,8 @@ def prepare(private_root,output,now=None,auth=None):
  # Explicit task-owned Dapr bootstrap service: preserve /ready while the writer marker is absent.
  for app in APPS:
   resource('Service',app+'-dapr',spec={'selector':{'dapr.io/app-id':app},'publishNotReadyAddresses':True,
-  'ports':[{'name':'dapr-http','port':80,'targetPort':3500},{'name':'dapr-grpc','port':50001,'targetPort':50001},{'name':'dapr-internal','port':50002,'targetPort':50002},{'name':'dapr-metrics','port':9090,'targetPort':9090}]})
+  'ports':([] if app=='eventstore' else [{'name':'dapr-http','port':80,'targetPort':3500},{'name':'dapr-grpc','port':50001,'targetPort':50001}])+
+   [{'name':'dapr-internal','port':50002,'targetPort':50002},{'name':'dapr-metrics','port':9090,'targetPort':9090}]})
  validate_manifests(documents,namespace)
  output.mkdir(parents=True)
  groups={'namespace':[ns],'infrastructure':[d for d in documents if d['kind'] not in ('Pod','Job','Namespace')],'redis':[redis],
@@ -215,7 +235,8 @@ def prepare(private_root,output,now=None,auth=None):
  for name,docs in groups.items():(output/(name+'.yaml')).write_text(yaml.safe_dump_all(docs,sort_keys=False))
  packet={'schema':'mcpcli-v1-operator-review/v1','status':'prepared-for-review','applyAuthorized':False,
   'target':{'context':'jpiquot@local','api':'https://192.168.1.30:6443','namespace':namespace,'release':namespace},'tenant':tenant,'operatorSubject':operator,
-  'createdAt':now.isoformat(),'expiresAt':(now+timedelta(hours=24)).isoformat(),'gatewayPort':18170,'operatorTokenTtlSeconds':7200,
+  'createdAt':now.isoformat(),'expiresAt':(now+timedelta(hours=24)).isoformat(),'gatewayPort':18170,'metadataPort':18171,'operatorTokenTtlSeconds':7200,
+  'gatewayLocalApi':{'tokenMode':'none','listenAddress':'127.0.0.1','httpPort':3500,'grpcPort':50001,'metadataPath':'/v1.0/metadata','metadataDeadlineSeconds':60,'appChannelTokenRequired':True,'publicJwtRequired':True,'mtlsRequired':True,'domainApiTokensRequired':True,'secretCount':8},
   'dns':{'allowedResolvers':[NODE_LOCAL_DNS],'names':['redis.'+namespace+'.svc.cluster.local',*CONTROL_DNS_NAMES],
    'lookupCommand':DNS_LOOKUP_COMMAND,'resolverReadCommand':['/bin/cat','/etc/resolv.conf'],'phaseDeadlineSeconds':45,'sidecarDeadlineSeconds':120},
   'images':IMAGE_ROOTS,'redisImage':REDIS,'gatewaySourceCommit':'717a06e16c3afd81b904eaf4de646b74b13262d2',
@@ -223,13 +244,13 @@ def prepare(private_root,output,now=None,auth=None):
    {'endpoint':'/api/v1/commands','tenant':'system','domain':'tenants','aggregateId':tenant,'commandType':'create-tenant','payload':{'TenantId':tenant,'Name':'McpCli operator setup','Description':'Task-owned synthetic operator tenant'}},
    {'endpoint':'/api/v1/commands','tenant':'system','domain':'tenants','aggregateId':tenant,'commandType':'add-user-to-tenant','payload':{'TenantId':tenant,'UserId':operator,'Role':'TenantContributor'}}],
   'fixtureHashes':{f:digest(MCPCLI/f) for f in FIXTURES},'runnerSha256':digest(HERE/'phases.py'),'prepareSha256':digest(HERE/'prepare.py'),
-  'evidenceHashes':{p.name:digest(p) for p in (HERE/'evidence').glob('*.json') if p.name in ('images.json','tenants-projection-contract-diff.json','parties-projection-contract-diff.json','wire-bindings.json','target-observation.json','controller-support.json','startup-order.json','dns-target.json')},'imageInspectionSha256':digest(HERE/'evidence/images.json'),
+  'evidenceHashes':{p.name:digest(p) for p in (HERE/'evidence').glob('*.json') if p.name in ('images.json','tenants-projection-contract-diff.json','parties-projection-contract-diff.json','wire-bindings.json','target-observation.json','controller-support.json','startup-order.json','dns-target.json','gateway-api-mode.json')},'imageInspectionSha256':digest(HERE/'evidence/images.json'),
   'privateManifest':str(private_manifest),'privateManifestSha256':digest(private_manifest),'secretReferences':{name:list(keys) for name,keys in secret_files.items()},
   'files':{p.name:digest(p) for p in output.iterdir() if p.is_file()},'inventory':[{'kind':d['kind'],'name':d['metadata']['name'],'namespace':d['metadata'].get('namespace')} for d in documents],
   'bounds':{'applicationPods':3,'redisPods':1,'applicationCpuLimit':'3','applicationMemoryLimit':'1536Mi','sidecarCpuLimit':'1500m','sidecarMemoryLimit':'768Mi','redisCpuLimit':'1','redisMemoryLimit':'256Mi','persistentStorage':'1Gi'},
-  'phases':['infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','administrator','writer','seed','handoff','cleanup'],
+  'phases':['infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','metadata','administrator','writer','seed','handoff','cleanup'],
   'limits':['No deployment, backup, UID or persisted-state result has been invented.','No application was started during preparation.','This packet qualifies neither the full Platform closure nor actual client/timing acceptance.'],
-  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Observed node-local resolver 169.254.25.10/32 receives only TCP/UDP 53 egress alongside cluster DNS. The actual provider resolver/policy and bounded DNS reads must succeed before any application Job; sidecar runtime readiness/identity must succeed before persisted queries.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
+  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Gateway optional API token is removed only for the strictly 127.0.0.1 local API; eight Secrets retain app-channel/JWT/mTLS and domain API protections. No Gateway Service publishes its local API ports. A real unauthenticated metadata/hostReady check on temporary loopback 18171 precedes writer activation.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Observed node-local resolver 169.254.25.10/32 receives only TCP/UDP 53 egress alongside cluster DNS. The actual provider resolver/policy and bounded DNS reads must succeed before any application Job; sidecar runtime readiness/identity must succeed before persisted queries.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
  dump(output/'review.json',packet)
  return packet
 

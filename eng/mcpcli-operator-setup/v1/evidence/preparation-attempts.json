@@ -86,5 +86,24 @@
       "packet-20261031-dns-review"
     ],
     "prepareExitCode": 0
+  },
+  {
+    "attempt": 8,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-gateway-api-review/review.json",
+    "reviewSha256": "063bac572c44e85441169aa4410b4001886f5ae7ed6e212f3c5138c607e86be4",
+    "namespace": "mcpcli-417-20261031-155f9b6d",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt8",
+    "outcome": "current Gateway-only loopback API compatibility candidate; no new deployment",
+    "applied": false,
+    "secretCount": 8,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt8",
+      "--output",
+      "packet-20261031-gateway-api-review"
+    ],
+    "prepareExitCode": 0
   }
 ]

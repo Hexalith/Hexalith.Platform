@@ -25,7 +25,7 @@ internal static class PlatformCatalogOwnerParity
     {
         foreach (var server in servers.Where(server => server.ServerId == "domain"))
         {
-            var assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(server.ProjectPath)));
+            var assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(server.ProjectPath)!));
             var entry = assembly.EntryPoint!.DeclaringType!;
             await (Task)typeof(PlatformCatalogOwnerParity).GetMethod(nameof(AssertHostAsync), BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(entry).Invoke(null, [catalog, server])!;
@@ -45,7 +45,7 @@ internal static class PlatformCatalogOwnerParity
         }));
         services.AddSingleton<IIdempotencyDigestKeyProvider, ConfigurationIdempotencyDigestKeyProvider>();
         using var provider = services.BuildServiceProvider();
-        _ = new IdempotencyIntentAdapterRegistry(provider.GetServices<IIdempotencyIntentAdapter>(), new CanonicalIdempotencyIntentEncoder());
+        _ = new IdempotencyIntentAdapterRegistry(NSubstitute.Substitute.For<IRouteCatalogAuthority>(), provider.GetServices<IIdempotencyIntentAdapter>(), new CanonicalIdempotencyIntentEncoder());
         var observed = await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore", TestContext.Current.CancellationToken);
         observed.Select(entry => entry.ContentDigest).Order().ShouldBe(catalog.Envelope.Idempotency.Select(entry => entry.ContentDigest).Order());
     }
@@ -55,7 +55,7 @@ internal static class PlatformCatalogOwnerParity
         await using var factory = new WebApplicationFactory<T>().WithWebHostBuilder(builder =>
         {
             builder.UseEnvironment("Development");
-            builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(new Dictionary<string, string?>
+            foreach (var (name, value) in new Dictionary<string, string?>
             {
                 ["APP_API_TOKEN"] = "owner-parity-channel-token",
                 ["EventStore:DomainService:AppId"] = server.AppId,
@@ -63,8 +63,8 @@ internal static class PlatformCatalogOwnerParity
                 ["Authentication:JwtBearer:Issuer"] = "owner-parity",
                 ["Authentication:JwtBearer:Audience"] = "owner-parity",
                 ["Authentication:JwtBearer:SigningKey"] = "owner-parity-signing-key-at-least-thirty-two-bytes",
-                ["Tenants:AutoBootstrapGlobalAdmin"] = "false",
-            }));
+                ["Tenants:BootstrapGlobalAdminEnabled"] = "false",
+            }) builder.UseSetting(name, value);
             // This component test executes the actual host's registrations and endpoint mappings.
             // Startup workers require live sidecars and are covered separately by the live lane.
             builder.ConfigureServices(services => services.RemoveAll<IHostedService>());

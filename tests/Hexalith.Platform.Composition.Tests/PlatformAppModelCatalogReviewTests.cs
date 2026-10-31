@@ -8,6 +8,7 @@ using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.EventStore.Contracts.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Shouldly;
 
 public sealed partial class PlatformAppModelTests
@@ -15,29 +16,25 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
     {
-        var options = Options();
-        var servers = PlatformAppModel.Prepare(options);
-        var dapr = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(options));
-        string directory = Path.Combine(Path.GetTempPath(), "package-catalog-refusal-" + Guid.NewGuid().ToString("N"));
-        var failure = Should.Throw<InvalidDataException>(() => PlatformRoutingCatalogBootstrap.Create(options with
-        { Mapping = options.Mapping with { Mode = WorkspaceMode.Package } }, servers, dapr, directory));
+        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
+        var builder = Builder();
+        builder.Environment.EnvironmentName = Environments.Development;
+        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
         failure.Message.ShouldContain("owner SDK");
         failure.Message.ShouldContain("Builds catalog pins");
-        Directory.Exists(directory).ShouldBeFalse();
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Fact]
     public void SelectedTimesheetsCallerRefusesBeforeCatalogGeneration()
     {
         var options = Options() with { TimesheetsEnabled = true };
-        var servers = PlatformAppModel.Prepare(options);
-        servers.ShouldContain(server => server.AppId == "timesheets");
-        var dapr = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(options));
-        string directory = Path.Combine(Path.GetTempPath(), "caller-catalog-refusal-" + Guid.NewGuid().ToString("N"));
-        var failure = Should.Throw<InvalidDataException>(() => PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, directory));
+        var builder = Builder();
+        builder.Environment.EnvironmentName = Environments.Development;
+        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
         failure.Message.ShouldContain("timesheets");
         failure.Message.ShouldContain("lacks catalog enrollment");
-        Directory.Exists(directory).ShouldBeFalse();
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Fact]
@@ -56,7 +53,7 @@ public sealed partial class PlatformAppModelTests
             };
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             var builder = Builder();
-            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"));
             var resources = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
             var environments = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
             foreach (var resource in resources)
@@ -133,6 +130,17 @@ public sealed partial class PlatformAppModelTests
             closure.RootElement.GetProperty("RunId").GetString().ShouldBe(plan.RunId);
             closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()).Order().ShouldBe(participants);
             closure.RootElement.GetProperty("callerClosure").EnumerateArray().Select(value => value.GetString()).ShouldBe(plan.Modules.Select(module => module.ModuleId));
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+            string firstHost = closure.RootElement.GetProperty("hosts")[0].GetProperty("ResourceId").GetString()!;
+            File.WriteAllBytes(Path.Combine(catalogDirectory, firstHost + ".committed.json"), JsonSerializer.SerializeToUtf8Bytes(new
+            { Serving = true, RootDigest = new string('0', 64), Generation = envelope.Generation, Epoch = 1 }));
+            using var provider = builder.Services.BuildServiceProvider();
+            var preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().Single();
+            var refusal = await Should.ThrowAsync<InvalidOperationException>(() => preparation.PrepareAsync(provider, TestContext.Current.CancellationToken));
+            refusal.Message.ShouldBe("A real catalog participant did not commit the selected native scope.");
+            preparation.NativeTestScope.ShouldBeNull();
+            File.Exists(Path.Combine(workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
+#endif
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, true); }
     }

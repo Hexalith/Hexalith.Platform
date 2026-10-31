@@ -12,6 +12,8 @@ internal sealed class GatewaySeedProtectionInstallation : IDisposable
     private readonly string _directory = Path.Combine(Path.GetTempPath(), "gateway-seed-installation-" + Guid.NewGuid().ToString("N"));
     private readonly string _variable = "HEXALITH_SEED_NATIVE_" + Guid.NewGuid().ToString("N").ToUpperInvariant();
 
+    private readonly Dictionary<string, string?> _previous = new(StringComparer.Ordinal);
+
     internal IReadOnlyDictionary<string, string?> Configuration { get; }
 
     internal GatewaySeedProtectionInstallation()
@@ -41,6 +43,14 @@ internal sealed class GatewaySeedProtectionInstallation : IDisposable
             ["EventStore:PayloadProtection:InstallationSha256"] = pinned.Hash,
             ["EventStore:PayloadProtection:QualificationObserver"] = "true",
         };
+        // The production entry point validates this installation before deferred WebApplicationFactory
+        // configuration callbacks run. Supply the same pinned inputs at CreateBuilder time.
+        foreach (var (name, value) in Configuration)
+        {
+            string variable = name.Replace(":", "__", StringComparison.Ordinal);
+            _previous[variable] = Environment.GetEnvironmentVariable(variable);
+            Environment.SetEnvironmentVariable(variable, value);
+        }
     }
 
     private (string Path, string Hash) Write(string name, byte[] bytes)
@@ -52,6 +62,7 @@ internal sealed class GatewaySeedProtectionInstallation : IDisposable
 
     public void Dispose()
     {
+        foreach (var (name, value) in _previous) Environment.SetEnvironmentVariable(name, value);
         Environment.SetEnvironmentVariable(_variable, null);
         Directory.Delete(_directory, true);
     }

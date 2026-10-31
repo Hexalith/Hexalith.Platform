@@ -92,70 +92,15 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
     [Fact]
-    public async Task PackageCompositionAddsCatalogContainersWithDeclaredSidecarsAndScopedBindingsAsync()
+    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
     {
-        List<string> inspected = [];
-        PlatformCompositionOptions options = PackageGraphOptions() with
+        var options = PackageGraphOptions() with
         {
-            Configuration = new Dictionary<string, string> { ["tenants/api/Tenants:ApiDaprToken"] = "api-scoped-token", ["tenants/domain/Tenants:AppChannelToken"] = "domain-scoped-token" },
-            ImageProbeRunner = (process, timeout, _) =>
-            {
-                process.FileName.ShouldBe("docker");
-                process.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
-                timeout.ShouldBe(TimeSpan.FromSeconds(20));
-                inspected.Add(process.ArgumentList[2]);
-                return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-            },
+            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
         };
-        IDistributedApplicationBuilder builder = Builder();
-        PlatformAppModel.Compose(builder, options);
-        IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-        servers.Length.ShouldBe(7);
-        servers.OfType<ProjectResource>().Single().Name.ShouldBe("eventstore");
-        servers.OfType<ProjectResource>().Single().GetProjectMetadata().ProjectPath.ShouldBe(options.EventStoreSeedProject);
-        servers.OfType<ContainerResource>().Count().ShouldBe(6);
-        inspected.Order().ShouldBe(servers.Select(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Single().Binding.Image).OfType<string>().Order());
-        foreach (IResource server in servers)
-        {
-            PlatformServerBinding binding = server.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
-            server.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
-            DaprSidecarOptions sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
-            sidecar.AppId.ShouldBe(binding.AppId);
-            sidecar.DaprHttpPort.GetValueOrDefault().ShouldBeGreaterThan(0);
-            sidecar.DaprGrpcPort.GetValueOrDefault().ShouldBeGreaterThan(0);
-            sidecar.DaprInternalGrpcPort.GetValueOrDefault().ShouldBeGreaterThan(0);
-            sidecar.MetricsPort.GetValueOrDefault().ShouldBeGreaterThan(0);
-            Dictionary<string, object> environment = new();
-            foreach (EnvironmentCallbackAnnotation callback in server.Annotations.OfType<EnvironmentCallbackAnnotation>())
-                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, server, environment, TestContext.Current.CancellationToken));
-            environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true", binding.AppId);
-            foreach (KeyValuePair<string, string> input in binding.Environment)
-                if (input.Key is "ConnectionStrings__redis" or "ConnectionStrings__falkordb") environment[input.Key].ShouldBeOfType<ReferenceExpression>();
-                else if (input.Key == "AccessTelemetryLifecycle__AttestationVerificationKey") environment[input.Key].ShouldBeOfType<string>().ShouldNotBeNullOrWhiteSpace();
-                else if (input.Key is "Authentication__DaprInternal__Audience" or "EventStore__CommandGateway__Audience") environment[input.Key].ShouldBe("eventstore");
-                else if (input.Key == "Authentication__Workload__Audience") environment[input.Key].ShouldBe(binding.AppId);
-                else environment[input.Key].ShouldBe(input.Value);
-            if (server.Name == "tenants-api") { environment["DAPR_API_TOKEN"].ShouldBe("api-scoped-token"); environment.ShouldNotContainKey("APP_API_TOKEN"); }
-            if (server.Name == "tenants") environment["APP_API_TOKEN"].ShouldBe("domain-scoped-token");
-            if (server.Name == "eventstore")
-            {
-                const string registration = "EventStore__DomainServices__Registrations__wildcard_tenants_v1__";
-                environment[registration + "AppId"].ShouldBe("tenants");
-                environment[registration + "MethodName"].ShouldBe("process");
-                environment[registration + "TenantId"].ShouldBe("*");
-                environment[registration + "Domain"].ShouldBe("tenants");
-                environment[registration + "Version"].ShouldBe("v1");
-            }
-            if (server is ContainerResource container)
-            {
-                ContainerImageAnnotation image = container.Annotations.OfType<ContainerImageAnnotation>().Single();
-                (image.Image + ":" + image.Tag).ShouldBe(binding.Image);
-                container.Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "http").TargetPort.ShouldBe(8080);
-            }
-        }
-        DaprSidecarOptions[] sidecars = servers.Select(server => server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options).ToArray();
-        sidecars.SelectMany(sidecar => new[] { sidecar.DaprHttpPort, sidecar.DaprGrpcPort, sidecar.DaprInternalGrpcPort, sidecar.MetricsPort }).Distinct().Count().ShouldBe(servers.Length * 4);
-        builder.Resources.ShouldNotContain(resource => resource.Name.Contains("admin") || resource.Name.Contains("mcp") || resource.Name == "eventstore-2");
+        var builder = Builder();
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Fact]

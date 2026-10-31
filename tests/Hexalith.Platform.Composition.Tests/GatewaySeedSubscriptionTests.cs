@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 
+[Collection("Platform file entry")]
 public sealed class GatewaySeedSubscriptionTests
 {
     [Theory]

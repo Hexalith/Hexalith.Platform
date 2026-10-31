@@ -115,11 +115,12 @@ internal sealed class PlatformRoutingCatalogBootstrap
 
     internal static string AuthorityName(string instance) => "routing-" + instance.ToLowerInvariant();
 
-    internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
-        PlatformDaprBindings dapr, string rendered)
+    /// <summary>Refuses unavailable package runtimes and selected callers without catalog enrollment before any composition effects.</summary>
+    internal static IReadOnlyList<PlatformServerBinding> ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
+        PlatformDaprBindings dapr)
     {
         // A gateway-only infrastructure graph has no enrolled business operations.
-        if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return null;
+        if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
         if (options.Mapping.Mode != WorkspaceMode.Source)
             throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
@@ -131,6 +132,14 @@ internal sealed class PlatformRoutingCatalogBootstrap
             if (selectedApps.Contains(grant.CallerAppId) && !enrolledApps.Contains(grant.CallerAppId)
                 && !(grant.Method.Trim('/') is "ready" or "health" or "alive" && grant.HttpMethods.SequenceEqual(["GET"], StringComparer.Ordinal)))
                 throw new InvalidDataException($"Selected caller '{grant.CallerAppId}' has a gateway/participant grant to '{receiver.AppId}/{grant.Method}' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.");
+        return participants;
+    }
+
+    internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
+        PlatformDaprBindings dapr, string rendered)
+    {
+        var participants = ResolveParticipants(options, servers, dapr);
+        if (participants.Count == 0) return null;
         var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
         return new(options, participants, catalog, rendered, dapr, servers);

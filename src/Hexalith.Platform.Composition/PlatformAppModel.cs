@@ -121,6 +121,7 @@ public static class PlatformAppModel
         var declarations = PlatformDeclarationSet.Load(options);
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
+        _ = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
             IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];

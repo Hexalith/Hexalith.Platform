@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch,Mock
 import yaml
 import prepare
 import phases
@@ -32,12 +32,15 @@ class FakeRunner(phases.Runner):
   super().__init__(*args);self.exists=False;self.pods=[];self.jobs={};self.pod_overrides={};self.mutations=[];self.redis_uid='redis-unit';self.pvc_uid='pvc-unit';self.api='https://192.168.1.30:6443';self.size=b'0';self.rdb=b'REDIS0009 UNIT TEST ONLY';self.save_result=b'OK'
   self.resolver='nameserver '+prepare.NODE_LOCAL_DNS+'\n';self.dns_responses={};self.dns_reads=[];self.policy_override=None;self.native_apps=set()
  def application_pod(self,app):
-  job=self.jobs[app];pod={'metadata':{'name':app+'-abc123','namespace':self.namespace,'uid':app+'-pod-unit','labels':copy.deepcopy(job['spec']['template']['metadata']['labels']),
+  job=self.jobs[app];pod={'metadata':{'name':app+'-abc123','namespace':self.namespace,'uid':app+'-pod-unit','labels':copy.deepcopy(job['spec']['template']['metadata']['labels']),'annotations':copy.deepcopy(job['spec']['template']['metadata']['annotations']),
    'ownerReferences':[{'controller':True,'kind':'Job','name':app,'uid':job['metadata']['uid']}]},'spec':copy.deepcopy(job['spec']['template']['spec']),
    'status':{'phase':'Running','containerStatuses':[{'name':app,'restartCount':0,'state':{'running':{}}},{'name':'daprd','ready':True,'restartCount':0,'state':{'running':{}},'containerID':'synthetic://'+app+'-sidecar'}]}}
-  pod['spec']['containers'].append({'name':'daprd','image':'synthetic-sidecar-only'})
+  annotations=pod['metadata']['annotations'];sidecar={'name':'daprd','image':'synthetic-sidecar-only','args':['--dapr-listen-addresses',annotations['dapr.io/sidecar-listen-addresses'],'--enable-mtls'],
+   'env':[{'name':'APP_API_TOKEN','valueFrom':{'secretKeyRef':{'name':annotations['dapr.io/app-token-secret'],'key':'token'}}}]}
+  if 'dapr.io/api-token-secret' in annotations:sidecar['env'].append({'name':'DAPR_API_TOKEN','valueFrom':{'secretKeyRef':{'name':annotations['dapr.io/api-token-secret'],'key':'token'}}})
+  pod['spec']['containers'].append(sidecar)
   if app in self.native_apps:
-   pod['spec']['containers']=[x for x in pod['spec']['containers'] if x['name']!='daprd'];pod['spec']['initContainers']=[{'name':'daprd','restartPolicy':'Always'}]
+   pod['spec']['containers']=[x for x in pod['spec']['containers'] if x['name']!='daprd'];pod['spec']['initContainers']=[{**sidecar,'restartPolicy':'Always'}]
    pod['status']['initContainerStatuses']=[x for x in pod['status']['containerStatuses'] if x['name']=='daprd'];pod['status']['containerStatuses']=[x for x in pod['status']['containerStatuses'] if x['name']!='daprd']
   return self.pod_overrides.get(app,pod)
  def kube(self,*args,input=None,timeout=30):
@@ -84,9 +87,10 @@ class FakeRunner(phases.Runner):
   self.dns_reads.append(host);values=self.dns_responses.get(host)
   return values.pop(0) if values else (0,'10.233.7.7 STREAM synthetic\n','')
  @contextmanager
- def forward(self,require_ready=True):
+ def forward(self,require_ready=True,metadata=False):
   phases.require(all(self.app_pod(app) is not None for app in prepare.APPS),'application-pod-missing')
   if require_ready:phases.require(all(self.sidecar_ready(app) for app in prepare.APPS),'sidecar-runtime-unready')
+  if metadata:self.gateway_api_boundary()
   yield
 
 
@@ -94,6 +98,7 @@ class Oracle:
  def __init__(self,packet):self.packet=packet;self.writes=[]
  def request(self,port,path,credential,body=None):
   if path in ('/alive','/ready'):return 200,None
+  if path=='/v1.0/metadata':return 200,{'id':'eventstore','actorRuntime':{'hostReady':True,'placement':'placement: connected','runtimeStatus':'RUNNING'}}
   if path.endswith('/activate'):self.writes.append(body);return 200,{'status':'Activated'}
   if path=='/api/v1/commands':self.writes.append(body);return 202,{}
   if '/status/' in path:return 200,{'status':'Completed','committedEventSequence':1,'eventCount':1}
@@ -278,6 +283,101 @@ class V1Tests(unittest.TestCase):
   values=iter([0,1,2,3,4,5]);self.refuse('observation-deadline-exceeded',lambda:phases.poll(lambda:False,bool,seconds=3,clock=lambda:next(values),pause=lambda _:None))
   self.refuse('application-redirect-refused',lambda:phases.NoRedirect().redirect_request(None))
   with patch.object(phases,'build_opener') as network:self.refuse('local-owner-path-required',lambda:phases.request(18170,'https://outside',''));network.assert_not_called()
+
+
+class MetadataRecoveryTests(unittest.TestCase):
+ refuse=V1Tests.refuse
+ setup_runner=lambda self,c,until:WriteFailureTests.setup_runner(self,c,until)
+ original_poll=staticmethod(phases.poll)
+ def bounded(self,action,accept,seconds=60):
+  ticks=iter(range(100));return self.original_poll(action,accept,seconds=4,clock=lambda:next(ticks),pause=lambda _:None)
+
+ def test_eight_secrets_and_gateway_only_loopback_mode_constraints(self):
+  with Control() as c:
+   self.assertEqual(8,len(c.bundle['secrets']));self.assertNotIn('mcpcli-eventstore-api',c.bundle['secrets'])
+   source=[]
+   for name in c.packet['files']:source+=list(yaml.safe_load_all((c.directory/name).read_text()))
+   cases=[('loopback','private-loopback-api-required'),('endpoint','private-loopback-api-required'),('endpoint-ref','private-loopback-api-required'),('port','private-loopback-api-required'),('api-annotation','gateway-loopback-tokenless-api-required'),('api-env','gateway-loopback-tokenless-api-required'),('env-from','gateway-loopback-tokenless-api-required'),('app-annotation','app-channel-token-required'),('app-token','app-channel-token-required'),('jwt-key','gateway-jwt-required'),('issuer','gateway-jwt-required'),('audience','gateway-jwt-required'),('mtls','dapr-mtls-required'),('domain-annotation','domain-api-token-required'),('domain-env','domain-api-token-required'),('api-service','gateway-api-service-exposure-refused')]
+   for case,code in cases:
+    with self.subTest(case=case),patch.object(subprocess,'run') as external:
+     docs=copy.deepcopy(source);job=next(d for d in docs if d['kind']=='Job' and d['metadata']['name']=='eventstore');template=job['spec']['template'];app=template['spec']['containers'][0];env=app['env'];annotations=template['metadata']['annotations']
+     if case=='loopback':annotations['dapr.io/sidecar-listen-addresses']='0.0.0.0'
+     if case=='endpoint':env.append({'name':'DAPR_HTTP_ENDPOINT','value':'http://remote:3500'})
+     if case=='endpoint-ref':env.append({'name':'DAPR_HTTP_ENDPOINT','valueFrom':{'secretKeyRef':{'name':'unknown','key':'url'}}})
+     if case=='port':env.append({'name':'DAPR_HTTP_PORT','value':'3502'})
+     if case=='api-annotation':annotations['dapr.io/api-token-secret']='unused-gateway-api'
+     if case=='api-env':env.append({'name':'DAPR_API_TOKEN','valueFrom':{'secretKeyRef':{'name':'unused-gateway-api','key':'token'}}})
+     if case=='env-from':app['envFrom']=[{'secretRef':{'name':'unreviewed'}}]
+     if case=='app-annotation':annotations.pop('dapr.io/app-token-secret')
+     if case=='app-token':env[:]=[e for e in env if e['name']!='APP_API_TOKEN']
+     if case=='jwt-key':env[:]=[e for e in env if e['name']!='Authentication__JwtBearer__SigningKey']
+     if case=='issuer':next(e for e in env if e['name']=='Authentication__JwtBearer__Issuer')['value']='other'
+     if case=='audience':next(e for e in env if e['name']=='Authentication__JwtBearer__Audience')['value']='other'
+     if case=='mtls':next(d for d in docs if d['kind']=='Configuration')['spec']['mtls']['enabled']=False
+     if case.startswith('domain-'):
+      domain=next(d for d in docs if d['kind']=='Job' and d['metadata']['name']=='tenants')['spec']['template']
+      if case=='domain-annotation':domain['metadata']['annotations'].pop('dapr.io/api-token-secret')
+      else:domain['spec']['containers'][0]['env']=[e for e in domain['spec']['containers'][0]['env'] if e['name']!='DAPR_API_TOKEN']
+     if case=='api-service':next(d for d in docs if d['kind']=='Service' and d['metadata']['name']=='eventstore-dapr')['spec']['ports'].append({'port':80,'targetPort':3500})
+     self.refuse(code,lambda:prepare.validate_manifests(docs,c.packet['target']['namespace']));external.assert_not_called()
+
+ def test_actual_injected_gateway_boundary_refusals_submit_nothing(self):
+  cases=[('listen','gateway-runtime-loopback-required'),('missing-listen','gateway-runtime-loopback-required'),('host-network','gateway-runtime-loopback-required'),('endpoint','gateway-runtime-loopback-required'),('env-from','gateway-runtime-token-mode-required'),('app-api','gateway-runtime-token-mode-required'),('sidecar-api','gateway-runtime-token-mode-required'),('annotation','gateway-runtime-token-mode-required'),('app-token','gateway-runtime-app-channel-required'),('sidecar-token','gateway-runtime-app-channel-required'),('jwt','gateway-runtime-jwt-required'),('mtls','gateway-runtime-mtls-required')]
+  for case,code in cases:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'metadata');pod=runner.application_pod('eventstore');app=next(x for x in pod['spec']['containers'] if x['name']=='eventstore');sidecar=next(x for x in pod['spec']['containers'] if x['name']=='daprd')
+    if case=='listen':sidecar['args'][1]='0.0.0.0'
+    if case=='missing-listen':sidecar['args']=['--dapr-listen-addresses']
+    if case=='host-network':pod['spec']['hostNetwork']=True
+    if case=='endpoint':app['env'].append({'name':'DAPR_HTTP_ENDPOINT','value':'http://remote:3500'})
+    if case=='env-from':sidecar['envFrom']=[{'secretRef':{'name':'unreviewed'}}]
+    if case=='app-api':app['env'].append({'name':'DAPR_API_TOKEN'})
+    if case=='sidecar-api':sidecar['env'].append({'name':'DAPR_API_TOKEN'})
+    if case=='annotation':pod['metadata']['annotations']['dapr.io/api-token-secret']='unexpected'
+    if case=='app-token':app['env']=[e for e in app['env'] if e['name']!='APP_API_TOKEN']
+    if case=='sidecar-token':sidecar['env']=[]
+    if case=='jwt':app['env']=[e for e in app['env'] if e['name']!='Authentication__JwtBearer__SigningKey']
+    if case=='mtls':sidecar['args'].remove('--enable-mtls')
+    runner.pod_overrides['eventstore']=pod;before=len(runner.mutations)
+    with patch.object(phases,'request') as request:self.refuse(code,lambda:runner.execute('metadata'));request.assert_not_called()
+    self.refuse('required-phase-incomplete',lambda:runner.execute('administrator'));self.assertEqual(before,len(runner.mutations));external.assert_not_called()
+
+ def test_real_metadata_get_has_no_authentication_headers(self):
+  response=io.BytesIO(b'{"id":"eventstore","actorRuntime":{"hostReady":true}}');response.status=200;response.headers={'Content-Type':'application/json'}
+  with patch.object(phases,'build_opener') as network:
+   network.return_value.open.return_value=response;result=phases.request(18171,'/v1.0/metadata','')
+   sent=network.return_value.open.call_args.args[0];self.assertEqual('GET',sent.get_method());self.assertEqual([],sent.header_items());self.assertEqual('http://127.0.0.1:18171/v1.0/metadata',sent.full_url);self.assertTrue(result[1]['actorRuntime']['hostReady'])
+
+ def test_delayed_real_metadata_shape_success_before_writer(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,oracle=self.setup_runner(c,'metadata');values=iter([(503,None),(200,{'id':'eventstore','actorRuntime':{'hostReady':False}}),(200,{'id':'eventstore','actorRuntime':{'hostReady':True,'placement':'placement: connected','runtimeStatus':'RUNNING'}})])
+   def get(port,path,credential,body=None):
+    self.assertEqual(c.packet['metadataPort'],port);self.assertEqual('/v1.0/metadata',path);self.assertEqual('',credential);self.assertIsNone(body);return next(values)
+   with patch.object(phases,'request',side_effect=get),patch.object(phases,'poll',side_effect=self.bounded):result=runner.execute('metadata')
+   self.assertTrue(result['hostReady']);self.assertTrue(result['unauthenticatedGet']);self.assertTrue(result['forwardStopped']);self.assertEqual(18171,result['loopbackPort']);self.assertEqual([],oracle.writes);external.assert_not_called()
+
+ def test_metadata_absent_forbidden_or_unready_blocks_queries_and_writer(self):
+  cases=[('unauthenticated',(401,None),'gateway-metadata-auth-incompatible'),('forbidden',(403,None),'gateway-metadata-auth-incompatible'),('wrong-id',(200,{'id':'other','actorRuntime':{'hostReady':True}}),'gateway-metadata-identity-mismatch'),('missing',(200,None),'observation-deadline-exceeded'),('missing-runtime',(200,{'id':'eventstore'}),'observation-deadline-exceeded'),('unready',(200,{'id':'eventstore','actorRuntime':{'hostReady':False}}),'observation-deadline-exceeded'),('string-ready',(200,{'id':'eventstore','actorRuntime':{'hostReady':'true'}}),'observation-deadline-exceeded'),('malformed',(200,[]),'observation-deadline-exceeded'),('not-found',(404,None),'observation-deadline-exceeded')]
+  for case,response,code in cases:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'metadata');before=len(runner.mutations);calls=[]
+    def get(port,path,credential,body=None):calls.append((port,path,credential,body));return response
+    with patch.object(phases,'request',side_effect=get),patch.object(phases,'poll',side_effect=self.bounded):
+     self.refuse(code,lambda:runner.execute('metadata'));self.refuse('required-phase-incomplete',lambda:runner.execute('administrator'));self.refuse('required-phase-incomplete',lambda:runner.execute('writer'))
+    self.assertTrue(calls);self.assertTrue(all(path=='/v1.0/metadata' and credential=='' and body is None for _,path,credential,body in calls));self.assertEqual(before,len(runner.mutations));self.assertFalse((runner.journal/'writer.json').exists());external.assert_not_called()
+
+ def test_metadata_refusal_cli_channels_and_temporary_forward_cleanup(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner,_=self.setup_runner(c,'metadata');stdout=io.StringIO();stderr=io.StringIO()
+   with patch('sys.argv',['phases.py','--packet',str(c.directory),'--review-sha256',c.hash,'--execute-reviewed','--phase','metadata']),patch.object(phases,'Runner',return_value=runner),patch.object(phases,'request',return_value=(403,{'private':'never-print'})),__import__('contextlib').redirect_stdout(stdout),__import__('contextlib').redirect_stderr(stderr):result=phases.main()
+   self.assertEqual(1,result);self.assertEqual('',stdout.getvalue());self.assertEqual('Phase stopped: gateway-metadata-auth-incompatible. Preserve the journal; do not retry uncertain writes.\n',stderr.getvalue());external.assert_not_called()
+  with Control() as c:
+   runner,_=self.setup_runner(c,'metadata');child=Mock(pid=12345);child.poll.return_value=None;child.wait.return_value=0
+   def start(argv,**kwargs):kwargs['stdout'].write('Forwarding from 127.0.0.1:18171 -> 3500\n');kwargs['stdout'].flush();return child
+   with patch.object(phases.socket,'socket') as socket,patch.object(phases.subprocess,'Popen',side_effect=start) as process,patch.object(phases.os,'killpg') as stop:
+    with self.assertRaisesRegex(ValueError,'synthetic observation failure'):
+     with phases.Runner.forward(runner,metadata=True):raise ValueError('synthetic observation failure')
+    socket.return_value.__enter__.return_value.bind.assert_called_once_with(('127.0.0.1',18171));self.assertEqual('18171:3500',process.call_args.args[0][-1]);self.assertIn('pod/eventstore-abc123',process.call_args.args[0]);self.assertIn('--address=127.0.0.1',process.call_args.args[0]);stop.assert_called_once_with(12345,phases.signal.SIGTERM)
 
 
 class DNSRecoveryTests(unittest.TestCase):

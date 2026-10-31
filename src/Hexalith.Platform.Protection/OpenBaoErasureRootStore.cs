@@ -328,7 +328,10 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     public async Task TrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
     {
         if (epoch <= 1) { throw new ArgumentException("Successor epoch required."); }
-        byte[] config = JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = epoch, min_encryption_version = epoch });
+        // Match the shipped ACL's bounded string values. Native ACL parameter
+        // matching rejects numeric JSON even though transit accepts that type.
+        string version = epoch.ToString(CultureInfo.InvariantCulture);
+        byte[] config = JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = version, min_encryption_version = version });
         byte[]? configured = null;
         byte[]? trim = null;
         byte[]? trimmed = null;

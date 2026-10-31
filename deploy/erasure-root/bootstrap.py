@@ -75,6 +75,9 @@ def render_policy(enrollment, tenant, scope):
     digest = hashlib.sha256(tenant.encode()).hexdigest()
     head = enrollment['headMount']
     transit = enrollment['transitMount']
+    # Native ACL parameter equality requires strings. Keep this exact bounded
+    # version inventory paired with TrimAsync's invariant string request values.
+    versions = ', '.join(json.dumps(str(version)) for version in range(1, 65))
     grants = (
         '# tenant ' + tenant + ' scope ' + scope + '\n'
         'path "' + head + '/data/tenants/' + digest + '" {\n  capabilities = ["read", "update"]\n}\n'
@@ -85,8 +88,8 @@ def render_policy(enrollment, tenant, scope):
         'path "' + transit + '/keys/' + key + '" {\n  capabilities = ["read"]\n}\n'
         'path "' + transit + '/keys/' + key + '/rotate" {\n  capabilities = ["update"]\n}\n'
         'path "' + transit + '/keys/' + key + '/config" {\n  capabilities = ["update"]\n'
-        '  allowed_parameters = {\n    "min_decryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n'
-        '    "min_encryption_version" = [' + ', '.join(str(version) for version in range(1, 65)) + ']\n  }\n}\n'
+        '  allowed_parameters = {\n    "min_decryption_version" = [' + versions + ']\n'
+        '    "min_encryption_version" = [' + versions + ']\n  }\n}\n'
         'path "' + transit + '/keys/' + key + '/trim" {\n  capabilities = ["update"]\n}\n'
     )
     denies = Path(__file__).with_name('custody-policy.hcl').read_text()
@@ -195,17 +198,28 @@ def main(argv=None):
                 if options:
                     body['options'] = options
                 call('POST', path, body)
-                return
+                return True
             if not same_mount(existing, expected_type, options):
                 raise BootstrapStop(step)
+            return False
 
-        def ensure_config(path, expected):
+        def ensure_config(path, expected, newly_created=False):
             existing = read_optional(path)
             data = existing.get('data') if isinstance(existing, dict) else None
-            if data is None:
+            # Only this invocation's new mount may move from native KV-v2
+            # defaults to the enrolled configuration. An existing mismatch is
+            # still a conflict and must never be silently overwritten.
+            native_defaults = isinstance(data, dict) and type(data.get('max_versions')) is int \
+                and data['max_versions'] == 0 and data.get('cas_required') is False \
+                and data.get('delete_version_after', '0s') == '0s'
+            if data is None or newly_created and native_defaults:
                 call('POST', path, expected)
+                response = call('GET', path)
+                readback = response.get('data') if isinstance(response, dict) else None
+                if not isinstance(readback, dict) or any(readback.get(field) != expected[field] for field in expected):
+                    raise BootstrapStop(step)
                 return
-            if any(data.get(field) != expected[field] for field in expected):
+            if not isinstance(data, dict) or any(data.get(field) != expected[field] for field in expected):
                 raise BootstrapStop(step)
 
         step = 'health'
@@ -216,9 +230,9 @@ def main(argv=None):
         step = 'mount:' + value['transitMount']
         ensure_mount(value['transitMount'], 'transit')
         step = 'mount:' + value['headMount']
-        ensure_mount(value['headMount'], 'kv', {'version': '2'})
+        head_mount_created = ensure_mount(value['headMount'], 'kv', {'version': '2'})
         step = 'head-config'
-        ensure_config(value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True})
+        ensure_config(value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True}, head_mount_created)
         for _, key in value['nativeKeys'].items():
             step = 'transit-key:' + key
             path = value['transitMount'] + '/keys/' + key

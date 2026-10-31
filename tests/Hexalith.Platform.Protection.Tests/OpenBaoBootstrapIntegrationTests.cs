@@ -56,8 +56,14 @@ public sealed class OpenBaoBootstrapIntegrationTests
                     if (data.TryGetProperty("max_versions", out var versions) && versions.TryGetInt32(out int maximum)) { maxVersions = maximum; }
                     if (data.TryGetProperty("cas_required", out var cas) && cas.ValueKind is JsonValueKind.True or JsonValueKind.False) { casRequired = cas.GetBoolean(); }
                 }
-                using var output = new FileStream(Path.Combine(diagnostic, "bootstrap-head-config.json"), FileMode.CreateNew, FileAccess.Write, FileShare.None);
-                JsonSerializer.Serialize(output, new { statusCode = (int)response.StatusCode, maxVersions, casRequired });
+                // Keep the first native default observation. Later bootstrap
+                // readback must still reach the server without rewriting it.
+                string observation = Path.Combine(diagnostic, "bootstrap-head-config.json");
+                if (!File.Exists(observation))
+                {
+                    using var output = new FileStream(observation, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+                    JsonSerializer.Serialize(output, new { statusCode = (int)response.StatusCode, maxVersions, casRequired });
+                }
             }
             context.Response.StatusCode = (int)response.StatusCode; await response.Content.CopyToAsync(context.Response.Body, context.RequestAborted);
         });

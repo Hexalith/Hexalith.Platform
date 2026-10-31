@@ -21,8 +21,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, ProxyHandler, HTTPRedirectHandler, build_opener
 from prepare import APPS, PLATFORM, MCPCLI, JOB_FAILURE_POLICY, digest, require
 
-PHASES=('infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','administrator','writer','seed','handoff','cleanup')
-DEPENDENCY={'dns':'infrastructure','backup':'dns','gateway':'backup','tenants':'gateway','parties':'tenants','startup':'parties','sidecars':'startup','administrator':'sidecars','writer':'administrator','seed':'writer','handoff':'seed','cleanup':'infrastructure'}
+PHASES=('infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','metadata','administrator','writer','seed','handoff','cleanup')
+DEPENDENCY={'dns':'infrastructure','backup':'dns','gateway':'backup','tenants':'gateway','parties':'tenants','startup':'parties','sidecars':'startup','metadata':'sidecars','administrator':'metadata','writer':'administrator','seed':'writer','handoff':'seed','cleanup':'infrastructure'}
 
 
 def save(path,value):Path(path).write_text(json.dumps(value,indent=2)+'\n')
@@ -68,7 +68,9 @@ class NoRedirect(HTTPRedirectHandler):
 
 def request(port,path,credential,body=None):
  require(path.startswith('/') and '://' not in path,'local-owner-path-required')
- headers={'Authorization':'Bearer '+credential,'Content-Type':'application/json'}
+ headers={}
+ if credential:headers['Authorization']='Bearer '+credential
+ if body is not None:headers['Content-Type']='application/json'
  req=Request('http://127.0.0.1:'+str(port)+path,headers=headers,data=json.dumps(body).encode() if body is not None else None)
  try:
   with build_opener(ProxyHandler({}),NoRedirect()).open(req,timeout=15) as response:
@@ -114,7 +116,7 @@ class Runner:
    result=action()
    with (self.journal/'observations.jsonl').open('a') as log:
     log.write(json.dumps({'at':datetime.now(timezone.utc).isoformat(),'status':result[0],
-     'transportError':(result[1] or {}).get('observationTransportError')})+'\n')
+     'transportError':(result[1] if isinstance(result[1],dict) else {}).get('observationTransportError')})+'\n')
    return result
   return poll(read,accept,seconds)
 
@@ -169,6 +171,25 @@ class Runner:
   else:raise ValueError('sidecar-runtime-identity-not-bound')
   return True
 
+ def gateway_api_boundary(self):
+  pod=self.app_pod('eventstore');require(pod is not None,'application-pod-missing')
+  spec=pod['spec'];app=next(c for c in spec['containers'] if c['name']=='eventstore')
+  sidecar=next(c for c in spec['containers']+spec.get('initContainers',[]) if c['name']=='daprd')
+  args=sidecar.get('args',[]);env={e['name']:e for e in app.get('env',[])};side_env={e['name']:e for e in sidecar.get('env',[])}
+  address=args[args.index('--dapr-listen-addresses')+1] if '--dapr-listen-addresses' in args and args.index('--dapr-listen-addresses')+1<len(args) else None
+  require(address=='127.0.0.1' and not spec.get('hostNetwork') and not spec.get('hostPID') and ('DAPR_HTTP_ENDPOINT' not in env or env['DAPR_HTTP_ENDPOINT'].get('value') in
+   ('http://localhost:3500','http://127.0.0.1:3500')) and ('DAPR_HTTP_PORT' not in env or env['DAPR_HTTP_PORT'].get('value')=='3500'),'gateway-runtime-loopback-required')
+  require('DAPR_API_TOKEN' not in env and 'DAPR_API_TOKEN' not in side_env and not app.get('envFrom') and not sidecar.get('envFrom') and
+   'dapr.io/api-token-secret' not in pod['metadata'].get('annotations',{}),'gateway-runtime-token-mode-required')
+  def reference(values,name,secret):
+   ref=values.get(name,{}).get('valueFrom',{}).get('secretKeyRef',{})
+   return ref.get('name')==secret and ref.get('key')==('signing-key' if name=='Authentication__JwtBearer__SigningKey' else 'token')
+  require(reference(env,'APP_API_TOKEN','mcpcli-eventstore-app') and reference(side_env,'APP_API_TOKEN','mcpcli-eventstore-app'),'gateway-runtime-app-channel-required')
+  require(reference(env,'Authentication__JwtBearer__SigningKey','mcpcli-jwt') and env.get('Authentication__JwtBearer__Issuer',{}).get('value')=='mcpcli-live-tests' and
+   env.get('Authentication__JwtBearer__Audience',{}).get('value')=='hexalith-eventstore','gateway-runtime-jwt-required')
+  require('--enable-mtls' in args,'gateway-runtime-mtls-required')
+  return pod
+
  def dns_probe(self,host):
   cmd=['kubectl','--context=jpiquot@local','--request-timeout=10s','-n',self.namespace,'exec','redis','-c','redis','--',*self.packet['dns']['lookupCommand'],host]
   try:
@@ -211,15 +232,17 @@ class Runner:
    'policySpecSha256':hashlib.sha256(json.dumps(actual['spec'],sort_keys=True,separators=(',',':')).encode()).hexdigest()}
 
  @contextmanager
- def forward(self,require_ready=True):
+ def forward(self,require_ready=True,metadata=False):
   pods={app:self.app_pod(app) for app in APPS};require(all(pods.values()),'application-pod-missing');pod=pods['eventstore']
   if require_ready:require(all(self.sidecar_ready(app) for app in APPS),'sidecar-runtime-unready')
+  if metadata:self.gateway_api_boundary()
+  port=self.packet['metadataPort'] if metadata else self.port;remote_port=3500 if metadata else 8080
   with socket.socket() as probe:
-   try:probe.bind(('127.0.0.1',self.port))
+   try:probe.bind(('127.0.0.1',port))
    except OSError:raise ValueError('private-forward-port-in-use')
-  log=self.journal/'port-forward.log'
+  log=self.journal/('metadata-port-forward.log' if metadata else 'port-forward.log')
   with log.open('w') as output:
-   child=subprocess.Popen(['kubectl','--context=jpiquot@local','-n',self.namespace,'port-forward','--address=127.0.0.1','pod/'+pod['metadata']['name'],str(self.port)+':8080'],stdout=output,stderr=output,start_new_session=True)
+   child=subprocess.Popen(['kubectl','--context=jpiquot@local','-n',self.namespace,'port-forward','--address=127.0.0.1','pod/'+pod['metadata']['name'],str(port)+':'+str(remote_port)],stdout=output,stderr=output,start_new_session=True)
    try:
     poll(lambda:child.poll() is None and 'Forwarding from 127.0.0.1:' in log.read_text(),bool,30)
     yield child
@@ -286,6 +309,19 @@ class Runner:
   elif phase=='sidecars':
    poll(lambda:all([self.sidecar_ready(app,bind=True) for app in APPS]),bool,self.packet['dns']['sidecarDeadlineSeconds'])
    receipt['sidecarRuntimeReadinessObserved']=True
+  elif phase=='metadata':
+   def observe_metadata():
+    self.gateway_api_boundary();require(self.sidecar_ready('eventstore'),'sidecar-runtime-unready')
+    result=request(self.packet['metadataPort'],'/v1.0/metadata','')
+    require(result[0] not in (401,403),'gateway-metadata-auth-incompatible')
+    if result[0]==200 and isinstance(result[1],dict) and result[1].get('id'):
+     require(result[1]['id']=='eventstore','gateway-metadata-identity-mismatch')
+    return result
+   with self.forward(metadata=True):
+    result=self.observe(observe_metadata,lambda x:x[0]==200 and isinstance(x[1],dict) and x[1].get('id')=='eventstore' and
+     isinstance(x[1].get('actorRuntime'),dict) and x[1]['actorRuntime'].get('hostReady') is True,self.packet['gatewayLocalApi']['metadataDeadlineSeconds'])
+   receipt.update(metadataObserved=True,unauthenticatedGet=True,hostReady=True,metadataId=result[1]['id'],loopbackPort=self.packet['metadataPort'],forwardStopped=True,
+    placement=result[1]['actorRuntime'].get('placement'),runtimeStatus=result[1]['actorRuntime'].get('runtimeStatus'))
   elif phase in ('administrator','writer','seed'):
    credential,_=token(self.packet,self.private)
    with self.forward():

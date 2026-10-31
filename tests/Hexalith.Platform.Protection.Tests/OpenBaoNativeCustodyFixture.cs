@@ -104,6 +104,8 @@ internal sealed class OpenBaoNativeCustodyFixture : IDisposable
             (HttpMethod.Post, heads + "/metadata/archives/forbidden", new { max_versions = 2 }),
             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { exportable = true }),
             (HttpMethod.Post, transit + "/keys/epoch-a/config", new { deletion_allowed = true }),
+            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "0", min_encryption_version = "0" }),
+            (HttpMethod.Post, transit + "/keys/epoch-a/config", new { min_decryption_version = "65", min_encryption_version = "65" }),
             (HttpMethod.Get, transit + "/export/encryption-key/epoch-a", null),
             (HttpMethod.Get, transit + "/backup/epoch-a", null),
             (HttpMethod.Get, "v1/sys/storage/raft/snapshot", null),
