@@ -68,5 +68,23 @@
       "packet-20261031-recovery-final"
     ],
     "prepareExitCode": 0
+  },
+  {
+    "attempt": 7,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-dns-review/review.json",
+    "reviewSha256": "23f8ac08ed0051024c4e1c0264fafd7037f96040ec911b58cca72124dac9094f",
+    "namespace": "mcpcli-417-20261031-ef5184e1",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt7",
+    "outcome": "current node-local DNS/sidecar-readiness review candidate; not applied",
+    "applied": false,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt7",
+      "--output",
+      "packet-20261031-dns-review"
+    ],
+    "prepareExitCode": 0
   }
 ]

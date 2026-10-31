@@ -39,11 +39,18 @@ public class PlatformRoutingCatalogTests
             using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
             receipt.RootElement.GetProperty("instanceId").GetString().ShouldBe(catalog.InstanceId);
         }
+#if HEXALITH_PLATFORM_SOURCE_CATALOG
+        await PlatformCatalogOwnerParity.AssertAsync(generated[0], servers);
+#endif
         string committed = Path.Combine(workspace, "tampered-predecessor.json");
-        File.WriteAllText(committed, "{}");
+        File.WriteAllText(committed, File.ReadAllText(generated[0].CatalogPath).Replace("agent-eligible", "UI-only", StringComparison.Ordinal));
         byte[] original = File.ReadAllBytes(generated[0].CatalogPath);
         Should.Throw<InvalidDataException>(() => PlatformRoutingCatalog.Generate(options with
-        { EnvironmentId = "catalog-run-one", CatalogGeneration = 2, CommittedRoutingCatalogPath = committed }, servers, Path.Combine(workspace, "catalog-run-one")));
+        { EnvironmentId = "catalog-run-one", CatalogGeneration = 2, CommittedRoutingCatalogPath = Path.GetRelativePath(Environment.CurrentDirectory, committed), CommittedRoutingCatalogRootDigest = generated[0].RootDigest }, servers, Path.Combine(workspace, "catalog-run-one")));
+        string refusal = File.ReadAllText(Path.Combine(workspace, "catalog-run-one", "catalog-reader", "generation.log"));
+        refusal.ShouldNotContain("missing-committed-root-or-bytes");
+        refusal.ShouldNotContain("Could not find");
+        refusal.ShouldContain("digest-mismatch");
         File.ReadAllBytes(generated[0].CatalogPath).ShouldBe(original);
         Directory.GetDirectories(Path.Combine(workspace, "catalog-run-one"), "catalog-pending-*").ShouldBeEmpty();
     }
@@ -135,14 +142,5 @@ public class PlatformRoutingCatalogTests
         };
     }
 
-    internal static string Root
-    {
-        get
-        {
-            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
-            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
-            return directory!.FullName;
-        }
-    }
+    internal static string Root => PlatformTestRepository.Root;
 }

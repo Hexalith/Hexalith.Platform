@@ -2,7 +2,7 @@
 
 Status: `in-progress`. Review counter 10, the original baselines, frozen intent and historical evidence are preserved. This directory is a new record; it supersedes no historical bytes. No accepted target, profile, integration date or availability is proposed. No Live/OQ/Agents, cluster installation, production OpenBao, Git mutation or remote operation is performed.
 
-This handback is still being assembled while the owned native execution runs. Final counts and cleanup will be recorded in `verification.json`.
+The fixture repairs are implemented. Verification exposes two source gaps: fresh shipped bootstrap refuses native KV-v2 defaults, and an observed native request/policy incompatibility returns HTTP 403 for the minimum-version configuration request; its underlying cause remains unproven. Production source remains unchanged. The final native suite executed all five unchanged cases and failed four; no new all-five pass is claimed. [verification.json](verification.json) binds the complete evidence.
 
 ## Fixture changes
 
@@ -18,9 +18,45 @@ Required builds use serialized Debug/project references, `-m:1`, `-nodeReuse:fal
 
 The first required build failed on a concurrent duplicate local variable in `DelegatedOwnerQueryClient.cs`. The parent renamed only the second pattern variable, preserving the concurrent timeout logic. The failure log and exact before/after source binding are retained; subsequent fixture builds report zero warnings and errors. This is a concurrent build repair, separate from fixture behavior.
 
-The first five-case native attempt overlapped a later test-only build and bootstrap diagnostic attempt. This violated the workflow's serialization requirement. Its timestamps, outcome and cleanup are retained without claiming serialized compliance. No further build/test started while that native attempt remained active. Final native verification must run serially after the owned attempts finish and cleanup is verified.
+The first five-case native attempt overlapped a later test-only build and bootstrap diagnostic attempt. This violated the workflow's serialization requirement. Its timestamps, outcome and cleanup are retained without claiming serialized compliance. After the overlap was noticed, no further build/test started until that native attempt finished and its cleanup was verified. The final native verification did run serially after the diagnostic attempts and cleanup.
 
 Raw outer-command logs are retained. The established native harness deliberately retains only closed test counts, safe failure markers/types/locations, policy hashes and public geometry from captured provider/test output, since raw assertion bodies may contain private material. Those closed observations are not relabelled as raw provider logs.
+
+## Executed verification and remaining source gaps
+
+Three required Debug/project-reference fixture builds pass with zero warnings and errors after the separately recorded concurrent build repair. Bootstrap/prepared shell tests pass 12/12, changed-harness checks pass 7/7, and the frozen initial DLL executes 42 transport/custody tests with zero failures/skips. These component results belong to their recorded runtime and do not replace native evidence.
+
+The final native suite runs serially from `2026-10-31T06:35:07.846652+00:00` to `2026-10-31T07:14:10.763652+00:00`, including harness setup/cleanup. Native execution takes **2330.957 seconds**: **5 executed, 1 passed, 4 failed, 0 errors/skips/not-run**. The [case results](native-five-final.result.json) retain exact safe outcomes and source locations:
+
+| Unchanged native case | Outcome |
+|---|---|
+| Tenant/context substitution, ACL denials, archive/history/index geometry | Passed |
+| Pin race | Failed at line 86 |
+| Lost trim acknowledgement / exact lookup | Failed at line 97 |
+| Leaked old ciphertext trim / survivor | Failed at line 34 |
+| Complete 1,000-target manifest vector | Failed at line 63 |
+
+The complete 1,000-root registration loop reaches its manifest assertion; terminal consumption, ordered vector and lookup are not established. The passed context/history/index case retains the actual 9MiB state, a **9,439,440-byte head**, both history geometries and **256 owners/occurrences**. All ten final tenant-policy records reproduce exactly from the shipped renderer. These are narrow primitive results with synthetic private eligibility, not installed qualification.
+
+All six owned native attempts remain separate:
+
+| Attempt | Executed outcome | Cleanup |
+|---|---|---|
+| Bootstrap 01 | 1 failed; generic refusal before runtime tokens | Verified |
+| Bootstrap 02 | 1 failed; `Bootstrap-head-config` | Verified |
+| Initial five-case 01 | 5 executed / 4 failed; initial overlap deviation retained | Verified |
+| Bootstrap 03 | 1 failed; exact fresh KV defaults captured | Verified |
+| Narrow lost-trim diagnostic | 1 failed; rotate 200, config 403 twice, no trim | Verified |
+| Final serialized five-case | 5 executed / 4 failed | Verified |
+
+[Independent post-run checks](post-run-audit.json) and the [corrected parent audit](parent-external-runtime-audit-v2.json) confirm all six exact container IDs absent, all harness tmpfs cleanup complete, and all three 257-file runtime closures unchanged. The [serialization record](serialization.json) preserves four initial overlap intervals: failed build/harness unit, bootstrap 01/transport components, initial native five/build 03, and initial native five/bootstrap 02. The final native interval overlaps no owned build/test. No initial attempt is relabelled as serialized or passing.
+
+The [source-gap trace](observed-source-gaps.json) is concrete:
+
+1. Shipped bootstrap's existing `GET erc-heads/config` returns HTTP 200 with `max_versions=0` and `cas_required=false` immediately after it creates the KV-v2 mount. `ensure_config` writes only when data is absent and otherwise refuses the mismatch with required `{1,true}`. Bootstrap therefore stops before key/policy/head installation and its runtime-owner/genesis/lifecycle checks. The fixture did not seed configuration or bypass this stop. A source repair must handle fresh/default configuration while preserving partial-run matching/conflict refusal and readback.
+2. Under the exact rendered tenant policy, native rotation returns 200, then the store's minimum-version configuration request returns 403 during both consumption and exact lookup. No trim POST occurs. The existing allowlists remain exactly 1..64; tenant isolation and export/backup/restore/deletion guards remain intact. The type-level cause and equivalence with direct production HTTP remain unestablished because this owned fixture forwards through the existing `bao` CLI transport. A source/transport compatibility repair and renewed native verification remain necessary; no policy bound or production behavior was changed here.
+
+The final runtime has distinct DLL/PDB hashes from the initial graph; [final-freeze.json](final-freeze.json) lists every difference. Native-relevant production source bytes remain unchanged, while test-only diagnostics and unrelated concurrent source activity are explicitly inventoried. Whole binaries are not claimed equal. Broad source inventories record build context and do not expand task scope. The [parent preservation audit](parent-preservation/final-preservation-audit.json) confirms all 49 historical files unchanged, the original spec preserved as a prefix, frozen intent, status, original baselines and counter 10 unchanged. The only spec addition is the authorization for this continuation. The superseded parent runtime audit used a case-sensitive missing-container matcher; its false absence flags are preserved with the corrected v2 audit and do not indicate failed cleanup.
 
 ## Reproducible disposable prerequisites
 

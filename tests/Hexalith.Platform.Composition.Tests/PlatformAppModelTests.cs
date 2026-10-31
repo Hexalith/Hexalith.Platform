@@ -22,19 +22,7 @@ using YamlDotNet.RepresentationModel;
 [Collection("Platform file entry")]
 public sealed partial class PlatformAppModelTests : IDisposable
 {
-    private static string Root
-    {
-        get
-        {
-            string? declared = typeof(PlatformAppModelTests).Assembly.GetCustomAttributes<System.Reflection.AssemblyMetadataAttribute>()
-                .SingleOrDefault(metadata => metadata.Key == "PlatformTestRepositoryRoot")?.Value;
-            if (declared is not null) return Path.GetFullPath(declared);
-            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_TEST_ROOT");
-            DirectoryInfo? directory = new(selected ?? AppContext.BaseDirectory);
-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
-            return directory!.FullName;
-        }
-    }
+    private static string Root => PlatformTestRepository.Root;
 
     private PlatformPackageFixture? _packageFixture;
 

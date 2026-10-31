@@ -86,7 +86,7 @@ def validate_manifests(documents,namespace):
   if kind=='NetworkPolicy':
    rules=[r for r in doc['spec']['egress'] if {'ipBlock':{'cidr':NODE_LOCAL_DNS+'/32'}} in r.get('to',[])]
    require(len(rules)==1 and rules[0]['to']==[{'ipBlock':{'cidr':NODE_LOCAL_DNS+'/32'}}] and
-    rules[0]['ports']==[{'protocol':'UDP','port':53},{'protocol':'TCP','port':53}],'exact-node-local-dns-egress-required')
+    rules[0].get('ports')==[{'protocol':'UDP','port':53},{'protocol':'TCP','port':53}],'exact-node-local-dns-egress-required')
   if kind in ('Pod','Job'):
    spec=doc['spec']
    if kind=='Job':
@@ -112,7 +112,8 @@ def prepare(private_root,output,now=None,auth=None):
  settings=json.loads((MCPCLI/FIXTURES[1]).read_text());validate_fixture(settings)
  images=json.loads((HERE/'evidence/images.json').read_text())
  dns=json.loads((HERE/'evidence/dns-target.json').read_text())
- require(dns['schema']=='mcpcli-v1-dns-target/v1' and dns['resolverAddress']==NODE_LOCAL_DNS and dns['resolverCidr']==NODE_LOCAL_DNS+'/32' and
+ require(dns['schema']=='mcpcli-v1-dns-target/v1' and dns['target']=={'context':'jpiquot@local','api':'https://192.168.1.30:6443'} and
+  dns['resolverAddress']==NODE_LOCAL_DNS and dns['resolverCidr']==NODE_LOCAL_DNS+'/32' and
   dns['hostNetwork'] is True and dns['providerTools']['image']==REDIS and
   dns['providerTools']['selectedCommands']['resolve'][:-1]==DNS_LOOKUP_COMMAND,'observed-dns-and-provider-tools-required')
  require({i['name'] for i in images}==set(APPS) and all(i['reference']==IMAGE_ROOTS[i['name']] and i['os']=='linux' and i['architecture']=='amd64' for i in images),'inspected-images-required')
@@ -228,7 +229,7 @@ def prepare(private_root,output,now=None,auth=None):
   'bounds':{'applicationPods':3,'redisPods':1,'applicationCpuLimit':'3','applicationMemoryLimit':'1536Mi','sidecarCpuLimit':'1500m','sidecarMemoryLimit':'768Mi','redisCpuLimit':'1','redisMemoryLimit':'256Mi','persistentStorage':'1Gi'},
   'phases':['infrastructure','dns','backup','gateway','tenants','parties','startup','sidecars','administrator','writer','seed','handoff','cleanup'],
   'limits':['No deployment, backup, UID or persisted-state result has been invented.','No application was started during preparation.','This packet qualifies neither the full Platform closure nor actual client/timing acceptance.'],
-  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
+  'adaptations':['Kubernetes task namespace and cluster.local mTLS replace self-hosted default/public scope.','Private password-protected Redis replaces fixture localhost Redis; the same provider serves state/pubsub.','Observed node-local resolver 169.254.25.10/32 receives only TCP/UDP 53 egress alongside cluster DNS. The actual provider resolver/policy and bounded DNS reads must succeed before any application Job; sidecar runtime readiness/identity must succeed before persisted queries.','Applications use controller-owned single-Pod Jobs: restart Never, backoffLimit 0, replacement only after failure, and FailJob on disruption/nonzero exit. No automatic retry is authorized; Job/Pod UIDs and actual daprd injection are required.','Existing injector has non-root/read-only enabled but drop-all-capabilities=false; namespace enforces baseline and audits/warns restricted, while app containers drop ALL. No shared injector setting is changed.','Bootstrap service publishes private unready endpoints without weakening /ready; handoff requires /ready success.','Explicit Parties Tenants.Enabled=false and MemoriesSearch.Enabled=false prevent legacy Development side effects outside the task.']}
  dump(output/'review.json',packet)
  return packet
 

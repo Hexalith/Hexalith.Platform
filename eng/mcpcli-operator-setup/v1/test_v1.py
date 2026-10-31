@@ -280,6 +280,135 @@ class V1Tests(unittest.TestCase):
   with patch.object(phases,'build_opener') as network:self.refuse('local-owner-path-required',lambda:phases.request(18170,'https://outside',''));network.assert_not_called()
 
 
+class DNSRecoveryTests(unittest.TestCase):
+ refuse=V1Tests.refuse
+ setup_runner=lambda self,c,until:WriteFailureTests.setup_runner(self,c,until)
+ original_poll=staticmethod(phases.poll)
+ def bounded(self,action,accept,seconds=60):
+  ticks=iter(range(100));return self.original_poll(action,accept,seconds=3,clock=lambda:next(ticks),pause=lambda _:None)
+
+ def test_preparation_refuses_unbound_dns_or_provider_tools(self):
+  actual=json.loads((prepare.HERE/'evidence/dns-target.json').read_text())
+  for case in ('schema','target','address','cidr','host-network','image','arguments'):
+   with self.subTest(case=case),tempfile.TemporaryDirectory() as root,patch.object(subprocess,'run') as external:
+    changed=copy.deepcopy(actual)
+    if case=='schema':changed['schema']='other'
+    if case=='target':changed['target']['api']='https://192.0.2.1:6443'
+    if case=='address':changed['resolverAddress']='192.0.2.1'
+    if case=='cidr':changed['resolverCidr']='169.254.0.0/16'
+    if case=='host-network':changed['hostNetwork']=False
+    if case=='image':changed['providerTools']['image']='redis:latest'
+    if case=='arguments':changed['providerTools']['selectedCommands']['resolve'][0]='/unqualified/tool'
+    original=json.loads;raw=(prepare.HERE/'evidence/dns-target.json').read_text()
+    def loads(value,*args,**kwargs):return changed if value==raw else original(value,*args,**kwargs)
+    with patch.object(json,'loads',side_effect=loads):self.refuse('observed-dns-and-provider-tools-required',lambda:prepare.prepare(Path(root)/'private',Path(root)/'packet',auth={}))
+    self.assertEqual([],list(Path(root).iterdir()));external.assert_not_called()
+
+ def test_exact_node_local_dns_policy_boundary(self):
+  with Control() as c:
+   source=[]
+   for name in c.packet['files']:source+=list(yaml.safe_load_all((c.directory/name).read_text()))
+   for case in ('missing','cidr','ports','protocol','peer','duplicate'):
+    with self.subTest(case=case),patch.object(subprocess,'run') as external:
+     docs=copy.deepcopy(source);egress=next(d for d in docs if d['kind']=='NetworkPolicy')['spec']['egress'];rule=next(r for r in egress if {'ipBlock':{'cidr':prepare.NODE_LOCAL_DNS+'/32'}} in r.get('to',[]))
+     if case=='missing':egress.remove(rule)
+     if case=='cidr':rule['to'][0]['ipBlock']['cidr']='169.254.0.0/16'
+     if case=='ports':rule.pop('ports')
+     if case=='protocol':rule['ports']=[{'protocol':'TCP','port':53}]
+     if case=='peer':rule['to'].append({'ipBlock':{'cidr':'0.0.0.0/0'}})
+     if case=='duplicate':egress.append(copy.deepcopy(rule))
+     self.refuse('exact-node-local-dns-egress-required',lambda:prepare.validate_manifests(docs,c.packet['target']['namespace']));external.assert_not_called()
+
+ def test_dns_policy_resolver_and_provider_refusals_stop_before_jobs(self):
+  cases=[('provider','dns-provider-identity-changed'),('volume','dns-provider-identity-changed'),('apps','applications-present-before-dns'),('policy','dns-policy-changed'),('policy-owner','dns-policy-changed'),('resolver-empty','pod-resolver-not-reviewed'),('resolver-other','pod-resolver-not-reviewed'),('resolver-extra','pod-resolver-not-reviewed')]
+  for case,code in cases:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external,patch.object(phases,'request') as request:
+    runner=FakeRunner(c.directory,c.packet,c.bundle);runner.execute('infrastructure');before=len(runner.mutations)
+    if case=='provider':runner.redis_uid='replaced'
+    if case=='volume':runner.pvc_uid='replaced'
+    if case=='apps':runner.pods.append('unapproved-app')
+    if case in ('policy','policy-owner'):
+     runner.policy_override=json.loads(runner.scoped('get','networkpolicy','task-isolation','-o','json'))
+     if case=='policy':runner.policy_override['spec']['egress']=[]
+     else:runner.policy_override['metadata']['labels']={}
+    if case=='resolver-empty':runner.resolver='search cluster.local\n'
+    if case=='resolver-other':runner.resolver='nameserver 192.0.2.1\n'
+    if case=='resolver-extra':runner.resolver+='nameserver 192.0.2.1\n'
+    self.refuse(code,lambda:runner.execute('dns'));self.refuse('required-phase-incomplete',lambda:runner.execute('backup'))
+    self.assertEqual([],runner.dns_reads);self.assertEqual(before,len(runner.mutations));request.assert_not_called();external.assert_not_called()
+
+ def test_delayed_dns_success_and_deadline_diagnostics_keep_cli_channels(self):
+  for case in ('delayed','timeout','malformed'):
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external,patch.object(phases,'request') as request:
+    runner=FakeRunner(c.directory,c.packet,c.bundle);runner.execute('infrastructure');before=len(runner.mutations);host=c.packet['dns']['names'][0]
+    runner.dns_responses[host]=[(143,'','private probe timeout')]*(1 if case=='delayed' else 10)
+    if case=='malformed':runner.dns_responses[host]=[(0,'invalid answer','')]*10
+    stdout=io.StringIO();stderr=io.StringIO()
+    with patch('sys.argv',['phases.py','--packet',str(c.directory),'--review-sha256',c.hash,'--execute-reviewed','--phase','dns']),patch.object(phases,'Runner',return_value=runner),patch.object(phases,'poll',side_effect=self.bounded),__import__('contextlib').redirect_stdout(stdout),__import__('contextlib').redirect_stderr(stderr):result=phases.main()
+    self.assertEqual(0 if case=='delayed' else 1,result)
+    self.assertEqual('{"phase": "dns", "status": "complete"}\n' if case=='delayed' else '',stdout.getvalue())
+    self.assertEqual('' if case=='delayed' else 'Phase stopped: dns-resolution-deadline-exceeded. Preserve the journal; do not retry uncertain writes.\n',stderr.getvalue())
+    log=(runner.journal/'dns-observations.jsonl').read_text();self.assertIn(host,log)
+    if case!='malformed':self.assertIn('private probe timeout',log);self.assertNotIn('private probe timeout',stderr.getvalue())
+    if case=='delayed':self.assertEqual('policy-unit',json.loads((runner.journal/'dns.json').read_text())['policyUid'])
+    else:self.refuse('required-phase-incomplete',lambda:runner.execute('backup'))
+    self.assertEqual(before,len(runner.mutations));self.assertFalse(runner.jobs);request.assert_not_called();external.assert_not_called()
+
+ def test_dns_probe_uses_exact_provider_tools_and_bounds_process_timeout(self):
+  with Control() as c:
+   runner=FakeRunner(c.directory,c.packet,c.bundle);host=c.packet['dns']['names'][0]
+   result=subprocess.CompletedProcess([],0,b'10.233.0.3 STREAM\n',b'')
+   with patch.object(subprocess,'run',return_value=result) as external:
+    self.assertEqual((0,'10.233.0.3 STREAM\n',''),phases.Runner.dns_probe(runner,host));args=external.call_args.args[0]
+    self.assertEqual(['exec','redis','-c','redis','--',*prepare.DNS_LOOKUP_COMMAND,host],args[5:]);self.assertEqual(12,external.call_args.kwargs['timeout'])
+   failure=subprocess.TimeoutExpired(['synthetic'],12,output=b'partial diagnostic',stderr=b'bounded timeout')
+   with patch.object(subprocess,'run',side_effect=failure) as external:
+    self.assertEqual((124,'partial diagnostic','bounded timeout'),phases.Runner.dns_probe(runner,host));self.assertEqual(1,external.call_count)
+
+ def test_delayed_sidecar_readiness_and_native_layout_before_queries(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner=FakeRunner(c.directory,c.packet,c.bundle);runner.native_apps={'tenants'};oracle=Oracle(c.packet)
+   with patch.object(phases,'request',side_effect=oracle.request):
+    for phase in phases.PHASES:
+     if phase=='sidecars':break
+     runner.execute(phase)
+   original=runner.application_pod;reads={app:0 for app in prepare.APPS}
+   def delayed(app):
+    pod=original(app);reads[app]+=1
+    statuses=pod['status'].get('initContainerStatuses' if app in runner.native_apps else 'containerStatuses',[])
+    next(s for s in statuses if s['name']=='daprd')['ready']=reads[app]>1
+    return pod
+   with patch.object(runner,'application_pod',side_effect=delayed),patch.object(phases,'poll',side_effect=self.bounded),patch.object(phases,'request') as request:
+    runner.execute('sidecars');request.assert_not_called()
+   self.assertEqual('native-init',json.loads((runner.journal/'tenants-sidecar-identity.json').read_text())['layout']);self.assertTrue(all(n==2 for n in reads.values()));self.assertEqual([],oracle.writes);external.assert_not_called()
+
+ def test_missing_unready_terminal_and_unidentified_sidecars_refuse_before_query(self):
+  for case,code in [('missing','observation-deadline-exceeded'),('unready','observation-deadline-exceeded'),('waiting','observation-deadline-exceeded'),('terminated','sidecar-terminal-or-restarted'),('restart','sidecar-terminal-or-restarted'),('identity','sidecar-runtime-identity-required')]:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'sidecars');pod=runner.application_pod('eventstore');status=next(s for s in pod['status']['containerStatuses'] if s['name']=='daprd')
+    if case=='missing':pod['status']['containerStatuses'].remove(status)
+    if case=='unready':status['ready']=False
+    if case=='waiting':status['state']={'waiting':{}}
+    if case=='terminated':status['state']={'terminated':{'exitCode':1}}
+    if case=='restart':status['restartCount']=1
+    if case=='identity':status.pop('containerID')
+    runner.pod_overrides['eventstore']=pod;before=len(runner.mutations)
+    with patch.object(phases,'poll',side_effect=self.bounded),patch.object(phases,'request') as request:
+     self.refuse(code,lambda:runner.execute('sidecars'));self.refuse('required-phase-incomplete',lambda:runner.execute('administrator'));request.assert_not_called()
+    self.assertTrue((runner.journal/'sidecar-observations.jsonl').is_file());self.assertEqual(before,len(runner.mutations));external.assert_not_called()
+
+ def test_changed_or_lost_sidecar_runtime_blocks_writer_without_post(self):
+  for case,code in [('changed','sidecar-runtime-identity-changed'),('unbound','sidecar-runtime-identity-not-bound'),('lost-readiness','sidecar-runtime-unready')]:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'writer');pod=runner.application_pod('tenants');status=next(s for s in pod['status']['containerStatuses'] if s['name']=='daprd')
+    if case=='changed':status['containerID']='synthetic://replacement'
+    if case=='unbound':(runner.journal/'tenants-sidecar-identity.json').unlink()
+    if case=='lost-readiness':status['ready']=False
+    runner.pod_overrides['tenants']=pod;before=len(runner.mutations)
+    with patch.object(phases,'request') as request:self.refuse(code,lambda:runner.execute('writer'));request.assert_not_called()
+    self.assertEqual(before,len(runner.mutations));external.assert_not_called()
+
+
 class RecoveryTests(unittest.TestCase):
  refuse=V1Tests.refuse
  setup_runner=lambda self,c,until:WriteFailureTests.setup_runner(self,c,until)

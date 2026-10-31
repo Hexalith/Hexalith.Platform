@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Hexalith.Builds.Tooling.Workspace;
 
 /// <summary>Binds independently observing hosts to the already generated catalog and existing EventStore activation authority.</summary>
 internal sealed class PlatformRoutingCatalogBootstrap
@@ -119,9 +120,18 @@ internal sealed class PlatformRoutingCatalogBootstrap
     {
         // A gateway-only infrastructure graph has no enrolled business operations.
         if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return null;
-        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
+        if (options.Mapping.Mode != WorkspaceMode.Source)
+            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
             || server.ResourceId is "tenants-api" or "memories").ToArray();
+        var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
+        var enrolledApps = participants.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
+        foreach (var receiver in participants)
+        foreach (var grant in dapr.DeclaredInvocations(receiver.AppId))
+            if (selectedApps.Contains(grant.CallerAppId) && !enrolledApps.Contains(grant.CallerAppId)
+                && !(grant.Method.Trim('/') is "ready" or "health" or "alive" && grant.HttpMethods.SequenceEqual(["GET"], StringComparer.Ordinal)))
+                throw new InvalidDataException($"Selected caller '{grant.CallerAppId}' has a gateway/participant grant to '{receiver.AppId}/{grant.Method}' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.");
+        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
         return new(options, participants, catalog, rendered, dapr, servers);
     }
