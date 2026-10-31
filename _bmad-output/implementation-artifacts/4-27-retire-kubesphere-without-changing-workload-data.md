@@ -987,3 +987,22 @@ recovery qualification remain pending. Public activation stays disabled;
 credentials/configuration/endpoints, operational helper replay, recovery
 allocation/signing/upload/recovery or infrastructure mutation occurred. The
 scoped no-staging/commit/push instruction is retained.
+
+## Authorized operational resume — 2026-10-31
+
+The Administrator requests resuming and completing KubeSphere retirement while
+preserving workloads and data. For this run the Administrator explicitly
+authorizes remote checks and the gated live operations required by this story,
+overriding the build workflow's local-only/no-remote restriction. Earlier
+offline-only continuation boundaries do not prohibit this run's authorized work.
+
+Refresh required backup and restore evidence, validate every prerequisite, and
+complete retirement and private native-access verification. Use existing
+approvals where their exact scope and validity still apply; request only missing
+required decisions. This direction supplies no fabricated signature, expired
+proof renewal or exact resource/attempt approval. Keep Story 4.1's upgrade gate
+closed until all prerequisites pass. Report measured evidence and any remaining
+blockers; preserve historical records and unrelated workspace changes. No Git
+staging, commit or push is requested. At entry the sole unrelated untracked file
+is `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+under this implementation-artifacts directory.

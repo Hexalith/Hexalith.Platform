@@ -31,7 +31,10 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         CompositionWorkspace.CreatePrivateDirectory(build);
         string template = Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.CatalogBuilder");
         string project = Path.Combine(build, "Hexalith.Platform.CatalogBuilder.csproj");
-        var xml = XDocument.Load(Path.Combine(template, "Hexalith.Platform.CatalogBuilder.csproj"));
+        string templateProject = Path.Combine(template, "Hexalith.Platform.CatalogBuilder.csproj");
+        if (!File.Exists(templateProject))
+            throw new InvalidDataException("The required Platform routing catalog reader project is unavailable: " + templateProject);
+        var xml = XDocument.Load(templateProject);
         xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Packages.props"))));
         xml.Root.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
         xml.Save(project);

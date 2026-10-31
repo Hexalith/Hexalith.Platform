@@ -1,0 +1,309 @@
+{
+  "cleanup": [
+    {
+      "absenceVerified": true,
+      "kind": "Pod",
+      "uid": "7266f757-3bea-474e-99e7-04e5c1d633b8"
+    },
+    {
+      "absenceVerified": true,
+      "kind": "NetworkPolicy",
+      "uid": "9bea8e45-fb3f-4800-9d29-36593e4718c5"
+    }
+  ],
+  "cleanupPassed": true,
+  "error": "ValueError:metadata-native-command-refused",
+  "fileCount": 0,
+  "helperCreateOutcomesUnverified": 0,
+  "helperCreationIntents": 2,
+  "helperObjectsCreated": 2,
+  "kind": "node-metadata-helper-result",
+  "metadataObserved": false,
+  "namespacePvcPvIdentitiesAndBindingsUnchanged": false,
+  "networkPolicyIsCompleteFence": false,
+  "productionRetirementAuthorized": false,
+  "requests": [
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumeclaims?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/persistentvolumes?limit=500",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/nodes/s426-e7fdafc99624-control-plane",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies",
+      "verb": "create"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods",
+      "verb": "create"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624/log",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "delete"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/api/v1/namespaces/kube-system/pods/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 0,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "delete"
+    },
+    {
+      "dispatched": true,
+      "exitCode": 1,
+      "path": "/apis/networking.k8s.io/v1/namespaces/kube-system/networkpolicies/s427-node-meta-metadata-e7fdafc99624",
+      "verb": "get"
+    }
+  ],
+  "snapshotTaken": false,
+  "sourceContentArchived": false,
+  "sourceNodeAndNamespaceUidRevalidated": false,
+  "sourceRecoveryAccepted": false,
+  "upgradeGate": "closed",
+  "uploadsPerformed": false
+}

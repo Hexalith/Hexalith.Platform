@@ -386,3 +386,37 @@ The 2026-10-02 fixture limits still apply, and no production allowlist or accept
 ## Review loop 3 changes, 2026-10-03
 
 Review loop 3 changed `rehearse.py` to SHA-256 `4862637dc063d06742392e21c98262d16127b4a1b055c56621ecb1299adf98a5`. The procedure now hashes the PATH-resolved kind and docker binaries, records the operator only when it is a safe identity, and records the digests of the imported `evidence.py` and `qualify.py` in `attempt.json`. The reviewed-entry comparison is described accurately above; its behavior is unchanged. Native deletion, phase, finalizer and preservation behavior is unchanged. These bytes have unit verification only, and no fixture rerun followed. New tests cover the fixture start's isolation gates, the synthetic run's checks, phase settling and absence waits, the final retirement comparison, the chart digest and core readiness refusals, and cleanup's network and credential criteria.
+
+## Accepted pre-existing audit-record absence, 2026-10-31
+
+The Administrator answered **“Keep existing user; accept absent login record”**
+after review of the exact historical `LoginRecord/jpiquot-dgjhn`, UID
+`501f5739-eacd-4448-b7d6-f1994c0551cf`, and its absence from the current complete
+native list. Preserve the original archive and current absence evidence. The
+cause of disappearance is unestablished. Preserve the other four live retained
+objects, their exact identities and authority; recreate no record or user and
+change no binding. This narrowly supersedes that record's presence requirement
+in the October 4 table. Every other retention and execution requirement remains.
+
+Supply the same owner-only `--retained-audit-absence-decision /private/decision.json`
+to proposal, execution and assessment. Its kind is
+`retained-audit-absence-decision`, `approvedBy` is `Administrator`, `accepted` is
+true and `disposition` is `accept-existing-absence`. It binds `sourceClusterUid`,
+the exact historical object's API/kind/namespace/name/UID, the four
+`survivingRetainedObjects` identities, and the reviewed `proposalSha256` and
+`decisionNoteSha256`. A proposal binds its original bytes and grants no mutation.
+Before execution, authenticate the original Administrator signature in namespace
+`hexalith-retirement`; include its digest under
+`preflightInputs.retained-audit-absence-decision.json` in the separate exact
+execution approval. The executor checks these bytes throughout execution and
+authenticates them again during assessment. An unsigned, changed, pending or
+wrong-source decision, a changed surviving UID, another missing retained object,
+or a reappearing old record still stops. Renew rehearsals and plan binding for
+the changed executor and procedure bytes before execution.
+
+The native census also checks and retains the exact nonpersistent Calico
+`projectcalico-default-allow` Profile as a diagnostic, including its full content
+digest and encrypted original list. It receives no deletion authority. All
+persistent Profiles remain inventoried; a changed, duplicated or unknown
+identity-less view closes coverage. This corrects a measured census refusal;
+it supplies no recovery, retirement or upgrade acceptance.

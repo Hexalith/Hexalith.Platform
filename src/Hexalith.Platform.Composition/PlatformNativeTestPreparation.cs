@@ -1,4 +1,3 @@
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
 namespace Hexalith.Platform.Composition;
 
 using System.Net;
@@ -352,4 +351,3 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
     private static Uri Endpoint(IServiceProvider services, string resource) => new(services.GetRequiredService<DistributedApplicationModel>()
         .Resources.OfType<IResourceWithEndpoints>().Single(candidate => candidate.Name == resource).GetEndpoint("http").Url.TrimEnd('/') + "/");
 }
-#endif

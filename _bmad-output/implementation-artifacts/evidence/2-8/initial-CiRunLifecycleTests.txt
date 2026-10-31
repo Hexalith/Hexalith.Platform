@@ -1,0 +1,25 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "passed") [FAIL]
+      Shouldly.ShouldAssertException : down.Result.Outcome.ExitCode
+          should be
+      ToolExitCode.Success
+          but was
+      ToolExitCode.TopologyOrLifecycle
+      
+      Additional Info:
+          {"Status":"failed","Outcome":{"ExitCode":3,"Phase":8,"Category":4,"RuleId":"HXR023"},"Diagnostics":[{"RuleId":"HXR023","Phase":8,"Category":4,"Message":"Owned cleanup could not be verified within its existing allowance.","Field":"down","Hint":"Retry down for the same run identity.","Source":null,"Location":null,"Row":null}],"RemainingResources":{"ContainerIds":[],"ProcessIds":[],"Unverified":true,"IsEmpty":false,"WorkspaceIds":["workspace:95581bbea258384a404e60d5347fb5dc"],"ClaimIds":[],"DiscoveryFailures":["cleanup-verification"],"ResourceIds":["workspace:95581bbea258384a404e60d5347fb5dc"]}}
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(104,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(String terminal)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = '7cae78b6043dc846a09ef8121a894fb5df1d7d69afe29b3798a2e05ca632ba7c')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 7, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 1.869s

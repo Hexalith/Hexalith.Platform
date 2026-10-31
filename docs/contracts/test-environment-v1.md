@@ -327,7 +327,7 @@ no package-mode CI, candidate or tool acceptance credit.
 
 `hexalith-module attach` admits an explicit attachment to a runner-owned local or CI
 environment under `hexalith.platform.candidate-and-attachment-policy.v1`. Hosted,
-developer-started, unknown, CI-owned and cross-job targets, incompatible composition, mode,
+developer-started, unknown and cross-job targets, incompatible composition, mode,
 artifact identity, readiness or isolation, and finished owners (except a ready local
 failure-retained one) are refused with stable `HXR033` to `HXR035` reasons, and a retry naming an unknown, ended or
 expired lineage with `HXR036`; an invalid
@@ -343,8 +343,34 @@ that attachment and records its first outcome (`passed`, `failed` or `cancelled`
 owner cancellation and explicit `down` end active holds as `withdrawn` with reason
 `expired`, `owner-cancelled` or `developer-stop`, recorded and reported before any teardown.
 Artifact-identity matching is refused as unverifiable until Epic 3 populates
-expected and loaded identities. CI owners do not wait for holds, so attaching to one is refused
-as `HXR035` `owner-ci-holds-unsupported` until CI withdrawal lands. CI job bounds remain later work.
+expected and loaded identities. Compatible active CI owners admit attachments only within the exact
+repository, workflow run, attempt and job. CI completion/cancellation closes admission and ends active
+holds as `withdrawn` (`ci-job-completed` or `ci-job-cancelled`) before resources stop. CI never waits
+for a hold beyond its job or retains failure resources. First terminal outcomes and original expiry
+remain immutable; finished CI owners refuse new attachments.
+
+## CI ownership recovery and finalization
+
+`hexalith-module test --manifest <v2> --mode package --profile <declared-suite>
+--ci-owner-receipt <external-path>` durably publishes exact owner run, attempt,
+environment and actual CI job identities before allocating a run workspace or service.
+The receipt must be writable, link-free and outside deleted run workspaces. It cannot
+be rebound to another allocation. It is operational recovery metadata, outside the
+immutable descriptor/result schemas, and confers no candidate acceptance.
+
+The workflow first requires successful isolated tests, then uses the exact local
+pinned tool, generated Release/package imports and real services for blocking
+integration. The helper finalizes in `finally`; an independent `always()` step
+retries `down --run-id` using the receipt after cancellation or partial startup.
+Before invoking down, it verifies repository/run/attempt/job and durable owner
+bindings. Cleanup completion requires zero owned resources and verified discovery.
+Unknown discovery or leftovers fail with retryable metadata. Only classified,
+redacted result and attachment documents are retained outside deleted workspaces;
+private tokens, endpoint credentials and raw logs are excluded.
+
+Reference package publication, accepted tool/catalog pins, release provenance and
+revision-bound hosted cancellation/partial-startup qualification remain separate
+prerequisites. Local controls and staged CI enrollment do not establish those gates.
 
 ## Local lifecycle results and cleanup
 
@@ -369,7 +395,7 @@ pending cleanup available for exact retry without replacing the first outcome.
 Test/startup failure and
 startup/execution timeout retain surviving owned resources until
 `hexalith-module down --run-id <owner-run-id>`. Cancellation without prior failure
-cleans up. CI retains its existing cleanup policy. Exact cleanup is bounded and
+cleans up. CI withdraws live attachments before bounded exact-owner cleanup on every terminal path. Exact cleanup is bounded and
 retryable; separately started applications and other owners keep their resources
 and data. Resource, workspace, claim and discovery failures remain visible, and
 uncertain deletion is never `complete`.

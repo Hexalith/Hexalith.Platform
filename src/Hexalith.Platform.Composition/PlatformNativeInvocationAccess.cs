@@ -1,4 +1,3 @@
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
 namespace Hexalith.Platform.Composition;
 
 using Hexalith.Builds.Tooling.Runtime;
@@ -21,5 +20,3 @@ internal sealed class PlatformNativeInvocationAccess
     /// <summary>Gets the existing opaque credential only for the private channel or actual owning sidecar send.</summary>
     internal string ApiToken { get; }
 }
-
-#endif

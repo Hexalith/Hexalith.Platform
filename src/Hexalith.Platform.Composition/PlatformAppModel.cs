@@ -163,12 +163,10 @@ public static class PlatformAppModel
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
             catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
                     servers.Single(server => server.ResourceId == "memories")));
-#endif
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");

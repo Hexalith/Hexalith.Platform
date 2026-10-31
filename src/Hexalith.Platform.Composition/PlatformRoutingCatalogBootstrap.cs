@@ -10,13 +10,11 @@ using Hexalith.Builds.Tooling.Workspace;
 internal sealed class PlatformRoutingCatalogBootstrap
 {
     private readonly Dictionary<string, Dictionary<string, string>> _environment = new(StringComparer.Ordinal);
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
     private PlatformTenantBootstrapAccess? _tenantBootstrap;
 
     /// <summary>Returns only the actual run-owned Tenants transport delegation required for native setup.</summary>
     internal PlatformTenantBootstrapAccess TenantBootstrapAccess => _tenantBootstrap
         ?? throw new InvalidOperationException("The actual Tenants bootstrap delegation is unavailable.");
-#endif
     internal string Directory { get; }
 
     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
@@ -71,7 +69,6 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 && (route.AppId == participant.AppId || participant.AppId == "memories" && route.AppId.StartsWith("memories-", StringComparison.Ordinal))))
                 .Select(declaration => declaration.Domain).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal);
             gateway[(participant.AppId == "tenants" ? "Authentication__BoundStreamRead__AllowedDomains__" : "Authentication__BoundCommand__AllowedDomains__") + participant.AppId] = string.Join(',', domains);
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
             if (participant.AppId == "tenants" && options.RunPlan?.SelectedTest?.ModuleId == "parties")
             {
                 string bootstrapDomain = catalog.Envelope.Declarations.Single(declaration => declaration.Execution?.HandlerType
@@ -81,7 +78,6 @@ internal sealed class PlatformRoutingCatalogBootstrap
                     _environment[participant.ResourceId]["Authentication__BoundStreamRead__PrivateKey"],
                     participant.Environment.GetValueOrDefault("DAPR_API_TOKEN"), participant.Environment["Authentication__JwtBearer__Issuer"]);
             }
-#endif
         }
         foreach (var group in catalog.Envelope.Declarations.Where(d => d.Kind == "command").GroupBy(d => (d.Domain, d.ContractVersion)))
         {
@@ -121,8 +117,6 @@ internal sealed class PlatformRoutingCatalogBootstrap
     {
         // A gateway-only infrastructure graph has no enrolled business operations.
         if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
-        if (options.Mapping.Mode != WorkspaceMode.Source)
-            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
             || server.ResourceId is "tenants-api" or "memories").ToArray();
         var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);

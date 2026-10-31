@@ -1,0 +1,33 @@
+Telemetry
+---------
+Microsoft Testing Platform collects usage data in order to help us improve your experience. The data is collected by Microsoft and are not shared with anyone.
+You can opt-out of telemetry by setting the TESTINGPLATFORM_TELEMETRY_OPTOUT or DOTNET_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+
+Read more about Microsoft Testing Platform telemetry: https://aka.ms/testingplatform/telemetry
+failed Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync (0ms)
+  Xunit.MicrosoftTestingPlatform.XunitException: Class fixture type 'Hexalith.EventStore.Platform.IntegrationTests.PlatformEnvironmentFixture' threw in InitializeAsync
+  ---- Hexalith.EventStore.Testing.TestEnvironmentDescriptorException : HXT106: Supply an existing readable local contract file. Source: hexalith.test-environment.v1; field: $.
+    
+    ----- Inner Stack Trace -----
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Refuse(String rule, String version, String field, String message) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:464
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Read(String path, String version, JsonSchema schema, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:142
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadDescriptor(String path, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:37
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadFromEnvironment() in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:44
+    at Hexalith.EventStore.Testing.Integration.AspireTopologyFixtureBase.InitializeAsync() in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs:51
+failed Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync (0ms)
+  Xunit.MicrosoftTestingPlatform.XunitException: Class fixture type 'Hexalith.EventStore.Platform.IntegrationTests.PlatformEnvironmentFixture' threw in InitializeAsync
+  ---- Hexalith.EventStore.Testing.TestEnvironmentDescriptorException : HXT106: Supply an existing readable local contract file. Source: hexalith.test-environment.v1; field: $.
+    
+    ----- Inner Stack Trace -----
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Refuse(String rule, String version, String field, String message) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:464
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Read(String path, String version, JsonSchema schema, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:142
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadDescriptor(String path, CancellationToken cancellationToken) in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:37
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadFromEnvironment() in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:44
+    at Hexalith.EventStore.Testing.Integration.AspireTopologyFixtureBase.InitializeAsync() in /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs:51
+
+Test run summary: Failed! - /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/tests/Hexalith.EventStore.Platform.IntegrationTests/bin/Debug/net10.0/Hexalith.EventStore.Platform.IntegrationTests.dll (net10.0|x64)
+  total: 2
+  failed: 2
+  succeeded: 0
+  skipped: 0
+  duration: 222ms

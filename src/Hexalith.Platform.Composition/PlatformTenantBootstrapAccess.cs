@@ -1,4 +1,3 @@
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
 namespace Hexalith.Platform.Composition;
 
 /// <summary>Private delegated Tenants transport held only by the owning runner; never serialized into observations or handoff.</summary>
@@ -19,4 +18,3 @@ internal sealed class PlatformTenantBootstrapAccess(string resourceId, string ap
     /// <summary>Gets the actual shared issuer of this run's Tenants workload.</summary>
     internal string Issuer { get; } = issuer;
 }
-#endif

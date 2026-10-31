@@ -1,0 +1,141 @@
+{
+  "record": "EXT-PROTECTION-1",
+  "loop": 10,
+  "runId": "314ddb04c56c",
+  "status": "in-progress",
+  "reviewLoopIteration": 10,
+  "scope": "Authorized loop-10 current-graph regression resume (2026-10-31) only",
+  "recordedUtc": "2026-10-31T16:17:59.417458+00:00",
+  "acceptedTarget": null,
+  "acceptedProfile": null,
+  "acceptedDate": null,
+  "availability": null,
+  "nativeBootstrapIntegrationRerun": false,
+  "nativeFiveCaseRerun": false,
+  "installed41CaseRun": false,
+  "physicalCopyQualification": false,
+  "liveOqAgentsClusterProductionOrGitMutation": false,
+  "auditAllCorrectionsPresent": true,
+  "auditBytesMatchLatestLoop10Graphs": true,
+  "productionSourceChanged": false,
+  "testSourceChanged": false,
+  "builds": [
+    {
+      "name": "platform",
+      "warnings": 0,
+      "errors": 0,
+      "allOutputsFresh": true,
+      "buildStartUtc": "2026-10-31T16:15:05.436861+00:00",
+      "projectOutputs": 11
+    },
+    {
+      "name": "eventstore",
+      "warnings": 0,
+      "errors": 0,
+      "allOutputsFresh": true,
+      "buildStartUtc": "2026-10-31T16:15:18.021500+00:00",
+      "projectOutputs": 18
+    }
+  ],
+  "tests": [
+    {
+      "repository": "platform",
+      "total": 76,
+      "passed": 76,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "notPassed": [],
+      "xml": "platform-tests.xml",
+      "sha256": "d3b794c205267076a8a75409f19fcd9768fed5d9c6b26ee95b5ca16184bfb77e"
+    },
+    {
+      "repository": "eventstore",
+      "total": 268,
+      "passed": 268,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "notPassed": [],
+      "xml": "eventstore-tests.xml",
+      "sha256": "8e10064b0349e2703f2bcf1d189d57c33d35e8493d94f3dba05ab80f5050f61b"
+    }
+  ],
+  "pythonTests": [
+    {
+      "name": "bootstrap-tests",
+      "ran": 12,
+      "ok": true,
+      "exitCode": 0,
+      "okLines": 11,
+      "resourceWarnings": 2
+    },
+    {
+      "name": "harness-unit-tests",
+      "ran": 7,
+      "ok": true,
+      "exitCode": 0,
+      "okLines": 7,
+      "resourceWarnings": 0
+    }
+  ],
+  "runtimeInventories": [
+    {
+      "repository": "platform",
+      "files": 257,
+      "unchangedAfterExecution": true,
+      "manifest": "platform-runtime.json",
+      "sha256": "ae941268697fdbd8ded9f3f2eef3b37e92eb0619d0164b172d6252389076fd64",
+      "externalRuntime": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-current-graph-314ddb04c56c/runtime/platform"
+    },
+    {
+      "repository": "eventstore",
+      "files": 692,
+      "unchangedAfterExecution": true,
+      "manifest": "eventstore-runtime.json",
+      "sha256": "3ea48d8e1bfd6026a8642b6f26b32611e218482f9b8efb81d1840982cf0c5312",
+      "externalRuntime": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-current-graph-314ddb04c56c/runtime/eventstore"
+    }
+  ],
+  "sourceChangedDuringRun": [],
+  "sourceAddedDuringRun": [],
+  "sourceAfterManifest": {
+    "path": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-current-graph-314ddb04c56c/source-after.json",
+    "sha256": "26a6cf1813e714cb5871ea6bfc6b5d1945305b1e7b6d47a69c01ad8fab6cb0cd"
+  },
+  "concurrentProcesses": {
+    "dotnetBuildOrMsbuildProcessesObservedBeforeRun": 16,
+    "referencingSharedPlatformOrEventStoreCheckout": 0,
+    "note": "Raw process command lines belong to other sessions and are not bundled."
+  },
+  "specInvariantsHold": true,
+  "frozenIntentSha256": "96c592bd1c874a331c90a37e9b1af74c5d2bae7b6f1720401c0aff560c317e86",
+  "frozenIntentMatchesParentAudit": true,
+  "contextInventory": [
+    {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md",
+      "bytes": 293355,
+      "sha256": "a47574e2fdd0feb17eff9a9845180cfe6f890f108e4ee6f82cd636b5e486265c"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/agents/_bmad-output/planning-artifacts/external-dependency-register.md",
+      "bytes": 75611,
+      "sha256": "e29b7fc41cb404209e0abb5fb1e735f29cab253ce4012b142a2c8c30a9c19860"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/eventstore/docs/implementation/ext-protection-1-owner-acceptance.md",
+      "bytes": 154919,
+      "sha256": "d6963d771f6614aac745e9e46d858e64ac723c0bed53d6865b1e4b1737d2f781"
+    },
+    {
+      "path": "/home/administrator/projects/hexalith/platform/docs/implementation/ext-secrets-1-dek-provider-decision-2026-10-18.md",
+      "bytes": 18736,
+      "sha256": "0536906b5d68f76b2e194fbe646c56e6132dd9a1f6bfd3fbbeb525abb2301b50"
+    }
+  ],
+  "deferred": [
+    "R7-BH-7 generic subprocess capture remains deferred and unchanged",
+    "Unopened Review 11 maybe-false rows remain deferred and unverified"
+  ],
+  "notAttributed": "Bootstrap native integration and the five-case native suite passes belong to source-gaps-7b5a4e938648 and are not attributed to this graph."
+}

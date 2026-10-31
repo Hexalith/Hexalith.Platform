@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -195,7 +196,8 @@ class RetirementTests(unittest.TestCase):
         plan = json.loads(plan_path.read_bytes())
         self.assertEqual(plan['attemptId'], 'execution')
         self.assertFalse(plan['productionApproved'])
-        self.assertEqual(len(plan['retainedAuthorityUids']), 5)
+        self.assertEqual(len(plan['retainedAuthorityUids']),
+                         4 if self.args.retained_audit_absence_decision else 5)
         self.args.plan = plan_path
         self.args.attempt_id, self.args.execute, self.args.arm_attempt = 'execution', True, 'execution'
         self.args.preflight, self.args.backup_bundle, self.args.approval = self.preflight, self.backup, self.root / 'approval.json'
@@ -206,6 +208,10 @@ class RetirementTests(unittest.TestCase):
         policy = self.recent(trustRootSha256=file_digest(self.trust), administratorPrincipal='admin',
                              maximumValidationAgeSeconds=900, maximumRecoveryAgeSeconds=3600, maximumPlanAgeSeconds=900)
         hashes = {'retirement-policy.json': self.signed(self.preflight, 'retirement-policy.json', policy)}
+        if plan.get('retainedAuditAbsenceDecision'):
+            path = self.args.retained_audit_absence_decision
+            hashes['retained-audit-absence-decision.json'] = self.signed(path.parent, path.name,
+                                                                          json.loads(path.read_bytes()))
         backup_hashes = {}
         policy40 = {'recoveryId': 'current-recovery', 'systems': {w: {'maximumProofAgeSeconds': 3600}
                                                                   for w in ('keycloak', 'openbao', 'memories')}}
@@ -286,6 +292,105 @@ class RetirementTests(unittest.TestCase):
         self.assertTrue((self.root / 'custody/retirement/execution/result.json.sig').exists())
         self.assertEqual({body['preconditions']['uid'] for _, _, body in MemoryNative.sent},
                          {a['uid'] for a in plan['actions']})
+
+    def approve_existing_audit_absence(self):
+        uid = next(uid for uid, raw in MemoryNative.live.items()
+                   if (raw['apiVersion'], raw['kind'], raw['metadata'].get('namespace'), raw['metadata']['name'])
+                   == retire.RETAINED_AUDIT)
+        del MemoryNative.live[uid]
+        survivors = [project_resource(raw) for raw in MemoryNative.live.values()
+                     if retire.key(project_resource(raw)) in retire.AUTHORITY]
+        decision = {'kind': 'retained-audit-absence-decision', 'approvedBy': 'Administrator', 'accepted': True,
+                    'disposition': 'accept-existing-absence', 'sourceClusterUid': 'Namespace-kube-system',
+                    'historicalObject': {'apiVersion': retire.RETAINED_AUDIT[0], 'kind': retire.RETAINED_AUDIT[1],
+                                         'namespace': None, 'name': retire.RETAINED_AUDIT[3],
+                                         'uid': retire.RETAINED_AUDIT_UID},
+                    'survivingRetainedObjects': survivors, 'proposalSha256': digest(b'reviewed-proposal'),
+                    'decisionNoteSha256': digest(b'reviewed-note')}
+        path = self.root / 'retained-audit-decision.json'
+        path.write_bytes(canonical(decision))
+        path.chmod(0o600)
+        self.args.retained_audit_absence_decision = path
+        return path
+
+    def test_exact_accepted_audit_absence_binds_plan_signed_gate_and_preserves_four_objects(self):
+        path = self.approve_existing_audit_absence()
+        plan = self.plan()
+        self.assertEqual(plan['retainedAuditAbsenceDecision']['sha256'], file_digest(path))
+        state, result = self.result()
+        self.assertEqual(state, 'retired-awaiting-acceptance', result)
+        self.assertEqual(len(plan['retainedAuthorityUids']), 4)
+        self.assertTrue(set(plan['retainedAuthorityUids']) <= set(MemoryNative.live))
+        self.assertNotIn(retire.RETAINED_AUDIT_UID, {v['metadata']['uid'] for v in MemoryNative.live.values()})
+        approval = json.loads(self.args.approval.read_bytes())
+        self.assertEqual(approval['preflightInputs']['retained-audit-absence-decision.json'], file_digest(path))
+
+    def test_missing_audit_still_requires_explicit_decision(self):
+        self.approve_existing_audit_absence()
+        self.args.retained_audit_absence_decision = None
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'retained-authority-incomplete')
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_pending_wrong_historical_uid_or_surviving_uid_cannot_authorize_absence(self):
+        path = self.approve_existing_audit_absence()
+        original = json.loads(path.read_bytes())
+        updates = [lambda d: d.update(accepted=False),
+                   lambda d: d['historicalObject'].update(uid='unapproved-uid'),
+                   lambda d: d['survivingRetainedObjects'][0].update(uid='changed-live-uid')]
+        for update in updates:
+            decision = copy.deepcopy(original)
+            update(decision)
+            path.write_bytes(canonical(decision))
+            with self.subTest(decision=decision), self.assertRaises(ValueError):
+                retire.retained_audit_absence_binding(self.args,
+                    [project_resource(v) for v in MemoryNative.live.values()], {'sourceClusterUid': 'Namespace-kube-system'})
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_accepted_audit_absence_does_not_allow_other_retained_objects_missing(self):
+        self.approve_existing_audit_absence()
+        del MemoryNative.live['User-jpiquot']
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'retained-authority-incomplete')
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_unsigned_audit_decision_refuses_before_mutation(self):
+        path = self.approve_existing_audit_absence()
+        self.plan()
+        Path(str(path) + '.sig').unlink()
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_changed_decision_refuses_before_mutation(self):
+        path = self.approve_existing_audit_absence()
+        self.plan()
+        self.modify_signed(path, {'decisionNoteSha256': digest(b'different-note')})
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_signed_approval_must_bind_the_signed_audit_decision(self):
+        self.approve_existing_audit_absence()
+        self.plan()
+        approval = json.loads(self.args.approval.read_bytes())
+        del approval['preflightInputs']['retained-audit-absence-decision.json']
+        self.modify_signed(self.args.approval, {'preflightInputs': approval['preflightInputs']})
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(result['reasonCode'], 'execution-approval-binding-mismatch')
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_audit_recreation_after_approved_absence_refuses_before_mutation(self):
+        self.approve_existing_audit_absence()
+        self.plan()
+        raw = object_(retire.RETAINED_AUDIT[0], 'LoginRecord', retire.RETAINED_AUDIT[3])
+        MemoryNative.live[raw['metadata']['uid']] = raw
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed')
+        self.assertEqual(MemoryNative.sent, [])
 
     def test_unarmed_gate_is_zero_mutations(self):
         self.plan()
@@ -1284,6 +1389,80 @@ class RetirementTests(unittest.TestCase):
             capture.list_resource('v1', '/api/v1', {'name': 'namespaces', 'kind': 'Namespace'}, 'namespace-list')
         self.assertEqual(len(capture.inventory), 1)
         self.assertEqual(project_resource(capture.raw_by_uid[raw['metadata']['uid']]), capture.inventory[0])
+
+
+class NativeDiagnosticTests(unittest.TestCase):
+    """The observed Calico diagnostic cannot hide missing persistent identities."""
+
+    @staticmethod
+    def default_profile():
+        return {'apiVersion': 'projectcalico.org/v3', 'kind': 'Profile',
+                'metadata': {'name': 'projectcalico-default-allow',
+                             'resourceVersion': '1', 'creationTimestamp': None},
+                'spec': {direction: [{'action': 'Allow', 'source': {}, 'destination': {}}]
+                         for direction in ('ingress', 'egress')}}
+
+    def capture(self, items, api='projectcalico.org/v3', pages=None):
+        capture = retire.NativeCapture(SimpleNamespace(), None)
+        listing = {'apiVersion': api, 'kind': 'ProfileList', 'metadata': {}, 'items': items}
+        original = copy.deepcopy(listing)
+        with patch.object(capture, 'kube', side_effect=pages or [listing]):
+            capture.list_resource(api, '/apis/' + api, {'name': 'profiles', 'kind': 'Profile'}, 'profiles')
+        self.assertEqual(listing, original, 'the original encrypted response must stay intact')
+        return capture
+
+    def test_exact_nonpersistent_view_retains_persistent_profiles_and_diagnostic_digest(self):
+        persistent = object_('projectcalico.org/v3', 'Profile', 'kns.synthetic')
+        capture = self.capture([self.default_profile(), persistent])
+        self.assertEqual(capture.coverage, [])
+        self.assertEqual([v['uid'] for v in capture.inventory], [persistent['metadata']['uid']])
+        self.assertEqual(set(capture.raw_by_uid), {persistent['metadata']['uid']})
+        self.assertEqual(len(capture.diagnostic_views), 1)
+        diagnostic = capture.diagnostic_views[0]
+        self.assertFalse(diagnostic['persistent'])
+        self.assertFalse(diagnostic['deletionAuthority'])
+        self.assertEqual(diagnostic['contentSha256'], retire.content_review_digest(self.default_profile()))
+
+    def test_changed_diagnostic_or_unknown_missing_identity_keeps_coverage_closed(self):
+        variants = []
+        for field, value in [('name', 'unreviewed'), ('resourceVersion', '2'), ('namespace', 'application'),
+                             ('uid', ''), ('finalizers', ['unexpected']), ('ownerReferences', [])]:
+            changed = self.default_profile()
+            changed['metadata'][field] = value
+            variants.append(changed)
+        changed = self.default_profile()
+        changed['spec']['ingress'][0]['action'] = 'Deny'
+        variants.append(changed)
+        changed = self.default_profile()
+        changed['spec']['labelsToApply'] = {'unreviewed': 'value'}
+        variants.append(changed)
+        changed = self.default_profile()
+        changed['kind'] = 'OtherProfile'
+        variants.append(changed)
+        for raw in variants:
+            with self.subTest(raw=raw):
+                capture = self.capture([raw])
+                self.assertTrue(capture.coverage)
+                self.assertTrue(all(v['state'] == 'invalid-schema' for v in capture.coverage))
+                self.assertEqual(capture.diagnostic_views, [])
+                self.assertEqual(capture.inventory, [])
+
+    def test_exact_view_on_other_api_path_is_not_excluded(self):
+        capture = self.capture([self.default_profile()], api='unreviewed.example/v3')
+        self.assertTrue(capture.coverage)
+        self.assertEqual(capture.diagnostic_views, [])
+
+    def test_duplicate_diagnostic_in_one_page_refuses(self):
+        capture = self.capture([self.default_profile(), self.default_profile()])
+        self.assertTrue(capture.coverage)
+        self.assertEqual(capture.diagnostic_views, [])
+
+    def test_duplicate_diagnostic_across_pages_refuses(self):
+        first = {'metadata': {'continue': 'second'}, 'items': [self.default_profile()]}
+        second = {'metadata': {}, 'items': [self.default_profile()]}
+        capture = self.capture([], pages=[first, second])
+        self.assertTrue(capture.coverage)
+        self.assertEqual(len(capture.diagnostic_views), 1)
 
 
 if __name__ == '__main__':

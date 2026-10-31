@@ -1,0 +1,80 @@
+{
+  "classification": "local-source-controls-only",
+  "storyStatus": "in-progress",
+  "hostedQualificationComplete": false,
+  "candidateAcceptance": false,
+  "passed": {
+    "buildsCiLifecycle": 14,
+    "buildsAttachAdmission": 130,
+    "buildsCompositionEngine": 43,
+    "buildsModuleRunnerReviewRegression": 51,
+    "platformNativePreparation": 8,
+    "platformPackagePrerequisites": 5,
+    "eventstoreDescriptorControls": 15,
+    "integrationHelper": 15,
+    "preparationHelper": 9,
+    "workflowAssertions": 223,
+    "requiredCiStatus": 1,
+    "partiesDeclaration": 7,
+    "partiesIsolatedObservation": 4
+  },
+  "zeroWarningDebugBuilds": [
+    "Builds CLI/Tooling",
+    "Builds focused Module.Tests (reused fixture dependencies)",
+    "Platform mapped Composition.Tests graph",
+    "EventStore Testing.Integration SDK",
+    "EventStore Platform.IntegrationTests",
+    "EventStore Testing.Integration.Tests",
+    "Parties Platform.IntegrationTests"
+  ],
+  "expectedNegativeControls": {
+    "eventstoreWithoutDescriptor": {
+      "failed": 2,
+      "skipped": 0
+    },
+    "partiesNativeSuiteWithoutDescriptor": {
+      "failed": 1,
+      "skipped": 0
+    },
+    "eventstorePublishedSdk3.128.4": {
+      "buildExitNonzero": true,
+      "missingApis": [
+        "non-generic AspireTopologyFixtureBase",
+        "TestEnvironmentEndpoint"
+      ]
+    }
+  },
+  "broadBlockers": [
+    "Unmapped Module.Tests fixture graph misses Commons/FrontComposer references.",
+    "Mapped Module.Tests graph fails HXW005: source FrontComposer duplicates restored Hexalith.FrontComposer.Contracts/4.7.1."
+  ],
+  "resolvedLocalBlocker": "Platform no-reference rebuild initially loaded inconsistent Tenants assembly versions; the subsequent full mapped graph and 13 focused controls pass.",
+  "pending": [
+    "Approved coordinated package/tool/image publication and exact-source gates",
+    "Reference caller activation using approved workflow/tool pins and released declaration provenance",
+    "Revision-bound disposable hosted reference CI, cancellation and partial-startup cleanup qualification"
+  ],
+  "auditCorrections": {
+    "helperConstructorCancellation": "A pending signal is forwarded after Popen assignment; forwarding is idempotent.",
+    "realHelperSignalControl": "The actual helper subprocess invokes a temporary fake dotnet executable, forwards SIGTERM as SIGINT and executes exact receipt-bound down with cancelled job status.",
+    "executingCiControls": {
+      "cases": 5,
+      "scenarios": [
+        "passed",
+        "failed",
+        "cancelled",
+        "partial-startup-failed",
+        "partial-startup-cancelled"
+      ],
+      "observer": "A live owned AppHost process reads the committed cleanup request, attachment withdrawal report and first terminal record at its first stop signal.",
+      "assertions": [
+        "withdrawal precedes first composed-resource stop",
+        "first outcome/time survives cleanup",
+        "original expiry unchanged",
+        "no CI failure retention",
+        "verified empty owned resources and deleted workspace"
+      ]
+    },
+    "limits": "CI identity is simulated in exclusive tests. Selected-suite execution uses source-mode fixtures and real local native/AppHost processes. The partial-startup callback drives the real engine FailAndTearDownAsync path. No live Aspire/Dapr/Docker topology, Release package or hosted qualification is claimed."
+  }
+}

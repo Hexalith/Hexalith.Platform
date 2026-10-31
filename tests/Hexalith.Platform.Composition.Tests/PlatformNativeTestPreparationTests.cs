@@ -1,4 +1,3 @@
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Reflection;
@@ -245,4 +244,3 @@ public sealed class PlatformNativeTestPreparationTests
         public void Dispose() => Directory.Delete(Root, recursive: true);
     }
 }
-#endif

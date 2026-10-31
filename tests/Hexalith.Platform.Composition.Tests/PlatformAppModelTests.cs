@@ -92,15 +92,18 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
     [Fact]
-    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+    public void PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
     {
-        var options = PackageGraphOptions() with
-        {
-            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
-        };
-        var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
-        builder.Resources.ShouldBeEmpty();
+        PlatformCompositionOptions options = PackageGraphOptions();
+        IReadOnlyList<Hexalith.Builds.Tooling.Manifest.PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
+        IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
+        PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations);
+        IReadOnlyList<PlatformServerBinding> participants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+        participants.Select(server => server.ResourceId).ShouldContain("eventstore");
+        participants.Select(server => server.ResourceId).ShouldContain("tenants");
+        participants.Select(server => server.ResourceId).ShouldContain("memories");
+        // Binding stays metadata-only: restore/build and image availability remain independent prerequisites.
+        Builder().Resources.ShouldBeEmpty();
     }
 
     [Fact]

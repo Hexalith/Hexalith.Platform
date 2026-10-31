@@ -38,6 +38,8 @@ AUTHORITY = {('iam.kubesphere.io/v1beta1', 'User', None, 'jpiquot'),
              ('rbac.authorization.k8s.io/v1', 'ClusterRoleBinding', None, 'jpiquot-cluster-admin'),
              ('v1', 'Secret', 'kubesphere-system', 'kubeconfig-jpiquot'),
              ('iam.kubesphere.io/v1beta1', 'LoginRecord', None, 'jpiquot-dgjhn')}
+RETAINED_AUDIT = ('iam.kubesphere.io/v1beta1', 'LoginRecord', None, 'jpiquot-dgjhn')
+RETAINED_AUDIT_UID = '501f5739-eacd-4448-b7d6-f1994c0551cf'
 BACKUP_FILES = ('policy/recovery-policy.json', 'manifest/evidence-manifest.json',
                 'cleanup/restore-target-cleanup.json', 'gate/backup-gate.json',
                 'keycloak/keycloak-restore-proof.json', 'openbao/openbao-restore-proof.json',
@@ -284,12 +286,43 @@ def validate_role_consumers(inventory, actions):
                     'retained-native-binding-consumes-retired-role')
 
 
+def retained_audit_absence_binding(args, inventory, source):
+    """One exact owner-dispositioned absence; the other four identities remain mandatory.
+
+    Planning binds the reviewed documentary decision. Execution also authenticates
+    its original Administrator signature and includes it in the exact approval.
+    """
+    current = {key(v): v['uid'] for v in inventory if key(v) in AUTHORITY}
+    path = getattr(args, 'retained_audit_absence_decision', None)
+    if not path:
+        require(set(current) == AUTHORITY, 'retained-authority-incomplete')
+        return None
+    path = private_file(path, args.project_root)
+    decision = json.loads(path.read_bytes())
+    historical = decision.get('historicalObject', {})
+    require(decision.get('kind') == 'retained-audit-absence-decision'
+            and decision.get('approvedBy') == 'Administrator' and decision.get('accepted') is True
+            and decision.get('disposition') == 'accept-existing-absence'
+            and decision.get('sourceClusterUid') == source['sourceClusterUid']
+            and key(historical) == RETAINED_AUDIT and historical.get('uid') == RETAINED_AUDIT_UID
+            and all(re.fullmatch(r'[a-f0-9]{64}', decision.get(field, '')) for field in
+                    ('proposalSha256', 'decisionNoteSha256')),
+            'retained-audit-absence-decision-invalid')
+    require(set(current) == AUTHORITY - {RETAINED_AUDIT}, 'retained-authority-incomplete')
+    retained = decision.get('survivingRetainedObjects', [])
+    require(isinstance(retained, list) and len(retained) == 4
+            and {key(v): v.get('uid') for v in retained} == current,
+            'retained-authority-decision-identity-drift')
+    return {'sha256': file_digest(path), 'historicalUid': RETAINED_AUDIT_UID,
+            'sourceClusterUid': source['sourceClusterUid'], 'retainedAuthorityUids': sorted(current.values())}
+
+
 def make_plan(args, inventory, raw, source, rehearsals):
     require(source.get('sourceClusterUid') and source.get('nativeEndpoint'), 'missing-native-source-identity')
     require({v['uid'] for v in inventory} == set(raw), 'incomplete-private-content-baseline')
     scope = retirement_scope(inventory)
     retained = {v['uid'] for v in inventory if key(v) in AUTHORITY}
-    require(len(retained) == len(AUTHORITY), 'retained-authority-incomplete')
+    absence = retained_audit_absence_binding(args, inventory, source)
     require(not scope & retained, 'retained-authority-in-removal-scope')
     phases = dependency_plan(inventory, scope)
     require(phases and all(v['name'] in PRODUCTION_FINALIZER_NAMES for v in inventory
@@ -317,6 +350,7 @@ def make_plan(args, inventory, raw, source, rehearsals):
             'resources': inventory, 'fullContentSha256': {uid: content_review_digest(v) for uid, v in raw.items()},
             'leaseRenewalBindings': make_lease_bindings(raw),
             'actions': actions, 'phases': phases, 'rehearsals': rehearsals,
+            'retainedAuditAbsenceDecision': absence,
             'retainedAuthorityUids': sorted(retained), 'productionApproved': False,
             'sourceAtomic': False, 'upgradeGate': 'closed'}
 
@@ -328,6 +362,9 @@ def validate_plan(args, plan, current, raw, source):
             and plan['nativeEndpoint'] == source['nativeEndpoint'], 'plan-source-identity-drift')
     require(plan['resolvedNativeConfigurationSha256'] == source['resolvedNativeConfigurationSha256'],
             'resolved-native-configuration-changed')
+    require(plan.get('retainedAuditAbsenceDecision') == retained_audit_absence_binding(args, current, source)
+            and plan['retainedAuthorityUids'] == sorted(v['uid'] for v in current if key(v) in AUTHORITY),
+            'retained-authority-decision-binding-changed')
     require(all(plan[k] == v for k, v in code_binding(args.project_root).items()), 'execution-bytes-changed')
     require(plan['toolSha256'] == tool_binding(args)
             and plan['nativeKubeconfigSha256'] == file_digest(args.kubeconfig)
@@ -480,6 +517,10 @@ def validate_preflight(args, signed, plan, plan_sha, raw):
     fresh({**plan, 'expiresAt': policy['expiresAt']}, policy['maximumPlanAgeSeconds'])
     backup_hashes = validate_backup(args, signed, policy, plan)
     records, hashes = {}, {'retirement-policy.json': policy_sha}
+    if plan.get('retainedAuditAbsenceDecision'):
+        _, sha = signed.read(args.retained_audit_absence_decision)
+        require(sha == plan['retainedAuditAbsenceDecision']['sha256'], 'retained-audit-decision-changed')
+        hashes['retained-audit-absence-decision.json'] = sha
     for name in GATE_FILES:
         record, sha = signed.read(args.preflight / name)
         require(record.get('attemptId') == args.attempt_id and record.get('planSha256') == plan_sha
@@ -574,6 +615,7 @@ class NativeCapture(Capture):
     def __init__(self, args, attempt):
         super().__init__(args, attempt)
         self.raw_by_uid, self.discovery = {}, {}
+        self.diagnostic_views = []
 
     def kube(self, name, args, parse=True):
         result = super().kube(name, args, parse)
@@ -592,6 +634,22 @@ class NativeCapture(Capture):
             for raw in data.get('items', []):
                 if isinstance(raw, dict) and safe(raw.get('metadata', {}).get('uid')):
                     self.raw_by_uid[raw['metadata']['uid']] = raw
+            # Calico serves this exact synthetic, nonpersistent view alongside
+            # real UID-addressable Profiles. Keep its original response encrypted
+            # and check its complete shape; it has no deletion identity. Every
+            # other identity-less or changed object still fails normal coverage.
+            if path.split('?', 1)[0] == '/apis/projectcalico.org/v3/profiles' and isinstance(data.get('items'), list):
+                expected = {'apiVersion': 'projectcalico.org/v3', 'kind': 'Profile',
+                    'metadata': {'name': 'projectcalico-default-allow', 'resourceVersion': '1',
+                                 'creationTimestamp': None},
+                    'spec': {direction: [{'action': 'Allow', 'source': {}, 'destination': {}}]
+                             for direction in ('ingress', 'egress')}}
+                views = [raw for raw in data['items'] if raw == expected]
+                if len(views) == 1 and not self.diagnostic_views:
+                    self.diagnostic_views.append({'path': path, 'kind': 'Profile',
+                        'name': 'projectcalico-default-allow', 'persistent': False,
+                        'deletionAuthority': False, 'contentSha256': content_review_digest(views[0])})
+                    data = dict(data, items=[raw for raw in data['items'] if raw != expected])
         return data
 
     def resources(self, data, step):
@@ -647,6 +705,8 @@ class Native(PhaseExecutor):
         sink = CaptureSink(self.attempt, self.args, f'census-{self.census_sequence:04d}')
         capture = NativeCapture(self.args, sink)
         access = capture.collect()
+        sink.record('diagnostic-views.json', {'observations': capture.diagnostic_views,
+            'scope': 'Exact checked nonpersistent views; never deletion or preservation identities'})
         require(capture.resolved_config_sha == before_config, 'resolved-native-configuration-changed')
         require(access['authorizedRead'] and access['unauthorizedDenied'], 'native-read-or-denial-unverified')
         require(all(v['state'] == 'observed' for v in capture.coverage), 'native-census-coverage-incomplete')
@@ -658,6 +718,7 @@ class Native(PhaseExecutor):
         self.observe_bound_leases()
         source = sink.records['inventory.json']
         source['resources'] = inventory
+        source['excludedReadOnlyDiagnostics'] = capture.diagnostic_views
         source['resolvedNativeConfigurationSha256'] = before_config
         return inventory, source
 
@@ -875,6 +936,9 @@ class Native(PhaseExecutor):
 
     def check_execution_bindings(self):
         require(all(self.plan[k] == v for k, v in code_binding(self.args.project_root).items()), 'execution-bytes-changed')
+        require(self.plan.get('retainedAuditAbsenceDecision') ==
+                retained_audit_absence_binding(self.args, self.plan['resources'], self.plan),
+                'retained-authority-decision-binding-changed')
         require(self.plan['toolSha256'] == tool_binding(self.args)
             and self.plan['nativeKubeconfigSha256'] == file_digest(private_file(self.args.kubeconfig, self.args.project_root))
             and self.plan['receiptSigningKeySha256'] == file_digest(private_file(self.args.receipt_key, self.args.project_root))
@@ -924,6 +988,8 @@ def structural_outcome(native, plan, inventory):
 def validate_assessment_inputs(args, native, plan, source=None):
     """Apply the original execution's trust and native identity to every read-only assessment."""
     require(all(plan[k] == v for k, v in code_binding(args.project_root).items()), 'execution-bytes-changed')
+    require(plan.get('retainedAuditAbsenceDecision') == retained_audit_absence_binding(args, plan['resources'], plan),
+            'retained-authority-decision-binding-changed')
     require(plan['context'] == args.context
             and plan['administratorPrincipal'] == args.administrator_principal
             and plan['trustRootSha256'] == file_digest(private_file(args.allowed_signers, args.project_root)),
@@ -970,6 +1036,9 @@ def assess(args, signed, native, inventory, source):
     native.namespace_modified = {uid for p in plan['phases'] for uid in p.get('expectedModified', [])}
     outcome = structural_outcome(native, plan, inventory)
     policy, _ = signed.read(args.preflight / 'retirement-policy.json')
+    if plan.get('retainedAuditAbsenceDecision'):
+        _, sha = signed.read(args.retained_audit_absence_decision)
+        require(sha == plan['retainedAuditAbsenceDecision']['sha256'], 'retained-audit-decision-changed')
     fresh(policy, 86400)
     native.assessment_freshness = [(policy, 86400, None)]
     require(policy['trustRootSha256'] == plan['trustRootSha256']
@@ -1155,7 +1224,7 @@ def parser():
     for name in ('kubeconfig', 'kubectl', 'helm', 'age', 'ssh-keygen', 'readback-identity', 'allowed-signers', 'receipt-key'):
         p.add_argument('--' + name, type=Path, required=True)
     for name in ('plan', 'approval', 'preflight', 'backup-bundle', 'catalog-rehearsal', 'namespace-rehearsal',
-                 'assess-result', 'postflight', 'acceptance'):
+                 'assess-result', 'postflight', 'acceptance', 'retained-audit-absence-decision'):
         p.add_argument('--' + name, type=Path)
     p.add_argument('--execution-attempt-id', help='New execution custody ID named by a planning attempt; defaults to <planning-id>-execution')
     p.add_argument('--rehearsal-source-inventory', type=Path, help='Exact sanitized census input used by both renewed fixture drivers')

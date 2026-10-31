@@ -1,0 +1,101 @@
+{
+  "classification": "uncommitted-release-preparation-only",
+  "owners": {
+    "Builds": {
+      "head": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": true,
+      "sourceSha256": {
+        ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+        ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+        ".github/workflows/domain-ci.md": "7d2921d2e1f04a0581f71fb6794862ecf4674b0c4e1c6b2c27b9be722de0aa6b",
+        ".github/workflows/domain-ci.yml": "9a0414c4b504597a9743c9179d52752292eafdcddb1a8724c70365d651e2bed2",
+        "Github/prepare-module-build/tests/test_prepare_module_build.py": "7be5d3d18704c68f5b56458a93e9b77708ac7ed962cbfa3644a17250b624e241",
+        "Github/run-module-integration/run_module_integration.py": "ce2a90aa19fc41d18dd8ec55fd5d073504be15224b724eba92faa901a598197c",
+        "Github/run-module-integration/tests/test_run_module_integration.py": "112d06e2a0ded590e56956489f91d0f76d39b145ff1b3e5241a1de4461fed38b",
+        "Props/Directory.Packages.props": "b69294eb7178525c8fbce0651c0fc7da0f0c37d02f33286a4c3381c5fa43e487",
+        "README.md": "7a451ba35a4e831f29e99cca1dd653991ab828fae0c45d5508485705117688ec",
+        "Tools/test-domain-workflow-test-platforms.ps1": "a3de76caf5e7402a3408788299e6f08a66a278411a3850b616f293bfb60be181",
+        "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+        "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "2577c12ff64c25df0ef726b527bccde48990bf8413601ecd9fdd148de0f820ed",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "558dfca085e4cb8ee2b46ddbf58a4bbe07f175aacf68c9887b732eed62d87450",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "b655dc657ed1be82d7befeeca006e1d6fd0fde433e0b903ef17ad477b3572ea8",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "9151df91bf202651fb6ea590c22944237c94821b4ad83251f228af38124bbc9c",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "02c4ff2bd7526a49867e55071cc15481d43d67e202ce47eb09e06019333f8338",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "7ae5717bade8c9ef9221d2f046f91dd0faca6987110e592361d4044c93a40fbd",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "c9b02b331bc74e440053fe7ee4a951b8045cd50f9beba636784834104af2f455",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "33e936a66b6064dae6e1e862234eb326e5e7715907f563c9b1fa4c1707eb51a3",
+        "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "ad94dffa24292c54c3ede39ad6077ce2ea0b15e6349564feccdc5737dcc4a822",
+        "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "07af5ce6aa1031a4046075ac2554a43f2c1dbf839ccfd229fa5746fc4954bedb"
+      }
+    },
+    "EventStore": {
+      "head": "ad383a96394307154b0026643245fdbb9a24dd4e",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": true,
+      "sourceSha256": {
+        ".config/dotnet-tools.json": "5987ade1af6e30e54f926ecafed260da95a1a29c813318a92e61dc8ab6c85f08",
+        ".github/workflows/ci.yml": "b71800731e8c9d1cb59a05b79c34ffed248ea2d12658b571d3807b66905dac09",
+        "Hexalith.EventStore.slnx": "8e1a10a348e982b13d397e0fdedf947c685ce72f016eb1ddbded5ce22f9dfd76",
+        "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+        "src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj": "3a667296d87180b2462e306d398d54ea679efd041b7d3f63c3f2f13cb1cf633f",
+        "src/Hexalith.EventStore.Testing.Integration/TestEnvironmentStreamReader.cs": "5f1511df780d49ca56821230d9dce650ab2571fbc5f80895ccd6a3a79e6952a8",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "81bbf0dac434cc148ae162267a409cfdfc851127614d860b7a39aec09a3d7e58",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj": "ce80ffa24f56e99d61fdf2db44aa1978f6f266d7be82a240acfd274b125697d5",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901",
+        "tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorFixtureTests.cs": "89fce978b8c71ec92dfa900af238b8e9f163194f422e542c97bafbe59a80864c"
+      }
+    },
+    "Parties": {
+      "head": "05aeee0d647a34eab112b6f8282a0810d35b7bf6",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": true,
+      "sourceSha256": {
+        ".github/workflows/ci.yml": "04ebb8f4cb9b5d4a5159218bae4bc5b2489532a66ba28693801adf2f4fedd0e2",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj": "b8ef49466ad1fa875024431088086f284c25b281bf4e2b4af2e3f7b5cd197ac2",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "74e8d3440ccdfc0e9042b847d88168adccfe27853da2b6afd22a17e4d7fc722a"
+      }
+    },
+    "Tenants": {
+      "head": "c12761223eafbe863d0a20c946685873173a9da4",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": false
+    },
+    "Memories": {
+      "head": "5aaa39831abe9e9b4603cd6b0f1f484b2d2c48c9",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": false
+    },
+    "Platform": {
+      "head": "c1550f447b1b5aaa89b8197a7f1cb48e87623f1f",
+      "publicationAuthorized": false,
+      "worktreeHasChanges": true,
+      "scope": "Changed Composition/native preparation/test source plus the required CatalogBuilder and authority inputs. Unrelated parent edits are excluded.",
+      "sourceSha256": {
+        "Directory.Build.props": "708aea4abc3138a3f152ee4daabc3bfe49448073c242e40c9841eac1d59a39ca",
+        "Directory.Packages.props": "71bbbb3b3bf472b00e24c0fa29130ee60851f9c929b8e2e0f32ae19c6c1c8b29",
+        "hexalith-platform.json": "efcbf0f9f358803ef16418a205f1adc25124139070f9a384f2dae81acf82059c",
+        "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj": "b46ea59b9b2a2bc500ee5ba453285bdda85324ed29099f5553d23d867ef5d3a8",
+        "src/Hexalith.Platform.CatalogBuilder/Program.cs": "5c801c4ef2e1c794672dc6f1a6f111c4a32fb2b9fa4cf1fa984ae052ee4cedda",
+        "src/Hexalith.Platform.Composition/Declarations/provenance.json": "8ab18487c4a62b1d4ab41067ec85b136ccf069e40489c3b64b0c831565a356b7",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "54c9cb55e8ea041b9df720509dc36711584a2482610fe5677869afc72689dfb4",
+        "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "74b1743c4fad0b28ec712e98e027d2ce6b523fc8ad3f6f884869581d98a3f126",
+        "src/Hexalith.Platform.Composition/PlatformNativeInvocationAccess.cs": "230ca876f8e7174f28a88a7cf8caa190ba799453a1cf47415c68cb2d098c4d46",
+        "src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs": "5674d71a8403c6d2806fea37369f3145bfb03d5215633a80f1274628fe1e44cc",
+        "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs": "3e0a43666bf9524aee01d885028e0bf0b7996d54db18a31575af0e1984797415",
+        "src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs": "fa6fc23abfcf84db050f554502ee0b7af8f74b532014815a39110e30d514cc91",
+        "src/Hexalith.Platform.Composition/PlatformTenantBootstrapAccess.cs": "2981949e158bd3782a78b89db8ae4a630a53e48a31878e98f181243f1e9d426a",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj": "73adba80565430663448fed6bd4e105ebb298f7729bce2f23e788f2d4e175b1b",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs": "d83ce07be1aff508276679a0fc69320c2b2e24fc1c9fcaccf49e1e4ddab923fc",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "8c7fc8c6396806118f2de4718c6e6c4923a7e4cdb5433fdacf99cbbfbea67418",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "f2cace262ff8e06ba6af738e5674b58a85053edfb9a34276d524908060b5e27b",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs": "6d6bfc1048d3a94f29a7b7bcc14bebdfd2acbc8405797836bb29191faa82e573",
+        ".gitattributes": "9f124da93a3caab7839d9a4b7f810de401658dac14518e7def8d392557f6c4e1"
+      }
+    }
+  },
+  "acceptedExistingPinChanges": false,
+  "newToolEnrollment": "EventStore adds the existing 4.39.0 coordinate; receipt support is not claimed for it.",
+  "hostedQualificationComplete": false
+}

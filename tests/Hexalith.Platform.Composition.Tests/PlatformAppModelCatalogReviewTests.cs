@@ -14,15 +14,16 @@ using Shouldly;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
-    public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
+    public void PackageCatalogBindsExplicitOwnerPackagePrerequisites()
     {
-        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
-        var builder = Builder();
-        builder.Environment.EnvironmentName = Environments.Development;
-        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
-        failure.Message.ShouldContain("owner SDK");
-        failure.Message.ShouldContain("Builds catalog pins");
-        builder.Resources.ShouldBeEmpty();
+        PlatformCompositionOptions options = PackageOptions();
+        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
+        IReadOnlyList<PlatformCatalogContractBinding> owners = PlatformCatalogContractBinding.Resolve(options, servers);
+        owners.ShouldNotBeEmpty();
+        owners.ShouldAllBe(owner => owner.PackageVersion != null && !Path.IsPathRooted(owner.ContractReference) && !Path.IsPathRooted(owner.AdapterReference));
+        owners.Select(owner => owner.ContractReference).ShouldContain("Hexalith.Tenants.Contracts");
+        owners.Select(owner => owner.AdapterReference).ShouldContain("Hexalith.Memories.EventStoreExtensions");
+        owners.Select(owner => owner.AdapterReference).ShouldContain("Hexalith.Tenants.Server");
     }
 
     [Fact]

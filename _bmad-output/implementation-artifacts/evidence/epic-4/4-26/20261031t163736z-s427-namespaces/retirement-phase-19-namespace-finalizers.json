@@ -1,0 +1,105 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "namespace-finalizer",
+  "order": 19,
+  "phase": "namespace-finalizers",
+  "phaseAllowlistSha256": "14038143472013977c4b3a06bf64e97c01cf7344742b03053c4dc8b6c26c4ccf",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-7",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "822",
+      "uid": "1c64d1e1-1700-4a7b-bab5-b957f48d64fd"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-3",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "794",
+      "uid": "2fe97271-a901-42d3-b80d-74a3c607d187"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-6",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "815",
+      "uid": "3d645b40-94e7-4414-80ff-78a55cf4495d"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-2",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "787",
+      "uid": "518e940c-e0df-4cd1-a32d-31d7434ab676"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-5",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "809",
+      "uid": "8110c0f2-e5c9-42e5-9208-e847d6a1cfaf"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-1",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "780",
+      "uid": "dd90d84c-b369-48b0-b66e-8d1a31bfcaa0"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/s426-residue-4",
+      "otherFinalizersRetained": [
+        "qualification.hexalith.io/retain"
+      ],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "801",
+      "uid": "deefb7aa-ea02-4023-8960-94deebe6003f"
+    }
+  ],
+  "settled": true
+}

@@ -1,0 +1,31 @@
+{
+  "classification": "local-source-controls-only",
+  "recordedAtUtc": "2026-10-31T17:14:08.579794+00:00",
+  "helperCommand": "python3 -m unittest discover -s Github/run-module-integration/tests -v",
+  "helperResult": {
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ciMethodCommand": "dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll -method '*ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync' -parallelMode none",
+  "ciMethodResult": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullFocusedBuildsResult": {
+    "passed": 238,
+    "failed": 0,
+    "skipped": 0
+  },
+  "buildCommand": "dotnet build test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj -c Debug --no-restore -m:1 -p:BuildProjectReferences=false -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0",
+  "reusedArtifactLimitation": "Only Module.Tests changed/rebuilt for this audit. Unchanged CLI/Tooling and fixture dependencies remain reused and are fingerprinted in focused-provenance.json.",
+  "sourceSha256": {
+    "Github/run-module-integration/run_module_integration.py": "ce2a90aa19fc41d18dd8ec55fd5d073504be15224b724eba92faa901a598197c",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "112d06e2a0ded590e56956489f91d0f76d39b145ff1b3e5241a1de4461fed38b",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "07af5ce6aa1031a4046075ac2554a43f2c1dbf839ccfd229fa5746fc4954bedb"
+  },
+  "hostedQualification": false,
+  "candidateAcceptance": false,
+  "frozenIntentModified": false
+}

@@ -30,6 +30,8 @@
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
     <PackageReference Include="Hexalith.EventStore.Aspire" />
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
+    <PackageReference Include="Hexalith.Tenants.Contracts" />
+    <PackageReference Include="Hexalith.Memories.Contracts" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
     <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />

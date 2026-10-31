@@ -1,0 +1,138 @@
+{
+  "classification": "local-source-audit-only",
+  "releaseSourceHashMismatches": [],
+  "approvedIntentUnchanged": true,
+  "allCoordinatorCiPassed": true,
+  "commands": [
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Github/run-module-integration/tests",
+        "-v"
+      ],
+      "exitCode": 0,
+      "tests": 15
+    },
+    {
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "argv": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "*CiRunLifecycleTests",
+        "-parallelMode",
+        "none",
+        "-result-xml",
+        "/tmp/story28-coordinator-ci.xml"
+      ],
+      "exitCode": 0,
+      "tests": 14
+    }
+  ],
+  "namedXml": {
+    "path": "coordinator-ci-tests.xml",
+    "sha256": "049dfd6863bcd39899adc811b86e2882d5a702827c1231018e40ce0cb1ebb564"
+  },
+  "coordinatorCiTests": [
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"directory\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"workspace\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ConcurrentReceiptPublicationIssuesAtMostOneOwnerAsync",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"passed\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"cancelled\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"partial-startup\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed-then-job-cancelled\\\")",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync",
+      "result": "Pass"
+    }
+  ],
+  "matrixAudit": [
+    {
+      "row": "Isolated failure",
+      "coverage": "workflow-contract-tests.txt: executable provisioning gate rejects failed/missing isolated output",
+      "localControlsPassed": true
+    },
+    {
+      "row": "Integration success/failure",
+      "coverage": "coordinator-ci-tests.xml: executing passed/failed service cases observe withdrawal before AppHost stop",
+      "localControlsPassed": true
+    },
+    {
+      "row": "Cancellation during startup/execution",
+      "coverage": "coordinator-ci-tests.xml: executing cancelled/partial-startup cases; integration-helper-tests.txt: actual subprocess forwarding",
+      "localControlsPassed": true
+    },
+    {
+      "row": "Same-job/cross-job attachment",
+      "coverage": "AttachAdmissionTests.txt: 130 passing cases; helper foreign-identity controls",
+      "localControlsPassed": true
+    },
+    {
+      "row": "Cleanup failure/unknown discovery",
+      "coverage": "integration-helper-tests.txt: leftovers/unknown discovery reject completion and exact cleanup retries",
+      "localControlsPassed": true
+    },
+    {
+      "row": "Missing tool/suite/package preparation",
+      "coverage": "preparation-helper-tests.txt, integration-helper-tests.txt and published-SDK negative build",
+      "localControlsPassed": true
+    }
+  ],
+  "hostedQualificationComplete": false,
+  "pending": [
+    "Approved coordinated publication",
+    "Reference caller activation with compatible released inputs",
+    "Hosted revision-bound cancellation/partial-startup qualification"
+  ],
+  "independentAuditFindings": "Both corrections resolved; helper15 and CI14 independently rerun."
+}

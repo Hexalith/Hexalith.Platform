@@ -272,5 +272,180 @@
       "codeOwner": true
     },
     "instruction": "Prepare concrete fully verified PRs before any required human-review request. Never bypass reviews or protections."
+  },
+  "concurrentSdkCiReconciliation": {
+    "main": "61e6fa853d81cf822d67d6abfd6a130bdbb14ce2",
+    "pr376Head": "c7b927c30f3af7a48d2f0d6aad5b822308cf0113",
+    "isolatedLocalHead": "c63071e80624c5904d538e5700560fd2f883f5d5",
+    "incomingScope": [
+      "same synthetic Aspire dependency fixture",
+      "CI Dapr pins1.18.2/runtime1.18.7 and AppHost.Tests to integration-test-projects"
+    ],
+    "productionOverlap": false,
+    "incomingPreservesEightDependencyMutationTestsAndDatedAudit": true,
+    "ciJob": 124581411199,
+    "appHostExecuted": {
+      "total": 217,
+      "passed": 217,
+      "failed": 0,
+      "skipped": 0,
+      "blockingTier": 2,
+      "summaryTimeUtc": "2026-10-31T16:09:52Z"
+    },
+    "optionalTier3SkippedIsNotTheseTests": true,
+    "workflowSourceAudited": "Hexalith/Hexalith.Builds@585ffbce4452d995ef09b9f65d21b4ba343d4993:.github/workflows/domain-ci.yml",
+    "workflowReadback": "Nonempty integration-test-projects plus MTP runs within required build-and-test; checks child exit and fresh nonzero TRX, then fails if any tier failure or missing output.",
+    "rawLog": "sdk-pr-qualification-20261031/ci-c7b927c-build-job-124581411199.log",
+    "rawLogSha256": "7bb69a5f67bca61309187f41594fad0e2afd908c908aaafe419d869fd8959c11",
+    "publicationAcceptance": false,
+    "instruction": "Preserve incoming when reconciling local uncommitted technical SDK draft; preserve model-only DaprPath test correction. Final source/release gates must run on final reconciled commit."
+  },
+  "unreferencedExternalSdkCandidate": {
+    "sha": "5938ab989d905bf37ed4f72136ea65ff6094a802",
+    "observedRelease": 41218442302,
+    "releaseActor": "jpiquot",
+    "releaseCreatedAt": "2026-10-31T16:11:13Z",
+    "sourceGuardJob": 124587789134,
+    "refusal": "No successful push ci.yml run exists for the exact current main SHA.",
+    "publicationJob": 124587880681,
+    "publicationConclusion": "skipped",
+    "currentMainReadbacks": [
+      "git ls-remote origin",
+      "git ls-remote explicit https URL",
+      "GitHub ref API",
+      "cache-busted GitHub ref API",
+      "Cache-Control no-cache git ls-remote"
+    ],
+    "allReadbacksMain": "61e6fa853d81cf822d67d6abfd6a130bdbb14ce2",
+    "pr376Head": "c7b927c30f3af7a48d2f0d6aad5b822308cf0113",
+    "branchesWhereCandidateIsHead": [],
+    "associatedPullRequests": [],
+    "latestOfficialRelease": "v3.129.0",
+    "handling": "Preserve audit; no assumption about remote history changes. Do not integrate this currently unreferenced alternate implementation. Recheck and reconcile if it later becomes actual reachable incoming source.",
+    "localCandidateChangedByThisDiscovery": false
+  },
+  "newerOwnerReleaseReadbacks": {
+    "tenants": {
+      "version": "6.0.0",
+      "publishedAt": "2026-10-31T16:39:33Z",
+      "tagCommit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "main": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "comparedBase": "c12761223eafbe863d0a20c946685873173a9da4",
+      "aheadBy": 3,
+      "changes": "Project package/floor/reader/release governance only; no runtime Program overlap with local draft. Five nupkg release assets.",
+      "runtimeLimit": "Tagged API still uses old manual CaptureAsync+HttpHostSecurity and has no Add/UseDevelopmentGeneratedRestCatalog. Local generated-GET enrollment draft remains necessary. No official-delivery verification claimed for this readback."
+    },
+    "memories": {
+      "version": "3.0.13",
+      "publishedAt": "2026-10-31T11:54:17Z",
+      "tagCommit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6",
+      "main": "00919bdd6fe97284da5f4f1657da4a5b336867cc",
+      "comparedBase": "5aaa39831abe9e9b4603cd6b0f1f484b2d2c48c9",
+      "aheadBy": 4,
+      "changes": "CI/submodule/security-test/spec changes; no runtime code. Ten nupkg assets plus YAML. Preserve newer incoming. No new SDK floor qualification claimed."
+    },
+    "partiesLatest": "2.0.0",
+    "buildsLatest": "4.39.0",
+    "instruction": "Reconcile these reachable newer owner sources and preserve stable version floors before any owner publication; no downgrade to prior remembered versions."
+  },
+  "technicalHttpEarlyParentRead": {
+    "run9": {
+      "log": "/tmp/story33-sdk-technical-http-run9.log",
+      "total": 75,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "seconds": 55.266
+    },
+    "scope": "Complete actual marked SDK MVC inventory including framework long/regex constraints; default and Web response byte parity; existing maintenance authorization/status tests; real admin effects and dedicated controls/credential tests.",
+    "read": "Parent read current receiver/observer/constraint/policy classes, complete HTTP test file, four DTOs and issuer diffs. Technical membership v2/pre-capture/socket/old-peer checks not yet implemented or accepted.",
+    "publicationAcceptance": false
+  },
+  "tenantsRemainingIssuerAndBootstrapTrace": {
+    "source": "isolated Tenants c127 draft; tagged6.0.0 runtime Program unchanged",
+    "ui": "Tenants.UI Program already relays actual signed-in authorization-code user access token; browser-only hexalith-tenants-ui client has no surface mapper. A narrow owning issuer correction is distinct from proxy synthesis, service-account or realm-wide ui labeling.",
+    "fixture": "AspireTopologyTests.CreateDemoJwt lacks surface. AspireTopologyFixture disables production hosted bootstrap for its startup, then CompleteBootstrapAsync directly sends BootstrapGlobalAdmin to human /api/v1/commands.",
+    "frozenPolicy": "Bootstrap remains internal. RouteCatalogEligibilityBehavior refuses human ingress for it regardless of ui claim; do not relax eligibility or internal/workload/delegation checks.",
+    "existingSeam": {
+      "entry": "CommandsController.SubmitBoundWorkload: /api/v1/commands/bound/workload",
+      "requirements": [
+        "authenticated exact workload assertion",
+        "signed BoundWorkloadCommandProof over exact command/principal",
+        "existing enrolled public key",
+        "explicit declared-domain scope",
+        "verified PrincipalId becomes AuthenticatedSubject"
+      ],
+      "alreadyUsedBy": "PlatformNativeTestPreparation.SubmitBootstrapAsync",
+      "alreadyScopedBy": "PlatformRoutingCatalogBootstrap lines72-76 for Tenants global-administrators in native Parties profile",
+      "reviewAuthority": "Spec review A4 accepted existing bound-workload proof scoping; contradictory older no-new-grant note was rejected."
+    },
+    "constraint": "Any owner runtime adaptation must preserve validated delegated human credential and attributable subject before using its bound proof. A configured subject or unvalidated JWT decode alone must not gain authority. Preserve exact command/status/idempotency checks.",
+    "oidcBoundary": "Current normal Tenants Aspire fixture explicitly selects EnableKeycloak=false/HMAC Development. Authority-mode resource binding remains an existing separately configured profile; no general OIDC success claimed.",
+    "status": "Read-only downstream investigation; SDK binding work continues; no owner code or grants changed by parent."
+  },
+  "technicalHttpNativeRpcFinding": {
+    "writer": "DaprSnapshotPolicyRepository.MutateIndexAsync calls native TrySaveStateAsync directly; SetPolicyAsync catches its exception and returns HTTP200 with UpstreamUnavailable result.",
+    "otherExample": "AdminStorageCommandController.CreateSnapshot invokes native actor proxy directly.",
+    "required": "Trace marked technical action RPC mutations and reuse existing RouteCatalogRemoteExecution boundaries so persisted-then-timeout/cancellation retains the durable lease despite controller catches. Preserve retries, response/status and ABI; known pre-send refusal must retain nothing.",
+    "status": "Sent to implementation agent; not yet verified or accepted."
+  },
+  "technicalHttpLocalMilestones": {
+    "status": "local-milestones-only",
+    "sdkHead": "c63071e80624c5904d538e5700560fd2f883f5d5",
+    "technicalDraft": "uncommitted and still changing",
+    "counts": {
+      "httpInventoryAndMaintenance": {
+        "total": 75,
+        "failed": 0,
+        "skipped": 0
+      },
+      "bindingPlusExistingRoutingClasses": {
+        "total": 67,
+        "failed": 0,
+        "skipped": 0
+      },
+      "modelOnlyRenderer": {
+        "total": 12,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "doNotSumAsFinalSourceQualification": true,
+    "remaining": [
+      "genuine old SDK peer refusal and v1 parity",
+      "real production factory send sockets",
+      "conditional domain v2 binding refusal",
+      "native RPC persisted-then-timeout/cancel durable fence",
+      "pre-capture endpoint/policy/binding/filter negatives",
+      "final full source audit and affected suites",
+      "ordinary CI and official publication"
+    ],
+    "logs": [
+      {
+        "path": "story33-sdk-technical-http-build17.log",
+        "bytes": 2745,
+        "sha256": "dbe6c350e49d511a9213972f134f54a19ab6b9a1b066ad60d908a1999b2bfa5b"
+      },
+      {
+        "path": "story33-sdk-technical-http-run9.log",
+        "bytes": 476,
+        "sha256": "a5aa5243d356c83737d4c6058a47b502cb281c97a3ab3e68f643b3f7af45b1ff"
+      },
+      {
+        "path": "story33-sdk-technical-binding-build3.log",
+        "bytes": 2745,
+        "sha256": "9acfd1d308033ba27d1279d9f92ecc33bc011d826d9ea489ede44135794f3365"
+      },
+      {
+        "path": "story33-sdk-technical-binding-run1.log",
+        "bytes": 475,
+        "sha256": "283d20af964a47e837fae29c7ee042f62b479cac9186a08adce9494a4a8041b5"
+      },
+      {
+        "path": "story33-sdk-renderer-fixture-run2.log",
+        "bytes": 1964,
+        "sha256": "e4217e954df9f52e43f35550a1140e9d2d151b3554553c79af31a465451fd72c"
+      }
+    ]
   }
 }

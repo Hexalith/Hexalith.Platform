@@ -1,0 +1,230 @@
+{
+  "status": "source trace; real-socket qualification pending",
+  "construction": "DaprClient.CreateInvokeMethodRequest",
+  "actualSend": "injected IHttpClientFactory client SendAsync; no DaprClient invocation sender found",
+  "guardRegistration": "DevelopmentRouteCatalogCallerExtensions -> DevelopmentRouteCatalogBootstrap -> AddEventStoreRouteCatalog -> RouteCatalogStateHttpClientFilter; every default/named factory primary handler is guarded",
+  "services": [
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprBackupCommandService.cs",
+      "sha256": "85c179014ecc5af442e03f6dad360410653be1a8acc422341e237612c960d88b",
+      "sinkEvidence": [
+        {
+          "line": 634,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 647,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 648,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        },
+        {
+          "line": 695,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 707,
+          "source": "HttpClient httpClient2 = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 708,
+          "source": "using HttpResponseMessage httpResponse2 = await httpClient2.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprDeadLetterCommandService.cs",
+      "sha256": "e6d0c5ae2b277c05045a919e09d3f89cec35e2c6738d8e548e7429cbc40bb971",
+      "sinkEvidence": [
+        {
+          "line": 93,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 104,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 105,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprDeadLetterQueryService.cs",
+      "sha256": "de62f1eef4c11ce5da8693f3921dda34be0170a210e2c0b2e5d9602db09033b0",
+      "sinkEvidence": [
+        {
+          "line": 91,
+          "source": "? _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, _options.OperationsAppId, endpoint)"
+        },
+        {
+          "line": 92,
+          "source": ": _daprClient.CreateInvokeMethodRequest(HttpMethod.Get, _options.OperationsAppId, endpoint, query);"
+        },
+        {
+          "line": 98,
+          "source": "HttpClient client = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 99,
+          "source": "using HttpResponseMessage response = await client.SendAsync(request, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprHealthQueryService.cs",
+      "sha256": "8a359e973ff35b0262d46669b85963ddc8fb34d287fbeb2debc41fc4be8369a2",
+      "sinkEvidence": [
+        {
+          "line": 91,
+          "source": "using HttpRequestMessage request = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 99,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 100,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(request, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprInfrastructureQueryService.cs",
+      "sha256": "d0394ffb10261a15dc07e5eeab42c1069adc17ef4ae5ac7e3fcbede19f1ae73e",
+      "sinkEvidence": [
+        {
+          "line": 651,
+          "source": "HttpClient client = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 1221,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient(\"DaprSidecar\");"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprProjectionCommandService.cs",
+      "sha256": "a5bf3c6e41ef2363922066bf20718316dd0b14157682aeedf61d0c547fcdbc36",
+      "sinkEvidence": [
+        {
+          "line": 108,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 117,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 118,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprProjectionQueryService.cs",
+      "sha256": "89ee6f52f7e3eae7fed9b2b57bd694fc0f75318fcfc500113cbc1907e07f824a",
+      "sinkEvidence": [
+        {
+          "line": 105,
+          "source": "using HttpRequestMessage request = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 114,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 115,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(request, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprStorageCommandService.cs",
+      "sha256": "5e79722515f0e87d108e5ab7b3815b5ca204bc27423e74d56c1664621d02c862",
+      "sinkEvidence": [
+        {
+          "line": 119,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 131,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 132,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprStreamQueryService.cs",
+      "sha256": "c81b09aa601ad97b8693cae0ed13c852f3883af8b51649cb270f9c161aae2965",
+      "sinkEvidence": [
+        {
+          "line": 556,
+          "source": "using HttpRequestMessage request = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 565,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 566,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(request, cts.Token).ConfigureAwait(false);"
+        },
+        {
+          "line": 579,
+          "source": "using HttpRequestMessage request = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 590,
+          "source": "HttpClient httpClient2 = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 591,
+          "source": "using HttpResponseMessage httpResponse2 = await httpClient2.SendAsync(request, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprTenantCommandService.cs",
+      "sha256": "73882631f4576600f3b352419cc7dbe5faec12bb4d8ceee3608c9d63e68a46c9",
+      "sinkEvidence": [
+        {
+          "line": 223,
+          "source": "using HttpRequestMessage httpRequest = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 235,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient();"
+        },
+        {
+          "line": 236,
+          "source": "using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cts.Token).ConfigureAwait(false);"
+        }
+      ]
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprTenantQueryService.cs",
+      "sha256": "50040df66f41c6651a6c7cac2987d0483f6b4f1719011edfde71b3061cb498ea",
+      "sinkEvidence": [
+        {
+          "line": 202,
+          "source": "HttpRequestMessage request = _daprClient.CreateInvokeMethodRequest("
+        },
+        {
+          "line": 217,
+          "source": "HttpClient httpClient = _httpClientFactory.CreateClient(_serverOptions.EventStoreAppId);"
+        },
+        {
+          "line": 218,
+          "source": "HttpResponseMessage httpResponse = await httpClient.SendAsync(request, ct).ConfigureAwait(false);"
+        }
+      ]
+    }
+  ]
+}

@@ -25,3 +25,7 @@ Memories workload proof, real gateway grants and authority were added by the exi
 ## Required source qualification
 
 Before SDK publication: explicit technical MVC composite/policy/filter/DTO refusals; actual UI issuer claims; valid human+channel requests to all five catalog controls leave authority unchanged; legitimate coordinator and canonical service dispatch succeed. Owner source preflight must cover the actual default and optional resource selections and retain optional dependency/build failures. Normal package/CI proof follows released owners and Builds pins.
+
+## Actual Admin.Server HTTP sink correction
+
+DaprClient constructs the invocation requests. Every actual service-invocation send in the eleven Dapr-backed admin services uses an injected IHttpClientFactory default/named client and SendAsync. Comments mentioning InvokeMethodAsync are historical. AddEventStoreRouteCatalog installs RouteCatalogStateHttpClientFilter on every factory client, wrapping the final primary sink in RouteCatalogInvocationHandler. See admin-factory-send-sink.json for exact source/hash/line evidence. This corrects the initial incomplete inference that DaprClient itself sent these requests. Real-socket source qualification and committed versioned technical target membership remain pending; no new transport is required.

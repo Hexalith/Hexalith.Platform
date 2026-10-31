@@ -1,0 +1,1080 @@
+{
+  "record": "EXT-PROTECTION-1",
+  "loop": 10,
+  "status": "in-progress",
+  "auditedUtc": "2026-10-31T16:14:59.951381+00:00",
+  "scope": "read-only audit of mandatory loop-10 corrections, Review 11 patches and both source-gap corrections in the current working trees",
+  "auditedFiles": [
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+      "sha256": "359ef2540e41b05b0e23f1d009ecb02cda0f1df0b48bc306ea7f6c4660bdff7c"
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+      "sha256": "5ce28189768e594a8d055f5529ac0f785b837ae4c6eac9fcab21241a3c757095"
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+      "sha256": "a649de375bd78659b9a6fda50ef5c3c3498316e2de2bf19591991cc49b2b62d7"
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs",
+      "sha256": "4b5b59415656436256d2156bd7a99b874d4a67ed0a319b7565c1c42f28ceb071"
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs",
+      "sha256": "104e12ccb10326d106f91f02468b797ae691b0fb480b90644fb779cfb0270e6d"
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/bootstrap.py",
+      "sha256": "87df9b0685265a485ec4df9f91e7ce27e3dd471048e73741fccfaadb95d23a71"
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/kubelet-noswap.fragment.yaml",
+      "sha256": "06636b5041f8b85c4af8f5ac15af576abd942e361c3a3052c680bf8bf819967d"
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/statefulset.yaml",
+      "sha256": "bf737dad6b2d9bed2a0dbafb117b411f0298b5508e30550a194177ba51002720"
+    },
+    {
+      "repository": "platform",
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "sha256": "ca9e71d2dd89359351a391d9c775667bb771a67f9631d46d7d9fa11d78e59c80"
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "sha256": "7ba8bce1846e30911f2397ba12e5c7152bab4c1d549b79d542e2139d28f30b9f"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+      "sha256": "7494a345540cefbaefaae5572f29a753ec1629a0165444c8a6202c7c60673921"
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+      "sha256": "76cca2fa52110b06542411d7bfe8b5ee2dc18fe5402dfbc3ad217facc89f6866"
+    }
+  ],
+  "corrections": [
+    {
+      "correction": "R10-BH-1/R10-EC-7",
+      "description": "apply resumes exact matches, refuses mismatches before change, and names the stopped step; default no-apply is zero calls",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "class BootstrapStop(Exception)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "'step': step",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "print(json.dumps({'status': 'PreparedOnly', 'tenants': len(value['nativeKeys']), 'effects': 0}))",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "re:if not args\\.apply:.*?return 0.*?step = 'credential'",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "step = 'transit-key:' + key",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "step = 'policy:' + name",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "step = 'head:' + tenant",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "elif any(data.get(field) != key_body[field] for field in key_body):\n                raise BootstrapStop(step)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "elif policy_text(existing) != text:\n                raise BootstrapStop(step)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "elif current != head:\n                raise BootstrapStop(step)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "if not same_mount(existing, expected_type, options):\n                raise BootstrapStop(step)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "for stage in ('mount', 'key', 'policy', 'head'):",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "'stop-after-' + stage",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "committed_paths.isdisjoint(rewritten)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "self.assertEqual([method for method, _, _ in Native.records if method == 'POST'], [])",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "run(True, 'mount-mismatch')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "run(True, 'head-mismatch')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "run(True, 'policy-mismatch')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_cli_defaults_to_prepared_only_with_available_credential_and_zero_native_requests",
+          "requires": "{'status': 'PreparedOnly', 'tenants': 2, 'effects': 0}",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_cli_defaults_to_prepared_only_with_available_credential_and_zero_native_requests",
+          "requires": "self.assertEqual(requests, [])",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-2",
+      "description": "bootstrap verifies the ERC with the explicit pinned CA before any bearer; a different CA refuses before the token is written",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "context.verify_mode = ssl.CERT_REQUIRED",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "context.check_hostname = True",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "context.load_verify_locations(cafile=str(ca_file))",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "re:step = 'ca-pin'.*?raise BootstrapStop\\('ca-pin'\\).*?opener = pinned_opener\\(args\\.ca_certificate\\).*?step = 'health'",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "urllib.request.HTTPSHandler(context=context), NoRedirect()",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py",
+          "requires": "return None",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "unpinned = run(True, 'ok', pin=False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "self.assertEqual(json.loads(unpinned.stdout)['step'], 'ca-pin')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "rejected = run(True, 'ok', ca=other)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "self.assertEqual(Native.tokens, [])",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "SSL_CERT_FILE=str(other)",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs (production pin)",
+          "requires": "chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs (production pin)",
+          "requires": "chain.ChainPolicy.CustomTrustStore.Add(pinnedCa);",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs (production pin)",
+          "requires": "Dedicated erasure-root TLS CA pin required.",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "public void MissingCaPinRefusesBeforeASocket()",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "public async Task MatchingPrivateCaReceivesTheTokenAndADifferentCaDoesNot()",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-3 + source gap 2 (policy literals)",
+      "description": "per-tenant key config allow-lists are exactly the quoted strings \"1\" through \"64\" for both minimum versions",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/bootstrap.py::render_policy",
+          "requires": "versions = ', '.join(json.dumps(str(version)) for version in range(1, 65))",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::render_policy",
+          "requires": "'  allowed_parameters = {\\n    \"min_decryption_version\" = [' + versions + ']\\n'",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::render_policy",
+          "requires": "'    \"min_encryption_version\" = [' + versions + ']\\n  }\\n}\\n'",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary",
+          "requires": "self.assertEqual(json.loads(versions[1]), [str(version) for version in range(1, 65)])",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary",
+          "requires": "self.assertNotIn('= []', text)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary",
+          "requires": "self.assertNotIn(', \"65\"]', text)",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "Source gap 2 (trim request values)",
+      "description": "TrimAsync sends invariant string minimum versions matching the quoted ACL literals; trim body keeps its numeric form",
+      "present": true,
+      "findings": [
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "string version = epoch.ToString(CultureInfo.InvariantCulture);",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "JsonSerializer.SerializeToUtf8Bytes(new { min_decryption_version = version, min_encryption_version = version });",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "JsonSerializer.SerializeToUtf8Bytes(new { min_available_version = epoch });",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs::TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy",
+          "requires": "GetProperty(\"min_decryption_version\").GetString()",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs::TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy",
+          "requires": "GetProperty(\"min_encryption_version\").GetString()",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs::TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy",
+          "requires": "GetProperty(\"min_available_version\").GetInt32()",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs (theory data)",
+          "requires": "re:\\[InlineData\\(2\\)\\]\\s*\\[InlineData\\(64\\)\\]\\s*public async Task TrimMinimumVersionsUseExactStringValuesAcceptedByTheBoundedNativePolicy",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "Source gap 1 (KV-v2 new-mount defaults)",
+      "description": "only a mount created by this invocation moves from native KV-v2 defaults; readback is mandatory; existing mismatches refuse",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/bootstrap.py::ensure_config",
+          "requires": "native_defaults = isinstance(data, dict) and type(data.get('max_versions')) is int",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::ensure_config",
+          "requires": "data['max_versions'] == 0 and data.get('cas_required') is False",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::ensure_config",
+          "requires": "if data is None or newly_created and native_defaults:",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::ensure_config",
+          "requires": "response = call('GET', path)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py::ensure_config",
+          "requires": "raise BootstrapStop(step)",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py (caller)",
+          "requires": "head_mount_created = ensure_mount(value['headMount'], 'kv', {'version': '2'})",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/bootstrap.py (caller)",
+          "requires": "ensure_config(value['headMount'] + '/config', {'max_versions': 1, 'cas_required': True}, head_mount_created)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "Native.configs['config'] = {'max_versions': 0, 'cas_required': False, 'delete_version_after': '0s'}",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "self.assertEqual([method for method, path, _ in Native.records if path.endswith('/erc-heads/config')], ['GET', 'POST', 'GET'])",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "fresh_conflict = run(True, 'fresh-config-conflict')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "unreadback = run(True, 'config-readback-mismatch')",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_apply_installs_non_deletable_keys_policies_and_reads_heads_back",
+          "requires": "for configuration in ({'max_versions': 0, 'cas_required': False}, {'max_versions': 2, 'cas_required': True}):",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-5",
+      "description": "TLS Secret defaultMode 0400; startup refuses unless memory.max=1Gi and memory.swap.max=0 (kubelet NoSwap fragment)",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "secretName: erasure-root-tls\n            defaultMode: 0400",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "[ \"$(cat /sys/fs/cgroup/memory.max 2>/dev/null)\" != \"1073741824\" ]",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "[ \"$(cat /sys/fs/cgroup/memory.swap.max 2>/dev/null)\" != \"0\" ]",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "ERC_MEMORY_AND_SWAP_LIMIT_UNVERIFIED",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "limits:\n              memory: 1Gi",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "command: [/bin/sh, /bao/config/start-erasure-root.sh]",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/kubelet-noswap.fragment.yaml",
+          "requires": "swapBehavior: NoSwap",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_prepared_startup_requires_exact_memory_and_zero_swap_before_openbao",
+          "requires": "('1073741824', '0', True)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_prepared_startup_requires_exact_memory_and_zero_swap_before_openbao",
+          "requires": "('1073741824', 'max', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_prepared_startup_requires_exact_memory_and_zero_swap_before_openbao",
+          "requires": "(None, '0', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_prepared_startup_requires_exact_memory_and_zero_swap_before_openbao",
+          "requires": "('1073741824', None, False)",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-7",
+      "description": "readiness fails unless health JSON reports version 2.6.2, initialized true and sealed false",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "grep -Eq '\"version\"[[:space:]]*:[[:space:]]*\"2\\.6\\.2\"' || exit 1",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "grep -Eq '\"initialized\"[[:space:]]*:[[:space:]]*true' || exit 1",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "grep -Eq '\"sealed\"[[:space:]]*:[[:space:]]*false' || exit 1",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "-ca-cert=/bao/tls/ca.crt",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_readiness_shell_refuses_wrong_native_health",
+          "requires": "({**good, 'version': '2.6.1'}, '0', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_readiness_shell_refuses_wrong_native_health",
+          "requires": "({**good, 'initialized': False}, '0', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_readiness_shell_refuses_wrong_native_health",
+          "requires": "({**good, 'sealed': True}, '0', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_readiness_shell_refuses_wrong_native_health",
+          "requires": "({'version': '2.6.2', 'initialized': True}, '0', False)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_actual_readiness_shell_refuses_wrong_native_health",
+          "requires": "(good, '1', False)",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-8",
+      "description": "listener max_request_size 67108864 and max_request_json_memory 134217728",
+      "present": true,
+      "findings": [
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "max_request_size = 67108864",
+          "present": true
+        },
+        {
+          "location": "deploy/erasure-root/statefulset.yaml",
+          "requires": "max_request_json_memory = 134217728",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary",
+          "requires": "self.assertIn('max_request_size = 67108864', stateful)",
+          "present": true
+        },
+        {
+          "location": "eng/ext-protection-1/test_bootstrap.py::test_rendered_policy_is_one_tenant_and_manifests_pin_the_client_boundary",
+          "requires": "self.assertIn('max_request_json_memory = 134217728', stateful)",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-13/R10-EC-3",
+      "description": "registry recovery returns null for a null snapshot (ArgumentNullException) and for JsonException",
+      "present": true,
+      "findings": [
+        {
+          "location": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+          "requires": "ArgumentNullException.ThrowIfNull(recovered);",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+          "requires": "catch (Exception exception) when (exception is InvalidOperationException or JsonException or ArgumentNullException) { return null; }",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+          "requires": "public async Task NullRecoveredSnapshotReturnsUnavailable()",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+          "requires": "byte[] bytes = \"null\"u8.ToArray();",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+          "requires": "public async Task InvalidRecoveredSnapshotJsonReturnsUnavailable()",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-BH-17",
+      "description": "DecryptAsync zeroes its request body in finally",
+      "present": true,
+      "findings": [
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::DecryptAsync",
+          "requires": "finally { CryptographicOperations.ZeroMemory(body); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::DecryptAsync",
+          "requires": "finally { CryptographicOperations.ZeroMemory(response); }",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "[InlineData(\"success\")]",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "[InlineData(\"native-refusal\")]",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "[InlineData(\"invalid-json\")]",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "public async Task DecryptRequestBodyIsZeroedAfterSuccessAndFailure(string outcome)",
+          "present": true
+        },
+        {
+          "location": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+          "requires": "retainedBody.ShouldNotBeNull().ToArray().ShouldAllBe(value => value == 0);",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-1",
+      "description": "newer current-original registry restore",
+      "present": true,
+      "findings": [
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "public async Task NewerCurrentOriginalRestoresExactRegistryState()",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "lookup.Record.Sealed.SnapshotReplaySkeleton.ShouldBe(skeleton);",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-2",
+      "description": "non-JSON registry target bytes",
+      "present": true,
+      "findings": [
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "byte[] bytes = \"{not-json\"u8.ToArray();",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "Status.ShouldBe(InteractionOccurrenceReservationStatus.Unavailable)",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-3",
+      "description": "sealed skeleton detachment and oversize rejection",
+      "present": true,
+      "findings": [
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "public async Task SealedSkeletonIsDetachedAndOversizeSkeletonIsRejected()",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "SnapshotReplaySkeleton.ShouldNotBeSameAs(skeleton);",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "new byte[16777217]",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-4",
+      "description": "published-trust ReadCurrentOriginalAsync vectors",
+      "present": true,
+      "findings": [
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests",
+          "requires": "re:\\[InlineData\\(\"exact\"\\)\\]\\[InlineData\\(\"foreign-scope\"\\)\\]\\[InlineData\\(\"foreign-tenant\"\\)\\]\\[InlineData\\(\"duplicate\"\\)\\]\\[InlineData\\(\"absent\"\\)\\]\\s*public async Task CurrentOriginalReadForwardsOnlyToExactSingleEnrolledOwner\\(string vector\\)",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests::CurrentOriginalReadForwardsOnlyToExactSingleEnrolledOwner",
+          "requires": "var original = await authority.ReadCurrentOriginalAsync(requested, TestContext.Current.CancellationToken);",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests::CurrentOriginalReadForwardsOnlyToExactSingleEnrolledOwner",
+          "requires": "if (vector == \"exact\") { original.ShouldBeSameAs(transition); }",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests::CurrentOriginalReadForwardsOnlyToExactSingleEnrolledOwner",
+          "requires": "await owner.DidNotReceiveWithAnyArgs().ReadCurrentOriginalAsync(default!, default);",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-5",
+      "description": "real-authority unissued accept and mismatch",
+      "present": true,
+      "findings": [
+        {
+          "location": "PublishedTrustReplacementAuthorityTests::UnissuedProofAcceptsMatchingGuardAndRejectsMismatchedGuard",
+          "requires": "(await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeTrue();",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustReplacementAuthorityTests::UnissuedProofAcceptsMatchingGuardAndRejectsMismatchedGuard",
+          "requires": "f.State = f.State with { Revision = f.State.Revision + 1 };",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustReplacementAuthorityTests::UnissuedProofAcceptsMatchingGuardAndRejectsMismatchedGuard",
+          "requires": "EpochId = \"epoch-mutated\"",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R10-VG-6",
+      "description": "RejectedUnissuedReplacement is null after the healthy issue",
+      "present": true,
+      "findings": [
+        {
+          "location": "ErasureRootUnissuedReplacementTests",
+          "requires": "re:var healthyIssue = await guard\\.Apply\\(guard\\.Command\\(GovernanceGuardOperation\\.ReplaceAttestation, batch: healthy\\)\\);.*?guard\\.State\\.Deletions\\.Single\\(\\)\\.Batches\\.Single\\(\\)\\.RejectedUnissuedReplacement\\.ShouldBeNull\\(\\);",
+          "present": true
+        },
+        {
+          "location": "ErasureRootUnissuedReplacementTests",
+          "requires": "unchanged.RejectedUnissuedReplacement.ShouldNotBeNull();",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R11-VG-1",
+      "description": "a newer matching original replaces an older stored registry snapshot that is still present",
+      "present": true,
+      "findings": [
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "public async Task NewerCurrentOriginalReplacesOlderStoredRegistry()",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).Revision.ShouldBe(olderRevision);",
+          "present": true
+        },
+        {
+          "location": "InteractionOccurrenceRegistryActorTests",
+          "requires": "((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).Revision.ShouldBe(newer.Revision);",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R11-VG-2",
+      "description": "the unissued accept test makes the independent journal reject the proof",
+      "present": true,
+      "findings": [
+        {
+          "location": "PublishedTrustReplacementAuthorityTests::UnissuedProofAcceptsMatchingGuardAndRejectsMismatchedGuard",
+          "requires": "return blocked && acceptBlockedProof;",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustReplacementAuthorityTests::UnissuedProofAcceptsMatchingGuardAndRejectsMismatchedGuard",
+          "requires": "re:acceptBlockedProof = false;\\s*\\(await f\\.Authority\\.VerifyBlockedReplacementAsync\\(request, token\\)\\)\\.ShouldBeFalse\\(\\);",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R11-VG-3",
+      "description": "owner reads include a foreign-tenant scope case",
+      "present": true,
+      "findings": [
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests",
+          "requires": "owner.TenantId.Returns(vector == \"foreign-tenant\" ? \"tenant-b\" : \"tenant-a\");",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests",
+          "requires": "re:\\[InlineData\\(\"foreign-tenant\"\\)\\].*?public async Task AdmittedOriginalReadForwardsOnlyToExactSingleEnrolledOwner",
+          "present": true
+        },
+        {
+          "location": "PublishedTrustOwnerStateAuthorityTests",
+          "requires": "re:\\[InlineData\\(\"foreign-tenant\"\\)\\].*?public async Task CurrentOriginalReadForwardsOnlyToExactSingleEnrolledOwner",
+          "present": true
+        }
+      ]
+    },
+    {
+      "correction": "R11-BH-9",
+      "description": "TrimAsync and ReadKeyAsync zero their native response buffers in finally",
+      "present": true,
+      "findings": [
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "if (configured is not null) { CryptographicOperations.ZeroMemory(configured); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "if (trimmed is not null) { CryptographicOperations.ZeroMemory(trimmed); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "CryptographicOperations.ZeroMemory(config);",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::TrimAsync",
+          "requires": "if (trim is not null) { CryptographicOperations.ZeroMemory(trim); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::ReadKeyAsync",
+          "requires": "if (health is not null) { CryptographicOperations.ZeroMemory(health); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::ReadKeyAsync",
+          "requires": "if (response is not null) { CryptographicOperations.ZeroMemory(response); }",
+          "present": true
+        },
+        {
+          "location": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs::ReadKeyAsync",
+          "requires": "CryptographicOperations.ZeroMemory(retained);",
+          "present": true
+        }
+      ]
+    }
+  ],
+  "allCorrectionsPresent": true,
+  "byteComparisonWithLatestLoop10Graphs": [
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/GovernanceScopeGuardReducer.cs",
+      "currentSha256": "359ef2540e41b05b0e23f1d009ecb02cda0f1df0b48bc306ea7f6c4660bdff7c",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "359ef2540e41b05b0e23f1d009ecb02cda0f1df0b48bc306ea7f6c4660bdff7c",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/InteractionOccurrenceRegistryActor.cs",
+      "currentSha256": "5ce28189768e594a8d055f5529ac0f785b837ae4c6eac9fcab21241a3c757095",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "5ce28189768e594a8d055f5529ac0f785b837ae4c6eac9fcab21241a3c757095",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+      "currentSha256": "bc4c432a74b90b25a343fdc6cfbce4376d40d4beec5eed36034da2476aa27c86",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "bc4c432a74b90b25a343fdc6cfbce4376d40d4beec5eed36034da2476aa27c86",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/GovernanceScopeGuardTests.cs",
+      "currentSha256": "e10d7bfb92e0264d7a42650b70f9de5af58c58c50fdbb6215c71005929293d5c",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "e10d7bfb92e0264d7a42650b70f9de5af58c58c50fdbb6215c71005929293d5c",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+      "currentSha256": "a649de375bd78659b9a6fda50ef5c3c3498316e2de2bf19591991cc49b2b62d7",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "a649de375bd78659b9a6fda50ef5c3c3498316e2de2bf19591991cc49b2b62d7",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustDeletionConsumptionAuthorityTests.cs",
+      "currentSha256": "fb8473d4aed63395e4ee240e1a991f1e3f1665fdce0d7fda39335b57c5fa9b1d",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "fb8473d4aed63395e4ee240e1a991f1e3f1665fdce0d7fda39335b57c5fa9b1d",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs",
+      "currentSha256": "4b5b59415656436256d2156bd7a99b874d4a67ed0a319b7565c1c42f28ceb071",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "4b5b59415656436256d2156bd7a99b874d4a67ed0a319b7565c1c42f28ceb071",
+      "matches": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs",
+      "currentSha256": "104e12ccb10326d106f91f02468b797ae691b0fb480b90644fb779cfb0270e6d",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "104e12ccb10326d106f91f02468b797ae691b0fb480b90644fb779cfb0270e6d",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": ".gitattributes",
+      "currentSha256": "4254b60acb0172df51c5ba915e27a75556320dee743ca61d7072c93bbda537cc",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "4254b60acb0172df51c5ba915e27a75556320dee743ca61d7072c93bbda537cc",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/README.md",
+      "currentSha256": "f1cefa7f7d85b11dbef950f1ba236c3c9f778201df0f389b84b3eb600329bfd4",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "f1cefa7f7d85b11dbef950f1ba236c3c9f778201df0f389b84b3eb600329bfd4",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/bootstrap.py",
+      "currentSha256": "87df9b0685265a485ec4df9f91e7ce27e3dd471048e73741fccfaadb95d23a71",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "87df9b0685265a485ec4df9f91e7ce27e3dd471048e73741fccfaadb95d23a71",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/custody-policy.hcl",
+      "currentSha256": "5bb633940302a180e9cf8d31aa3ed5bf945b0f0ba90aba8dd408dd91a0d24820",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "5bb633940302a180e9cf8d31aa3ed5bf945b0f0ba90aba8dd408dd91a0d24820",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/kubelet-noswap.fragment.yaml",
+      "currentSha256": "06636b5041f8b85c4af8f5ac15af576abd942e361c3a3052c680bf8bf819967d",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "06636b5041f8b85c4af8f5ac15af576abd942e361c3a3052c680bf8bf819967d",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/statefulset.yaml",
+      "currentSha256": "bf737dad6b2d9bed2a0dbafb117b411f0298b5508e30550a194177ba51002720",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "bf737dad6b2d9bed2a0dbafb117b411f0298b5508e30550a194177ba51002720",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "currentSha256": "ca9e71d2dd89359351a391d9c775667bb771a67f9631d46d7d9fa11d78e59c80",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "ca9e71d2dd89359351a391d9c775667bb771a67f9631d46d7d9fa11d78e59c80",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ErasureRootCustody.cs",
+      "currentSha256": "9d6913cb298a0e7d262bf6325460722eda677b4f0085b38ff433c76e5c9d96da",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "9d6913cb298a0e7d262bf6325460722eda677b4f0085b38ff433c76e5c9d96da",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "currentSha256": "7ba8bce1846e30911f2397ba12e5c7152bab4c1d549b79d542e2139d28f30b9f",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "7ba8bce1846e30911f2397ba12e5c7152bab4c1d549b79d542e2139d28f30b9f",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/OrdinalStringSortedDictionaryConverter.cs",
+      "currentSha256": "eef7ae1d62b4ba7fe7e9be66af5a55ba6d1d816cfe8b03a532b5813964d95e69",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "eef7ae1d62b4ba7fe7e9be66af5a55ba6d1d816cfe8b03a532b5813964d95e69",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/OrdinalStringSortedDictionaryConverterFactory.cs",
+      "currentSha256": "70fbfb630848c5cee56d6227c503b135f7d13b209fa1c78296264a1a001c1f63",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "70fbfb630848c5cee56d6227c503b135f7d13b209fa1c78296264a1a001c1f63",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/CustodyOccurrenceProviderTests.cs",
+      "currentSha256": "3c2c058bea68739aede8621e152573c5c655bd3cec96570d63bf73460931061d",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "3c2c058bea68739aede8621e152573c5c655bd3cec96570d63bf73460931061d",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+      "currentSha256": "7246a9c4e5c88afdd51c4dfa584f6a226162d80f9c905c8296e8f2f562b2ddc8",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "7246a9c4e5c88afdd51c4dfa584f6a226162d80f9c905c8296e8f2f562b2ddc8",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootLoop8AdmissionTests.cs",
+      "currentSha256": "701f9a1bbe7aeaab54013c53232ecd7f5c674f7110873f880e8f015f57847d17",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "701f9a1bbe7aeaab54013c53232ecd7f5c674f7110873f880e8f015f57847d17",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+      "currentSha256": "647bc9e1b5a7dcfe311d162fa56651f7bf7170a3f427903e7ebd4f2ce12110d0",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "647bc9e1b5a7dcfe311d162fa56651f7bf7170a3f427903e7ebd4f2ce12110d0",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootTransportHandler.cs",
+      "currentSha256": "5dacf39e4b249988cc0a603704f75009e51dcb13006fe1e28d193ef0ed06ee08",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "5dacf39e4b249988cc0a603704f75009e51dcb13006fe1e28d193ef0ed06ee08",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootUnissuedReplacementTests.cs",
+      "currentSha256": "7494a345540cefbaefaae5572f29a753ec1629a0165444c8a6202c7c60673921",
+      "expectedFrom": "ext-protection-loop10-resume-27fe4f343c1a/selected-source",
+      "expectedSha256": "7494a345540cefbaefaae5572f29a753ec1629a0165444c8a6202c7c60673921",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoBootstrapIntegrationTests.cs",
+      "currentSha256": "5f6306775364901ddbb21c542dc0cb3e93c1cd84bdc146fa73e6accc5d1bd950",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "5f6306775364901ddbb21c542dc0cb3e93c1cd84bdc146fa73e6accc5d1bd950",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+      "currentSha256": "76cca2fa52110b06542411d7bfe8b5ee2dc18fe5402dfbc3ad217facc89f6866",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "76cca2fa52110b06542411d7bfe8b5ee2dc18fe5402dfbc3ad217facc89f6866",
+      "matches": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoNativeCustodyFixture.cs",
+      "currentSha256": "04f74bd9de39db6009d6a0de6dfa2db4de6fb6824fa6dce7cd4d9a9200291c2d",
+      "expectedFrom": "source-gaps-7b5a4e938648/implementation-after",
+      "expectedSha256": "04f74bd9de39db6009d6a0de6dfa2db4de6fb6824fa6dce7cd4d9a9200291c2d",
+      "matches": true
+    }
+  ],
+  "allBytesMatchLatestLoop10Graphs": true,
+  "sourceChangedByThisRun": false
+}
