@@ -1,0 +1,146 @@
+{
+  "observedAt": "2026-10-31T06:42:36.136559+00:00",
+  "image": "redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+  "archive": "/tmp/mcpcli-417-dns-provider-inspection-20261031/redis.tar",
+  "archiveSha256": "dbf1b3c0b182e070615c335d48faf9ca93a2135c6e48aed8f171be223419338d",
+  "configDigest": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+  "tools": {
+    "bin/busybox": {
+      "type": "file",
+      "mode": "0o755",
+      "sha256": "aa1e1f4214ec2489ed373f3c5b92b7a7c665821a1decaa9685e5363886a93c7c"
+    },
+    "bin/cat": {
+      "type": "symlink",
+      "target": "/bin/busybox"
+    },
+    "etc/nsswitch.conf": {
+      "type": "file",
+      "mode": "0o644",
+      "sha256": "0afd94c183d30a348b45057f6bf468e121aa448a7641109addb5bb8e282f514d",
+      "contents": "# musl itself does not support NSS, however some third-party DNS\n# implementations use the nsswitch.conf file to determine what\n# policy to follow.\n# Editing this file is not recommended.\nhosts: files dns\n"
+    },
+    "lib/ld-musl-x86_64.so.1": {
+      "type": "file",
+      "mode": "0o755",
+      "sha256": "2fb72c67f292827c8c4095067197af7880c234a3a4060136e1b5518d10de1eb9"
+    },
+    "usr/bin/getent": {
+      "type": "file",
+      "mode": "0o755",
+      "sha256": "366aefa9f33381f85c0bce26c968dd1c696e59ca3af86fd176db56ffc519e5de"
+    },
+    "usr/bin/timeout": {
+      "type": "symlink",
+      "target": "/bin/busybox"
+    },
+    "usr/lib/os-release": {
+      "type": "file",
+      "mode": "0o644",
+      "sha256": "d5ea128b80aea23a85e41f25be80f54ea454a61ab8a1ed92cca4fc1db67afe1e",
+      "contents": "NAME=\"Alpine Linux\"\nID=alpine\nVERSION_ID=3.21.7\nPRETTY_NAME=\"Alpine Linux v3.21\"\nHOME_URL=\"https://alpinelinux.org/\"\nBUG_REPORT_URL=\"https://gitlab.alpinelinux.org/alpine/aports/-/issues\"\n"
+    }
+  },
+  "capabilityCommands": [
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "chroot",
+        "/tmp/mcpcli-417-dns-provider-inspection-20261031/tool-root",
+        "/bin/busybox",
+        "timeout",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "BusyBox v1.37.0 (2025-11-23 13:10:04 UTC) multi-call binary.\n\nUsage: timeout [-s SIG] [-k KILL_SECS] SECS PROG ARGS\n\nRun PROG. Send SIG to it if it is not gone in SECS seconds.\nDefault SIG: TERM.If it still exists in KILL_SECS seconds, send KILL.\n\n"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "chroot",
+        "/tmp/mcpcli-417-dns-provider-inspection-20261031/tool-root",
+        "/usr/bin/timeout",
+        "-s",
+        "TERM",
+        "-k",
+        "1",
+        "5",
+        "/bin/busybox",
+        "true"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "chroot",
+        "/tmp/mcpcli-417-dns-provider-inspection-20261031/tool-root",
+        "/usr/bin/getent",
+        "--help"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "getent: Unknown database `--help': No error information\nUsage: /usr/bin/getent database [key ...]\n\tdatabase may be one of:\n\t\tethers group hosts ahosts ahostsv4 ahostsv6 networks\n\t\tpasswd protocols services shadow shells\n"
+    },
+    {
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--net",
+        "chroot",
+        "/tmp/mcpcli-417-dns-provider-inspection-20261031/tool-root",
+        "/usr/bin/timeout",
+        "-s",
+        "TERM",
+        "-k",
+        "1",
+        "5",
+        "/usr/bin/getent",
+        "ahostsv4",
+        "127.0.0.1"
+      ],
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "selectedCommands": {
+    "readResolver": [
+      "/bin/cat",
+      "/etc/resolv.conf"
+    ],
+    "resolve": [
+      "/usr/bin/timeout",
+      "-s",
+      "TERM",
+      "-k",
+      "1",
+      "5",
+      "/usr/bin/getent",
+      "ahostsv4",
+      "<reviewed-fqdn>"
+    ]
+  },
+  "diagnostics": [
+    "Initial static inspection expected regular timeout/cat files; archive identifies genuine BusyBox links.",
+    "GNU timeout long options were discarded; the exact BusyBox -s/-k arguments pass with a no-op command.",
+    "getent help lists ahostsv4. Numeric lookup in an unconfigured isolated network namespace exits 2; this is retained and is not DNS proof."
+  ],
+  "limits": [
+    "Only isolated local CLI help/argument checks ran; no application/container/Kubernetes workload started.",
+    "No DNS success is claimed during preparation. Real DNS proof will be produced only by the newly approved provider-Pod phase."
+  ]
+}

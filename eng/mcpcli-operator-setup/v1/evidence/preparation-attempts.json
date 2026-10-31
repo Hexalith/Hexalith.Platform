@@ -1,0 +1,109 @@
+[
+  {
+    "attempt": 1,
+    "exitCode": 1,
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031",
+    "outcome": "configured-registry-auth-unavailable",
+    "cause": "Configured credential helper is desktop.exe; initial helper basename validator excluded the extension. The helper handling was corrected; no Secret value was printed and no resources were applied."
+  },
+  {
+    "attempt": 2,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031/review.json",
+    "reviewSha256": "168fe6bbc54995b88c56102f0c3645fbca35491994924b088e7a52a3b7b69e9b",
+    "namespace": "mcpcli-417-20261031-80c56709",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt2",
+    "outcome": "superseded by source/bounds/binding corrections",
+    "applied": false
+  },
+  {
+    "attempt": 3,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-final/review.json",
+    "reviewSha256": "f2c079ee565cbe338787aa2484686e9a2a93dfe4dbecb52ac636375384cb21e3",
+    "namespace": "mcpcli-417-20261031-5c8b09d1",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt3",
+    "outcome": "superseded after runner helper/evidence binding and two-hour token change",
+    "applied": false
+  },
+  {
+    "attempt": 4,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-review/review.json",
+    "reviewSha256": "79b9b6febc3c6ba8ca9753c1d8a4776f4eef07470fe25dcec3a01b3c84e5cedd",
+    "namespace": "mcpcli-417-20261031-aebefecb",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt4",
+    "outcome": "current prepared review candidate; no deployment",
+    "applied": false
+  },
+  {
+    "attempt": 5,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-review/review.json",
+    "reviewSha256": "b852925c1c74ae59f24feeb4719a432b8971583f86f405523b6bb21bff6aaf1b",
+    "namespace": "mcpcli-417-20261031-ae9919ae",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt5",
+    "outcome": "superseded after all-app ownership gate was added before forward/handoff",
+    "applied": false,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt5",
+      "--output",
+      "packet-20261031-recovery-review"
+    ],
+    "prepareExitCode": 0
+  },
+  {
+    "attempt": 6,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/review.json",
+    "reviewSha256": "1f632480a23e000ade4abbb9a89ec6632fd29c6f75268eac2b977cc181fd69fc",
+    "namespace": "mcpcli-417-20261031-e01a41d1",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt6",
+    "outcome": "current recovery review candidate; fresh approval required; not applied",
+    "applied": false,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt6",
+      "--output",
+      "packet-20261031-recovery-final"
+    ],
+    "prepareExitCode": 0
+  },
+  {
+    "attempt": 7,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-dns-review/review.json",
+    "reviewSha256": "23f8ac08ed0051024c4e1c0264fafd7037f96040ec911b58cca72124dac9094f",
+    "namespace": "mcpcli-417-20261031-ef5184e1",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt7",
+    "outcome": "current node-local DNS/sidecar-readiness review candidate; not applied",
+    "applied": false,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt7",
+      "--output",
+      "packet-20261031-dns-review"
+    ],
+    "prepareExitCode": 0
+  },
+  {
+    "attempt": 8,
+    "packet": "eng/mcpcli-operator-setup/v1/packet-20261031-gateway-api-review/review.json",
+    "reviewSha256": "063bac572c44e85441169aa4410b4001886f5ae7ed6e212f3c5138c607e86be4",
+    "namespace": "mcpcli-417-20261031-155f9b6d",
+    "privateRoot": "/tmp/mcpcli-417-v1-private-20261031-attempt8",
+    "outcome": "current Gateway-only loopback API compatibility candidate; no new deployment",
+    "applied": false,
+    "secretCount": 8,
+    "prepareArgv": [
+      "python3",
+      "prepare.py",
+      "--private-root",
+      "/tmp/mcpcli-417-v1-private-20261031-attempt8",
+      "--output",
+      "packet-20261031-gateway-api-review"
+    ],
+    "prepareExitCode": 0
+  }
+]

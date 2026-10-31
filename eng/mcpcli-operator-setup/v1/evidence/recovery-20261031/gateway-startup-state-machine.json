@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "timeout",
+    "30",
+    "/home/administrator/.nuget/packages/dotnet-inspect.linux-x64/0.26.0/tools/any/linux-x64/dotnet-inspect",
+    "member",
+    "--library",
+    "/tmp/mcpcli-417-v1-images-20261031/eventstore/Hexalith.EventStore.Gateway.dll",
+    "Hexalith.EventStore.Indexes.AdminOperationalIndexHostedService+<StartAsync>d__15",
+    "-m",
+    "MoveNext",
+    "--all",
+    "-S",
+    "Annotated Source",
+    "--print",
+    "--offline"
+  ],
+  "exitCode": 1,
+  "assemblySha256": "3ea3b9dc297c5ffdce7c7b5f654ef8d943d2fbbd83fe8a287e79e44daffdd714",
+  "stdout": "",
+  "stderr": "Error: Type 'Hexalith.EventStore.Indexes.AdminOperationalIndexHostedService+<StartAsync>d__15' not found.\n"
+}

@@ -1,0 +1,167 @@
+{
+  "scope": "Working-tree Debug/source verification; no committed candidate, delivered package/CI or hosted acceptance",
+  "status": "review patches complete; story in-progress pending owner SDK release and Builds pins",
+  "baselineCommit": "1316523edfab050e03539a4e6425605245070de9",
+  "frozenBlockSha256": "ffb9327ae823c1464f10f265d090a93f336f9bcb5c1124ae2328d0767a8070d3",
+  "effectiveRepositoryRoot": "/home/administrator/projects/hexalith/platform",
+  "requestedTestRoot": null,
+  "testRootPolicy": "PlatformTestRepository uses collecting-assembly PlatformTestRepositoryRoot metadata before an optional environment override",
+  "testCompilationMapping": "6a80e8aa4ac4f719d1995dd5d2eee22b247f711844e6f3234e7ba9787a6dfbf1",
+  "tests": [
+    {
+      "name": "eventstore-server-tests-verified",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "output": "eventstore-server-tests-verified.txt",
+      "command": "eventstore-server-tests-verified.command.json"
+    },
+    {
+      "name": "eventstore-contracts-tests-verified",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "output": "eventstore-contracts-tests-verified.txt",
+      "command": "eventstore-contracts-tests-verified.command.json"
+    },
+    {
+      "name": "tenants-tests-verified",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "output": "tenants-tests-verified.txt",
+      "command": "tenants-tests-verified.command.json"
+    },
+    {
+      "name": "parties-tests-verified",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "output": "parties-tests-verified.txt",
+      "command": "parties-tests-verified.command.json"
+    },
+    {
+      "name": "memories-tests-verified",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "output": "memories-tests-verified.txt",
+      "command": "memories-tests-verified.command.json"
+    },
+    {
+      "name": "platform-seeds-verified",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "output": "platform-seeds-verified.txt",
+      "command": "platform-seeds-verified.command.json"
+    },
+    {
+      "name": "platform-bootstrap-rerun",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "output": "platform-bootstrap-rerun.txt",
+      "command": "platform-bootstrap-rerun.command.json"
+    },
+    {
+      "name": "platform-catalog-verified",
+      "total": 11,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 1,
+      "output": "platform-catalog-verified.txt",
+      "command": "platform-catalog-verified.command.json"
+    },
+    {
+      "name": "catalog-live-verified",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "output": "catalog-live-verified.txt",
+      "command": "catalog-live-verified.command.json"
+    },
+    {
+      "name": "reference-servers-readiness-verified",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "output": "reference-servers-readiness-verified.txt",
+      "command": "reference-servers-readiness-verified.command.json"
+    }
+  ],
+  "executedPassingCases": 85,
+  "explicitClassGateSkips": 1,
+  "classGateSeparatelyPassed": true,
+  "excludedZeroCaseInvocations": [
+    "platform-tests.txt",
+    "reference-readiness-verified.txt"
+  ],
+  "historicalFailuresRetained": [
+    "baseline-live.txt",
+    "baseline-seed.txt",
+    "eventstore-server-tests.txt",
+    "platform-catalog-seeds.txt",
+    "platform-bootstrap-tests.txt"
+  ],
+  "liveCatalog": {
+    "evidence": "_bmad-output/implementation-artifacts/evidence/3-3/verification/catalog-live-8d48f5506c9943fa83f4864790eace2c",
+    "gatewayProject": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+    "mappingHash": "9a5de6207ff377bb152d0eef73330091c13cca270ee4a6117bf7fd249c0253a8",
+    "instanceId": "catalog-live-8d48f5506c9943fa83f4864790eace2c-catalog",
+    "rootDigest": "d37f1374ca52911215f3a4a0bf4e94e6e487fb28b7ea530c59ea393bfc077966",
+    "publicSchemas": 44,
+    "committedReadbacks": 6,
+    "supportedCleanup": "stop.txt"
+  },
+  "referenceReadiness": {
+    "durationSeconds": 135.109,
+    "sourcePrebuild": "reference-source-prebuild.txt",
+    "successfulOwnerPrebuilds": 7,
+    "runtimeMappingHash": "5b76277e6f8305700209a3c5de04d811fbda7efecdaeef1a8696c73d6181127a",
+    "finalExactAspireStatus": "No AppHost is currently running for apphost.cs"
+  },
+  "sourceSha256": {
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs": "dbebc008f740d75ea43dc08a32d1671569b4a974efb071291dc764725480f450",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs": "b09669c11b37ff8790a53b51a099772ae6d3e8e38bf4fff2b0e76bd1a47b6b91",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "1cf855f016d41e23a9cba07a82592b47c486a2b6fffacc76a15c7d8d27a4461b",
+    "src/Hexalith.Platform.EventStoreHost/Program.cs": "dd3b18f234dd6394dc4de445d85436627f46e5b6e5222285c4392c40d1709d4f",
+    "src/Hexalith.Platform.CatalogBuilder/Program.cs": "ad2f07a22632f0173984397d78aa3ad4e76969069128f1f0c91df84b40cf028e",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj": "40820b20cfb2071d3bf4381743fd33fb01991743b9d0019ebc780ae30fc8829f",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs": "e1dbd716c8b389098fc2d0889a2b9c4010354eaa0fdda1a456a833b045ceb602",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogIntegrationTests.cs": "1cecffefe7aab7c5f8ed227ebeb9ff3158a8a7c81eeaa443b2eabb8cbd7f930b",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformTestRepository.cs": "5d7fc092853bfb52a7dd3a3e24636f7ed09d130a855d83e02146752e5a77b56a",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs": "4d6c18cabbca8c2bc73789263f9c92ffd4c50744064545754207922f7a4b0567",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs": "86fedc6b1ec471fa687062019ea533a06f9ed8205100434b77b9e509a9a6c396",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "5597dede20360ac5d8ef55aecb8716aa0a3273ad55c77d2b30bdb0643c5d30ca",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs": "bdeedfd3ac73b8f88269d70167e528e256b162a1c4a2dda2dbd68832f5915fbe",
+    "tests/Hexalith.Platform.Composition.Tests/GatewaySeedSubscriptionTests.cs": "a40e8f52de96c84e271db27399e9461ae3c6aa95a6c4a6fb0a496123dbd58c71",
+    "tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs": "574bf0d7ad7be585df2b711bf311f3d3ca61378b0e0daeb472e75962d9ec3332",
+    "references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/VersionedRouteCatalogBuilder.cs": "533534f7e246dc4fc47f312a1e2f52b3679612ae406d182708689a47bf991209",
+    "references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Routing/GeneratedRouteCatalogFilter.cs": "e071d3e69f47b6a66ae5df4cfe60a9db60eab636afdaa5afc6e51e8bbf5b0c11",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Routing/RouteCatalogV3Tests.cs": "6402687639d7d60995e3a3822b2fb7e9a445b0d2c7e4bea72a58d139e76729d4",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Routing/RouteCatalogV3IngressTests.cs": "b2b5e77f3358fad00d3854daf93a104ecd463f718ccac154e51e969208e4f39a",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Routing/RouteCatalogTopologyIsolationTests.cs": "44d6cd632786d23b0051bc76002847f8d5eeba08c8913184adcbe6029a83929d",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogSchemaThreeFixture.cs": "4e23515c223561b4a03875bd0203055b19817439b2797dea370712aa3a40f372",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogSchemaThreePolicyTests.cs": "89cde89845e1b702ce11bb921725fbcacf49d89408145d56eee6bab49b8cb768",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentDomainRouteCatalogTests.cs": "de52ea7b5aeb3eec43d84f0ef99faa2613ee86c7a0427441adc2b1a2de967b20"
+  },
+  "workspaceContinuity": "External commits including e65953f0cd725d27642b5d72f60dc3721e6e890a captured in-progress Platform edits. This implementation agent did not stage or commit; unrelated changes were preserved.",
+  "currentTestAssemblySha256": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll": "393d6fa921fb496362e4454d26b9dac3f6e21f4a71c116b599ea25abc4919f20",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll": "7d31417cf126cd3abe9437552f28e6f0f3515e456a39d3eaa4e0b77b21a6a7fc",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.Tests.dll": "135e39b7e64fbf94292e56415f1b941606a1c9075f0aad52ef0c8445965df431"
+  },
+  "binaryReceiptScope": "Current test DLL hashes identify the final collecting outputs used by the required live and reference lanes. The earlier focused runs used their immediately preceding mapped build; the final Integration edit only corrected the recorded gateway-project identity. Current source hashes do not assert that every historical run used these exact final DLL bytes.",
+  "parentAudit": "parent-audit.json",
+  "workspaceHeadAtParentAudit": "e65953f0cd725d27642b5d72f60dc3721e6e890a"
+}

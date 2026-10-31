@@ -33,6 +33,8 @@ public class PlatformRoutingCatalogIntegrationTests
             ["Platform__DeclarationPath"] = options.DeclarationPaths.Single(),
             ["Platform__UsePrebuiltProjects"] = "true",
         };
+        File.WriteAllBytes(Path.Combine(evidence, "runtime-selection.json"), JsonSerializer.SerializeToUtf8Bytes(new
+        { gatewayProject = PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "eventstore").ProjectPath, mappingHash = options.Mapping.ContentHash }));
         string apphost = Path.Combine(root, "apphost.cs");
         bool started = false;
         try

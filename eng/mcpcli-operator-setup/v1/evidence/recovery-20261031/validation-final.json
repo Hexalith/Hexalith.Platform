@@ -1,0 +1,177 @@
+{
+  "schema": "mcpcli-v1-recovery-validation/v1",
+  "observedAt": "2026-10-31T06:13:20.154637+00:00",
+  "reviewSha256": "1f632480a23e000ade4abbb9a89ec6632fd29c6f75268eac2b977cc181fd69fc",
+  "namespaceAbsent": true,
+  "results": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "eng/mcpcli-operator-setup/v1",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "test_all_application_jobs_exist_before_first_liveness_and_readiness_after_writer (test_v1.RecoveryTests.test_all_application_jobs_exist_before_first_liveness_and_readiness_after_writer) ... ok\ntest_changed_domain_pod_blocks_writer_before_post (test_v1.RecoveryTests.test_changed_domain_pod_blocks_writer_before_post) ... ok\ntest_get_transient_startup_failures_are_bounded_and_retained (test_v1.RecoveryTests.test_get_transient_startup_failures_are_bounded_and_retained) ... ok\ntest_job_and_pod_identity_injection_and_terminal_refusals (test_v1.RecoveryTests.test_job_and_pod_identity_injection_and_terminal_refusals) ... ok\ntest_job_retry_replacement_and_template_boundaries (test_v1.RecoveryTests.test_job_retry_replacement_and_template_boundaries) ... ok\ntest_native_sidecar_and_delayed_controller_pod_resolution (test_v1.RecoveryTests.test_native_sidecar_and_delayed_controller_pod_resolution) ... ok\ntest_post_transport_uncertainty_is_not_retried_and_forward_cli_is_read_only (test_v1.RecoveryTests.test_post_transport_uncertainty_is_not_retried_and_forward_cli_is_read_only) ... ok\ntest_backup_and_provider_refusals (test_v1.V1Tests.test_backup_and_provider_refusals) ... ok\ntest_cli_requires_review_and_preserves_channels_without_external_calls (test_v1.V1Tests.test_cli_requires_review_and_preserves_channels_without_external_calls) ... ok\ntest_filled_control_fixture_parity_and_sensitive_boundaries (test_v1.V1Tests.test_filled_control_fixture_parity_and_sensitive_boundaries) ... ok\ntest_fixture_route_and_bootstrap_refusals (test_v1.V1Tests.test_fixture_route_and_bootstrap_refusals) ... ok\ntest_fresh_private_and_packet_output_refusals (test_v1.V1Tests.test_fresh_private_and_packet_output_refusals) ... ok\ntest_image_and_capability_refusals (test_v1.V1Tests.test_image_and_capability_refusals) ... ok\ntest_kubernetes_transport_failure_is_not_exposed_or_retried (test_v1.V1Tests.test_kubernetes_transport_failure_is_not_exposed_or_retried) ... ok\ntest_manifest_refusal_matrix (test_v1.V1Tests.test_manifest_refusal_matrix) ... ok\ntest_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff (test_v1.V1Tests.test_ordered_phases_real_backup_shape_writer_once_and_scoped_handoff) ... ok\ntest_phase_order_target_and_retry_refusals (test_v1.V1Tests.test_phase_order_target_and_retry_refusals) ... ok\ntest_poll_and_redirect_refusals (test_v1.V1Tests.test_poll_and_redirect_refusals) ... ok\ntest_private_repository_boundary_and_existing_namespace_refuse_without_mutation (test_v1.V1Tests.test_private_repository_boundary_and_existing_namespace_refuse_without_mutation) ... ok\ntest_registry_helper_constraints_and_extension (test_v1.V1Tests.test_registry_helper_constraints_and_extension) ... ok\ntest_review_binding_refusals (test_v1.V1Tests.test_review_binding_refusals) ... ok\ntest_token_expiry_is_capped_by_review_window (test_v1.V1Tests.test_token_expiry_is_capped_by_review_window) ... ok\ntest_missing_administrator_or_membership_stops_before_handoff (test_v1.WriteFailureTests.test_missing_administrator_or_membership_stops_before_handoff) ... ok\ntest_terminal_seed_failure_never_submits_membership_or_replays_command (test_v1.WriteFailureTests.test_terminal_seed_failure_never_submits_membership_or_replays_command) ... ok\ntest_uncertain_writer_is_submitted_once_and_blocks_further_phases (test_v1.WriteFailureTests.test_uncertain_writer_is_submitted_once_and_blocks_further_phases) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 1.362s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "eng/mcpcli-operator-setup/v1/phases.py",
+        "--packet",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final",
+        "--review-sha256",
+        "1f632480a23e000ade4abbb9a89ec6632fd29c6f75268eac2b977cc181fd69fc"
+      ],
+      "exitCode": 0,
+      "stdout": "Reviewed packet/local inputs verified; no resources applied.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "get",
+        "namespace",
+        "mcpcli-417-20261031-e01a41d1",
+        "--ignore-not-found",
+        "-o",
+        "json"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/tenants.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/tenants\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/parties.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/parties\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/eventstore.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "job.batch/eventstore\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/namespace.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "namespace/mcpcli-417-20261031-e01a41d1\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/infrastructure.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "serviceaccount/mcpcli-v1\nresourcequota/task-bounds\nrole.rbac.authorization.k8s.io/mcpcli-task-secrets\nrolebinding.rbac.authorization.k8s.io/mcpcli-task-secrets\nnetworkpolicy.networking.k8s.io/task-isolation\npersistentvolumeclaim/task-data\nconfigmap/redis-config\nservice/redis\nconfiguration.dapr.io/mcpcli-v1-access\ncomponent.dapr.io/statestore\ncomponent.dapr.io/pubsub\nconfigmap/gateway-settings\nconfigmap/component-files\nservice/eventstore\nservice/tenants\nservice/parties\nservice/eventstore-dapr\nservice/tenants-dapr\nservice/parties-dapr\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "kubectl",
+        "--context=jpiquot@local",
+        "--request-timeout=10s",
+        "create",
+        "--dry-run=client",
+        "--validate=false",
+        "-f",
+        "eng/mcpcli-operator-setup/v1/packet-20261031-recovery-final/redis.yaml",
+        "-o",
+        "name"
+      ],
+      "exitCode": 0,
+      "stdout": "pod/redis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "eng/mcpcli-operator-setup/v1"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "sourceHashes": {
+    "prepare.py": "23cefe7b6838a6b160f2f2a2e34a650609c021014f0062affabd8213287f1126",
+    "phases.py": "9573387fa429f135ea6659e2c2c14486d3d229f8351d32898fc35b1179088795",
+    "test_v1.py": "ad38feff003cd168b4b0a42dc70d2b0b46ab6a7705ae82a7f0c577c9da0b5f4c",
+    "README.md": "59ef1312e05f0578d874408070f12831621890cfdd8028984c9f4e73b23ee133"
+  },
+  "limits": [
+    "25 focused synthetic test methods passed; six public manifests passed client-only dry-run. This is not admission, runtime injection, readiness or persistence proof.",
+    "Original successful infrastructure/empty backup and failed Gateway attempt/cleanup remain preserved. No recovery deployment, application call, mutation replay, Secret resource retrieval or publication executed."
+  ]
+}
