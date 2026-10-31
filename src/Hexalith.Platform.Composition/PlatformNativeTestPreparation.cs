@@ -184,7 +184,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         credentialServices.AddSingleton<IHostEnvironment>(services.GetRequiredService<IHostEnvironment>());
         credentialServices.AddLogging();
         credentialServices.AddEventStoreWorkloadAssertionIssuer(configuration, options => options.Workload = tenantBootstrap.AppId);
-        await using var credentials = credentialServices.BuildServiceProvider();
+        var credentials = credentialServices.BuildServiceProvider();
+        await using var credentialsLifetime = credentials.ConfigureAwait(false);
         string? assertion = await credentials.GetRequiredService<IWorkloadAssertionIssuer>().IssueAsync(new(audience,
             EventStoreGatewayWorkloadOperations.CommandSubmit, new Dictionary<string, string>
             {
@@ -282,7 +283,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         string temporary = path + ".tmp";
         var options = new FileStreamOptions { Access = FileAccess.Write, Mode = FileMode.CreateNew, Share = FileShare.None, Options = FileOptions.Asynchronous };
         if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
-        await using (var stream = new FileStream(temporary, options))
+        var stream = new FileStream(temporary, options);
+        await using (stream.ConfigureAwait(false))
         {
             using var writer = new Utf8JsonWriter(stream);
             writer.WriteStartObject();

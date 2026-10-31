@@ -28,10 +28,14 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
     public const string ActorTypeName = "DeletionCapabilitySigningActor";
     /// <summary>Exact private read-only actor scope; it cannot collide with a signing request owner.</summary>
     public static string GetReadinessActorId(DeletionCapabilitySigningReadinessRequest request)
-        => new AggregateIdentity(request.TenantId, "custody", "deletion-signing-availability-" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(request)))).ActorId;
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return new AggregateIdentity(request.TenantId, "custody", "deletion-signing-availability-" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(request)))).ActorId;
+    }
     /// <inheritdoc />
     public async Task<DeletionCapabilitySigningAvailability?> ReadAvailabilityAsync(DeletionCapabilitySigningReadinessRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (Host.Id.GetId() != GetReadinessActorId(request) || request.KeyFamily != KeyFamily || request.TrustProfileRevision <= 0
             || request.SubjectPublicKeyInfoSha256 is not { Length: 64 } || request.InstallationBinding is not { Length: 64 }
             || authority is null || provider is null || trustProvider is null) { return null; }

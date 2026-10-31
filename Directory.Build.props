@@ -9,6 +9,10 @@
     <HexalithBuildsRoot Condition="'$(HexalithBuildsRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.Builds</HexalithBuildsRoot>
     <HexalithEventStoreRoot Condition="'$(HexalithEventStoreRoot)' == '' and Exists('$(MSBuildThisFileDirectory)../Hexalith.EventStore/src/Hexalith.EventStore.Contracts')">$(MSBuildThisFileDirectory)../Hexalith.EventStore</HexalithEventStoreRoot>
     <HexalithEventStoreRoot Condition="'$(HexalithEventStoreRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.EventStore</HexalithEventStoreRoot>
+    <HexalithTenantsRoot Condition="'$(HexalithTenantsRoot)' == '' and Exists('$(MSBuildThisFileDirectory)../Hexalith.Tenants/src/Hexalith.Tenants.Contracts/Hexalith.Tenants.Contracts.csproj')">$(MSBuildThisFileDirectory)../Hexalith.Tenants</HexalithTenantsRoot>
+    <HexalithTenantsRoot Condition="'$(HexalithTenantsRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.Tenants</HexalithTenantsRoot>
+    <HexalithMemoriesRoot Condition="'$(HexalithMemoriesRoot)' == '' and Exists('$(MSBuildThisFileDirectory)../Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj')">$(MSBuildThisFileDirectory)../Hexalith.Memories</HexalithMemoriesRoot>
+    <HexalithMemoriesRoot Condition="'$(HexalithMemoriesRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.Memories</HexalithMemoriesRoot>
     <UseHexalithProjectReferences Condition="'$(UseHexalithProjectReferences)' == '' and '$(Configuration)' == 'Debug'">true</UseHexalithProjectReferences>
     <UseHexalithProjectReferences Condition="'$(UseHexalithProjectReferences)' == ''">false</UseHexalithProjectReferences>
     <!-- CI binds the two Builds assemblies to the verified published tool archive. -->
