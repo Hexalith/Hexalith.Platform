@@ -1,5 +1,11 @@
 # Reference-composition Helm qualification
 
+The [isolated node1 Docker proposal](ISOLATED-DOCKER.md) and
+`isolated_docker.py --output /private/local/fresh-bundle` prepare only a private
+offline rootless-engine bundle. They perform no host contact or installation and
+grant no calibration admission. Actual new host changes require their exact
+approval; the existing calibration approval remains accepted and unused.
+
 The selected application package is the maintained chart in `chart/`. The native
 probe uses Aspire **13.6.4**, `Aspire.Hosting.Kubernetes`
 **13.6.4-preview.1.26523.11**, and the catalog Dapr integration
