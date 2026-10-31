@@ -60,6 +60,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+            gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
             committedPredecessor = options.CommittedRoutingCatalogPath,
             committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
             owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
