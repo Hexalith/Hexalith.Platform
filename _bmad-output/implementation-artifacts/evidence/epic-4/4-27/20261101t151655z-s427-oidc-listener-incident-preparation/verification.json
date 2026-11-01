@@ -1,0 +1,105 @@
+{
+  "actionDocSha256": "a46f171ce44f5cd25be30485e7e297f07e9734706776372666aeeed3409a1725",
+  "actualOwnerDecisionPending": true,
+  "approvalBindingsSha256": "eab9bc79a217d4adffa61b8dd00e18c1a0033f710670d91e32037a9515d6a602",
+  "archivePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/tracking-before-20261101t151655z-s427-oidc-listener-incident-preparation",
+  "canonicalFailurePreserved": true,
+  "checkpointUnsigned": true,
+  "concurrentVcsAdvanceObserved": true,
+  "correctedHelperSha256": "69e6d634fee397fa4ab7897a748a23d4941cdd7dc15a20150b0099a352f95b91",
+  "diagnostic": {
+    "allEightChecksObserved": true,
+    "allPass": true,
+    "bootstrapReplayed": false,
+    "diagnosticOnly": true,
+    "incidentApproved": false,
+    "operationalAcceptance": false,
+    "portForwardsClosed": true
+  },
+  "diagnosticSha256": "9a76b6930b63383a740d2991421c28851bca00ceeaa032361919304c3d16c341",
+  "exclusiveWindowEnd": "2026-11-01T23:00:00Z",
+  "failedCanonicalSha256": "2825e15794ba5f77c0c0971b0a21cdcff12b7133cd082901ea1c7992cb08ae38",
+  "firstStep": "keycloak-isolation",
+  "focusedIncidentTests": {
+    "errors": 0,
+    "failures": 0,
+    "run": 10,
+    "skips": 0
+  },
+  "frozenIntentSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+  "gitHead": "4c43913231b54214b40574d02ce5ed5ed30c470d",
+  "helperTests": {
+    "errors": 0,
+    "failures": 0,
+    "run": 18,
+    "skips": 0
+  },
+  "kind": "sanitized-oidc-listener-incident-preparation-checkpoint",
+  "kubernetesUpgradeExecuted": false,
+  "observedAt": "2026-11-01T15:16:55.623332+00:00",
+  "operationalContinuationDispatched": false,
+  "originalPoint": {
+    "capturedAt": "2026-11-01T12:48:05Z",
+    "cutoff": "2026-11-01T12:47:52Z",
+    "recaptured": false,
+    "rpoSeconds": 18,
+    "sourceObservedAt": "2026-11-01T12:48:10Z"
+  },
+  "originalPolicySourceToolsJournalsPreserved": true,
+  "originalSignatureSha256": "bd121679f5e67fdf06ae05654171d2a4b515db925be2b85ddde51d26daa057e0",
+  "packetPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/oidc-listener-correction",
+  "parentIndependentReview": {
+    "focusedTestsPassed": 10,
+    "localOriginalSshAuthenticated": true,
+    "nativeRequests": 0,
+    "operationalGateOpen": false,
+    "receiptPath": "/tmp/story-4-27-parent-oidc-incident-y__vtz1x/verification.json",
+    "receiptSha256": "109e667f62d844c466be775513149a64923f79226125baea711762d038ff52be",
+    "remoteRequests": 0,
+    "totalInputHashesUnchanged": 55
+  },
+  "pendingDecisionSha256": "f3e75596e5b4b23cdb4e38530d48b25577409e99fb269e749128df90ff76d3bc",
+  "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+  "previouslyRecordedGitHead": "a397de8e4d9a700b43cb372fa6b1e59c997c6054",
+  "qualificationSha256": "24e8e65c3f53036dc70f3f6039b0ae970a8a696f7252e683a56b70019bb7ab4d",
+  "rancherInstalled": false,
+  "rawDiagnosticsEncryptedRestricted": true,
+  "recoveryAccepted": false,
+  "recoveryId": "20261101t131121z",
+  "remainingSteps": 39,
+  "retainedState": {
+    "existingVerifierRetained": true,
+    "externalResourcesInCleanupScope": false,
+    "memoriesIntakeWorkerClock": [
+      2,
+      1,
+      0
+    ],
+    "namespaceUid": "c5ead512-6bf5-4cf2-9e29-66e3be4930d5",
+    "observedUnownedExternalResources": 3,
+    "protectedOriginalResourceBindingsObserved": 85,
+    "sourceOutageBegan": false,
+    "watchExtensionRetained": true,
+    "wholeGlobalCensusUnchangedClaimed": false
+  },
+  "retirementExecuted": false,
+  "story41": "closed",
+  "story427": "in-progress",
+  "timesheets36": "open/FAIL",
+  "timesheetsDeployed": false,
+  "trackingAfterSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "33b7afc13630edd50f2b24904ed553e7e3a0199e563985d983c3f0a06368c65f",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "17514c1f3895e44f479871177d124f05f2529030ce64ef03563fdf98f811ee0e",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "343ac56d2806721cc44431c7c9720d837073175657935702be79d7d21827fb0c",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "5ea137eafecebe7a4d3516ebdb7b0562270d6aa69ddc6b8315422db14260da25",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "01cc7d99f519008afa63ee43931d51c5eea01f02682163040a13619cc7d2c018"
+  },
+  "trackingBeforeSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "e2450e7b9a48878d03bc8fc5dc4844162ff725e55215f8639f5834175bc5cb12",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "b8b9a3aacc714582a0f3c4071271e218d07b1f1323cea0998b46d3ddce1adbaa",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "252045302dd14516a20ed3d1eaef4a2b1dff03485563d678c7e6e36bec489afb",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "3c3344465b7ff3b517c61b4d92f96f0664312081e06dd40b4e3f59f3c462a7d4",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "608db803cd5ac28fa38d8aa5a35f12ae66f886d4b7b0c80ce2b4a9da08c3f432"
+  },
+  "vcsMutationByThisAgent": false
+}

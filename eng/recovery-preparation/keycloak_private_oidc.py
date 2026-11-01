@@ -133,11 +133,25 @@ def listener_owned(pid,port):
     expected='socket:['+found[0][1]+']'
     return any(os.readlink(p)==expected for p in pathlib.Path(f'/proc/{pid}/fd').iterdir())
 
+def listener_absent(port):
+    require(type(port) is int and 0<port<65536,'invalid private listener port')
+    for table in ('tcp','tcp6'):
+        with open('/proc/net/'+table,'rb') as source:
+            raw=source.read(4*1024*1024+1)
+        require(len(raw)<=4*1024*1024,'private listener census bound exceeded')
+        for line in raw.decode('ascii').splitlines()[1:]:
+            fields=line.split()
+            require(len(fields)>=10,'private listener census malformed')
+            # TIME_WAIT retains a TCP connection, but no process or listener.
+            # Any actual listener on this port, including wildcard/IPv6 or an
+            # unrelated owner, prevents startup and successful cleanup.
+            if int(fields[1].rsplit(':',1)[1],16)==port and fields[3]=='0A':
+                return False
+    return True
+
 @contextlib.contextmanager
 def forward(b,ns,target,port,tracker):
-    with socket.socket() as s:
-        try:s.bind(('127.0.0.1',port))
-        except OSError:raise Refusal('unexpected existing listener') from None
+    require(listener_absent(port),'unexpected existing listener')
     tracked={'port':port,'pid':None,'started':False,'terminationConfirmed':False,'loopbackListenerAbsent':False};tracker.append(tracked)
     p=None
     try:
@@ -162,9 +176,7 @@ def forward(b,ns,target,port,tracker):
             except subprocess.TimeoutExpired:p.kill();p.wait(5)
         if p is not None:p.stdout.close()
         tracked['terminationConfirmed']=p is None or p.poll() is not None
-        with socket.socket() as check:
-            try:check.bind(('127.0.0.1',port));tracked['loopbackListenerAbsent']=True
-            except OSError:pass
+        tracked['loopbackListenerAbsent']=listener_absent(port)
         require(tracked['terminationConfirmed'] and tracked['loopbackListenerAbsent'],'private forward cleanup uncertain')
 
 def read_human_count(b,ns,pod):

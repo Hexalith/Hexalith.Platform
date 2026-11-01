@@ -1,0 +1,217 @@
+{
+  "actionDocSha256": "69bb5c602233c912169ffdebf495a2f0ec34f50c1ec07fb293ed864240662150",
+  "activeUnownedEventstorePublisherStillObserved": true,
+  "actualRestoreResult": {
+    "backupAccepted": false,
+    "decisionSha256": "d0c380b2a8ad4a493c51e4dfe62bfb5c3a40dfca8b0a879b0c3a4f3906587ff6",
+    "externalJobMutationAuthorized": false,
+    "failedQuiescencePreserved": true,
+    "finishedAt": "2026-11-01T17:20:10Z",
+    "fromReplicas": 0,
+    "intakeReady": true,
+    "intakeUid": "a9bf6dde-593d-4313-af47-c55670e2a0a7",
+    "kind": "exact-intact-source-intake-recovery",
+    "operationalContinuationAuthorized": false,
+    "patchOutcomeKnown": true,
+    "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+    "recordedAt": "2026-11-01T17:20:03Z",
+    "sourceDataRestoredFromBackup": false,
+    "state": "intake-restored",
+    "toReplicas": 2
+  },
+  "allAcceptedInputHashesVerified": 23,
+  "archivePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/tracking-before-20261101t172332z-s427-intact-source-intake-restored",
+  "backupAccepted": false,
+  "bindingsSha256": "ea6116785cea8598482f21dbd067119d329f9557f906b25c899024a52ad1f55a",
+  "checkpointUnsigned": true,
+  "cleanupDispatched": false,
+  "confirmedIntakeReadyAt": "2026-11-01T17:20:10Z",
+  "driverSha256": "1f41bfc7280795266d11589fab2d56266807bda38541479fb19967edae3ce201",
+  "exclusiveWindowEnd": "2026-11-01T23:00:00Z",
+  "externalJobMutations": 0,
+  "failedQuiescencePreserved": true,
+  "failedQuiescenceSha256": "540dd7ef385d3ed5f43bd0ef5b227adaa1443e8c3f191ffa413814bb87247fd3",
+  "frozenIntentSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+  "gitHead": "4c43913231b54214b40574d02ce5ed5ed30c470d",
+  "intakeOnlyDecisionSha256": "d0c380b2a8ad4a493c51e4dfe62bfb5c3a40dfca8b0a879b0c3a4f3906587ff6",
+  "kind": "sanitized-intact-source-intake-restoration-checkpoint",
+  "kubernetesUpgradeExecuted": false,
+  "observedAt": "2026-11-01T17:23:32.080617+00:00",
+  "operationalContinuationAuthorized": false,
+  "parentIndependentFourTestReview": {
+    "receiptPath": "/tmp/story-4-27-parent-intake-recovery-wvolo1_l/verification.json",
+    "sha256": "8bb413f7d02454264c6057d0535a316634c61cbd512168d045bdd826eb9d8c9f"
+  },
+  "parentIndependentRestorationObservation": {
+    "receiptPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/intake-recovery-owner-acceptance-20261101t171845z/parent-restoration-observation.json",
+    "sha256": "d82f63704e418836af438412cc08d1a9b870facf2c92262cf3fcc97ebdd0c61b"
+  },
+  "pendingRecordPreserved": true,
+  "pointProofOrTlsHorizonsRenewed": false,
+  "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+  "postRecoveryState": {
+    "backupAccepted": false,
+    "externalJobMutations": 0,
+    "failedQuiescencePreserved": true,
+    "failedQuiescenceSha256": "540dd7ef385d3ed5f43bd0ef5b227adaa1443e8c3f191ffa413814bb87247fd3",
+    "globalEventstorePodObjects": [
+      {
+        "containers": [
+          {
+            "name": "daprd",
+            "ready": true,
+            "state": "running"
+          },
+          {
+            "name": "eventstore",
+            "ready": true,
+            "state": "running"
+          }
+        ],
+        "namespace": "mcpcli-417-20261101-00c6a713",
+        "phase": "Running",
+        "pod": "eventstore-nkkwj",
+        "uid": "d888a907-5fb9-4684-9b52-a6f827582884"
+      }
+    ],
+    "heldTargets": {
+      "keycloak": {
+        "namespace": "recovery-4-0-kc",
+        "namespaceUid": "c5ead512-6bf5-4cf2-9e29-66e3be4930d5",
+        "retained": true,
+        "storageBindingsVerified": [
+          {
+            "pvUid": "7e6754cd-ba9b-4c27-b0e4-425fd7f05dca",
+            "pvcUid": "318fc60c-7331-41fb-9bb0-e5a3b3157c84"
+          }
+        ],
+        "workloads": [
+          {
+            "kind": "deployment",
+            "name": "keycloak-restore-app",
+            "readyInstances": null,
+            "readyReplicas": 1,
+            "uid": "7699d3ad-7737-4c2e-a402-c732c647faab"
+          },
+          {
+            "kind": "cluster.postgresql.cnpg.io",
+            "name": "keycloak-restore",
+            "readyInstances": 1,
+            "readyReplicas": null,
+            "uid": "0e08af8b-2c37-441b-aa5e-d946a9c3ba61"
+          }
+        ]
+      },
+      "openbao": {
+        "namespace": "recovery-4-0-bao",
+        "namespaceUid": "14ff4947-7b3f-4476-984b-d518a7c8fbdb",
+        "retained": true,
+        "storageBindingsVerified": [
+          {
+            "pvUid": "8f2fdaf1-824c-4877-8939-ff4e5f787217",
+            "pvcUid": "74aaa782-12f2-4811-9373-5cde9a3725df"
+          },
+          {
+            "pvUid": "01d93dbe-3ddd-48d8-b809-1a77fff5e7ce",
+            "pvcUid": "c4ed8a47-65d7-42d3-83ba-d2d53e4f21b2"
+          },
+          {
+            "pvUid": "dd0f8fc2-85a2-45f2-95d2-7ae8903b7f1b",
+            "pvcUid": "1d2d4da1-06ee-4cdb-9c33-b703ed74ea1b"
+          }
+        ],
+        "workloads": [
+          {
+            "kind": "statefulset",
+            "name": "bao-restore",
+            "readyInstances": null,
+            "readyReplicas": 3,
+            "uid": "d937b5e5-c0b7-4350-9994-36a8487b19d8"
+          }
+        ]
+      }
+    },
+    "kind": "post-intake-only-recovery-read-only-state",
+    "observedAt": "2026-11-01T17:21:29Z",
+    "operationalContinuationAuthorized": false,
+    "rawEvidenceEncrypted": true,
+    "recoveryDecisionSha256": "d0c380b2a8ad4a493c51e4dfe62bfb5c3a40dfca8b0a879b0c3a4f3906587ff6",
+    "restoreResultSha256": "ea3f8b51c0cf89b9ef4187eb067b6f83f35fe5b98ae577f1bc6b91ea7ed2e595",
+    "source": {
+      "access-telemetry-postgresql": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "747db81b-04e5-4d22-b747-89d4c6d4d1f4"
+      },
+      "falkordb": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "3dfd84ae-b4d7-47e8-b7fd-7934782603e6"
+      },
+      "memories": {
+        "readyReplicas": 2,
+        "replicas": 2,
+        "uid": "f6d05934-7a44-4920-8fd3-8351752dbdee"
+      },
+      "memories-access-telemetry": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "ce58cb74-9118-414c-8a62-801802deb9ab"
+      },
+      "memories-access-telemetry-clock": {
+        "readyReplicas": 0,
+        "replicas": 0,
+        "uid": "d4efbcd9-c537-448f-8189-ac2f68ea712f"
+      },
+      "memories-mcp": {
+        "readyReplicas": 2,
+        "replicas": 2,
+        "uid": "a9bf6dde-593d-4313-af47-c55670e2a0a7"
+      },
+      "redis-stack": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "6eb1484c-fe20-4efe-b13e-57245a81324e"
+      }
+    },
+    "watchNamespaceValue": "keycloak,cnpg-system,recovery-4-0-kc"
+  },
+  "postRecoveryStateSha256": "ba45f9b32cffdf203cda82fab146b51eccba6af496cdb8dba667c3899425303a",
+  "rancherInstalled": false,
+  "rawDiagnosticsEncryptedRestricted": true,
+  "readOnlyObservationTime": "2026-11-01T17:21:29Z",
+  "recordedIntakePauseAt": "2026-11-01T16:59:03Z",
+  "recordedPauseToReadySeconds": 1267,
+  "recoveryAccepted": false,
+  "recoveryId": "20261101t131121z",
+  "retirementExecuted": false,
+  "singleRestoreIntentSha256": "0210bbd564d771e677e157459f7c1784e33539155ecd4b2535a8fd3ed49a7e69",
+  "singleRestoreResultSha256": "ea3f8b51c0cf89b9ef4187eb067b6f83f35fe5b98ae577f1bc6b91ea7ed2e595",
+  "sourceDataRestoredFromBackup": false,
+  "sourceIntakeWorkerClock": [
+    2,
+    1,
+    0
+  ],
+  "sourceStoresOrWriterMutatedByRecovery": false,
+  "sourceStoresReady": true,
+  "story41": "closed",
+  "story427": "in-progress",
+  "timesheets36": "open/FAIL",
+  "timesheetsDeployed": false,
+  "trackingAfterSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "db053e0e1fcabfdd65731a24066ac8b05c358b3165444f95c097145caf663877",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "e7060e99a324551396e7b404b437d8570e919a5ad7be000c2968db97c81ec949",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "04ad202ae4216102b1ab3e9a4ea215744df9d89f52265eb79093843d62fd5ac6",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "4f23dd3655cf505c9aa3332c63704131ee838b91adc17c60ff55cb10fbf20c33",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "1aeca75a48c1b196299b7b7ce64eee586c4ef5a2b02d4047f8e00418ee8239f6"
+  },
+  "trackingBeforeSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "e85e1441ebffdf36bd1024417d7825cc07b6f3993a28f1041f28636a50d4e220",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "917016d05f0142ed0b149573a097e894d574df256555df53a1b0bd9c3c6ce761",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "b3f9173ce7a12f1b80a0c8ef4a3cd00b1c5577b59577d932c1d32d1acf192347",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "2b6c71625eff812fa7e7d50745655e83ce18d6f03feeb8c558cfeaf8b89e390f",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "403cfd48a6261bc0f5194241b5e6fa4e8df0e3cccb437e5016356aae81f16bb2"
+  },
+  "vcsMutationByThisAgent": false
+}

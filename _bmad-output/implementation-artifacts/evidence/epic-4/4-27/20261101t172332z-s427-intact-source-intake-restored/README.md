@@ -1,0 +1,3 @@
+# Intact source intake restored
+
+The single exact accepted MCP 0→original 2 restoration succeeded with known guarded patch outcome and two-ready rollout at 17:20:10Z. Final read-only state confirms source 2/1/0 readiness and all stores ready; the parent independently verified exact source specifications and UIDs. Failed drain/quiescence remains unchanged, and the active unrelated EventStore publisher still blocks complete recovery. Held targets/watch remain; no capture, continuation, cleanup or external Job mutation ran. See verification.json and appended story/spec/operator handoffs for actual hashes and limits.

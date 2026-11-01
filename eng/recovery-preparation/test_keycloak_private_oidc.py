@@ -213,4 +213,75 @@ class Checks(unittest.TestCase):
             else:self.assertEqual(sum(reads),2*1024*1024+1)
             self.assertTrue(all(value<=4.0 for value in timeouts))
 
+class ListenerState(unittest.TestCase):
+    SCRIPT="""import socket,sys
+port=int(sys.argv[1]);listener=socket.socket();listener.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+listener.bind(('127.0.0.1',port));listener.listen(2)
+print(f'Forwarding from 127.0.0.1:{port} -> 8080',flush=True)
+while True:
+ connection,_=listener.accept();connection.recv(16);connection.sendall(b'x');connection.shutdown(socket.SHUT_WR)
+ while connection.recv(16):pass
+ connection.close()
+"""
+
+    def fixture(self):
+        with socket.socket() as choose:
+            choose.bind(('127.0.0.1',0));port=choose.getsockname()[1]
+        current=binding();current.update(authorize=lambda:True,deadline=time.monotonic()+10)
+        return current,port
+
+    def test_real_active_close_time_wait_allows_two_owned_forwards_without_clearing_tcp_state(self):
+        current,port=self.fixture();real_popen=subprocess.Popen;children=[];tracker=[]
+        def spawn(*args,**kwargs):
+            child=real_popen([sys.executable,'-I','-S','-B','-c',self.SCRIPT,str(port)],**kwargs)
+            children.append(child);return child
+        try:
+            with patch.object(p.subprocess,'Popen',side_effect=spawn):
+                for _ in range(2):
+                    with p.forward(current,'inert','inert',port,tracker):
+                        with socket.create_connection(('127.0.0.1',port),timeout=2) as connection:
+                            connection.sendall(b'x');self.assertEqual(connection.recv(1),b'x')
+                            self.assertEqual(connection.recv(1),b'');connection.shutdown(socket.SHUT_WR)
+                    rows=[line.split() for line in Path('/proc/net/tcp').read_text().splitlines()[1:]]
+                    self.assertTrue(any(int(row[1].rsplit(':',1)[1],16)==port and row[3]=='06' for row in rows))
+                    self.assertTrue(p.listener_absent(port));self.assertIsNotNone(children[-1].poll())
+            self.assertEqual(len(tracker),2)
+            self.assertTrue(all(row['terminationConfirmed'] and row['loopbackListenerAbsent'] for row in tracker))
+        finally:
+            for child in children:
+                if child.poll() is None:child.kill();child.wait(3)
+
+    def test_unrelated_ipv4_ipv6_loopback_and_wildcard_listeners_block_startup_and_survive(self):
+        for family,address in [(socket.AF_INET,'127.0.0.1'),(socket.AF_INET,'0.0.0.0'),
+                               (socket.AF_INET6,'::1'),(socket.AF_INET6,'::')]:
+            with self.subTest(address=address),socket.socket(family) as unrelated:
+                unrelated.bind((address,0));unrelated.listen(1);port=unrelated.getsockname()[1]
+                current=binding();current.update(authorize=lambda:True,deadline=time.monotonic()+5)
+                with patch.object(p.subprocess,'Popen') as spawn:
+                    with self.assertRaisesRegex(p.Refusal,'unexpected existing listener'):
+                        with p.forward(current,'inert','inert',port,[]):self.fail('unrelated listener adopted')
+                    spawn.assert_not_called()
+                self.assertEqual(unrelated.getsockopt(socket.SOL_SOCKET,socket.SO_ACCEPTCONN),1)
+
+    def test_cleanup_refuses_unrelated_replacement_listener_without_signalling_its_owner(self):
+        current,port=self.fixture();real_popen=subprocess.Popen;children=[];outsiders=[];tracker=[]
+        def spawn(*args,**kwargs):
+            child=real_popen([sys.executable,'-I','-S','-B','-c',self.SCRIPT,str(port)],**kwargs)
+            original=child.terminate
+            def terminate_then_listen():
+                original();child.wait(3)
+                other=socket.socket();other.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+                other.bind(('0.0.0.0',port));other.listen(1);outsiders.append(other)
+            child.terminate=terminate_then_listen;children.append(child);return child
+        try:
+            with patch.object(p.subprocess,'Popen',side_effect=spawn):
+                with self.assertRaisesRegex(p.Refusal,'private forward cleanup uncertain'):
+                    with p.forward(current,'inert','inert',port,tracker):pass
+            self.assertTrue(tracker[0]['terminationConfirmed']);self.assertFalse(tracker[0]['loopbackListenerAbsent'])
+            self.assertIsNotNone(children[0].poll());self.assertEqual(outsiders[0].getsockopt(socket.SOL_SOCKET,socket.SO_ACCEPTCONN),1)
+        finally:
+            for other in outsiders:other.close()
+            for child in children:
+                if child.poll() is None:child.kill();child.wait(3)
+
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,158 @@
+{
+  "actionDocSha256": "535623456c5d303bc9f2f381b5a2722af6c63dc3dff83ee59cc0ec276105cde1",
+  "actualNewOwnerDecisionPending": true,
+  "approvalBindingsSha256": "f478d1aba1001b2772090aaba536649b183f6d0f719b99e453c31d2abe8ce227",
+  "archivePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/tracking-before-20261101t165532z-s427-memories-role-order-incident",
+  "canonicalCensusAbsentAtStop": true,
+  "checkpointUnsigned": true,
+  "diagnostic": {
+    "allReadOnlyPrerequisitesPassed": true,
+    "bindingsSha256": "240dd7eadd852896daa9a236e66f6219ece7bf289975d52d84114c734fc97258",
+    "canonicalCensusWritten": false,
+    "capturePerformed": false,
+    "checkedAt": "2026-11-01T16:41:03Z",
+    "completeTableCensusMatched": true,
+    "diagnosticOnly": true,
+    "elapsedSeconds": 3.845,
+    "falkordbDbsize": 0,
+    "falkordbGraphs": 0,
+    "incidentApproved": false,
+    "kind": "read-only-memories-source-role-order-diagnostic",
+    "operationalAcceptance": false,
+    "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+    "recoveryId": "20261101t131121z",
+    "redisDbsize": 3,
+    "redisInflight": 0,
+    "redisReminderKeys": 0,
+    "redisStreamLength": 0,
+    "redisWorkflowKeys": 0,
+    "registryAbsent": true,
+    "sourceControlRolesExtensionsMatched": true,
+    "sourceOutageBegan": false,
+    "sourcePodContainerStorageIncarnationMatched": true,
+    "sourceToolsAndConfigurationHashesMatched": true,
+    "tenantCount": 0
+  },
+  "diagnosticSha256": "ff841d618995df227538256e5f5056694113a5a91e8034e3f2f19a96c0a106ac",
+  "exclusiveWindowEnd": "2026-11-01T23:00:00Z",
+  "failedCensusIntentSha256": "79120686e86708022eb48beb4630df25b95e28f29382483199a5dfa7d2c844eb",
+  "failedCensusResultSha256": "f0a9d2d7bba7746f75089b47104357ec1d1fa8cdb0ddec99f63def8391ff959c",
+  "failedOriginalStage": "memories-final-census",
+  "firstDistinctStep": "memories-census-role-order-correction",
+  "frozenIntentSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+  "gitHead": "4c43913231b54214b40574d02ce5ed5ed30c470d",
+  "heldState": {
+    "censusExists": false,
+    "heldRestoreTargets": {
+      "keycloak": {
+        "namespace": "recovery-4-0-kc",
+        "namespaceUid": "c5ead512-6bf5-4cf2-9e29-66e3be4930d5",
+        "recordedIdentitySha256": "aac333284a66b3d2c7e90434e8513eb115adf555af97fe20729baf909ae1fbd2",
+        "retained": true
+      },
+      "openbao": {
+        "namespace": "recovery-4-0-bao",
+        "namespaceUid": "14ff4947-7b3f-4476-984b-d518a7c8fbdb",
+        "recordedIdentitySha256": "aed8543e82de9ea962912a403d3373855202b470c96a8eb7320fee3411ff60ad",
+        "retained": true
+      }
+    },
+    "kind": "read-only-stopped-before-memories-mutation",
+    "observedAt": "2026-11-01T16:36:26Z",
+    "operationalContinuationAdvanced": false,
+    "pauseExists": false,
+    "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+    "rawEvidenceTwoRecipientEncrypted": true,
+    "recoveryAccepted": false,
+    "sourceOutageBegan": false,
+    "systems": {
+      "access-telemetry-postgresql": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "747db81b-04e5-4d22-b747-89d4c6d4d1f4"
+      },
+      "falkordb": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "3dfd84ae-b4d7-47e8-b7fd-7934782603e6"
+      },
+      "memories-access-telemetry": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "ce58cb74-9118-414c-8a62-801802deb9ab"
+      },
+      "memories-access-telemetry-clock": {
+        "readyReplicas": 0,
+        "replicas": 0,
+        "uid": "d4efbcd9-c537-448f-8189-ac2f68ea712f"
+      },
+      "memories-mcp": {
+        "readyReplicas": 2,
+        "replicas": 2,
+        "uid": "a9bf6dde-593d-4313-af47-c55670e2a0a7"
+      },
+      "redis-stack": {
+        "readyReplicas": 1,
+        "replicas": 1,
+        "uid": "6eb1484c-fe20-4efe-b13e-57245a81324e"
+      }
+    },
+    "watchNamespaceValue": "keycloak,cnpg-system,recovery-4-0-kc"
+  },
+  "kind": "sanitized-memories-role-order-incident-checkpoint",
+  "kubernetesUpgradeExecuted": false,
+  "observedAt": "2026-11-01T16:55:32.859865+00:00",
+  "operationalContinuationDispatched": false,
+  "operationalVariantsExecuted": false,
+  "originalSignedPolicyToolsPointClocksAndFailurePreserved": true,
+  "packetPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/memories-role-order-correction",
+  "parentIndependentReview": {
+    "receiptPath": "/tmp/story-4-27-parent-role-order-x4hbso_y/verification.json",
+    "receiptSha256": "8df66e41dcac85e7a6e7892c4e9579dcdbb2bf76fcc95368ba391a9c9758b7c3"
+  },
+  "parentRoleOrderDiagnosis": {
+    "receiptPath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/owner-acceptance-20261101t162030z/parent-role-order-failure-observation.json",
+    "receiptSha256": "6136b4cb1f96f351aac717ee9c4520836a3c0daa9e1a1ad45e67c768500434a1"
+  },
+  "pendingDecisionSha256": "3a51294c2affd34cf5ecf03d90148fceba8464532b1db067bafba0b554b92a8b",
+  "policySha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+  "priorActualOidcDecisionSha256": "15ac76556f28dddfe8eba3dcc671d34f28b9fdb8afe157f88cd54c555d10f559",
+  "priorJournalRecordsUnchanged": 32,
+  "priorPassedStages": 15,
+  "rancherInstalled": false,
+  "rawDiagnosticsEncryptedRestricted": true,
+  "recoveryAccepted": false,
+  "recoveryId": "20261101t131121z",
+  "remainingSteps": 24,
+  "retirementExecuted": false,
+  "sourceCapturePerformed": false,
+  "sourceOutageBegan": false,
+  "sourcePaused": false,
+  "story41": "closed",
+  "story427": "in-progress",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "productionRequests": 0,
+    "qualificationSha256": "871ef6a967752ed6f11cbcd94218c3bf46965ade51e68e15a8fe9ba55f2cb686",
+    "run": 14,
+    "skips": 0
+  },
+  "timesheets36": "open/FAIL",
+  "timesheetsDeployed": false,
+  "trackingAfterSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "0b2d860938aa37324936007d6db2866f80a56328bd8aa82cd22989693fd3f4af",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "01795604b28a9081d25186f58344dfc6c77e472fda7237415b93735f3b1d04c8",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "4e22fa90663dad36e4113f1d55fd599889962fee411851df99e3d03b893010df",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "52672e372bcb64641cf2a6f6876160dd9099ab2f058be7de2544c55e465ed7eb",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "ecec0351c9bb0a554e660233fd31306147f32a2fe2fe75dbc261210b6d2911ed"
+  },
+  "trackingBeforeSha256": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": "e603b08e367415de6594db202a3252dc64f9c3f52dd70a83a9d129c24c99230f",
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": "3acc69c142b72c66563db2a0df0af0561a0fa4671a276e7e1b3572109834d00c",
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": "877e429b77642090bdf907315771e9778a5bd7b7f8621e20144b48f81d1dd271",
+    "eng/cluster-management/STAGING-PREREQUISITES.md": "5ea137eafecebe7a4d3516ebdb7b0562270d6aa69ddc6b8315422db14260da25",
+    "eng/timesheets-deployment/staging-dependency-handoff.md": "01cc7d99f519008afa63ee43931d51c5eea01f02682163040a13619cc7d2c018"
+  },
+  "vcsMutationByThisAgent": false
+}

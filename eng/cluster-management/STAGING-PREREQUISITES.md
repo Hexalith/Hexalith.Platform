@@ -854,3 +854,264 @@ and separate native/node/etcd prerequisites still precede an exact retirement
 plan/approval/arm. **4.27 stays in-progress, 4.1 closed, Timesheets 3.6 open/FAIL**.
 No retirement, upgrade, Rancher or deployment ran; frozen intent and original
 production tasks remain unchanged.
+
+
+## OIDC listener incident: diagnostic passed, exact decision pending — 2026-11-01
+
+The authenticated retained-point run completed its first nine stages and stopped
+at the original private OIDC command. Its canonical result remains **allPass=false**,
+**portForwardsClosed=false**, SHA-256
+`2825e15794ba5f77c0c0971b0a21cdcff12b7133cd082901ea1c7992cb08ae38`.
+All passed/failed journals, signed policy, original source point and clocks remain
+unchanged. No later isolation, OpenBao or Memories stage followed that failure;
+Memories intake/worker/clock remain 2/1/0. The known isolated Keycloak target,
+existing verifier and temporary watch extension remain retained.
+
+The [new checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t151655z-s427-oidc-listener-incident-preparation/verification.json) records the bounded read-only investigation.
+The old bind predicate also refuses a real inert active-close/TIME_WAIT connection
+after its owned process exits and no listener remains. The original failure's
+exact transient TCP state was not captured; this is a supported diagnosis, not a
+retroactive success. Corrected startup/cleanup inspect actual TCP/TCP6 LISTEN state,
+require owned-child death and refuse unrelated listeners without signalling them.
+All eight checks, claims-shape logic, custody and deadlines remain unchanged.
+Eighteen helper tests and ten focused incident/consumer tests pass; the parent
+independently passed both selected suites and the exact packet guard.
+
+The distinct current-target read-only diagnostic observed all eight checks
+strictly true and both loopback forwards terminated with no listener. Its
+SHA-256 is `9a76b6930b63383a740d2991421c28851bca00ceeaa032361919304c3d16c341`.
+It permanently remains diagnosticOnly=true and incidentApproved/operationalAcceptance=false.
+The failed canonical artifact is neither overwritten nor promoted.
+
+The [concrete narrow incident action](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/oidc-listener-correction/INCIDENT-ACTION.md) binds the unchanged current policy
+`b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4`,
+corrected helper, passing diagnostic, explicit guarded proof consumer, exact
+retained target UIDs and separate no-replay 39-stage plan. Approval-bindings
+SHA-256: `eab9bc79a217d4adffa61b8dd00e18c1a0033f710670d91e32037a9515d6a602`.
+Actual owner acceptance is **pending**. Every selected entrypoint refuses before
+remote calls while it remains pending; no continuation was dispatched. The
+requested owner reply is **“Accept the OIDC listener correction and continue
+20261101t131121z.”** This is the October 14 incident pattern on the existing target,
+with no new policy/RID, recapture, bootstrap, broad scope or freeze request.
+
+After actual exact acceptance only, recheck the original authorization, point
+age, current source/UID/storage/health and remaining time; begin at the original
+unexecuted `keycloak-isolation`. The signed manifest must bind both OIDC artifacts,
+the actual decision and every accepted correction input. The explicit proof
+variant changes only the guarded OIDC reference/provenance, preserving all original
+acceptance and age rules. Target presence requires its exact UID; later absence
+requires the authenticated approved cleanup stage and recorded target identity.
+Later original signing remains Administrator-only at the real barriers. The
+attempt still ends **2026-11-01T23:00:00Z**; no proof or TLS horizon is renewed.
+
+The separately observed unrelated `mcpcli-417-20261101-00c6a713` namespace/PVC/PV
+remain unowned and outside cleanup scope. All 85 original protected resource
+identities/bindings were present in the encrypted census; no whole-global-census
+unchanged claim is made. Existing node probes retain their own bounded before/
+after checks and can refuse concurrent unrelated changes.
+
+Fresh accepted recovery, later signatures/readbacks, non-dry validation and honest
+current M1/M2 remain unfinished. **4.27 stays in-progress, 4.1 closed, Timesheets
+3.6 open/FAIL**. No retirement, upgrade, Rancher or deployment ran. Original
+production tasks and frozen intent remain unchanged.
+
+
+## Memories role-order refusal: source unpaused, exact correction pending — 2026-11-01
+
+After the actual accepted OIDC decision, the separate continuation completed
+**15 stages**: Keycloak isolation/identity; OpenBao pre/snapshot/off-node transfer/
+post, target/TLS/voters, restore, verification/isolation/identity; and Memories
+source-pre. All required Keycloak/OpenBao isolation checks and all 10 OpenBao
+restore checks passed. The actual OpenBao off-node snapshot checksum, AES256/
+COMPLIANCE readback and temporary source-reader deletion passed; isolated restore
+returned HTTP 204. These are real stage observations, not whole-run acceptance.
+
+The next `memories-final-census` returned nonzero before executing its tenant
+census or writing `memories/census.json`. Source metadata SQL succeeded; the
+original caller compared two role lists positionally. All 18 unique complete
+role records match after canonical sorting; only sequence differs. System ID,
+timeline, server version and extensions match. The failed original intent/result,
+all 15 passed stages, source proposal, signed tools/policy and original clocks
+remain unchanged. **No Memories pause, writer/store change or capture followed.**
+At the bounded read-only held-state observation, intake/worker/clock remained
+2/1/0 and Redis/FalkorDB/telemetry PostgreSQL remained 1/1 ready. Both known
+Keycloak/OpenBao target namespaces and the temporary watcher extension remain
+retained. No cleanup/adoption was dispatched.
+
+The [new checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t165532z-s427-memories-role-order-incident/verification.json) binds the encrypted failure/metadata evidence and
+the [concrete narrow correction action](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/memories-role-order-correction/INCIDENT-ACTION.md). A distinct read-only diagnostic
+at **16:41:03Z** completed all remaining source predicates: exact source runtime/
+storage identity, control/roles/extensions, complete table census and source
+configuration/tools; actual Redis dbsize 3 with zero stream/workflow/reminders/
+inflight, FalkorDB zero keys/graphs and the accepted zero-tenant profile.
+Diagnostic SHA-256: `ff841d618995df227538256e5f5056694113a5a91e8034e3f2f19a96c0a106ac`.
+Its diagnosticOnly=true, incidentApproved/operationalAcceptance=false and no
+canonical-census/capture/outage flags remain unchanged.
+
+The correction compares sorted canonical bytes of complete role records, retaining
+all fields, duplicate/count/type checks and privileges. Actual producer/consumer
+regressions reject changed, missing, extra, duplicate and wrong-type records.
+No shell/SQL newline fix was needed: AST and actual runtime values match the
+unchanged payload. The final selected Live v2 and supervisor v3 add exact decision
+gates, explicit named imports and two pinned-original `mem.py` routes; their core
+is equivalent to the actually observed diagnostic. They have **not** run live.
+The static proof variant changes only the explicit combined guard/provenance,
+preserving original OIDC/retained-point acceptance and clocks. It requires the
+new approved cleanup lifecycle without editing the old stopped journal, and the
+manifest must bind both OIDC artifacts/decisions and all correction provenance.
+
+All **14 focused tests** pass, including actual old-vs-corrected Live consumer,
+real unchanged `mem.py` execution to the inert native boundary under stripped
+environment, all three selected CLI gates, canonical source-copy hashes,
+new/old proof-guard wiring, exact 24-stage projection and both held target
+lifecycle branches. The source remains unpaused. Exact local verification
+authenticates original SSH/policy/tools and prior OIDC acceptance, verifies all
+settled inputs and reports zero native/remote requests with the gate closed.
+
+Approval-bindings SHA-256:
+`f478d1aba1001b2772090aaba536649b183f6d0f719b99e453c31d2abe8ce227`.
+Actual new correction acceptance is **pending**. The owner can reply **“accept”**
+to the reviewed action; preserve the actual reply verbatim separately from the
+canonical accepted statement **“Accept the Memories role-order correction and
+continue 20261101t131121z.”** No repeat whole policy, scope, freeze, recapture or
+bootstrap action is requested. Only after that exact decision, begin the distinct
+`memories-census-role-order-correction` stage, then the original 23 unexecuted
+stages. Fresh gates recheck all 85 original protected bindings, both exact held
+workload/namespace/storage UIDs, source/intake/watch and remaining time. Unrelated
+observed resources remain unowned and outside cleanup scope; no global-census
+unchanged claim is made.
+
+The current signed policy remains
+`b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4`;
+actual prior OIDC decision remains `15ac76556f28dddfe8eba3dcc671d34f28b9fdb8afe157f88cd54c555d10f559`.
+The original Keycloak cutoff **12:47:52Z**, durability **12:48:05Z**, source
+observation **12:48:10Z** and RPO **18 seconds** remain unchanged. Exact attempt
+end remains **2026-11-01T23:00:00Z**; no point/proof/TLS horizon is renewed.
+After successful actual Memories restoration and clean drain, resume intact
+source/intake before any later Administrator-only original-signature wait.
+Unknown/failed results stop without retry or an invented recovery decision.
+
+Accepted complete recovery, later signatures/readbacks, non-dry validation and
+honest M1/M2 remain unfinished. **4.27 stays in-progress, 4.1 closed, Timesheets
+3.6 open/FAIL**. No retirement, upgrade, Rancher or deployment ran; frozen intent
+and original production tasks remain unchanged.
+
+
+## Actual Memories role-order incident acceptance — 2026-11-01
+
+The Administrator replied **“accept”** to the exact
+[reviewed role-order correction](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/memories-role-order-correction/INCIDENT-ACTION.md), SHA-256
+`535623456c5d303bc9f2f381b5a2722af6c63dc3dff83ee59cc0ec276105cde1`. The actual reply is retained verbatim
+in a new create-only [incident decision](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/role-order-owner-acceptance-20261101t165550z/incident-decision.json), SHA-256
+`04d609a0ccd1388932fa80450bfb0f09e0225e851caf792247990f39d2d375ab`; the canonical accepted statement is recorded separately. This
+accepts unchanged approval bindings `f478d1aba1001b2772090aaba536649b183f6d0f719b99e453c31d2abe8ce227`
+and the separate 24-stage continuation. Prior OIDC acceptance
+`15ac76556f28dddfe8eba3dcc671d34f28b9fdb8afe157f88cd54c555d10f559`, signed policy, original proposal,
+all 15 prior passed stages, failed census intent/result and original point clocks
+remain unchanged. No repeat policy/scope/freeze or incident decision is pending.
+
+The [new authenticated checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t165731z-s427-accepted-memories-role-order-continuation/verification.json) records the parent's fresh
+full read-only guard: original policy/retained-point immutable readbacks authenticate;
+source metadata, complete table census, tools/configuration and zero-tenant profile
+pass; all 85 protected bindings and both held namespace/workload/PVC/PV identities
+match. Source intake/worker/clock remain 2/1/0. No canonical census or resumed
+operation had been written at this checkpoint. Exact attempt end remains
+**2026-11-01T23:00:00Z**; no native/TLS or recovery-point horizon is renewed.
+
+Resume the exact accepted `role_order_step.py` dispatcher, one stage at a time,
+starting `memories-census-role-order-correction` with this actual decision path/hash.
+Recheck the mandatory first-stage live gates, retain encrypted results and the
+new no-replay journal, and stop on any false/nonzero/unknown result. Keep signed
+originals and accepted correction bytes fixed. Do not replay old stages, adopt
+unowned resources or promote diagnostics. The combined proof guard must bind
+both incident decisions/corrections, original OIDC failure and diagnostic, and
+the legitimate cleanup in this new journal.
+
+After successful Memories recovery and clean drain, resume intact source/intake
+immediately before later signature waits. Original cleanup/manifest/proof/gate/
+final-validation signatures remain Administrator-only at their real barriers;
+prepare each exact actual signing action. Non-dry validation and honest current
+M1/M2 remain required. Fresh accepted recovery and separate native/node/etcd
+prerequisites still precede an exact retirement plan/approval/arm. **4.27 remains
+in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**. No retirement, upgrade,
+Rancher or Timesheets deployment authority is added.
+
+
+## Failed drain; intact intake-only recovery prepared — 2026-11-01
+
+The accepted role-order continuation passed its distinct census and intake pause,
+then `memories-drain` exited zero but failed its semantic gate. Both samples
+counted one active unowned EventStore publisher in `mcpcli-417-20261101-00c6a713`;
+actual EventStore and daprd containers and its Job remain Running/active. All seven
+sample-equality checks and empty stream/workflow/reminder/inflight fields passed.
+Failed quiescence SHA-256 `540dd7ef385d3ed5f43bd0ef5b227adaa1443e8c3f191ffa413814bb87247fd3` remains unchanged, with
+intakePaused/drainPass false. No later stage, writer/store pause or capture ran.
+Actual source intake/worker/clock are **0/1/0**; both held targets/watch remain.
+
+The old signed resume branch requires passed drain and paused-writer/supervisor
+evidence, which are absent. Do not force that branch, promote quiescence, retry
+the failed stage or mutate/adopt the external Job. The [concrete intake-only
+recovery action](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/memories-drain-publisher-incident/intake-recovery/RECOVERY-ACTION.md) restores only owned MCP **0→original2**, with exact
+UID/resourceVersion/full-spec tests and one patch. Its binding digest is
+`ea6116785cea8598482f21dbd067119d329f9557f906b25c899024a52ad1f55a`.
+Actual full intact-source read-only preflight and four focused tests pass; the
+parent independently verified all four and 25 unchanged bound inputs.
+The [checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t171406z-s427-drain-publisher-intake-recovery/verification.json) records pending owner recovery decision, zero
+recovery mutation and no backup/continuation or external-Job authority.
+
+The exact attempt still ends **2026-11-01T23:00:00Z**. Original signed policy,
+proposal, both accepted corrections, failed records and point clocks remain fixed.
+This recovery action grants no backup acceptance or later continuation. **4.27
+remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**; no retirement,
+upgrade, Rancher or deployment ran.
+
+
+## Intact source intake restored; recovery remains stopped — 2026-11-01
+
+The actual intake-only decision `d0c380b2a8ad4a493c51e4dfe62bfb5c3a40dfca8b0a879b0c3a4f3906587ff6`
+was executed **once** using the unchanged accepted driver and binding. Fresh
+intact-source/full-spec preflight passed. One UID/resourceVersion/complete-spec
+JSON patch restored only `hexalith-memories/deployment/memories-mcp`, UID
+`a9bf6dde-593d-4313-af47-c55670e2a0a7`, from 0 to its original 2 replicas.
+The patch outcome is known and actual two-ready rollout completed at
+**2026-11-01T17:20:10Z**. The [actual recovery result](../../../../../hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t140315z/memories-drain-publisher-incident/intake-recovery/restore-result.json), SHA-256
+`ea3f8b51c0cf89b9ef4187eb067b6f83f35fe5b98ae577f1bc6b91ea7ed2e595`, records
+intake-restored, patchOutcomeKnown/intakeReady true and failedQuiescencePreserved
+true, with backupAccepted/operationalContinuationAuthorized/externalJobMutationAuthorized
+false. No archived data was restored and no failed stage was retried.
+
+The [new checkpoint](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t172332z-s427-intact-source-intake-restored/verification.json) records a separate read-only observation at
+**17:21:29Z**: source intake/worker/clock are **2/1/0 ready**, Memories API is
+2-ready, and Redis/FalkorDB/access-telemetry PostgreSQL are each 1-ready. Their
+recorded UIDs are preserved. The parent independently verified the exact original
+source Deployment specifications/UIDs, readiness and all three source stores.
+The recorded intake pause at **16:59:03Z** to confirmed ready at **17:20:10Z**
+spans **1267 seconds**; source stores and worker were never changed by this
+intake recovery. This interval describes the recorded intake pause, not a claim
+that the data services were stopped.
+
+Both isolated targets remain held with exact recorded namespace/workload/PVC/PV
+identities: Keycloak app/DB ready 1/1 and OpenBao voters ready 3. The CNPG watch
+extension remains `keycloak,cnpg-system,recovery-4-0-kc`. No cleanup, target adoption,
+source store/writer change, backup/capture or recovery continuation was dispatched.
+All signed originals, accepted corrections, passed/failed journals and clocks
+remain unchanged. Failed quiescence SHA-256
+`540dd7ef385d3ed5f43bd0ef5b227adaa1443e8c3f191ffa413814bb87247fd3`
+still records drainPass/intakePaused false; it has not been promoted.
+
+The precise remaining drain blocker is the still active unowned
+`mcpcli-417-20261101-00c6a713/eventstore-nkkwj` Pod, UID
+`d888a907-5fb9-4684-9b52-a6f827582884`, controlled by Job `eventstore`, UID
+`4b8f43cb-7875-43a6-a4a8-0c5f007879a6`. The final observation still found both
+EventStore and daprd containers running/ready. It is not a retained terminal-Pod
+false positive. No source-publisher exclusion, unrelated Job mutation, cleanup or
+new continuation is authorized by the intake-only decision. Any later work must
+respect the real failed drain and retained target state, without replay or
+changing accepted bytes. Intake restoration itself supplies no backup acceptance.
+
+The exact attempt still ends **2026-11-01T23:00:00Z**. Original Keycloak point
+cutoff/durability/RPO and native/TLS horizons are not renewed. Complete accepted
+recovery, later Administrator-only signatures/readbacks, non-dry validation and
+honest M1/M2 remain unfinished. **4.27 stays in-progress, 4.1 closed and Timesheets
+3.6 open/FAIL**. No retirement, upgrade, Rancher or deployment ran; frozen intent
+and original production tasks remain unchanged.

@@ -1,0 +1,3 @@
+# Memories role-order incident preparation
+
+Fifteen actual continuation stages passed before a read-only source role-order guard refused. No Memories pause/capture/canonical census occurred. Complete role records match; order alone differs. A distinct encrypted read-only diagnostic passed all source/catalog/tool/zero-tenant predicates. The settled correction prepares a separately gated 24-stage continuation on the existing targets. Fourteen focused local tests pass; operational acceptance remains pending. See `verification.json` and the appended current story/spec/operator handoff for exact bindings, owner action and unfinished acceptance.
