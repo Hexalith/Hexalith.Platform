@@ -18,7 +18,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
             string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
             string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
             string? version = null;
-            bool fromSource = selected.Origin == "source";
+            bool fromSource = options.Mapping.Mode == WorkspaceMode.Source && selected.Origin == "source";
             string Reference(string assembly)
             {
                 if (!fromSource && options.Mapping.Mode != WorkspaceMode.Source) return assembly;

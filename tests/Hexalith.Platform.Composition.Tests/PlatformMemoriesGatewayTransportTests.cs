@@ -39,28 +39,17 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
-    /// <summary>Keeps a package-mode Memories container on the EventStore endpoint; its own loopback hosts no daprd.</summary>
+    /// <summary>Refuses the unqualified package receiver graph before assigning container transports or probing registries.</summary>
     [Fact]
-    public async Task PackageMemoriesContainerKeepsTheGatewayEndpointReferenceAsync()
+    public void PackageMemoriesContainerRequiresAQualifiedCatalogSdkBeforeBindingTransport()
     {
         IDistributedApplicationBuilder builder = Builder();
-        try
+        PlatformCompositionOptions options = PackageGraphOptions() with
         {
-            PlatformAppModel.Compose(builder, PackageGraphOptions() with
-            {
-                ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
-            });
-            IResource memories = builder.Resources.Single(resource => resource.Name == "memories").ShouldBeOfType<ContainerResource>();
-            Dictionary<string, object> environment = await MemoriesGatewayEnvironmentAsync(builder, memories);
-            environment["EventStore__CommandGateway__BaseAddress"].ShouldBeOfType<EndpointReference>().Resource.Name.ShouldBe("eventstore");
-            environment.ShouldNotContainKey("DAPR_HTTP_ENDPOINT");
-        }
-        finally
-        {
-            string? policy = builder.Resources.SelectMany(resource => resource.Annotations.OfType<DaprSidecarAnnotation>())
-                .Select(sidecar => sidecar.Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.Config).FirstOrDefault();
-            if (policy is not null) await CompositionWorkspace.TryDeleteAsync(Path.GetDirectoryName(policy)!, CancellationToken.None);
-        }
+            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Package catalog qualification must precede registry probes."),
+        };
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        builder.Resources.ShouldBeEmpty();
     }
 
     /// <summary>Renders only EventStore's two required canonical POST operations on the actual Memory receiver.</summary>

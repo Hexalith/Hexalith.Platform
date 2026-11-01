@@ -25,6 +25,13 @@
             "resourceId": "memories-access-telemetry",
             "enabled": true,
             "required": true
+          },
+          {
+            "id": "domain",
+            "appId": "memories-domain-service",
+            "resourceId": "memories-domain-service",
+            "enabled": true,
+            "required": true
           }
         ],
         "dependencies": [
@@ -37,37 +44,102 @@
             "role": "state",
             "capability": "state",
             "recoveryClass": "authoritative-restore",
-            "configurationKey": "Dapr:StateStoreComponent"
+            "configurationKey": "EventStoreIntegration:StateStore:StateStoreName",
+            "servers": [
+              "server"
+            ]
+          },
+          {
+            "role": "state",
+            "capability": "state",
+            "recoveryClass": "authoritative-restore",
+            "configurationKey": "Ingestion:WorkflowPayloadStore:StateStoreName",
+            "servers": [
+              "server"
+            ]
           },
           {
             "role": "events",
             "capability": "pubsub",
             "recoveryClass": "rebuild-only",
-            "configurationKey": "Dapr:PubSubComponent"
+            "configurationKey": "EventStoreIntegration:Routing:PubSubName",
+            "servers": [
+              "server"
+            ]
           },
           {
             "role": "secrets",
             "capability": "secret",
             "recoveryClass": "live-authority-only",
-            "configurationKey": "Dapr:SecretStoreComponent"
+            "configurationKey": "Memories:SecretStoreName",
+            "servers": [
+              "server"
+            ]
           },
           {
             "role": "telemetry-state",
             "capability": "state",
             "recoveryClass": "authoritative-restore",
-            "configurationKey": "AccessTelemetryLifecycle:StateStoreComponent"
+            "configurationKey": "AccessTelemetryLifecycle:StateStoreName",
+            "servers": [
+              "telemetry"
+            ]
           },
           {
             "role": "telemetry-secrets",
             "capability": "secret",
             "recoveryClass": "live-authority-only",
-            "configurationKey": "AccessTelemetryLifecycle:SecretStoreComponent"
+            "configurationKey": "AccessTelemetryLifecycle:SecretStoreName",
+            "servers": [
+              "server",
+              "telemetry"
+            ]
+          },
+          {
+            "role": "telemetry-secrets",
+            "capability": "secret",
+            "recoveryClass": "live-authority-only",
+            "configurationKey": "Clock:SecretStoreName",
+            "servers": [
+              "clock"
+            ]
           },
           {
             "role": "telemetry-configuration",
             "capability": "configuration",
             "recoveryClass": "authoritative-restore",
-            "configurationKey": "AccessTelemetryLifecycle:ConfigurationComponent"
+            "configurationKey": "AccessTelemetryLifecycle:ConfigurationStoreName",
+            "servers": [
+              "server",
+              "telemetry"
+            ]
+          },
+          {
+            "role": "conversation",
+            "capability": "conversation",
+            "recoveryClass": "rebuild-only",
+            "configurationKey": "NaturalLanguage:DaprComponentName",
+            "servers": [
+              "server"
+            ]
+          },
+          {
+            "role": "state",
+            "capability": "state",
+            "recoveryClass": "authoritative-restore",
+            "configurationKey": "EventStore:ReadModelStore:StateStoreName",
+            "servers": [
+              "domain"
+            ]
+          },
+          {
+            "role": "state",
+            "capability": "state",
+            "recoveryClass": "authoritative-restore",
+            "configurationKey": "EventStore:StateStoreName",
+            "servers": [
+              "domain"
+            ]
           }
         ],
         "extensions": [
@@ -325,6 +397,12 @@
             "volumes": []
           },
           {
+            "server": "domain",
+            "requests": {},
+            "limits": {},
+            "volumes": []
+          },
+          {
             "server": "clock",
             "requests": {},
             "limits": {},
@@ -426,6 +504,22 @@
                 "kind": "query",
                 "authorizationPolicy": "authenticated"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "memories",
+                "path": "/v1/time/attest",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "memories-access-telemetry",
+                "path": "/v1/time/attest",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           },
           {
@@ -458,6 +552,29 @@
                 "kind": "query",
                 "authorizationPolicy": "authenticated"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "memories",
+                "path": "/v1/access-telemetry/write",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "memories",
+                "path": "/v1/access-telemetry/heartbeat",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "memories",
+                "path": "/v1/access-telemetry/validate",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           },
           {
@@ -479,6 +596,15 @@
                 "name": "inspect",
                 "kind": "query",
                 "authorizationPolicy": "authenticated"
+              }
+            ],
+            "invocationRules": [
+              {
+                "caller": "memories-access-telemetry-inspector",
+                "path": "/v1/access-telemetry/inspect",
+                "verbs": [
+                  "GET"
+                ]
               }
             ]
           },
@@ -502,6 +628,58 @@
                 "kind": "command",
                 "authorizationPolicy": "authenticated"
               }
+            ],
+            "invocationRules": [
+              {
+                "caller": "access-telemetry-adapter",
+                "path": "/v1/access-telemetry/physical-reclamation-evidence",
+                "verbs": [
+                  "POST"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "memories-domain",
+            "server": "domain",
+            "protocol": "http",
+            "routePrefix": "/",
+            "exposure": "internal-only",
+            "surfaceClass": "service",
+            "authorization": {
+              "policy": "authenticated",
+              "permissions": []
+            },
+            "callers": [
+              "eventstore"
+            ],
+            "operations": [
+              {
+                "name": "process",
+                "kind": "command",
+                "authorizationPolicy": "authenticated"
+              },
+              {
+                "name": "admin-operational-index-metadata",
+                "kind": "administration",
+                "authorizationPolicy": "authenticated"
+              }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/process",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "eventstore",
+                "path": "/admin/operational-index-metadata",
+                "verbs": [
+                  "POST"
+                ]
+              }
             ]
           }
         ]
@@ -513,6 +691,10 @@
             "role": "events",
             "deadLetter": {
               "strategy": "none"
+            },
+            "subscription": {
+              "server": "server",
+              "route": "/events/ingest"
             }
           }
         ],
@@ -693,6 +875,11 @@
             "endpoint": "/ready"
           },
           {
+            "server": "domain",
+            "kind": "http",
+            "endpoint": "/ready"
+          },
+          {
             "server": "clock",
             "kind": "http",
             "endpoint": "/ready"
@@ -726,7 +913,19 @@
           "reason": "Declare Memories core and access telemetry services with explicit provider exceptions."
         },
         "recoveryInventory": []
-      }
+      },
+      "tests": [
+        {
+          "name": "functional-retention",
+          "executor": "python3",
+          "entry": "tools/verify-access-telemetry-lifecycle.py",
+          "reportFormat": "trx",
+          "executionTimeoutSeconds": 14400,
+          "stopTimeoutSeconds": 900,
+          "mode": "source",
+          "daprRuntimeVersion": "1.18.1"
+        }
+      ]
     }
   ]
 }

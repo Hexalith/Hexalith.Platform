@@ -36,11 +36,11 @@ public sealed partial class PlatformAppModelTests : IDisposable
     {
         SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(Root, "references"), "Hexalith.*")
             .Where(path => Path.GetFileName(path) != "Hexalith.Parties")
-            .Select(path => new SourceMappingEntry(Path.GetFileName(path), "source", path)).ToArray();
+            .Select(path => new SourceMappingEntry(Path.GetFileName(path), "source", PlatformTestRepository.ReferenceRoot(Root, Path.GetFileName(path)))).ToArray();
         return new PlatformCompositionOptions
         {
             PlatformRoot = Root, Mapping = new SourceMapping(WorkspaceMode.Source, Root, "Hexalith.Platform", entries, true), ActiveModule = active,
-            EventStoreSeedProject = Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
+            EventStoreSeedProject = Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
         };
     }
 
@@ -48,20 +48,33 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
     {
         IDistributedApplicationBuilder builder = Builder();
-        // This case deliberately reads real production snapshots/catalog/provenance, independently of synthetic package fixtures.
-        SourceMapping mapping = Options().Mapping;
-        PlatformCompositionOptions production = Options() with
+        // Copy the real producer bytes into an isolated layout; no synthetic release provenance is substituted.
+        string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
+        string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
+        string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
+        Directory.CreateDirectory(snapshots);
+        Directory.CreateDirectory(catalog);
+        foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
+            File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
+        File.Copy(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+        try
         {
-            Mapping = mapping with { Mode = WorkspaceMode.Package, Entries = mapping.Entries.Select(entry => entry with { Origin = "package", Path = null }).ToArray() },
-        };
-        production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
-        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
-        refusal.Message.ShouldContain("Hexalith.EventStore");
-        refusal.Message.ShouldContain("3.120.0");
-        refusal.Message.ShouldContain("947c843c");
-        builder.Resources.ShouldBeEmpty();
-        if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
-            File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
+            SourceMapping mapping = Options().Mapping;
+            PlatformCompositionOptions production = Options() with
+            {
+                PlatformRoot = productionRoot,
+                Mapping = mapping with { Mode = WorkspaceMode.Package, Entries = mapping.Entries.Select(entry => entry with { Origin = "package", Path = null }).ToArray() },
+            };
+            production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
+            refusal.Message.ShouldContain("Hexalith.EventStore");
+            refusal.Message.ShouldContain("3.129.0");
+            refusal.Message.ShouldContain("c02afa0f");
+            builder.Resources.ShouldBeEmpty();
+            if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
+                File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
+        }
+        finally { Directory.Delete(productionRoot, recursive: true); }
     }
 
     [Theory]
@@ -104,6 +117,19 @@ public sealed partial class PlatformAppModelTests : IDisposable
         participants.Select(server => server.ResourceId).ShouldContain("memories");
         // Binding stays metadata-only: restore/build and image availability remain independent prerequisites.
         Builder().Resources.ShouldBeEmpty();
+    }
+
+
+    [Fact]
+    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+    {
+        var options = PackageGraphOptions() with
+        {
+            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
+        };
+        var builder = Builder();
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Fact]
@@ -513,7 +539,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
         string apphost = Path.Combine(Root, "apphost.cs");
         string workspace = Path.Combine(Path.GetTempPath(), "platform-file-prebuild-" + Guid.NewGuid().ToString("N"));
         using PlatformCompositionWorkspace prebuildWorkspace = new(workspace);
-        string manifest = Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json");
+        string manifest = Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.EventStore"), "module", "hexalith.module-manifest.v2.json");
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
         await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken);
         Dictionary<string, string> launchEnvironment = new(SourceMappingMaterializer.Environment(mapping, workspace))
@@ -566,7 +592,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
 
     private static string Fixture(string directory, string module, bool tasks)
     {
-        string fixture = File.ReadAllText(Path.Combine(Root, "references", "Hexalith.Builds", "test", "fixtures", "module", "platform", "valid.json")).Replace("sample", module, StringComparison.Ordinal);
+        string fixture = File.ReadAllText(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "test", "fixtures", "module", "platform", "valid.json")).Replace("sample", module, StringComparison.Ordinal);
         JsonNode document = JsonNode.Parse(fixture)!;
         JsonNode declaration = document["modules"]![0]!;
         declaration["lifecycle"]!["readiness"]![0]!["endpoint"] = "/ready";
