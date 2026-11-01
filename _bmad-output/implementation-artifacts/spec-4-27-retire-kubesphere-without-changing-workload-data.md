@@ -908,3 +908,202 @@ The current C3 acknowledgement needs no repeat confirmation. Fresh authenticated
 policy/signature readbacks still precede capture; all later signatures, manual
 acceptance and exact retirement approval remain required. Story 4.27 remains
 in-progress and the 4.1 upgrade gate remains closed.
+
+
+## Authenticated policy continuation after protected signing — 2026-11-01
+
+The Administrator replied **“done”** after the exact protected-terminal action.
+The [new original-signature/readback checkpoint](evidence/epic-4/4-27/20261101t120715z-s427-authenticated-policy-continuation/verification.json) records independent
+verification of policy `bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51`, its original Administrator SSH signature, both
+actual immutable object versions with the distinct validator credential, current
+code/trust/node bindings and the current RID C3 announcement. There are no prior
+production step intents. This resolves the initial policy-signing/C3 barriers;
+actual whole-source recovery remains unaccepted and no all-record signing
+delegation is inferred. The exact attempt ends `2026-11-01T23:00:00Z`.
+
+Resume the [exact reviewed 52-step procedure](../../../../../hexalith-recovery-evidence/4-0/20261031t175250z/CURRENT-RECOVERY-APPROVAL.md) sequentially through
+`tools-complete-v3/recovery_step.py`, beginning with the first unexecuted step.
+Refresh actual source identity/configuration/health, grants, capacity and time
+budget at the named gates; current policy authentication/readbacks precede every
+dependent operation. Never replay an existing passed, failed or uncertain intent.
+Stop on any nonzero, false or unobserved semantic result and retain encrypted raw
+diagnostics. Use only the exact policy's conditional intact-source failure branch
+when every stated ownership/content/semantic condition actually passes; an
+unknown or changed source remains under the Administrator's incident decision.
+
+After successful Memories recovery and clean drain recheck, resume the intact
+source and intake immediately before waiting for later signatures. At each later
+authentic original-record signing prerequisite, prepare the actual unsigned
+record and exact protected-terminal action; preserve scope approval and request
+only the missing real signature. Do not fabricate signatures or sign on the
+Administrator's behalf. Fresh accepted 4.0 recovery still precedes the separately
+bound native/node/etcd prerequisites. Actual retirement requires its fresh
+source-bound plan, exact approval and arm; no upgrade, Rancher or Timesheets
+deployment authority is supplied. Story 4.27 remains in-progress and 4.1 closed.
+
+
+## Corrected recovery policy successor — 2026-11-01
+
+The authenticated RID `20261031t175250z` completed `watch-on` and
+`keycloak-pre`, then `keycloak-backup` refused before its intent or backup
+request: the signed policy used a pretty raw-file hash for the compact semantic
+proposal field required by the actual PostgreSQL consumers. No outage or restore
+target began. The exact owned CNPG watch transition was reversed with the
+unchanged signed UID/resourceVersion/full-spec guard and rollout passed. Source
+intake/worker/clock remain 2/1/0. Original signed policy/signature, immutable
+selectors, canonical source records, standing freeze statement and journal are
+retained unchanged; no intent is replayed or relabelled successful.
+
+The [new verification](evidence/epic-4/4-27/20261101t123705z-s427-corrected-policy-successor/verification.json) binds unsigned successor RID
+`20261101t121847z`, its [reviewable exact correction](../../../../../hexalith-recovery-evidence/4-0/20261101t121847z/CURRENT-RECOVERY-APPROVAL.md)
+and [protected-terminal signing action](../../../../../hexalith-recovery-evidence/4-0/20261101t121847z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Final policy SHA-256: `fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf`.
+Compact semantic digest and legitimate raw-file/template/proof hashes are checked
+separately. The actual producer→Live/record/plan/guard regression, wrong-encoding
+controls, original standing-freeze lineage and actual node caller/emitter/RID
+agreement pass. The regression also passes with an existing real canonical
+policy while altering only disposable fixture copies. Forty-three distinct
+current caller cases and nine rebound node guards pass; the parent independently
+reran the settled cross-consumer regression and exact guard. The final guard
+uses zero remote requests and remains closed pending the new original signature
+and immutable readbacks. Unchanged synthetic primitive qualification is retained
+without another production recovery claim.
+
+Fresh identity/storage/readiness and measured capacity checks passed; twenty
+read-only destination checks passed with encrypted raw custody/readback. The
+original **“Freeze announced for this run”** remains the standing owner fact
+under explicit predecessor RID/policy/hash lineage; it was neither overwritten
+nor fabricated for the successor and needs no repeat announcement. Existing
+operational scope approval persists. The concrete missing owner action is the
+new exact original policy signature/publication/readback. The successor's fresh
+journal starts at `watch-on` only after that barrier, with current source and
+time gates remeasured. Later original signatures and honest M1/M2 remain required.
+
+The exact attempt still ends **2026-11-01T23:00:00Z**, within the administrative
+end **2026-11-02T23:00:00Z** and unchanged native/TLS horizon. No source measurement
+time or old proof freshness was renewed. No backup request, quiescence, source
+restore, target creation, successor PUT/signature, retirement, upgrade, Rancher
+or Timesheets deployment occurred. Fresh accepted recovery and separate exact
+retirement plan/approval/arm remain pending. **4.27 stays in-progress, 4.1 closed,
+Timesheets 3.6 open/FAIL**; original production tasks and frozen intent remain
+unchanged.
+
+
+## Authenticated corrected successor continuation — 2026-11-01
+
+The Administrator replied **“done”** after the exact corrected successor signing
+block. The [new authenticated checkpoint](evidence/epic-4/4-27/20261101t124411z-s427-authenticated-successor-continuation/verification.json) records independent
+verification of corrected policy `fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf`, its original Administrator SSH
+signature, both actual immutable policy/signature versions using the qualified
+SDK and distinct validator, and the actual standing freeze through its unchanged
+predecessor RID/policy/hash. Successor RID `20261101t121847z` has no step intents.
+The signed predecessor remains stopped with watcher restored; never replay or
+alter its signed inputs, completed intents or publication ledger.
+
+Resume the [corrected exact 52-step procedure](../../../../../hexalith-recovery-evidence/4-0/20261101t121847z/CURRENT-RECOVERY-APPROVAL.md) from fresh successor
+`watch-on`, one exact signed `recovery_step.py` stage at a time. Recheck current
+source identity/configuration/health/grants, capacity and remaining time before
+mutation. This explicitly continues the already approved recovery scope under
+the now-authenticated corrected policy; no repeat scope or freeze confirmation
+is needed. The exact attempt ends `2026-11-01T23:00:00Z`.
+
+Retain every result and stop on false/nonzero/unknown observations or uncertain
+mutation; no automatic replay or adoption. Use only the policy's exact approved
+owned-cleanup/intact-source failure branch when every condition actually passes.
+After successful Memories restoration and clean drain recheck, resume the intact
+source/intake immediately before later signature waits. No all-record signing
+delegation was supplied: at each later original-signature barrier, prepare the
+actual record and exact protected-terminal action for the Administrator. Honest
+manual final acceptance and every later recovery/retirement gate remain required.
+Actual whole-source recovery is still unaccepted; 4.27 stays in-progress and 4.1
+closed. No retirement plan/arm, upgrade, Rancher or Timesheets deployment is
+authorized by this continuation.
+
+
+## Retained authenticated Keycloak point continuation — 2026-11-01
+
+Signed RID `20261101t121847z` passed its first five stages: watcher enable,
+Keycloak pre, actual fresh backup, WAL/RPO and post. The backup completed,
+required WAL archived, pre/post canaries matched and source storage bindings
+remained fixed. `keycloak-create-target` then failed at its first source GET
+because a legacy call used bare kubectl under the deliberately stripped workflow
+environment. No target apply/create occurred. Encrypted diagnostics, all five
+passed journals, failed target intent/result, signed originals and four raw source
+records remain unchanged. Six explicit read-only GETs proved all four target
+namespaces absent, no target PV claims and the completed backup UID preserved.
+Exact owned watcher restoration and rollout passed with the controller UID
+preserved; intake/worker/clock remain 2/1/0. No source outage began.
+
+The [new verification](evidence/epic-4/4-27/20261101t133559z-s427-retained-keycloak-continuation/verification.json) binds unsigned completion RID
+`20261101t131121z`, [exact reviewable scope and lineage](../../../../../hexalith-recovery-evidence/4-0/20261101t131121z/CURRENT-RECOVERY-APPROVAL.md)
+and [protected-terminal signing action](../../../../../hexalith-recovery-evidence/4-0/20261101t131121z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Policy SHA-256: `b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4`.
+All selected native call sites now use pinned explicit regular kubeconfig/context
+and bounded timeouts. The actual stripped workflow environment and helper paths
+pass their local tests without ambient defaults. The 49-step continuation omits
+all five passed IDs; the prior capture entrypoint explicitly rejects recapture
+under this policy. Distinct verification/watch/explicit-target stages precede the
+remaining approved sequence; no fabricated successor passes or overwritten failed
+intent exists.
+
+The existing actual Keycloak point is imported byte-for-byte. Its source cutoff
+**12:47:52Z**, durability/capture **12:48:05Z**, source observation **12:48:10Z**
+and measured RPO **18 seconds** remain unchanged. Original encrypted policy/
+signature readback at **12:47:16.821065Z** preceded source pre/capture under the
+authentic origin policy. Actual restore, proof and final-validator consumers
+verify that lineage, original versions, raw source/journal hashes and old age
+rules. A later new policy does not renew the point or the original policy age
+cap. Unauthorized/mismatched origin, rewritten clocks, expired point and stage
+replay controls pass. Fifty-three caller cases and nine rebound node guards
+passed; the parent independently passed all 11 selected lineage/transport/
+producer-consumer cases and the exact signing guard. Test target outcomes remain
+explicitly inert and supply no production restore evidence.
+
+The standing original **“Freeze announced for this run”** record remains at its
+actual predecessor RID/policy/hash. Existing operational scope approval persists.
+The concrete missing action is the new exact original policy signature/publication
+and independent immutable readbacks; no repeat broad scope or freeze confirmation
+is requested. Current guard passes with zero remote requests and remains closed.
+Original capture clocks, prior signed packets, native/TLS facts and history remain
+preserved. The exact attempt still ends **2026-11-01T23:00:00Z** within the broader
+administrative window. No new continuation step, signature or PUT ran.
+
+Actual isolated recovery, Memories pause/resume/cleanup, later original signatures,
+non-dry validation and honest current M1/M2 remain required. Fresh accepted 4.0
+and separate native/node/etcd prerequisites still precede an exact retirement
+plan/approval/arm. **4.27 stays in-progress, 4.1 closed, Timesheets 3.6 open/FAIL**.
+No retirement, upgrade, Rancher or deployment ran; frozen intent and original
+production tasks remain unchanged.
+
+
+## Authenticated retained-point continuation — 2026-11-01
+
+The Administrator replied **“done”** after the exact retained-point signing
+block. The [new authenticated checkpoint](evidence/epic-4/4-27/20261101t140032z-s427-authenticated-retained-continuation/verification.json) records independent original
+Administrator signature and exact immutable policy/signature readback verification
+for policy `b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4`, RID `20261101t131121z`. The actual standing freeze and the
+original Keycloak point authorization/readbacks also verify. Actual backup UID
+`30186df2-2d23-4b3b-a5cc-13badb74db31`, cutoff `12:47:52Z`, durability
+`12:48:05Z` and measured RPO 18 seconds remain unchanged; no recapture is claimed.
+The continuation journal is empty. Old signed inputs and all stopped/passed/failed
+intents remain immutable. The exact attempt ends `2026-11-01T23:00:00Z`.
+
+Resume the [authenticated 49-step retained-point procedure](../../../../../hexalith-recovery-evidence/4-0/20261101t131121z/CURRENT-RECOVERY-APPROVAL.md), one
+exact current signed wrapper stage at a time. Begin with actual retained-point
+and current-source verification, then the separately named watcher reenable and
+explicit native target stages. Never replay the five passed source stages or the
+failed old target intent; the current capture entrypoint forbids those replays.
+Refresh source identity/configuration/health, grants, capacity and time at the
+named gates. No repeat scope or freeze confirmation is needed.
+
+Keep the original capture/durability/RPO clocks and original age caps throughout
+restore, proofs and final validation. Stop on false/nonzero/unknown outcomes and
+retain encrypted command/results. Apply only the exact approved owned-cleanup or
+intact-source failure branch when its conditions actually hold. After successful
+Memories restore and clean drain, resume intact source/intake before waiting for
+later signatures. Later originals remain Administrator-only; prepare the actual
+record and exact protected signing action at the real barrier, without inventing
+a signature or all-record delegation. Fresh accepted 4.0 and separately bound
+native/etcd/node recovery still precede a fresh exact retirement plan/approval/arm.
+Story 4.27 remains in-progress, 4.1 closed; no upgrade, Rancher or Timesheets
+deployment is authorized.

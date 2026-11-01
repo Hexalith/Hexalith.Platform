@@ -751,3 +751,106 @@ native/etcd/node recovery and separate exact retirement plan/approval/arm still
 precede retirement. **4.27 stays in-progress, 4.1's upgrade gate closed and
 Timesheets 3.6 open/FAIL**; original production tasks and frozen intent remain
 unchanged.
+
+
+## Corrected recovery policy successor — 2026-11-01
+
+The authenticated RID `20261031t175250z` completed `watch-on` and
+`keycloak-pre`, then `keycloak-backup` refused before its intent or backup
+request: the signed policy used a pretty raw-file hash for the compact semantic
+proposal field required by the actual PostgreSQL consumers. No outage or restore
+target began. The exact owned CNPG watch transition was reversed with the
+unchanged signed UID/resourceVersion/full-spec guard and rollout passed. Source
+intake/worker/clock remain 2/1/0. Original signed policy/signature, immutable
+selectors, canonical source records, standing freeze statement and journal are
+retained unchanged; no intent is replayed or relabelled successful.
+
+The [new verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t123705z-s427-corrected-policy-successor/verification.json) binds unsigned successor RID
+`20261101t121847z`, its [reviewable exact correction](../../../../../hexalith-recovery-evidence/4-0/20261101t121847z/CURRENT-RECOVERY-APPROVAL.md)
+and [protected-terminal signing action](../../../../../hexalith-recovery-evidence/4-0/20261101t121847z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Final policy SHA-256: `fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf`.
+Compact semantic digest and legitimate raw-file/template/proof hashes are checked
+separately. The actual producer→Live/record/plan/guard regression, wrong-encoding
+controls, original standing-freeze lineage and actual node caller/emitter/RID
+agreement pass. The regression also passes with an existing real canonical
+policy while altering only disposable fixture copies. Forty-three distinct
+current caller cases and nine rebound node guards pass; the parent independently
+reran the settled cross-consumer regression and exact guard. The final guard
+uses zero remote requests and remains closed pending the new original signature
+and immutable readbacks. Unchanged synthetic primitive qualification is retained
+without another production recovery claim.
+
+Fresh identity/storage/readiness and measured capacity checks passed; twenty
+read-only destination checks passed with encrypted raw custody/readback. The
+original **“Freeze announced for this run”** remains the standing owner fact
+under explicit predecessor RID/policy/hash lineage; it was neither overwritten
+nor fabricated for the successor and needs no repeat announcement. Existing
+operational scope approval persists. The concrete missing owner action is the
+new exact original policy signature/publication/readback. The successor's fresh
+journal starts at `watch-on` only after that barrier, with current source and
+time gates remeasured. Later original signatures and honest M1/M2 remain required.
+
+The exact attempt still ends **2026-11-01T23:00:00Z**, within the administrative
+end **2026-11-02T23:00:00Z** and unchanged native/TLS horizon. No source measurement
+time or old proof freshness was renewed. No backup request, quiescence, source
+restore, target creation, successor PUT/signature, retirement, upgrade, Rancher
+or Timesheets deployment occurred. Fresh accepted recovery and separate exact
+retirement plan/approval/arm remain pending. **4.27 stays in-progress, 4.1 closed,
+Timesheets 3.6 open/FAIL**; original production tasks and frozen intent remain
+unchanged.
+
+
+## Retained authenticated Keycloak point continuation — 2026-11-01
+
+Signed RID `20261101t121847z` passed its first five stages: watcher enable,
+Keycloak pre, actual fresh backup, WAL/RPO and post. The backup completed,
+required WAL archived, pre/post canaries matched and source storage bindings
+remained fixed. `keycloak-create-target` then failed at its first source GET
+because a legacy call used bare kubectl under the deliberately stripped workflow
+environment. No target apply/create occurred. Encrypted diagnostics, all five
+passed journals, failed target intent/result, signed originals and four raw source
+records remain unchanged. Six explicit read-only GETs proved all four target
+namespaces absent, no target PV claims and the completed backup UID preserved.
+Exact owned watcher restoration and rollout passed with the controller UID
+preserved; intake/worker/clock remain 2/1/0. No source outage began.
+
+The [new verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t133559z-s427-retained-keycloak-continuation/verification.json) binds unsigned completion RID
+`20261101t131121z`, [exact reviewable scope and lineage](../../../../../hexalith-recovery-evidence/4-0/20261101t131121z/CURRENT-RECOVERY-APPROVAL.md)
+and [protected-terminal signing action](../../../../../hexalith-recovery-evidence/4-0/20261101t131121z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Policy SHA-256: `b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4`.
+All selected native call sites now use pinned explicit regular kubeconfig/context
+and bounded timeouts. The actual stripped workflow environment and helper paths
+pass their local tests without ambient defaults. The 49-step continuation omits
+all five passed IDs; the prior capture entrypoint explicitly rejects recapture
+under this policy. Distinct verification/watch/explicit-target stages precede the
+remaining approved sequence; no fabricated successor passes or overwritten failed
+intent exists.
+
+The existing actual Keycloak point is imported byte-for-byte. Its source cutoff
+**12:47:52Z**, durability/capture **12:48:05Z**, source observation **12:48:10Z**
+and measured RPO **18 seconds** remain unchanged. Original encrypted policy/
+signature readback at **12:47:16.821065Z** preceded source pre/capture under the
+authentic origin policy. Actual restore, proof and final-validator consumers
+verify that lineage, original versions, raw source/journal hashes and old age
+rules. A later new policy does not renew the point or the original policy age
+cap. Unauthorized/mismatched origin, rewritten clocks, expired point and stage
+replay controls pass. Fifty-three caller cases and nine rebound node guards
+passed; the parent independently passed all 11 selected lineage/transport/
+producer-consumer cases and the exact signing guard. Test target outcomes remain
+explicitly inert and supply no production restore evidence.
+
+The standing original **“Freeze announced for this run”** record remains at its
+actual predecessor RID/policy/hash. Existing operational scope approval persists.
+The concrete missing action is the new exact original policy signature/publication
+and independent immutable readbacks; no repeat broad scope or freeze confirmation
+is requested. Current guard passes with zero remote requests and remains closed.
+Original capture clocks, prior signed packets, native/TLS facts and history remain
+preserved. The exact attempt still ends **2026-11-01T23:00:00Z** within the broader
+administrative window. No new continuation step, signature or PUT ran.
+
+Actual isolated recovery, Memories pause/resume/cleanup, later original signatures,
+non-dry validation and honest current M1/M2 remain required. Fresh accepted 4.0
+and separate native/node/etcd prerequisites still precede an exact retirement
+plan/approval/arm. **4.27 stays in-progress, 4.1 closed, Timesheets 3.6 open/FAIL**.
+No retirement, upgrade, Rancher or deployment ran; frozen intent and original
+production tasks remain unchanged.

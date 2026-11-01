@@ -1,0 +1,284 @@
+{
+  "administrativeExclusiveEnd": "2026-11-02T23:00:00Z",
+  "checkpoint": "20261101t133559z-s427-retained-keycloak-continuation",
+  "continuation": {
+    "actualOriginPolicyAgeCapPreserved": true,
+    "failedIntentOverwritten": false,
+    "firstStages": [
+      "verify-authenticated-retained-keycloak-point",
+      "enable-watch-for-retained-keycloak-target",
+      "keycloak-create-target-explicit-context"
+    ],
+    "newCaptureOrPassedStageFabricated": false,
+    "operationalScopeApprovalRetained": true,
+    "orderedSteps": 49,
+    "passedIdsExcluded": true,
+    "priorCaptureEntrypointDisabled": true,
+    "rawSourceRecordsByteIdentical": {
+      "keycloak/backup.json": "07af3a09ce7c3af0dc8150004002a2d1c0d64826ebfba389d036ff05f1067572",
+      "keycloak/rpo-observation.json": "cdaad1cb91c81959181ea6891861e17e5157ddec2af32a8b571784ab1e7c5acd",
+      "keycloak/source-post.json": "3a811b430dc00152f1a52aa65c14911add7b73c3eaa5c3220aa5797ed537a742",
+      "keycloak/source-pre.json": "c080357f2a6d6ab6fe8faef7fffa4447ebc2f6d9262360564470fd41b1a869eb"
+    },
+    "repeatFreezeRequired": false,
+    "standingFreezeOriginalUnchanged": true,
+    "successorIntentsPresent": false
+  },
+  "currentPolicy": {
+    "bytes": 78970,
+    "immutableVersionsAccepted": false,
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t131121z/policy/recovery-policy.json",
+    "preparedAt": "2026-11-01T13:30:29Z",
+    "sha256": "b592cd01db298b4b1f556ee7ef9d9d7edb950e326b97653ee6729f2e322a67d4",
+    "signaturePresent": false
+  },
+  "exactAttemptExclusiveEnd": "2026-11-01T23:00:00Z",
+  "kind": "s427-explicit-native-retained-keycloak-continuation",
+  "nativeScope": {
+    "scopePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/node-production-scope-v6.json",
+    "scopeSha256": "fc633be5086aacb4cf33b082f4cbae87d2f0509359c1b25b780abc93c9bb9324"
+  },
+  "newContinuationStepOrSignatureOrPut": false,
+  "observedAt": "2026-11-01T13:35:59.100954+00:00",
+  "operationalGate": "closed-awaiting-new-exact-original-policy-signature-and-immutable-readbacks",
+  "operatorDocuments": {
+    "CURRENT-RECOVERY-APPROVAL.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t131121z/CURRENT-RECOVERY-APPROVAL.md",
+      "sha256": "0e011eb68e885af5d21bec32e83b38b33e0d3170e16b0fb1e35dce42278cb7c0"
+    },
+    "NEXT-PROTECTED-SIGNING-ACTION.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t131121z/NEXT-PROTECTED-SIGNING-ACTION.md",
+      "sha256": "4d30a09d7878331ebba54b5683d3da888aadb84f86de658e987ed0920fdb69ad"
+    }
+  },
+  "originRecoveryId": "20261101t121847z",
+  "preCaptureOriginalAuthentication": {
+    "actualPreCaptureOriginalReadbacks": true,
+    "backupStartedAt": "2026-11-01T12:47:48Z",
+    "backupStoppedAt": "2026-11-01T12:47:52Z",
+    "capturedAt": "2026-11-01T12:47:16.821065+00:00",
+    "originalPolicyAuthenticationStrictlyBeforeSourcePre": true,
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/policy/original-policy-readbacks/20261101t124716825354z-13095ac4.age",
+    "policyLastModified": "2026-11-01T12:43:57+00:00",
+    "policyVersion": "1793537037406529",
+    "sha256": "a6e7e66a79f5fe4f65d2c6fb56fe4fd3c20ec8d9a3cd7cf3c6b8a76eed45d44f",
+    "signatureLastModified": "2026-11-01T12:43:57+00:00",
+    "signatureVersion": "1793537037836586",
+    "sourcePreCapturedAt": "2026-11-01T12:47:17Z"
+  },
+  "predecessor": {
+    "failedStage": "keycloak-create-target",
+    "failureBeforeAnyTargetApplyOrCreate": true,
+    "fivePassedStages": [
+      "keycloak-backup",
+      "keycloak-post",
+      "keycloak-pre",
+      "keycloak-rpo",
+      "watch-on"
+    ],
+    "originalsAndJournalsUnchanged": {
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/keycloak/backup.json": "07af3a09ce7c3af0dc8150004002a2d1c0d64826ebfba389d036ff05f1067572",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/keycloak/rpo-observation.json": "cdaad1cb91c81959181ea6891861e17e5157ddec2af32a8b571784ab1e7c5acd",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/keycloak/source-post.json": "3a811b430dc00152f1a52aa65c14911add7b73c3eaa5c3220aa5797ed537a742",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/keycloak/source-pre.json": "c080357f2a6d6ab6fe8faef7fffa4447ebc2f6d9262360564470fd41b1a869eb",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/policy/recovery-policy.json": "fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/policy/recovery-policy.json.sig": "dfef6a22beff12c0c4ed068b74fa6573ae339bc710c52e4d0e51617ea8c94267",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-backup-intent.json": "81f639b5d1203811407d12068fe02fb9f28fdf8769616dd6ee419bc63817844c",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-backup-result.json": "f296fbd51d66abcd306a6e21db5ca787a97173a9f2dd4518ecb9b076f2b1142e",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-create-target-intent.json": "ceab601e29b0932676068b33e32d37e1b635224834f345bd5f8288b5a31592c8",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-create-target-result.json": "5d45cf0a63e60cc92068981225787f1ad455a5fb82b7465dfceaef8ee43c58b7",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-post-intent.json": "7334c84fb97ebfa37eaba67887de323691e3ea9413ae00d01bcb4bf89e15a7ae",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-post-result.json": "98df2665016f4f2127acbb226a24bbd6fdd7e900a828b9f68960bfbbf78471f3",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-pre-intent.json": "c397bbc626a6c2d37b283aa9e7e265a2a79b1ad6ff28d047b963240bdc053f84",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-pre-result.json": "17e0e44704f01922d285da3d458d1459bbc7eeefce8e39ec0bd912455c944381",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-rpo-intent.json": "d4a941901af045888ff1af942417a62726c1e17d5d674c43ada3a4c8abdaaa7c",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/keycloak-rpo-result.json": "f37b41aeee2c3216a4ee1656b220951c63a29bdb273e017ed48534bc05f95ad4",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/watch-on-intent.json": "76bb8f4a5579d5925d23b71cba63f84a5a68ccb364fbce718773768435b0ba8a",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/sequential-steps/watch-on-result.json": "b866a55bd23fc12af9dfd87d44c534aa2c93192c9bb94ce860eed1f155d8f64a",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/signatures/uploads.json": "6bd3f7e3d335a25f7a4a161f8173398a4292aee7f2f6e87f994dcba93f1137b1"
+    },
+    "readOnlyReconciliationGets": 6,
+    "sourceIntakeWorkerClockReplicas": [
+      2,
+      1,
+      0
+    ],
+    "sourcePointActuallyCaptured": true,
+    "targetNamespacesAndTargetPvsAbsent": true,
+    "watchBaselineRestored": true,
+    "watchControllerUidPreserved": true,
+    "wholeRecoveryAccepted": false
+  },
+  "preservation": {
+    "boundExecutionProcedureMaintenanceFiles": [
+      {
+        "path": "eng/cluster-management/retire.py",
+        "sha256": "af24514b449a9b889b95339dc25d746c6d379fcd71f58655d1325ac538409d71",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/rehearse.py",
+        "sha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/qualify.py",
+        "sha256": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/evidence.py",
+        "sha256": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/RETIRE-KUBESPHERE.md",
+        "sha256": "ac8c59c48066af88c486eb20d093f37537f9fe2278c43f7ccfc8e018091c8c93",
+        "unchanged": true
+      },
+      {
+        "path": "eng/kubernetes-upgrade/MAINTENANCE.md",
+        "sha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+        "unchanged": true
+      }
+    ],
+    "frozenBlockSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+    "frozenIntentUnchanged": true,
+    "repositorySources": {
+      "eng/recovery-preparation/keycloak_private_oidc.py": {
+        "sha256": "b45b4cee62b898a62331f698d49c2edca3bcd15a3404047849fb7669b4246709",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/telemetry_isolation.py": {
+        "sha256": "a61f689891c7bfa8d1229b37950da71f18d21d485454719b1a8b001aaf1a88a5",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/telemetry_postgres_adapter.py": {
+        "sha256": "a801a498cf0d30d2b8ff324653dee17e34716cd0722f3b8affd5a4d0304ba970",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_keycloak_private_oidc.py": {
+        "sha256": "eafd92011b2758057a0161e6335c01cf4033b9b1a3d383d49efb6fd63cfbbb78",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_telemetry_isolation.py": {
+        "sha256": "69a9b9002e4ba9ec7de17ff66921280065e51e3459043505cf82d20d4fc83a76",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_telemetry_postgres_adapter.py": {
+        "sha256": "5fd36acb5c851978c919fc89b35cd02e5d97e810561cf214a5a0faa7df0939de",
+        "unchangedSinceParent93TestAudit": true
+      }
+    },
+    "scope": "Checked exact original hashes, four source record copies, bound bytes and append prefixes only; no whole-history integrity claim"
+  },
+  "privateContinuation": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t124555z",
+  "recoveryId": "20261101t131121z",
+  "remainingOwnerInputs": [
+    "Exact original signature/publication/readback for the corrected retained-point continuation policy; existing scope and standing freeze retained",
+    "Later authentic original cleanup/manifest/proofs/gate/validation signatures and honest current M1/M2",
+    "Separate retirement plan/exact approval/arm only after accepted recovery and actual native prerequisites"
+  ],
+  "retainedPoint": {
+    "backupId": "20261101T124748",
+    "backupName": "kc-4-0-20261101t121847z",
+    "backupUid": "30186df2-2d23-4b3b-a5cc-13badb74db31",
+    "capturedAt": "2026-11-01T12:48:05Z",
+    "dataCutoff": "2026-11-01T12:47:52Z",
+    "expiresAt": "2026-11-02T12:48:05Z",
+    "kind": "authenticated-retained-keycloak-point",
+    "lineageSha256": "abf587b5ffcb420891892f3213527764eb9924fc35205bc3bc4fd5d3140c5300",
+    "maximumProofAgeSeconds": 86400,
+    "measuredRpoSeconds": 18,
+    "newCaptureClaimed": false,
+    "originPolicyExpiresAt": "2026-11-02T12:32:44Z",
+    "originPolicyPreparedAt": "2026-11-01T12:32:44Z",
+    "originPolicySha256": "fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf",
+    "originRecoveryId": "20261101t121847z",
+    "originSignatureSha256": "dfef6a22beff12c0c4ed068b74fa6573ae339bc710c52e4d0e51617ea8c94267",
+    "originalVersions": {
+      "policy": "1793537037406529",
+      "signature": "1793537037836586"
+    },
+    "preCaptureReadbackSha256": "a6e7e66a79f5fe4f65d2c6fb56fe4fd3c20ec8d9a3cd7cf3c6b8a76eed45d44f",
+    "sourceObservedAt": "2026-11-01T12:48:10Z",
+    "sourceRecordSha256": {
+      "keycloak/backup.json": "07af3a09ce7c3af0dc8150004002a2d1c0d64826ebfba389d036ff05f1067572",
+      "keycloak/rpo-observation.json": "cdaad1cb91c81959181ea6891861e17e5157ddec2af32a8b571784ab1e7c5acd",
+      "keycloak/source-post.json": "3a811b430dc00152f1a52aa65c14911add7b73c3eaa5c3220aa5797ed537a742",
+      "keycloak/source-pre.json": "c080357f2a6d6ab6fe8faef7fffa4447ebc2f6d9262360564470fd41b1a869eb"
+    }
+  },
+  "storyStatus": "in-progress",
+  "timesheets36": "open/FAIL",
+  "trackedCheckpoints": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 103297,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "e35486353f7ab9f91f77eb78926469165bc97caafcf58c1b113b5a6b37e8a014",
+      "sha256": "cafc45c1ccb36a4b6b1f770fdb8043330b268be46cbc12bb9a16649edc34f3e9"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 138445,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "c48005780ca3d67b1be548acb77f07809d3ba746aa5edbd38cf7f3ed4fca1b53",
+      "sha256": "455d58cd1925a4c622d4472ca8ab9e5e2dc7aab99629240358b76b3a75aebf0c"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 117954,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "df57e5b0ac17bb8a028440fbb61ee422a003f728eb4f32fc9008f5182e09ab1b",
+      "sha256": "3b3a9ca078125273ecaf2c8af8a1d08e278b73e42b6dcd9c236697e303f0e142"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "bytes": 64306,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "e31196315cfcd4a87276eeca7ebd2293295b5ccf4cce297ecfa18d09e8586f47",
+      "sha256": "3c3344465b7ff3b517c61b4d92f96f0664312081e06dd40b4e3f59f3c462a7d4"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "bytes": 61222,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "9f81bf44ba23481eb9f6915563bd4ad4b0c94116ce22e4404d494fe7a6eda31d",
+      "sha256": "608db803cd5ac28fa38d8aa5a35f12ae66f886d4b7b0c80ce2b4a9da08c3f432"
+    }
+  },
+  "transportCorrection": {
+    "actualStrippedEnvironmentContext": "jpiquot@local",
+    "ambientDefaultsRequired": false,
+    "requestTimeoutSeconds": 60,
+    "selectedCallSitesExplicitPinnedConfigContext": true,
+    "selectedSubprocessTimeoutSeconds": 180,
+    "testNativeOrProviderRequests": 0
+  },
+  "upgradeGate": "closed",
+  "vcs": {
+    "head": "947b4077997975f1898c7ed2c6297d0178e36a86",
+    "legacySpecBaseline": "54920908f15a99b48e69861baf306365353fc6df",
+    "stagedCommittedOrPushed": false
+  },
+  "verification": {
+    "actualProducerConsumerCanonicalAndNodeBindingPassed": true,
+    "actualRestoreProofValidatorLineageAndAgeCasesPassed": true,
+    "bashSyntaxPassed": true,
+    "callerCasesPassed": 53,
+    "existingCanonicalReplayabilityPassed": true,
+    "gitDiffCheckPassed": true,
+    "nodeGuardHorizonCasesPassed": 9,
+    "parentIndependentGuardPassed": true,
+    "parentIndependentSelectedCasesPassed": 11,
+    "strictGuardReceiptSha256": "ad87c0a0ba6d3d7d29d929b98921bfbc47822ddfec022b5eb8aa1ab53b7939c5",
+    "strictGuardRemoteRequests": 0,
+    "strictPacketGuard": "passed: exact-current-unsigned-packet-consistent; zero remote requests; closed pending exact original signature/readbacks",
+    "testTargetOutcomesSyntheticOnly": true,
+    "toolChecksumManifest": {
+      "allEntriesMatch": true,
+      "entries": 84,
+      "excludesSelf": true,
+      "settledBeforePolicy": true,
+      "sha256": "0d366a8fa18bc426042639c9b475733290409e65f834aa9fedc923c8caae6a93"
+    },
+    "unauthorizedOriginMismatchClockRewriteExpiryReplayNegativesPassed": true
+  },
+  "wholeSourceRecoveryAccepted": false
+}

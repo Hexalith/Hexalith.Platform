@@ -1,0 +1,226 @@
+{
+  "administrativeExclusiveEnd": "2026-11-02T23:00:00Z",
+  "checkpoint": "20261101t123705z-s427-corrected-policy-successor",
+  "correction": {
+    "actualSourceMeasurementTimestampsNotChanged": true,
+    "newTargetAndObjectNamesBound": true,
+    "nodeScope": {
+      "scopePath": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/node-production-scope-v5.json",
+      "scopeSha256": "9441279860d7d88a4c832adce0944d2762a79a5e7162f12439b310cb2307b4f5"
+    },
+    "rawFileConventionsPreserved": true,
+    "rawProposalFileSha256": "4b9c32f02ed4e72b4c75b3e6a4df143e9654100254bb5ea6b353f9170e621d3f",
+    "semanticProposalSha256": "1e73d7d5f6470e53eee9e6844f3c9cc4a9cf28b4940bb790afac7297883fef0f"
+  },
+  "currentPolicy": {
+    "bytes": 71064,
+    "immutableVersionsAccepted": false,
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/policy/recovery-policy.json",
+    "preparedAt": "2026-11-01T12:32:44Z",
+    "sha256": "fa4053b10c5ac9fc6e10f83de99493fc0ee01a9e29c4d0913c5bed941f7606bf",
+    "signaturePresent": false
+  },
+  "exactAttemptExclusiveEnd": "2026-11-01T23:00:00Z",
+  "kind": "s427-corrected-exact-policy-successor",
+  "observedAt": "2026-11-01T12:37:05.016850+00:00",
+  "operationalGate": "closed-awaiting-new-original-policy-signature-and-immutable-readback",
+  "operatorDocuments": {
+    "CURRENT-RECOVERY-APPROVAL.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/CURRENT-RECOVERY-APPROVAL.md",
+      "sha256": "57000cd1c605f6f433665961ccb8996729a8ef561a54d8d3b6eae73ab75d6b50"
+    },
+    "NEXT-PROTECTED-SIGNING-ACTION.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t121847z/NEXT-PROTECTED-SIGNING-ACTION.md",
+      "sha256": "37d7c6bcbeecb914dfae3e487cac88c98ec9b090961410341fb69acd8d8a7bbc"
+    }
+  },
+  "originalNativeTlsEpochUnchanged": true,
+  "predecessor": {
+    "backupRequestIssued": false,
+    "failedGate": "keycloak-backup absent-name precheck: proposal differs from signed policy",
+    "failedStepIntentPresent": false,
+    "originalCanonicalHashesUnchanged": {
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/policy/recovery-policy.json": "bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/policy/recovery-policy.json.sig": "a2107baff7b81d80e5117385c8d2f865d91af2415fbb8bdf8c4da438f7a6d774",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/proposal/current-c3-announcement.json": "47c1cd2f407769b559f580e724f044a647ceb0aacfe433417a5251a9be9ad32f",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/sequential-steps/keycloak-pre-intent.json": "11fd72b9f3abbde36bdeada3d25dec792e3e53739fe7f1fb9f1b21d15b64a26f",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/sequential-steps/keycloak-pre-result.json": "62d505ee67e5f89c0bd6cc3fa061b4cbdef3d9f4d1be66767521dbc0a303f02e",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/sequential-steps/watch-on-intent.json": "1b3dfb299921640651754247bcebd1aaa5a8c98e6d6f490ae838473107b98b44",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/sequential-steps/watch-on-result.json": "e974c8fc7ead358595194258d69790d47d30eba00f50722f04e817fc0dd5cb52",
+      "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/signatures/uploads.json": "abbbf442776db0fe9dd18418e5c93c960f98624c4d8656c5c3b33c7dc583d67d"
+    },
+    "passedSteps": [
+      "watch-on",
+      "keycloak-pre"
+    ],
+    "sourceIntakeWorkerClockReplicas": [
+      2,
+      1,
+      0
+    ],
+    "watchBaselineRestored": true,
+    "watchControllerUidPreserved": true
+  },
+  "predecessorRecoveryId": "20261031t175250z",
+  "preservation": {
+    "boundExecutionProcedureMaintenanceFiles": [
+      {
+        "path": "eng/cluster-management/retire.py",
+        "sha256": "af24514b449a9b889b95339dc25d746c6d379fcd71f58655d1325ac538409d71",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/rehearse.py",
+        "sha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/qualify.py",
+        "sha256": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/evidence.py",
+        "sha256": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/RETIRE-KUBESPHERE.md",
+        "sha256": "ac8c59c48066af88c486eb20d093f37537f9fe2278c43f7ccfc8e018091c8c93",
+        "unchanged": true
+      },
+      {
+        "path": "eng/kubernetes-upgrade/MAINTENANCE.md",
+        "sha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+        "unchanged": true
+      }
+    ],
+    "frozenBlockSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+    "frozenIntentUnchanged": true,
+    "repositoryCodeFiles": {
+      "eng/recovery-preparation/keycloak_private_oidc.py": {
+        "sha256": "b45b4cee62b898a62331f698d49c2edca3bcd15a3404047849fb7669b4246709",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/telemetry_isolation.py": {
+        "sha256": "a61f689891c7bfa8d1229b37950da71f18d21d485454719b1a8b001aaf1a88a5",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/telemetry_postgres_adapter.py": {
+        "sha256": "a801a498cf0d30d2b8ff324653dee17e34716cd0722f3b8affd5a4d0304ba970",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_keycloak_private_oidc.py": {
+        "sha256": "eafd92011b2758057a0161e6335c01cf4033b9b1a3d383d49efb6fd63cfbbb78",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_telemetry_isolation.py": {
+        "sha256": "69a9b9002e4ba9ec7de17ff66921280065e51e3459043505cf82d20d4fc83a76",
+        "unchangedSinceParent93TestAudit": true
+      },
+      "eng/recovery-preparation/test_telemetry_postgres_adapter.py": {
+        "sha256": "5fd36acb5c851978c919fc89b35cd02e5d97e810561cf214a5a0faa7df0939de",
+        "unchangedSinceParent93TestAudit": true
+      }
+    },
+    "scope": "Checked exact canonical originals, bound bytes and append prefixes only; no whole-history integrity claim"
+  },
+  "privateContinuation": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t121400z",
+  "productionActionsThisContinuation": {
+    "backupRequestIssued": false,
+    "quiescence": false,
+    "rancher": false,
+    "retirement": false,
+    "sourcePreInventoryRecorded": true,
+    "sourceRestore": false,
+    "successorSignatureOrPut": false,
+    "targetCreate": false,
+    "timesheetsDeployment": false,
+    "upgrade": false,
+    "watchPatchesIncludingRestoration": 2
+  },
+  "readOnlyPreflight": {
+    "atLeast2GiBMemoryAvailable": true,
+    "capacityGets": 5,
+    "capacityReadOnlyExec": 1,
+    "destinationReads": 20,
+    "protectedIdentityStorageReadinessGets": 10,
+    "rawTwoRecipientEncryptionAndReadbackPassed": true
+  },
+  "recoveryId": "20261101t121847z",
+  "remainingActualOwnerInputs": [
+    "Exact corrected original policy signature/publication and independent immutable readbacks; existing scope approval and standing freeze retained",
+    "Later authentic original cleanup/manifest/proofs/gate/validation signatures and honest current M1/M2",
+    "Separate source-bound retirement plan/exact approval/arm after accepted recovery and actual native prerequisites"
+  ],
+  "standingFreeze": {
+    "newAnnouncementFabricated": false,
+    "originalStandingOwnerStatementRetained": true,
+    "repeatAnnouncementRequired": false,
+    "sourcePath": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/proposal/current-c3-announcement.json",
+    "sourceSha256": "47c1cd2f407769b559f580e724f044a647ceb0aacfe433417a5251a9be9ad32f"
+  },
+  "storyStatus": "in-progress",
+  "timesheets36": "open/FAIL",
+  "trackedCheckpoints": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 97138,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "4b2f46d1c8c7cd85a91452d3d67822952bdebe96acccc289fcfd286e6a34ffff",
+      "sha256": "d54fafae524e87ce88d9212d8d723c78f173d26fa9dfde7e921b7d6c552ca6dd"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 132286,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "41bd9e70a627a6118bb2a1b700ae0a7d18c3377671124ebf7a177a8172245200",
+      "sha256": "3ae76d8f77dbc62afbeba5552407739f592e6fcca13a6f13fc465524ca668806"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 111707,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "a65f632a4a18265189be93bc2665c28c0e1b253a10cd7ed37f3207d892430c3c",
+      "sha256": "7de2ff457ea73847e9aa62039dfc33f7225375b0f62d979aeb613e04b7b8f687"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "bytes": 60307,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "52318b78a631b459b3f23fbea393dedf4e3e10baec7d418e31e200e73d9e3062",
+      "sha256": "e31196315cfcd4a87276eeca7ebd2293295b5ccf4cce297ecfa18d09e8586f47"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "bytes": 57223,
+      "originalPrefixPreserved": true,
+      "preAppendSha256": "b881aa8d359e327626c504462f6aa144d7f43b2fb6c3d946b8e4ad377475a81b",
+      "sha256": "9f81bf44ba23481eb9f6915563bd4ad4b0c94116ce22e4404d494fe7a6eda31d"
+    }
+  },
+  "upgradeGate": "closed",
+  "vcs": {
+    "head": "947b4077997975f1898c7ed2c6297d0178e36a86",
+    "legacySpecBaseline": "54920908f15a99b48e69861baf306365353fc6df",
+    "stagedCommittedOrPushed": false
+  },
+  "verification": {
+    "base42AndUpdatedCrossConsumer1QualifiedSeparately": true,
+    "bashSyntaxPassed": true,
+    "crossConsumerReceipt": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/continuation-20261101t121400z/successor-cross-consumer-t2k4ubz1/regression.json",
+    "crossConsumerReceiptSha256": "4f7c8c14e78c68ff337cb75e1369854a1c94b0a1dc136d1e75fde2ebeefddf5b",
+    "distinctCurrentCallerCasesPassed": 43,
+    "earlierUnsignedFixtureTestFailuresRetained": true,
+    "gitDiffCheckPassed": true,
+    "parentIndependentExactGuardPassed": true,
+    "parentIndependentSettledRegressionPassed": true,
+    "reboundNodeGuardHorizonCasesPassed": 9,
+    "strictGuardRemoteRequests": 0,
+    "strictPacketGuard": "passed: exact-current-unsigned-packet-consistent; zero remote requests; closed pending original signature/readback",
+    "strictPacketGuardReceiptSha256": "1b5c4b9ce5db5abeb422b52cd808fde3ad05255c7ecf0a3204cf0698f1615809",
+    "toolChecksumManifest": {
+      "allEntriesMatch": true,
+      "entries": 79,
+      "excludesSelf": true,
+      "settledBeforePolicy": true,
+      "sha256": "6e8b841236791b935a89c8f28bf877c8cadd080fcc462b20d0fc0669a434be4d"
+    }
+  },
+  "wholeSourceRecoveryAccepted": false
+}
