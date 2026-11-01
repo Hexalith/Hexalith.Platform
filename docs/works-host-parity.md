@@ -1,5 +1,8 @@
 # Works host parity and rollback
 
+Current Development startup also requires the [private owner catalog profile](works-development-catalog-profile.md).
+The canonical proof supplies it before composition; retained state never receives automatically regenerated digest material.
+
 ## Canonical local and CI profiles
 
 `eng/verify-works-host.sh --profile full` is the default local gate: source Debug and public-package Release consumer checks, followed by every explicit live R1–R11 proof and complete-fleet rollback. `--profile ci` uses only Release/public-package consumer checks and Release/package Agents scaffold probes, as required by the Hexalith CI baseline. The explicitly accepted test-only source exceptions are unpublished Platform.Identity, Platform.Composition, conditional Platform.Works.Runtime and the eleven linked Parties authority/query sources compiled into Works IntegrationTests. Parties.Client and Parties.Contracts remain catalog-selected public NuGet packages, and `linkedFixtureSources` binds the exact linked authority/query bytes from `HexalithPartiesRoot`; the Composition exception is hash-bound from the Platform tree the consumer actually compiles (`PlatformWorksRuntimeRoot`), including its linked `DaprSelfHostedMtls.cs`, not from the Works dependency copy. Runtime SDK executables still build in Release from independently qualified exact public producer source; their external dependencies use packages.

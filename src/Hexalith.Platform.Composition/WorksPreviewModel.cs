@@ -79,9 +79,9 @@ public static class WorksPreviewModel
         string adminAcl = Component("accesscontrol.eventstore-admin.yaml");
         string operationsAcl = Component("accesscontrol.eventstore-operations.yaml");
         string resiliencyPath = Component(Path.Combine("resiliency", "resiliency.yaml"));
-        string stateStorePath = Component("statestore.yaml");
-        string pubSubPath = Component("pubsub.yaml");
-        string configStorePath = Component("configstore.yaml");
+        string stateStorePath;
+        string pubSubPath;
+        string configStorePath;
         string sentryPath = Component("sentry.yaml");
         _ = Component(Path.Combine("works", "subscription.work.events.yaml"));
 
@@ -98,8 +98,24 @@ public static class WorksPreviewModel
         string[] checkouts = [builder.AppHostDirectory, worksRoot, eventStoreRoot];
         // Refuse a misplaced certificate parent before this preview creates its workspace.
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, platformRoot, workspace, checkouts);
+        var developmentProfile = WorksDevelopmentCatalogProfile.Load(builder.Configuration, platformRoot, worksRoot, eventStoreRoot);
+        stateStorePath = developmentProfile.StateStoreComponentPath;
         CompositionWorkspace.CreatePrivateDirectory(workspace);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
+        string CopyOwnerComponent(string source, string name)
+        {
+            string directory = Path.Combine(workspace, "components", name);
+            CompositionWorkspace.CreatePrivateDirectory(directory);
+            string target = Path.Combine(directory, name + ".yaml");
+            File.Copy(source, target);
+            if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(target, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            return target;
+        }
+        // Dapr scans a LocalPath's directory. Never expose owner keys/custody or ambient
+        // default components through that resource path; each selected component owns one directory.
+        stateStorePath = CopyOwnerComponent(stateStorePath, "statestore");
+        pubSubPath = CopyOwnerComponent(developmentProfile.PubSubComponentPath!, "pubsub");
+        configStorePath = CopyOwnerComponent(developmentProfile.ConfigStoreComponentPath!, "configstore");
         CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
         var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, platformRoot, workspace, controlPorts.PlacementHealth, checkoutRoots: checkouts);
         // Default credentials belong to the workspace and survive with its failed-start diagnostics.
@@ -162,7 +178,7 @@ public static class WorksPreviewModel
             daprSchedulerHostAddress: schedulerAddress,
             pubSubComponentPath: pubSubPath);
 
-        var works = builder.AddProject("works", worksProject)
+        IResourceBuilder<ProjectResource> AddWorks(string resourceName) => builder.AddProject(resourceName, worksProject)
             .WithHttpEndpoint()
             .WithEnvironment("Dapr__DeclarativeSubscriptions", "true")
             .WithEnvironment("Works__Projection__UseSdkDelivery", "true")
@@ -184,23 +200,29 @@ public static class WorksPreviewModel
             .WithEnvironment("EventStore__CommandGateway__BaseAddress", eventStore.GetEndpoint("http"))
             .WaitFor(eventStoreResources.StateStore);
 
-        IDaprSidecarResource worksSidecar = SidecarOf(works.Resource)!;
-        DaprSidecarOptionsAnnotation options = worksSidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
-        worksSidecar.Annotations.Remove(options);
-        worksSidecar.Annotations.Add(new DaprSidecarOptionsAnnotation(options.Options with
+        var works = AddWorks("works");
+        IResourceBuilder<ProjectResource>[] worksHosts = developmentProfile.Replicas == 2 ? [works, AddWorks("works-ha")] : [works];
+
+        foreach (var host in worksHosts)
         {
-            ResourcesPaths = (options.Options.ResourcesPaths ?? []).Append(Path.Combine(components, "works")).ToImmutableHashSet(StringComparer.Ordinal),
-        }));
+            IDaprSidecarResource worksSidecar = SidecarOf(host.Resource)!;
+            DaprSidecarOptionsAnnotation options = worksSidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+            worksSidecar.Annotations.Remove(options);
+            worksSidecar.Annotations.Add(new DaprSidecarOptionsAnnotation(options.Options with
+            {
+                ResourcesPaths = (options.Options.ResourcesPaths ?? []).Append(Path.Combine(components, "works")).ToImmutableHashSet(StringComparer.Ordinal),
+            }));
 
         // Gateway startup discovers this module's protected metadata. A readiness wait in the opposite
         // direction prevents either service from starting; keep the SDK's references and sidecar wiring.
-        foreach (WaitAnnotation wait in works.Resource.Annotations.OfType<WaitAnnotation>()
+        foreach (WaitAnnotation wait in host.Resource.Annotations.OfType<WaitAnnotation>()
             .Where(wait => ReferenceEquals(wait.Resource, eventStore.Resource)).ToArray())
-            works.Resource.Annotations.Remove(wait);
+            host.Resource.Annotations.Remove(wait);
+        }
 
         eventStore.WithEnvironment("Authentication__WorkloadIssuer__Workload", "eventstore");
         SdkReadinessHealthCheck.Attach(builder, eventStore);
-        SdkReadinessHealthCheck.Attach(builder, works);
+        foreach (var host in worksHosts) SdkReadinessHealthCheck.Attach(builder, host);
         builder.CreateResourceBuilder(SidecarOf(eventStore.Resource)!).WithReference(configStore);
 
         var operations = builder.AddProject("eventstore-operations", operationsProject)
@@ -270,7 +292,7 @@ public static class WorksPreviewModel
         string devSigningKey = builder.Configuration["Works:Authentication:DevSigningKey"] is { Length: > 0 } configuredKey
             ? configuredKey
             : "DevOnlySigningKey-AtLeast32Chars!";
-        foreach (IResourceBuilder<ProjectResource> jwtValidator in new[] { eventStore, admin, works })
+        foreach (IResourceBuilder<ProjectResource> jwtValidator in new[] { eventStore, admin, operations }.Concat(worksHosts))
         {
             _ = jwtValidator
                 .WithEnvironment("DOTNET_ENVIRONMENT", builder.Environment.EnvironmentName)
@@ -280,6 +302,30 @@ public static class WorksPreviewModel
                 .WithEnvironment("Authentication__JwtBearer__ValidAudiences__0", HexalithEventStoreSecurityOptions.DefaultAudience)
                 .WithEnvironment("Authentication__JwtBearer__SigningKey", devSigningKey)
                 .WithEnvironment("Authentication__JwtBearer__RequireHttpsMetadata", "false");
+        }
+
+        admin.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__Role", "admin-receiver");
+        operations.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__Role", "operations-receiver");
+        // Read the actual selected child through its launch/build environment. The executable owns
+        // both contracts and adapters; Works retains its existing five-package publication inventory.
+        var preparedOwner = works.PrepareEventStoreDevelopmentOwnerAsync(TimeSpan.FromMinutes(5)).GetAwaiter().GetResult();
+        try
+        {
+            // Preparation has built and hash-verified this selected executable and its SDK.
+            // Every physical replica runs that same output; concurrent dotnet-run builds of
+            // one project would race the shared static-web-assets intermediates.
+            foreach (var host in worksHosts) host.WithArgs("--no-build", "--no-restore");
+            var catalog = builder.AddEventStoreDevelopmentRouteCatalog(eventStore, [preparedOwner.Owner],
+                [eventStore.CaptureEventStoreDevelopmentReceiver([.. worksHosts, admin]),
+                    .. worksHosts.Select(host => host.CaptureEventStoreDevelopmentReceiver(eventStore, operations, admin)),
+                    admin.CaptureEventStoreDevelopmentReceiver(),
+                    operations.CaptureEventStoreDevelopmentReceiver(admin)], eventStoreResources.StateStore, options: developmentProfile.Catalog);
+            builder.Services.AddSingleton<IHostedService>(_ => new WorksRoutingCatalogLifetime(preparedOwner, catalog));
+        }
+        catch
+        {
+            preparedOwner.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            throw;
         }
 
         static string LocatePlatformRoot(string appHostDirectory)
