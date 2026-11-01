@@ -1,0 +1,44 @@
+{
+  "kind": "s427-current-owner-freeze-acknowledgement",
+  "observedAt": "2026-11-01T06:40:41.484331+00:00",
+  "recoveryId": "20261031t175250z",
+  "policySha256": "bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51",
+  "announcement": {
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/proposal/current-c3-announcement.json",
+    "sha256": "47c1cd2f407769b559f580e724f044a647ceb0aacfe433417a5251a9be9ad32f",
+    "actualOwnerReply": "Freeze announced for this run",
+    "signed": false
+  },
+  "localGuard": {
+    "result": "exact-current-unsigned-packet-consistent",
+    "policySha256": "bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51",
+    "recoveryId": "20261031t175250z",
+    "operationalGate": "closed-awaiting-owner-scope-signature-and-immutable-readback",
+    "remoteRequests": 0,
+    "productionRecoveryAccepted": false,
+    "currentC3AnnouncementSupplied": true
+  },
+  "policySignaturePresent": false,
+  "publicationLedgerPresent": false,
+  "trackedAppends": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "beforeSha256": "ebf1af5a46babe9b9991d8aa8070f4e9d4be51f2948674dcc12796cb185588d7",
+      "afterSha256": "de640c23a6f04f607f375cfb751ebc043fca2c33eafbc1c0124d09f1b47146f9",
+      "previousPrefixPreserved": true
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "beforeSha256": "0027b359cc225747cbdd04d239e49866ac66c70f3b22773e1b2734b8deb9a4d1",
+      "afterSha256": "b087f367c944380a38985fdde9160a5345c6839c6711586ed03a02d9b5afddb1",
+      "previousPrefixPreserved": true
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "beforeSha256": "fdfa93829e6a16d75ac49a3dfd12221420453f6dbb5b39b04948cf8b258b88c7",
+      "afterSha256": "9cec296e4bf40643b2e1d7aea6b60d22f401df9c6d8a633288d95abbe34be80f",
+      "previousPrefixPreserved": true
+    }
+  },
+  "productionOperations": 0,
+  "storyStatus": "in-progress",
+  "upgradeGate": "closed",
+  "remainingNextOwnerAction": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/NEXT-PROTECTED-SIGNING-ACTION.md"
+}

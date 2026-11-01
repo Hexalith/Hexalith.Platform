@@ -1113,14 +1113,23 @@ def compare_canaries(value, source_raw, target_raw):
             expected['inherit'] = True
             require(expected_roles[role_name] == expected)
         require(actual == expected)
-    for observations in (source['roleIsolation'], target['roleIsolation']):
+    source_memberships = source['roleIsolation']['memberships']
+    source_bootstraps = [role['name'] for role in expected_roles.values()
+                         if all(role[flag] for flag in ROLE_FLAGS)]
+    if source_memberships:
+        require(len(source_bootstraps) == 1)
+    source_bootstrap = source_bootstraps[0] if len(source_bootstraps) == 1 else None
+    for observations, grantor in ((source['roleIsolation'], source_bootstrap),
+                                 (target['roleIsolation'], t['bootstrapUser'])):
         # We do not reconstruct arbitrary role graphs from a pg_dump archive.
-        # Only stock builtin-to-builtin edges, granted by the bootstrap, are
-        # supported. Any custom membership, even an apparently inert grant,
-        # could change ownership/ACL meaning and requires a different proposal.
+        # Each cluster's pinned bootstrap may have a different name. Only its
+        # stock builtin-to-builtin edges are supported; all edge semantics must
+        # still match and no source activation authority is restored.
         require(all(row['role'].startswith('pg_') and row['member'].startswith('pg_') and
-                    row['grantor'] == t['bootstrapUser'] for row in observations['memberships']))
-    require(source['roleIsolation']['memberships'] == target['roleIsolation']['memberships'])
+                    row['grantor'] == grantor for row in observations['memberships']))
+    normalized_source_memberships = [dict(row, grantor=t['bootstrapUser']) for row in source_memberships]
+    require(sorted(normalized_source_memberships, key=canonical) ==
+            sorted(target['roleIsolation']['memberships'], key=canonical))
     require(source['databaseActivation']['owner'] in expected_roles and
             target['databaseActivation']['owner'] == t['bootstrapUser'] and
             target['databaseActivation']['acl'] is None)
@@ -1254,7 +1263,7 @@ def render_proposal(value):
             'roleAuthorityProfile': {'flags': ROLE_FLAGS, 'sourceAuthorityObservation': None,
                 'sourceMemberships': None, 'targetAuthorityObservation': None, 'targetMemberships': None,
                 'customTargetRoles': 'all-authority-flags-false-including-inherit; no-memberships',
-                'supportedMemberships': 'builtin-to-builtin-only; bootstrap-grantor; exact-source-target-agreement',
+                'supportedMemberships': 'builtin-to-builtin-only; pinned-unique-source-bootstrap-to-fresh-target-bootstrap; exact-other-edge-semantics',
                 'builtinException': 'stock-builtin-flags-only-inherit-true; membership-graph-must-agree',
                 'bootstrapException': 'fresh-isolated-postgres-bootstrap-all-recorded-flags-true', 'qualification': None},
             'sequenceObservation': {'census': None, 'before': None, 'after': None,
