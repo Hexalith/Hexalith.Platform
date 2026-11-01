@@ -8,6 +8,14 @@ using Hexalith.EventStore.ServiceDefaults.Routing;
 using var document = JsonDocument.Parse(File.ReadAllBytes(args.Single()));
 var input = document.RootElement;
 long generation = input.GetProperty("generation").GetInt64();
+if (!input.TryGetProperty("gatewayAppId", out var gateway) || gateway.ValueKind != JsonValueKind.String
+    || string.IsNullOrWhiteSpace(gateway.GetString()))
+    throw new InvalidDataException("The routing catalog requires its actual gatewayAppId binding.");
+string gatewayAppId = gateway.GetString()!;
+#if !HEXALITH_SCOPED_CONSUMER_BINDING
+if (gatewayAppId != "eventstore")
+    throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK 3.130.0 or 3.130.1.");
+#endif
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];
 List<RouteCompositionBinding> bindings = [];
@@ -34,10 +42,7 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
             && route.CredentialKind == "workload"
             && route.Operation == Hexalith.EventStore.Contracts.Authorization.EventStoreOperationIdentifiers.ProjectionQuery)
         {
-            if (!input.TryGetProperty("gatewayAppId", out var gateway) || gateway.ValueKind != JsonValueKind.String
-                || string.IsNullOrWhiteSpace(gateway.GetString()))
-                throw new InvalidDataException("The declared gateway projection query requires its actual gatewayAppId binding.");
-            appId = gateway.GetString()!;
+            appId = gatewayAppId;
             method = "QueryAsync";
         }
         else
@@ -52,7 +57,11 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     {
         if (source.SourceType.GetProperty("Commands", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IEnumerable<CommandIntentDeclaration> commands)
             throw new InvalidDataException($"Owner {source.SourceType.FullName} has no declared command policies.");
+#if HEXALITH_SCOPED_CONSUMER_BINDING
+        policies.AddRange(commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, generation, gatewayAppId)));
+#else
         policies.AddRange(commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, generation)));
+#endif
     }
 }
 byte[]? predecessor = input.TryGetProperty("committedPredecessor", out var previous) && previous.ValueKind == JsonValueKind.String
