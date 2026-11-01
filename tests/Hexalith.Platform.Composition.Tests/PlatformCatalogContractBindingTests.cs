@@ -30,19 +30,7 @@ public sealed class PlatformCatalogContractBindingTests
         const string version = "9.8.7";
         try
         {
-            foreach (string assembly in new[] { contract, adapter })
-            {
-                string directory = Path.Combine(owner, "src", assembly);
-                Directory.CreateDirectory(directory);
-                File.WriteAllText(Path.Combine(directory, assembly + ".csproj"),
-                    """<Project><Target Name="SourceControlMustNotBuild" BeforeTargets="Build"><Error Text="Native control source is not a package runtime input." /></Target></Project>""");
-            }
-
-            string catalog = Path.Combine(workspace, "references", "Hexalith.Builds", "Props");
-            Directory.CreateDirectory(catalog);
-            File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"),
-                "<Project><PropertyGroup><Hexalith" + repository["Hexalith.".Length..] + "Version>" + version
-                + "</Hexalith" + repository["Hexalith.".Length..] + "Version></PropertyGroup></Project>");
+            WriteControlSourceInputs(owner, workspace, contract, adapter, repository, version);
             var mapping = new SourceMapping(mode, workspace, repository,
                 [new SourceMappingEntry(repository, "source", owner)], false);
             string mappingHash = mapping.ContentHash;
@@ -80,4 +68,21 @@ public sealed class PlatformCatalogContractBindingTests
             }
         }
     }
+    private static void WriteControlSourceInputs(string owner, string workspace, string contract, string adapter, string repository, string version)
+    {
+        foreach (string assembly in new[] { contract, adapter })
+        {
+            string directory = Path.Combine(owner, "src", assembly);
+            Directory.CreateDirectory(directory);
+            File.WriteAllText(Path.Combine(directory, assembly + ".csproj"),
+                """<Project><Target Name="SourceControlMustNotBuild" BeforeTargets="Build"><Error Text="Native control source is not a package runtime input." /></Target></Project>""");
+        }
+
+        string catalog = Path.Combine(workspace, "references", "Hexalith.Builds", "Props");
+        Directory.CreateDirectory(catalog);
+        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"),
+            "<Project><PropertyGroup><Hexalith" + repository["Hexalith.".Length..] + "Version>" + version
+            + "</Hexalith" + repository["Hexalith.".Length..] + "Version></PropertyGroup></Project>");
+    }
+
 }

@@ -42,86 +42,12 @@ public sealed class PlatformRoutingCatalogMetadataTests
         await File.WriteAllTextAsync(proof, "stale", TestContext.Current.CancellationToken);
         try
         {
-            JsonElement request = JsonSerializer.SerializeToElement(new { type = "object", properties = new { identity = new { type = "string" } } });
-            JsonElement result = JsonSerializer.SerializeToElement(new { type = "array", items = new { type = "string" } });
-            RouteOperationContract[] operations =
-            [
-                new("public-route", "v1", "public", "agent-eligible", request, result, new string('b', 64)),
-                new("internal-route", "v1", "internal", "UI-only", request, result, new string('c', 64)),
-            ];
-            RouteContractDeclaration[] declarations =
-            [
-                new("public-route", "query", "fixture", "FixtureQuery", null, "v1", null, "workload", "query:read", null, []),
-                new("internal-route", "command", "fixture", "FixtureCommand", null, "v1", 1, "workload", "command:submit", null, []),
-            ];
-            var catalog = new RouteCatalogEnvelope(3, 7, "Development", true, declarations, [], [], new string('d', 64), new string('e', 64), operations);
+            RouteCatalogEnvelope catalog = CreateCatalog(out JsonElement request, out JsonElement result);
             string root = new('a', 64);
-            JsonObject metadata = JsonSerializer.SerializeToNode(new
-            {
-                schemaVersion = 3, generation = 7, rootDigest = root,
-                operations = new[] { new { routeId = "public-route", contractVersion = "v1", eligibility = "agent-eligible", digest = operations[0].Digest,
-                    requestSchema = request, resultSchema = result, kind = "query", domain = "fixture", messageType = "FixtureQuery" } },
-            })!.AsObject();
-            if (scenario == "wrong-root")
-            {
-                metadata["rootDigest"] = new string('f', 64);
-            }
-            if (scenario == "wrong-generation")
-            {
-                metadata["generation"] = 8;
-            }
-            if (scenario == "wrong-schema")
-            {
-                metadata["operations"]![0]!["requestSchema"]!["type"] = "string";
-            }
-            if (scenario == "wrong-result-schema")
-            {
-                metadata["operations"]![0]!["resultSchema"]!["type"] = "object";
-            }
-            if (scenario == "wrong-policy")
-            {
-                metadata["operations"]![0]!["eligibility"] = "UI-only";
-            }
-            if (scenario == "wrong-digest")
-            {
-                metadata["operations"]![0]!["digest"] = new string('f', 64);
-            }
-            if (scenario == "wrong-contract-version")
-            {
-                metadata["operations"]![0]!["contractVersion"] = "v2";
-            }
-            if (scenario == "wrong-kind")
-            {
-                metadata["operations"]![0]!["kind"] = "command";
-            }
-            if (scenario == "wrong-domain")
-            {
-                metadata["operations"]![0]!["domain"] = "different-owner";
-            }
-            if (scenario == "wrong-message-type")
-            {
-                metadata["operations"]![0]!["messageType"] = "DifferentQuery";
-            }
-            if (scenario == "extra-root-field")
-            {
-                metadata["retainedIdempotency"] = new JsonArray();
-            }
-            if (scenario == "extra-key-field")
-            {
-                metadata["signingKey"] = "[redacted]";
-            }
-            if (scenario == "extra-operation-field")
-            {
-                metadata["operations"]![0]!["internalTarget"] = "unexpected";
-            }
-            if (scenario == "internal-operation") metadata["operations"]!.AsArray().Add(new JsonObject
-            {
-                ["routeId"] = "internal-route", ["requestSchema"] = JsonNode.Parse(request.GetRawText()), ["resultSchema"] = JsonNode.Parse(result.GetRawText()),
-            });
-            if (scenario == "oversized")
-            {
-                metadata["padding"] = new string('x', 4194304);
-            }
+            JsonObject metadata = CreateMetadata(catalog, root);
+            MutateMetadataIdentity(metadata, scenario);
+            MutateOperationSchemas(metadata, scenario, request, result);
+            MutateOperationPolicy(metadata, scenario);
             string credential = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
             using var response = new HttpResponseMessage(scenario == "unauthorized" ? HttpStatusCode.Unauthorized : HttpStatusCode.OK)
             {
@@ -135,24 +61,128 @@ public sealed class PlatformRoutingCatalogMetadataTests
             });
             using var client = new HttpClient(handler) { BaseAddress = new Uri("http://127.0.0.1:1") };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", credential);
-            if (scenario == "valid")
-            {
-                await PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken);
-                using JsonDocument observed = JsonDocument.Parse(await File.ReadAllBytesAsync(proof, TestContext.Current.CancellationToken));
-                JsonElement body = observed.RootElement.GetProperty("body");
-                body.GetProperty("rootDigest").GetString().ShouldBe(root);
-                JsonElement.DeepEquals(body.GetProperty("operations")[0].GetProperty("requestSchema"), request).ShouldBeTrue();
-                (await File.ReadAllTextAsync(proof, TestContext.Current.CancellationToken)).ShouldNotContain(credential);
-            }
-            else
-            {
-                await Should.ThrowAsync<InvalidOperationException>(() => PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken));
-                File.Exists(proof).ShouldBeFalse();
-            }
+            await AssertMetadataOutcomeAsync(client, catalog, root, directory, proof, scenario, credential, request);
         }
         finally
         {
             Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    private static RouteCatalogEnvelope CreateCatalog(out JsonElement request, out JsonElement result)
+    {
+        request = JsonSerializer.SerializeToElement(new { type = "object", properties = new { identity = new { type = "string" } } });
+        result = JsonSerializer.SerializeToElement(new { type = "array", items = new { type = "string" } });
+        RouteOperationContract[] operations =
+        [
+            new("public-route", "v1", "public", "agent-eligible", request, result, new string('b', 64)),
+            new("internal-route", "v1", "internal", "UI-only", request, result, new string('c', 64)),
+        ];
+        RouteContractDeclaration[] declarations =
+        [
+            new("public-route", "query", "fixture", "FixtureQuery", null, "v1", null, "workload", "query:read", null, []),
+            new("internal-route", "command", "fixture", "FixtureCommand", null, "v1", 1, "workload", "command:submit", null, []),
+        ];
+        return new RouteCatalogEnvelope(3, 7, "Development", true, declarations, [], [], new string('d', 64), new string('e', 64), operations);
+    }
+
+    private static JsonObject CreateMetadata(RouteCatalogEnvelope catalog, string root)
+    {
+        return JsonSerializer.SerializeToNode(new
+        {
+            schemaVersion = 3, generation = 7, rootDigest = root,
+            operations = new[] { new { routeId = "public-route", contractVersion = "v1", eligibility = "agent-eligible", digest = catalog.Operations![0].Digest,
+                requestSchema = catalog.Operations![0].RequestSchema, resultSchema = catalog.Operations![0].ResultSchema, kind = "query", domain = "fixture", messageType = "FixtureQuery" } },
+        })!.AsObject();
+    }
+
+    private static void MutateMetadataIdentity(JsonObject metadata, string scenario)
+    {
+        if (scenario == "wrong-root")
+        {
+            metadata["rootDigest"] = new string('f', 64);
+        }
+        if (scenario == "wrong-generation")
+        {
+            metadata["generation"] = 8;
+        }
+        if (scenario == "extra-root-field")
+        {
+            metadata["retainedIdempotency"] = new JsonArray();
+        }
+        if (scenario == "extra-key-field")
+        {
+            metadata["signingKey"] = "[redacted]";
+        }
+        if (scenario == "oversized")
+        {
+            metadata["padding"] = new string('x', 4194304);
+        }
+    }
+
+    private static void MutateOperationSchemas(JsonObject metadata, string scenario, JsonElement request, JsonElement result)
+    {
+        if (scenario == "wrong-schema")
+        {
+            metadata["operations"]![0]!["requestSchema"]!["type"] = "string";
+        }
+        if (scenario == "wrong-result-schema")
+        {
+            metadata["operations"]![0]!["resultSchema"]!["type"] = "object";
+        }
+        if (scenario == "internal-operation") metadata["operations"]!.AsArray().Add(new JsonObject
+        {
+            ["routeId"] = "internal-route", ["requestSchema"] = JsonNode.Parse(request.GetRawText()), ["resultSchema"] = JsonNode.Parse(result.GetRawText()),
+        });
+    }
+
+    private static void MutateOperationPolicy(JsonObject metadata, string scenario)
+    {
+        if (scenario == "wrong-policy")
+        {
+            metadata["operations"]![0]!["eligibility"] = "UI-only";
+        }
+        if (scenario == "wrong-digest")
+        {
+            metadata["operations"]![0]!["digest"] = new string('f', 64);
+        }
+        if (scenario == "wrong-contract-version")
+        {
+            metadata["operations"]![0]!["contractVersion"] = "v2";
+        }
+        if (scenario == "wrong-kind")
+        {
+            metadata["operations"]![0]!["kind"] = "command";
+        }
+        if (scenario == "wrong-domain")
+        {
+            metadata["operations"]![0]!["domain"] = "different-owner";
+        }
+        if (scenario == "wrong-message-type")
+        {
+            metadata["operations"]![0]!["messageType"] = "DifferentQuery";
+        }
+        if (scenario == "extra-operation-field")
+        {
+            metadata["operations"]![0]!["internalTarget"] = "unexpected";
+        }
+    }
+
+    private static async Task AssertMetadataOutcomeAsync(HttpClient client, RouteCatalogEnvelope catalog, string root, string directory, string proof, string scenario, string credential, JsonElement request)
+    {
+        if (scenario == "valid")
+        {
+            await PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken);
+            using JsonDocument observed = JsonDocument.Parse(await File.ReadAllBytesAsync(proof, TestContext.Current.CancellationToken));
+            JsonElement body = observed.RootElement.GetProperty("body");
+            body.GetProperty("rootDigest").GetString().ShouldBe(root);
+            JsonElement.DeepEquals(body.GetProperty("operations")[0].GetProperty("requestSchema"), request).ShouldBeTrue();
+            (await File.ReadAllTextAsync(proof, TestContext.Current.CancellationToken)).ShouldNotContain(credential);
+        }
+        else
+        {
+            await Should.ThrowAsync<InvalidOperationException>(() => PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken));
+            File.Exists(proof).ShouldBeFalse();
         }
     }
 

@@ -75,7 +75,17 @@ public sealed class PlatformCommittedCatalogProofTests
         if (scenario == "extra-readback") readbacks.Add("foreign", readback);
         if (scenario == "empty-cohort") expected.Clear();
         if (scenario == "foreign-cohort") expected[gateway.HostId] = "foreign-app";
-        activation = scenario switch
+        activation = MutateActivation(scenario, activation, gateway, tenants);
+        readbacks[tenants.HostId] = MutateReadback(scenario, readback, gateway, tenants, readbacks.GetValueOrDefault(tenants.HostId)!);
+        if (scenario == "missing-readback") readbacks.Remove(tenants.HostId);
+        if (scenario is "valid" or "scoped-gateway")
+            PlatformCommittedCatalogProof.Validate(activation, canonical, root, attempt, expected, readbacks);
+        else
+            Should.Throw<InvalidOperationException>(() => PlatformCommittedCatalogProof.Validate(activation, canonical, root, attempt, expected, readbacks));
+    }
+    private static RouteCatalogActivation MutateActivation(string scenario, RouteCatalogActivation activation, RouteCatalogHostIdentity gateway, RouteCatalogHostIdentity tenants)
+    {
+        return scenario switch
         {
             "wrong-attempt" => activation with { AttemptId = "foreign-run-same-root" },
             "wrong-root" => activation with { RootDigest = new string('f', 64) },
@@ -86,7 +96,11 @@ public sealed class PlatformCommittedCatalogProofTests
             "wrong-activation-host" => activation with { RequiredHosts = [gateway with { AppId = "foreign-app" }, tenants] },
             _ => activation,
         };
-        readbacks[tenants.HostId] = scenario switch
+    }
+
+    private static RouteCatalogGenerationReadback MutateReadback(string scenario, RouteCatalogGenerationReadback readback, RouteCatalogHostIdentity gateway, RouteCatalogHostIdentity tenants, RouteCatalogGenerationReadback fallback)
+    {
+        return scenario switch
         {
             "not-serving" => readback with { Serving = false },
             "zero-epoch" => readback with { Epoch = 0 },
@@ -102,13 +116,9 @@ public sealed class PlatformCommittedCatalogProofTests
             "missing-readback-host" => readback with { RequiredHosts = [gateway] },
             "extra-readback-host" => readback with { RequiredHosts = [gateway, tenants, tenants with { HostId = "foreign" }] },
             "duplicate-readback-host" => readback with { RequiredHosts = [gateway, gateway] },
-            _ => readbacks.GetValueOrDefault(tenants.HostId)!,
+            _ => fallback,
         };
-        if (scenario == "missing-readback") readbacks.Remove(tenants.HostId);
-        if (scenario is "valid" or "scoped-gateway")
-            PlatformCommittedCatalogProof.Validate(activation, canonical, root, attempt, expected, readbacks);
-        else
-            Should.Throw<InvalidOperationException>(() => PlatformCommittedCatalogProof.Validate(activation, canonical, root, attempt, expected, readbacks));
     }
+
 }
 #endif
