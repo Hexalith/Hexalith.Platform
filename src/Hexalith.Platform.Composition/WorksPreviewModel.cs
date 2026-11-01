@@ -319,7 +319,7 @@ public static class WorksPreviewModel
                 [eventStore.CaptureEventStoreDevelopmentReceiver([.. worksHosts, admin]),
                     .. worksHosts.Select(host => host.CaptureEventStoreDevelopmentReceiver(eventStore, operations, admin)),
                     admin.CaptureEventStoreDevelopmentReceiver(),
-                    operations.CaptureEventStoreDevelopmentReceiver(admin)], eventStoreResources.StateStore, options: developmentProfile.Catalog);
+                    operations.CaptureEventStoreDevelopmentReceiver(admin)], eventStoreResources.StateStore, developmentProfile.Catalog);
             builder.Services.AddSingleton<IHostedService>(_ => new WorksRoutingCatalogLifetime(preparedOwner, catalog));
         }
         catch
