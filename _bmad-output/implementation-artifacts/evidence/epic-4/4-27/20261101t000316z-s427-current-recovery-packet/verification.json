@@ -1,0 +1,207 @@
+{
+  "actualWholePipelineRecoveryAccepted": false,
+  "administrativeExclusiveEnd": "2026-11-02T23:00:00Z",
+  "checkpoint": "20261101t000316z-s427-current-recovery-packet",
+  "currentC3AnnouncementSupplied": false,
+  "currentPolicy": {
+    "bytes": 65899,
+    "originalImmutableVersionsAccepted": false,
+    "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/policy/recovery-policy.json",
+    "preparedAt": "2026-11-01T00:01:45Z",
+    "sha256": "bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51",
+    "signaturePresent": false
+  },
+  "exactAttemptExclusiveEnd": "2026-11-01T23:00:00Z",
+  "kind": "s427-current-guarded-recovery-preparation",
+  "newRecoveryRidAllocated": false,
+  "observedAt": "2026-11-01T00:03:16.222515+00:00",
+  "operationalGate": "closed",
+  "operatorDocuments": {
+    "CURRENT-RECOVERY-APPROVAL.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/CURRENT-RECOVERY-APPROVAL.md",
+      "sha256": "b1570e30ce7e3aa3c5886944396ed01da4b7a1a71956b6c57492b3cd0c08f4ec"
+    },
+    "NEXT-PROTECTED-SIGNING-ACTION.md": {
+      "path": "/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/NEXT-PROTECTED-SIGNING-ACTION.md",
+      "sha256": "f5fb4182b3dff9740469440dd006ff7dcef7d08e3cf378787115cfb88ad1c2dc"
+    }
+  },
+  "originalTlsEpochUnchanged": true,
+  "preservation": {
+    "boundFiles": [
+      {
+        "path": "eng/cluster-management/retire.py",
+        "sha256": "af24514b449a9b889b95339dc25d746c6d379fcd71f58655d1325ac538409d71",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/rehearse.py",
+        "sha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/qualify.py",
+        "sha256": "8478ae76a3316055519830d3b73f0b7c7cb421db2fdd217486e9fe3a2eedbbb0",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/evidence.py",
+        "sha256": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+        "unchanged": true
+      },
+      {
+        "path": "eng/cluster-management/RETIRE-KUBESPHERE.md",
+        "sha256": "ac8c59c48066af88c486eb20d093f37537f9fe2278c43f7ccfc8e018091c8c93",
+        "unchanged": true
+      },
+      {
+        "path": "eng/kubernetes-upgrade/MAINTENANCE.md",
+        "sha256": "834be8225ca05175e7cbf7c6d4ee35324401c196002002269223b9000a97d8b5",
+        "unchanged": true
+      }
+    ],
+    "frozenIntentSha256": "da038758e6382e0c204a44999b63d71c327524817370cdfb3d7575f9d7d9463f",
+    "frozenIntentUnchanged": true,
+    "knownHistoricalOriginals": {
+      "keycloak/restore-verification-oidc.json": {
+        "matchesRetainedKnownHash": true,
+        "sha256": "014463ef76fd99431f6c268edbc41274b5031157f683a1630011956cb5738578"
+      },
+      "policy/recovery-policy.json": {
+        "matchesRetainedKnownHash": true,
+        "sha256": "021a8c773366fc2cc5b36e5407e03fd0e0a4dca363df1da71704725443bdc85a"
+      },
+      "validation/validation.json": {
+        "matchesRetainedKnownHash": true,
+        "sha256": "b269db6ab85f3a99d27560742921f0192d41925d9a3fe2bebd3adc95c6b234ae"
+      }
+    },
+    "scope": "Only explicitly checked bytes and append prefixes; older packets and unrelated workspace content were not modified by this continuation. No whole-history or submodule integrity claim."
+  },
+  "privateResumeCustody": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/resume-20261031t225927z",
+  "productionActions": {
+    "capture": false,
+    "providerPut": false,
+    "quiescence": false,
+    "rancher": false,
+    "restore": false,
+    "retirement": false,
+    "signing": false,
+    "timesheetsDeployment": false,
+    "upgrade": false
+  },
+  "readOnlyObservations": {
+    "localRecipientReadbacksPassed": true,
+    "nativeGets": 27,
+    "privateSdkValidatorReads": 3,
+    "providerPrecheckReads": 19,
+    "rawEncryptedToBothPinnedRecipients": true,
+    "sourceAndProtectedStorageBindingsAndReadinessPreserved": true
+  },
+  "recoveryId": "20261031t175250z",
+  "remainingOwnerInputs": [
+    "Exact current policy/native/interruption/custody/stop/resume approval and protected original policy signing/publication",
+    "Actual current RID/policy C3 announcement before final Memories pre/census/pause",
+    "Later actual original record signatures and honest current M1/M2 acceptance"
+  ],
+  "sourceFiles": {
+    "eng/recovery-preparation/keycloak_private_oidc.py": {
+      "bytes": 20037,
+      "sha256": "b45b4cee62b898a62331f698d49c2edca3bcd15a3404047849fb7669b4246709"
+    },
+    "eng/recovery-preparation/telemetry_isolation.py": {
+      "bytes": 2254,
+      "sha256": "a61f689891c7bfa8d1229b37950da71f18d21d485454719b1a8b001aaf1a88a5"
+    },
+    "eng/recovery-preparation/telemetry_postgres_adapter.py": {
+      "bytes": 95393,
+      "sha256": "a801a498cf0d30d2b8ff324653dee17e34716cd0722f3b8affd5a4d0304ba970"
+    },
+    "eng/recovery-preparation/test_keycloak_private_oidc.py": {
+      "bytes": 13227,
+      "sha256": "eafd92011b2758057a0161e6335c01cf4033b9b1a3d383d49efb6fd63cfbbb78"
+    },
+    "eng/recovery-preparation/test_telemetry_isolation.py": {
+      "bytes": 2514,
+      "sha256": "69a9b9002e4ba9ec7de17ff66921280065e51e3459043505cf82d20d4fc83a76"
+    },
+    "eng/recovery-preparation/test_telemetry_postgres_adapter.py": {
+      "bytes": 108104,
+      "sha256": "5fd36acb5c851978c919fc89b35cd02e5d97e810561cf214a5a0faa7df0939de"
+    }
+  },
+  "storyStatus": "in-progress",
+  "syntheticRuntime": {
+    "actualOwnedNamespacePvAndNodePathAbsence": {
+      "confirmedCreates": 5,
+      "creationIntents": 5,
+      "namespaceDeleted": true,
+      "ownedVolumePathAbsent": true,
+      "targetNamespaceAbsent": true,
+      "targetPvAbsent": true,
+      "unknownCreateOutcomes": 0
+    },
+    "actualSnapshotDumpRestoreCanaryAndFencePassed": true,
+    "aggregateCleanupPassed": true,
+    "directory": "/home/administrator/hexalith-retirement-investigation-evidence/20261031t160723z-s427-operational-resume/pg-native-fixtures/rehearsal/20261031t231400z-s427-pg-native-qual",
+    "productionDataOrCredentialsImported": false,
+    "scope": "synthetic PostgreSQL primitives only; aggregate summary passed-limited",
+    "state": "passed",
+    "v12FailurePreserved": true
+  },
+  "timesheets36": "open/FAIL",
+  "trackedCheckpoints": {
+    "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 90129,
+      "originalPrefixPreserved": true,
+      "sha256": "ebf1af5a46babe9b9991d8aa8070f4e9d4be51f2948674dcc12796cb185588d7"
+    },
+    "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md": {
+      "bytes": 125287,
+      "originalPrefixPreserved": true,
+      "sha256": "6914626206e6fca9d03326ccc3151d6eb0d36144847cd3a1a6b13a8f2037cc43"
+    },
+    "eng/cluster-management/NEXT-OPERATOR-ACTION.md": {
+      "bytes": 104566,
+      "originalPrefixPreserved": true,
+      "sha256": "fdfa93829e6a16d75ac49a3dfd12221420453f6dbb5b39b04948cf8b258b88c7"
+    },
+    "eng/cluster-management/STAGING-PREREQUISITES.md": {
+      "bytes": 56965,
+      "originalPrefixPreserved": true,
+      "sha256": "52318b78a631b459b3f23fbea393dedf4e3e10baec7d418e31e200e73d9e3062"
+    },
+    "eng/timesheets-deployment/staging-dependency-handoff.md": {
+      "bytes": 53881,
+      "originalPrefixPreserved": true,
+      "sha256": "b881aa8d359e327626c504462f6aa144d7f43b2fb6c3d946b8e4ad377475a81b"
+    }
+  },
+  "unobservedOperationalAcceptance": [
+    "Fresh actual production captures/isolated restores/source resume/target cleanup",
+    "All8 original signatures and independent immutable readbacks plus non-dry validation/manual acceptance",
+    "Fresh production native/etcd/node recovery",
+    "Fresh source-bound retirement plan and exact execution approval/arm",
+    "Actual retirement and signed postflight preservation/recovery acceptance"
+  ],
+  "upgradeGate": "closed",
+  "vcs": {
+    "head": "a397de8e4d9a700b43cb372fa6b1e59c997c6054",
+    "legacySpecBaseline": "54920908f15a99b48e69861baf306365353fc6df",
+    "stagedCommittedOrPushed": false
+  },
+  "verification": {
+    "bashSyntax": "passed",
+    "currentCallerTests": 42,
+    "currentEntryPointSubcases": 16,
+    "nativeGuardAndHorizonTests": 9,
+    "parentImmediateDescendantCleanupRegressionPassed": true,
+    "parentIndependentRepoTests": 93,
+    "privateSdkActualValidatorReadbackPassed": true,
+    "privateSdkBytesMatchRetainedOriginal": true,
+    "privateSdkSingleLinkFiles": 2211,
+    "producerValidatorTests": 8,
+    "strictPacketGuard": "passed: exact-current-unsigned-packet-consistent; zero remote requests; gate closed",
+    "toolChecksumManifest": "passed: settled before policy generation, excludes itself, all entries match"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "artifact": {
+    "key": "memories/20261031t175250z/telemetry-postgresql.dump.age",
+    "retainUntil": "2026-12-01T23:21:20.040740Z",
+    "sha256": "83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a",
+    "size": 4114,
+    "store": "synthetic-store",
+    "version": "synthetic-local-83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a"
+  },
+  "authenticatedCaptureRecord": {
+    "artifactSha256": "83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a",
+    "artifactVersion": "synthetic-local-83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a",
+    "capturedAt": "2026-10-31T23:21:20.040740Z",
+    "expiresAt": "2026-11-01T23:21:20.040740Z",
+    "plaintextSha256": "31fa2cbc280d120d676b988f6f2655f187f5fad9e35d3c2d2ae8e611f36b6bc4",
+    "plaintextSize": 3792,
+    "recordSha256": "89511e3e2e6b7f338a4ef7dc36e1978284fa1493dc213955bf7ea81725dd84ee"
+  },
+  "container": "postgres",
+  "containerId": "containerd://5cf9c04bf0570460f3cb435726de271217487e35140cb22ff8a02de8bad8a0ac",
+  "decryptedStdinSha256": "31fa2cbc280d120d676b988f6f2655f187f5fad9e35d3c2d2ae8e611f36b6bc4",
+  "decryptedStdinSize": 3792,
+  "emptySchema": {
+    "functions": [],
+    "nondefaultSchemas": [],
+    "sequences": [],
+    "tables": [],
+    "types": []
+  },
+  "image": "docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722",
+  "imageId": "docker.io/library/postgres:18.6-trixie@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722",
+  "independentlyReadBack": {
+    "encryption": "AES256",
+    "key": "memories/20261031t175250z/telemetry-postgresql.dump.age",
+    "retainUntil": "2026-12-01T23:21:20.040740Z",
+    "retentionMode": "COMPLIANCE",
+    "sha256": "83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a",
+    "size": 4114,
+    "store": "synthetic-store",
+    "validatorPrincipal": "synthetic-validator",
+    "version": "synthetic-local-83d769fccbf85137d3b0f09a6c3b7834ebcdb07cf44abb2a04ae33bcf008461a"
+  },
+  "isolationAssessmentSha256": "309c323570fd84da9b325d53d3cc43de0d85f3d091aca3eea55df7d5c1da51bf",
+  "namespace": {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "name": "s427-pg-target",
+    "namespace": "",
+    "resourceVersion": "1000",
+    "uid": "045a1dc2-b9b6-44d6-a50f-08c0842c57ae"
+  },
+  "pod": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "synthetic-isolated-postgres-0",
+    "namespace": "s427-pg-target",
+    "resourceVersion": "1079",
+    "uid": "db83db2b-18dc-4d21-8d8c-e78de54d3e1b"
+  },
+  "proposalInputSha256": "80940ddae2b2b9a7613ca473938f770483c23b5440eaae0ea52b9952eacc43e4",
+  "pv": {
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "name": "pvc-007219c9-ae1e-45e0-920f-378323270428",
+    "namespace": "",
+    "resourceVersion": "1067",
+    "uid": "16eaf2f0-49bd-42df-a360-ca75afe47742"
+  },
+  "pvClaimName": "synthetic-isolated-data",
+  "pvClaimNamespace": "s427-pg-target",
+  "pvClaimUid": "007219c9-ae1e-45e0-920f-378323270428",
+  "pvc": {
+    "apiVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "name": "synthetic-isolated-data",
+    "namespace": "s427-pg-target",
+    "resourceVersion": "1070",
+    "uid": "007219c9-ae1e-45e0-920f-378323270428"
+  },
+  "pvcVolumeName": "pvc-007219c9-ae1e-45e0-920f-378323270428",
+  "reclaimPolicy": "Delete",
+  "statefulSet": {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "name": "synthetic-isolated-postgres",
+    "namespace": "s427-pg-target",
+    "resourceVersion": "1080",
+    "uid": "782ce5c9-c168-4ef8-9928-4f2b766617ea"
+  },
+  "storageClassUid": "141b3347-da9e-4ef5-824a-8c8f11a02e53",
+  "volumePath": {
+    "nodeUid": "436f79e7-7856-4508-aec2-6c2906ae7111",
+    "path": "/var/openebs/local/pvc-007219c9-ae1e-45e0-920f-378323270428_s427-pg-target_synthetic-isolated-data",
+    "pvUid": "16eaf2f0-49bd-42df-a360-ca75afe47742"
+  }
+}

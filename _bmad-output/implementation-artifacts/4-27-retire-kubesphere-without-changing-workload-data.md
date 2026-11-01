@@ -1006,3 +1006,74 @@ blockers; preserve historical records and unrelated workspace changes. No Git
 staging, commit or push is requested. At entry the sole unrelated untracked file
 is `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
 under this implementation-artifacts directory.
+
+
+## Current guarded recovery packet — 2026-11-01
+
+The explicit operational resume was reconciled with the preserved October 31
+coordination pause and accepted amendments. The scheduling end is
+**2026-11-02T23:00:00Z**; this exact attempt remains bounded earlier at
+**2026-11-01T23:00:00Z**, inside the unchanged measured native/TLS horizon.
+No signed proof or certificate freshness was extended. Existing RID
+`20261031t175250z` and earlier evidence are retained; no replacement RID was
+allocated by this continuation.
+
+The [current unsigned preparation verification](evidence/epic-4/4-27/20261101t000316z-s427-current-recovery-packet/verification.json) binds a concrete
+[owner approval procedure](/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/CURRENT-RECOVERY-APPROVAL.md) and
+[protected-terminal signing action](/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Exact unsigned policy SHA-256: `bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51`.
+The strict exact-byte local guard passes with zero remote requests and a closed
+operational gate. The policy binds all 52 ordered steps, current source/target
+proposals, tools, private SDK, original trust/custody and explicit native profile.
+
+The corrected PostgreSQL v13 synthetic rehearsal passed actual snapshot capture,
+decryption, empty-target restore, full canary comparison, creation-fence checks
+and exact target namespace/PV/node-path cleanup; aggregate owned fixture cleanup
+passed. Its scoped summary is `passed-limited`, without production data or
+credentials. The v12 target crash/failure and cleanup remain immutable. The
+parent independently passed all 93 changed-repository tests; the final current
+caller suite passed 42 cases including 16 pre-dispatch CLI subcases. Actual
+workflow-descendant cleanup now retains the leader until group death is observed;
+the parent's immediate-state regressions passed. The private single-link SDK's
+byte identity and actual three-call validator readback passed. Initial unsigned
+candidate/schema/custody/manifest-order refusals and all superseded bytes remain
+preserved. These are preparation/qualification outcomes, not whole-source
+recovery acceptance.
+
+Current known-source checks used 27 bounded native GETs, 19 destination reads
+and three SDK validator reads, preserving protected identities/bindings/readiness
+with encrypted raw custody and local readback. No production capture, pause,
+restore, provider PUT, signature, retirement or upgrade ran.
+
+**Next actual owner inputs:** review and approve the exact new policy/native/
+interruption/custody/stop/resume scope, then sign/publish its original in the
+protected terminal. Authenticate its exact immutable policy/signature readbacks
+before capture. A separate actual current-RID C3 freeze announcement is required
+before the final Memories pre/census/pause; an old reply or policy signature
+supplies no such fact. Later authentic original signatures, non-dry validation
+and honest current M1/M2 remain required. No repeat destination/key/role/channel
+selection or second documentary reviewer is needed. Fresh accepted 4.0, actual
+native/etcd/node recovery and separate exact retirement plan/approval/arm still
+precede retirement. **4.27 stays in-progress, 4.1's upgrade gate closed and
+Timesheets 3.6 open/FAIL**; original production tasks and frozen intent remain
+unchanged.
+
+
+## Current freeze acknowledgement — 2026-11-01
+
+The Administrator replied **“Freeze announced for this run”** in response to the
+current request to notify Memories API/operator callers and freeze operator-token
+issuance. The owner-only announcement is bound to RID `20261031t175250z` and
+policy SHA-256 `bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51`; the policy bytes are unchanged.
+
+The [new acknowledgement checkpoint](evidence/epic-4/4-27/20261101t063953z-s427-current-freeze-acknowledgement/verification.json) records the actual message
+provenance and the local guard's `currentC3AnnouncementSupplied=true`. This is an
+unsigned owner statement, not an original policy signature or recovery acceptance.
+The original policy signature and publication ledger are still absent. No remote
+request, capture, pause, restore, publication or signing was performed.
+
+The next actual owner action remains the [protected policy signing action](../../../../../hexalith-recovery-evidence/4-0/20261031t175250z/NEXT-PROTECTED-SIGNING-ACTION.md).
+The current C3 acknowledgement needs no repeat confirmation. Fresh authenticated
+policy/signature readbacks still precede capture; all later signatures, manual
+acceptance and exact retirement approval remain required. Story 4.27 remains
+in-progress and the 4.1 upgrade gate remains closed.

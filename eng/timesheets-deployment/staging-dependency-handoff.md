@@ -684,3 +684,54 @@ records local hash/expiry/preservation checks only. No existing evidence or
 operational byte changed, and no helper or unchanged suite was replayed.
 **4.27 remains in-progress, 4.1 closed and Timesheets 3.6 open/FAIL**, with all
 release/provider/source/deployed-acceptance and default-deny gates preserved.
+
+
+## Current guarded recovery packet — 2026-11-01
+
+The explicit operational resume was reconciled with the preserved October 31
+coordination pause and accepted amendments. The scheduling end is
+**2026-11-02T23:00:00Z**; this exact attempt remains bounded earlier at
+**2026-11-01T23:00:00Z**, inside the unchanged measured native/TLS horizon.
+No signed proof or certificate freshness was extended. Existing RID
+`20261031t175250z` and earlier evidence are retained; no replacement RID was
+allocated by this continuation.
+
+The [current unsigned preparation verification](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-27/20261101t000316z-s427-current-recovery-packet/verification.json) binds a concrete
+[owner approval procedure](/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/CURRENT-RECOVERY-APPROVAL.md) and
+[protected-terminal signing action](/home/administrator/hexalith-recovery-evidence/4-0/20261031t175250z/NEXT-PROTECTED-SIGNING-ACTION.md).
+Exact unsigned policy SHA-256: `bb5c1e4d86dffe48a4379cac4cc81c49210b38fe897250e6d6cd450c97291a51`.
+The strict exact-byte local guard passes with zero remote requests and a closed
+operational gate. The policy binds all 52 ordered steps, current source/target
+proposals, tools, private SDK, original trust/custody and explicit native profile.
+
+The corrected PostgreSQL v13 synthetic rehearsal passed actual snapshot capture,
+decryption, empty-target restore, full canary comparison, creation-fence checks
+and exact target namespace/PV/node-path cleanup; aggregate owned fixture cleanup
+passed. Its scoped summary is `passed-limited`, without production data or
+credentials. The v12 target crash/failure and cleanup remain immutable. The
+parent independently passed all 93 changed-repository tests; the final current
+caller suite passed 42 cases including 16 pre-dispatch CLI subcases. Actual
+workflow-descendant cleanup now retains the leader until group death is observed;
+the parent's immediate-state regressions passed. The private single-link SDK's
+byte identity and actual three-call validator readback passed. Initial unsigned
+candidate/schema/custody/manifest-order refusals and all superseded bytes remain
+preserved. These are preparation/qualification outcomes, not whole-source
+recovery acceptance.
+
+Current known-source checks used 27 bounded native GETs, 19 destination reads
+and three SDK validator reads, preserving protected identities/bindings/readiness
+with encrypted raw custody and local readback. No production capture, pause,
+restore, provider PUT, signature, retirement or upgrade ran.
+
+**Next actual owner inputs:** review and approve the exact new policy/native/
+interruption/custody/stop/resume scope, then sign/publish its original in the
+protected terminal. Authenticate its exact immutable policy/signature readbacks
+before capture. A separate actual current-RID C3 freeze announcement is required
+before the final Memories pre/census/pause; an old reply or policy signature
+supplies no such fact. Later authentic original signatures, non-dry validation
+and honest current M1/M2 remain required. No repeat destination/key/role/channel
+selection or second documentary reviewer is needed. Fresh accepted 4.0, actual
+native/etcd/node recovery and separate exact retirement plan/approval/arm still
+precede retirement. **4.27 stays in-progress, 4.1's upgrade gate closed and
+Timesheets 3.6 open/FAIL**; original production tasks and frozen intent remain
+unchanged.
