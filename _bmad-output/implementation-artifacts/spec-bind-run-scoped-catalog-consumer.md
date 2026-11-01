@@ -109,3 +109,57 @@ The single required BlindHunter review is complete; no additional review loop.
   under the proof directory, plus default129-final-build.log and
   evidence-state-controls/controls.json. Focused exact-source remote CI remains
   required after the normal owner branch push; this local record is not that gate.
+
+
+## Pending SDK 3.130.2 maintenance qualification
+
+Prepare this finite follow-up from selected sourced9d0eb18 while the SDK owner
+repairs method-specific technical reachability on its maintenance branch.
+The existing d9 public130/public131 and default129 evidence remains valid;
+no 3.130.2 public archive or immutable published source is verified yet.
+
+Extend only the typed public three-argument binding capability, executable
+fixture choice and focused workflow matrix with exact stable3.130.2 and the
+already supported same-binary forms. Keep the default SDK, fixture default131,
+all previous versions, project-reference refusal and future/prerelease
+refusals unchanged. Request validation, policies, bindings and query inventory
+are unchanged. No broader composition, SDK feature or trust scope is adopted.
+
+The genuine Sample fixture source map deliberately has no guessed3.130.2 SHA.
+Insert only the immutable source verified against all fourteen actual official
+archives after publication; until then the new fixture choice cannot qualify.
+Do not restore/build3.130.2, commit, push or enroll the draft workflow beforehand.
+
+After that handoff, repeat actual normal public restore/build, all13 executable
+public132 controls, default129 compatibility and affected finite selection
+controls. Preserve the actual Root45 policies,1 actor query and7 total Sample
+routes comparison where its immutable fixture remains available. Use pinned
+commitlint and normal hooks; advance only the existing qualification branch.
+Require its full exact-source workflow matrix. Original source selection and
+any fresh producer preparation remain RootCI-coordinated.
+
+
+## SDK 3.130.2 local public qualification completed
+
+All fourteen official SDK132 archives are HTTP200 and verified against
+published source28e3f260bbaf4619d1a99d656fba04c0c532387b and its repository
+URL. The genuine nonpackable Sample fixture source map now pins that exact
+verified commit. Initial stale-index NU1102 logs remain retained; supported
+no-http-cache restore against the same public NuGet.org source succeeds,
+without archive injection, a candidate feed or global-cache cleanup.
+
+The actual public132 owning tool build has zero warnings/errors. All13 strict
+public executable controls pass, including genuine Sample+Tenant owners and
+legacy129 bare/scoped controls. All11 full copied Root controls also pass:
+45 policies,1 actor query,19 domain queries and7 total Sample routes, with all
+declarations/bindings/operations and non-consumer fields unchanged from68.
+All13 actual MSBuild finite capability controls and actionlint pass. The same
+default129 catalog input still builds without an SDK override or warnings.
+
+Proof is /tmp/downstream-sdk132-drafts-wd24gzkq/proof, including public132 and
+root132 result reports plus qualified-public132-provenance.json. All restored
+SDK132 and executed Core DLL identities match the actual official archives.
+The existing exact branch will be advanced normally after pinned lint/hooks;
+its full public130/public131/public132 workflow matrix must pass. No original
+source selection, dependency default, production trust or broader composition
+scope is changed by this maintenance alias.
