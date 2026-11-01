@@ -1,0 +1,349 @@
+{
+  "observedAtUtc": "2026-10-31T22:01:03.254905+00:00",
+  "graphs": [
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj",
+      "assetsFile": "src/Hexalith.Parties.Contracts/obj/project.assets.json",
+      "assetsSha256": "5a1a33eee926a70b40dfe62870d12d4593e2d8457d616f7d0855f90f4551e924",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [],
+      "hexalithPackages": [
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0"
+      ]
+    },
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj",
+      "assetsFile": "src/Hexalith.Parties.Security/obj/project.assets.json",
+      "assetsSha256": "122bc63d59b870496c2a650bed3fa345a3b4f67f0d51b2009a10c86e71c6c46f",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [
+        {
+          "id": "Hexalith.Parties.Contracts",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj"
+        }
+      ],
+      "hexalithPackages": [
+        "Hexalith.Commons.Http/2.30.7",
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0"
+      ]
+    },
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj",
+      "assetsFile": "src/Hexalith.Parties.EventStoreExtensions/obj/project.assets.json",
+      "assetsSha256": "2ef2e6bda261216405f08f389022c254af1b4d5fe4648c0fb8e9f806082b082b",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [
+        {
+          "id": "Hexalith.Parties.Contracts",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj"
+        }
+      ],
+      "hexalithPackages": [
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Client/3.130.0",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.EventStore.DomainService/3.130.0",
+        "Hexalith.EventStore.ServiceDefaults/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0"
+      ]
+    },
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj",
+      "assetsFile": "src/Hexalith.Parties/obj/project.assets.json",
+      "assetsSha256": "16c2ef2987baa9e7f9f623dacba386f5de594ee1027b5405de005335ff76bbb9",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [
+        {
+          "id": "Hexalith.Parties.Authentication",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj"
+        },
+        {
+          "id": "Hexalith.Parties.Contracts",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj"
+        },
+        {
+          "id": "Hexalith.Parties.Projections",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj"
+        },
+        {
+          "id": "Hexalith.Parties.Security",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj"
+        }
+      ],
+      "hexalithPackages": [
+        "Hexalith.Commons/2.30.7",
+        "Hexalith.Commons.Http/2.30.7",
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Client/3.130.0",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.EventStore.DomainService/3.130.0",
+        "Hexalith.EventStore.ServiceDefaults/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0",
+        "Hexalith.Memories.Client.Rest/3.0.13",
+        "Hexalith.Memories.Contracts/3.0.13",
+        "Hexalith.Tenants.Client/6.0.0",
+        "Hexalith.Tenants.Contracts/6.0.0"
+      ]
+    },
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj",
+      "assetsFile": "src/Hexalith.Parties.Authentication/obj/project.assets.json",
+      "assetsSha256": "eb89975d296b60c7ef934a3649c4782615866259a34171009c5464fd5876ecf0",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [
+        {
+          "id": "Hexalith.Parties.Contracts",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj"
+        }
+      ],
+      "hexalithPackages": [
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0"
+      ]
+    },
+    {
+      "project": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj",
+      "assetsFile": "src/Hexalith.Parties.Projections/obj/project.assets.json",
+      "assetsSha256": "15d7bda701e50d78252b894c8d33fb9ed1b7a32ebb016ad6d644eb9685df5825",
+      "restoreSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "ownProjectReferences": [
+        {
+          "id": "Hexalith.Parties.Contracts",
+          "path": "/tmp/hexalith-story28-parties-package/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj"
+        }
+      ],
+      "hexalithPackages": [
+        "Hexalith.Commons.UniqueIds/2.30.7",
+        "Hexalith.EventStore.Client/3.130.0",
+        "Hexalith.EventStore.Contracts/3.130.0",
+        "Hexalith.EventStore.DomainService/3.130.0",
+        "Hexalith.EventStore.ServiceDefaults/3.130.0",
+        "Hexalith.McpCli.Abstractions/1.1.0"
+      ]
+    }
+  ],
+  "packages": {
+    "Hexalith.Commons.UniqueIds/2.30.7": {
+      "id": "Hexalith.Commons.UniqueIds",
+      "version": "2.30.7",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Commons",
+        "commit": "3a8d1513319a211e2836c2fe77ea63236e105778"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.commons.uniqueids/2.30.7/hexalith.commons.uniqueids.2.30.7.nupkg",
+      "archiveSha256": "d6ef0605b224727b9d3d4f4135ece7bece09b5e565a287ef4f2afbe47711de2b",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "i7X8qDuinW7AOqyuSfXc8QAR1NpowVT6JdInATCdlW2xyQN6TSUTAwYWKc7VewbE8PAneEjcgkm9/aBv5sdMjg==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.EventStore.Contracts/3.130.0": {
+      "id": "Hexalith.EventStore.Contracts",
+      "version": "3.130.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.contracts/3.130.0/hexalith.eventstore.contracts.3.130.0.nupkg",
+      "archiveSha256": "be9181737e45ebeb757d29535576aa0e98907039208730912867f8df52e0680a",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "CqsK/Bobt/+6pqZlU3KkubvDdEacPkmO0yXrysvqPZmg9YTRWZbgcPC3CnYgwEszUxVahVeAOpuT5k92354e8w==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.McpCli.Abstractions/1.1.0": {
+      "id": "Hexalith.McpCli.Abstractions",
+      "version": "1.1.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.McpCli",
+        "commit": "8d4a8c07636c1ad065dfc8dc28dbfc956d5deb82"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.mcpcli.abstractions/1.1.0/hexalith.mcpcli.abstractions.1.1.0.nupkg",
+      "archiveSha256": "84af4f6005fe1846ab89fa95d237b070a7a7f6e57bf0d7586d9fbe46abd43173",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "QzjAs5xJ9lCVaXDURyUSkFIkr9iuXz3QHb0fHhjjatW/3BUPam/LBgQ55q0CrX9rbhtrkfafI2mZf7UvRJFJVQ==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Commons.Http/2.30.7": {
+      "id": "Hexalith.Commons.Http",
+      "version": "2.30.7",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Commons",
+        "commit": "3a8d1513319a211e2836c2fe77ea63236e105778"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.commons.http/2.30.7/hexalith.commons.http.2.30.7.nupkg",
+      "archiveSha256": "021dfbd327e102c1b5b999f9f4135fda7a36060a00c8ab050309a18e495f128d",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "CXsQPC/CqAh1bf2AWFujaC1btGw3gf2s8bsNTyBsRICZnNWauJ5S2JUmAK+Bu+ytAls4M+f/jPHNxbe1Z4EU4g==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.EventStore.Client/3.130.0": {
+      "id": "Hexalith.EventStore.Client",
+      "version": "3.130.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.client/3.130.0/hexalith.eventstore.client.3.130.0.nupkg",
+      "archiveSha256": "82f17e2c19accf64d90f65e01126e0abb5983b3e328dec2ba8179b1034cbeda6",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "V4iMlgAXRryyReBeiOAIvO+x+nMP5lGjCmyyJTiBYEh3bByE+FRYUDZ383mAfqSi2lSwMEKJ/uF00uGiJTp6sw==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.EventStore.DomainService/3.130.0": {
+      "id": "Hexalith.EventStore.DomainService",
+      "version": "3.130.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.domainservice/3.130.0/hexalith.eventstore.domainservice.3.130.0.nupkg",
+      "archiveSha256": "7e0589675658effedab7d439ccf94d66194037d0e98e676c739c0468d2ac707a",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "aeFMZ49aou/T7u0+34rTvE+E+TTcmdGwAN45w8Zc8fYMUk+Yrc72/oEMs1RZgHCLKvnOTlrlEAOCqPDSRPDIGA==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.EventStore.ServiceDefaults/3.130.0": {
+      "id": "Hexalith.EventStore.ServiceDefaults",
+      "version": "3.130.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.servicedefaults/3.130.0/hexalith.eventstore.servicedefaults.3.130.0.nupkg",
+      "archiveSha256": "7be1a82a6193bc1ff2b0b46f087f733ff5fc28fa1b3d4507b0f2c9910db572ad",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "X8i6NJLKC1XmLN68BgrtjtniX7iNKLTEsSSH450wH0eLUt255mIpZkbCOFQTxfhyXvtx9NPj+KQ40i2WMV8K7g==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Commons/2.30.7": {
+      "id": "Hexalith.Commons",
+      "version": "2.30.7",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith",
+        "commit": "3a8d1513319a211e2836c2fe77ea63236e105778"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.commons/2.30.7/hexalith.commons.2.30.7.nupkg",
+      "archiveSha256": "765aaac15e7f4001094f805dbdce3d7f8def2fe3f95e9506cddac57c80e03fd4",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "/97hymoydNrGDLOlmITnj8LVhYKGeYJWbq0wbes04ijt8OQU9jI0JG+66LrnEqJJVXXGHYHqdQ/y5EBVP2X69w==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Memories.Client.Rest/3.0.13": {
+      "id": "Hexalith.Memories.Client.Rest",
+      "version": "3.0.13",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.memories.client.rest/3.0.13/hexalith.memories.client.rest.3.0.13.nupkg",
+      "archiveSha256": "e82800fadc7ba96142e3ced26b8b7f2a72ebc8f59e8b9f157541f498d7229d70",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "PPbdg+pxnGy+uEtH3ri+PIuzyjuQwCdQzYJ2GW4iSY9idxJG7+dMqZSoGbl/tEqB3a3y3h11bw01SjejvkWgwg==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Memories.Contracts/3.0.13": {
+      "id": "Hexalith.Memories.Contracts",
+      "version": "3.0.13",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "0a1f6bf94301094afd0045c4e396dad4dd613ce6"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.memories.contracts/3.0.13/hexalith.memories.contracts.3.0.13.nupkg",
+      "archiveSha256": "2050c1dd0f43d90fae91d0acf0091a240ac962dcde22ea9c0a79315a1cbb2320",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "GZ81ag5qXkguFpoh6hYFyLRPso2Wwn9GNVa1dB/TvhFGHr6+Mp14x5EKIkeS/ruCkRaRFiuSItT4HraJuK2n5w==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Tenants.Client/6.0.0": {
+      "id": "Hexalith.Tenants.Client",
+      "version": "6.0.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.tenants.client/6.0.0/hexalith.tenants.client.6.0.0.nupkg",
+      "archiveSha256": "3c20f4ff7e73aada1ad54e186e872751bc1a9b04735d58413611253ff3682ca1",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "7AoXCVNzYBDvuWEBqyjc92+s4CpUGimM0DxBXTgWwMoHe3lowF/nVtu8kdOpHjuE2ryl/VYQCS5+/PqrLFRjMA==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    },
+    "Hexalith.Tenants.Contracts/6.0.0": {
+      "id": "Hexalith.Tenants.Contracts",
+      "version": "6.0.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Tenants",
+        "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+      },
+      "archive": "/home/administrator/.nuget/packages/hexalith.tenants.contracts/6.0.0/hexalith.tenants.contracts.6.0.0.nupkg",
+      "archiveSha256": "6a75fbab7455cae74c00d6d3b9dc5ce123651bbb9c8af90474540b1d7af3101c",
+      "signaturePresent": true,
+      "cacheMetadata": {
+        "version": 2,
+        "contentHash": "dr/6yfYrgDieP7djTgacmKPo7yq0Go6sSwKM3jN/u87llWOPqGuZ7uWPdYd/t0M2z/JTdELyB1IhkLuBEaME4g==",
+        "source": "https://api.nuget.org/v3/index.json"
+      }
+    }
+  },
+  "externalSourceFallback": false
+}

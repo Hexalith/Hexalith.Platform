@@ -1,0 +1,61 @@
+{
+  "attemptId": "20261031t222850z-per-hop-transition-preparation",
+  "checks": {
+    "all16RecordChecksumsMatch": true,
+    "allEightRetainedSignedRecordsAndSignaturesUnchanged": true,
+    "allPrivateFilesMode0600": true,
+    "allRecordsUnsignedAndNonAuthorizing": true,
+    "bothHopCommandListsEmpty": true,
+    "bothHopGatesClosed": true,
+    "bothUncordonAuthorizationsFalse": true,
+    "fourIndependentPendingStoragePhases": true,
+    "historicalMaintenanceUnchanged": true,
+    "ownGateAndTransitionBindingsForBothHops": true,
+    "privateDirectoryMode0700": true,
+    "twoIndependentPendingTransitionEntries": true
+  },
+  "classification": "sanitized unsigned sequential local preparation",
+  "documentationAppendedAfterPrivateAttempt": true,
+  "gateState": "closed",
+  "mutationAuthorized": false,
+  "operationalAcceptance": "incomplete; all existing prerequisites and actual upgrades remain required",
+  "operations": {
+    "kubeadmUpgrade": false,
+    "liveProofsCollected": 0,
+    "packageOrBinaryMutation": false,
+    "quiesceCordonDrain": false,
+    "reboot": false,
+    "remoteRequests": 0,
+    "signingAttempts": 0
+  },
+  "private16RecordLedgerSha256": "e4995e645aaa676c7f2e2e646163e7c85b9fc46dcabf39771b95265007e2a8ec",
+  "privateAttemptPath": "/home/administrator/hexalith-upgrade-evidence/evidence/epic-4/4-1/20261031t222850z-per-hop-transition-preparation",
+  "recordedAt": "2026-10-31T22:28:50.492074+00:00",
+  "retainedRecovery": {
+    "cryptographicValidationThisAttempt": "not-run",
+    "freshnessEstablishedThisAttempt": false,
+    "previouslyEstablishedExpiry": "2026-10-15T11:40:42Z",
+    "recoveryId": "20261014t112353z",
+    "remoteReadbackThisAttempt": "not-run",
+    "unchangedSignedRecordAndSignatureLedgerSha256": "9dbfaf144e821f97202369a6b345a7efcb97ae3616f0dee97a76747266c1986f"
+  },
+  "schemaVersion": 1,
+  "signed": false,
+  "sourceSha256": {
+    "eng/kubernetes-upgrade/prepare.py": "a226474cf4a2d51e10e162d09865854a6f27a5b1f44e3f6bd383765554c2df21",
+    "eng/kubernetes-upgrade/test_prepare.py": "0b37502632c7b6fa27a19bc01bd9091682bd24cdf3c3e1290b21727c73b558a9"
+  },
+  "sourceStatuses": {
+    "4.0": "done",
+    "4.1": "in-progress",
+    "4.27": "in-progress"
+  },
+  "storyState": "in-progress",
+  "tests": {
+    "command": "/usr/bin/python3 -I -S -B -m unittest discover -s eng/kubernetes-upgrade -p 'test_*.py'",
+    "exitCode": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 46
+  }
+}

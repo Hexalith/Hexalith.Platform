@@ -1,0 +1,34 @@
+The '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False) [FAIL]
+      Shouldly.ShouldAssertException : cancelledCleanup
+          should be
+      True
+          but was
+      null
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(458,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.AssertBudgetOutcome(CompositionRunSession session, Nullable`1 cancelledCleanup, Boolean blockedWithdrawal, String directory, TimeSpan elapsed, String output)
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(366,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecuteBudgetCaseAsync(CompositionEngineOptions options, String manifest, FileStream heldLock, Func`1 session, Func`1 cancelledCleanup, Boolean blockedWithdrawal, String directory, StringWriter output)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(370,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecuteBudgetCaseAsync(CompositionEngineOptions options, String manifest, FileStream heldLock, Func`1 session, Func`1 cancelledCleanup, Boolean blockedWithdrawal, String directory, StringWriter output)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(227,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(Boolean blockedWithdrawal)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(230,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(Boolean blockedWithdrawal)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs(230,0): at Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(Boolean blockedWithdrawal)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'df5fec69d2197ddbd552b18282958da49f1cef64ed4f529cd9652a4fa5c3faa2')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 37, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 27.719s

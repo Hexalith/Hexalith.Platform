@@ -1,0 +1,300 @@
+{
+  "story": "2.8",
+  "status": "in-progress",
+  "approval": {
+    "source": "User message: approve",
+    "scope": "Staged prerequisite releases and hosted qualification; preserve normal PR, exact-source and protected publication gates"
+  },
+  "eventstore": {
+    "publishedVersion": "3.130.1",
+    "publishedSource": "1de42b706f52af0da6513f0b7663002606d17156",
+    "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+    "pr": 378,
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/378",
+    "prHead": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+    "isolatedWorktree": "/tmp/hexalith-story28-eventstore-sdk",
+    "stage": "Helper3.130.1 released at exact1de; all14 official archives/source/signatures and helper presence verified; tag+multiarch OCI/source/version labels+smoke/cleanup verified. No reference adoption yet.",
+    "requiredPrGatesGreen": 7,
+    "requiredPrGatesTotal": 7,
+    "remainingRequiredGate": null,
+    "fullPrCiRun": 41236793431,
+    "fullPrCiConclusion": "success",
+    "hostedDescriptorTests": {
+      "passed": 59,
+      "failed": 0,
+      "skipped": 0
+    },
+    "baselineLiveSidecar": {
+      "run": 41218513032,
+      "job": 124587997056,
+      "passed": 282,
+      "failed": 7,
+      "skipped": 4,
+      "source": "61e6fa853d81cf822d67d6abfd6a130bdbb14ce2",
+      "failures": "owned subprocess cancellation plus named projection replay/source/buffering cases; outside the three SDK files"
+    },
+    "otherOwnerFixPr": 376,
+    "otherOwnerFixHeadObserved": "6b9004d942e280724ca5bf554f3862ab23af68a0",
+    "note": "Historical baseline failures and otherOwnerFix fields retain their observed-source identities; current exact-main push CI passed.",
+    "releaseDispatch": {
+      "run": 41246774822,
+      "source": "1de42b706f52af0da6513f0b7663002606d17156",
+      "status": "completed",
+      "proof": "eventstore-sdk/helper-release-preflight-main1de.json",
+      "normalReview": "eventstore-sdk/helper-release-normal-review.json",
+      "version": "3.130.1",
+      "conclusion": "success"
+    },
+    "failedRequiredGate": null,
+    "ownerFixStatus": {
+      "observedAt": "2026-10-31T19:56:41.907671+00:00",
+      "pr379": "Normally merged19:55:23Z",
+      "pr379Head": "bb7f96676a33873690845494e4f4865267ae2d1a",
+      "main": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+      "scope": "Owner catalog/native/live corrections are now onmain; our separate3-file SDK prerequisite will be reconciled normally",
+      "release": "3.129.0 remains latest; no new publication claimed"
+    },
+    "currentMain": "1de42b706f52af0da6513f0b7663002606d17156",
+    "currentIntegrationRun": 41236793296,
+    "currentLiveSidecarJob": 124642171616,
+    "historicalFailedLiveSidecarResult": "eventstore-sdk/pr-live-sidecar-result.json",
+    "publishedCompatibilityActualResult": "eventstore-sdk/published-compatibility-actual-result-2ed.json",
+    "publicationVerificationAccepted": "Prerequisite archive and owner OCI identity verification passed; combined reference runtime acceptance pending.",
+    "mergeHoldEvidence": "eventstore-sdk/merge-eligibility-release-hold.json",
+    "existingPublicationRun": 41238371177,
+    "existingPublicationSource": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+    "concurrentOwnerCohort": "eventstore-sdk/concurrent-cohort-pr380.json",
+    "concurrentOwnerPr": 380,
+    "concurrentOwnerHead": "f3025fb2489dc776edb6dc5e1722f7d530b34daf",
+    "mergedCommit": "1de42b706f52af0da6513f0b7663002606d17156",
+    "mergeEvidence": "eventstore-sdk/normal-merge-result.json",
+    "publishedTagSourceVerified": true,
+    "existingPublicationConclusion": "success",
+    "releaseOwnershipClarification": "User explicitly confirmed41238371177 is separate workstream; completed externally and never reviewed/dispatched/modified by Story2.8.",
+    "officialArchivesVerified": 14,
+    "signaturesValid": true,
+    "currentMainCi": {
+      "run": 41244694290,
+      "conclusion": "success",
+      "passed": 14863,
+      "failed": 0,
+      "existingSkipped": 49
+    },
+    "currentMainCommitlint": {
+      "run": 41244694281,
+      "conclusion": "success"
+    },
+    "releaseVerification": "eventstore-sdk/helper-release-completed-31301.json",
+    "publishedDeclaration": "owner-snapshots/eventstore-3.130.1-source.json",
+    "historical3130ArchiveInventory": "owner-packages/eventstore-3.130.0/inventory.json",
+    "publishedArchiveInventory": "owner-packages/eventstore-3.130.1/inventory.json"
+  },
+  "tenants": {
+    "publishedVersion": "6.0.0",
+    "source": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+    "releaseRun": 41219537483,
+    "archiveVerification": "5/5 official family archives: exact version/source commit; signatures valid"
+  },
+  "memories": {
+    "publishedVersion": "3.0.13",
+    "publishedSource": "0a1f6bf94301094afd0045c4e396dad4dd613ce6",
+    "latestReleaseRun": 41224023437,
+    "latestReleaseConclusion": "success",
+    "note": "Successful run at2649a946 did not produce a newer release",
+    "archiveVerification": "10/10 official family archives: exact version/source commit; signatures valid"
+  },
+  "builds": {
+    "repository": "Hexalith/Hexalith.Builds",
+    "foundation": {
+      "base": "2132fe0e276059dcd9fc35a7115fd2a1795ce538",
+      "worktree": "/tmp/hexalith-story28-builds-foundation",
+      "runtimeCases": 238,
+      "runtimeFailed": 0,
+      "runtimeSkipped": 0,
+      "helperCases": 15,
+      "selfCiControl": "passed",
+      "publisherHarness": "passed; remote functions mocked",
+      "archiveProbe": "passed; committed-artifacts.json and coordinator-audit.json",
+      "scope": "Runtime/receipt/helper and package host fixes; no global domain-ci activation or family pin changes",
+      "remoteStatus": "Merged PR source passed; exact-main .NET run fails1 concurrent startup/down case; separate deterministic diagnosis required",
+      "pr": 148,
+      "url": "https://github.com/Hexalith/Hexalith.Builds/pull/148",
+      "currentMainObserved": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+      "reconciledSourceLocal": "829f1a3d827763e09d437e92274fe790918553e2",
+      "reconciliationAudit": "All package-host security/probe/typed qualification/publisher mutations exactly match incoming main; only host delta is enabling published catalog APIs previously behind six source guards.",
+      "requiredAnalyzerFindings": "All resolved; both hosted analyzers pass with zero new Codacy issues; no gate weakening",
+      "initialSource": "ee6074995b7da585f731f938cc295a6f7d3bf6a3",
+      "currentSource": "86ed14c4627e12b9dccb1b7067042cd1684a69a2",
+      "archiveAndCSharpSource": "a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+      "mergeableAgainst": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+      "affectedVerification": {
+        "helperPassed": 24,
+        "ciLifecyclePassed": 14,
+        "artifactValidatorScenarios": 71,
+        "publisherContracts": "passed; mocked remotes/publication",
+        "archiveProof": "reconciled-artifacts.json",
+        "broaderRuntimeBaseline": "238passed at ee60749; historical, unchanged engine/admission/regression code"
+      },
+      "globalWorkflowActivationChanged": false,
+      "packagePinsChanged": false,
+      "dotnetFailure": "builds-foundation/hosted-dotnet-d18-failure.json",
+      "affectedHostedEnvControlsPassed": 37,
+      "ciLifecycleCasesPassed": 16,
+      "hostedEnvCorrection": "builds-foundation/hosted-env-corrected-source.json",
+      "mergedCommit": "57255b502fdd546bb09851d04fc1830175d897f3",
+      "mergeEvidence": "builds-foundation/normal-merge-result.json",
+      "fullHostedCiRun": 41236477150,
+      "fullHostedCiConclusion": "success",
+      "hostedModuleTests": {
+        "total": 2668,
+        "passed": 2663,
+        "failed": 0,
+        "existingSkipped": 5
+      },
+      "mainPushCiRun": 41238944762,
+      "mainPushCiConclusion": "failure",
+      "publicationDispatched": false,
+      "mainFailureEvidence": "builds-foundation/main-dotnet-572-failure.json"
+    },
+    "historicalPackagedHostBlocker": {
+      "record": {
+        "head": "2132fe0e276059dcd9fc35a7115fd2a1795ce538",
+        "run_id": 41221082341,
+        "job_id": 124595586094,
+        "error": "PackagedSeedProbe startup: Shared HTTP security requires UseEventStoreHttpHostSecurity() enrollment before startup.",
+        "source": "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs",
+        "cause": "UseEventStoreHttpHostSecurity and run-scoped gateway/receiver/channel enrollment are inside HEXALITH_EVENTSTORE_MAPPED_SOURCE even though published SDK3.129.0 provides these APIs.",
+        "validatedPublishedApis": [
+          "ServiceDefaults.EventStoreHttpHostSecurityExtensions.UseEventStoreHttpHostSecurity",
+          "ServiceDefaults.EventStoreHttpHostSecurityExtensions.RequireEventStoreChannel",
+          "ServiceDefaults.Routing.FiniteRouteCatalogReceiver",
+          "Server.Routing.RunScopedRouteCatalogGateway",
+          "Gateway.Extensions.EventStoreActorCallbackEndpointMetadata.Instance"
+        ],
+        "probe": "Tools/PackagedSeedProbe/PackagedSeedProbe.cs",
+        "next": "Use actual published SDK APIs in package host; give packaged seed probe its own configured Dapr app-channel token and assert proper private-channel rejection. Preserve security/inventory gates."
+      },
+      "status": "Resolved in foundation PR148; subsequent exact-main package/catalog gates pass; retained as historical source, not the current blocker"
+    },
+    "currentMain": "d8d0d70f26d79c95b544a64a74e329149711cb7d",
+    "currentPr": 149,
+    "currentPrHead": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+    "currentBlocker": "New exact-main push CI41246834980 running before tool publication; reviewed producer normally merged",
+    "currentMergeEvidence": "current-main-reconciliation/normal-merge-result.json",
+    "currentPrState": "merged",
+    "exactPrCi": {
+      "run": 41244914066,
+      "conclusion": "success",
+      "modulePassed": 2666,
+      "moduleFailed": 0,
+      "moduleExistingSkipped": 5,
+      "evidencePassed": 191,
+      "toolingPassed": 1,
+      "toolingExistingSkipped": 12
+    },
+    "mainPushCi": {
+      "run": 41246834980,
+      "status": "in_progress"
+    }
+  },
+  "parties": {
+    "publishedVersion": "2.0.0",
+    "remoteMain": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+    "note": "New upstream story/runtime changes must be preserved during later reconciliation; no caller activation yet.",
+    "restoreBlocker": null,
+    "adapterCoordinateObservation": "Official Hexalith.Parties.EventStoreExtensions2.0.0 could not be acquired; later owner release must supply compatible adapter.",
+    "rangeGateBlocker": "Exact selections ratified; missing ledger rows still require source correction and normal current-source CI/range proof.",
+    "legacyMainConsumers": [
+      "Hexalith.Commons",
+      "Hexalith.Folders",
+      "Hexalith.Conversations",
+      "Hexalith.Tenants",
+      "Hexalith.EventStore"
+    ],
+    "workflowRolloutConstraint": "Preserve unchanged legacy interface; EventStore/Parties explicitly adopt approved exact v2 source after compatible publication",
+    "preflight": "parties-preflight/README.md",
+    "actualReleaseCompile": {
+      "service": "passed, zero warnings/errors",
+      "adapter": "passed, zero warnings/errors",
+      "packageMode": true,
+      "externalSourceFallback": false,
+      "sdk": "3.130.0",
+      "tenants": "6.0.0",
+      "memories": "3.0.13"
+    },
+    "sourceSelectionProposal": "parties-preflight/owner-selection-proposal.md",
+    "ownerRatification": "User explicitly approved allseven exact existing revisions in owner-selection-proposal.json; normal ledger PR preparation is next after registry handoff.",
+    "fullCi": "Historical run41224674293 red beforeSDKpublication; fresh complete current-source qualification remains necessary."
+  },
+  "hostedQualificationComplete": false,
+  "candidateAcceptance": false,
+  "registry": {
+    "pullAccountPreference": "User explicitly selected dedicated CI reader account",
+    "existingCredentialObservation": "Repo/org metadata includes publisher credentials; no dedicated CI pull secret found.",
+    "knownReader": "cluster-reader is documented for cluster pull secrets; do not repurpose without selection/authorization.",
+    "safety": "Never pass publisher/provider credentials to integration CI; only explicit pull-only secrets may reach it.",
+    "preparation": "Existing auth wiring verified; sequential agent prepares exact reviewable provisioning artifact, no account/config/credential mutation performed.",
+    "principal": "ci-reader",
+    "source": "Original external kustomize source not located; reproducible exact patch required before apply."
+  },
+  "observedAt": "2026-10-31T22:21:35.209754+00:00",
+  "ownerPackageInventory": "owner-packages/inventory.json",
+  "ownerDeclarationSnapshots": "owner-snapshots/inventory.json",
+  "approvedIntentSha256": "19044c59bdc8f93eee27bb766b6985fbc2f908f8e9764bebaeb72ecb908d9b0a",
+  "approvedIntentUnchanged": true,
+  "workflowRollout": {
+    "strategy": "Versioned strict entry point domain-ci-v2.yml; legacy domain-ci.yml unchanged",
+    "decision": "versioned-workflow/decision.json",
+    "implementation": "Normal squash merged reviewed16-filev2 producer; production source identical to incomingmain; provisional wait withdrawn.",
+    "callerActivation": false,
+    "legacyPinPrs": "Commons51,Folders15,Conversations11,Tenants58 closed unmerged after verified v2 replacement PR149",
+    "provenance": "Exact v2 identity and closed executor-helper binding; preserve legacy authorization",
+    "partiesCoverage": "Preserve three retired direct-integration project executions; caller-coverage-observation.json",
+    "pr": 149,
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+    "head": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+    "coordinatorSourceAudit": "cleanup-contention/coordinator-reconciled-source-fb949.json",
+    "localControls": {
+      "legacyAssertions": 411,
+      "strictAssertions": 254,
+      "provenanceTests": 95,
+      "governedWorkflowTests": 56,
+      "preparationTests": 11,
+      "helperTests": 24
+    },
+    "cleanupFixLocalCases": 78,
+    "cleanupFixVerification": "current-main-reconciliation/coordinator-verification.json",
+    "historicalFullCi": {
+      "run": 41242828507,
+      "head": "46365cd94f8501f513f1cc413916ac24737d33e2",
+      "conclusion": "success",
+      "modulePassed": 2666,
+      "moduleFailed": 0,
+      "moduleExistingSkipped": 5
+    },
+    "base": "f6834a33967f8ec905145db14e1a13ffb5468d69",
+    "productionSourceChanged": false,
+    "controls": {
+      "localLifecyclePassed": 59,
+      "ciLifecyclePassed": 16,
+      "legacyBookkeepingPassed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mergedCommit": "d8d0d70f26d79c95b544a64a74e329149711cb7d",
+    "mergeEvidence": "current-main-reconciliation/normal-merge-result.json",
+    "exactCurrentBaseCi": {
+      "run": 41244914066,
+      "conclusion": "success",
+      "modulePassed": 2666,
+      "moduleFailed": 0,
+      "moduleExistingSkipped": 5,
+      "evidencePassed": 191,
+      "toolingPassed": 1,
+      "toolingExistingSkipped": 12
+    }
+  },
+  "executionStatus": "paused-by-user",
+  "pauseCheckpoint": "paused-checkpoint.json",
+  "explicitResumeRequired": true
+}

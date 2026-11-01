@@ -1,0 +1,35 @@
+Working directory: /tmp/hexalith-story28-eventstore-sdk
+Base: origin/main at 61e6fa853d81cf822d67d6abfd6a130bdbb14ce2
+Exact prerequisite commit: 67bab1f13bd26d7fd7fbe390b57006a537e5c5a2
+
+Local toolchain:
+npm ci --ignore-scripts
+npm run prepare
+./node_modules/.bin/commitlint --version  # 21.2.4
+./node_modules/.bin/commitlint --verbose < /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/commit-message.txt
+./node_modules/.bin/commitlint --verbose < /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/pr-title.txt
+./node_modules/.bin/commitlint --verbose < /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/squash-message.txt
+
+Pinned package props extracted without initializing nested submodules:
+git -C /home/administrator/projects/hexalith/platform/references/Hexalith.Builds show a22b55f0a4f6d2aaa3a5ccc505896064ac595364:Props/Directory.Packages.props > /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/build-package-props.xml
+
+Build/test/pack:
+dotnet build tests/Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.csproj -c Release -m:1 -p:UseHexalithProjectReferences=false -p:HexalithBuildPackageVersions1=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/build-package-props.xml -p:Hexalith4BuildPackageProps=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/build-package-props.xml
+dotnet tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll -class '*DescriptorFixtureTests' -parallelMode none -result-xml /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/descriptor-tests.xml
+dotnet pack src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj -c Release --no-build --no-restore -o /tmp/hexalith-story28-eventstore-sdk-pack -p:UseHexalithProjectReferences=false -p:HexalithBuildPackageVersions1=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/build-package-props.xml -p:Hexalith4BuildPackageProps=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/build-package-props.xml
+
+Exact three-file staging was asserted before the normal hooks ran:
+git diff --cached --check
+bash scripts/check-committed-files.sh --staged
+git commit -F /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/eventstore-sdk/commit-message.txt
+git push --set-upstream origin fix/story-2-8-sdk-stream-observer
+
+PR created using the connected GitHub tool, with the retained pr-title.txt and pr-body.md.
+gh pr checks 378 --repo Hexalith/Hexalith.EventStore --required --watch --interval 30
+
+Local nupkg version 3.128.4 is the pinned compilation identity only; semantic-release chooses the actual version from current-main history. No source/dependency pins or caller enrollment were changed.
+
+Local build, descriptor controls and pack were repeated after the commit to bind embedded assembly git identity to the exact PR head; the retained outputs and local-artifacts.json describe that final run.
+
+API tooling: dotnet-inspect0.26.0+d236a7a (dnx).
+dnx dotnet-inspect -y -- member TestEnvironmentStreamReader --package /tmp/hexalith-story28-eventstore-sdk-pack/Hexalith.EventStore.Testing.Integration.3.128.4.nupkg -S Methods -v:q

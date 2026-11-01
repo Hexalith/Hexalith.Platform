@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+    "number": 149,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": false,
+    "body": "Preserve existing domain-ci.yml callers and introduce declared package integration\nthrough domain-ci-v2.yml. The legacy workflow and dedicated documentation retain\ntheir current-main bytes.\n\nV2 requires isolated success, declared suites, dedicated pull-only registry secrets,\nexact owner finalization and classified diagnostics. Bind its actual workflow\nidentity and direct integration executor into the authorized closure; reject legacy\nidentities/digests and missing or changed executor source. Remove unused legacy-only\ninputs, preserve direct integration/AppHost refusals, and require HTTPS downloads\nand redirects. Run both validator modes in CI/release and document explicit migration.\n\nReconcile current main f6834a33967f8ec905145db14e1a13ffb5468d69 through a normal branch\nmerge. Preserve its test-only startup cancellation correction, both executing\nrun-id/session refusal-and-retry controls and its separate specification exactly.\nProduction source matches current main: the provisional outcome-lock waiting change\nis withdrawn, and the existing HXR037/HXT008 same-owner retry contract is preserved.\nAn additional active-attachment control verifies immediate metadata refusal, owned\nworkspace/claims, exact idempotent retry, immutable first outcomes/times and original\nabsolute expiry. No production allowance, cleanup, withdrawal or retention changes.\n\nValidation: fresh Debug project graph builds with zero warnings/errors. On one\nsame-source binary with complete simulated GitHub identity, all 59 local lifecycle\ncases, 16 CI lifecycle cases and three existing legacy bookkeeping scenarios pass,\nwith zero failures/skips/errors. The four original startup cases and both incoming\nlive-process refusal/retry cases remain present. Exact source/tree/binary hashes,\ncommands, named XML and historical failed/provisional evidence are retained.\n\nThe 15 reviewed v2 producer files remain unchanged from 26ba857. Their source controls\npassed 411 legacy and 254 strict assertions, 95 provenance tests, 56 governed workflow\ntests, 11 preparation tests and 24 unchanged helper tests. Actionlint and diff checks\npass. Local Debug controls and simulated CI supply no hosted reference, Release/package\nor candidate acceptance; complete current-base hosted gates remain mandatory.\n\nE/P adoption, registry provisioning, compatible releases and hosted lifecycle\nqualification remain pending. No PR merge or publication is part of this handoff.\n",
+    "title": "feat(ci): add versioned integration and preserve cleanup retries",
+    "base": "main",
+    "base_sha": "f6834a33967f8ec905145db14e1a13ffb5468d69",
+    "head": "feat/story-2-8-domain-ci-v2",
+    "head_sha": "fb949ec9c41587279b1e153a3f9d00c7ad3cfc37",
+    "head_repo_id": 952945989,
+    "head_repo_full_name": "Hexalith/Hexalith.Builds",
+    "merge_commit_sha": "face51c41a4d9417164bf399d9d54ce1ca945f71",
+    "user": {
+      "login": "jpiquot",
+      "name": "jpiquot",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "id": 6775094
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-10-31T20:48:21Z",
+    "updated_at": "2026-10-31T21:43:32Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 4,
+    "changed_files": 16,
+    "additions": 1537,
+    "deletions": 259,
+    "display_url": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+    "display_title": "feat(ci): add versioned integration and preserve cleanup retries"
+  },
+  "isError": false
+}

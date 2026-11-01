@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-31T20:40:02.416013+00:00",
+  "run": 41236793296,
+  "job": 124642171774,
+  "prHead": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "jobConclusion": "success",
+  "actualTestResult": {
+    "total": 50,
+    "passed": 49,
+    "failed": 1,
+    "skipped": 0
+  },
+  "failedTest": "PublishedScenarioTests.Published31282QualificationMatrixAsync",
+  "failure": "Every required published lane must pass compatibility;239 historical package/source observations include failures/unverified results",
+  "selectedHistoricalPackage": "3.128.2",
+  "originalHistoricalSource": "935c21ac5ebc5e50738ae6ee79dc661acd2fd5a8",
+  "actualExecutor": "f7204379cce4783678c1a8b423c9fc51e1d90ba2",
+  "maskingCause": "integration.yml Run isolated published qualification pipes dotnet to tee under default bash-e without pipefail;tee exit masks failed dotnet",
+  "workflowChangedBySdkPrerequisite": false,
+  "rawLog": "/tmp/story28-sdk-2ed-compat-7imnlle6.txt",
+  "rawLogSha256": "3da87c1b9d7093ab0087a7b2d7b7e12b40afb3a14900ebdcfac4d207d60fa09c",
+  "bytes": 8152501,
+  "qualificationAcceptance": false,
+  "releaseDispatch": "Held; no failure waiver or expectation change"
+}

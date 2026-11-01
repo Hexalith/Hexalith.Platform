@@ -1,0 +1,5 @@
+Native module integration suites need to inspect the exact synthetic event stream through their descriptor-owned Redis endpoint. Add `TestEnvironmentStreamReader` to the shared EventStore integration testing SDK, refuse foreign tenants before opening persistence, and declare its centrally versioned Redis dependency.
+
+Validation: the isolated three-file prerequisite builds in Release with zero warnings/errors against the owner's pinned Builds package props and published cross-repository dependencies; all 15 descriptor fixture tests pass, including the foreign-tenant refusal control. The owning pinned Commitlint 21.2.4 and staged-file guard pass.
+
+This PR is the first SDK prerequisite release input for Platform Story 2.8. Caller enrollment, workflow/tool configuration, module manifests, solution activation and consumer pins remain for later approved steps. Publication will use the existing protected release workflow only after current-main exact-source push proofs succeed. Hosted module CI qualification remains pending.

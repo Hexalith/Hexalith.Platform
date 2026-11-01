@@ -478,5 +478,66 @@ class CanonicalEnrollmentAndDefaultCliTests(unittest.TestCase):
             finally:
                 server.shutdown(); server.server_close(); thread.join(timeout=2)
 
+
+class PreexistingHeadConfigReadbackTests(unittest.TestCase):
+    """R11-EC-3: a pre-existing head mount whose configuration read has no data is never overwritten."""
+
+    def test_preexisting_mount_config_without_data_refuses_before_any_write(self):
+        import os
+        import ssl
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); cert = root / 'cert.pem'; key = root / 'key.pem'
+            subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', str(key), '-out', str(cert), '-days', '1',
+                            '-subj', '/CN=127.0.0.1', '-addext', 'subjectAltName=IP:127.0.0.1'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+            class Native(BaseHTTPRequestHandler):
+                records = []
+                mode = 'empty-object'
+
+                def _json(self, payload, status=200):
+                    raw = json.dumps(payload).encode(); self.send_response(status)
+                    self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)
+
+                def _dispatch(self, method):
+                    length = int(self.headers.get('Content-Length', 0) or 0)
+                    Native.records.append((method, self.path, self.rfile.read(length) if length else b''))
+                    if self.path.endswith('/sys/health'):
+                        self._json({'version': '2.6.2', 'initialized': True, 'sealed': False}); return
+                    if self.path.endswith('/sys/mounts'):
+                        # Both mounts already exist, so this invocation creates neither of them.
+                        self._json({'data': {'erc-transit/': {'type': 'transit', 'options': {}}, 'erc-heads/': {'type': 'kv', 'options': {'version': '2'}}}}); return
+                    if self.path.endswith('/erc-heads/config') and method == 'GET':
+                        if Native.mode == 'empty-object':
+                            self._json({}); return
+                        if Native.mode == 'null-data':
+                            self._json({'data': None}); return
+                        self.send_response(404); self.end_headers(); return
+                    if method == 'POST':
+                        self.send_response(204); self.end_headers(); return
+                    self.send_response(404); self.end_headers()
+
+                def do_GET(self): self._dispatch('GET')
+                def do_POST(self): self._dispatch('POST')
+                def log_message(self, *args): pass
+
+            server = HTTPServer(('127.0.0.1', 0), Native)
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); context.load_cert_chain(cert, key); server.socket = context.wrap_socket(server.socket, server_side=True)
+            thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+            try:
+                value = CanonicalEnrollmentAndDefaultCliTests.valid(); value['address'] = 'https://127.0.0.1:' + str(server.server_port)
+                path = root / 'enrollment.json'; path.write_text(json.dumps(value))
+                environment = dict(os.environ, ERC_BOOTSTRAP_TOKEN='synthetic-local-test-credential')
+                for mode in ('empty-object', 'null-data', 'missing'):
+                    with self.subTest(mode=mode):
+                        Native.mode = mode; Native.records.clear()
+                        result = subprocess.run(['python3', str(Path(bootstrap.__file__)), '--enrollment', str(path), '--apply', '--ca-certificate', str(cert)],
+                                                env=environment, capture_output=True, text=True, timeout=20)
+                        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                        self.assertEqual(json.loads(result.stdout)['step'], 'head-config')
+                        self.assertEqual([path for method, path, _ in Native.records if method == 'POST'], [])
+            finally:
+                server.shutdown(); server.server_close(); thread.join(timeout=2)
+
 if __name__ == '__main__':
     unittest.main()

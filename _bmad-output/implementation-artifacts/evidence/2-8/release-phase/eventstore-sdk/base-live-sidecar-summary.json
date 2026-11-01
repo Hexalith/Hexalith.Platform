@@ -1,0 +1,20 @@
+{
+  "scope": "Existing main baseline, not PR378 result",
+  "sourceCommit": "61e6fa853d81cf822d67d6abfd6a130bdbb14ce2",
+  "runId": 41218513032,
+  "jobId": 124587997056,
+  "total": 293,
+  "passed": 282,
+  "failed": 7,
+  "skipped": 4,
+  "failedCases": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogFixtureToolTests.OwnedInfrastructureSubprocessHasBoundedCancellationAndNormalCompletion(mode: \"cancellation\") (1s 146ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.ReplayRecovery_GenericHandlerReusesOneOriginalManifestAcrossThreeLostDurableResponses(head: 10000) (1m 30s 181ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorOversizedEnvelopeReturnsTypedPageFailureBeforeAnyEffects (118ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 9999) (1m 29s 818ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 10000) (1m 29s 652ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9000, delta: 771, pageSize: 256) (1m 12s 709ms)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9999, delta: 1, pageSize: 256) (1m 29s 413ms)"
+  ],
+  "relationship": "These tests and their production sources are outside the three-file SDK prerequisite diff; this failure predates that diff."
+}

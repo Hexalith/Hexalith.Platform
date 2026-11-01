@@ -1,0 +1,61 @@
+[93mThe '-parallel' switch has been deprecated in favor of '-parallelMode' and will be removed in the next major version
+[0m[93mThe '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+[0m
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+[37m  Discovering: Hexalith.Platform.Protection.Tests
+[0m[37m  Discovered:  Hexalith.Platform.Protection.Tests
+[0m[37m  Starting:    Hexalith.Platform.Protection.Tests
+[0m[91m    Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: "VerifyReservedManifestAndCopyPolicy") [FAIL]
+[0m[37m      System.NullReferenceException : Object reference not set to an instance of an object.
+[0m[90m      Stack Trace:
+[0m[37m        src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs(254,0): at Hexalith.Platform.Protection.ErasureRootAuthorityOperationHandler.HandleCoreAsync(String method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, Boolean recovery, CancellationToken token)
+[0m[37m        tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs(150,0): at Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(String operation)
+[0m[37m        --- End of stack trace from previous location ---
+[0m[91m    Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(operation: "VerifyLifecycle") [FAIL]
+[0m[37m      System.NullReferenceException : Object reference not set to an instance of an object.
+[0m[90m      Stack Trace:
+[0m[37m        src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs(249,0): at Hexalith.Platform.Protection.ErasureRootAuthorityOperationHandler.HandleCoreAsync(String method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, Boolean recovery, CancellationToken token)
+[0m[37m        tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs(150,0): at Hexalith.Platform.Protection.Tests.ErasureRootReceivingTests.AbsentQualificationBindingsDenyWithoutThrowing(String operation)
+[0m[37m        --- End of stack trace from previous location ---
+[0m[91m    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: "epoch-success") [FAIL]
+[0m[37m      Shouldly.ShouldAssertException : foreach (var item in observed) { item.Buffer
+[0m[37m          should satisfy the condition
+[0m[37m      (value == 0)
+[0m[37m          but
+[0m[37m      [123, 34, 100, 97, 116, 97, 34, 58, 123, 34, 116, 121, 112, 101, 34, 58, 34, 97, 101, 115, 50, 53, 54, 45, 103, 99, 109, 57, 54, 34, 44, 34, 100, 101, 114, 105, 118, 101, 100, 34, 58, 116, 114, 117, 101, 44, 34, 101, 120, 112, 111, 114, 116, 97, 98, 108, 101, 34, 58, 102, 97, 108, 115, 101, 44, 34, 97, 108, 108, 111, 119, 95, 112, 108, 97, 105, 110, 116, 101, 120, 116, 95, 98, 97, 99, 107, 117, 112, 34, 58, 102, 97, 108, 115, 101, 44, 34, 100, 101, 108, 101, 116, 105, 111, 110, 95, 97, 108, 108, 111, 119, 101, 100, 34, 58, 102, 97, 108, 115, 101, 44, 34, 108, 97, 116, 101, 115, 116, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 97, 118, 97, 105, 108, 97, 98, 108, 101, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 100, 101, 99, 114, 121, 112, 116, 105, 111, 110, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 101, 110, 99, 114, 121, 112, 116, 105, 111, 110, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 107, 101, 121, 115, 34, 58, 123, 34, 50, 34, 58, 49, 50, 51, 125, 125, 125]
+[0m[37m          do not
+[0m[37m      
+[0m[37m      Additional Info:
+[0m[37m          read-key:retained
+[0m[90m      Stack Trace:
+[0m[37m        tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs(361,0): at Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(String outcome)
+[0m[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+[0m[37m        --- End of stack trace from previous location ---
+[0m[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+[0m[91m    Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(outcome: "verify-trim-success") [FAIL]
+[0m[37m      Shouldly.ShouldAssertException : foreach (var item in observed) { item.Buffer
+[0m[37m          should satisfy the condition
+[0m[37m      (value == 0)
+[0m[37m          but
+[0m[37m      [123, 34, 100, 97, 116, 97, 34, 58, 123, 34, 116, 121, 112, 101, 34, 58, 34, 97, 101, 115, 50, 53, 54, 45, 103, 99, 109, 57, 54, 34, 44, 34, 100, 101, 114, 105, 118, 101, 100, 34, 58, 116, 114, 117, 101, 44, 34, 101, 120, 112, 111, 114, 116, 97, 98, 108, 101, 34, 58, 102, 97, 108, 115, 101, 44, 34, 97, 108, 108, 111, 119, 95, 112, 108, 97, 105, 110, 116, 101, 120, 116, 95, 98, 97, 99, 107, 117, 112, 34, 58, 102, 97, 108, 115, 101, 44, 34, 100, 101, 108, 101, 116, 105, 111, 110, 95, 97, 108, 108, 111, 119, 101, 100, 34, 58, 102, 97, 108, 115, 101, 44, 34, 108, 97, 116, 101, 115, 116, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 97, 118, 97, 105, 108, 97, 98, 108, 101, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 100, 101, 99, 114, 121, 112, 116, 105, 111, 110, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 109, 105, 110, 95, 101, 110, 99, 114, 121, 112, 116, 105, 111, 110, 95, 118, 101, 114, 115, 105, 111, 110, 34, 58, 50, 44, 34, 107, 101, 121, 115, 34, 58, 123, 34, 50, 34, 58, 49, 50, 51, 125, 125, 125]
+[0m[37m          do not
+[0m[37m      
+[0m[37m      Additional Info:
+[0m[37m          read-key:retained
+[0m[90m      Stack Trace:
+[0m[37m        tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs(361,0): at Hexalith.Platform.Protection.Tests.OpenBaoErasureRootStoreTests.KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(String outcome)
+[0m[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+[0m[37m        --- End of stack trace from previous location ---
+[0m[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+[0m[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+[0m[37m  Finished:    Hexalith.Platform.Protection.Tests (ID = '82cf1755618a2328845172c0746242a7fc73f34e3b7160a342a8f0d3cc6b160c')
+[0m[37m=== TEST EXECUTION SUMMARY ===
+[0m[37m   Hexalith.Platform.Protection.Tests  Total: 68, Errors: 0, Failed: 4, Skipped: 0, Not Run: 0, Time: 7.909s
+[0m[0m

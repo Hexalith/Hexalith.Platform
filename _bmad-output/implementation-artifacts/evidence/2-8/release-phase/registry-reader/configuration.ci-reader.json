@@ -1,0 +1,133 @@
+{
+  "distSpecVersion": "1.1.1",
+  "storage": {
+    "rootDirectory": "/var/lib/zot/distribution",
+    "gc": true,
+    "gcDelay": "24h",
+    "gcInterval": "24h",
+    "gcTimeWindow": "02:00-05:00",
+    "retention": {
+      "dryRun": false,
+      "delay": "24h",
+      "policies": [
+        {
+          "repositories": [
+            "**"
+          ],
+          "deleteReferrers": false,
+          "deleteUntagged": false,
+          "keepTags": [
+            {
+              "patterns": [
+                ".*"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "http": {
+    "address": "0.0.0.0",
+    "port": "5000",
+    "externalUrl": "https://registry.hexalith.com",
+    "readTimeout": "15m",
+    "writeTimeout": "15m",
+    "compat": [
+      "docker2s2"
+    ],
+    "realm": "zot-distribution",
+    "auth": {
+      "apikey": true,
+      "sessionKeysFile": "/etc/zot/session/sessionKeys.json",
+      "secureSession": true,
+      "openid": {
+        "providers": {
+          "oidc": {
+            "name": "Keycloak",
+            "credentialsFile": "/etc/zot/oidc/credentials.json",
+            "issuer": "https://auth.tache.ai/realms/tache",
+            "scopes": [
+              "openid",
+              "profile",
+              "email"
+            ],
+            "claimMapping": {
+              "username": "preferred_username"
+            }
+          }
+        }
+      },
+      "failDelay": 5,
+      "htpasswd": {
+        "path": "/etc/zot/htpasswd/htpasswd"
+      }
+    },
+    "accessControl": {
+      "repositories": {
+        "**": {
+          "anonymousPolicy": [],
+          "policies": [
+            {
+              "users": [
+                "jpiquot",
+                "jpiquot@itaneo.com"
+              ],
+              "actions": [
+                "read",
+                "create",
+                "update",
+                "delete"
+              ]
+            },
+            {
+              "users": [
+                "cluster-reader"
+              ],
+              "actions": [
+                "read"
+              ]
+            },
+            {
+              "users": [
+                "ci-reader"
+              ],
+              "actions": [
+                "read"
+              ]
+            }
+          ]
+        }
+      },
+      "adminPolicy": {
+        "users": [
+          "jpiquot",
+          "jpiquot@itaneo.com"
+        ],
+        "actions": [
+          "read",
+          "create",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  },
+  "log": {
+    "level": "info"
+  },
+  "extensions": {
+    "search": {
+      "enable": true
+    },
+    "ui": {
+      "enable": true
+    },
+    "metrics": {
+      "enable": true,
+      "prometheus": {
+        "path": "/metrics"
+      }
+    }
+  }
+}

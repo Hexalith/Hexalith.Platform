@@ -1,0 +1,288 @@
+[
+  {
+    "name": "ci / build-and-test",
+    "id": 124644326439,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326439",
+    "failedSteps": [
+      {
+        "name": "Initialize root-declared submodules",
+        "conclusion": "failure",
+        "number": 7
+      },
+      {
+        "name": "Fail on blocking test failures",
+        "conclusion": "failure",
+        "number": 24
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 14,
+        "start_column": null,
+        "end_line": 14,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "No files were found with the provided path: TestResults/**/*.trx\nTestResults/**/coverage.cobertura.xml. No artifacts will be uploaded.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 65,
+        "start_column": null,
+        "end_line": 65,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 1.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 64,
+        "start_column": null,
+        "end_line": 64,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "Missing test shard output",
+        "message": "Tier 1 Microsoft.Testing.Platform did not report a failure count.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 35,
+        "start_column": null,
+        "end_line": 35,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 128.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "e2e-gates",
+    "id": 124644326396,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326396",
+    "failedSteps": [
+      {
+        "name": "Initialize root-declared submodules",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 32,
+        "start_column": null,
+        "end_line": 32,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 128.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "folders-specialized-gates",
+    "id": 124644326316,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326316",
+    "failedSteps": [
+      {
+        "name": "Initialize root-declared submodules",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 32,
+        "start_column": null,
+        "end_line": 32,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 128.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "accessibility-gates",
+    "id": 124644326106,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326106",
+    "failedSteps": [
+      {
+        "name": "Initialize root-declared submodules",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 32,
+        "start_column": null,
+        "end_line": 32,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 128.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "dependency-review / dependency-review",
+    "id": 124644325008,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526335/job/124644325008",
+    "failedSteps": [
+      {
+        "name": "Dependency review",
+        "conclusion": "failure",
+        "number": 3
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 7,
+        "start_column": null,
+        "end_line": 7,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Dependency review is not supported on this repository. Please ensure that Dependency graph is enabled, see https://github.com/Hexalith/Hexalith.Folders/settings/security_analysis",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "name": "contract and generated artifact gates",
+    "id": 124644324880,
+    "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526114/job/124644324880",
+    "failedSteps": [
+      {
+        "name": "Initialize root-level build submodules",
+        "conclusion": "failure",
+        "number": 3
+      },
+      {
+        "name": "Run safety invariant gates",
+        "conclusion": "failure",
+        "number": 8
+      }
+    ],
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 12,
+        "start_column": null,
+        "end_line": 12,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 1.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 24,
+        "start_column": null,
+        "end_line": 24,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 128.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/Hexalith/Hexalith.Folders/blob/35b1228a6b7832dd92b9ca255b4c710c1b5a1430/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+        "raw_details": ""
+      }
+    ]
+  }
+]

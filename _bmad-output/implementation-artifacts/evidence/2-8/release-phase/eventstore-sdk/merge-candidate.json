@@ -1,0 +1,11 @@
+{
+  "preparedAt": "2026-10-31T20:31:33.796544+00:00",
+  "title": "fix(testing): add descriptor-owned stream observation",
+  "body": "Native integration suites can inspect their exact synthetic event stream through the\nrun-owned Redis endpoint. The SDK helper rejects foreign tenants before opening\npersistence, bounds connection/read work and uses the centrally pinned Redis package.\n\nThe three-file prerequisite preserves current owner main and passes all 15 descriptor\ncontrols with a zero-warning Release build. Caller activation, tool pins, publication\nand hosted topology qualification remain separate steps.\n",
+  "expectedHead": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "expectedBase": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "messageSha256": "f310da19ee0f8a56c13329bbb1cb54766bbc7a71edffb3bc7500d63b7318a042",
+  "lintVersion": "21.2.4",
+  "lintExitCode": 0,
+  "mergeAuthorizedOnlyAfter": "All7 strict current-base effective required contexts and full CI pass; fresh live source/base/review/protection checks. Historical3.128.2 compatibility failure remains visible and gives no qualification; release separately requires source/cohort and actual normal release policy."
+}

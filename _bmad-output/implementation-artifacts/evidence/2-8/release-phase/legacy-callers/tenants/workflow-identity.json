@@ -1,0 +1,45 @@
+{
+  "recordedAtUtc": "2026-10-31T20:12:15.333916+00:00",
+  "owner": "Hexalith/Hexalith.Tenants",
+  "base": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+  "file": ".github/workflows/ci.yml",
+  "before": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+    "sha256": "9713f827d7f818c05365beac8e2ab0647a96218bcd5a7d27eab84a5f29f4e5af",
+    "commitBlob": "108ecf353c80b7dcfbc13efd96b8b321dd3c3474",
+    "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+  },
+  "after": {
+    "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "sha256": "c1d0f459ead0c28317c859e09148eb63b81d7b669308a5783e30c75916ecc87e",
+    "normalizedBlob": "8f92c38870dc02a3d4add676db670308e9e54976"
+  },
+  "onlyExactRefReplacement": true,
+  "allOtherBytesEqual": true,
+  "parsedYamlEquivalentExceptReference": true,
+  "allCallerInputsSupportedByPinnedInterface": true,
+  "callerInputs": {
+    "solution": "Hexalith.Tenants.slnx",
+    "test-platform": "microsoft-testing-platform",
+    "run-consumer-validation": "true",
+    "package-prepare-script": "scripts/prepare-bootstrap-compatibility.sh",
+    "run-coverage-gate": "true",
+    "build-timeout-minutes": "25",
+    "unit-test-projects": "tests/Hexalith.Tenants.Contracts.Tests\ntests/Hexalith.Tenants.Client.Tests\ntests/Hexalith.Tenants.Testing.Tests\ntests/Hexalith.Tenants.UI.Tests\nsamples/Hexalith.Tenants.Sample.Tests\n",
+    "integration-test-projects": "tests/Hexalith.Tenants.AppHost.Tests\ntests/Hexalith.Tenants.Server.Tests\n",
+    "aspire-test-project": "tests/Hexalith.Tenants.IntegrationTests",
+    "aspire-timeout-minutes": "35",
+    "aspire-continue-on-error": "false",
+    "aspire-browser-project": "tests/performance/tenant-audit",
+    "aspire-fail-skips": "true",
+    "coverage-minimum-line": "80",
+    "coverage-required-branch": "100",
+    "coverage-line-scope": "src/Hexalith.Tenants.Contracts/\nsrc/Hexalith.Tenants.Client/\nsrc/Hexalith.Tenants.Server/\nsrc/Hexalith.Tenants.Testing/\n",
+    "coverage-isolation-targets": "src/Hexalith.Tenants.Server/Aggregates/TenantAggregate.cs\nsrc/Hexalith.Tenants.Server/Aggregates/GlobalAdministratorsAggregate.cs\nsrc/Hexalith.Tenants.Server/Validators/ChangeUserRoleValidator.cs\nsrc/Hexalith.Tenants.Server/Projections/TenantAuditOwnership.cs\n"
+  },
+  "callerSecretsUnchanged": null,
+  "requiredLegacySecrets": false,
+  "lineEndingsPreserved": true,
+  "candidateAcceptance": false,
+  "callerMergeAuthorizedInThisStage": false
+}

@@ -1,0 +1,11 @@
+{
+  "preparedAt": "2026-10-31T21:31:47.242577+00:00",
+  "title": "feat(ci): add versioned integration and bounded cleanup",
+  "body": "Introduce domain-ci-v2.yml for required declared package integration after isolated\nsuccess. Preserve the existing domain-ci.yml contract and bind the v2 workflow and\nits direct executor to their exact authorized source. Require explicit pull-only\nregistry credentials, bounded exact-owner finalization and classified diagnostics.\n\nWhen cleanup races outcome publication, attachment-capable owners serialize the\ninitial outcome commit within the original stopping token. Persistent lock failure\nstill refuses resource teardown and allows exact retry. Legacy owners without\nattachment admission keep their immediate bookkeeping and cleanup behavior. First\noutcomes, times, expiry and withdrawal-before-stop ordering are preserved.\n\nFresh Debug build and all 78 affected local/CI/legacy controls pass. Versioned source\ncontrols cover both legacy and strict contracts, identity/digest and helper drift\nrefusals, HTTPS downloads and credential cleanup. Full exact-head hosted gates must\npass before merge; source fixtures provide no reference or candidate acceptance.\n\nReference adoption, compatible package releases and hosted lifecycle qualification\nremain separate steps.\n",
+  "expectedHead": "46365cd94f8501f513f1cc413916ac24737d33e2",
+  "expectedBase": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "messageSha256": "364e6d088c740bb343ed489f240bf5dc35638d88d28305ca1c3b4c337956dbd8",
+  "lintVersion": "21.2.4",
+  "lintExitCode": 0,
+  "mergePrerequisite": "All effective strict current-base required checks and full exact-head CI pass, current review/merge rules satisfied, no active Builds publication"
+}

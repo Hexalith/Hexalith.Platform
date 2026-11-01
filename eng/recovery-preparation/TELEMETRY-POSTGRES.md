@@ -152,7 +152,8 @@ must stop and rebind before dump. The schema's two table checks never imply
 coverage for additional tables.
 
 Only after those separate observations may the constructor return custom
-archive `pg_dump --file=- --snapshot=<bound-id>` argv and same-snapshot canary
+archive `pg_dump --format=custom --snapshot=<bound-id>` argv with no output-file
+option (custom format treats `--file=-` as a literal source file), and same-snapshot canary
 stdin. Dump has no table/schema filter, so it covers the whole database and
 both observed schemas. The canary importer sets the snapshot before its first
 query. No runtime constructor executes it or validates a holder's actual

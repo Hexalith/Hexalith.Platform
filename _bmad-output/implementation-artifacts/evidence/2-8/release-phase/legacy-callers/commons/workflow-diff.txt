@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 765dd6c..2aa7d4d 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -26,7 +26,7 @@ jobs:
+       - run: python3 -m unittest discover -s tools -p 'test_verify_nuget_release.py' -v
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9
+     with:
+       solution: Hexalith.Commons.slnx
+       run-consumer-validation: true

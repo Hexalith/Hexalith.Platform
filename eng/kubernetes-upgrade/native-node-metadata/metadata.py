@@ -53,7 +53,7 @@ PATHS = (
 )
 
 
-def collect_metadata(root, paths, mount_paths, require_readonly=True):
+def collect_metadata(root, paths, mount_paths, require_readonly=True, require_security_profile=False):
     """Hash only fixed paths without following links or retaining file contents."""
     import hashlib
     import json
@@ -63,6 +63,19 @@ def collect_metadata(root, paths, mount_paths, require_readonly=True):
     from pathlib import Path
     deadline = time.monotonic() + 90
     root = Path(root)
+    security = None
+    if require_security_profile:
+        with open('/proc/self/status', 'r', encoding='ascii') as stream:
+            profile = stream.read(65537)
+        if len(profile) > 65536:
+            raise ValueError('metadata-process-profile-bound')
+        fields = dict(line.split(':', 1) for line in profile.splitlines() if ':' in line)
+        if (any(int(fields.get(key, '-1').strip(), 16) != 4 for key in ('CapEff', 'CapPrm', 'CapBnd'))
+                or fields.get('NoNewPrivs', '').strip() != '1'
+                or not os.statvfs('/').f_flag & os.ST_RDONLY):
+            raise ValueError('metadata-process-security-profile-refused')
+        security = {'onlyDacReadSearchEffectivePermittedAndBounded': True, 'noNewPrivileges': True,
+                    'rootFilesystemReadOnly': True}
     for path in mount_paths:
         if require_readonly and not os.statvfs(root / path.lstrip('/')).f_flag & os.ST_RDONLY:
             raise ValueError('source-mount-not-readonly')
@@ -159,6 +172,7 @@ def collect_metadata(root, paths, mount_paths, require_readonly=True):
         os.close(root_fd)
     result = {'kind': 'node-file-metadata-only', 'entries': entries, 'absentOptionalPaths': absent,
               'hashedBytes': total, 'sourceContentExported': False, 'networkOperations': 0,
+              'processSecurityProfile': security,
               'bindMountedFileMetadataIsNotHostSymlinkProof': True}
     if len(json.dumps(result).encode()) > 4 * 1024 * 1024:
         raise ValueError('metadata-response-bound')
@@ -168,7 +182,7 @@ def collect_metadata(root, paths, mount_paths, require_readonly=True):
 def program():
     return (inspect.getsource(collect_metadata) + '\nimport json\nprint(json.dumps(collect_metadata('
             + repr('/source') + ', ' + repr(PATHS) + ', '
-            + repr(tuple(p for _, p, _ in MOUNTS)) + '), sort_keys=True))\n')
+            + repr(tuple(p for _, p, _ in MOUNTS)) + ', require_security_profile=True), sort_keys=True))\n')
 
 
 def manifests(attempt, node, node_uid, namespace_uid, image):
@@ -199,7 +213,7 @@ def manifests(attempt, node, node_uid, namespace_uid, image):
                                     'command': ['/usr/local/bin/python3', '-I', '-S', '-B', '-c', program()],
                                     'securityContext': {'privileged': False, 'readOnlyRootFilesystem': True,
                                                         'allowPrivilegeEscalation': False,
-                                                        'capabilities': {'drop': ['ALL']}},
+                                                        'capabilities': {'drop': ['ALL'], 'add': ['DAC_READ_SEARCH']}},
                                     'resources': {'requests': {'cpu': '25m', 'memory': '64Mi'},
                                                   'limits': {'cpu': '500m', 'memory': '256Mi'}},
                                     'volumeMounts': [{'name': name, 'mountPath': '/source' + path, 'readOnly': True}
@@ -217,6 +231,12 @@ def assert_owned(observed, desired, uid):
             raise ValueError('metadata-owned-shape-drift')
     annotations = dict(observed['metadata'].get('annotations', {}))
     if desired['kind'] == 'Pod':
+        statuses = observed.get('status', {}).get('containerStatuses', [])
+        terminal = (observed.get('status', {}).get('phase') in ('Succeeded', 'Failed')
+                    and len(statuses) == 1 and statuses[0].get('name') == 'metadata'
+                    and isinstance(statuses[0].get('state', {}).get('terminated', {}).get('exitCode'), int))
+        cleared_ips = (terminal and annotations.get('cni.projectcalico.org/podIP') == ''
+                       and annotations.get('cni.projectcalico.org/podIPs') == '')
         for key in ('cni.projectcalico.org/containerID', 'cni.projectcalico.org/podIP', 'cni.projectcalico.org/podIPs'):
             if key not in annotations:
                 continue
@@ -226,6 +246,8 @@ def assert_owned(observed, desired, uid):
                     if not re.fullmatch('[a-f0-9]{64}', value):
                         raise ValueError()
                 else:
+                    if value == '' and cleared_ips:
+                        continue  # Calico removes both IPs after the fixed container terminates.
                     if not value or any(ipaddress.ip_interface(v).network.prefixlen not in (32, 128)
                                         for v in value.split(',')):
                         raise ValueError()
@@ -433,12 +455,18 @@ def collect(args, manifests_, attempt):
             if phase == 'Succeeded':
                 break
             if phase == 'Failed' or time.monotonic() >= deadline:
-                client.run('get', resource_path(pod) + '/log')
+                try:
+                    client.run('get', resource_path(pod) + '/log')
+                except Exception:
+                    pass  # Keep the observed Pod failure; unavailable diagnostics cannot replace it.
                 raise ValueError('metadata-helper-failed-or-timeout')
             time.sleep(2)
         outcome = client.run('get', resource_path(pod) + '/log')
         if (outcome.get('kind') != 'node-file-metadata-only' or outcome.get('sourceContentExported') is not False
-                or outcome.get('networkOperations') != 0 or not outcome.get('entries')):
+                or outcome.get('networkOperations') != 0 or not outcome.get('entries')
+                or outcome.get('processSecurityProfile') != {
+                    'onlyDacReadSearchEffectivePermittedAndBounded': True, 'noNewPrivileges': True,
+                    'rootFilesystemReadOnly': True}):
             raise ValueError('metadata-helper-result-refused')
         preserved = client.protected_state() == before
         if not preserved:

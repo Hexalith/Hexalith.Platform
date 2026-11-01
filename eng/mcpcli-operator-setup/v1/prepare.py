@@ -181,14 +181,14 @@ def prepare(private_root,output,now=None,auth=None):
   'volumes':[{'name':'data','persistentVolumeClaim':{'claimName':'task-data'}},{'name':'config','configMap':{'name':'redis-config'}},{'name':'private','secret':{'secretName':'mcpcli-redis','defaultMode':288}}]})
  redis['metadata']['labels']['app']='redis'
  resource('Service','redis',spec={'selector':{'app':'redis'},'ports':[{'name':'redis','port':6379,'targetPort':6379}]})
- access=json.loads((MCPCLI/FIXTURES[3]).read_text());access['metadata'].update(name='mcpcli-v1-access',namespace=namespace,labels={'hexalith.com/operator-task':namespace})
+ access=yaml.safe_load((MCPCLI/FIXTURES[3]).read_text());access['metadata'].update(name='mcpcli-v1-access',namespace=namespace,labels={'hexalith.com/operator-task':namespace})
  access['spec']['accessControl']['trustDomain']='cluster.local'
  for p in access['spec']['accessControl']['policies']:p.update(namespace=namespace,trustDomain='cluster.local')
  access['spec']['mtls']={'enabled':True,'sentryAddress':'dapr-sentry.dapr-system.svc.cluster.local:443','controlPlaneTrustDomain':'cluster.local'}
  documents.append(access)
  components=[]
  for fixture in FIXTURES[4:6]:
-  component=json.loads((MCPCLI/fixture).read_text());component['metadata'].update(namespace=namespace,labels={'hexalith.com/operator-task':namespace})
+  component=yaml.safe_load((MCPCLI/fixture).read_text());component['metadata'].update(namespace=namespace,labels={'hexalith.com/operator-task':namespace})
   for m in component['spec']['metadata']:
    if m['name']=='redisHost':m['value']='redis:6379'
    if m['name']=='redisPassword':m.pop('value',None);m['secretKeyRef']={'name':'mcpcli-redis','key':'password'}

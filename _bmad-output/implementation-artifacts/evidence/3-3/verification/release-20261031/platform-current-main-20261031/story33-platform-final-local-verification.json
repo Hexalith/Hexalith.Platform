@@ -1,0 +1,70 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final",
+  "base": "68b785b6a929050771e70d78f83ff10fea3daabc",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "-m:1",
+      "--disable-build-servers",
+      "-p:NuGetAudit=false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+      "-p:HexalithBuildsRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final",
+      "-p:HexalithTenantsRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants-final",
+      "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+      "-p:HexalithPartiesRoot=/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Parties"
+    ],
+    "exitCode": 0,
+    "log": "/tmp/story33-platform-final-source-build3.log"
+  },
+  "focused": {
+    "command": [
+      "dotnet",
+      "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "*PlatformRoutingCatalogMetadataTests",
+      "-class",
+      "*PlatformCatalogContractBindingTests",
+      "-class",
+      "*PlatformNativeTestPreparationTests",
+      "-xml",
+      "/tmp/story33-platform-final-focused.xml"
+    ],
+    "counts": {
+      "Pass": 32,
+      "Fail": 0,
+      "Skip": 0
+    },
+    "classes": {
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests": 18,
+      "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests": 8,
+      "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests": 6
+    },
+    "assembly": {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "e9fe95d7-33cf-4ba9-b814-1b72664317e1",
+      "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "run-date": "2026-10-31",
+      "run-time": "21:23:59",
+      "start-rtf": "2026-10-31T21:23:59.7006951+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-31T21:24:00.1178740+00:00",
+      "not-run": "0",
+      "passed": "32",
+      "skipped": "0",
+      "time": "0.417",
+      "time-rtf": "00:00:00.4170000",
+      "total": "32"
+    },
+    "xml": "/tmp/story33-platform-final-focused.xml",
+    "log": "/tmp/story33-platform-final-focused.log"
+  },
+  "limits": "Compile and pure protocol/input/preparation checks only; no topology, actual native child, image/package provenance or ordinary package/CI acceptance."
+}

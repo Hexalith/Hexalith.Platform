@@ -1,0 +1,544 @@
+{
+  "sourceRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final",
+  "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "preRepairCommit": "fb59abb49341f99c25654ba3c5119e96f3890d28",
+  "files": [
+    {
+      "path": "docs/operations/development-catalog-release-qualification.md",
+      "sha256": "036aa02aab5b22df8f43ed102a43f4596573641aa443ed3961906d1dc71f9e57"
+    },
+    {
+      "path": "docs/reference/development-route-catalog.md",
+      "sha256": "7433e1aa34c8d47ba3a6eca2786ff5c576f0bf37d900c6e82689c5cc2976ecd1"
+    },
+    {
+      "path": "samples/Hexalith.EventStore.Sample.BlazorUI/Services/EventStoreApiAccessTokenProvider.cs",
+      "sha256": "1382c795d420c08847eead87bda1b09e89f84d5e10acd1b88b6ab2e463695e31"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server.Host/Program.cs",
+      "sha256": "41441d2628b5fafa1ddc8ea6ba254666f5ad20946e699a67577a7341451b372f"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminBackupsController.cs",
+      "sha256": "38916c77aef008d6f55020a69bf73d447ca7f3f1a8bacb2931b9ea0f6c3f796e"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminConsistencyController.cs",
+      "sha256": "7c5656bb8993fe8a445e94d6131ae6ab6ff59f7b11d7f7a935e022e1cf783660"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminDaprController.cs",
+      "sha256": "4b6072f1cf8e24131614ceb872e2a46ae1c4395c63d3d2c40986b2763c480bf1"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminDeadLettersController.cs",
+      "sha256": "2ebb7a9a71e57b8472f6789742c66611b3c4fe2db483688f61ac38de0c18bb89"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminHealthController.cs",
+      "sha256": "c1e49ec157edd3d153ac5a1adb5afc2138046dca74627f46b042b1332d0a8ca2"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminProjectionsController.cs",
+      "sha256": "c213e3614b05359daca99ab80cee7ce086097564fc53855dc18b437e057b8c4c"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminStorageController.cs",
+      "sha256": "15b4ae0299c18f3954e5aa610e9e35f80d328fea4bea9766f1ddb7c8102a290d"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminStreamsController.cs",
+      "sha256": "9b88ce12da7783227384c771b254d6830a35f4dab0383e3a8814a4eaf8c4fcc3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminTenantsController.cs",
+      "sha256": "19f90544ec10cc74036c4c3242e2b3b1ef0b6cb827f8140e69e63ce1cd243e1a"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminTracesController.cs",
+      "sha256": "f7c698224c0ad3df763266934cfd253ec21bbc9bcb4ee67610f9a4fcc210e19d"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Controllers/AdminTypeCatalogController.cs",
+      "sha256": "cf46e4b980279c1f0c176486f3f7b52c8f9f678745906059850c780ba7e9c4ee"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprBackupCommandService.cs",
+      "sha256": "780954a5fda2f497543d0698b5e053edf00163d450d6794c8166f97062e2a4ce"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprConsistencyCommandService.cs",
+      "sha256": "ea45b53dcdd1277ccb97f188ca5eefe6b7a9afb53fdad07ec1ae70993352eef3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.Server/Services/DaprInfrastructureQueryService.cs",
+      "sha256": "206b069eb880aba64c4123c8be830a747ba66314f341da9a2c092f77930e5672"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Admin.UI/Services/AdminApiAccessTokenProvider.cs",
+      "sha256": "4a8267427deb3f0d9d26ba3d5479b9db16d04db1543aa310df665710962f5be5"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogAspireExtensions.cs",
+      "sha256": "28f776646c7f00d4a5d35e5fb9f6001934d00a4c675bbe59ee43412e5ccd7aa9"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComponentObserver.cs",
+      "sha256": "73d006f71e0921a51f9f667b928fcde570ea7a3c5d3a6454542557c3f25d79d8"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogComposition.cs",
+      "sha256": "5103c6b005771d2e536141f4208bb5f06b5546c7f360440d355ab94fa4740fe0"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogCompositionOptions.cs",
+      "sha256": "a616cab3ba8de95d008a769693cf3a73938f6df84510e7667662eeacb510084a"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogCustody.cs",
+      "sha256": "03ad1af58eedb3008bcb42b6145423e8df02b6781aa41051364afe8371c9c9dd"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwnerPreparationExtensions.cs",
+      "sha256": "b97f51f496af038d3beb13a32d2a5c749d42aadfa19a1e947017ea97617aab92"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogOwnerReadObserver.cs",
+      "sha256": "2bef828728285a5118ea1edfe22bf51b3880ecfd744be5b7822936a36e256b50"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogReceiver.cs",
+      "sha256": "2a4eda3e8eab46d7a76c84ff4182292d413766f6b25149c504b047992960bbbd"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/DevelopmentActorStateTransport.cs",
+      "sha256": "d323d394dd73a1e0b47eeb3007eff03313b600bd71fa7cd022661f290c88d884"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/EventStoreTechnicalHttpControllerAttribute.cs",
+      "sha256": "e8329c51978fd1f59b6f0ff35f483a0126d39464d8348a130ef7c8b4f359efc6"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/IRouteCatalogBackgroundBoundary.cs",
+      "sha256": "459fcccf6868a03621da39e565c0a73384d74121c2c589628ba8597239a634c9"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/IRouteCatalogBackgroundWork.cs",
+      "sha256": "bd9d2efeae81f6d94d769403ee29391f4b84333e5fc2cbcc76cc574ae47f3d0b"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogActivation.cs",
+      "sha256": "e370bfe9548b8311d9864e75a5514095c9d63215f391b486e71b85acee0a209f"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogEnvelope.cs",
+      "sha256": "427ce2b9a9fa65f9eed87574abf6e018d2ef2ec24bc6451b28b1a7a401628b47"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogGenerationReadback.cs",
+      "sha256": "ae125a0f5c7d90259a214e5635fd0dbc5372abeced99eb58346dedf15d30b0d0"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs",
+      "sha256": "c7b533fcf054ca99fad6db7bd3bb3ad178abe750e665a182ed51599c14a9ebd9"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverSurface.cs",
+      "sha256": "c705e50700ccff32b0c89d7440e5244bc2929aa98e70dab85f58aae42518cc56"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogRemoteExecution.cs",
+      "sha256": "2c76e03f7bfe6b885c887e4f2097b825f2b716729b9e4b5b6e00e3cea8fb26e1"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTechnicalHttpEndpoint.cs",
+      "sha256": "7a03627f68a119e6c2f0ce057a3fd87b27d36766c8bf7476d72cd6a141824ed4"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTechnicalHttpPolicy.cs",
+      "sha256": "8a35bfdac4bb4bdf5a19577e5c384c43605b5e0a35878e419905a25f51601ff1"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTechnicalHttpReceiver.cs",
+      "sha256": "af0ac916545ab4a39ce8ff52ba9eccbeeb6650c27cac2e005c207aab0465f795"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs",
+      "sha256": "15dca3b28edd6d7036abe89e3159f7c401b2dae3dca6b96a43bc2b22bf0bd9ec"
+    },
+    {
+      "path": "src/Hexalith.EventStore.DomainService/DomainRouteCatalogGuard.cs",
+      "sha256": "d9da2af2a1a7dd78e2defd0d8a3e9aba9523d99def284e74f52a17ff79303171"
+    },
+    {
+      "path": "src/Hexalith.EventStore.DomainService/DomainRouteCatalogSidecarMetadata.cs",
+      "sha256": "3cfd9ffc94006a85501243eb7cfe7540e9e7cfa95f9178ef4f892f367f03b5ed"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Gateway/Routing/DevelopmentDaprCallbackReceiver.cs",
+      "sha256": "6a93d5ab7000bd6609fd48a997d420af63706c76310410f3a432fb5c0528023b"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Server/Projections/ProjectionRebuildCheckpointStore.cs",
+      "sha256": "3d0bc88d5135ef93f85fdae5e44dbdab1291e4b330c6b816f804c0529e8851c3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Server/Projections/ProjectionSourceGuardQualification.cs",
+      "sha256": "0d00fa837e3e7832a76bb5c1ab55eb1b63e49f0b209d4cddb1e5ad41f71b8798"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Server/Routing/DevelopmentNativeActorReceiver.cs",
+      "sha256": "4605afbbc42d7a3acaba4ea09eb4d3283548b60b5ce874ef3d6a432f74f84283"
+    },
+    {
+      "path": "src/Hexalith.EventStore.Server/Routing/RunScopedRouteCatalogGateway.cs",
+      "sha256": "358e103a603e25d084f7967c9a00db85de124cc0846142ee80f85af557169f3b"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+      "sha256": "88fe4dc7fa2f9fa0986549a326d0d6829ef68ee7be87c62d9481a25817ccd8a5"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/CommittedRouteCatalogSnapshot.cs",
+      "sha256": "e14d46d614fa40f276b2235aea8f41740b88507426b1473f337f04a8bbbd3355"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentActorStateOwnerBoundary.cs",
+      "sha256": "c122ab9fa0006d8b57fc87b30177b78704547565d596f245cf3d6e9fa1383cc3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentActorStateOwnerObservation.cs",
+      "sha256": "01690b90b27a01ea2ca854db05081d6649a019f714bd0443cab6f11bff603621"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentAdminRouteCatalog.cs",
+      "sha256": "b210144a3c19f675a3b8cf3ad4233efe1f5c5e7b98f5064f67a7251ff2a7c1ab"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogBootstrap.cs",
+      "sha256": "acec382317adfa6162579c43b7b381c67d6d6c61318159949a2c728157a19d56"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogCallerExtensions.cs",
+      "sha256": "ed779e2e59242e2d161986cffd16ee28f76291f20f6fe3afede849174d8e5cc9"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogInputs.cs",
+      "sha256": "e4e40c08b47590d8b79ef89bd0389cb020c318848a34cf158cbd6ecc36cf9b76"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentTechnicalHttpTransport.cs",
+      "sha256": "d56500127ba29c8d11ee5665bfe01bb8d8624eb7625b9ea8ec5c7dd457f4edfd"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs",
+      "sha256": "9df48ddd0d08bc05979d4532941da6818ae2904745c80f1c8d641be1f42709c1"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/IDevelopmentDaprCallbackReceiver.cs",
+      "sha256": "ee883789e2f9a4d0151dbebe4654e1c9b41c5e671fd8aba48ad0f6dd8e13105b"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/IDevelopmentNativeActorReceiver.cs",
+      "sha256": "8ba0b8f233c41556ee8ac826d6b47faf625ebfcddda7bb4ba69e0ad875727bfd"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/ObservedRouteCatalogHost.cs",
+      "sha256": "f556e39c583231cf5d5783718666a1bafa42c4430013a4558d4301dff1838d85"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs",
+      "sha256": "12a688dac72aa645393e0bcc73d083b33cd37f5d3aaa63836bf2c98bf83749ef"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs",
+      "sha256": "deea4989e0332215ed57ea074c9579fd4b460ee4f128663004f48a93c75e595b"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogBackgroundBoundary.cs",
+      "sha256": "41163bd020ae81b7b318ed5aa53fe465169a97b8b24fc39026cb7d765f934aad"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogBackgroundWork.cs",
+      "sha256": "ebdb9301517b39381151f21477e94e7ae7cff39d65d4b2cdb8da67a812fd26fa"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogDispatchLease.cs",
+      "sha256": "1c5b164578ea7a12b723067a9c7162e10a4da6d7797e90679925ef2ad9ad732d"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogHostOptions.cs",
+      "sha256": "7d497038927aa87b211dbd205c71412f358dd86a8952bde27943b0b917a3e13e"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogInvocationHandler.cs",
+      "sha256": "e0f706307d7335fed7e5276e36dc032ac345e9b4a9370ccc6f8b0e98bb451abb"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogLeaseReleaser.cs",
+      "sha256": "807196bd452d4cee062a46f18fdf09d1fa413419e7b3860195b0a11dfb249524"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogPeerBinding.cs",
+      "sha256": "b097fcb6be6fa9c138103e109a2d0468272d3ec8ef1aaaffe9d9a3eaad5e5260"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogRemoteCall.cs",
+      "sha256": "3f277b63942c62f7474904084a7dd2b304c98c55ee57914d851cdd1a903ce8d9"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogRemoteScope.cs",
+      "sha256": "59e647b7014ed7dab7bd5750b18ffa421aafda8f0a193fda361e6561197b78f8"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogServiceCollectionExtensions.cs",
+      "sha256": "8fa33b2bc0a1111034c029d500172178a542c58e5e1fca40d3dc78446ba5270f"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpActionObservation.cs",
+      "sha256": "8b08a62d10140b0010d1cecd8df0b69e7db3f7c59ecb6c852b044ed2b94edab3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpCatalogBinding.cs",
+      "sha256": "fcbf23e29186a35e835b6f3266508831eefe338ce19d5c6fe7ed89ed83482954"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpObservationPass.cs",
+      "sha256": "b345aba090687ed5572cf2dc157c7b1e99627523c4a9b5ce026c3382f6981903"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs",
+      "sha256": "addeab11ba8d788bd7f9b3c0c97f6f217d50fe41a94a38a87ee3a4d9bafbabb3"
+    },
+    {
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteTemplate.cs",
+      "sha256": "9a2cc5f52bf122e4d305a1ffb0e1b1cfd32afbc1a7e29c38a66270a34a8032ca"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminCommandsQueryController.cs",
+      "sha256": "32c71765805d069be1903f32465b560d6c1d3f0473267caf6dce5b91c058c8a8"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminProjectionRebuildController.SourceGuard.cs",
+      "sha256": "e5cb30c08452fe5d53979223a9cf497c9aecb81db295a6f1039d99415fbdcac0"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminProjectionRebuildController.SourceProof.cs",
+      "sha256": "3d458aa9f659468559ebc986ce71b677c3fd96f0fdc72f4b348be8d3df82e648"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminProjectionRebuildController.cs",
+      "sha256": "5bad33e970931f60a4fe0c0159e53b404487e7d5ed23849019920ee538ca8ada"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs",
+      "sha256": "e58629d0993ac60d60cbd900380c61f3f769cc4bb9d03adb16ccb8ea9e0f4f8b"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminStreamQueryController.cs",
+      "sha256": "85bdd45d5c26e1b8f06a1ffd4066beab76e95144e5c121a63459c61a8ee3e833"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/AdminTraceQueryController.cs",
+      "sha256": "df682c8d2da20e5061a1146509933b49c20912dbd4cf57b99c55e10c10b421a2"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/CommandStatusController.cs",
+      "sha256": "4e9c92be485696043e0af55478f12c9239af902dd775b596389fd1d05c8ad64a"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/CommandValidationController.cs",
+      "sha256": "21e2a58a345ca08abd88bdddd05f796319323859401c734a8667d4cda8eb49d4"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/ProjectionDeliveryReconciliationResponse.cs",
+      "sha256": "cb0ba72be585bcbb9fd6d03cb93b88c8e612a4ed38791717c132d629d6a0b844"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/ProjectionDeliveryWriterProtocolResponse.cs",
+      "sha256": "60678b752c9d16d2d477494bc8fae6f4e3e77a31d4064082ef06b1f7f5fed5c4"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/ProjectionSourceGuardQualificationResponse.cs",
+      "sha256": "a23faced8c17e2c2e20f7bf9c2fdad0c50fb51f41ad7429ebe2aa9ee8ed7839f"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/ProjectionSourceProofBootstrapResponse.cs",
+      "sha256": "af19a2100b7c0e83d157370efe42bc99da613dd64bd84a45bcce0d4571baea93"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+      "sha256": "1960158a57341e420f143b40745f5bbbf579f5ca9bcc27e8f78bfc86c126f1a5"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/QueryValidationController.cs",
+      "sha256": "a60d1cd4570203fe40063ba9a169c0c15dc5aafb90392a04bf2cdaa8fbfca373"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Controllers/RetainedIdentityHistoryController.cs",
+      "sha256": "5685c0642ee43252962866f4d0b9dcea95217ce122560fc7c59574974cf03cd7"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs",
+      "sha256": "b37b30b04112d2f8c8d96b72e53a283768d272a7374bfdc1017b68eea9450df6"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Program.cs",
+      "sha256": "1ee993910c0cd760e92646df5568f277c87db341699972f11d13f49fcee63105"
+    },
+    {
+      "path": "src/Hexalith.EventStore/Services/DaprSnapshotPolicyRepository.cs",
+      "sha256": "0ffdde8df12166581c1ea1aaa40dc8ed5c21f533407f45631f1c5a3e10d4c346"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/DevelopmentActorStateMetadataTimeoutTests.cs",
+      "sha256": "d18c8df150e1e60542eab9e85467a56e6cfa68f6cf0c332c33417c49e72d8a02"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/DevelopmentActorStateOwnerBindingTests.cs",
+      "sha256": "a4ef37476fbaff1628618f9b5d7ded30379b9ff97f343acc5233b53c29a15592"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/DevelopmentAdminTransportReviewTests.cs",
+      "sha256": "a8abb60246e8b8eb2a74825473b738ad7a7f9ce8f70744044651a37b96432667"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/DevelopmentAdminTransportTests.cs",
+      "sha256": "4bc9796afe54b138cc7f388c5adbdffc50a578bdb08cf66fe8a7dcb28f3901f0"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/TechnicalAdminHost.cs",
+      "sha256": "b093ced1acf9f89eb2617945a26fc3285c505f5afffdc9a9f164774a7ee78241"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.Server.Tests/Routing/TechnicalCatalogMemoryStore.cs",
+      "sha256": "d5605f4db920029f2fec73bc86209e2b7f90e997165588fb80c5cbc59eac1a63"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Admin.UI.Tests/Services/AdminApiAccessTokenProviderRoleTests.cs",
+      "sha256": "20ff6c0b7cb6d241605b3fb8816c378f11566a87e303c708b67455095fbc24b5"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentActorStateOwnerModelTests.cs",
+      "sha256": "1e1c3f8b6bbfe0e8e97f64a106c06f60cfb83d7b9fb5a20e5b72d727c6bd6972"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentCatalogModelCustody.cs",
+      "sha256": "411d603e8b3447efa2720f95e2dd40b791fb9fa16cba90ef0ab986dc11751603"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogAspireTests.cs",
+      "sha256": "f9a415a657dff36c33904cf0e9c59c1a718c89e192f5aa28019d59e098c1252b"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogCustodyTests.cs",
+      "sha256": "724ecabfe2b1a0c6997af2fcf064690246b9cb660ecd23ee9b0448a435f6e4d9"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Client.Tests/Projections/RecordingDaprClient.cs",
+      "sha256": "f2cbc83a92fb60353d14367fdf901753ecdcb98de92afc40f8e07baac038ad9a"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NativeActorCatalogLiveTests.cs",
+      "sha256": "b221c218a980bf3ad589f2d5ebef46b595d892b00ea135b3bb00744a5cf8f405"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj",
+      "sha256": "b125cac627178aff59245aecbdef5cf057d8ed93a2c9978a010d80694f4b80a3"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogAdmissionTests.cs",
+      "sha256": "aa389b0f5e8c9cd20c5333db7cc1bcabaa5831529411597e0086fdc4a396ba5d"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentCatalogSuccessorTests.cs",
+      "sha256": "2ea0f0bb9884ad5767bf261a636c26cdd5a775f372ff9d0b358df068065fc2c4"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/DevelopmentGatewayAdminMetadataTests.cs",
+      "sha256": "72201d97a4cca00928a92c6e7b7ba69cfe578ffcfb8413092bc269ded0eb8a81"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/PreviousRouteCatalogPeerLoadContext.cs",
+      "sha256": "6e136c4cebe42921bf82c93b477ec2874213fc0aa1d30a0741ccde7fa3ebba9f"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/RouteCatalogTestFixture.cs",
+      "sha256": "e37bd4e80927f6b5e1f1be7e0e66cf4acf11ddce67e07559f9717dcfe8644cc5"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpBackgroundTests.cs",
+      "sha256": "5bd4a1da7e4cfb72ea420d80f7e6f45379e8df6eec99d28c0eb964e09ff4cd66"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpBindingConfigurationTests.cs",
+      "sha256": "ed36fa4436b5b3afecaa80dfc23ef66da2af63727fa28cfab0ae1e7a390583d4"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpBindingTests.cs",
+      "sha256": "5c1966cacb2ffcb618b6176f7a160d5d60f60964c43a84a8b6c1dcc1dbc4fc93"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpCatalogFixture.cs",
+      "sha256": "0393c9103908cc29ddbd4ff840d4ffd4aef8f392515dde0d4bcb6db34d66d366"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpCatalogReceiverTests.cs",
+      "sha256": "16289b802751616492915701f3ec5580bbcc92550ee94083227e5ad2b27d4d8d"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpControllerFeatureProvider.cs",
+      "sha256": "a7cc6bfb25ccc182496d2f8623a228a56030ef3462971bfa30d5757dd93902e7"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpCoreCommandHandler.cs",
+      "sha256": "19e7bdd6d1f6e5d67be2a073e59a74a61afe00c9742415028cf6ae367c0134b4"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpCorePeerTests.cs",
+      "sha256": "84b0a424c809299361c399144af7a3a5320ba4815fdc705d72f471c5e838ff83"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpDomainPeerTests.cs",
+      "sha256": "f650092687ac25773f426add60ab1868e78111b3b6bbd79cea0840f727bac63c"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInstalledMetadataTests.cs",
+      "sha256": "eba8f15fe9c5442daff47f0e4d741a2b9af00aeabcf2960b860e6bcdeacaa481"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs",
+      "sha256": "c7073e7cd0cf961992377e88d002ed3e26668ecb4aa80f6aa1421a05aec6610d"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationTests.cs",
+      "sha256": "fd1e1be2eebe1a495617324bb19b5a0d37747c369827a498adfa8780e19cedf0"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpNativeRpcTests.cs",
+      "sha256": "e4a345e4c9bd323211dffb0adc2305320111f869a0e3ffea5e72bde9da123820"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpPreviousPeerTests.cs",
+      "sha256": "1d5e55d495448cf76488d524b200944a41f44389adb651980fb7355986f74f29"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpReadbackTests.cs",
+      "sha256": "c132af518bb32a2f3f312c3764df37065f7c534cc681c2fc4e2992fa3d68cb91"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpWorkloadActionTests.cs",
+      "sha256": "c726469ed9a7cc57e59ef89c38f527a28edb989adc6364ecf860bb81c547bcad"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalMaintenanceWireTests.cs",
+      "sha256": "18a41c28275bd25ed2ed82aa7e6b0db2e8bb08fd9629445f6853704343b4f6b1"
+    }
+  ],
+  "parentAudit": "Original7639line133filecompleteaudit plus fullyread twofile11addition4deletiondelta; other131filehashes unchanged",
+  "completePatchSha256": "4fc297ab0a9e7d8b6ade8be2483abda2d03ac3514d8b178788345af508666f35",
+  "deltaSha256": "d236096ddbc9a5d2504a766ad7151334aaa64e3ef93d71ad95dad52173f8bdeb",
+  "verification": "204/204 focused +1/1alltrackedcandidate secret scan; buildclean; hostedexactnewheadstillrequired",
+  "committedHead": "f3025fb2489dc776edb6dc5e1722f7d530b34daf"
+}

@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-10-31T21:01:18.479099+00:00",
+  "id": 41238371177,
+  "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41238371177",
+  "source": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "status": "waiting",
+  "actor": "jpiquot",
+  "triggeringActor": "jpiquot",
+  "createdAt": "2026-10-31T20:19:35Z",
+  "jobs": [
+    {
+      "id": 124646836727,
+      "name": "Verify exact live-main source proof",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124647265740,
+      "name": "Publish EventStore packages and container",
+      "status": "waiting",
+      "conclusion": null
+    }
+  ],
+  "pendingEnvironments": [
+    {
+      "environment": "production",
+      "id": 18422589799,
+      "currentUserCanApprove": true,
+      "reviewers": [
+        {
+          "type": "User",
+          "login": "jpiquot"
+        }
+      ]
+    }
+  ],
+  "mergedSdkPrerequisite": false,
+  "reviewSubmitted": false,
+  "releaseDispatchedByThisPhase": false,
+  "disposition": "No concurrent main mutation or duplicate publication. Existing run source lacks this three-file SDK helper; its selected source/cohort ownership must be reconciled rather than assuming it is our newly qualified candidate."
+}

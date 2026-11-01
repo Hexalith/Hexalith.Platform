@@ -1,0 +1,9 @@
+{
+  "title": "fix(module): guarantee disposable CI cleanup",
+  "body": "Declared CI suites now persist exact recovery ownership before allocation, admit compatible\nsame-job attachments, withdraw active holds before resource stops, and clean up without\nretaining CI failures. First outcomes and expiry remain unchanged through cancellation and\nretry.\n\nThe workflow helper confines evidence to workspace/TestResults and uses the fixed job-temp\nreceipt. It refuses link traversal, validates ASCII profile and owner identities, binds option\nvalues as data, and forwards cancellation before exact-owner finalization. The packaged host can\nuse the run-scoped catalog APIs already published in EventStore 3.129.0.\n\nLocal-retention fixtures explicitly select local test policy on hosted runners. CI controls\ncover blocked withdrawal with no resource stop and permitted withdrawal with the original\nexpired stopping token. Independent metadata work does not renew the resource stopping\nallowance.\n\nValidation: all normal PR checks and CI run 41236477150 pass. The hosted module suite passes\n2,663 cases with five existing skips; other unit, package and catalog gates pass. Focused\nverification passes 24 helper controls and 37 CI-environment cases, including all 16 CI\nlifecycle cases, with zero-warning Release builds. Real extracted-package seed checks pass.\nFixture and archive checks do not establish reference hosted topology or candidate acceptance.\n\nShared workflow activation, compatible owner-package adoption, publication and reference hosted\nintegration remain separate steps.\n",
+  "expectedHead": "86ed14c4627e12b9dccb1b7067042cd1684a69a2",
+  "expectedBase": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+  "messageSha256": "c2a312c572f69331148fec1fc7db6a30c13b4920a174d9cd3259210cb5748523",
+  "lintVersion": "21.2.4",
+  "lintExitCode": 0
+}

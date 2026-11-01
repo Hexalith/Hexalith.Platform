@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-31T18:58:20.633791+00:00",
+  "scope": "Local uncommitted hardening on reconciled829f1a3; not a committed archive/hosted proof",
+  "sourceSha256": {
+    "Github/run-module-integration/run_module_integration.py": "a4d0fd045ec16e4838fb952d86154b950a7823b7654918211ac31bbed3222789",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "3906dad5e93e93aa84acb3fda9a0c75aec12924a03754258b9410897c11902eb",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f"
+  },
+  "ciLifecyclePassed": 14,
+  "ciLifecycleFailed": 0,
+  "ciLifecycleSkipped": 0,
+  "executingStopObservers": [
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")"
+  ],
+  "sourceAudit": "Full helper and C# receipt/lifecycle refactor read; original cancellation forwarding, exact cleanup, owner context/rebinding and all terminal/expiry assertions preserved. New path/profile negative controls inspected.",
+  "publishedOrHostedAcceptance": false,
+  "committedSourceVerified": "a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+  "committedSourceCheckedAt": "2026-10-31T19:04:07.935351+00:00",
+  "validatedFinalSourceSha256": {
+    "Github/run-module-integration/run_module_integration.py": "a4d0fd045ec16e4838fb952d86154b950a7823b7654918211ac31bbed3222789",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "3906dad5e93e93aa84acb3fda9a0c75aec12924a03754258b9410897c11902eb",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f"
+  },
+  "helperControls": 22,
+  "localQuality": "Style0, Bandit0 (precise owner-style subprocess review markers), max complexity15/9; remote gates still required",
+  "sourceLimit": "Functional checks ran against the exact committed file bytes before commit; binary informational-version stamping is refreshed separately in committed archive proof."
+}

@@ -1,0 +1,24 @@
+116: 2026-10-31T20:15:34.5972874Z ##[endgroup]
+117: 2026-10-31T20:15:34.5973530Z ##[group]Checking out the ref
+118: 2026-10-31T20:15:34.5981044Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/11/merge
+119: 2026-10-31T20:15:34.7019313Z ##[error]error: invalid path 'module/validation/epic-16-published-artifact-qualification/attempt-20261028-implementation-01/collection-01/isolated/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/repository_signatures_5.0.0.dat'
+120: 2026-10-31T20:15:34.7060363Z ##[group]Removing auth
+121: 2026-10-31T20:15:34.7061074Z Removing SSH command configuration
+122: 2026-10-31T20:15:34.7070482Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+123: 2026-10-31T20:15:34.7505505Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+124: 2026-10-31T20:15:35.3112863Z Removing HTTP extra header
+125: 2026-10-31T20:15:35.3126509Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+126: 2026-10-31T20:15:35.3527297Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+127: 2026-10-31T20:15:35.9308540Z Removing includeIf entries pointing to credentials config files
+145: 2026-10-31T20:15:36.3472044Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+146: 2026-10-31T20:15:36.9159288Z Removing credentials config 'D:\a\_temp\git-credentials-fa879ce4-49c9-4ac9-8d30-ab95ff8b8c0c.config'
+147: 2026-10-31T20:15:36.9171295Z ##[endgroup]
+148: 2026-10-31T20:15:36.9198231Z ##[error]The process 'C:\Program Files\Git\bin\git.exe' failed with exit code 128
+149: 2026-10-31T20:15:36.9636516Z Post job cleanup.
+150: 2026-10-31T20:15:37.1881535Z [command]"C:\Program Files\Git\bin\git.exe" version
+151: 2026-10-31T20:15:37.2346767Z git version 2.56.0.windows.4
+152: 2026-10-31T20:15:37.2427321Z Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\dedc1910-c1d6-4f9f-a778-0d87b49de409\.gitconfig'
+153: 2026-10-31T20:15:37.2455515Z Temporarily overriding HOME='D:\a\_temp\dedc1910-c1d6-4f9f-a778-0d87b49de409' before making global git config changes
+154: 2026-10-31T20:15:37.2457619Z Adding repository directory to the temporary git global config as a safe directory
+155: 2026-10-31T20:15:37.2469905Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Hexalith.Conversations\Hexalith.Conversations
+156: 2026-10-31T20:15:37.3123174Z Removing SSH command configuration

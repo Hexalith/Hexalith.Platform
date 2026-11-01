@@ -1,0 +1,27 @@
+269: 2026-10-31T20:15:44.7852281Z ##[endgroup]
+270: 2026-10-31T20:15:46.2013039Z E..........
+271: 2026-10-31T20:15:46.2013343Z ======================================================================
+272: 2026-10-31T20:15:46.2013952Z ERROR: test_actual_overlay_selects_packages_and_external_successor_locks (test_minimal_module_compatibility_overlay.MinimalModuleCompatibilityOverlayTests.test_actual_overlay_selects_packages_and_external_successor_locks)
+273: 2026-10-31T20:15:46.2014483Z ----------------------------------------------------------------------
+274: 2026-10-31T20:15:46.2014713Z Traceback (most recent call last):
+275: 2026-10-31T20:15:46.2018842Z   File "/home/runner/work/Hexalith.Conversations/Hexalith.Conversations/tests/tooling/test_minimal_module_compatibility_overlay.py", line 41, in test_actual_overlay_selects_packages_and_external_successor_locks
+276: 2026-10-31T20:15:46.2019443Z     result = subprocess.run(command, cwd=ROOT, env=environment, text=True, capture_output=True, check=True)
+277: 2026-10-31T20:15:46.2019780Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+278: 2026-10-31T20:15:46.2020120Z   File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/subprocess.py", line 571, in run
+279: 2026-10-31T20:15:46.2020418Z     raise CalledProcessError(retcode, process.args,
+280: 2026-10-31T20:15:46.2022367Z subprocess.CalledProcessError: Command '['dotnet', 'msbuild', '/home/runner/work/Hexalith.Conversations/Hexalith.Conversations/tests/fixtures/Hexalith.Conversations.MinimalModule/src/Hexalith.Conversations.MinimalModule.Contracts/Hexalith.Conversations.MinimalModule.Contracts.csproj', '-nologo', '-t:MinimalModuleCompatibilitySelectPackages', '-p:Configuration=Release', '-p:MinimalModuleCompatibilityMode=package', '-p:MinimalModuleCompatibilityUseSuccessorLocks=true', '-p:CustomAfterMicrosoftCommonTargets=/home/runner/work/Hexalith.Conversations/Hexalith.Conversations/tests/compatibility/MinimalModule/RegisteredCommand.targets', '-getProperty:NuGetLockFilePath,Configuration', '-getItem:ProjectReference,PackageReference']' returned non-zero exit status 1.
+281: 2026-10-31T20:15:46.2024026Z 
+282: 2026-10-31T20:15:46.2024135Z ----------------------------------------------------------------------
+283: 2026-10-31T20:15:46.2024328Z Ran 11 tests in 1.307s
+284: 2026-10-31T20:15:46.2024408Z 
+285: 2026-10-31T20:15:46.2024466Z FAILED (errors=1)
+286: 2026-10-31T20:15:46.2024933Z Minimal-module platform compatibility: 7 passed, 0 failed/skipped/errors
+287: 2026-10-31T20:15:46.2098509Z ##[error]Process completed with exit code 1.
+288: 2026-10-31T20:15:46.2147144Z ##[group]Run actions/upload-artifact@v7.0.2
+289: 2026-10-31T20:15:46.2147301Z with:
+290: 2026-10-31T20:15:46.2147435Z   name: minimal-module-platform-compatibility
+291: 2026-10-31T20:15:46.2147607Z   path: TestResults/minimal-module/*
+292: 2026-10-31T20:15:46.2147746Z   retention-days: 7
+293: 2026-10-31T20:15:46.2147867Z   if-no-files-found: warn
+294: 2026-10-31T20:15:46.2147995Z   compression-level: 6
+295: 2026-10-31T20:15:46.2148112Z   overwrite: false

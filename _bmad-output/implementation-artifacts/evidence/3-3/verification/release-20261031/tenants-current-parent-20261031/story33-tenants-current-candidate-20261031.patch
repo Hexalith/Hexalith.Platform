@@ -1,0 +1,1428 @@
+diff --git a/.github/workflows/source-reference.yml b/.github/workflows/source-reference.yml
+index 323c61ae..655b45fe 100644
+--- a/.github/workflows/source-reference.yml
++++ b/.github/workflows/source-reference.yml
+@@ -65,3 +65,103 @@ jobs:
+           --configuration Debug --no-build --no-restore -p:UseHexalithProjectReferences=true
+           --filter-class Hexalith.Tenants.Contracts.Tests.TenantCatalogTests
+           --minimum-expected-tests 1 --fail-skips on
++
++  development-catalog:
++    name: Actual source catalog owner profile
++    runs-on: ubuntu-latest
++    timeout-minutes: 35
++    env:
++      UseHexalithProjectReferences: 'true'
++      UseNuGetDeps: 'false'
++      SSL_CERT_DIR: /home/runner/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
++      TENANTS_LIVE_REQUIRE_COLD_BOOTSTRAP: 'true'
++      TENANTS_SOURCE_CATALOG_RESULT: ${{ runner.temp }}/tenants-source-catalog-result.json
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
++        with:
++          fetch-depth: 0
++          submodules: false
++          persist-credentials: false
++      - name: Initialize only this standalone repository's declared roots
++        run: git -c submodule.recurse=false submodule update --init
++      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
++        with:
++          global-json-file: global.json
++      - name: Record the actual selected SDK source and producer version
++        shell: bash
++        run: |
++          set -euo pipefail
++          source_sha="$(git rev-parse HEAD:references/Hexalith.EventStore)"
++          test "$(git -C references/Hexalith.EventStore rev-parse HEAD)" = "$source_sha"
++          printf 'TENANTS_SOURCE_SDK_SHA=%s\n' "$source_sha" >> "$GITHUB_ENV"
++          source_version="$(dotnet msbuild references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj -nologo -getProperty:Version)"
++          if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.+-][0-9A-Za-z.-]+)?$ ]]; then
++            echo 'The selected source producer version is invalid.' >&2
++            exit 1
++          fi
++          printf 'TENANTS_SOURCE_SDK_PRODUCER_VERSION=%s\n' "$source_version" >> "$GITHUB_ENV"
++          # Record provenance; do not replace another dependency owner's numeric catalog pin.
++          python3 - <<'PY'
++          import datetime, json, os, pathlib, subprocess
++          before = pathlib.Path(os.environ["RUNNER_TEMP"]) / "tenants-source-before-volumes.json"
++          volumes = subprocess.check_output(["docker", "volume", "ls", "-q"], text=True, timeout=30).splitlines()
++          with before.open("x", encoding="utf-8") as output:
++              json.dump(volumes, output)
++          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
++              output.write("TENANTS_SOURCE_BACKEND_BEFORE_PATH=" + str(before) + "\n")
++              output.write("TENANTS_SOURCE_BACKEND_STARTED_AT=" + datetime.datetime.now(datetime.timezone.utc).isoformat() + "\n")
++          PY
++      - name: Verify material provisioning refuses retained or substituted inputs
++        run: python3 -m unittest discover -s scripts/tests -p 'test_source_catalog_profile.py' -v
++      - name: Initialize the same Dapr tuple as the selected SDK source gate
++        uses: Hexalith/Hexalith.Builds/Github/dapr-init@fff4a212180d8cd1c5c0759655a9bc4fb6963c45
++        with:
++          version: '1.18.2'
++          runtime-version: '1.18.7'
++      - name: Prove fresh backend ownership before provisioning private owner material
++        run: >-
++          python3 scripts/prepare-source-catalog-profile.py
++          --sdk-source-sha "$TENANTS_SOURCE_SDK_SHA"
++          --output "${{ runner.temp }}/tenants-source-backend.json"
++      - name: Trust the SDK development certificate for actual HTTPS peers
++        shell: bash
++        run: |
++          set -euo pipefail
++          sudo apt-get update
++          sudo apt-get install -y libnss3-tools
++          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
++            mkdir -p "$live_nss_directory"
++            if [ ! -f "$live_nss_directory/cert9.db" ]; then
++              certutil -N -d "sql:$live_nss_directory" --empty-password
++            fi
++          done
++          dotnet dev-certs https --trust
++          for live_nss_directory in "$HOME/.pki/nssdb" "$HOME/.local/share/pki/nssdb"; do
++            live_cert_index=0
++            for live_certificate in "$HOME"/.aspnet/dev-certs/trust/*.pem; do
++              [ -f "$live_certificate" ] || continue
++              certutil -A -d "sql:$live_nss_directory" -n "tenants-source-dev-cert-$live_cert_index" -t 'P,,' -i "$live_certificate"
++              live_cert_index=$((live_cert_index + 1))
++            done
++          done
++      - name: Build the actual source runtime graph serially
++        run: >-
++          dotnet build tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
++          --configuration Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false
++          -warnaserror -m:1 -nr:false --disable-build-servers
++      - name: Require actual cohort binding, owned bootstrap, persisted effects and refusal
++        run: >-
++          dotnet test tests/Hexalith.Tenants.IntegrationTests/Hexalith.Tenants.IntegrationTests.csproj
++          --configuration Debug --no-build --no-restore
++          -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false
++          --filter-class Hexalith.Tenants.IntegrationTests.SourceCatalogOwnerProfileTests
++          --minimum-expected-tests 1 --fail-skips on
++      - name: Retain only credential-free source qualification results
++        if: always()
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++        with:
++          name: tenants-source-catalog-owner-profile
++          path: |
++            ${{ runner.temp }}/tenants-source-backend.json
++            ${{ runner.temp }}/tenants-source-catalog-result.json
++          if-no-files-found: warn
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index bf1844a6..87908dd2 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -1,4 +1,8 @@
+ <Project>
++  <!-- The next SDK cohort API is source-only until its normal released package is qualified. -->
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'">
++    <DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_COHORT</DefineConstants>
++  </PropertyGroup>
+   <!-- Normalize only qualified stable binaries; metadata suffixes do not change their API. -->
+   <PropertyGroup>
+     <HexalithTenantsCatalogArtifactsAvailable>false</HexalithTenantsCatalogArtifactsAvailable>
+Submodule references/Hexalith.EventStore e014af6c...316da6cf (commits not present)
+diff --git a/src/Hexalith.Tenants.Api/Program.cs b/src/Hexalith.Tenants.Api/Program.cs
+index ddd81922..0ac00a5c 100644
+--- a/src/Hexalith.Tenants.Api/Program.cs
++++ b/src/Hexalith.Tenants.Api/Program.cs
+@@ -22,7 +22,10 @@ builder.AddServiceDefaults();
+ // gateway client; the interactive UI uses EventStore client libraries directly.
+ builder.Services.AddControllers();
+ builder.Services.AddHttpContextAccessor();
+-#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++builder.Services.AddEventStoreDevelopmentGeneratedRestCatalog(builder.Configuration, "tenants-api",
++    typeof(Hexalith.Tenants.Contracts.Routing.TenantCatalogDeclarations).Assembly);
++#elif HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+ builder.Services.AddEventStoreRouteCatalog(builder.Configuration);
+ string? catalogAppId = builder.Configuration["EventStore:DomainService:AppId"];
+ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"])
+@@ -138,6 +141,9 @@ if (!app.Environment.IsDevelopment())
+ 
+ app.UseHttpsRedirection();
+ app.UseRouting();
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++app.UseEventStoreDevelopmentGeneratedRestCatalogReceiver();
++#endif
+ #if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
+ app.UseEventStoreHttpHostSecurity();
+ #endif
+diff --git a/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj b/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
+index 0784adcf..2ebdf756 100644
+--- a/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
++++ b/src/Hexalith.Tenants.AppHost/Hexalith.Tenants.AppHost.csproj
+@@ -24,6 +24,7 @@
+     <ProjectReference Include="$(HexalithEventStoreRoot)\src\Hexalith.EventStore.Aspire\Hexalith.EventStore.Aspire.csproj" IsAspireProjectResource="false" GlobalPropertiesToRemove="Version" Condition="'$(HexalithEventStoreFromSource)' == 'true'" />
+     <PackageReference Include="Hexalith.EventStore.Aspire" Condition="'$(HexalithEventStoreFromSource)' != 'true'" />
+     <ProjectReference Include="..\Hexalith.Tenants.Aspire\Hexalith.Tenants.Aspire.csproj" IsAspireProjectResource="false" />
++    <ProjectReference Include="..\Hexalith.Tenants.Server\Hexalith.Tenants.Server.csproj" IsAspireProjectResource="false" />
+     <ProjectReference Include="$(HexalithMemoriesRoot)\src\Hexalith.Memories.Aspire\Hexalith.Memories.Aspire.csproj" IsAspireProjectResource="false" Condition="'$(HexalithMemoriesFromSource)' == 'true'" />
+     <PackageReference Include="Hexalith.Memories.Aspire" Condition="'$(HexalithMemoriesFromSource)' != 'true'" />
+   </ItemGroup>
+diff --git a/src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json b/src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json
+index 5ca3f07a..f8da181e 100644
+--- a/src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json
++++ b/src/Hexalith.Tenants.AppHost/KeycloakRealms/hexalith-realm.json
+@@ -453,6 +453,20 @@
+             "access.token.claim": "true",
+             "userinfo.token.claim": "true"
+           }
++        },
++        {
++          "name": "eventstore-ui-surface",
++          "protocol": "openid-connect",
++          "protocolMapper": "oidc-hardcoded-claim-mapper",
++          "consentRequired": false,
++          "config": {
++            "claim.name": "eventstore:surface",
++            "claim.value": "ui",
++            "jsonType.label": "String",
++            "id.token.claim": "false",
++            "access.token.claim": "true",
++            "userinfo.token.claim": "false"
++          }
+         }
+       ]
+     },
+diff --git a/src/Hexalith.Tenants.AppHost/Program.cs b/src/Hexalith.Tenants.AppHost/Program.cs
+index ad4db0ce..55fbc5d9 100644
+--- a/src/Hexalith.Tenants.AppHost/Program.cs
++++ b/src/Hexalith.Tenants.AppHost/Program.cs
+@@ -334,6 +334,11 @@ else {
+     : null;
+ try
+ {
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++    await using DevelopmentRouteCatalogComposition? localCatalog = builder.ExecutionContext.IsRunMode
++        ? TenantsDevelopmentRoutingCatalog.Create(builder, eventStore, tenants, tenantsApi, tenantsUI, adminServer, adminUI, stateStoreComponentPath)
++        : null;
++#endif
+     DistributedApplication application = builder.Build();
+     await using (application.ConfigureAwait(false))
+     {
+diff --git a/src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs
+index 68b571bf..4ff9108a 100644
+--- a/src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs
++++ b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapHostedService.cs
+@@ -5,6 +5,7 @@ using System.Text.Json;
+ using Dapr.Client;
+ 
+ using Hexalith.Commons.UniqueIds;
++using Hexalith.EventStore.Contracts.Commands;
+ using Hexalith.Tenants.Configuration;
+ using Hexalith.Tenants.Contracts.Commands;
+ using Hexalith.Tenants.Contracts.Identity;
+@@ -108,18 +109,34 @@ public partial class TenantBootstrapHostedService(
+                     return;
+                 }
+ 
+-                using HttpRequestMessage httpRequest = daprClient.CreateInvokeMethodRequest(
+-                    HttpMethod.Post,
+-                    EventStoreAppId,
+-                    CommandEndpoint);
+-                httpRequest.Content = JsonContent.Create(commandBody);
+-                httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
++                HttpRequestMessage? selectedRequest;
++                if (configuration.GetValue<bool>("Tenants:BootstrapBoundWorkloadEnabled"))
++                {
++                    phase = "bound-administrator-validation";
++                    var submitted = new SubmitCommandRequest(messageId, TenantIdentity.DefaultTenantId,
++                        TenantIdentity.GlobalAdministratorsDomain, TenantIdentity.GlobalAdministratorsAggregateId,
++                        nameof(BootstrapGlobalAdmin), payloadElement, correlationId);
++                    selectedRequest = await TenantBootstrapBoundCommand.CreateAsync(scope.ServiceProvider, configuration,
++                        daprClient, submitted, userId, accessToken, timeProvider ?? TimeProvider.System,
++                        httpClient.Timeout, cancellationToken).ConfigureAwait(false);
++                    if (selectedRequest is null) return;
++                }
++                else
++                {
++                    selectedRequest = daprClient.CreateInvokeMethodRequest(HttpMethod.Post, EventStoreAppId, CommandEndpoint);
++                    selectedRequest.Content = JsonContent.Create(commandBody);
++                    selectedRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
++                }
++                using HttpRequestMessage httpRequest = selectedRequest;
+ 
++                TenantBootstrapReceipt? receipt = configuration.GetValue<bool>("Tenants:BootstrapBoundWorkloadEnabled")
++                    ? await TenantBootstrapReceipt.BeginAsync(configuration, messageId, correlationId, userId, cancellationToken).ConfigureAwait(false) : null;
+                 phase = "command-dispatch";
+                 Log.BootstrapAttempt(logger, messageId, correlationId);
+                 using HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+ 
+                 if (httpResponse.StatusCode == HttpStatusCode.Accepted) {
++                    if (receipt is not null) await receipt.CompleteAsync(configuration, (int)httpResponse.StatusCode, "accepted", cancellationToken).ConfigureAwait(false);
+                     Log.BootstrapCommandSent(logger);
+                     return;
+                 }
+@@ -133,10 +150,12 @@ public partial class TenantBootstrapHostedService(
+                 // support-safe body mentions the marker.
+                 if (httpResponse.StatusCode == HttpStatusCode.Conflict
+                     && errorBody.Contains("GlobalAdminAlreadyBootstrappedRejection", StringComparison.Ordinal)) {
++                    if (receipt is not null) await receipt.CompleteAsync(configuration, (int)httpResponse.StatusCode, "already-bootstrapped", cancellationToken).ConfigureAwait(false);
+                     Log.BootstrapAlreadyDone(logger);
+                     return;
+                 }
+ 
++                if (receipt is not null) await receipt.CompleteAsync(configuration, (int)httpResponse.StatusCode, "response-received", cancellationToken).ConfigureAwait(false);
+                 Log.BootstrapUnexpectedResponse(logger, (int)httpResponse.StatusCode);
+             }
+         }
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs b/tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs
+index 3cc63728..eec44fd4 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/AspireTopologyTests.cs
+@@ -764,6 +764,7 @@ public class AspireTopologyTests : IDisposable {
+         Claim[] claims =
+         [
+             new("sub", BootstrapGlobalAdminUserId),
++            new("eventstore:surface", "ui"),
+             new("tenants", "[\"system\"]"),
+             new("domains", "[\"global-administrators\",\"tenants\"]"),
+             new("permissions", "[\"command:submit\",\"query:read\"]"),
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+index 3883c5af..0fee6f70 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/BootstrapResourceFailureDiagnosticsTests.cs
+@@ -17,6 +17,7 @@ public sealed class BootstrapResourceFailureDiagnosticsTests
+         observed.ExceptionTypes.ShouldContain("System.MissingMethodException");
+         observed.ApiSymbols.ShouldContain("Hexalith.EventStore.Client.Routing.PublicApi.Read");
+         observed.CatalogReasons.ShouldBe(["configuration-missing"]);
++        observed.CapturedLineCount.ShouldBe(2);
+     }
+ 
+     [Fact]
+@@ -44,7 +45,7 @@ public sealed class BootstrapResourceFailureDiagnosticsTests
+         using CancellationTokenSource bound = new(TimeSpan.FromSeconds(2));
+         var observed = await BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token);
+         observed.Count.ShouldBe(3);
+-        observed.Values.ShouldAllBe(value => value.ExceptionTypes.Contains("System.MissingMethodException"));
++        observed.Values.ShouldAllBe(value => value.ExceptionTypes.Contains("System.MissingMethodException") && value.CapturedLineCount > 0);
+         await bound.CancelAsync();
+         await Should.ThrowAsync<OperationCanceledException>(() => BootstrapResourceFailureDiagnostics.ReadAsync(logger.WatchAsync, bound.Token));
+     }
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
+index 05e0531f..eb61bb95 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/AspireTopologyFixture.cs
+@@ -23,7 +23,8 @@ namespace Hexalith.Tenants.IntegrationTests.Fixtures;
+ /// and requires projected caller authority after its explicit post-startup bootstrap.
+ /// </remarks>
+ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith_Tenants_AppHost>, IAsyncLifetime {
+-    internal const string DemoSigningKey = "DevOnlySigningKey-AtLeast32Chars!";
++    internal static string DemoSigningKey => Environment.GetEnvironmentVariable("TENANTS_SOURCE_CATALOG_SIGNING_KEY")
++        ?? "DevOnlySigningKey-AtLeast32Chars!";
+     private static readonly TimeSpan CommandApiHealthTimeout = TimeSpan.FromMinutes(4);
+     private static readonly TimeSpan TenantsApiHealthTimeout = TimeSpan.FromMinutes(4);
+     private static readonly TimeSpan SampleHealthTimeout = TimeSpan.FromMinutes(2);
+@@ -66,6 +67,8 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+             timeout.Token);
+     }
+ 
++    internal static bool IsSourceCatalogProfile => string.Equals(Environment.GetEnvironmentVariable("TENANTS_SOURCE_CATALOG_PROFILE"), "true", StringComparison.Ordinal);
++
+     /// <summary>Gets the inherited worker profile captured before the AppHost child processes start.</summary>
+     internal bool ProjectionWorkersEnabledAtStartup { get; private set; }
+ 
+@@ -117,7 +120,7 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+         string?[] previous = keys.Select(Environment.GetEnvironmentVariable).ToArray();
+         try
+         {
+-            Environment.SetEnvironmentVariable(keys[0], "false");
++            Environment.SetEnvironmentVariable(keys[0], IsSourceCatalogProfile ? "true" : "false");
+             Environment.SetEnvironmentVariable(keys[1], "00:00:01");
+             await initialize();
+         }
+@@ -179,6 +182,10 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+     private static async Task<(long? Sequence, string? Failure)> SubmitBootstrapAsync(
+         HttpClient commandApi, string token, bool requireColdBootstrap, CancellationToken cancellationToken)
+     {
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++        if (IsSourceCatalogProfile)
++            return await SourceCatalogBootstrapEvidence.WaitForOwnedBootstrapAsync(commandApi, token, requireColdBootstrap, cancellationToken);
++#endif
+         // Retrying the same immutable request preserves the gateway's command/idempotency identity.
+         var command = AspireTopologyTests.CreateCommand("global-administrators", "global-administrators",
+             nameof(BootstrapGlobalAdmin), new BootstrapGlobalAdmin(AuthenticatedRouteState.CallerId));
+@@ -342,6 +349,12 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+         new("tenants-dapr-cli", "http", TenantsApiClientTimeout, TenantsApiHealthTimeout, WaitForAliveness: false, TenantsApiHealthTimeout),
+         new("tenants-ui-dapr-cli", "http", TenantsApiClientTimeout, TenantsApiHealthTimeout, WaitForAliveness: false, TenantsApiHealthTimeout),
+         new("sample", "http", SampleClientTimeout, SampleHealthTimeout, WaitForAliveness: true, SampleHealthTimeout),
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++        // The source qualification also drives the real Admin UI's existing SSR/client transport.
++        .. IsSourceCatalogProfile
++            ? new AspireResource[] { new("eventstore-admin-ui", "http", TenantsApiClientTimeout, TenantsApiHealthTimeout, WaitForAliveness: false, TenantsApiHealthTimeout) }
++            : [],
++#endif
+         // HTTPS is required because tenants-api redirects HTTP. Aliveness is polled by the Story 4.7
+         // proof with that test's timeout so a slow or unhealthy generated API does not stall the
+         // shared fixture's 6-minute startup budget or the other topology tests.
+@@ -381,4 +394,9 @@ public class AspireTopologyFixture : AspireTopologyFixtureBase<Projects.Hexalith
+ 
+     /// <summary>Gets the HTTP client for the Sample service.</summary>
+     public HttpClient SampleClient => Client("sample");
++
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++    /// <summary>Gets the real Admin UI child for source-profile issuer and proxy qualification.</summary>
++    internal HttpClient AdminUiClient => Client("eventstore-admin-ui");
++#endif
+ }
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+index 3beeadce..b9b0a6cb 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/BootstrapResourceFailureDiagnostics.cs
+@@ -15,7 +15,7 @@ internal static class BootstrapResourceFailureDiagnostics
+     private static readonly string[] Reasons = ["configuration-missing", "owner-trust-refused", "topology-disagreement", "installed-inventory-disagreement", "store-or-transport-unavailable", "catalog-disagreement", "catalog-invalid", "host-validation-unavailable"];
+     private static readonly string[] SensitiveMarkers = ["Bearer ", "Authorization:", "password", "privatekey", "signingkey", "apikey", "api_key", "token="];
+ 
+-    internal sealed record Observation(string[] ExceptionTypes, string[] ApiSymbols, string[] CatalogReasons, bool Truncated);
++    internal sealed record Observation(string[] ExceptionTypes, string[] ApiSymbols, string[] CatalogReasons, bool Truncated, int CapturedLineCount);
+ 
+     internal static Observation Classify(IEnumerable<string> lines)
+     {
+@@ -37,7 +37,7 @@ internal static class BootstrapResourceFailureDiagnostics
+             foreach (Match match in Regex.Matches(line, @"\b(?:System|Microsoft|Hexalith|Dapr)\.[A-Za-z_][A-Za-z0-9_.+`]{1,180}", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)).Cast<Match>().Take(32))
+                 if (symbols.Count < 32) symbols.Add(match.Value);
+         }
+-        return new(exceptions.Order(StringComparer.Ordinal).ToArray(), symbols.Order(StringComparer.Ordinal).ToArray(), reasons.Order(StringComparer.Ordinal).ToArray(), truncated);
++        return new(exceptions.Order(StringComparer.Ordinal).ToArray(), symbols.Order(StringComparer.Ordinal).ToArray(), reasons.Order(StringComparer.Ordinal).ToArray(), truncated, Math.Min(count, 2048));
+     }
+ 
+     internal static Task<IReadOnlyDictionary<string, Observation>> ReadAsync(ResourceLoggerService logger, CancellationToken cancellationToken)
+@@ -73,8 +73,17 @@ internal static class BootstrapResourceFailureDiagnostics
+                 .GetField("_app", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(fixture) as DistributedApplication;
+             if (app is null) return;
+             using CancellationTokenSource bound = new(TimeSpan.FromSeconds(3));
+-            IReadOnlyDictionary<string, Observation> resources = await ReadAsync(app.Services.GetRequiredService<ResourceLoggerService>(), bound.Token);
+-            string json = JsonSerializer.Serialize(new { kind = "owned-bootstrap-failure-categories", fixtureVersion = typeof(AspireTopologyFixtureBase<>).Assembly.GetName().Version?.ToString(), resources });
++            ResourceLoggerService logger = app.Services.GetRequiredService<ResourceLoggerService>();
++            DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
++            // Resolve each logical resource to its allocated DCP instance names through Aspire's
++            // resource overload; a project replica does not write to the logical-name stream.
++            IReadOnlyDictionary<string, Observation> resources = await ReadAsync(
++                name => logger.GetAllAsync(model.Resources.Single(resource => resource.Name == name)), bound.Token);
++            string json = JsonSerializer.Serialize(new
++            {
++                kind = "owned-bootstrap-failure-categories", source = "Aspire.GetAllAsync(IResource)",
++                fixtureVersion = typeof(AspireTopologyFixtureBase<>).Assembly.GetName().Version?.ToString(), resources,
++            });
+             string directory = Path.Combine(temporary, "tenants-bootstrap-diagnostics");
+             Directory.CreateDirectory(directory);
+             await File.WriteAllTextAsync(Path.Combine(directory, Guid.NewGuid().ToString("N") + ".json"), json, bound.Token);
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs b/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
+index cf26205e..913fdf44 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/OwnerSourceCaptureHandler.cs
+@@ -11,6 +11,11 @@ namespace Hexalith.Tenants.IntegrationTests;
+ /// <summary>Captures the owner-source HTTP boundary without a sidecar or network listener.</summary>
+ internal sealed class OwnerSourceCaptureHandler(AuthoritativeEventStream? source = null, RSA? scopeKey = null) : HttpMessageHandler
+ {
++    private OwnerSourceCaptureHandler? _observer;
++
++    /// <summary>Creates a separately owned nonredirecting SDK test transport sharing only recorded observations.</summary>
++    internal OwnerSourceCaptureHandler CreateIndependentTransport() => new(source, scopeKey) { _observer = this };
++
+     internal int ReadCount { get; private set; }
+     internal HttpMethod? Method { get; private set; }
+     internal Uri? Uri { get; private set; }
+@@ -24,6 +29,14 @@ internal sealed class OwnerSourceCaptureHandler(AuthoritativeEventStream? source
+         Headers = request.Headers.ToDictionary(static header => header.Key, static header => header.Value.ToArray(), StringComparer.OrdinalIgnoreCase);
+         Body = await request.Content!.ReadAsStringAsync(cancellationToken);
+         ReadCount++;
++        if (_observer is { } observer)
++        {
++            observer.Method = Method;
++            observer.Uri = Uri;
++            observer.Headers = Headers;
++            observer.Body = Body;
++            observer.ReadCount++;
++        }
+         var read = JsonSerializer.Deserialize<StreamReadRequest>(Body, JsonSerializerOptions.Web)!;
+         if (source is not null)
+         {
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs b/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
+index 343f25b1..5ba01efa 100644
+--- a/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
++++ b/tests/Hexalith.Tenants.IntegrationTests/TenantOwnerSourceGatewayTests.cs
+@@ -1,4 +1,8 @@
+ using System.Diagnostics;
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++#endif
+ using Hexalith.EventStore.Client.Streams;
+ using Hexalith.Tenants.Contracts.Events;
+ using Hexalith.Tenants.IntegrationTests.Fixtures;
+@@ -53,6 +57,16 @@ public sealed class TenantOwnerSourceGatewayTests
+                     {
+                         services.RemoveAll<IWorkloadAssertionIssuer>();
+                         services.AddSingleton(issuer);
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++                        // Keep the real invocation guard and its separate no-redirect transport.
++                        // Activation is isolated; the permitted technical target is the SDK's existing workload read.
++                        var owner = TenantOwnerCatalogTestAuthority.CreateSnapshot("tenants");
++                        var selected = new CommittedRouteCatalogSnapshot(RouteCatalogCodec.Encode(owner.Envelope), owner.RootDigest, owner.Epoch,
++                            [new("eventstore", "api/v1/streams/read/workload", "eventstore:stream-read", "gateway")], localAppId: "tenants");
++                        services.RemoveAll<IRouteCatalogAuthority>();
++                        services.AddSingleton(TenantOwnerCatalogTestAuthority.Create(selected));
++                        services.Configure<RouteCatalogHostOptions>(options => options.InvocationTransportFactory = _ => terminal.CreateIndependentTransport());
++#endif
+                         services.AddHttpClient<TenantOwnerSourceGateway>()
+                             .ConfigurePrimaryHttpMessageHandler(() => terminal);
+                     });
+@@ -72,6 +86,10 @@ public sealed class TenantOwnerSourceGatewayTests
+                 terminal.Method.ShouldBe(HttpMethod.Post);
+                 terminal.Uri.ShouldBe(new Uri("http://127.0.0.1:3579/api/v1/streams/read/workload"));
+                 terminal.Headers["dapr-app-id"].ShouldBe(["eventstore"]);
++#if HEXALITH_DEVELOPMENT_CATALOG_SOURCE
++                terminal.Headers[RouteCatalogInvocationHandler.RootHeader].ShouldBe([TenantOwnerCatalogTestAuthority.CreateSnapshot("tenants").RootDigest]);
++                terminal.Headers[RouteCatalogInvocationHandler.EpochHeader].ShouldBe(["1"]);
++#endif
+                 if (token is null) terminal.Headers.ContainsKey("dapr-api-token").ShouldBeFalse();
+                 else terminal.Headers["dapr-api-token"].ShouldBe([token]);
+                 terminal.Headers[EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName].ShouldBe([assertion]);
+diff --git a/tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs b/tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs
+index 8270218d..52158042 100644
+--- a/tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs
++++ b/tests/Hexalith.Tenants.Server.Tests/Configuration/EventPublicationConfigurationTests.cs
+@@ -718,6 +718,37 @@ public class EventPublicationConfigurationTests {
+         attributes.GetProperty("permissions").EnumerateArray().Select(value => value.GetString()).OfType<string>().ShouldContain("command:submit");
+     }
+ 
++    [Fact]
++    public void LocalKeycloakRealm_StampsOnlyTheActualBrowserClientsAccessTokenAsUi()
++    {
++        string realmPath = RepositoryPath("src", "Hexalith.Tenants.AppHost", "KeycloakRealms", "hexalith-realm.json");
++        using JsonDocument document = JsonDocument.Parse(File.ReadAllText(realmPath));
++        JsonElement[] clients = [.. document.RootElement.GetProperty("clients").EnumerateArray()];
++        JsonElement browser = clients.Single(client => client.GetProperty("clientId").GetString() == "hexalith-tenants-ui");
++        browser.GetProperty("standardFlowEnabled").GetBoolean().ShouldBeTrue();
++        browser.GetProperty("serviceAccountsEnabled").GetBoolean().ShouldBeFalse();
++        browser.GetProperty("directAccessGrantsEnabled").GetBoolean().ShouldBeFalse();
++        JsonElement SurfaceMapper(JsonElement client) => client.GetProperty("protocolMappers").EnumerateArray()
++            .Single(mapper => mapper.GetProperty("config").TryGetProperty("claim.name", out var claim) && claim.GetString() == "eventstore:surface");
++        JsonElement mapper = SurfaceMapper(browser);
++        mapper.GetProperty("protocolMapper").GetString().ShouldBe("oidc-hardcoded-claim-mapper");
++        JsonElement config = mapper.GetProperty("config");
++        config.GetProperty("claim.value").GetString().ShouldBe("ui");
++        config.GetProperty("access.token.claim").GetString().ShouldBe("true");
++        config.GetProperty("id.token.claim").GetString().ShouldBe("false");
++        config.GetProperty("userinfo.token.claim").GetString().ShouldBe("false");
++        foreach (JsonElement client in clients.Where(client => client.GetProperty("clientId").GetString() != "hexalith-tenants-ui"))
++        {
++            if (client.TryGetProperty("protocolMappers", out var mappers))
++                mappers.EnumerateArray().Any(candidate => candidate.GetProperty("config").TryGetProperty("claim.name", out var name) && name.GetString() == "eventstore:surface").ShouldBeFalse();
++        }
++        foreach (JsonElement scope in document.RootElement.GetProperty("clientScopes").EnumerateArray())
++        {
++            if (scope.TryGetProperty("protocolMappers", out var mappers))
++                mappers.EnumerateArray().Any(candidate => candidate.GetProperty("config").TryGetProperty("claim.name", out var name) && name.GetString() == "eventstore:surface").ShouldBeFalse();
++        }
++    }
++
+     [Fact]
+     public void LocalKeycloakRealm_DeclaresScopedEventStoreWorkloadClientAndDefaultHumanScopes()
+     {
+diff --git a/docs/development-route-catalog.md b/docs/development-route-catalog.md
+new file mode 100644
+index 00000000..1a0121b8
+--- /dev/null
++++ b/docs/development-route-catalog.md
+@@ -0,0 +1,81 @@
++# Development routing catalog owner profile
++
++This source profile uses the selected EventStore SDK's compiled schema 3 catalog
++and complete activation binding v2. Its source prerequisite is pinned by
++`references/Hexalith.EventStore`; a source result does not qualify a released
++package floor.
++
++The selected authority peers are the Gateway (`eventstore`), Admin.Server
++(`eventstore-admin`), Tenants domain service (`tenants`), and generated REST host
++(`tenants-api`). Only the compiled Tenants Contracts and Server adapters declare
++business ownership. Gateway and Admin.Server observe their actual installed SDK
++technical actions. Admin.Server's owner-state reader uses the actual selected
++Gateway sidecar coordinates and owner credential.
++
++Tenants.UI and Admin.UI retain their authenticated proxy transports outside the
++authority cohort. The six Tenants REST reads use Dapr; Tenants.UI command and
++status calls retain direct Gateway HTTPS. The Tenants `sample` remains its
++existing pub/sub consumer and supplies no SDK Counter operations. Optional
++Memories REST traffic is not qualified by this focused profile; an undeclared
++workload path remains refused rather than receiving an inferred grant.
++
++## Retained backend and key custody
++
++A source AppHost run requires the `Tenants:DevelopmentRouteCatalog` section to
++bind `DevelopmentRouteCatalogCompositionOptions`: `CustodyDirectory`,
++`AuthorityComponentName`, `AuthorityStateKey`, `ActiveDigestKeyGeneration`,
++`DigestKeys`, and `SecretMapGeneration`. Keep the custody directory and key ring
++private and retained together with the actual business backend. An empty routing
++cell does not establish that the business backend is new. Missing custody inputs
++refuse startup; this profile never silently replaces persistent digest keys.
++
++For an existing backend, supply its existing ring and retained predecessor
++custody. Provision new material only together with an independently established
++new isolated business backend. Never commit credentials, private custody, or raw
++host observations. The SDK checks complete predecessor readbacks, current backend
++coordinates, authority component membership, and full activation identity before
++accepting a successor.
++
++## Existing delegated bootstrap
++
++`BootstrapGlobalAdmin` stays internal. The source profile enables the existing
++Tenants startup service to cryptographically validate the configured
++administrator's bearer with the installed authentication handler, then preserve
++that subject in the existing bound workload command proof. The Gateway verifies
++the actual workload assertion, source key, allowed domain, command payload, and
++idempotency identity. The configured subject or an unvalidated JWT decode never
++supplies authority. The legacy bootstrap wire remains unchanged outside this
++explicit profile.
++
++The private `tenants.bootstrap.json` delivery receipt records the one actual
++hosted attempt and its response identity. It is workflow evidence, not a domain
++projection or an authorization source. Runtime qualification follows the real
++command status and persisted administrator projection rather than submitting a
++replacement human internal command.
++
++The Keycloak `hexalith-tenants-ui` authorization-code client alone issues one
++`eventstore:surface=ui` access-token claim. Service clients, client-credential
++tokens, proxies, and receivers do not acquire that claim through a shared mapper.
++
++## Standalone source runtime qualification
++
++The `development-catalog` job in `source-reference.yml` initializes only this
++standalone repository's root-declared dependencies, nonrecursively. It records
++the exact SDK source and evaluated producer version without overriding another
++owner's numeric package catalog.
++
++Before provisioning private keys, the job proves that Dapr initialization created
++its actual Redis container and volumes after the job's recorded boundary, no
++volume existed in the pre-initialization inventory, the selected localhost
++listener belongs to that container, and the actual database is empty. Refusal
++leaves prior evidence and environment inputs unchanged. The retained material is
++scoped to that disposable job's genuinely new backend.
++
++The mandatory `SourceCatalogOwnerProfileTests` case then requires all four actual
++hosts to commit the complete v2 identity, the hosted bound bootstrap to complete
++and project membership, a public tenant command to persist, all six real REST
++reads and a conditional read to succeed, the real Admin UI issuer/proxy/owner
++reader to load its infrastructure page, an undeclared UI descendant to refuse,
++and the actual authority to have no outstanding leases. Missing prerequisites or
++skipped cases cannot qualify this lane. Only the credential-free backend and
++result records are uploaded; raw observations and key material remain private.
+diff --git a/scripts/prepare-source-catalog-profile.py b/scripts/prepare-source-catalog-profile.py
+new file mode 100755
+index 00000000..e7afa52e
+--- /dev/null
++++ b/scripts/prepare-source-catalog-profile.py
+@@ -0,0 +1,102 @@
++#!/usr/bin/env python3
++"""Provision private material only after proving this CI job owns a fresh backend."""
++import argparse
++import base64
++import datetime
++import json
++import os
++from pathlib import Path
++import secrets
++import subprocess
++import tempfile
++
++
++def command(*arguments):
++    return subprocess.check_output(arguments, text=True, timeout=30).strip()
++
++
++def instant(value):
++    return datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--sdk-source-sha", required=True)
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("GITHUB_JOB") != "development-catalog":
++        raise ValueError("The source profile requires its declared disposable CI job.")
++    root = Path(command("git", "rev-parse", "--show-toplevel"))
++    for module in ("Hexalith.EventStore", "Hexalith.Builds"):
++        relative = f"references/{module}"
++        if command("git", "config", "--file", ".gitmodules", "--get", f"submodule.{module}.path") != relative:
++            raise ValueError("A source prerequisite is not root-declared.")
++        expected = command("git", "rev-parse", f"HEAD:{relative}")
++        actual = command("git", "-C", str(root / relative), "rev-parse", "HEAD")
++        if actual != expected or module == "Hexalith.EventStore" and actual != args.sdk_source_sha:
++            raise ValueError("The actual source prerequisite differs from the selected gitlink.")
++    if args.output.exists() or args.output.is_symlink():
++        raise ValueError("Existing source qualification evidence must remain unchanged.")
++    started = instant(os.environ["TENANTS_SOURCE_BACKEND_STARTED_AT"])
++    before = Path(os.environ["TENANTS_SOURCE_BACKEND_BEFORE_PATH"])
++    previous_volumes = json.loads(before.read_text(encoding="utf-8"))
++    if not isinstance(previous_volumes, list) or any(not isinstance(name, str) for name in previous_volumes):
++        raise ValueError("The pre-initialization backend inventory is invalid.")
++    backend = json.loads(command("docker", "inspect", "dapr_redis"))[0]
++    if not backend["State"]["Running"] or instant(backend["Created"]) < started:
++        raise ValueError("The backend was not created by this job's initialization.")
++    volumes = []
++    for mount in backend["Mounts"]:
++        if mount["Type"] != "volume":
++            raise ValueError("A bind mount cannot establish a fresh business backend.")
++        volume = json.loads(command("docker", "volume", "inspect", mount["Name"]))[0]
++        if mount["Name"] in previous_volumes or volume["Driver"] != "local" or instant(volume["CreatedAt"]) < started.replace(microsecond=0):
++            raise ValueError("A retained volume cannot receive newly provisioned owner keys.")
++        volumes.append({"name": volume["Name"], "created": volume["CreatedAt"]})
++    ports = backend["NetworkSettings"]["Ports"].get("6379/tcp") or []
++    if not any(port["HostPort"] == "6379" and port["HostIp"] in ("0.0.0.0", "127.0.0.1") for port in ports):
++        raise ValueError("The actual backend does not serve the selected localhost:6379 owner component.")
++    if command("docker", "exec", backend["Id"], "redis-cli", "DBSIZE") != "0":
++        raise ValueError("The business backend is not empty; no replacement owner material is provisioned.")
++    runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve(strict=True)
++    private = Path(tempfile.mkdtemp(prefix="tenants-source-catalog-", dir=runner_temp))
++    private.chmod(0o700)
++    ring = base64.b64encode(secrets.token_bytes(32)).decode()
++    signer = secrets.token_hex(32)
++    for secret in (ring, signer):
++        print("::add-mask::" + secret, flush=True)
++    values = {
++        "TENANTS_SOURCE_CATALOG_PROFILE": "true",
++        "TENANTS_SOURCE_CATALOG_SIGNING_KEY": signer,
++        "Tenants__DevelopmentRouteCatalog__CustodyDirectory": str(private / "custody"),
++        "Tenants__DevelopmentRouteCatalog__AuthorityComponentName": "routing-tenants-owner",
++        "Tenants__DevelopmentRouteCatalog__AuthorityStateKey": "tenants-owner-authority",
++        "Tenants__DevelopmentRouteCatalog__ActiveDigestKeyGeneration": "development-v1",
++        "Tenants__DevelopmentRouteCatalog__DigestKeys__development-v1": ring,
++        "Tenants__DevelopmentRouteCatalog__SecretMapGeneration": "development-v1",
++        "EventStore__Authentication__Issuer": "hexalith-dev",
++        "EventStore__Authentication__Audience": "hexalith-eventstore",
++        "EventStore__Authentication__SigningKey": signer,
++        "EventStore__Authentication__Subject": "11111111-1111-1111-1111-111111111111",
++        "EventStore__Authentication__GlobalAdmin": "true",
++        "EventStore__Authentication__Tenants__0": "system",
++        "EventStore__Authentication__Domains__0": "tenants",
++        "EventStore__Authentication__Domains__1": "global-administrators",
++        "EventStore__Authentication__Permissions__0": "command:submit",
++        "EventStore__Authentication__Permissions__1": "query:read",
++    }
++    with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
++        for key, value in values.items():
++            output.write(f"{key}={value}\n")
++    evidence = {"sdkSource": args.sdk_source_sha,
++                "sdkProducerVersion": os.environ.get("TENANTS_SOURCE_SDK_PRODUCER_VERSION"),
++                "buildsSource": command("git", "rev-parse", "HEAD:references/Hexalith.Builds"),
++                "backend": {"containerId": backend["Id"], "imageId": backend["Image"],
++                            "created": backend["Created"], "volumes": volumes, "initialDatabaseSize": 0},
++                "materialProvisionedWithFreshBackend": True}
++    with args.output.open("x", encoding="utf-8") as output:
++        output.write(json.dumps(evidence, indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/tests/test_source_catalog_profile.py b/scripts/tests/test_source_catalog_profile.py
+new file mode 100644
+index 00000000..bc7f7884
+--- /dev/null
++++ b/scripts/tests/test_source_catalog_profile.py
+@@ -0,0 +1,99 @@
++"""Provisioning boundary tests use captured Docker shapes; they do not start a topology."""
++import contextlib
++import copy
++import importlib.util
++import io
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest import mock
++
++
++spec = importlib.util.spec_from_file_location("source_catalog_profile", Path(__file__).parents[1] / "prepare-source-catalog-profile.py")
++profile = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(profile)
++
++
++class SourceCatalogProfileProvisioningTests(unittest.TestCase):
++    def exercise(self, scenario):
++        with tempfile.TemporaryDirectory(prefix="tenants-source-material-test-") as temporary:
++            root = Path(temporary)
++            environment = root / "environment"
++            environment.write_text("preserved=true\n", encoding="utf-8")
++            output = root / "evidence.json"
++            before = root / "before.json"
++            before.write_text(json.dumps(["retained-volume"]), encoding="utf-8")
++            backend = {
++                "Id": "owned-container", "Image": "sha256:" + "a" * 64,
++                "Created": "2026-10-31T21:00:02.123Z", "State": {"Running": True},
++                "Mounts": [{"Type": "volume", "Name": "owned-volume"}],
++                "NetworkSettings": {"Ports": {"6379/tcp": [{"HostPort": "6379", "HostIp": "127.0.0.1"}]}},
++            }
++            volume = {"Name": "owned-volume", "Driver": "local", "CreatedAt": "2026-10-31T21:00:02Z"}
++            if scenario == "old-container": backend["Created"] = "2026-10-31T20:00:00Z"
++            if scenario == "stopped": backend["State"]["Running"] = False
++            if scenario == "retained-volume": backend["Mounts"][0]["Name"] = "retained-volume"
++            if scenario == "old-volume": volume["CreatedAt"] = "2026-10-31T20:00:00Z"
++            if scenario == "bind-mount": backend["Mounts"][0]["Type"] = "bind"
++            if scenario == "wrong-port": backend["NetworkSettings"]["Ports"]["6379/tcp"][0]["HostPort"] = "6380"
++            if scenario == "ipv6-only": backend["NetworkSettings"]["Ports"]["6379/tcp"][0]["HostIp"] = "::"
++            if scenario == "wrong-loopback": backend["NetworkSettings"]["Ports"]["6379/tcp"][0]["HostIp"] = "127.0.0.2"
++            outside = root / "outside"
++            outside.write_bytes(b"outside-evidence-unchanged")
++            if scenario == "existing-evidence": output.write_bytes(b"previous-evidence")
++            if scenario == "evidence-link": output.symlink_to(outside)
++            settings = {
++                "GITHUB_ACTIONS": "true", "GITHUB_JOB": "development-catalog", "RUNNER_TEMP": str(root),
++                "GITHUB_ENV": str(environment), "TENANTS_SOURCE_BACKEND_STARTED_AT": "2026-10-31T21:00:01.900+00:00",
++                "TENANTS_SOURCE_BACKEND_BEFORE_PATH": str(before), "TENANTS_SOURCE_SDK_PRODUCER_VERSION": "3.128.4",
++            }
++            if scenario == "wrong-job": settings["GITHUB_JOB"] = "unowned"
++            calls = []
++
++            def command(*arguments):
++                calls.append(arguments)
++                if arguments == ("git", "rev-parse", "--show-toplevel"): return str(root)
++                if arguments[:4] == ("git", "config", "--file", ".gitmodules"):
++                    module = arguments[-1].split(".", 1)[1].removesuffix(".path")
++                    return "references/" + module
++                if arguments[:2] == ("git", "rev-parse"): return "b" * 40
++                if arguments[:2] == ("git", "-C"): return "c" * 40 if scenario == "source-drift" else "b" * 40
++                if arguments == ("docker", "inspect", "dapr_redis"): return json.dumps([copy.deepcopy(backend)])
++                if arguments[:3] == ("docker", "volume", "inspect"): return json.dumps([copy.deepcopy(volume)])
++                if arguments == ("docker", "exec", "owned-container", "redis-cli", "DBSIZE"):
++                    return "1" if scenario == "nonempty" else "0"
++                raise AssertionError("Unexpected boundary command: " + repr(arguments))
++
++            with mock.patch.dict(os.environ, settings), mock.patch.object(profile, "command", command), \
++                    mock.patch("sys.argv", ["prepare", "--sdk-source-sha", "b" * 40, "--output", str(output)]), \
++                    contextlib.redirect_stdout(io.StringIO()) as diagnostics:
++                if scenario == "fresh":
++                    profile.main()
++                    evidence = json.loads(output.read_text(encoding="utf-8"))
++                    self.assertTrue(evidence["materialProvisionedWithFreshBackend"])
++                    self.assertEqual(evidence["backend"]["initialDatabaseSize"], 0)
++                    self.assertEqual(evidence["sdkProducerVersion"], "3.128.4")
++                    self.assertNotIn("DigestKeys", output.read_text(encoding="utf-8"))
++                    self.assertIn("Tenants__DevelopmentRouteCatalog__CustodyDirectory=", environment.read_text(encoding="utf-8"))
++                    self.assertEqual(diagnostics.getvalue().count("::add-mask::"), 2)
++                else:
++                    with self.assertRaises(ValueError): profile.main()
++                    self.assertEqual(environment.read_text(encoding="utf-8"), "preserved=true\n")
++                    self.assertEqual(diagnostics.getvalue(), "")
++                    self.assertEqual(list(root.glob("tenants-source-catalog-*")), [])
++                    if scenario == "existing-evidence": self.assertEqual(output.read_bytes(), b"previous-evidence")
++                    elif scenario != "evidence-link": self.assertFalse(output.exists())
++                self.assertEqual(outside.read_bytes(), b"outside-evidence-unchanged")
++
++    def test_fresh_owned_backend_provisions_private_material_and_public_receipt(self):
++        self.exercise("fresh")
++
++    def test_refusals_preserve_existing_evidence_and_do_not_mint_owner_material(self):
++        for scenario in ("old-container", "stopped", "retained-volume", "old-volume", "bind-mount", "wrong-port",
++                         "wrong-loopback", "ipv6-only", "nonempty", "source-drift", "existing-evidence", "evidence-link", "wrong-job"):
++            with self.subTest(scenario=scenario): self.exercise(scenario)
++
++
++if __name__ == "__main__": unittest.main()
+diff --git a/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs b/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs
+new file mode 100644
+index 00000000..f5b61225
+--- /dev/null
++++ b/src/Hexalith.Tenants.AppHost/TenantsDevelopmentRoutingCatalog.cs
+@@ -0,0 +1,41 @@
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++using Aspire.Hosting;
++using Aspire.Hosting.ApplicationModel;
++using Hexalith.EventStore.Aspire;
++using Hexalith.EventStore.DomainService;
++using Hexalith.Tenants.Contracts.Routing;
++using Hexalith.Tenants.Server.Routing;
++using Microsoft.Extensions.Configuration;
++
++namespace Hexalith.Tenants.AppHost;
++
++/// <summary>Composes the existing owner traffic with explicit retained keys and actual SDK technical receivers.</summary>
++internal static class TenantsDevelopmentRoutingCatalog
++{
++    internal static DevelopmentRouteCatalogComposition Create(IDistributedApplicationBuilder builder,
++        IResourceBuilder<ProjectResource> gateway, IResourceBuilder<ProjectResource> domain,
++        IResourceBuilder<ProjectResource> api, IResourceBuilder<ProjectResource> ui,
++        IResourceBuilder<ProjectResource> admin, IResourceBuilder<ProjectResource> adminUi, string stateComponent)
++    {
++        var custody = builder.Configuration.GetSection("Tenants:DevelopmentRouteCatalog")
++            .Get<DevelopmentRouteCatalogCompositionOptions>()
++            ?? throw new InvalidOperationException("Tenants:DevelopmentRouteCatalog must supply the retained owner custody and digest ring. An empty routing cell does not prove that the business backend is new.");
++        // Preserve the existing human-delegated bootstrap's attribution using the existing
++        // bound command proof, never a human submission of an internal operation.
++        domain.WithEnvironment("Tenants__BootstrapBoundWorkloadEnabled", "true");
++        gateway.WithEnvironment("Authentication__BoundCommand__AllowedDomains__tenants", "global-administrators");
++        DevelopmentRouteCatalogInvocation[] domainCalls = EventStoreDomainServiceRoutes.Operational
++            .Select(route => new DevelopmentRouteCatalogInvocation(gateway, route.Route, ["POST"])).ToArray();
++        var catalog = builder.AddEventStoreDevelopmentRouteCatalog(gateway,
++            [new(domain, typeof(TenantCatalogDeclarations).Assembly, typeof(TenantIntentAdapters).Assembly)],
++            [new(gateway, [new(domain, "/api/v1/commands/bound/workload", ["POST"]), new(domain, "/api/v1/streams/read/workload", ["POST"]),
++                new(api, "/api/v1/commands", ["POST"]), new(api, "/api/v1/queries", ["POST"]), new(api, "/ready", ["GET"]),
++                new(admin, "/**", ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"])]) { TechnicalHttp = true },
++                new(domain, domainCalls), api.CaptureEventStoreDevelopmentReceiver(ui),
++                new(admin, [new(adminUi, "/**", ["GET", "POST", "PUT", "DELETE"])]) { TechnicalHttp = true, ActorStateOwners = [gateway] }],
++            stateComponent, custody);
++        domain.WithEnvironment("Tenants__BootstrapBoundWorkloadReceiptPath", Path.Combine(catalog.Directory, "tenants.bootstrap.json"));
++        return catalog;
++    }
++}
++#endif
+diff --git a/src/Hexalith.Tenants/Bootstrap/TenantBootstrapBoundCommand.cs b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapBoundCommand.cs
+new file mode 100644
+index 00000000..3b8ad986
+--- /dev/null
++++ b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapBoundCommand.cs
+@@ -0,0 +1,72 @@
++using System.Net.Http.Json;
++using System.Security.Claims;
++using System.Text.Json;
++
++using Dapr.Client;
++
++using Hexalith.EventStore.Authorization;
++using Hexalith.EventStore.Client.Gateway;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.Tenants.Contracts.Commands;
++using Hexalith.Tenants.Contracts.Identity;
++
++using Microsoft.AspNetCore.Authentication;
++using Microsoft.AspNetCore.Authentication.JwtBearer;
++using Microsoft.Extensions.Configuration;
++
++namespace Hexalith.Tenants.Bootstrap;
++
++/// <summary>Preserves a cryptographically authenticated administrator through the existing exact bound workload command protocol.</summary>
++internal static class TenantBootstrapBoundCommand
++{
++    internal static async Task<HttpRequestMessage?> CreateAsync(IServiceProvider services, IConfiguration configuration,
++        DaprClient dapr, SubmitCommandRequest command, string administrator, string accessToken, TimeProvider clock,
++        TimeSpan readinessTimeout, CancellationToken token)
++    {
++        token.ThrowIfCancellationRequested();
++        if (readinessTimeout <= TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(readinessTimeout));
++        var context = new DefaultHttpContext { RequestServices = services, RequestAborted = token };
++        context.Request.Headers.Authorization = "Bearer " + accessToken;
++        // Use the owning host's real installed bearer handler, including OIDC signing-key
++        // discovery, issuer, audience, signature and lifetime validation. Decoding sub is not authority.
++        var authenticated = await services.GetRequiredService<IAuthenticationService>()
++            .AuthenticateAsync(context, JwtBearerDefaults.AuthenticationScheme).ConfigureAwait(false);
++        if (!authenticated.Succeeded || authenticated.Principal is not { } principal) return null;
++        var human = new ClaimsPrincipal(principal.Identities.Where(identity => identity.IsAuthenticated));
++        Claim[] subjects = human.FindAll("sub").ToArray();
++        if (subjects.Length != 1 || subjects[0].Value != administrator || !GlobalAdministratorHelper.IsGlobalAdministrator(human)
++            || human.HasClaim(claim => claim.Type == EventStoreWorkloadAuthenticationDefaults.WorkloadClaimType)
++            || command.Tenant != TenantIdentity.DefaultTenantId || command.Domain != TenantIdentity.GlobalAdministratorsDomain
++            || command.AggregateId != TenantIdentity.GlobalAdministratorsAggregateId || command.CommandType != nameof(BootstrapGlobalAdmin)
++            || command.Payload.Deserialize<BootstrapGlobalAdmin>(JsonSerializerOptions.Web)?.UserId != subjects[0].Value) return null;
++        string? caller = configuration["Authentication:WorkloadIssuer:Workload"];
++        string? privateKey = configuration["Authentication:BoundStreamRead:PrivateKey"];
++        if (string.IsNullOrWhiteSpace(caller) || string.IsNullOrWhiteSpace(privateKey)) return null;
++        if (services.GetService<IRouteCatalogAuthority>() is { } authority
++            && configuration["EventStore:RouteCatalog:DevelopmentBootstrap:RootDigest"] is { Length: > 0 } root)
++        {
++            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token); deadline.CancelAfter(readinessTimeout);
++            while (true)
++            {
++                try
++                {
++                    var readback = await authority.ReadbackAsync(deadline.Token).ConfigureAwait(false);
++                    if (readback.Serving && readback.RootDigest == root) break;
++                }
++                catch (RouteCatalogUnavailableException) { }
++                await Task.Delay(100, deadline.Token).ConfigureAwait(false);
++            }
++        }
++        string? assertion = await services.GetRequiredService<IWorkloadAssertionIssuer>()
++            .IssueAsync(new("eventstore", EventStoreWorkloadOperations.GatewayCommandSubmit), token).ConfigureAwait(false);
++        if (string.IsNullOrWhiteSpace(assertion)) return null;
++        var bound = new BoundWorkloadCommandRequest(command, subjects[0].Value);
++        var request = dapr.CreateInvokeMethodRequest(HttpMethod.Post, "eventstore", "api/v1/commands/bound/workload");
++        request.Content = JsonContent.Create(bound);
++        request.Headers.Add(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, assertion);
++        request.Headers.Add(BoundWorkloadCommandProof.HeaderName, BoundWorkloadCommandProof.Issue(bound, caller, privateKey, clock.GetUtcNow()));
++        return request;
++    }
++}
+diff --git a/src/Hexalith.Tenants/Bootstrap/TenantBootstrapReceipt.cs b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapReceipt.cs
+new file mode 100644
+index 00000000..4e1de4c6
+--- /dev/null
++++ b/src/Hexalith.Tenants/Bootstrap/TenantBootstrapReceipt.cs
+@@ -0,0 +1,66 @@
++using System.Text.Json;
++
++using Microsoft.Extensions.Configuration;
++
++namespace Hexalith.Tenants.Bootstrap;
++
++/// <summary>Private delivery evidence for the existing bootstrap workflow; projected membership remains the authority.</summary>
++internal sealed record TenantBootstrapReceipt(string AttemptId, string RootDigest, string MessageId,
++    string CorrelationId, string PrincipalId, string Phase, int? HttpStatus)
++{
++    internal static async Task<TenantBootstrapReceipt?> BeginAsync(IConfiguration configuration, string messageId,
++        string correlationId, string principalId, CancellationToken token)
++    {
++        string? path = ReceiptPath(configuration);
++        if (path is null) return null;
++        var receipt = new TenantBootstrapReceipt(configuration["EventStore:RouteCatalog:DevelopmentBootstrap:AttemptId"]!,
++            configuration["EventStore:RouteCatalog:DevelopmentBootstrap:RootDigest"]!, messageId, correlationId, principalId, "attempted", null);
++        if (string.IsNullOrWhiteSpace(receipt.AttemptId) || string.IsNullOrWhiteSpace(receipt.RootDigest))
++            throw new InvalidOperationException("The bootstrap receipt requires the actual private catalog attempt.");
++        await WriteNewAsync(path, JsonSerializer.SerializeToUtf8Bytes(receipt), token).ConfigureAwait(false);
++        return receipt;
++    }
++
++    internal async Task CompleteAsync(IConfiguration configuration, int status, string phase, CancellationToken token)
++    {
++        string path = ReceiptPath(configuration) ?? throw new InvalidOperationException("The bootstrap receipt path changed.");
++        RequirePrivate(path);
++        byte[] original = JsonSerializer.SerializeToUtf8Bytes(this);
++        if (new FileInfo(path).Length != original.Length || !(await File.ReadAllBytesAsync(path, token).ConfigureAwait(false)).AsSpan().SequenceEqual(original))
++            throw new InvalidOperationException("The bootstrap delivery receipt changed; preserve it for recovery.");
++        string pending = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
++        await WriteNewAsync(pending, JsonSerializer.SerializeToUtf8Bytes(this with { Phase = phase, HttpStatus = status }), token).ConfigureAwait(false);
++        RequirePrivate(path);
++        File.Move(pending, path, overwrite: true);
++    }
++
++    private static string? ReceiptPath(IConfiguration configuration)
++    {
++        if (configuration["Tenants:BootstrapBoundWorkloadReceiptPath"] is not { Length: > 0 } path) return null;
++        string directory = configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"]
++            ?? throw new InvalidOperationException("The bootstrap receipt has no actual private catalog directory.");
++        if (!Path.IsPathFullyQualified(directory) || !Path.IsPathFullyQualified(path)
++            || Path.GetFullPath(path) != Path.Combine(Path.GetFullPath(directory), "tenants.bootstrap.json"))
++            throw new InvalidOperationException("The bootstrap receipt must remain in its actual private catalog directory.");
++        RequirePrivate(directory, directory: true);
++        return path;
++    }
++
++    private static void RequirePrivate(string path, bool directory = false)
++    {
++        FileSystemInfo entry = directory ? new DirectoryInfo(path) : new FileInfo(path);
++        if (!entry.Exists || entry.LinkTarget is not null || (entry.Attributes & FileAttributes.ReparsePoint) != 0
++            || !OperatingSystem.IsWindows() && (File.GetUnixFileMode(path) & (UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute
++                | UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute)) != 0)
++            throw new InvalidOperationException("The bootstrap receipt requires an owned regular private entry.");
++    }
++
++    private static async Task WriteNewAsync(string path, byte[] bytes, CancellationToken token)
++    {
++        var options = new FileStreamOptions { Mode = FileMode.CreateNew, Access = FileAccess.Write, Share = FileShare.Read };
++        if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
++        var stream = new FileStream(path, options);
++        await using (stream.ConfigureAwait(false))
++            await stream.WriteAsync(bytes, token).ConfigureAwait(false);
++    }
++}
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/Fixtures/SourceCatalogBootstrapEvidence.cs b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/SourceCatalogBootstrapEvidence.cs
+new file mode 100644
+index 00000000..eedd8dd7
+--- /dev/null
++++ b/tests/Hexalith.Tenants.IntegrationTests/Fixtures/SourceCatalogBootstrapEvidence.cs
+@@ -0,0 +1,108 @@
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++using System.Net;
++using System.Text.Json;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.Tenants.Bootstrap;
++using Hexalith.Tenants.Contracts.Identity;
++
++using StackExchange.Redis;
++
++namespace Hexalith.Tenants.IntegrationTests.Fixtures;
++
++/// <summary>Reads the actual isolated authority and the actual hosted bootstrap receipt; it never manufactures a caller or submits an internal human command.</summary>
++internal static class SourceCatalogBootstrapEvidence
++{
++    internal static async Task<(RouteCatalogActivationState State, string Directory)> ReadCommittedAsync(CancellationToken token)
++    {
++        string component = Environment.GetEnvironmentVariable("Tenants__DevelopmentRouteCatalog__AuthorityComponentName")
++            ?? throw new InvalidOperationException("source-catalog-authority-unconfigured");
++        string key = Environment.GetEnvironmentVariable("Tenants__DevelopmentRouteCatalog__AuthorityStateKey")
++            ?? throw new InvalidOperationException("source-catalog-authority-unconfigured");
++        // Dapr's real keyPrefix=name format is component||key. See its v1.18
++        // state-sharing contract; no application prefix or alternate key is guessed.
++        using var redis = await ConnectionMultiplexer.ConnectAsync("localhost:6379,abortConnect=false,connectTimeout=5000,asyncTimeout=5000").WaitAsync(token);
++        while (true)
++        {
++            token.ThrowIfCancellationRequested();
++            RedisValue value = await redis.GetDatabase().HashGetAsync(component + "||" + key, "data").WaitAsync(token);
++            if (!value.IsNull && value.ToString().Length <= 16 * 1024 * 1024)
++            {
++                var state = JsonSerializer.Deserialize<RouteCatalogActivationState>(value.ToString(), JsonSerializerOptions.Web);
++                if (state is { Committed: { } committed, Pending: null, Epoch: > 0 })
++                {
++                    string[] directories = System.IO.Directory.EnumerateDirectories(Path.GetTempPath(), "hexalith-route-catalog-*")
++                        .Where(directory => Matches(directory, committed)).ToArray();
++                    if (directories.Length > 1) throw new InvalidOperationException("source-catalog-run-ambiguous");
++                    if (directories.Length == 1) return (state, directories[0]);
++                }
++            }
++            await Task.Delay(100, token);
++        }
++    }
++
++    internal static async Task<(long? Sequence, string? Failure)> WaitForOwnedBootstrapAsync(HttpClient commandApi,
++        string humanToken, bool requireColdBootstrap, CancellationToken token)
++    {
++        var (state, directory) = await ReadCommittedAsync(token);
++        while (true)
++        {
++            string path = Path.Combine(directory, "tenants.bootstrap.json");
++            if (File.Exists(path))
++            {
++                TenantBootstrapReceipt? receipt = null;
++                try { receipt = JsonSerializer.Deserialize<TenantBootstrapReceipt>(ReadPrivate(path, 64 * 1024)); }
++                catch (JsonException) { }
++                if (receipt is not null && receipt.Phase != "attempted")
++                {
++                    if (receipt.AttemptId != state.Committed!.AttemptId || receipt.RootDigest != state.Committed.RootDigest
++                        || receipt.PrincipalId != AuthenticatedRouteState.CallerId || receipt.Phase != "accepted"
++                        || receipt.HttpStatus != (int)HttpStatusCode.Accepted)
++                        return (null, "bootstrap-owned-receipt-invalid");
++                    var status = await AspireTopologyTests.WaitForTerminalStatusAsync(commandApi, receipt.CorrelationId, humanToken, token);
++                    if (status.CorrelationId != receipt.CorrelationId || status.MessageId is not null && status.MessageId != receipt.MessageId
++                        || status.Domain is not null && status.Domain != TenantIdentity.GlobalAdministratorsDomain || status.AggregateId != TenantIdentity.GlobalAdministratorsAggregateId
++                        || status.Status != "Completed" || status.StatusCode != (int)Hexalith.EventStore.Contracts.Commands.CommandStatus.Completed || status.EventCount != 1 || status.CommittedEventSequence is not > 0)
++                        return (null, "bootstrap-owned-terminal-invalid");
++                    return requireColdBootstrap && status.CommittedEventSequence != 1
++                        ? (null, "bootstrap-cold-state-required") : (status.CommittedEventSequence, null);
++                }
++            }
++            await Task.Delay(100, token);
++        }
++    }
++
++    internal static byte[] ReadPrivate(string path, int maximum)
++    {
++        var file = new FileInfo(path);
++        if (!file.Exists || file.LinkTarget is not null || (file.Attributes & FileAttributes.ReparsePoint) != 0
++            || file.Length > maximum || !OperatingSystem.IsWindows() && (File.GetUnixFileMode(path) & (UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute
++                | UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute)) != 0)
++            throw new InvalidOperationException("source-catalog-private-evidence-invalid");
++        using var source = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
++        using var bytes = new MemoryStream();
++        byte[] buffer = new byte[8192];
++        while (source.Read(buffer) is int count && count > 0)
++        {
++            if (bytes.Length + count > maximum) throw new InvalidOperationException("source-catalog-evidence-limit");
++            bytes.Write(buffer, 0, count);
++        }
++        return bytes.ToArray();
++    }
++
++    private static bool Matches(string directory, RouteCatalogActivation activation)
++    {
++        var entry = new DirectoryInfo(directory);
++        if (entry.LinkTarget is not null || (entry.Attributes & FileAttributes.ReparsePoint) != 0) return false;
++        string path = Path.Combine(directory, "receipt.json");
++        if (!File.Exists(path)) return false;
++        using var document = JsonDocument.Parse(ReadPrivate(path, 64 * 1024));
++        JsonElement root = document.RootElement;
++        return root.ValueKind == JsonValueKind.Object
++            && root.TryGetProperty("instanceId", out var instance) && instance.ValueKind == JsonValueKind.String && instance.GetString() == activation.AttemptId
++            && root.TryGetProperty("rootDigest", out var digest) && digest.ValueKind == JsonValueKind.String && digest.GetString() == activation.RootDigest
++            && root.TryGetProperty("bindingVersion", out var version) && version.ValueKind == JsonValueKind.Number && version.TryGetInt32(out int value) && value == 2;
++    }
++}
++#endif
+diff --git a/tests/Hexalith.Tenants.IntegrationTests/SourceCatalogOwnerProfileTests.cs b/tests/Hexalith.Tenants.IntegrationTests/SourceCatalogOwnerProfileTests.cs
+new file mode 100644
+index 00000000..cea47529
+--- /dev/null
++++ b/tests/Hexalith.Tenants.IntegrationTests/SourceCatalogOwnerProfileTests.cs
+@@ -0,0 +1,106 @@
++#if HEXALITH_DEVELOPMENT_CATALOG_COHORT
++using System.Net;
++using System.Text.Json;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++using Hexalith.Tenants.Contracts.Commands;
++using Hexalith.Tenants.Contracts.Queries;
++using Hexalith.Tenants.Contracts.Routing;
++using Hexalith.Tenants.IntegrationTests.Fixtures;
++using Hexalith.Tenants.UI.Services.Gateways;
++
++using Shouldly;
++using StackExchange.Redis;
++
++namespace Hexalith.Tenants.IntegrationTests;
++
++/// <summary>Mandatory standalone source-runtime proof; model/socket fixtures and package compatibility hosts cannot satisfy it.</summary>
++[Collection("AspireTopology")]
++[DaprTestSerialization]
++[Trait("Category", "Integration")]
++public sealed class SourceCatalogOwnerProfileTests(AspireTopologyFixture fixture)
++{
++    [Fact(Timeout = 180000)]
++    public async Task ActualOwnerCohortCommitsCompleteV2AndPreservesOwnedBootstrapAndRestEffects()
++    {
++        AspireTopologyFixture.IsSourceCatalogProfile.ShouldBeTrue();
++        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        deadline.CancelAfter(TimeSpan.FromMinutes(2));
++        string token = AspireTopologyTests.CreateDemoJwt();
++        var (state, directory) = await SourceCatalogBootstrapEvidence.ReadCommittedAsync(deadline.Token);
++        var activation = state.Committed.ShouldNotBeNull();
++        var catalog = RouteCatalogCodec.Decode(activation.CanonicalCatalog, activation.RootDigest);
++        catalog.SchemaVersion.ShouldBe(3);
++        activation.RequiredHosts.Select(host => (host.HostId, host.AppId)).Order().ShouldBe(
++            new[] { ("eventstore", "eventstore"), ("eventstore-admin", "eventstore-admin"), ("tenants", "tenants"), ("tenants-api", "tenants-api") }.Order());
++        catalog.Routes.ShouldAllBe(route => route.AppId != "tenants-api");
++        var operations = CompiledRouteCatalogDeclarations.ReadOperations([typeof(TenantCatalogDeclarations).Assembly]);
++        catalog.Operations!.Select(operation => (operation.RouteId, operation.Digest)).Order().ShouldBe(operations.Select(operation => (operation.RouteId, operation.Digest)).Order());
++        activation.TechnicalHttpReceivers.ShouldNotBeNull().Select(receiver => receiver.AppId).Order().ShouldBe(["eventstore", "eventstore-admin"]);
++        string binding = RouteCatalogActivationBinding.ComputeDigest(activation);
++        foreach (var host in activation.RequiredHosts)
++        {
++            string path = Path.Combine(directory, host.HostId + ".committed.json");
++            while (!File.Exists(path)) await Task.Delay(50, deadline.Token);
++            var held = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(SourceCatalogBootstrapEvidence.ReadPrivate(path, 1024 * 1024)).ShouldNotBeNull();
++            held.Serving.ShouldBeTrue(); held.Epoch.ShouldBe(state.Epoch); held.Generation.ShouldBe(catalog.Generation);
++            held.RootDigest.ShouldBe(activation.RootDigest); held.AttemptId.ShouldBe(activation.AttemptId); held.ActivationBindingDigest.ShouldBe(binding);
++            held.RouteFacetDigest.ShouldBe(catalog.RouteFacetDigest); held.IdempotencyFacetDigest.ShouldBe(catalog.IdempotencyFacetDigest); held.Profile.ShouldBe(catalog.Profile);
++            held.RequiredHosts.OrderBy(peer => peer.HostId, StringComparer.Ordinal).ShouldBe(activation.RequiredHosts.OrderBy(peer => peer.HostId, StringComparer.Ordinal));
++        }
++        string tenantId = "source-catalog-" + Guid.NewGuid().ToString("N");
++        var status = await AspireTopologyTests.SubmitAndWaitForTerminalStatusAsync(fixture.CommandApiClient,
++            AspireTopologyTests.CreateCommand("tenants", tenantId, nameof(CreateTenant), new CreateTenant(tenantId, "Source catalog proof", "Owned source-runtime qualification")),
++            token, deadline.Token);
++        status.Status.ShouldBe("Completed"); status.EventCount.HasValue.ShouldBeTrue(); status.EventCount.Value.ShouldBeGreaterThan(0);
++        var persisted = await AspireTopologyTests.WaitForPersistedTenantAsync(tenantId, null, deadline.Token);
++        persisted.ShouldNotBeNull();
++        using var scoped = AspireTopologyTests.CreateIsolatedTenantsApiClient(fixture.TenantsApiClient, token, _ => { });
++        var rest = new TenantsRestQueryClient(scoped);
++        (await rest.ListTenantsAsync(new ListTenantsQuery { PageSize = 100 }, null, deadline.Token)).IsSuccess.ShouldBeTrue();
++        var detail = await rest.GetTenantAsync(new GetTenantQuery { TenantId = tenantId }, null, deadline.Token); detail.IsSuccess.ShouldBeTrue();
++        (await rest.GetTenantUsersAsync(new GetTenantUsersQuery { TenantId = tenantId, PageSize = 100 }, null, deadline.Token)).IsSuccess.ShouldBeTrue();
++        (await rest.GetUserTenantsAsync(new GetUserTenantsQuery { UserId = AuthenticatedRouteState.CallerId, PageSize = 100 }, null, deadline.Token)).IsSuccess.ShouldBeTrue();
++        (await rest.GetTenantAuditAsync(new GetTenantAuditQuery { TenantId = tenantId, PageSize = 100 }, null, deadline.Token)).IsSuccess.ShouldBeTrue();
++        (await rest.GetGlobalAdministratorsAsync(new GetGlobalAdministratorsQuery { PageSize = 100 }, null, deadline.Token)).IsSuccess.ShouldBeTrue();
++        detail.Metadata.ETag.ShouldNotBeNullOrWhiteSpace();
++        (await rest.GetTenantAsync(new GetTenantQuery { TenantId = tenantId }, detail.Metadata.ETag, deadline.Token)).IsNotModified.ShouldBeTrue();
++        // This SSR page calls the actual Admin UI issuer and named Dapr client, then
++        // the marked Admin receiver and its independently bound Gateway owner reader.
++        using var adminPage = await fixture.AdminUiClient.GetAsync("/dapr", deadline.Token);
++        adminPage.StatusCode.ShouldBe(HttpStatusCode.OK);
++        string adminHtml = await adminPage.Content.ReadAsStringAsync(deadline.Token);
++        adminHtml.ShouldContain("DAPR Infrastructure"); adminHtml.ShouldContain("statestore");
++        adminHtml.ShouldNotContain("Unable to load DAPR infrastructure");
++        adminHtml.ShouldNotContain("EventStore sidecar unreachable");
++        adminHtml.ShouldNotContain("EventStore sidecar metadata invalid");
++        adminHtml.ShouldNotContain("DAPR component inventory not configured");
++        // The unmarked descendant is still refused by the real UI-sidecar invocation path.
++        using var refused = new HttpRequestMessage(HttpMethod.Get, "/v1.0/invoke/tenants-api/method/api/tenants/" + tenantId + "/foreign-child");
++        refused.Headers.Authorization = new("Bearer", token);
++        using var denied = await fixture.TenantsUiDaprClient.SendAsync(refused, deadline.Token);
++        denied.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
++        using var redis = await ConnectionMultiplexer.ConnectAsync("localhost:6379,abortConnect=false,connectTimeout=5000,asyncTimeout=5000").WaitAsync(deadline.Token);
++        (await redis.GetDatabase().KeyExistsAsync("tenants||projection:tenants:" + tenantId).WaitAsync(deadline.Token)).ShouldBeTrue();
++        while (true)
++        {
++            var final = await SourceCatalogBootstrapEvidence.ReadCommittedAsync(deadline.Token);
++            final.State.Committed!.AttemptId.ShouldBe(activation.AttemptId);
++            if (final.State.Leases.Count == 0) break;
++            await Task.Delay(100, deadline.Token);
++        }
++        string output = Environment.GetEnvironmentVariable("TENANTS_SOURCE_CATALOG_RESULT") ?? throw new InvalidOperationException("source-catalog-result-unconfigured");
++        byte[] result = JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            sdkSource = Environment.GetEnvironmentVariable("TENANTS_SOURCE_SDK_SHA"),
++            sdkProducerVersion = Environment.GetEnvironmentVariable("TENANTS_SOURCE_SDK_PRODUCER_VERSION"), activation.AttemptId, activation.RootDigest,
++            activationBindingDigest = binding, state.Epoch, generation = catalog.Generation, requiredHosts = activation.RequiredHosts,
++            operations = operations.Count, ownedBootstrapTerminalAndProjectedMembership = true,
++            realRestReads = 6, conditionalRead = true, actualAdminUiProxyAndOwnerRead = true, refusedDescendant = true, persistedTenant = true, outstandingLeases = 0,
++        });
++        var resultStream = new FileStream(output, FileMode.CreateNew, FileAccess.Write, FileShare.None);
++        await using (resultStream.ConfigureAwait(false)) await resultStream.WriteAsync(result, deadline.Token);
++    }
++}
++#endif
+diff --git a/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapBoundCommandTests.cs b/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapBoundCommandTests.cs
+new file mode 100644
+index 00000000..f68d0977
+--- /dev/null
++++ b/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapBoundCommandTests.cs
+@@ -0,0 +1,101 @@
++using System.IdentityModel.Tokens.Jwt;
++using System.Net.Http.Json;
++using System.Security.Claims;
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++
++using Dapr.Client;
++
++using Hexalith.EventStore.Client.Gateway;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.Tenants.Bootstrap;
++using Hexalith.Tenants.Contracts.Commands;
++using Hexalith.Tenants.Contracts.Identity;
++
++using Microsoft.AspNetCore.Authentication.JwtBearer;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Hosting;
++using Microsoft.IdentityModel.Tokens;
++
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.Tenants.Server.Tests.Bootstrap;
++
++/// <summary>Validates actual bearer signatures before the existing RSA requester proof and SDK workload assertion are issued; no sidecar is started.</summary>
++public sealed class TenantBootstrapBoundCommandTests
++{
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("web-payload")]
++    [InlineData("signature")]
++    [InlineData("issuer")]
++    [InlineData("audience")]
++    [InlineData("expired")]
++    [InlineData("subject")]
++    [InlineData("not-admin")]
++    [InlineData("workload")]
++    [InlineData("payload")]
++    [InlineData("missing-key")]
++    [InlineData("missing-caller")]
++    public async Task OnlyTheValidatedAdministratorCanBindTheExactInternalBootstrap(string scenario)
++    {
++        string key = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
++        using RSA proofKey = RSA.Create(2048);
++        var settings = new Dictionary<string, string?>
++        {
++            ["Authentication:JwtBearer:Issuer"] = "bootstrap-origin",
++            ["Authentication:JwtBearer:Audience"] = "bootstrap-reader",
++            ["Authentication:JwtBearer:SigningKey"] = key,
++            ["Authentication:JwtBearer:RequireHttpsMetadata"] = "false",
++            ["Authentication:JwtBearer:AllowInsecureSymmetricKey"] = "true",
++            ["Authentication:WorkloadIssuer:Workload"] = scenario == "missing-caller" ? null : "tenants",
++            ["Authentication:BoundStreamRead:PrivateKey"] = scenario == "missing-key" ? null : Convert.ToBase64String(proofKey.ExportPkcs8PrivateKey()),
++        };
++        IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(settings).Build();
++        var services = new ServiceCollection(); services.AddLogging(); services.AddSingleton(configuration);
++        IHostEnvironment environment = Substitute.For<IHostEnvironment>(); environment.EnvironmentName.Returns(Environments.Development);
++        services.AddSingleton(environment);
++        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
++            JwtBearerAuthenticationContract.Configure(options, configuration.GetSection("Authentication:JwtBearer").Get<JwtBearerAuthenticationOptions>()!));
++        services.AddEventStoreWorkloadAssertionIssuer(configuration);
++        await using var provider = services.BuildServiceProvider();
++        await using var scope = provider.CreateAsyncScope();
++        using DaprClient dapr = new DaprClientBuilder().UseHttpEndpoint("http://127.0.0.1:3500").Build();
++        string subject = scenario == "subject" ? "foreign-administrator" : "bootstrap-administrator";
++        List<Claim> claims = [new("sub", subject)];
++        if (scenario != "not-admin") claims.Add(new("global_admin", "true"));
++        if (scenario == "workload") claims.Add(new(EventStoreWorkloadAuthenticationDefaults.WorkloadClaimType, "tenants"));
++        var jwt = new JwtSecurityToken(scenario == "issuer" ? "foreign" : "bootstrap-origin",
++            scenario == "audience" ? "foreign" : "bootstrap-reader", claims,
++            notBefore: DateTime.UtcNow.AddMinutes(-10), expires: scenario == "expired" ? DateTime.UtcNow.AddMinutes(-5) : DateTime.UtcNow.AddMinutes(2),
++            signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(scenario == "signature" ? Convert.ToHexString(RandomNumberGenerator.GetBytes(32)) : key)), SecurityAlgorithms.HmacSha256));
++        string bearer = new JwtSecurityTokenHandler().WriteToken(jwt);
++        var command = new SubmitCommandRequest("01ARZ3NDEKTSV4RRFFQ69G5FAV", TenantIdentity.DefaultTenantId,
++            TenantIdentity.GlobalAdministratorsDomain, TenantIdentity.GlobalAdministratorsAggregateId, nameof(BootstrapGlobalAdmin),
++            JsonSerializer.SerializeToElement(new BootstrapGlobalAdmin(scenario == "payload" ? "foreign" : "bootstrap-administrator"), scenario == "web-payload" ? JsonSerializerOptions.Web : JsonSerializerOptions.Default), "01ARZ3NDEKTSV4RRFFQ69G5FAW");
++        using var request = await TenantBootstrapBoundCommand.CreateAsync(scope.ServiceProvider, configuration, dapr, command,
++            "bootstrap-administrator", bearer, TimeProvider.System, TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
++        if (scenario is not ("valid" or "web-payload")) { request.ShouldBeNull(); return; }
++        request.ShouldNotBeNull(); request.RequestUri!.AbsolutePath.ShouldEndWith("/api/v1/commands/bound/workload");
++        request.Headers.Authorization.ShouldBeNull();
++        var bound = (await request.Content!.ReadFromJsonAsync<BoundWorkloadCommandRequest>(TestContext.Current.CancellationToken)).ShouldNotBeNull();
++        bound.PrincipalId.ShouldBe("bootstrap-administrator"); bound.Command.MessageId.ShouldBe(command.MessageId);
++        string proof = request.Headers.GetValues(BoundWorkloadCommandProof.HeaderName).ShouldHaveSingleItem();
++        string publicKey = Convert.ToBase64String(proofKey.ExportSubjectPublicKeyInfo());
++        BoundWorkloadCommandProof.Verify(bound, proof, "tenants", publicKey, DateTimeOffset.UtcNow).ShouldBeTrue();
++        BoundWorkloadCommandProof.Verify(bound with { PrincipalId = "foreign" }, proof, "tenants", publicKey, DateTimeOffset.UtcNow).ShouldBeFalse();
++        string assertion = request.Headers.GetValues(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName).ShouldHaveSingleItem();
++        var validated = await new Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler().ValidateTokenAsync(assertion, new TokenValidationParameters
++        {
++            ValidateIssuer = true, ValidIssuer = "bootstrap-origin", ValidateAudience = true, ValidAudience = "eventstore",
++            ValidateIssuerSigningKey = true, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), ValidateLifetime = true,
++        });
++        validated.IsValid.ShouldBeTrue();
++        validated.ClaimsIdentity.FindFirst("azp")!.Value.ShouldBe("tenants");
++        validated.ClaimsIdentity.FindFirst(EventStoreWorkloadAuthenticationDefaults.OperationClaimType)!.Value.ShouldBe(EventStoreWorkloadOperations.GatewayCommandSubmit);
++    }
++}
+diff --git a/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapReceiptTests.cs b/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapReceiptTests.cs
+new file mode 100644
+index 00000000..859a1dd5
+--- /dev/null
++++ b/tests/Hexalith.Tenants.Server.Tests/Bootstrap/TenantBootstrapReceiptTests.cs
+@@ -0,0 +1,70 @@
++using System.Text.Json;
++
++using Hexalith.Tenants.Bootstrap;
++
++using Microsoft.Extensions.Configuration;
++
++using Shouldly;
++
++namespace Hexalith.Tenants.Server.Tests.Bootstrap;
++
++/// <summary>Private delivery evidence never overwrites an outside target or becomes domain authority.</summary>
++public sealed class TenantBootstrapReceiptTests
++{
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("duplicate")]
++    [InlineData("begin-link")]
++    [InlineData("complete-link")]
++    [InlineData("changed")]
++    [InlineData("outside-path")]
++    public async Task ActualDeliveryReceiptPreservesOwnedBytesAndRefusesSubstitution(string scenario)
++    {
++        string directory = Directory.CreateTempSubdirectory("tenant-bootstrap-receipt-").FullName;
++        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
++        string path = Path.Combine(directory, "tenants.bootstrap.json");
++        string outside = Path.Combine(Path.GetTempPath(), "tenant-outside-" + Guid.NewGuid().ToString("N"));
++        byte[] outsideBytes = "outside-target-must-remain-unchanged"u8.ToArray(); await File.WriteAllBytesAsync(outside, outsideBytes, TestContext.Current.CancellationToken);
++        IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
++        {
++            ["Tenants:BootstrapBoundWorkloadReceiptPath"] = scenario == "outside-path" ? outside : path,
++            ["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"] = directory,
++            ["EventStore:RouteCatalog:DevelopmentBootstrap:AttemptId"] = "file-evidence-attempt",
++            ["EventStore:RouteCatalog:DevelopmentBootstrap:RootDigest"] = new string('a', 64),
++        }).Build();
++        try
++        {
++            if (scenario == "begin-link") File.CreateSymbolicLink(path, outside);
++            if (scenario is "begin-link" or "outside-path")
++            {
++                await Should.ThrowAsync<Exception>(() => TenantBootstrapReceipt.BeginAsync(configuration, "message-one", "correlation-one", "validated-administrator", TestContext.Current.CancellationToken));
++            }
++            else
++            {
++                var receipt = (await TenantBootstrapReceipt.BeginAsync(configuration, "message-one", "correlation-one", "validated-administrator", TestContext.Current.CancellationToken)).ShouldNotBeNull();
++                byte[] original = await File.ReadAllBytesAsync(path, TestContext.Current.CancellationToken);
++                if (scenario == "duplicate")
++                {
++                    await Should.ThrowAsync<IOException>(() => TenantBootstrapReceipt.BeginAsync(configuration, "message-two", "correlation-two", "another", TestContext.Current.CancellationToken));
++                    File.ReadAllBytes(path).ShouldBe(original);
++                }
++                else if (scenario is "complete-link" or "changed")
++                {
++                    if (scenario == "complete-link") { File.Delete(path); File.CreateSymbolicLink(path, outside); }
++                    else await File.WriteAllTextAsync(path, "changed", TestContext.Current.CancellationToken);
++                    await Should.ThrowAsync<InvalidOperationException>(() => receipt.CompleteAsync(configuration, 202, "accepted", TestContext.Current.CancellationToken));
++                }
++                else
++                {
++                    await receipt.CompleteAsync(configuration, 202, "accepted", TestContext.Current.CancellationToken);
++                    var completed = JsonSerializer.Deserialize<TenantBootstrapReceipt>(await File.ReadAllBytesAsync(path, TestContext.Current.CancellationToken)).ShouldNotBeNull();
++                    completed.Phase.ShouldBe("accepted"); completed.MessageId.ShouldBe(receipt.MessageId); completed.CorrelationId.ShouldBe(receipt.CorrelationId);
++                    completed.PrincipalId.ShouldBe(receipt.PrincipalId); completed.HttpStatus.ShouldBe(202);
++                    if (!OperatingSystem.IsWindows()) File.GetUnixFileMode(path).ShouldBe(UnixFileMode.UserRead | UnixFileMode.UserWrite);
++                }
++            }
++            (await File.ReadAllBytesAsync(outside, TestContext.Current.CancellationToken)).ShouldBe(outsideBytes);
++        }
++        finally { Directory.Delete(directory, true); File.Delete(outside); }
++    }
++}

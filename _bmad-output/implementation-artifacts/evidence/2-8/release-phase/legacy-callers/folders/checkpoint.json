@@ -1,0 +1,242 @@
+{
+  "observedAtUtc": "2026-10-31T20:16:19.175324+00:00",
+  "pr": {
+    "url": "https://github.com/Hexalith/Hexalith.Folders/pull/15",
+    "number": 15,
+    "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+    "base": "765544efc5c8aa395895f3a3d5911d4364658639",
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "mergeableState": "unstable",
+    "changedFiles": 1,
+    "additions": 1,
+    "deletions": 1
+  },
+  "workflowIdentity": {
+    "recordedAtUtc": "2026-10-31T20:08:23.785918+00:00",
+    "owner": "Hexalith/Hexalith.Folders",
+    "base": "765544efc5c8aa395895f3a3d5911d4364658639",
+    "file": ".github/workflows/ci.yml",
+    "before": {
+      "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+      "sha256": "ab5942869b3b6670d289e4c111ebca319bd6beb769eb60565151ab065ab1185f",
+      "commitBlob": "e56224f1334b0b72c271acaf083f05aaf365ac12",
+      "resolvedWorkflowCommit": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9"
+    },
+    "after": {
+      "uses": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+      "sha256": "d1cd65952c42bf4facee6f21b39b0945986f8fad23132cafc24a8659de992853",
+      "normalizedBlob": "30491018a0d0a7c33a5923c252eac44a3c8b65cc"
+    },
+    "onlyExactRefReplacement": true,
+    "allOtherBytesEqual": true,
+    "parsedYamlEquivalentExceptReference": true,
+    "allCallerInputsSupportedByPinnedInterface": true,
+    "callerInputs": {
+      "solution": "Hexalith.Folders.CI.slnx",
+      "build-timeout-minutes": "45",
+      "test-platform": "microsoft-testing-platform",
+      "run-consumer-validation": "true",
+      "run-coverage-gate": "true",
+      "coverage-minimum-line": "75",
+      "coverage-required-branch": "80",
+      "coverage-isolation-targets": "src/Hexalith.Folders/Aggregates/Folder/FolderArchiveTenantGate.cs\n",
+      "coverage-line-scope": "src/Hexalith.Folders.Contracts/\nsrc/Hexalith.Folders/\nsrc/Hexalith.Folders.Client/\nsrc/Hexalith.Folders.Aspire/\nsrc/Hexalith.Folders.Testing/\n",
+      "unit-test-projects": "tests/Hexalith.Folders.Contracts.Tests\ntests/Hexalith.Folders.Tests\ntests/Hexalith.Folders.Cli.Tests\ntests/Hexalith.Folders.EventStore.Tests\ntests/Hexalith.Folders.LoadTests.Tests\ntests/Hexalith.Folders.Mcp.Tests\ntests/Hexalith.Folders.Server.Tests\ntests/Hexalith.Folders.Testing.Tests\ntests/Hexalith.Folders.UI.Tests\ntests/Hexalith.Folders.Workers.Tests\ntests/Hexalith.Folders.AppHost.Tests\nsamples/Hexalith.Folders.Sample.Tests\n",
+      "integration-test-projects": "tests/Hexalith.Folders.IntegrationTests\n"
+    },
+    "callerSecretsUnchanged": null,
+    "requiredLegacySecrets": false,
+    "lineEndingsPreserved": true,
+    "candidateAcceptance": false,
+    "callerMergeAuthorizedInThisStage": false
+  },
+  "sourceSha256": {
+    ".github/workflows/ci.yml": {
+      "sha256": "d1cd65952c42bf4facee6f21b39b0945986f8fad23132cafc24a8659de992853",
+      "commitBlob": "30491018a0d0a7c33a5923c252eac44a3c8b65cc"
+    }
+  },
+  "validation": {
+    "actionlint": "passed without exclusions",
+    "exactWorkflowReferenceOnly": true,
+    "allOtherWorkflowBytesPreserved": true,
+    "parsedYamlEquivalentExceptReference": true,
+    "allInputsSupportedByPinnedWorkflow": true,
+    "gitDiffCheck": "passed",
+    "owningLockedCommitlint": "@commitlint/cli@21.2.4",
+    "commitTitleBodySquashAndRange": "passed",
+    "existingReleaseToolingCases": null,
+    "matchingSecurityExpectationOnly": false
+  },
+  "originalCheckoutPreserved": {
+    "head": "fdcf5542e6ec0aabcbc2d7386907e276a4ec1b86",
+    "branch": "main",
+    "status": "",
+    "indexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workflowSha256": "ab5942869b3b6670d289e4c111ebca319bd6beb769eb60565151ab065ab1185f",
+    "allCapturedDirtyFileHashesMatch": true
+  },
+  "checkSummary": [
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237577634/job/124644481707"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237574125/job/124644469798"
+    },
+    {
+      "name": "ci / aspire-tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644466027"
+    },
+    {
+      "name": "ci / performance-tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644465877"
+    },
+    {
+      "name": "Cursor Bugbot",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644448231"
+    },
+    {
+      "name": "ci / build-and-test",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326439"
+    },
+    {
+      "name": "e2e-gates",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326396"
+    },
+    {
+      "name": "folders-specialized-gates",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326316"
+    },
+    {
+      "name": "codeql / analyze",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526574/job/124644326253"
+    },
+    {
+      "name": "accessibility-gates",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500/job/124644326106"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526461/job/124644325643"
+    },
+    {
+      "name": "dependency-review / dependency-review",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526335/job/124644325008"
+    },
+    {
+      "name": "contract and generated artifact gates",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526114/job/124644324880"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644324100"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/runs/124644323348"
+    }
+  ],
+  "statusSummary": [],
+  "workflowRuns": [
+    {
+      "id": 41237577634,
+      "name": "Commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237577634"
+    },
+    {
+      "id": 41237574125,
+      "name": "Commitlint",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237574125"
+    },
+    {
+      "id": 41237526461,
+      "name": "Commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526461"
+    },
+    {
+      "id": 41237526335,
+      "name": "Dependency Review",
+      "status": "completed",
+      "conclusion": "failure",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526335"
+    },
+    {
+      "id": 41237526574,
+      "name": "CodeQL",
+      "status": "in_progress",
+      "conclusion": null,
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526574"
+    },
+    {
+      "id": 41237526114,
+      "name": "contract-spine-gates",
+      "status": "completed",
+      "conclusion": "failure",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526114"
+    },
+    {
+      "id": 41237526500,
+      "name": "CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "head": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "event": "pull_request",
+      "url": "https://github.com/Hexalith/Hexalith.Folders/actions/runs/41237526500"
+    }
+  ],
+  "globalActivationExecuted": false,
+  "candidateAcceptance": false,
+  "callerMerged": false
+}

@@ -1,0 +1,28 @@
+from pathlib import Path
+import sys,json,hashlib,subprocess,datetime,copy,yaml
+owner=sys.argv[1];root=Path.cwd();evidence=Path('/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/legacy-callers')/owner.lower();evidence.mkdir(exist_ok=True)
+legacy='1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9';prefix=b'Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@';p=root/'.github/workflows/ci.yml';before=p.read_bytes();assert before.count(prefix+b'main')==1;after=before.replace(prefix+b'main',prefix+legacy.encode(),1);assert after.replace(prefix+legacy.encode(),prefix+b'main',1)==before
+original=yaml.load(before,Loader=yaml.BaseLoader);changed=yaml.load(after,Loader=yaml.BaseLoader);original['jobs']['ci']['uses']=changed['jobs']['ci']['uses'];assert original==changed
+producer=yaml.load((evidence.parent/'legacy-domain-ci.yml').read_text(),Loader=yaml.BaseLoader)['on']['workflow_call'];inputs=changed['jobs']['ci'].get('with',{});assert set(inputs)<=set(producer['inputs']);assert all(k in inputs for k,v in producer['inputs'].items() if v.get('required')=='true');assert not any(v.get('required')=='true' for v in producer.get('secrets',{}).values())
+(evidence/'workflow-before.yml').write_bytes(before);p.write_bytes(after);(evidence/'workflow-after.yml').write_bytes(after)
+def git(*args):return subprocess.check_output(['git',*args],cwd=root,text=True).strip()
+assert git('diff','--name-only')=='.github/workflows/ci.yml';assert git('diff','--numstat')=='1\t1\t.github/workflows/ci.yml'
+receipt={'recordedAtUtc':datetime.datetime.now(datetime.UTC).isoformat(),'owner':'Hexalith/Hexalith.'+owner,'base':git('rev-parse','HEAD'),'file':'.github/workflows/ci.yml','before':{'uses':prefix.decode()+'main','sha256':hashlib.sha256(before).hexdigest(),'commitBlob':git('rev-parse','HEAD:.github/workflows/ci.yml'),'resolvedWorkflowCommit':legacy},'after':{'uses':prefix.decode()+legacy,'sha256':hashlib.sha256(after).hexdigest(),'normalizedBlob':git('hash-object',str(p))},'onlyExactRefReplacement':True,'allOtherBytesEqual':True,'parsedYamlEquivalentExceptReference':True,'allCallerInputsSupportedByPinnedInterface':True,'callerInputs':inputs,'callerSecretsUnchanged':changed['jobs']['ci'].get('secrets'),'requiredLegacySecrets':False,'lineEndingsPreserved':True,'candidateAcceptance':False,'callerMergeAuthorizedInThisStage':False}
+(evidence/'workflow-identity.json').write_text(json.dumps(receipt,indent=2)+'\n');(evidence/'workflow-diff.txt').write_text(subprocess.check_output(['git','diff','--','.github/workflows/ci.yml'],cwd=root,text=True))
+title='fix(ci): pin the legacy domain workflow';body=f'''The shared workflow rollout adds required integration inputs and registry secrets.
+{owner} still uses the existing caller interface. Pin its domain-ci workflow to
+verified Builds revision {legacy} before the
+shared interface changes. Producer push CI passed on that exact main revision:
+https://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095
+
+Only jobs.ci.uses changes. Preserve every caller input, job, permission, test,
+package/tool pin and protection. This compatibility fence supplies no Story2.8
+integration or candidate acceptance; caller merge and global activation remain
+pending separate normal gates.
+
+Validation: actionlint syntax check, exact single-reference byte comparison,
+parsed YAML equivalence, pinned-interface input compatibility, git diff checks,
+and the owning lockfile-pinned commitlint CLI.
+'''.replace('Story2.8','Story 2.8')
+(evidence/'pr-title.txt').write_text(title+'\n');(evidence/'pr-body.md').write_text(body);(evidence/'squash-message.txt').write_text(title+'\n\n'+body);(evidence/'commit-message.txt').write_text(title+'\n\nFreeze this caller at the verified existing workflow interface.\nPreserve all jobs, inputs, test gates and dependency pins during rollout.\n')
+print(json.dumps({'owner':owner,'base':receipt['base'],'workflowSha256':receipt['after']['sha256'],'changedFiles':1,'changedLines':'1/1'}))

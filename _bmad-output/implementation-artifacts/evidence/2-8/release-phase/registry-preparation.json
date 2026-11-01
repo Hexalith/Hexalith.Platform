@@ -1,0 +1,53 @@
+{
+  "story": "2.8",
+  "observedAt": "2026-10-31T18:15:33.172054+00:00",
+  "mode": "read-only planning; no registry or secret mutation",
+  "cluster": {
+    "context": "jpiquot@local",
+    "namespaceUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557"
+  },
+  "registry": {
+    "host": "registry.hexalith.com",
+    "namespace": "registry-distribution",
+    "configMap": "distribution-registry-config",
+    "uid": "d00eeb4b-f507-440f-8328-fb838a7d5da3",
+    "resourceVersion": "27899151",
+    "configurationSha256": "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317",
+    "anonymousPolicy": [],
+    "existingReader": "cluster-reader",
+    "existingReaderUse": "cluster workloads; do not repurpose",
+    "writerIdentities": [
+      "jpiquot",
+      "jpiquot@itaneo.com"
+    ],
+    "htpasswdSecret": "distribution-registry-htpasswd"
+  },
+  "proposal": {
+    "principal": "ci-reader",
+    "registryActions": [
+      "read"
+    ],
+    "adminPolicyMembership": false,
+    "githubSecretScope": [
+      "Hexalith/Hexalith.EventStore",
+      "Hexalith/Hexalith.Parties"
+    ],
+    "githubSecretNames": [
+      "HEXALITH_CI_REGISTRY_USERNAME",
+      "HEXALITH_CI_REGISTRY_PASSWORD"
+    ],
+    "workflowSecrets": "explicit named pull-only inputs; no secrets inheritance",
+    "timing": "login after isolated success and before package integration; remove temporary Docker credential directory in unconditional finalizer"
+  },
+  "verificationRequired": [
+    "authenticated manifest and blob reads of selected released images",
+    "anonymous and wrong-credential refusals",
+    "create/update/delete denied",
+    "exact caller workflow and job credential inventory",
+    "unchanged existing readers/writers and registry policy"
+  ],
+  "sourceConstraint": "Original applied registry source is outside local repositories. Preserve existing configuration and establish a reproducible source patch before any apply.",
+  "credentialValuesReadOrPersisted": false,
+  "mutationAuthorizedByThisRecord": false,
+  "hostedAcceptance": false
+}

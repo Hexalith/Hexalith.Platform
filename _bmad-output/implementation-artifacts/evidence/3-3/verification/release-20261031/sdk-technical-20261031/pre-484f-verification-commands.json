@@ -1,0 +1,59 @@
+{
+  "sourceRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-integrated",
+  "sourceHead": "6b9004d942e280724ca5bf554f3862ab23af68a0",
+  "sourceArchive": "/tmp/story33-sdk-pre-484f-20261031",
+  "runs": [
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Client.Tests/bin/Debug/net10.0/Hexalith.EventStore.Client.Tests.dll -class *DevelopmentRouteCatalogBuilderTests -xml /tmp/story33-sdk-client-source-rerun.xml",
+      "environment": {
+        "HexalithEventStoreRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-integrated",
+        "HexalithTenantsRoot": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Tenants"
+      },
+      "mappingReceipt": "/tmp/story33-sdk-client-source-mapping.json",
+      "xml": "/tmp/story33-sdk-client-source-rerun.xml",
+      "log": "/tmp/story33-sdk-client-source-rerun.log",
+      "total": 53,
+      "passed": 53,
+      "scope": "supported compilation mapping only, no runtime child qualification"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -class *QueryResponseProvenancePersistenceTests -xml /tmp/story33-sdk-provenance-ephemeral.xml",
+      "environment": {
+        "ASPNETCORE_URLS": "http://127.0.0.1:0"
+      },
+      "xml": "/tmp/story33-sdk-provenance-ephemeral.xml",
+      "log": "/tmp/story33-sdk-provenance-ephemeral.log",
+      "total": 7,
+      "passed": 7,
+      "scope": "owned ephemeral Kestrel only; unrelated dcp5000 untouched"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -method *TrackedReusableContent_DoesNotContainUsableSecrets -xml /tmp/story33-sdk-pre-custody-scan-tracked.xml",
+      "environment": {},
+      "xml": "/tmp/story33-sdk-pre-custody-scan-tracked.xml",
+      "log": "/tmp/story33-sdk-pre-custody-scan-tracked.log",
+      "total": 1,
+      "passed": 1,
+      "scope": "normal tracked source"
+    },
+    {
+      "command": "dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -method *TrackedReusableContent_DoesNotContainUsableSecrets -xml /tmp/story33-sdk-pre-custody-scan-candidate2.xml",
+      "environment": {
+        "GIT_INDEX_FILE": "/tmp/story33-pre-custody-index-25rzulev/index"
+      },
+      "xml": "/tmp/story33-sdk-pre-custody-scan-candidate2.xml",
+      "log": "/tmp/story33-sdk-pre-custody-scan-candidate2.log",
+      "total": 1,
+      "passed": 1,
+      "scope": "HEAD plus all124 changed/new source paths, literal-path staging into an alternate index; scanner unchanged; initial failed candidate scan retained"
+    }
+  ],
+  "alternateIndexPreparation": [
+    "GIT_INDEX_FILE=<owned temporary index> git read-tree HEAD",
+    "GIT_INDEX_FILE=<owned temporary index> git add --pathspec-from-file=<NUL literal pathspecs from diff HEAD + untracked source> --pathspec-file-nul",
+    "GIT_INDEX_FILE=/tmp/story33-pre-custody-index-25rzulev/index git add -- tests/Hexalith.EventStore.Admin.Server.Tests/Routing/DevelopmentActorStateOwnerBindingTests.cs tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentActorStateOwnerModelTests.cs"
+  ],
+  "actualIndexSha256Before": "8772a7af757179a356b760e638f9a4b6d587655feb417bea5ed4d31e519d4efb",
+  "actualIndexSha256After": "8772a7af757179a356b760e638f9a4b6d587655feb417bea5ed4d31e519d4efb",
+  "actualIndexUnchanged": true
+}

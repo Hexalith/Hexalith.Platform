@@ -247,11 +247,11 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
             {
                 var request = original.Deserialize<CustodyKeyLifecycleRequest>(CustodyBindingContract.Json)!;
                 allowed &= request.Identity.TenantId == tenant && ErasureRootCustody.Hash(request) == requestDigest && request.FenceRevision > 0
-                    && current.QualificationBindings!.TryGetValue("erc.fence." + request.FenceTokenId, out var fence) && fence == requestDigest;
+                    && current.QualificationBindings is { } fenceBindings && fenceBindings.TryGetValue("erc.fence." + request.FenceTokenId, out var fence) && fence == requestDigest;
             }
             if (operation == "VerifyReservedManifestAndCopyPolicy")
             {
-                allowed &= current.QualificationBindings!.TryGetValue("erc.copyPolicySha256", out var qualified) && qualified == acceptedCopyPolicySha256;
+                allowed &= current.QualificationBindings is { } copyBindings && copyBindings.TryGetValue("erc.copyPolicySha256", out var qualified) && qualified == acceptedCopyPolicySha256;
                 var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
                 allowed &= read is { } actual && actual.Head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(tenant), out var owner)
                     && owner.Revision == original.GetProperty("ownerRevision").GetInt64() && owner.Digest == original.GetProperty("ownerStateDigest").GetString();

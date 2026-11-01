@@ -1,0 +1,18 @@
+Introduce domain-ci-v2.yml for required declared package integration after isolated
+success. Preserve the existing domain-ci.yml contract and bind the v2 workflow and
+its direct executor to their exact authorized source. Require explicit pull-only
+registry credentials, bounded exact-owner finalization and classified diagnostics.
+
+When cleanup races outcome publication, attachment-capable owners serialize the
+initial outcome commit within the original stopping token. Persistent lock failure
+still refuses resource teardown and allows exact retry. Legacy owners without
+attachment admission keep their immediate bookkeeping and cleanup behavior. First
+outcomes, times, expiry and withdrawal-before-stop ordering are preserved.
+
+Fresh Debug build and all 78 affected local/CI/legacy controls pass. Versioned source
+controls cover both legacy and strict contracts, identity/digest and helper drift
+refusals, HTTPS downloads and credential cleanup. Full exact-head hosted gates must
+pass before merge; source fixtures provide no reference or candidate acceptance.
+
+Reference adoption, compatible package releases and hosted lifecycle qualification
+remain separate steps.

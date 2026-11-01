@@ -6,6 +6,7 @@ import copy
 import io
 import json
 from pathlib import Path
+import stat
 import subprocess
 import tempfile
 import unittest
@@ -852,6 +853,71 @@ class ReviewPatchTests(unittest.TestCase):
    root=Path(root);stdout=io.StringIO();stderr=io.StringIO()
    with patch('sys.argv',['prepare.py','--private-root',str(root/'private'),'--output',str(root/'packet')]),__import__('contextlib').redirect_stdout(stdout),__import__('contextlib').redirect_stderr(stderr):result=prepare.main()
    self.assertEqual((1,'','Preparation refused: configured-registry-auth-unavailable\n'),(result,stdout.getvalue(),stderr.getvalue()));self.assertEqual([],list(root.iterdir()))
+
+
+class ReviewPass2Tests(unittest.TestCase):
+ refuse=V1Tests.refuse
+ setup_runner=lambda self,c,until:WriteFailureTests.setup_runner(self,c,until)
+
+ def unready(self,runner,app):
+  pod=runner.application_pod(app);next(s for s in pod['status']['containerStatuses'] if s['name']=='daprd')['ready']=False;runner.pod_overrides[app]=pod
+
+ def test_real_forward_checks_sidecars_and_gateway_boundary_before_any_process(self):
+  for case,code,metadata in [('sidecar','sidecar-runtime-unready',False),('boundary','gateway-runtime-mtls-required',True)]:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'metadata')
+    if case=='sidecar':self.unready(runner,'tenants')
+    else:
+     pod=runner.application_pod('eventstore');sidecar=next(x for x in pod['spec']['containers'] if x['name']=='daprd');sidecar['args'].remove('--enable-mtls');runner.pod_overrides['eventstore']=pod
+    with patch.object(phases.socket,'socket') as socket,patch.object(phases.subprocess,'Popen') as process:
+     def forward():
+      with phases.Runner.forward(runner,metadata=metadata):self.fail('unchecked forward opened')
+     self.refuse(code,forward);process.assert_not_called();socket.assert_not_called()
+    self.assertEqual([],list(runner.journal.glob('*port-forward-*.log')));external.assert_not_called()
+
+ def test_handoff_refuses_missing_pod_or_unready_sidecar_without_profile(self):
+  for case,code in [('pod','application-pod-missing'),('sidecar','sidecar-runtime-unready')]:
+   with self.subTest(case=case),Control() as c,patch.object(subprocess,'run') as external:
+    runner,_=self.setup_runner(c,'handoff')
+    if case=='pod':runner.pods.remove('parties')
+    else:self.unready(runner,'parties')
+    with patch.object(phases,'Runner',return_value=runner):self.assertEqual((1,'','Phase stopped: '+code+'. Preserve the journal; do not retry uncertain writes.\n'),ReviewPatchTests.cli(self,c,'--execute-reviewed','--phase','handoff'))
+    self.assertFalse((c.private/'operator-home').exists());self.assertEqual('uncertain',json.loads((runner.journal/'handoff.json').read_text())['status']);external.assert_not_called()
+
+ def test_handoff_profile_is_private_and_seed_submits_exactly_the_reviewed_operations(self):
+  with Control() as c,patch.object(subprocess,'run') as external:
+   runner=FakeRunner(c.directory,c.packet,c.bundle);oracle=Oracle(c.packet)
+   with patch.object(phases,'request',side_effect=oracle.request):
+    for phase in phases.PHASES[:-1]:runner.execute(phase)
+   profile=c.private/'operator-home/.eventstore/mcpcli.json';self.assertEqual(0o600,stat.S_IMODE(profile.stat().st_mode))
+   fields=('tenant','domain','aggregateId','commandType','payload')
+   self.assertEqual([{k:op[k] for k in fields} for op in c.packet['seedOperations']],[{k:w[k] for k in fields} for w in oracle.writes if 'commandType' in w])
+   self.assertEqual(c.packet['seedOperations'][1]['payload']['Role'],json.loads((runner.journal/'handoff.json').read_text())['role']);external.assert_not_called()
+
+ def test_tenants_bootstrap_image_marker_is_required(self):
+  actual=json.loads((prepare.HERE/'evidence/images.json').read_text());raw=(prepare.HERE/'evidence/images.json').read_text();original=json.loads
+  changed=copy.deepcopy(actual);next(i for i in changed if i['name']=='tenants')['markers']['BootstrapGlobalAdminEnabled']=[]
+  def loads(value,*args,**kwargs):return changed if value==raw else original(value,*args,**kwargs)
+  with tempfile.TemporaryDirectory() as root,patch.object(json,'loads',side_effect=loads),patch.object(subprocess,'run') as external:
+   self.refuse('required-image-capability-missing',lambda:prepare.prepare(Path(root)/'private',Path(root)/'packet',auth={}))
+   self.assertEqual([],list(Path(root).iterdir()));external.assert_not_called()
+
+ def test_block_style_yaml_fixtures_prepare_the_same_dapr_documents(self):
+  with tempfile.TemporaryDirectory() as root:
+   root=Path(root);copy_root=root/'mcpcli'
+   for name in prepare.FIXTURES:
+    target=copy_root/name;target.parent.mkdir(parents=True,exist_ok=True);text=(prepare.MCPCLI/name).read_text()
+    if name in prepare.FIXTURES[3:6]:text=yaml.safe_dump(json.loads(text),default_flow_style=False);self.assertRaises(json.JSONDecodeError,json.loads,text)
+    target.write_text(text)
+   with patch.object(prepare,'MCPCLI',copy_root):block=prepare.prepare(root/'block-private',root/'block-packet',auth={})
+   flow=prepare.prepare(root/'flow-private',root/'flow-packet',auth={})
+   def dapr(packet,directory):
+    docs=[d for d in yaml.safe_load_all((directory/'infrastructure.yaml').read_text()) if d['kind'] in ('Configuration','Component')]
+    for d in docs:d['metadata']['namespace']=d['metadata']['labels']=None
+    for d in docs:
+     for p in d['spec'].get('accessControl',{}).get('policies',[]):p['namespace']=None
+    return docs
+   self.assertEqual(dapr(flow,root/'flow-packet'),dapr(block,root/'block-packet'))
 
 
 if __name__=='__main__':unittest.main()

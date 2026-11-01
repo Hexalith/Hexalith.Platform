@@ -1,0 +1,51 @@
+78: src/Hexalith.Folders.Aspire/
+79: src/Hexalith.Folders.Testing/
+80: 
+81: 2026-10-31T20:09:08.9823381Z   aspire-continue-on-error: true
+82: 2026-10-31T20:09:08.9823621Z   aspire-prepare-script: 
+83: 2026-10-31T20:09:08.9823822Z   aspire-runner-script: 
+84: 2026-10-31T20:09:08.9824030Z   aspire-prepare-timeout-minutes: 30
+85: 2026-10-31T20:09:08.9824270Z   aspire-runner-timeout-minutes: 30
+86: 2026-10-31T20:09:08.9824545Z   aspire-evidence-path: TestResults/aspire-hook-evidence
+87: 2026-10-31T20:09:08.9824817Z   aspire-browser-project: 
+88: 2026-10-31T20:09:08.9825017Z   aspire-fail-skips: false
+89: 2026-10-31T20:09:08.9825222Z   build-timeout-minutes: 45
+322: 2026-10-31T20:09:30.7918525Z Skipping submodule 'references/Hexalith.Projects'
+323: 2026-10-31T20:09:30.7919074Z Skipping submodule 'references/Hexalith.Tenants'
+324: 2026-10-31T20:09:30.8010140Z Submodule path 'references/Hexalith.AI.Tools': checked out '70dbf73e80787299c832d30d911b16b105ab194d'
+325: 2026-10-31T20:09:31.5029936Z fatal: remote error: upload-pack: not our ref 15d6a10c54660153cf8c05f24db83215824faf8e
+326: 2026-10-31T20:09:31.5034015Z fatal: Fetched in submodule path 'references/Hexalith.Builds', but it did not contain 15d6a10c54660153cf8c05f24db83215824faf8e. Direct fetching of that commit failed.
+327: 2026-10-31T20:09:31.5070398Z ##[error]Process completed with exit code 128.
+328: 2026-10-31T20:09:31.5081013Z ##[end-action id=__Hexalith_Hexalith_Builds.__run;outcome=failure;conclusion=failure;duration_ms=6770]
+329: 2026-10-31T20:09:31.5239802Z ##[group]Run set -euo pipefail
+330: 2026-10-31T20:09:31.5240121Z [36;1mset -euo pipefail[0m
+331: 2026-10-31T20:09:31.5240361Z [36;1mif [ "$TEST_PLATFORM" = "vstest" ]; then[0m
+332: 2026-10-31T20:09:31.5240749Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_VSTEST_FAILURE_COUNT" ]; then[0m
+333: 2026-10-31T20:09:31.5241229Z [36;1m    echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'[0m
+334: 2026-10-31T20:09:31.5241592Z [36;1m    exit 1[0m
+335: 2026-10-31T20:09:31.5241771Z [36;1m  fi[0m
+363: 2026-10-31T20:09:31.5250944Z [36;1mdone[0m
+364: 2026-10-31T20:09:31.5251095Z [36;1m[0m
+365: 2026-10-31T20:09:31.5251267Z [36;1mif [ "$total_failures" -ne 0 ]; then[0m
+366: 2026-10-31T20:09:31.5251702Z [36;1m  printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\n' "$total_failures"[0m
+367: 2026-10-31T20:09:31.5252120Z [36;1m  exit 1[0m
+368: 2026-10-31T20:09:31.5252288Z [36;1mfi[0m
+369: 2026-10-31T20:09:31.5282240Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+370: 2026-10-31T20:09:31.5282664Z env:
+371: 2026-10-31T20:09:31.5282862Z   TEST_PLATFORM: microsoft-testing-platform
+372: 2026-10-31T20:09:31.5284217Z   UNIT_TEST_PROJECTS: tests/Hexalith.Folders.Contracts.Tests
+373: tests/Hexalith.Folders.Tests
+374: tests/Hexalith.Folders.Cli.Tests
+389: 2026-10-31T20:09:31.5286577Z   INTEGRATION_VSTEST_FAILURE_COUNT: 
+390: 2026-10-31T20:09:31.5286797Z   INTEGRATION_MTP_FAILURE_COUNT: 
+391: 2026-10-31T20:09:31.5286996Z ##[endgroup]
+392: 2026-10-31T20:09:31.5340180Z ##[error]Tier 1 Microsoft.Testing.Platform did not report a failure count.
+393: 2026-10-31T20:09:31.5341761Z ##[error]Process completed with exit code 1.
+394: 2026-10-31T20:09:31.5384696Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+395: 2026-10-31T20:09:31.5385033Z with:
+396: 2026-10-31T20:09:31.5385223Z   name: blocking-test-results
+397: 2026-10-31T20:09:31.5385504Z   path: TestResults/**/*.trx
+398: TestResults/**/coverage.cobertura.xml
+399: 
+400: 2026-10-31T20:09:31.5385931Z   retention-days: 7
+401: 2026-10-31T20:09:31.5386120Z   if-no-files-found: warn

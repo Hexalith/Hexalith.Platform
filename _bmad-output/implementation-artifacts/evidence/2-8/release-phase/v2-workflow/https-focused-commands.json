@@ -1,0 +1,41 @@
+[
+  {
+    "argv": [
+      "/home/administrator/.local/bin/actionlint",
+      ".github/workflows/domain-ci.yml",
+      ".github/workflows/domain-ci-v2.yml",
+      ".github/workflows/ci.yml",
+      ".github/workflows/build-release.yml"
+    ],
+    "expectedExit": 0,
+    "exitCode": 0,
+    "output": "actionlint-https.txt"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "expectedExit": 0,
+    "exitCode": 0,
+    "output": "diff-check-https.txt"
+  },
+  {
+    "argv": [
+      "curl",
+      "--fail",
+      "--location",
+      "--proto",
+      "=https",
+      "--proto-redir",
+      "=https",
+      "--retry",
+      "3",
+      "http://127.0.0.1:1"
+    ],
+    "expectedExit": 1,
+    "exitCode": 1,
+    "output": "curl-insecure-protocol-control.txt"
+  }
+]

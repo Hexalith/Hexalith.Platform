@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-10-31T21:02:32.966102+00:00",
+  "head": "2ed2f03346d11c925104f4bfc31ac747182a3dc8",
+  "base": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+  "all7StrictRequiredChecksSuccess": true,
+  "requiredChecks": {
+    "advisory": {
+      "id": 124642171678,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "ci / build-and-test": {
+      "id": 124642172319,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "ci / tenants-source-mode": {
+      "id": 124642172048,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "codeql / analyze": {
+      "id": 124642172169,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "commitlint / commitlint": {
+      "id": 124655971072,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "dependency-review / dependency-review": {
+      "id": 124642173243,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "live-sidecar": {
+      "id": 124642171616,
+      "app": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  "mergeableState": "clean",
+  "activePublication": {
+    "run": 41238371177,
+    "head": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+    "status": "waiting",
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41238371177"
+  },
+  "mergeExecuted": false,
+  "releaseReviewSubmitted": false,
+  "releaseOwnershipClarification": "Asked asynchronously; independent Builds correction continues",
+  "historicalMatrixAcceptance": false
+}

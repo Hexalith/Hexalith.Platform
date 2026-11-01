@@ -1,0 +1,92 @@
+{
+  "actualAgentReadbacks": {
+    "node-recovery.tar.gz.age": {
+      "bytes": 95366348,
+      "outputFileWritten": false,
+      "sha256": "5819eb3d1cf0fc6d88df95adb81289f1113dff6bf8bd50918925efca50c2ea02",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "streamComplete": true
+    },
+    "snapshot.db.age": {
+      "bytes": 20512,
+      "outputFileWritten": false,
+      "sha256": "cffc9bddda7420606642775ccf1c6c90103e8b34f8b31f0a95e6f6463f32c143",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "streamComplete": true
+    }
+  },
+  "actualMemoryCapacity": {
+    "actualHelperCgroupLimitBytes": 1610612736,
+    "hostMemAvailableBytes": 35501441024,
+    "privateTmpfsCapacityBytes": 1073741824
+  },
+  "actualOtherOwnerClientKey0600Read": true,
+  "actualSourceRecoveryAccepted": false,
+  "actualSourceRevisionUnchanged": true,
+  "archiveMemberCount": 97,
+  "artifacts": {
+    "node-recovery.tar.gz.age": {
+      "bytes": 95389950,
+      "outputFileWritten": true,
+      "sha256": "e72b325f5d551ea0e5209a813b12a0d86e09ec2567456bca5e8f585f320a34db",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "streamComplete": true
+    },
+    "snapshot.db.age": {
+      "bytes": 20834,
+      "outputFileWritten": true,
+      "sha256": "2978c664d811f1fc1ebf0a5b79d12cbc59b2c2310103a3f07be0055b59fb3c25",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "streamComplete": true
+    }
+  },
+  "authorizationCallbackStages": [
+    "node-etcd-capture-before-helper",
+    "node-etcd-capture-helper-create",
+    "node-etcd-capture-helper-create",
+    "node-etcd-capture-public-tool-install"
+  ],
+  "canaryCount": 3,
+  "fullVisibleKeyspace": {
+    "algorithm": "SHA256 sorted-base64-key native visible key/value/create_revision/mod_revision/version/optional-lease compact sorted-key JSON",
+    "canonicalBytes": 450,
+    "keyCount": 3,
+    "revision": 7,
+    "sha256": "7263e7c2b61b8dbdfb17bee540b32fc74b9920621aac709932cbff9095ce7787"
+  },
+  "helperCleanupPassed": true,
+  "imagePin": "docker.io/library/python@sha256:47d41ea4947601fd5bc7ed6c00a7b9c1fbb936a7684873908a3c3b4e68ce3c86",
+  "immutableProviderReadbackQualifiedHere": false,
+  "isolatedRestoreQualifiedHere": false,
+  "nodeVersion": "v1.34.9",
+  "plaintextSnapshotRemoved": true,
+  "productionCredentialsOrDataImported": false,
+  "productionPolicySignatureQualifiedHere": false,
+  "protectedNamespaceAndStoragePreserved": true,
+  "qualifiedModuleHashes": {
+    "/home/administrator/projects/hexalith/platform/eng/cluster-management/evidence.py": "7baf72327c0bca5daccd6ed48c781b3b3ba24298c3f8f2dd42ee5f50cbca96c9",
+    "/home/administrator/projects/hexalith/platform/eng/cluster-management/rehearse.py": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-etcd-metadata/etcd_metadata.py": "1d0e1efc7315dfe6b423f900a611c1c1f6e526bbef74fc608734926755352dfd",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-metadata/metadata.py": "b13f927319b2aa1a0bd4db69d30c9ddcc28463c017865a761a40f37ce7b7d97c",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-recovery/archive.py": "c64aecc2abc0f0cb1580fd2cc605456bc25fef012c5fc37303e20c1792d347ab",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-recovery/caller.py": "8c92aa4604f4f26dc15ef09efee80b1d0a04699dedb2220423a911365e5b16c5",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-recovery/capture.py": "c14da22a3e0dab9024b512c895abb47c3a50b70dfb26efed31e7b666ea5900a6",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-recovery/transfer.py": "772b6bfa386f702aa837017d17633b15bf136bfbf84fb2cca380c0917e927335",
+    "/home/administrator/projects/hexalith/platform/eng/kubernetes-upgrade/native-node-recovery/volume_probe.py": "8c3339f1380b04405b226ca6928e37fd5466b06391207096cf2181610c437d4d",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/recovery_adapters.py": "3a41b15b273b9cc533b17532c837c4366ac12dcd9206911c4136a4925093bdb1",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/telemetry_capture.py": "9da422b9f7aadada823ff24a2caa0f7d9bfc8292fe633b16e71f48226d0e683e",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/telemetry_postgres_adapter.py": "175ac34b63bc1ed7a592686c37fbf84d3c8da4cd853f2593e610aed077196785",
+    "/home/administrator/projects/hexalith/platform/eng/recovery-preparation/telemetry_restore.py": "f779061e66ee545e3a24b3cc31ec553cbd458d5d12813be7ab6c51af5eb03e89"
+  },
+  "snapshotPlaintextOnlyInMemoryBackedHelper": true,
+  "snapshotRevision": 7,
+  "sourceEtcdIdentity": {
+    "clusterId": "7687328609813917735",
+    "memberId": "7323602748121601512"
+  },
+  "sourceFileBytes": 258887830,
+  "sourceMountsReadonly": true,
+  "sourceRevision": 7,
+  "state": "passed",
+  "syntheticEtcdVersion": "3.6.5"
+}

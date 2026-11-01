@@ -1,0 +1,26 @@
+235: 2026-10-31T20:10:35.2590505Z Cloning into '/home/runner/work/Hexalith.Folders/Hexalith.Folders/references/Hexalith.PolymorphicSerializations'...
+236: 2026-10-31T20:10:35.4922585Z Cloning into '/home/runner/work/Hexalith.Folders/Hexalith.Folders/references/Hexalith.Tenants'...
+237: 2026-10-31T20:10:37.9527879Z Submodule path 'references/Hexalith.AI.Tools': checked out '70dbf73e80787299c832d30d911b16b105ab194d'
+238: 2026-10-31T20:10:38.2401379Z fatal: remote error: upload-pack: not our ref 15d6a10c54660153cf8c05f24db83215824faf8e
+239: 2026-10-31T20:10:38.2407285Z fatal: Fetched in submodule path 'references/Hexalith.Builds', but it did not contain 15d6a10c54660153cf8c05f24db83215824faf8e. Direct fetching of that commit failed.
+240: 2026-10-31T20:10:38.2446773Z ##[error]Process completed with exit code 128.
+241: 2026-10-31T20:10:38.2530680Z ##[group]Run ./tests/tools/run-safety-invariant-gates.ps1 -SkipRestoreBuild
+242: 2026-10-31T20:10:38.2531285Z [36;1m./tests/tools/run-safety-invariant-gates.ps1 -SkipRestoreBuild[0m
+243: 2026-10-31T20:10:38.2664491Z shell: /usr/bin/pwsh -command ". '{0}'"
+244: 2026-10-31T20:10:38.2664951Z ##[endgroup]
+245: 2026-10-31T20:10:40.9106516Z [31;1mWrite-Error: [0m/home/runner/work/_temp/a9540a64-d8d9-4842-a4e1-4196c64f712b.ps1:2[0m
+246: 2026-10-31T20:10:40.9107524Z [31;1m[0m[36;1mLine |[0m
+247: 2026-10-31T20:10:40.9108662Z [31;1m[0m[36;1m[36;1m   2 | [0m [36;1m./tests/tools/run-safety-invariant-gates.ps1 -SkipRestoreBuild[0m
+248: 2026-10-31T20:10:40.9109847Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+249: 2026-10-31T20:10:40.9111228Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mSAFETY-PREREQUISITE-DRIFT: safety test assembly is missing. Run the[0m
+250: 2026-10-31T20:10:40.9112967Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1msafety gate without -SkipRestoreBuild, or run the shared restore/build[0m
+251: 2026-10-31T20:10:40.9115283Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mlane before using -SkipRestoreBuild.[0m
+252: 2026-10-31T20:10:40.9539757Z ##[error]Process completed with exit code 1.
+253: 2026-10-31T20:10:40.9692297Z Post job cleanup.
+254: 2026-10-31T20:10:41.0579221Z [command]/usr/bin/git version
+255: 2026-10-31T20:10:41.0632795Z git version 2.56.0
+256: 2026-10-31T20:10:41.0677514Z Temporarily overriding HOME='/home/runner/work/_temp/176390be-9475-42c7-b570-94d5f0ea7683' before making global git config changes
+257: 2026-10-31T20:10:41.0679073Z Adding repository directory to the temporary git global config as a safe directory
+258: 2026-10-31T20:10:41.0683849Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Folders/Hexalith.Folders
+259: 2026-10-31T20:10:41.0724583Z Removing SSH command configuration
+260: 2026-10-31T20:10:41.0734214Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand

@@ -113,7 +113,8 @@ class RetirementTests(unittest.TestCase):
                    subjects=[{'kind': 'User', 'name': 'independent-administrator'}])]
         raw += [object_('postgresql.cnpg.io/v1', 'Cluster', 'keycloak-postgres', 'keycloak')]
         raw += [object_('apps/v1', 'StatefulSet', name, namespace, spec={'replicas': 1})
-                for namespace, name in [('openbao', 'hexalith-keys'), ('hexalith-memories', 'redis-stack'), ('hexalith-memories', 'falkordb')]]
+                for namespace, name in [('openbao', 'hexalith-keys'), ('hexalith-memories', 'redis-stack'),
+                                        ('hexalith-memories', 'falkordb'), ('hexalith-memories', 'access-telemetry-postgresql')]]
         for api, kind, namespace, name in sorted(retire.AUTHORITY, key=str):
             fields = {'roleRef': {'apiGroup': 'rbac.authorization.k8s.io', 'kind': 'ClusterRole', 'name': 'cluster-admin'}} \
                 if kind == 'ClusterRoleBinding' else {}
@@ -215,11 +216,29 @@ class RetirementTests(unittest.TestCase):
         backup_hashes = {}
         policy40 = {'recoveryId': 'current-recovery', 'systems': {w: {'maximumProofAgeSeconds': 3600}
                                                                   for w in ('keycloak', 'openbao', 'memories')}}
+        policy40['systems']['memories'].update(requiredStores=['access-telemetry-postgresql', 'falkordb', 'redis-stack'], rpoSeconds=1800)
+        telemetry = self.recent(sourceClusterUid=plan['sourceClusterUid'], sourceUid='StatefulSet-access-telemetry-postgresql',
+            measuredRpo={'seconds': 1, 'withinPolicy': True}, artifactEncrypted=True,
+            artifact={'key': 'memories/current-recovery/telemetry-postgresql.dump.age', 'versionId': 'immutable-version',
+                      'bytes': 123, 'sha256': 'a' * 64},
+            isolatedTargetUids={k: 'isolated-' + k for k in ('namespace', 'statefulSet', 'pvc', 'pv')},
+            checks={k: True for k in ('snapshotHolderAliveThroughDump', 'sameSnapshotDumpAndCanaries',
+                'quiescedSequencesStable', 'completeObjectCoverage', 'sourceAndTargetCanariesEqual',
+                'targetRolesNoLoginOrSuperuser', 'sourceFenced', 'isolatedTarget', 'sourceResumedAndHealthy',
+                'targetCleanupComplete', 'independentValidatorReadback')},
+            evidence={k: {'path': 'memories/telemetry/' + k + '.json', 'sha256': digest(k.encode())}
+                      for k in ('capture', 'isolation', 'comparison', 'restore', 'resume', 'cleanup')})
+        retention = (datetime.now(timezone.utc) + timedelta(days=31)).isoformat()
+        manifest = dict(policy40, objects=[dict(telemetry['artifact'], system='memories', readBy='validator',
+            contentLength=123, readBackSha256='a' * 64, serverSideEncryption='AES256', objectLockMode='COMPLIANCE',
+            objectLockRetainUntil=retention, retentionApi={'mode': 'COMPLIANCE', 'retainUntil': retention})],
+            localEvidence=list(telemetry['evidence'].values()))
         namespace = 'hexalith-recovery'
         for name in retire.BACKUP_FILES[:2]:
-            backup_hashes[name] = self.signed(self.backup, name, policy40, namespace)
+            backup_hashes[name] = self.signed(self.backup, name, manifest if name.startswith('manifest/') else policy40, namespace)
         proof_uids = {'keycloak': 'Cluster-keycloak-postgres', 'openbao': 'StatefulSet-hexalith-keys',
-                      'memories': {'redis-stack': 'StatefulSet-redis-stack', 'falkordb': 'StatefulSet-falkordb'}}
+                      'memories': {'redis-stack': 'StatefulSet-redis-stack', 'falkordb': 'StatefulSet-falkordb',
+                                   'access-telemetry-postgresql': 'StatefulSet-access-telemetry-postgresql'}}
         for name in (retire.BACKUP_FILES[2], *retire.BACKUP_FILES[4:7], retire.BACKUP_FILES[3]):
             record = self.recent(recoveryId='current-recovery', verificationResult='pass',
                 policySha256=backup_hashes[retire.BACKUP_FILES[0]], evidenceManifestSha256=backup_hashes[retire.BACKUP_FILES[1]],
@@ -227,6 +246,8 @@ class RetirementTests(unittest.TestCase):
             if name in retire.BACKUP_FILES[4:7]:
                 system = name.split('/')[0]
                 record.update(system=system, runKind='final', sourceUid=proof_uids[system])
+                if system == 'memories':
+                    record['telemetryPostgresql'] = telemetry
             if name == retire.BACKUP_FILES[3]:
                 record['proofs'] = {system: {'sha256': backup_hashes[proof],
                     'signatureSha256': file_digest(str(self.backup / proof) + '.sig')}
@@ -237,7 +258,9 @@ class RetirementTests(unittest.TestCase):
             gateSha256=backup_hashes['gate/backup-gate.json'], validatedAt=retire.now(), inputs={name: {
                 'sha256': sha, 'signatureSha256': file_digest(str(self.backup / name) + '.sig'), 'signatureVerified': True}
                 for name, sha in backup_hashes.items()}, summary={'fail': 0, 'skipped': 0},
-            checks=[{'status': 'pass'}], providerReadBack={'manifestObjectsReRead': 3, 'manifestObjectsMatching': 3})
+            checks=[{'status': 'pass'}, {'id': 'memories-telemetry-postgresql', 'status': 'pass',
+                                       'proofSha256': digest(canonical(telemetry))}],
+            providerReadBack={'manifestObjectsReRead': 3, 'manifestObjectsMatching': 3})
         backup_hashes[retire.BACKUP_FILES[-1]] = self.signed(self.backup, retire.BACKUP_FILES[-1], validation, namespace)
         base = dict(attemptId='execution', planSha256=file_digest(self.args.plan),
                     sourceClusterUid=plan['sourceClusterUid'], verificationResult='pass')
@@ -274,11 +297,141 @@ class RetirementTests(unittest.TestCase):
         directory, state = retire.run(self.args)
         return state, json.loads((directory / 'result.json').read_bytes())
 
-    def modify_signed(self, path, update):
+    def telemetry_contract(self):
+        plan = self.plan()
+        load = lambda name: json.loads((self.backup / name).read_bytes())
+        return [load('memories/memories-restore-proof.json'), load('policy/recovery-policy.json'),
+                load('manifest/evidence-manifest.json'), load('validation/validation.json'), plan, 3600]
+
+    def test_complete_three_store_signed_handoff_requires_explicit_telemetry_semantics(self):
+        values = self.telemetry_contract()
+        retire.validate_memories_telemetry(*values)
+        attacks = [lambda x: x[0].pop('telemetryPostgresql'),
+                   lambda x: x[0]['sourceUid'].pop('access-telemetry-postgresql'),
+                   lambda x: x[1]['systems']['memories'].pop('requiredStores'),
+                   lambda x: x[0]['telemetryPostgresql'].update(sourceUid='wrong-source'),
+                   lambda x: x[0]['telemetryPostgresql'].update(sourceClusterUid='wrong-cluster')]
+        for attack in attacks:
+            changed = copy.deepcopy(values)
+            attack(changed)
+            with self.subTest(attack=attack), self.assertRaises(ValueError):
+                retire.validate_memories_telemetry(*changed)
+        for check in values[0]['telemetryPostgresql']['checks']:
+            for mutation in ('omit', 'false'):
+                changed = copy.deepcopy(values)
+                checks = changed[0]['telemetryPostgresql']['checks']
+                if mutation == 'omit':
+                    checks.pop(check)
+                else:
+                    checks[check] = False
+                with self.subTest(check=check, mutation=mutation), self.assertRaises(ValueError):
+                    retire.validate_memories_telemetry(*changed)
+
+    def test_telemetry_artifact_and_independent_validator_binding_cannot_be_substituted(self):
+        values = self.telemetry_contract()
+        attacks = [lambda x: x[0]['telemetryPostgresql'].update(artifactEncrypted=False),
+                   lambda x: x[0]['telemetryPostgresql']['artifact'].update(key='memories/other/telemetry-postgresql.dump.age'),
+                   lambda x: x[0]['telemetryPostgresql']['artifact'].update(versionId='other-version'),
+                   lambda x: x[0]['telemetryPostgresql']['artifact'].update(bytes=124),
+                   lambda x: x[0]['telemetryPostgresql']['artifact'].update(sha256='b' * 64),
+                   lambda x: x[2].update(objects=[]),
+                   lambda x: x[2]['objects'].append(copy.deepcopy(x[2]['objects'][0])),
+                   lambda x: x[2]['objects'][0].update(readBy='writer'),
+                   lambda x: x[2]['objects'][0].update(contentLength=124),
+                   lambda x: x[2]['objects'][0].update(serverSideEncryption=None),
+                   lambda x: x[2]['objects'][0].update(objectLockMode='GOVERNANCE'),
+                   lambda x: x[2]['objects'][0]['retentionApi'].update(mode='GOVERNANCE'),
+                   lambda x: x[2]['objects'][0].update(objectLockRetainUntil=retire.now())]
+        for attack in attacks:
+            changed = copy.deepcopy(values)
+            attack(changed)
+            with self.subTest(attack=attack), self.assertRaises(ValueError):
+                retire.validate_memories_telemetry(*changed)
+
+    def test_telemetry_actual_evidence_and_final_validation_digest_are_required(self):
+        values = self.telemetry_contract()
+        attacks = [lambda x: x[0]['telemetryPostgresql']['evidence'].pop('resume'),
+                   lambda x: x[0]['telemetryPostgresql']['evidence']['cleanup'].update(sha256='b' * 64),
+                   lambda x: x[0]['telemetryPostgresql']['evidence']['restore'].update(path='memories/telemetry/../other'),
+                   lambda x: x[2].update(localEvidence=[]),
+                   lambda x: x[3].update(checks=[]),
+                   lambda x: x[3]['checks'][1].update(status='fail'),
+                   lambda x: x[3]['checks'][1].update(proofSha256='c' * 64),
+                   lambda x: x[3]['checks'].append(copy.deepcopy(x[3]['checks'][1]))]
+        for attack in attacks:
+            changed = copy.deepcopy(values)
+            attack(changed)
+            with self.subTest(attack=attack), self.assertRaises(ValueError):
+                retire.validate_memories_telemetry(*changed)
+
+    def test_telemetry_freshness_rpo_and_distinct_target_identity_are_required(self):
+        values = self.telemetry_contract()
+        attacks = [lambda x: x[0]['telemetryPostgresql'].update(expiresAt=retire.now()),
+                   lambda x: x[0]['telemetryPostgresql'].update(capturedAt=(datetime.now(timezone.utc)-timedelta(hours=2)).isoformat()),
+                   lambda x: x[0]['telemetryPostgresql']['measuredRpo'].update(seconds=1801),
+                   lambda x: x[0]['telemetryPostgresql']['measuredRpo'].update(seconds=True),
+                   lambda x: x[0]['telemetryPostgresql']['measuredRpo'].update(withinPolicy=False),
+                   lambda x: x[0]['telemetryPostgresql']['isolatedTargetUids'].update(statefulSet='StatefulSet-access-telemetry-postgresql'),
+                   lambda x: x[0]['telemetryPostgresql']['isolatedTargetUids'].update(pvc='isolated-pv')]
+        for attack in attacks:
+            changed = copy.deepcopy(values)
+            attack(changed)
+            with self.subTest(attack=attack), self.assertRaises(ValueError):
+                retire.validate_memories_telemetry(*changed)
+
+    def authenticated_telemetry_refusal(self, mutate, expected):
+        self.plan()
+        memory_path = self.backup / 'memories/memories-restore-proof.json'
+        proof = json.loads(memory_path.read_bytes())
+        mutate(proof)
+        self.modify_signed(memory_path, proof, namespace='hexalith-recovery')
+        memory_sha = file_digest(memory_path)
+        self.modify_signed(self.backup / 'gate/backup-gate.json', {
+            'proofs': {**json.loads((self.backup / 'gate/backup-gate.json').read_bytes())['proofs'],
+                       'memories': {'sha256': memory_sha, 'signatureSha256': file_digest(str(memory_path) + '.sig')}}},
+                           namespace='hexalith-recovery')
+        validation = json.loads((self.backup / 'validation/validation.json').read_bytes())
+        for name in retire.BACKUP_FILES[:-1]:
+            validation['inputs'][name] = {'sha256': file_digest(self.backup / name), 'signatureVerified': True,
+                                         'signatureSha256': file_digest(str(self.backup / name) + '.sig')}
+        validation['gateSha256'] = file_digest(self.backup / 'gate/backup-gate.json')
+        validation['checks'][1]['proofSha256'] = digest(canonical(proof.get('telemetryPostgresql')))
+        self.modify_signed(self.backup / 'validation/validation.json', validation, namespace='hexalith-recovery')
+        hashes = {name: file_digest(self.backup / name) for name in retire.BACKUP_FILES}
+        self.modify_signed(self.preflight / 'recovery-validation.json', {'backupInputs': hashes})
+        approval = json.loads(self.args.approval.read_bytes())
+        approval['backupInputs'] = hashes
+        approval['preflightInputs']['recovery-validation.json'] = file_digest(self.preflight / 'recovery-validation.json')
+        self.modify_signed(self.args.approval, approval)
+        state, result = self.result()
+        self.assertEqual(state, 'failed-closed', result)
+        self.assertEqual(expected, result['reasonCode'])
+        self.assertEqual(MemoryNative.sent, [])
+
+    def test_real_signed_rebound_old_pair_only_proof_refuses_before_mutation(self):
+        def old_pair(proof):
+            proof['sourceUid'].pop('access-telemetry-postgresql')
+            proof.pop('telemetryPostgresql')
+        self.authenticated_telemetry_refusal(old_pair, 'workload-proof-source-drift')
+
+    def test_real_signed_rebound_missing_telemetry_proof_refuses_before_mutation(self):
+        self.authenticated_telemetry_refusal(lambda p: p.pop('telemetryPostgresql'), 'memories-telemetry-recovery-incomplete')
+
+    def test_real_signed_rebound_false_same_snapshot_refuses_before_mutation(self):
+        self.authenticated_telemetry_refusal(
+            lambda p: p['telemetryPostgresql']['checks'].update(sameSnapshotDumpAndCanaries=False),
+            'memories-telemetry-recovery-incomplete')
+
+    def test_real_signed_rebound_wrong_immutable_telemetry_version_refuses_before_mutation(self):
+        self.authenticated_telemetry_refusal(
+            lambda p: p['telemetryPostgresql']['artifact'].update(versionId='substituted-version'),
+            'memories-telemetry-recovery-incomplete')
+
+    def modify_signed(self, path, update, namespace='hexalith-retirement'):
         value = json.loads(path.read_bytes())
         value.update(update)
         Path(str(path) + '.sig').unlink()
-        self.signed(path.parent, path.name, value)
+        self.signed(path.parent, path.name, value, namespace)
 
     def test_shared_phase_execution_and_real_plan_to_execute_handoff(self):
         self.assertIs(Fixture.native_retire, PhaseExecutor.native_retire)

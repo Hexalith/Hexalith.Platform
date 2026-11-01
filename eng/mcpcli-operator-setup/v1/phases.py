@@ -55,13 +55,16 @@ def verify(packet_dir,approved_hash,now=None,*,phase='verify',forward=False):
 
 def token(packet,private,operator=False):
  key=Path(private['secrets']['mcpcli-jwt']['signing-key']).read_bytes();now=int(time.time())
- payload={'iss':'mcpcli-live-tests','aud':'hexalith-eventstore','sub':packet['operatorSubject'] if operator else 'mcpcli-live-admin',
+ payload={'iss':'mcpcli-live-tests','aud':'hexalith-eventstore','sub':packet['operatorSubject'] if operator else packet['administratorSubject'],
   'tenants':json.dumps(['system',packet['tenant']]),'domains':json.dumps(['tenants','party'] if operator else ['tenants','party','global-administrators']),
   'permissions':json.dumps(['command:submit','query:read']),'global_admin':'false' if operator else 'true','iat':now,'nbf':now-30,
   'exp':min(now+(packet['operatorTokenTtlSeconds'] if operator else 600),int(datetime.fromisoformat(packet['expiresAt']).timestamp()))}
  encode=lambda raw:base64.urlsafe_b64encode(raw).decode().rstrip('=')
  unsigned=encode(b'{"alg":"HS256","typ":"JWT"}')+'.'+encode(json.dumps(payload,separators=(',',':')).encode())
  return unsigned+'.'+encode(hmac.new(key,unsigned.encode(),hashlib.sha256).digest()),payload['exp']
+
+
+def seed_member(packet):return next(op['payload'] for op in packet['seedOperations'] if op['commandType']=='add-user-to-tenant')
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -329,7 +332,7 @@ class Runner:
    with self.forward():
     if phase=='administrator':
      query={'tenant':'system','domain':'global-administrators','aggregateId':'global-administrators','queryType':'get-global-administrators','projectionType':'global-administrators'}
-     self.observe(lambda:request(self.port,'/api/v1/queries',credential,query),lambda x:x[0]==200 and any(i.get('userId')=='mcpcli-live-admin' for i in (x[1] or {}).get('payload',{}).get('items',[])))
+     self.observe(lambda:request(self.port,'/api/v1/queries',credential,query),lambda x:x[0]==200 and any(i.get('userId')==self.packet['administratorSubject'] for i in (x[1] or {}).get('payload',{}).get('items',[])))
      receipt['persistedAdministratorObserved']=True
     elif phase=='writer':
      proof=self.backup();body={'cutoverCommit':self.packet['gatewaySourceCommit'],'backupReference':'sha256:'+proof['sha256']+';file:'+proof['backupFile'],
@@ -341,20 +344,21 @@ class Runner:
       pod=self.app_pod(app);require(pod is not None,'application-pod-missing')
       self.scoped('wait','--for=condition=Ready','pod/'+pod['metadata']['name'],'--timeout=180s',timeout=190);self.app_pod(app)
     else:
-     tenant=self.packet['tenant'];subject=self.packet['operatorSubject']
-     for wire,payload in [('create-tenant',{'TenantId':tenant,'Name':'McpCli operator setup','Description':'Task-owned synthetic operator tenant'}),('add-user-to-tenant',{'TenantId':tenant,'UserId':subject,'Role':'TenantContributor'})]:
+     tenant=self.packet['tenant'];member=seed_member(self.packet)
+     for operation in self.packet['seedOperations']:
+      wire=operation['commandType']
       value=(int(time.time()*1000)<<80)|int.from_bytes(os.urandom(10),'big');alphabet='0123456789ABCDEFGHJKMNPQRSTVWXYZ';message=''
       for _ in range(26):message=alphabet[value&31]+message;value>>=5
-      body={'messageId':message,'correlationId':message,'tenant':'system','domain':'tenants','aggregateId':tenant,'commandType':wire,'payload':payload}
+      body={'messageId':message,'correlationId':message,'tenant':operation['tenant'],'domain':operation['domain'],'aggregateId':operation['aggregateId'],'commandType':wire,'payload':operation['payload']}
       save(self.journal/(wire+'-intent.json'),body)
-      status,_=request(self.port,'/api/v1/commands',credential,body);require(status==202,'seed-command-uncertain-stop')
+      status,_=request(self.port,operation['endpoint'],credential,body);require(status==202,'seed-command-uncertain-stop')
       def observe():
        response=request(self.port,'/api/v1/commands/status/'+message,credential)
        require((response[1] or {}).get('status') not in ('Rejected','PublishFailed','TimedOut'),'seed-command-terminal-failure')
        return response
       self.observe(observe,lambda x:x[0]==200 and (x[1] or {}).get('status')=='Completed' and x[1].get('committedEventSequence',0)>0 and x[1].get('eventCount',0)>0,45)
      query={'tenant':'system','domain':'tenants','aggregateId':tenant,'queryType':'get-tenant','projectionType':'tenants','payload':{'TenantId':tenant}}
-     self.observe(lambda:request(self.port,'/api/v1/queries',credential,query),lambda x:x[0]==200 and (x[1] or {}).get('payload',{}).get('tenantId')==tenant and any(m.get('userId')==subject and m.get('role')=='TenantContributor' for m in (x[1] or {}).get('payload',{}).get('members',[])),45)
+     self.observe(lambda:request(self.port,'/api/v1/queries',credential,query),lambda x:x[0]==200 and (x[1] or {}).get('payload',{}).get('tenantId')==tenant and any(m.get('userId')==member['UserId'] and m.get('role')==member['Role'] for m in (x[1] or {}).get('payload',{}).get('members',[])),45)
      receipt.update(persistedTenantObserved=True,persistedContributorObserved=True)
   elif phase=='handoff':
    require(all(self.app_pod(app) is not None for app in APPS),'application-pod-missing')
@@ -362,7 +366,7 @@ class Runner:
    value,expiry=token(self.packet,self.private,operator=True);home=self.journal.parent/'operator-home';(home/'.eventstore').mkdir(mode=0o700,parents=True,exist_ok=True)
    profile=home/'.eventstore/mcpcli.json';require(not profile.exists(),'operator-profile-already-exists')
    profile.write_text(json.dumps({'version':1,'profiles':{'operator':{'url':'http://127.0.0.1:'+str(self.port),'token':value,'tenant':self.packet['tenant'],'actor':self.packet['operatorSubject'],'allowTenantOverride':False}}}));profile.chmod(0o600)
-   receipt.update(profilePath=str(profile),tokenExpiresUnix=expiry,tokenExpiresAt=datetime.fromtimestamp(expiry,timezone.utc).isoformat(),globalAdministrator=False,role='TenantContributor')
+   receipt.update(profilePath=str(profile),tokenExpiresUnix=expiry,tokenExpiresAt=datetime.fromtimestamp(expiry,timezone.utc).isoformat(),globalAdministrator=False,role=seed_member(self.packet)['Role'])
   elif phase=='cleanup':
    self.scoped('delete','namespace',self.namespace,'--wait=true','--timeout=180s',timeout=190)
    require(not self.kube('get','namespace',self.namespace,'--ignore-not-found','-o','json').strip(),'cleanup-incomplete')

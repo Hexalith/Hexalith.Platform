@@ -1,0 +1,193 @@
+{
+  "observedAtUtc": "2026-10-31T20:47:10.120856+00:00",
+  "base": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "sourceSha256": {
+    ".gitattributes": "a35498f6b9995ea5b8333af04dfa0058858995db55b9284ab8eb66952e6e78d9",
+    ".github/actionlint.yaml": "ae59240217b52a4e4df83e05c475998cbaea4761d420c37fe7b705d166c156ad",
+    ".github/workflows/build-release.yml": "850d83784b030852308c6e2576886938b1fe9b37946146e016dae9235461dcc0",
+    ".github/workflows/ci-cd-standards.md": "c7298f6fce8446df6b828b761f5502d0a4063433644e623b015ff501c5ace2c0",
+    ".github/workflows/ci.yml": "b285683e40f024e956a6dd2ebcefb23253739e9a6a90363795568529b8d1351e",
+    ".github/workflows/domain-ci-v2.md": "1494c8cd19af3be001d6127e71d0fb5cac71fc5470c36c204003d335fb116bfe",
+    ".github/workflows/domain-ci-v2.yml": "655ea4bd1434a8c20da4152ea9829d1ac15c717f27720f96eb75d40bd940e92f",
+    "Github/governed-provenance/README.md": "00028f026647fcdd449269e886088c8d632bf8734567b9f3e58fba01b5f24c2a",
+    "Github/governed-provenance/governed_provenance.py": "9ea23bccc2c0464c5a4685eb85a4fcc8d33d7b18db8d6aeb5f89fba6f2b6492f",
+    "Github/governed-provenance/tests/test_candidate_policy.py": "4a84e547662a4b7ba9f541e7a0b1d575980e93eb7d85edf9d164ff3d8be7684d",
+    "Github/governed-provenance/tests/test_governed_provenance.py": "0dc033eb64074a9689a39012495fc7dda0c2851d7a634df24662fce75e5956d6",
+    "Github/prepare-module-build/tests/test_prepare_module_build.py": "124bd207b953c81471546efa0599c977d9d469ea6a5a25ff6b23873af51c8ec0",
+    "Github/publish-containers/tests/test_governed_release_workflow.py": "61cd994a44f9c83ec13dfd4fb0781bdf73df0bbb65d5f745dc3500a43094d2ba",
+    "README.md": "676deec72151537b64de2bee7706ec92147e4d2ab20b93431dc7fb4a98a7ccc3",
+    "Tools/test-domain-workflow-test-platforms.ps1": "6849ccd3fac787cb6d91b101e22f04fb2b5aaf169a95e991c775ca911cadb633"
+  },
+  "preserved": {
+    "legacyWorkflowSha256": "510b6e8d868c659846f921ed531d9c582468e718ad2c1caae9f506abd6817d14",
+    "legacyDocsSha256": "c23005c5ed0c993f40960f8a33a9aa528a41a725645694e85e7949b1d5bb6e23",
+    "candidateConsumerSha256": "d4d79ed7a2cf2e97a39e897dd6cc6cb77948f9335c2198afcd8c3adad487c91b",
+    "originalHead": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+    "originalIndexAndCapturedDirtySourceUnchanged": true
+  },
+  "crlfException": {
+    "file": "Github/publish-containers/tests/test_governed_release_workflow.py",
+    "baselineCrLf": 1298,
+    "baselineLf": 1298,
+    "currentCrLf": 1314,
+    "currentLf": 1314,
+    "reason": "The authored source was already CRLF. The scoped -text/diff/whitespace=cr-at-eol attribute preserves those bytes and prevents false added-line whitespace failures; no file-wide line-ending conversion."
+  },
+  "verification": {
+    "legacyAssertions": 411,
+    "v2Assertions": 251,
+    "provenanceTests": 95,
+    "affectedGovernedWorkflowTests": 56,
+    "preparationTests": 11,
+    "unchangedIntegrationHelperTests": 24,
+    "earlierBroadPublisherBaseline": 159,
+    "actionlint": "passed with only existing narrowly scoped job-context compatibility rules",
+    "changedPythonLineStyleFindings": 0,
+    "unchangedPythonStyleFindings": 7
+  },
+  "scope": "Local source controls; no runtime rebuild, package archive acceptance or hosted reference acceptance. Original shared draft remains historical and unactivated. E/P source adoption is deferred until an approved compatible v2 producer/tool exists.",
+  "candidateAcceptance": false,
+  "callerActivation": false,
+  "publicationExecuted": false,
+  "recordedAtUtc": "2026-10-31T20:51:22.628882+00:00",
+  "head": "d11e16e79d93d849c99d97d053b4be64c648ee1c",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/149",
+  "worktreeClean": true,
+  "sourceMatchesCommittedBlobs": true,
+  "currentChecks": [
+    {
+      "name": "Codacy Static Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653983377"
+    },
+    {
+      "name": "CodeQL",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653952734"
+    },
+    {
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653690216"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240633934/job/124653606673"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240623331/job/124653576344"
+    },
+    {
+      "name": "Cursor Bugbot",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653560059"
+    },
+    {
+      "name": "Dependency review / dependency-review",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653538157"
+    },
+    {
+      "name": "Build and package contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653538110"
+    },
+    {
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653538043"
+    },
+    {
+      "name": "Python contract tests",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653538027"
+    },
+    {
+      "name": "Package catalog contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653537903"
+    },
+    {
+      "name": ".NET tests",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610195/job/124653537770"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41240610207/job/124653537706"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653535826"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/124653535100"
+    }
+  ],
+  "supersededCompatibilityPrs": [
+    {
+      "owner": "Commons",
+      "number": 51,
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/Hexalith/Hexalith.Commons/pull/51"
+    },
+    {
+      "owner": "Folders",
+      "number": 15,
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/Hexalith/Hexalith.Folders/pull/15"
+    },
+    {
+      "owner": "Conversations",
+      "number": 11,
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/Hexalith/Hexalith.Conversations/pull/11"
+    },
+    {
+      "owner": "Tenants",
+      "number": 58,
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/Hexalith/Hexalith.Tenants/pull/58"
+    }
+  ],
+  "runtimeAndCandidateConsumerChanged": false,
+  "legacyWorkflowChanged": false,
+  "legacyDocsChanged": false,
+  "archiveRepackedInThisPhase": false,
+  "publicationPerformedInThisPhase": false,
+  "callerActivationPerformedInThisPhase": false,
+  "credentialProvisioningPerformedInThisPhase": false,
+  "remaining": [
+    "Normal PR149 required checks/review and any needed current-base reconciliation",
+    "Separate merged-main cleanup contention investigation; current exact-main .NET proof is red",
+    "SDK published compatibility has an actual failing historical matrix case despite masked job status; no merge/publication credit",
+    "Approved compatible producer/tool/package/image selection and exact-source release gates",
+    "E/P exact v2 adoption with all existing test coverage preserved, registry provisioning and hosted cancellation/partial-startup qualification"
+  ]
+}

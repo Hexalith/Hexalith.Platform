@@ -1,0 +1,184 @@
+[
+  {
+    "name": "apphost",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll",
+      "-class",
+      "*DevelopmentRouteCatalogCustodyTests",
+      "-class",
+      "*DevelopmentRouteCatalogAspireTests",
+      "-class",
+      "*DevelopmentActorStateOwnerModelTests",
+      "-class",
+      "*DevelopmentRouteCatalogOwnerPreparationTests",
+      "-xml",
+      "/tmp/story33-sdk-final-apphost.xml"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-apphost.log",
+    "xml": "/tmp/story33-sdk-final-apphost.xml",
+    "exitCode": 0,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "214b4fdd-1455-4ab2-a0bf-e1a1cc0d1bdc",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.AppHost.Tests/bin/Debug/net10.0/Hexalith.EventStore.AppHost.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "20:39:08",
+        "start-rtf": "2026-10-31T20:39:08.7055443+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T20:39:37.3277126+00:00",
+        "not-run": "0",
+        "passed": "71",
+        "skipped": "0",
+        "time": "28.623",
+        "time-rtf": "00:00:28.6230000",
+        "total": "71"
+      }
+    ]
+  },
+  {
+    "name": "servicedefaults",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.ServiceDefaults.Tests/bin/Debug/net10.0/Hexalith.EventStore.ServiceDefaults.Tests.dll",
+      "-xml",
+      "/tmp/story33-sdk-final-servicedefaults.xml"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-servicedefaults.log",
+    "xml": "/tmp/story33-sdk-final-servicedefaults.xml",
+    "exitCode": 0,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "96dc48ab-c0ae-4756-8085-9b817d9ab180",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.ServiceDefaults.Tests/bin/Debug/net10.0/Hexalith.EventStore.ServiceDefaults.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "20:39:37",
+        "start-rtf": "2026-10-31T20:39:37.5572787+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T20:39:38.5225051+00:00",
+        "not-run": "0",
+        "passed": "157",
+        "skipped": "0",
+        "time": "0.965",
+        "time-rtf": "00:00:00.9650000",
+        "total": "157"
+      }
+    ]
+  },
+  {
+    "name": "contracts-routing",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Contracts.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.Tests.dll",
+      "-class",
+      "*.Routing.*",
+      "-xml",
+      "/tmp/story33-sdk-final-contracts-routing.xml"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-contracts-routing.log",
+    "xml": "/tmp/story33-sdk-final-contracts-routing.xml",
+    "exitCode": 0,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "2430519a-9cdd-4f43-85c1-f68000700a29",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.Contracts.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "20:39:38",
+        "start-rtf": "2026-10-31T20:39:38.7719125+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T20:39:39.1392061+00:00",
+        "not-run": "0",
+        "passed": "161",
+        "skipped": "0",
+        "time": "0.367",
+        "time-rtf": "00:00:00.3670000",
+        "total": "161"
+      }
+    ]
+  },
+  {
+    "name": "domainservice",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.DomainService.Tests/bin/Debug/net10.0/Hexalith.EventStore.DomainService.Tests.dll",
+      "-xml",
+      "/tmp/story33-sdk-final-domainservice.xml"
+    ],
+    "environment": {},
+    "log": "/tmp/story33-sdk-final-domainservice.log",
+    "xml": "/tmp/story33-sdk-final-domainservice.xml",
+    "exitCode": 1,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "9759de60-d895-48b2-a4c0-9298acef6e97",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.DomainService.Tests/bin/Debug/net10.0/Hexalith.EventStore.DomainService.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "20:39:39",
+        "start-rtf": "2026-10-31T20:39:39.3937680+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "1",
+        "finish-rtf": "2026-10-31T20:43:21.1153397+00:00",
+        "not-run": "0",
+        "passed": "1299",
+        "skipped": "1",
+        "time": "221.728",
+        "time-rtf": "00:03:41.7280000",
+        "total": "1301"
+      }
+    ]
+  },
+  {
+    "name": "server-full",
+    "command": [
+      "dotnet",
+      "tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+      "-xml",
+      "/tmp/story33-sdk-final-server-full.xml"
+    ],
+    "environment": {
+      "ASPNETCORE_URLS": "http://127.0.0.1:0"
+    },
+    "log": "/tmp/story33-sdk-final-server-full.log",
+    "xml": "/tmp/story33-sdk-final-server-full.xml",
+    "exitCode": 0,
+    "assemblies": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "3a004704-70a7-4b98-b9c4-e4af71937c53",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "20:43:21",
+        "start-rtf": "2026-10-31T20:43:21.6721348+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T20:48:38.3066551+00:00",
+        "not-run": "0",
+        "passed": "6815",
+        "skipped": "25",
+        "time": "316.645",
+        "time-rtf": "00:05:16.6450000",
+        "total": "6840"
+      }
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-31T19:26:41.432587+00:00",
+  "activationBefore": {
+    "Hexalith.Builds": {
+      ".github/workflows/domain-ci.yml": "9a0414c4b504597a9743c9179d52752292eafdcddb1a8724c70365d651e2bed2",
+      ".github/workflows/domain-ci.md": "7d2921d2e1f04a0581f71fb6794862ecf4674b0c4e1c6b2c27b9be722de0aa6b",
+      "Tools/test-domain-workflow-test-platforms.ps1": "a3de76caf5e7402a3408788299e6f08a66a278411a3850b616f293bfb60be181"
+    },
+    "Hexalith.EventStore": {
+      ".github/workflows/ci.yml": "b71800731e8c9d1cb59a05b79c34ffed248ea2d12658b571d3807b66905dac09"
+    },
+    "Hexalith.Parties": {
+      ".github/workflows/ci.yml": "04ebb8f4cb9b5d4a5159218bae4bc5b2489532a66ba28693801adf2f4fedd0e2"
+    }
+  },
+  "parityBefore": {
+    "Github/run-module-integration/run_module_integration.py": "ce2a90aa19fc41d18dd8ec55fd5d073504be15224b724eba92faa901a598197c",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "112d06e2a0ded590e56956489f91d0f76d39b145ff1b3e5241a1de4461fed38b",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "9151df91bf202651fb6ea590c22944237c94821b4ad83251f228af38124bbc9c",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "07af5ce6aa1031a4046075ac2554a43f2c1dbf839ccfd229fa5746fc4954bedb"
+  },
+  "untouchedOwnerSource": {
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "7f52b6a1151a69ec95af905c5bc781b65e72bdc457f1abeb23b4d58b1d9365f7",
+    "Tools/PackagedSeedProbe/PackagedSeedProbe.cs": "45fb8327093da86a31f0e40a971eb1484bcb9b5df4c2d00241f02888a1486e9d",
+    "Tools/G4PackageQualification.functions.ps1": "6aa8edcb2144f7563bccaedd5a2e6ac95f954203bd2072b16b32eb0f84b4d1c7",
+    "Tools/test-publish-g4-tool-packages.ps1": "19129dd3cc6926ecbf6d8964e58246245f02b09460959a5a200b4bd9d4c558d2",
+    "Tools/test-g4-tool-package-artifact-validator.ps1": "584102ee619652a018fb70030f4619beabf44062c2457948b9d5b24fd5435e8b",
+    "Props/Directory.Packages.props": "b69294eb7178525c8fbce0651c0fc7da0f0c37d02f33286a4c3381c5fa43e487"
+  },
+  "foundationCommit": "d18bb63daf85d4a5b32b0ac322b3ec069570596d",
+  "concurrentEditOverlap": [],
+  "scope": "Authorized exact four-file parity and local activation credential wiring only. No broader owner source/pin adoption."
+}

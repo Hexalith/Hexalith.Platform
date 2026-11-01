@@ -1,0 +1,34 @@
+[
+  {
+    "name": "adapter",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj",
+      "--configuration",
+      "Release",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-m:1",
+      "/nr:false"
+    ],
+    "exitCode": 0,
+    "output": "adapter-release-build.txt"
+  },
+  {
+    "name": "parties",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Parties/Hexalith.Parties.csproj",
+      "--configuration",
+      "Release",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-m:1",
+      "/nr:false"
+    ],
+    "exitCode": 0,
+    "output": "parties-release-build.txt"
+  }
+]

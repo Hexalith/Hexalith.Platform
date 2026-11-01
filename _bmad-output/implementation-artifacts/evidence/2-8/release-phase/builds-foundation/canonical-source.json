@@ -1,0 +1,48 @@
+{
+  "sourceCommit": "6eb962e885ec2fff1e7a5ebf629216175d3bd284",
+  "sourceSha256": {
+    ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+    ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+    "Github/run-module-integration/run_module_integration.py": "7fadefd4459c9460d37dddb97bd161f30d7b9f0c7145566aa538a628fc0f9107",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "f0673c827c34dba9bf042a3303764f5359c6a09d6f1e9e9b39ec6cecd250cbe0",
+    "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "e3d0bc592df3f14881a2cf83eff033c3a5c5ec846b0283fa032520c1543d4a1c",
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "2577c12ff64c25df0ef726b527bccde48990bf8413601ecd9fdd148de0f820ed",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "558dfca085e4cb8ee2b46ddbf58a4bbe07f175aacf68c9887b732eed62d87450",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "b655dc657ed1be82d7befeeca006e1d6fd0fde433e0b903ef17ad477b3572ea8",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "02c4ff2bd7526a49867e55071cc15481d43d67e202ce47eb09e06019333f8338",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "7ae5717bade8c9ef9221d2f046f91dd0faca6987110e592361d4044c93a40fbd",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "c9b02b331bc74e440053fe7ee4a951b8045cd50f9beba636784834104af2f455",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "33e936a66b6064dae6e1e862234eb326e5e7715907f563c9b1fa4c1707eb51a3",
+    "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "c10d6309f69d41cafe374e2f6ef438e5ee315aa37d2adf0d7854054e0e4f9a2a",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f"
+  },
+  "onlyChangesSinceArchiveSource": [
+    "Github/run-module-integration/run_module_integration.py",
+    "Github/run-module-integration/tests/test_run_module_integration.py"
+  ],
+  "archiveSourceCommit": "a03c7bce9a33587207e299c9b022c7d1ab8d3d61",
+  "archiveAndCsControls": "Unchanged C#/MSBuild/package inputs. Reconciled archive/seed proof and14 affected C# controls remain historical, valid source-equivalent controls; not rerun for Python-only changes.",
+  "helper": {
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "output": "helper-tests-canonical.txt"
+  },
+  "pythonStyleFindings": 0,
+  "banditFindings": 0,
+  "complexityMax": {
+    "Github/run-module-integration/run_module_integration.py": 15,
+    "Github/run-module-integration/tests/test_run_module_integration.py": 5
+  },
+  "fixedReceipt": "RUNNER_TEMP/hexalith-ci-owner.json",
+  "newChecks": [
+    "different in-job receipt filename refuses before tool invocation",
+    "canonical receipt symlink refuses without modifying target",
+    "real helper process PID/signal/finalizer assertions preserved after fixture extraction"
+  ],
+  "reviewDisposition": "Owner-style exact down-call nosec B603/nosemgrep annotation: only fixed tool/verb/options and strictly32 ASCII-hex, equals-bound run identity. No NOSONAR or broad exclusion.",
+  "candidateAcceptance": false
+}

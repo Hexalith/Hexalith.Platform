@@ -1,0 +1,129 @@
+{
+  "recordedAtUtc": "2026-10-31T19:56:54.708202+00:00",
+  "foundationCommit": "86ed14c4627e12b9dccb1b7067042cd1684a69a2",
+  "preconditions": "All prior phase hashes and the four additional test-file baseline hashes matched immediately before copying; no concurrent edit overlap.",
+  "filesSha256": {
+    "Hexalith.Builds": {
+      ".github/workflows/domain-ci.yml": "01898663c8fb3180d228ee590b0bd83555f1b79fe487ef00503ebad578d7e0c0",
+      ".github/workflows/domain-ci.md": "d6b1d1fd44b5dc13b7e0d3584a578f33b974df3b8c13e6e7c778f95325470985",
+      "Tools/test-domain-workflow-test-platforms.ps1": "ef2d1e452dd2b2cfc0b3d8c190b9b8318004977d7a8fc825eb96fa6f39733b81",
+      "Github/run-module-integration/run_module_integration.py": "187b8cdedd049c7788165d3493304faef3204c1c9ff751e3fc210e196d52bc04",
+      "Github/run-module-integration/tests/test_run_module_integration.py": "763209ca2c51dcc5acc37142a4b8af77ce43ebb7ebfbd926a24e1ba3aef9a45b",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+      "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "f5b9b31a7a3d605556175e08e91d6c3e446de9b4c2a730acd8431f385ca53394",
+      "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleFixture.cs": "16093ebba434e8c8ec6323b29cc41cfe5862e8b29e4377b388ad959d05d6eb3d",
+      "test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs": "5deaf855982e2bb1321be62593ac69a9d909223a64e7b559f45414e1e7995299",
+      "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "f371c3ae16b718c3ba725a2072f72f6f35a14d443eb426463fd609a60d85aa3c"
+    },
+    "Hexalith.EventStore": {
+      ".github/workflows/ci.yml": "0df9f6717c380fc61fb3bbf144874c854be373611b73f1ecaef1d06f23dab620"
+    },
+    "Hexalith.Parties": {
+      ".github/workflows/ci.yml": "cd8877b2ac4d9f77eadb3b5896383020266e73ad7d1b637eb8ed87fa3409154b"
+    }
+  },
+  "preservedUnrelated": {
+    "Hexalith.Builds": {
+      "originalHeadUnchanged": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+      "unchangedCapturedDirtyFiles": 15,
+      "sha256": {
+        ".github/workflows/build-release.yml": "d2a6d5547148726eb55627d8517b77fa9cb101088f20e27223860481ebd525cb",
+        ".github/workflows/ci.yml": "461188641df4a724cf586f23ed4a226e72490843e4d9fd276a52ba50da02a436",
+        "Github/prepare-module-build/tests/test_prepare_module_build.py": "7be5d3d18704c68f5b56458a93e9b77708ac7ed962cbfa3644a17250b624e241",
+        "Props/Directory.Packages.props": "b69294eb7178525c8fbce0651c0fc7da0f0c37d02f33286a4c3381c5fa43e487",
+        "README.md": "7a451ba35a4e831f29e99cca1dd653991ab828fae0c45d5508485705117688ec",
+        "Tools/test-self-ci.py": "b0300fed7bfeaf7ae3b146952d749f2f5b415e9b7015fab7b973239cb0ba3008",
+        "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs": "2577c12ff64c25df0ef726b527bccde48990bf8413601ecd9fdd148de0f820ed",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs": "558dfca085e4cb8ee2b46ddbf58a4bbe07f175aacf68c9887b732eed62d87450",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs": "b655dc657ed1be82d7befeeca006e1d6fd0fde433e0b903ef17ad477b3572ea8",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs": "02c4ff2bd7526a49867e55071cc15481d43d67e202ce47eb09e06019333f8338",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "7ae5717bade8c9ef9221d2f046f91dd0faca6987110e592361d4044c93a40fbd",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs": "c9b02b331bc74e440053fe7ee4a951b8045cd50f9beba636784834104af2f455",
+        "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs": "33e936a66b6064dae6e1e862234eb326e5e7715907f563c9b1fa4c1707eb51a3",
+        "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs": "ad94dffa24292c54c3ede39ad6077ce2ea0b15e6349564feccdc5737dcc4a822"
+      },
+      "originalIndexUnchanged": true
+    },
+    "Hexalith.EventStore": {
+      "originalHeadUnchanged": "ad383a96394307154b0026643245fdbb9a24dd4e",
+      "unchangedCapturedDirtyFiles": 9,
+      "sha256": {
+        ".config/dotnet-tools.json": "5987ade1af6e30e54f926ecafed260da95a1a29c813318a92e61dc8ab6c85f08",
+        "Hexalith.EventStore.slnx": "8e1a10a348e982b13d397e0fdedf947c685ce72f016eb1ddbded5ce22f9dfd76",
+        "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+        "src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj": "3a667296d87180b2462e306d398d54ea679efd041b7d3f63c3f2f13cb1cf633f",
+        "src/Hexalith.EventStore.Testing.Integration/TestEnvironmentStreamReader.cs": "5f1511df780d49ca56821230d9dce650ab2571fbc5f80895ccd6a3a79e6952a8",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "81bbf0dac434cc148ae162267a409cfdfc851127614d860b7a39aec09a3d7e58",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj": "ce80ffa24f56e99d61fdf2db44aa1978f6f266d7be82a240acfd274b125697d5",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901",
+        "tests/Hexalith.EventStore.Testing.Integration.Tests/DescriptorFixtureTests.cs": "89fce978b8c71ec92dfa900af238b8e9f163194f422e542c97bafbe59a80864c"
+      }
+    },
+    "Hexalith.Parties": {
+      "originalHeadUnchanged": "05aeee0d647a34eab112b6f8282a0810d35b7bf6",
+      "unchangedCapturedSourceFiles": 2,
+      "sha256": {
+        "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj": "b8ef49466ad1fa875024431088086f284c25b281bf4e2b4af2e3f7b5cd197ac2",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "74e8d3440ccdfc0e9042b847d88168adccfe27853da2b6afd22a17e4d7fc722a"
+      }
+    }
+  },
+  "untouchedOwnerHostAndPinSources": {
+    "src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs": "7f52b6a1151a69ec95af905c5bc781b65e72bdc457f1abeb23b4d58b1d9365f7",
+    "Tools/PackagedSeedProbe/PackagedSeedProbe.cs": "45fb8327093da86a31f0e40a971eb1484bcb9b5df4c2d00241f02888a1486e9d",
+    "Tools/G4PackageQualification.functions.ps1": "6aa8edcb2144f7563bccaedd5a2e6ac95f954203bd2072b16b32eb0f84b4d1c7",
+    "Tools/test-publish-g4-tool-packages.ps1": "19129dd3cc6926ecbf6d8964e58246245f02b09460959a5a200b4bd9d4c558d2",
+    "Tools/test-g4-tool-package-artifact-validator.ps1": "584102ee619652a018fb70030f4619beabf44062c2457948b9d5b24fd5435e8b",
+    "Props/Directory.Packages.props": "b69294eb7178525c8fbce0651c0fc7da0f0c37d02f33286a4c3381c5fa43e487"
+  },
+  "originalIndexDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "callerWorkflowPinsUnchanged": {
+    "Hexalith.EventStore": "uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+    "Hexalith.Parties": "uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1745ea0f09df9e518aeea3eeb1a7df836f67e09d"
+  },
+  "copiedTestFiles": {
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleFixture.cs": {
+      "beforeSha256": "eb8b497fb432ed0807062163d28d862acd39b18a62280ae479945c2df9ff3bbf",
+      "afterSha256": "16093ebba434e8c8ec6323b29cc41cfe5862e8b29e4377b388ad959d05d6eb3d",
+      "commitBlob": "08d156e7e11d68b15b6fe17b9f6de022d63199ae",
+      "crlfPreserved": true
+    },
+    "test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs": {
+      "beforeSha256": "0cd7d03620f2409a137a3a8ee5f899fbf64192249e4f47243f8c74394c87aa02",
+      "afterSha256": "5deaf855982e2bb1321be62593ac69a9d909223a64e7b559f45414e1e7995299",
+      "commitBlob": "dcff06510a62aaa2a5e2b70409924edc44bfc581",
+      "crlfPreserved": true
+    },
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": {
+      "beforeSha256": "242342f8239bca7c502d085833124a314c93179c9599340b9deccc6b2690d49f",
+      "afterSha256": "f371c3ae16b718c3ba725a2072f72f6f35a14d443eb426463fd609a60d85aa3c",
+      "commitBlob": "db9c9d407cdd50560d30b23727202d7656714ecf",
+      "crlfPreserved": true
+    },
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": {
+      "beforeSha256": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f",
+      "afterSha256": "f5b9b31a7a3d605556175e08e91d6c3e446de9b4c2a730acd8431f385ca53394",
+      "commitBlob": "fd85fe258138570462bf319bda5b99e530a283b2",
+      "crlfPreserved": true
+    }
+  },
+  "verification": {
+    "workflowAssertions": 251,
+    "helperControls": 24,
+    "ciEnvironmentFocusedCases": 37,
+    "ciLifecycleCasesIncluded": 16,
+    "foundationReleaseBuildWarnings": 0,
+    "foundationReleaseBuildErrors": 0,
+    "testSourceAndBinaryReceipt": "../builds-foundation/hosted-env-corrected-source.json",
+    "scope": "The fresh compiled CI-environment controls execute in the isolated foundation worktree. Original-tree test source is byte-identical; the original graph was not rebuilt. Workflow/helper checks in this phase ran in the original staged tree."
+  },
+  "credentialProvisioningExecuted": false,
+  "workflowActivationExecuted": false,
+  "familyPinAdoptionExecuted": false,
+  "candidateAcceptance": false,
+  "historicalReceiptsPreserved": [
+    "source-after.json",
+    "implementation-parity.json"
+  ]
+}

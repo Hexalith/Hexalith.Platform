@@ -116,4 +116,100 @@ public sealed class ErasureRootReceivingTests
         receiver.State = receiver.State with { Callers = [receiver.State.Callers[0] with { Revoked = true }] };
         (await client.AuthorizeAsync("tenant-a", "root-original", "WrapDek", new string('B', 64), TestContext.Current.CancellationToken)).ShouldBeFalse();
     }
+
+    /// <summary>R11-EC-1: absent qualification bindings deny the binding-dependent permission checks as a signed denial instead of throwing.</summary>
+    [Theory]
+    [InlineData("VerifyReservedManifestAndCopyPolicy")]
+    [InlineData("VerifyLifecycle")]
+    public async Task AbsentQualificationBindingsDenyWithoutThrowing(string operation)
+    {
+        var token = TestContext.Current.CancellationToken;
+        using var fixture = new ErasureRootEngineFixture(); using var native = Substitute.For<DaprClient>();
+        var handler = new ErasureRootAuthorityOperationHandler(fixture.Custody, new(fixture.Custody, fixture.Permissions, native, fixture.Digests), Substitute.For<IGovernanceScopeGuard>(),
+            Substitute.For<IDeletionCapabilityRevocationAuthenticator>(), new string('A', 64), TimeProvider.System);
+        using var receiver = new ReceivingAuthorityFixture("erc-owner", handlers: [handler]);
+        var grant = new IndependentCallerGrant(new string('0', 64), "erc-owner-identity", "tenant-a|erc", "erc-owner", [.. handler.Methods], DateTimeOffset.UtcNow.AddHours(1), false);
+        object original;
+        string digest;
+        if (operation == "VerifyLifecycle")
+        {
+            // Every earlier conjunct holds, so only the bindings lookup decides the result.
+            var request = new CustodyKeyLifecycleRequest(new CustodyKeyObjectIdentity("tenant-a", "interaction-a", PlatformKeyPurpose.InteractionRootDek, "alias-a", "root-v1",
+                "lifecycle", "erc-test", "custody-1"), "lifecycle-operation", CustodyKeyLifecycleAction.Pin, 0, "hold-1", "fence-1", 1, "decision-1");
+            original = request;
+            digest = ErasureRootCustody.Hash(request);
+        }
+        else
+        {
+            original = new { ownerRevision = 1L, ownerStateDigest = new string('C', 64) };
+            digest = new string('B', 64);
+        }
+        var payload = JsonSerializer.SerializeToElement(new { tenantId = "tenant-a", identity = "deferred-row", operation, requestDigest = digest, original }, CustodyBindingContract.Json);
+        foreach (var bindings in new Dictionary<string, string>?[] { null, new() })
+        {
+            var result = await handler.HandleAsync("erc-permission", payload, grant, receiver.State with { QualificationBindings = bindings }, token);
+            var evidence = result.ShouldBeOfType<ErasureRootPermissionEvidence>();
+            evidence.Permitted.ShouldBeFalse();
+            evidence.Operation.ShouldBe(operation);
+            evidence.TenantId.ShouldBe("tenant-a");
+        }
+    }
+
+    /// <summary>R11-BH-7: erased reads keep the resolve identity checks; a source original for another owner, occurrence, key reference or store is never adopted.</summary>
+    [Fact]
+    public async Task ErasedReadsRefuseEverySubstitutedSourceIdentity()
+    {
+        var token = TestContext.Current.CancellationToken;
+        using var fixture = new ErasureRootEngineFixture();
+        var original = fixture.Enroll() with { Writer = new("source-proof", "exact-writer", new Dictionary<string, string>()) };
+        var installation = new ErasureRootInstallation("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" });
+        var loss = new ErasureRootPermanentLossReceipt("erc-test", "enrollment", "tenant-a", "retired-volume-uid", "final-independent-retirement", new string('A', 64));
+        var authorization = Substitute.For<IErasureRootAuthorization>();
+        authorization.ReadPermanentLossAsync("tenant-a", "erc-test", "enrollment", Arg.Any<CancellationToken>()).Returns(loss);
+        var custody = new ErasureRootCustody(fixture.Store, installation, authorization);
+        var source = Substitute.For<IErasureRootOccurrenceSource>();
+        ErasureRootOccurrenceEnrollment? returned = original;
+        source.ResolveErasedStoredAsync(Arg.Any<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(), Arg.Any<PayloadProtectionOccurrenceContext>(), Arg.Any<string>(), Arg.Any<string>(),
+            Arg.Any<ErasureRootPermanentLossReceipt>(), Arg.Any<CancellationToken>()).Returns(_ => returned);
+        var bindings = new ErasureRootOccurrenceBindings(custody, authorization, source);
+        var identity = original.Binding.Identity;
+        var occurrence = ErasureRootOccurrenceBindings.Occurrence(identity);
+        byte[] sealedPayload = "{\"ProtectedContent\":{\"Value\":{\"$pdenc\":\"sealed\"}}}"u8.ToArray();
+        (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBe(original.Binding);
+        ErasureRootOccurrenceEnrollment[] substitutions =
+        [
+            original with { Binding = original.Binding with { Identity = identity with { Owner = new Hexalith.EventStore.Contracts.Identity.AggregateIdentity("tenant-a", "conversations", "other-directory") } } },
+            original with { Binding = original.Binding with { Identity = identity with { Sequence = identity.Sequence + 1 } } },
+            original with { Binding = original.Binding with { Identity = identity with { Kind = PayloadProtectionPayloadKind.Snapshot } } },
+            original with { Binding = original.Binding with { Identity = identity with { PayloadTypeId = "Other.Type" } } },
+            original with { Binding = original.Binding with { KeyReference = "01ARZ3NDEKTSV4RRFFQ69G5FAW" } },
+            original with { RootIdentity = original.RootIdentity with { StoreTarget = "other-store" } },
+        ];
+        foreach (var substituted in substitutions)
+        {
+            returned = substituted;
+            (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBeNull();
+        }
+
+        // The native skeleton read binds the caller's exact binding before reading any persisted-writer proof.
+        using var native = Substitute.For<DaprClient>();
+        var independent = new ErasureRootSourceOriginals("tenant-a", "erc-test", new() { [ErasureRootOccurrenceBindings.Id(identity.Owner, occurrence)] = original });
+        native.GetStateAsync<ErasureRootSourceOriginals>("source-originals", "source-index", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
+            .Returns(_ => independent);
+        var nativeSource = new ErasureRootNativeOccurrenceSource(fixture.Custody, fixture.Permissions, native, fixture.Digests,
+            new Dictionary<string, ProtectionQualificationNativeCell> { ["tenant-a"] = new("source-originals", "source-index", new()) });
+        string sealedDigest = Convert.ToHexString(SHA256.HashData(sealedPayload));
+        (await nativeSource.ReadErasedSnapshotSkeletonAsync(original.Binding with { KeyReference = "01ARZ3NDEKTSV4RRFFQ69G5FAW" }, sealedDigest, loss, token)).ShouldBeNull();
+        await native.DidNotReceive().GetStateAsync<ErasureRootWriterProof>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>());
+        (await nativeSource.ReadErasedSnapshotSkeletonAsync(original.Binding, sealedDigest, loss, token)).ShouldBeNull();
+        await native.Received(1).GetStateAsync<ErasureRootWriterProof>("source-proof", "exact-writer", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>());
+
+        // Without an authenticated permanent loss no erased read is attempted.
+        authorization.ReadPermanentLossAsync("tenant-a", "erc-test", "enrollment", Arg.Any<CancellationToken>()).Returns((ErasureRootPermanentLossReceipt?)null);
+        returned = original;
+        source.ClearReceivedCalls();
+        (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBeNull();
+        await source.DidNotReceive().ResolveErasedStoredAsync(Arg.Any<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(), Arg.Any<PayloadProtectionOccurrenceContext>(),
+            Arg.Any<string>(), Arg.Any<string>(), Arg.Any<ErasureRootPermanentLossReceipt>(), Arg.Any<CancellationToken>());
+    }
 }

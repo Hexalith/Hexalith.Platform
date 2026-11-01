@@ -1,0 +1,49 @@
+{
+  "observedAtUtc": "2026-10-31T18:08:59.377724+00:00",
+  "head": "c63071e80624c5904d538e5700560fd2f883f5d5",
+  "source": "uncommitted pre-bb3 draft, preserved in /tmp/story33-sdk-technical-pre-bb3-20261031",
+  "build": "clean, zero warnings/errors",
+  "executed": 23,
+  "passed": 23,
+  "failed": 0,
+  "skipped": 0,
+  "seconds": 8.239,
+  "files": [
+    {
+      "path": "sdk-technical-20261031/story33-sdk-technical-schema3-build2.log",
+      "sha256": "020839c485404e939c982754798c74df38a69ad41ba1e545c3b41573b8fe079d"
+    },
+    {
+      "path": "sdk-technical-20261031/story33-sdk-technical-schema3-run1.log",
+      "sha256": "310b67264941cd3ffa0e4ff2e6c69ef1712c61799e50fa9468af4fbf42d74123"
+    },
+    {
+      "path": "sdk-technical-20261031/story33-sdk-technical-schema3-run2.log",
+      "sha256": "e8ededa8159059966d14a3976c113ff15b91c974f1b9cf23de2dce2aa2bd9a5a"
+    },
+    {
+      "path": "sdk-technical-20261031/story33-sdk-technical-schema3-run2.xml",
+      "sha256": "62b8bcd4218d008d04274700ef41c90db3843452531342f9509f2731f15c0a8a"
+    }
+  ],
+  "parentRead": [
+    "TechnicalHttpCorePeerTests.cs",
+    "TechnicalHttpCoreCommandHandler.cs",
+    "TechnicalHttpDomainPeerTests.cs",
+    "TechnicalHttpCatalogFixture.cs",
+    "RouteCatalogTestFixture.cs"
+  ],
+  "coverage": [
+    "Actual compiled Sample declarations and operation schemas plus adapter admission feed VersionedRouteCatalogBuilder schema 3.",
+    "Core uses real SDK CommandsController, AuthorizationBehavior and RouteCatalogEligibilityBehavior; only terminal persistence handler and tenant/RBAC services are component substitutes.",
+    "UI/channel and direct human positives; agent/service/missing/ambiguous surface and absent/incomplete/tampered/foreign full activation binding negatives.",
+    "Domain uses actual shared workload scheme, JWT signature/issuer/audience/lifetime and operation policy, channel guard, DomainRouteCatalogGuard and domain dispatcher; only projection terminal and Dapr persistence are component substitutes.",
+    "Schema 3 signed service positive, missing/ambiguous/non-service surface and full binding negatives precede native persisted effects.",
+    "Legacy schema 2 domain coverage retained."
+  ],
+  "limitations": [
+    "Component Kestrel/recording-state evidence; no real Dapr or owner package qualification in this milestone.",
+    "Overlapping runs are not cumulative final qualification counts.",
+    "Run1 had six core failures caused by missing fixture IHttpContextAccessor; dependency supplied without production behavior changes."
+  ]
+}

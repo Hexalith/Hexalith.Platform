@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-10-31T19:43:07.737359+00:00",
+  "candidateCommit": "d18bb63daf85d4a5b32b0ac322b3ec069570596d",
+  "jobId": 124633532746,
+  "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41233840031/job/124633532746",
+  "conclusion": "failure",
+  "total": 2667,
+  "passed": 2645,
+  "failed": 17,
+  "skipped": 5,
+  "failedCases": [
+    "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.FinalManifestRefusalFinalizesIssuedOwnerAsync(declared: True)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync(declared: True, deletionFails: False)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{\\\"run\\\":[]}\", tracked: False)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{}\", tracked: False)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{\\\"run\\\":[]}\", tracked: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{\\\"run\\\":null}\", tracked: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{\\\"run\\\":null}\", tracked: False)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync(bindings: \"{}\", tracked: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: False)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync(exclusive: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ListingReconcilesCommittedFailureAfterResultPublicationFailureAsync",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True)",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync"
+  ],
+  "baseline": {
+    "source": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "ciRun": 41226277095,
+    "conclusion": "success"
+  },
+  "diagnosis": "Investigation in progress. Local fixtures persist local metadata but often leave host CI context implicit. One callback-budget test explicitly selects CI and requires separate ordering/budget analysis. Assertions and runtime trust must be preserved.",
+  "fullLog": {
+    "path": "/tmp/story28-builds-d18-dotnet-eji60y81.txt",
+    "sha256": "82d13013421aa8100b80a9f44edce8fa9d6901f9f1a586edc4eaf848c120f84d",
+    "bytes": 82601,
+    "mode": "0600"
+  },
+  "mergeOrReleaseAllowedByThisRecord": false,
+  "runId": 41233840031
+}

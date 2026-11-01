@@ -1,0 +1,44 @@
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs
+index f206c1076..b13b77f15 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/TechnicalHttpRouteCatalogReceiver.cs
+@@ -78,8 +78,6 @@ public sealed class TechnicalHttpRouteCatalogReceiver
+             if (!channel && !markedSdkAction) { await next(context).ConfigureAwait(false); return; }
+             if (channel && !DaprAppChannelToken.IsAdmitted(DaprAppChannelToken.Verify(context.Request, app.Configuration, app.Environment)))
+             { context.Response.StatusCode = StatusCodes.Status401Unauthorized; return; }
+-            if (fence._callbacks?.IsAbsentDiscovery(context) == true)
+-            { context.Response.StatusCode = StatusCodes.Status404NotFound; return; }
+             RouteCatalogNativeActorTransport? native = null; RouteCatalogDaprCallbackTransport? callback = null;
+             if (context.GetEndpoint() is RouteEndpoint nativeEndpoint)
+             {
+@@ -99,7 +97,13 @@ public sealed class TechnicalHttpRouteCatalogReceiver
+                 || !fence._captured.TryGetValue(endpoint, out string? captured) || fence.RequestFingerprint(endpoint, out description) != captured
+                 || endpoint.Metadata.GetMetadata<IHttpMethodMetadata>() is { } methods && !methods.HttpMethods.Contains(context.Request.Method, StringComparer.Ordinal)
+                 || captured.StartsWith("probe:", StringComparison.Ordinal) && !HttpMethods.IsGet(context.Request.Method))
+-            { context.Response.StatusCode = StatusCodes.Status403Forbidden; return; }
++            {
++                // An absent declarative discovery route is a closed refusal, never an
++                // alternative that can skip the authentication of an admitted action.
++                context.Response.StatusCode = fence._callbacks?.IsAbsentDiscovery(context) == true
++                    ? StatusCodes.Status404NotFound : StatusCodes.Status403Forbidden;
++                return;
++            }
+             if (native is not null || callback is not null)
+             {
+                 await fence.InvokeNativeAsync(context, next, endpoint, native, callback).ConfigureAwait(false); return;
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
+index 782777d9b..c21892f3d 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
+@@ -64,7 +64,10 @@ internal sealed class TechnicalHttpInvocationFixture : IAsyncDisposable
+             }
+             using var response = await Receiver.Client.SendAsync(request, token);
+             context.Response.StatusCode = (int)response.StatusCode;
+-            if (response.Content.Headers.ContentType is { } contentType) context.Response.ContentType = contentType.ToString();
++            // This explicit test bridge carries only the SDK JSON protocol. Its response
++            // must never adopt a content type influenced by the forwarded request.
++            context.Response.ContentType = "application/json";
++            context.Response.Headers.XContentTypeOptions = "nosniff";
+             await response.Content.CopyToAsync(context.Response.Body, token);
+         });
+         await _bridge.StartAsync(token); Address = new Uri(_bridge.Urls.Single());

@@ -1,0 +1,1049 @@
+diff --git a/Hexalith.Platform.slnx b/Hexalith.Platform.slnx
+index 17f9fd2a..d41d56b6 100644
+--- a/Hexalith.Platform.slnx
++++ b/Hexalith.Platform.slnx
+@@ -30,4 +30,5 @@
+   <Project Path="src/Hexalith.Platform.Protection.Qualification.Executor/Hexalith.Platform.Protection.Qualification.Executor.csproj" />
+   <Project Path="src/Hexalith.Platform.Protection.Qualification.Observer/Hexalith.Platform.Protection.Qualification.Observer.csproj" />
+   <Project Path="src/Hexalith.Platform.Protection.Qualification.Enrollment/Hexalith.Platform.Protection.Qualification.Enrollment.csproj" />
++  <Project Path="eng/Hexalith.Platform.CatalogProof/Hexalith.Platform.CatalogProof.csproj" />
+ </Solution>
+diff --git a/eng/tuple-ci-suites.json b/eng/tuple-ci-suites.json
+index f5b6a0b7..54e6ff78 100644
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -22,6 +22,15 @@
+         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+       ],
+       "requiredCount": 2
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
++        "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
++      ],
++      "requiredCount": 24
+     }
+   ]
+ }
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Program.cs b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+index 457914fe..4c774485 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Program.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+@@ -1,3 +1,4 @@
++using System.Security.Cryptography;
+ using System.Reflection;
+ using System.Text.Json;
+ 
+@@ -66,4 +67,13 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
+ {
+     instanceId = input.GetProperty("instanceId").GetString(), rootDigest = RouteCatalogCodec.ComputeRootDigest(catalog),
+     ownerAssemblies = owners, adapterAssemblies = adapters,
++    sourceMappingHash = input.GetProperty("sourceMappingHash").GetString(),
++    mode = input.GetProperty("mode").GetString(),
++    loadedArtifacts = owners.Concat(adapters).Append(typeof(RouteCatalogCodec).Assembly.Location).Distinct(StringComparer.Ordinal).Select(path => new
++    {
++        path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
++        assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,
++        informationalVersion = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => !assembly.IsDynamic && assembly.Location == path)
++            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
++    }).ToArray(),
+ }));
+diff --git a/src/Hexalith.Platform.Composition/Declarations/eventstore.json b/src/Hexalith.Platform.Composition/Declarations/eventstore.json
+index d8e69711..acfaec1a 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/eventstore.json
++++ b/src/Hexalith.Platform.Composition/Declarations/eventstore.json
+@@ -21,19 +21,55 @@
+             "role": "state",
+             "capability": "state",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "Dapr:StateStoreComponent"
++            "configurationKey": "EventStore:CommandStatus:StateStoreName",
++            "servers": [
++              "gateway"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:Projections:CheckpointStateStoreName",
++            "servers": [
++              "gateway"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:Projections:ReadModelStateStoreName",
++            "servers": [
++              "gateway"
++            ]
+           },
+           {
+             "role": "events",
+             "capability": "pubsub",
+             "recoveryClass": "rebuild-only",
+-            "configurationKey": "Dapr:PubSubComponent"
++            "configurationKey": "EventStore:Publisher:PubSubName",
++            "servers": [
++              "gateway"
++            ]
++          },
++          {
++            "role": "events",
++            "capability": "pubsub",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "EventStore:ProjectionChanges:PubSubName",
++            "servers": [
++              "gateway"
++            ]
+           },
+           {
+             "role": "rate-limit-configuration",
+             "capability": "configuration",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "Dapr:ConfigurationStoreComponent"
++            "configurationKey": "EventStore:RateLimiting:ConfigurationStoreName",
++            "servers": [
++              "gateway"
++            ]
+           }
+         ],
+         "extensions": [
+@@ -295,7 +331,12 @@
+               "policy": "authenticated",
+               "permissions": []
+             },
+-            "callers": [],
++            "callers": [
++              "tenants-api",
++              "timesheets",
++              "tenants",
++              "memories"
++            ],
+             "operations": [
+               {
+                 "name": "submit-command",
+@@ -322,6 +363,78 @@
+                 "kind": "administration",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "tenants-api",
++                "path": "/api/v1/commands",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "tenants-api",
++                "path": "/api/v1/queries",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "timesheets",
++                "path": "/api/v1/commands",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "timesheets",
++                "path": "/api/v1/commands/workload",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "timesheets",
++                "path": "/api/v1/queries",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "timesheets",
++                "path": "/api/v1/commands/status",
++                "verbs": [
++                  "GET"
++                ]
++              },
++              {
++                "caller": "timesheets",
++                "path": "/api/v1/commands/status/workload",
++                "verbs": [
++                  "GET"
++                ]
++              },
++              {
++                "caller": "tenants",
++                "path": "/api/v1/streams/read/workload",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories",
++                "path": "/api/v1/commands/bound/workload",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "tenants",
++                "path": "/api/v1/commands/bound/workload",
++                "verbs": [
++                  "POST"
++                ]
++              }
+             ]
+           }
+         ]
+@@ -334,6 +447,18 @@
+             "deadLetter": {
+               "strategy": "none"
+             }
++          },
++          {
++            "name": "projection-notifications",
++            "role": "events",
++            "deadLetter": {
++              "strategy": "none"
++            },
++            "subscription": {
++              "server": "gateway",
++              "route": "/projections/changed",
++              "topic": "*.*.projection-changed"
++            }
+           }
+         ],
+         "secrets": [
+diff --git a/src/Hexalith.Platform.Composition/Declarations/memories.json b/src/Hexalith.Platform.Composition/Declarations/memories.json
+index faf6d346..82032cbe 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/memories.json
++++ b/src/Hexalith.Platform.Composition/Declarations/memories.json
+@@ -25,6 +25,13 @@
+             "resourceId": "memories-access-telemetry",
+             "enabled": true,
+             "required": true
++          },
++          {
++            "id": "domain",
++            "appId": "memories-domain-service",
++            "resourceId": "memories-domain-service",
++            "enabled": true,
++            "required": true
+           }
+         ],
+         "dependencies": [
+@@ -37,37 +44,102 @@
+             "role": "state",
+             "capability": "state",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "Dapr:StateStoreComponent"
++            "configurationKey": "EventStoreIntegration:StateStore:StateStoreName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "Ingestion:WorkflowPayloadStore:StateStoreName",
++            "servers": [
++              "server"
++            ]
+           },
+           {
+             "role": "events",
+             "capability": "pubsub",
+             "recoveryClass": "rebuild-only",
+-            "configurationKey": "Dapr:PubSubComponent"
++            "configurationKey": "EventStoreIntegration:Routing:PubSubName",
++            "servers": [
++              "server"
++            ]
+           },
+           {
+             "role": "secrets",
+             "capability": "secret",
+             "recoveryClass": "live-authority-only",
+-            "configurationKey": "Dapr:SecretStoreComponent"
++            "configurationKey": "Memories:SecretStoreName",
++            "servers": [
++              "server"
++            ]
+           },
+           {
+             "role": "telemetry-state",
+             "capability": "state",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "AccessTelemetryLifecycle:StateStoreComponent"
++            "configurationKey": "AccessTelemetryLifecycle:StateStoreName",
++            "servers": [
++              "telemetry"
++            ]
+           },
+           {
+             "role": "telemetry-secrets",
+             "capability": "secret",
+             "recoveryClass": "live-authority-only",
+-            "configurationKey": "AccessTelemetryLifecycle:SecretStoreComponent"
++            "configurationKey": "AccessTelemetryLifecycle:SecretStoreName",
++            "servers": [
++              "server",
++              "telemetry"
++            ]
++          },
++          {
++            "role": "telemetry-secrets",
++            "capability": "secret",
++            "recoveryClass": "live-authority-only",
++            "configurationKey": "Clock:SecretStoreName",
++            "servers": [
++              "clock"
++            ]
+           },
+           {
+             "role": "telemetry-configuration",
+             "capability": "configuration",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "AccessTelemetryLifecycle:ConfigurationComponent"
++            "configurationKey": "AccessTelemetryLifecycle:ConfigurationStoreName",
++            "servers": [
++              "server",
++              "telemetry"
++            ]
++          },
++          {
++            "role": "conversation",
++            "capability": "conversation",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "NaturalLanguage:DaprComponentName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:ReadModelStore:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:StateStoreName",
++            "servers": [
++              "domain"
++            ]
+           }
+         ],
+         "extensions": [
+@@ -324,6 +396,12 @@
+             "limits": {},
+             "volumes": []
+           },
++          {
++            "server": "domain",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          },
+           {
+             "server": "clock",
+             "requests": {},
+@@ -426,6 +504,22 @@
+                 "kind": "query",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories",
++                "path": "/v1/time/attest",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories-access-telemetry",
++                "path": "/v1/time/attest",
++                "verbs": [
++                  "POST"
++                ]
++              }
+             ]
+           },
+           {
+@@ -458,6 +552,29 @@
+                 "kind": "query",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/write",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/heartbeat",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/validate",
++                "verbs": [
++                  "POST"
++                ]
++              }
+             ]
+           },
+           {
+@@ -480,6 +597,15 @@
+                 "kind": "query",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories-access-telemetry-inspector",
++                "path": "/v1/access-telemetry/inspect",
++                "verbs": [
++                  "GET"
++                ]
++              }
+             ]
+           },
+           {
+@@ -502,6 +628,58 @@
+                 "kind": "command",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "access-telemetry-adapter",
++                "path": "/v1/access-telemetry/physical-reclamation-evidence",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          },
++          {
++            "name": "memories-domain",
++            "server": "domain",
++            "protocol": "http",
++            "routePrefix": "/",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "eventstore"
++            ],
++            "operations": [
++              {
++                "name": "process",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "admin-operational-index-metadata",
++                "kind": "administration",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "eventstore",
++                "path": "/process",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/admin/operational-index-metadata",
++                "verbs": [
++                  "POST"
++                ]
++              }
+             ]
+           }
+         ]
+@@ -513,6 +691,10 @@
+             "role": "events",
+             "deadLetter": {
+               "strategy": "none"
++            },
++            "subscription": {
++              "server": "server",
++              "route": "/events/ingest"
+             }
+           }
+         ],
+@@ -692,6 +874,11 @@
+             "kind": "http",
+             "endpoint": "/ready"
+           },
++          {
++            "server": "domain",
++            "kind": "http",
++            "endpoint": "/ready"
++          },
+           {
+             "server": "clock",
+             "kind": "http",
+@@ -726,7 +913,19 @@
+           "reason": "Declare Memories core and access telemetry services with explicit provider exceptions."
+         },
+         "recoveryInventory": []
+-      }
++      },
++      "tests": [
++        {
++          "name": "functional-retention",
++          "executor": "python3",
++          "entry": "tools/verify-access-telemetry-lifecycle.py",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 14400,
++          "stopTimeoutSeconds": 900,
++          "mode": "source",
++          "daprRuntimeVersion": "1.18.1"
++        }
++      ]
+     }
+   ]
+ }
+diff --git a/src/Hexalith.Platform.Composition/Declarations/provenance.json b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+index 067aa8fe..77dbcec4 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/provenance.json
++++ b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+@@ -1,10 +1,10 @@
+ {
+   "eventstore": {
+     "repository": "Hexalith.EventStore",
+-    "version": "3.120.0",
+-    "commit": "947c843c7bb73f217e27463d9540fde0c24d0332",
++    "version": "3.129.0",
++    "commit": "c02afa0fce310ccdb696232f18829df96cba088e",
+     "source": "module/hexalith.module-manifest.v2.json",
+-    "sha256": "c76853a3fd0d03f345929927f94cafcdf71714fdc20192bc2717a5fda8501a09"
++    "sha256": "a56951dcc4a8c53f22e449a2399516e51c4d2569bec1357f8197593a8d9e44a2"
+   },
+   "tenants": {
+     "repository": "Hexalith.Tenants",
+@@ -15,9 +15,9 @@
+   },
+   "memories": {
+     "repository": "Hexalith.Memories",
+-    "version": "2.27.1",
+-    "commit": "867e09a357ab94719e4d1572b1ab14d8d124eabe",
++    "version": "3.0.12",
++    "commit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7",
+     "source": "module/hexalith.module-manifest.v2.json",
+-    "sha256": "30f97d509aeb9fa019373579ad24db113aa84a9df52139a88a0cfdbaa6b192d4"
++    "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+   }
+ }
+diff --git a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+index ae2baee8..51fb282e 100644
+--- a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
++++ b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+@@ -5,12 +5,15 @@
+     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+-    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+     <HexalithTenantPreparationRoot Condition="'$(HexalithTenantsRoot)' != ''">$(HexalithTenantsRoot)</HexalithTenantPreparationRoot>
+     <HexalithTenantPreparationRoot Condition="'$(HexalithTenantPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Tenants</HexalithTenantPreparationRoot>
+     <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesRoot)' != ''">$(HexalithMemoriesRoot)</HexalithMemoriesPreparationRoot>
+     <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Memories</HexalithMemoriesPreparationRoot>
+   </PropertyGroup>
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.130.0')))"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_V2_CATALOG</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants>
++  </PropertyGroup>
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+     <ProjectReference Include="$(HexalithTenantPreparationRoot)/src/Hexalith.Tenants.Contracts/Hexalith.Tenants.Contracts.csproj" />
+     <ProjectReference Include="$(HexalithMemoriesPreparationRoot)/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj" />
+diff --git a/src/Hexalith.Platform.Composition/PlatformAppModel.cs b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+index 803342d8..c7f5c733 100644
+--- a/src/Hexalith.Platform.Composition/PlatformAppModel.cs
++++ b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+@@ -166,7 +166,7 @@ public static class PlatformAppModel
+             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
+                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
+                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
+-                    servers.Single(server => server.ResourceId == "memories")));
++                    servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts));
+             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
+             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+             string secrets = Path.Combine(rendered, "secrets.json");
+diff --git a/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs b/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
+index b46af492..2fb6dc15 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs
+@@ -18,7 +18,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
+             string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
+             string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
+             string? version = null;
+-            bool fromSource = selected.Origin == "source";
++            bool fromSource = options.Mapping.Mode == WorkspaceMode.Source && selected.Origin == "source";
+             string Reference(string assembly)
+             {
+                 if (!fromSource && options.Mapping.Mode != WorkspaceMode.Source) return assembly;
+diff --git a/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs b/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
+index e26497d0..0beef404 100644
+--- a/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
++++ b/src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs
+@@ -1,5 +1,6 @@
+ namespace Hexalith.Platform.Composition;
+ 
++using System.Collections.Frozen;
+ using System.Net;
+ using System.Net.Http.Headers;
+ using System.Net.Http.Json;
+@@ -29,10 +30,15 @@ using Microsoft.Extensions.Options;
+ 
+ /// <summary>Prepares synthetic owner state through the real native APIs before the runner publishes readiness.</summary>
+ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, string catalogDirectory, string signingKey,
+-    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding) : ICompositionRunPreparation
++    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding, IReadOnlyDictionary<string, string> expectedCatalogHosts) : ICompositionRunPreparation
+ {
+     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
+ 
++    private readonly FrozenDictionary<string, string> _expectedCatalogHosts = expectedCatalogHosts.ToFrozenDictionary(StringComparer.Ordinal);
++
++    /// <inheritdoc />
++    public bool RoutingCatalogObservationsRequired => true;
++
+     /// <inheritdoc />
+     public CompositionNativeTestScope? NativeTestScope { get; private set; }
+ 
+@@ -67,7 +73,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             || scope.Domains.Contains(TenantIdentity.GlobalAdministratorsDomain, StringComparer.Ordinal)
+             || !scope.Tenants.Contains(plan.TenantNamespace, StringComparer.Ordinal))
+             throw new InvalidOperationException("The native consumer scope differs from this owning run.");
+-        var catalog = RouteCatalogCodec.Decode(await ReadRequiredAsync(Path.Combine(catalogDirectory, "catalog.json"), cancellationToken).ConfigureAwait(false), scope.RoutingCatalogRoot);
++        byte[] canonical = await ReadRequiredAsync(Path.Combine(catalogDirectory, "catalog.json"), cancellationToken).ConfigureAwait(false);
++        var catalog = RouteCatalogCodec.Decode(canonical, scope.RoutingCatalogRoot);
+         var tenantQuery = TenantCatalogDeclarations.Queries.Single(declaration => declaration.Execution!.HandlerType == typeof(Hexalith.Tenants.Contracts.Queries.GetTenantQuery).FullName);
+         if (!catalog.Declarations.Any(declaration => declaration.RouteId == tenantQuery.RouteId
+                 && RouteCatalogCodec.ComputeDeclarationDigest(declaration) == RouteCatalogCodec.ComputeDeclarationDigest(tenantQuery))
+@@ -80,12 +87,28 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             Tenants = scope.Tenants.Append(TenantIdentity.DefaultTenantId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
+         };
+         using var closure = JsonDocument.Parse(await ReadRequiredAsync(Path.Combine(catalogDirectory, "selected-closure.json"), cancellationToken).ConfigureAwait(false));
+-        foreach (string host in closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()!))
++        JsonElement[] selectedHosts = closure.RootElement.GetProperty("hosts").EnumerateArray().ToArray();
++        if (_expectedCatalogHosts.Count == 0 || selectedHosts.Length != _expectedCatalogHosts.Count
++            || selectedHosts.Select(host => host.GetProperty("ResourceId").GetString()).Distinct(StringComparer.Ordinal).Count() != selectedHosts.Length
++            || selectedHosts.Any(host => !_expectedCatalogHosts.TryGetValue(host.GetProperty("ResourceId").GetString()!, out string? appId)
++                || host.GetProperty("AppId").GetString() != appId))
++            throw new InvalidOperationException("The retained catalog closure differs from the owning composition.");
++        Dictionary<string, RouteCatalogGenerationReadback> readbacks = new(StringComparer.Ordinal);
++        foreach (string host in _expectedCatalogHosts.Keys)
+         {
+-            var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(await ReadRequiredAsync(Path.Combine(catalogDirectory, host + ".committed.json"), cancellationToken).ConfigureAwait(false));
+-            if (readback is not { Serving: true } || readback.RootDigest != scope.RoutingCatalogRoot)
++            var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(await ReadRequiredAsync(Path.Combine(catalogDirectory, host + ".committed.json"), cancellationToken).ConfigureAwait(false))
++                ?? throw new InvalidOperationException("A real catalog participant readback is absent.");
++            if (!readback.Serving || readback.RootDigest != scope.RoutingCatalogRoot
++                || readback.Generation != catalog.Generation || readback.Profile != catalog.Profile
++                || readback.RouteFacetDigest != catalog.RouteFacetDigest || readback.IdempotencyFacetDigest != catalog.IdempotencyFacetDigest)
+                 throw new InvalidOperationException("A real catalog participant did not commit the selected native scope.");
++            readbacks.Add(host, readback);
+         }
++#if HEXALITH_PLATFORM_V2_CATALOG
++        var activation = JsonSerializer.Deserialize<RouteCatalogActivation>(await ReadRequiredAsync(Path.Combine(catalogDirectory, "activation.json"), cancellationToken).ConfigureAwait(false))
++            ?? throw new InvalidOperationException("The complete committed catalog activation is absent.");
++        PlatformCommittedCatalogProof.Validate(activation, canonical, scope.RoutingCatalogRoot, plan.AttemptId, _expectedCatalogHosts, readbacks);
++#endif
+         await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
+         DateTimeOffset now = DateTimeOffset.UtcNow;
+         TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, now);
+@@ -99,6 +122,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             ["command:submit", "query:read"], true, remaining) { Surface = "ui" }, now);
+         string nativeProbe = CompositionTokenFactory.Create(signingKey, new("g4-native-tests", scope.Tenants, scope.Domains,
+             ["command:submit", "query:read"], false, remaining) { Surface = "agent" }, now);
++        using var catalogHttp = Client(Endpoint(services, "eventstore"), nativeProbe);
++        await PlatformRoutingCatalogMetadata.ObserveAsync(catalogHttp, catalog, scope.RoutingCatalogRoot, catalogDirectory, cancellationToken).ConfigureAwait(false);
+         using var gatewayHttp = Client(Endpoint(services, "eventstore"), operatorToken);
+         var gateway = new EventStoreGatewayClient(gatewayHttp, Options.Create(new EventStoreGatewayClientOptions { BaseAddress = gatewayHttp.BaseAddress! }));
+         var receipts = new List<CommandStatusQueryResponse>();
+@@ -144,6 +169,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+             nativeGlobalAdministrator = false, nativeRole = nameof(TenantRole.TenantReader),
+             nativeSurface = "agent", consumedTenantsQuery = tenantQuery.RouteId, nativeDomains = scope.Domains,
+             commands = receipts.Select(receipt => new { receipt.MessageId, receipt.Domain, receipt.AggregateId, receipt.Status, receipt.CommittedEventSequence, receipt.EventCount }).ToArray(),
++            routingCatalogMetadataObserved = true,
+             tenantsNativeQueryObserved = true, memoriesRegistryObserved = nameof(Hexalith.Memories.Contracts.V1.TenantStatus.Active), observedAtUtc = DateTimeOffset.UtcNow,
+         }), cancellationToken).ConfigureAwait(false);
+         await WriteEndpointCredentialsAsync(credentialPath, plan, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
+@@ -338,7 +364,18 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
+     private static async Task<byte[]> ReadRequiredAsync(string path, CancellationToken token)
+     {
+         while (!File.Exists(path)) await Task.Delay(50, token).ConfigureAwait(false);
+-        return await File.ReadAllBytesAsync(path, token).ConfigureAwait(false);
++        var file = new FileInfo(path);
++        if (file.LinkTarget is not null || file.Length is <= 0 or > 8388608)
++            throw new InvalidOperationException("A native catalog input is linked, empty or exceeds its bounded contract.");
++        var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.Asynchronous);
++        await using (stream.ConfigureAwait(false))
++        {
++            byte[] bytes = new byte[checked((int)file.Length)];
++            await stream.ReadExactlyAsync(bytes, token).ConfigureAwait(false);
++            if (await stream.ReadAsync(new byte[1], token).ConfigureAwait(false) != 0)
++                throw new InvalidOperationException("A native catalog input changed while it was read.");
++            return bytes;
++        }
+     }
+ 
+     private static HttpClient Client(Uri endpoint, string token)
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+index be7ed503..341f8698 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+@@ -64,6 +64,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+         {
+             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
++            sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
+             committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
+             committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
+             owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
+index e11eac13..e22253f4 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs
+@@ -1,5 +1,6 @@
+ namespace Hexalith.Platform.Composition;
+ 
++using System.Collections.Frozen;
+ using System.Security.Cryptography;
+ using System.Text.Json;
+ using Aspire.Hosting;
+@@ -17,10 +18,14 @@ internal sealed class PlatformRoutingCatalogBootstrap
+         ?? throw new InvalidOperationException("The actual Tenants bootstrap delegation is unavailable.");
+     internal string Directory { get; }
+ 
++    /// <summary>Gets the immutable receiver cohort resolved by the owning composition.</summary>
++    internal IReadOnlyDictionary<string, string> ExpectedHosts { get; }
++
+     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
+         PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
+     {
+         Directory = catalog.Directory;
++        ExpectedHosts = participants.ToFrozenDictionary(server => server.ResourceId, server => server.AppId, StringComparer.Ordinal);
+         string[] hosts = participants.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ToArray();
+         foreach (var server in participants)
+         {
+@@ -41,6 +46,11 @@ internal sealed class PlatformRoutingCatalogBootstrap
+                 ["EventStore__DomainService__ServiceVersion"] = "v1",
+                 ["Authentication__Workload__Audience"] = server.AppId,
+             };
++#if HEXALITH_PLATFORM_V2_CATALOG
++            environment["EventStore__RouteCatalog__DevelopmentBootstrap__BindingVersion"] = "2";
++            if (server.ResourceId == "eventstore")
++                environment["EventStore__RouteCatalog__DevelopmentBootstrap__ReceiverProfile"] = Hexalith.EventStore.Contracts.Routing.RouteCatalogTechnicalHttpPolicy.FenceVersion;
++#endif
+             for (int index = 0; index < hosts.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__" + index] = hosts[index];
+             string[] selected = servers.Select(item => item.AppId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+             for (int index = 0; index < selected.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__SelectedAppIds__" + index] = selected[index];
+@@ -103,7 +113,14 @@ internal sealed class PlatformRoutingCatalogBootstrap
+             }
+             File.WriteAllBytes(Path.Combine(catalog.Directory, "selected-closure.json"), JsonSerializer.SerializeToUtf8Bytes(new
+             {
+-                plan.RunId, hosts = participants.Select(server => new { server.ResourceId, server.AppId }).ToArray(),
++                plan.RunId, hosts = participants.Select(server => new
++                {
++                    server.ResourceId, server.AppId, artifact = server.Image ?? server.ProjectPath,
++                    artifactKind = server.Image is not null ? "released-image"
++                        : options.Mapping.Mode == WorkspaceMode.Package ? "published-seed" : "mapped-project",
++                    artifactSha256 = server.ProjectPath is null ? null
++                        : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(server.ProjectPath))),
++                }).ToArray(),
+                 callerClosure = plan.Modules.Select(module => module.ModuleId).ToArray(),
+             }));
+         }
+@@ -117,6 +134,8 @@ internal sealed class PlatformRoutingCatalogBootstrap
+     {
+         // A gateway-only infrastructure graph has no enrolled business operations.
+         if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
++        if (options.Mapping.Mode != WorkspaceMode.Source)
++            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
+         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
+             || server.ResourceId is "tenants-api" or "memories").ToArray();
+         var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
+diff --git a/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj b/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj
+index 1ce9540e..f7b6c321 100644
+--- a/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj
++++ b/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj
+@@ -10,7 +10,10 @@
+   <ItemGroup>
+     <ProjectReference Include="../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" />
+   </ItemGroup>
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants>
++  </PropertyGroup>
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+-    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK</DefineConstants>
+   </PropertyGroup>
+ </Project>
+diff --git a/src/Hexalith.Platform.EventStoreHost/Program.cs b/src/Hexalith.Platform.EventStoreHost/Program.cs
+index 78e4ba53..2badea79 100644
+--- a/src/Hexalith.Platform.EventStoreHost/Program.cs
++++ b/src/Hexalith.Platform.EventStoreHost/Program.cs
+@@ -28,7 +28,7 @@ builder.Services.AddEventStoreSignalR(builder.Configuration);
+ builder.Services.AddPlatformIdentity(builder.Configuration);
+ builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
+ 
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
++#if HEXALITH_PLATFORM_CATALOG_SDK
+ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+     Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
+ #else
+@@ -47,7 +47,7 @@ app.UseAuthentication();
+ app.UseRateLimiter();
+ // OpenAPI/Swagger UI (gated by configuration, H13)
+ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
++#if HEXALITH_PLATFORM_CATALOG_SDK
+     _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
+     _ = app.UseEventStoreHumanSurface("/swagger");
+ #else
+@@ -64,14 +64,22 @@ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
+     });
+ }
+ 
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
++#if HEXALITH_PLATFORM_CATALOG_SDK
+ app.UseEventStoreHttpHostSecurity();
+ #endif
+ app.UseAuthorization();
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
++#if HEXALITH_PLATFORM_CATALOG_SDK
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+-    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+-        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++{
++#if HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK
++    if (Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.IsEnabled(app.Configuration))
++        Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.UseDevelopmentTechnicalHttpCatalogReceiver(app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++    else
++#endif
++        Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++}
+ #endif
+ app.UseCloudEvents();
+ 
+@@ -88,7 +96,7 @@ app.MapControllers().Add(endpoint =>
+ });
+ app.MapErrorReferences();
+ app.MapApiVersionFallback();
+-#if HEXALITH_PLATFORM_SOURCE_CATALOG
++#if HEXALITH_PLATFORM_CATALOG_SDK
+ if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
+ app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+ #else
+diff --git a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+index e3b99c51..bf65ee5c 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++++ b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+@@ -1,6 +1,9 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
+-  <!-- Source-only owner parity controls remain available alongside native preparation in both modes. -->
++  <PropertyGroup><HexalithPartiesRoot Condition="'$(HexalithPartiesRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Parties</HexalithPartiesRoot></PropertyGroup>
++  <!-- Native preparation follows SDK availability; source owner parity retains mapped projects. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.130.0')))"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_V2_CATALOG</DefineConstants></PropertyGroup>
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or ('$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '3.129.0')))"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants></PropertyGroup>
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants></PropertyGroup>
+   <ItemGroup><AssemblyMetadata Include="PlatformTestRepositoryRoot" Value="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)/../..'))" /></ItemGroup>
+   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
+@@ -20,13 +23,14 @@
+     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+   </ItemGroup>
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+-    <ProjectReference Include="../../references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj" Aliases="tenantdomain" />
+-    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj" Aliases="partydomain" />
+-    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj" Aliases="memorydomain" />
+-    <ProjectReference Include="../../references/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj" />
+-    <ProjectReference Include="../../references/Hexalith.Memories/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj" />
++    <ProjectReference Include="$(HexalithTenantsRoot)/src/Hexalith.Tenants/Hexalith.Tenants.csproj" Aliases="tenantdomain" />
++    <ProjectReference Include="$(HexalithPartiesRoot)/src/Hexalith.Parties/Hexalith.Parties.csproj" Aliases="partydomain" />
++    <ProjectReference Include="$(HexalithMemoriesRoot)/src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj" Aliases="memorydomain" />
++    <ProjectReference Include="$(HexalithPartiesRoot)/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj" />
++    <ProjectReference Include="$(HexalithMemoriesRoot)/src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj" />
++    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj" />
+     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj" />
+   </ItemGroup>
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs
+index f6c004cb..74866415 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs
+@@ -14,16 +14,15 @@ using Shouldly;
+ public sealed partial class PlatformAppModelTests
+ {
+     [Fact]
+-    public void PackageCatalogBindsExplicitOwnerPackagePrerequisites()
++    public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
+     {
+-        PlatformCompositionOptions options = PackageOptions();
+-        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
+-        IReadOnlyList<PlatformCatalogContractBinding> owners = PlatformCatalogContractBinding.Resolve(options, servers);
+-        owners.ShouldNotBeEmpty();
+-        owners.ShouldAllBe(owner => owner.PackageVersion != null && !Path.IsPathRooted(owner.ContractReference) && !Path.IsPathRooted(owner.AdapterReference));
+-        owners.Select(owner => owner.ContractReference).ShouldContain("Hexalith.Tenants.Contracts");
+-        owners.Select(owner => owner.AdapterReference).ShouldContain("Hexalith.Memories.EventStoreExtensions");
+-        owners.Select(owner => owner.AdapterReference).ShouldContain("Hexalith.Tenants.Server");
++        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
++        var builder = Builder();
++        builder.Environment.EnvironmentName = Environments.Development;
++        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
++        failure.Message.ShouldContain("owner SDK");
++        failure.Message.ShouldContain("Builds catalog pins");
++        builder.Resources.ShouldBeEmpty();
+     }
+ 
+     [Fact]
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
+index 60390472..ed989122 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs
+@@ -418,7 +418,7 @@ public sealed partial class PlatformAppModelTests
+     }
+ 
+     [Fact]
+-    public async Task SignedPackageCatalogRequiresReaderAndStillChecksMappingDriftAsync()
++    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
+     {
+         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
+         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
+@@ -455,7 +455,7 @@ public sealed partial class PlatformAppModelTests
+             File.Delete(readerProject);
+             IDistributedApplicationBuilder builder = Builder();
+             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
+-                .Message.ShouldContain("Hexalith.Platform.CatalogBuilder.csproj");
++                .Message.ShouldContain("owner SDK");
+             builder.Resources.ShouldBeEmpty();
+             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
+             IDistributedApplicationBuilder refused = Builder();
+@@ -469,14 +469,14 @@ public sealed partial class PlatformAppModelTests
+     [Theory]
+     [InlineData(1, false)]
+     [InlineData(0, true)]
+-    public void UnavailableReleasedImageRefusesBeforePreparingCatalog(int exit, bool timedOut)
++    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
+     {
+         bool inspected = false;
+         var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
+         { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
+         var builder = Builder();
+-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("unavailable from its released registry");
+-        inspected.ShouldBeTrue();
++        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
++        inspected.ShouldBeFalse();
+         builder.Resources.ShouldBeEmpty();
+     }
+ 
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+index df7ec8c5..ae3c8892 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+@@ -92,18 +92,15 @@ public sealed partial class PlatformAppModelTests : IDisposable
+     }
+ 
+     [Fact]
+-    public void PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
++    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+     {
+-        PlatformCompositionOptions options = PackageGraphOptions();
+-        IReadOnlyList<Hexalith.Builds.Tooling.Manifest.PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
+-        IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
+-        PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations);
+-        IReadOnlyList<PlatformServerBinding> participants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+-        participants.Select(server => server.ResourceId).ShouldContain("eventstore");
+-        participants.Select(server => server.ResourceId).ShouldContain("tenants");
+-        participants.Select(server => server.ResourceId).ShouldContain("memories");
+-        // Binding stays metadata-only: restore/build and image availability remain independent prerequisites.
+-        Builder().Resources.ShouldBeEmpty();
++        var options = PackageGraphOptions() with
++        {
++            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
++        };
++        var builder = Builder();
++        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
++        builder.Resources.ShouldBeEmpty();
+     }
+ 
+     [Fact]
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs
+index 28c2090d..598f6840 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs
+@@ -214,12 +214,33 @@ public sealed class PlatformNativeTestPreparationTests
+ 
+         // Neither delegated Tenants transport nor the Memories binding is reached before the network boundary.
+         public PlatformNativeTestPreparation Preparation() => new(Plan, Catalog, CompositionSigningKey.Create(),
+-            new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-bootstrap-key", null, "unused-issuer"), null!);
++            new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-bootstrap-key", null, "unused-issuer"), null!, new Dictionary<string, string> { ["fixture-tenants"] = "tenants", ["fixture-gateway"] = "eventstore" });
+ 
+         public void WriteSource(CompositionNativeTestScope scope)
+         {
+             File.WriteAllBytes(Path.Combine(Catalog, "catalog.json"), TenantsCatalog.Value.Bytes);
+-            File.WriteAllText(Path.Combine(Catalog, "selected-closure.json"), """{"hosts":[]}""");
++            var envelope = RouteCatalogCodec.Decode(TenantsCatalog.Value.Bytes, TenantsCatalog.Value.Root);
++            var identity = new RouteCatalogHostIdentity("fixture-tenants", "tenants", new string('a', 64), new string('b', 64), new string('c', 64));
++            var gateway = identity with { HostId = "fixture-gateway", AppId = "eventstore" };
++            var readback = new RouteCatalogGenerationReadback(1, envelope.Generation, TenantsCatalog.Value.Root,
++                envelope.RouteFacetDigest, envelope.IdempotencyFacetDigest, "Development", [gateway, identity], true);
++#if HEXALITH_PLATFORM_V2_CATALOG
++            // This is structural unit evidence only; it never establishes an actual observed receiver or active runtime.
++            var activation = new RouteCatalogActivation(Plan.AttemptId, TenantsCatalog.Value.Bytes, TenantsCatalog.Value.Root, null,
++                [gateway, identity], "Development-fixture", "")
++            {
++                TechnicalHttpReceivers = [new("tenants", RouteCatalogTechnicalHttpPolicy.FenceVersion,
++                    [new("/unit/structural", ["GET"], "unit-file-proof-not-runtime-acceptance", new string('a', 64), new string('a', 64),
++                        ["EventStoreHuman"], new string('a', 64), new string('a', 64))])],
++            };
++            string binding = Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogActivationBinding.ComputeDigest(activation);
++            activation = activation with { TrustProof = binding };
++            readback = readback with { AttemptId = Plan.AttemptId, ActivationBindingDigest = binding };
++            File.WriteAllBytes(Path.Combine(Catalog, "activation.json"), JsonSerializer.SerializeToUtf8Bytes(activation));
++#endif
++            File.WriteAllBytes(Path.Combine(Catalog, "fixture-tenants.committed.json"), JsonSerializer.SerializeToUtf8Bytes(readback));
++            File.WriteAllBytes(Path.Combine(Catalog, "fixture-gateway.committed.json"), JsonSerializer.SerializeToUtf8Bytes(readback));
++            File.WriteAllText(Path.Combine(Catalog, "selected-closure.json"), """{"hosts":[{"ResourceId":"fixture-gateway","AppId":"eventstore"},{"ResourceId":"fixture-tenants","AppId":"tenants"}]}""");
+             // Publish the scope last and atomically: a waiting owner may poll for it concurrently.
+             string staged = Path.Combine(Catalog, "native-scope.staged");
+             File.WriteAllBytes(staged, JsonSerializer.SerializeToUtf8Bytes(scope));

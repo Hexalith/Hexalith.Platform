@@ -1,0 +1,34 @@
+{
+  "scope": "Exact PR378 required live-sidecar result; not a passed prerequisite",
+  "observedAt": "2026-10-31T18:31:51.198213+00:00",
+  "sourceCommit": "67bab1f13bd26d7fd7fbe390b57006a537e5c5a2",
+  "runId": 41224995195,
+  "jobId": 124607183097,
+  "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41224995195/job/124607183097",
+  "conclusion": "failure",
+  "total": 293,
+  "passed": 283,
+  "failed": 6,
+  "skipped": 4,
+  "failedCases": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.ReplayRecovery_GenericHandlerReusesOneOriginalManifestAcrossThreeLostDurableResponses(head: 10000)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorOversizedEnvelopeReturnsTypedPageFailureBeforeAnyEffects",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 9999)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_CurrentMatrixUsesExactlyElevenMetadataReadsAndPreservesEveryOwningSurface(head: 10000)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9000, delta: 771, pageSize: 256)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NamedProjectionDispatchLiveSidecarTests.SourceGuard_RealActorHandlerAndStores_ProveTailThenReadOnlyCurrent(completed: 9999, delta: 1, pageSize: 256)"
+  ],
+  "allFailedCasesAlsoFailOnRecordedMainBaseline": true,
+  "baselineRunId": 41218513032,
+  "baselineJobId": 124587997056,
+  "fullLog": {
+    "path": "/tmp/story28-pr378-live-50xob35g.txt",
+    "bytes": 6689087,
+    "sha256": "234dbec80b1735dddd210326a43d7becb792d925bed7c6b8fe4f88fe52bdf846",
+    "mode": "0600 temporary local file"
+  },
+  "relationship": "The same six replay/source-guard cases fail on current-main baseline, outside the SDK three-file change. No unchanged rerun, merge or release bypass is authorized. Separate owner SDK/cohort corrections remain required.",
+  "releaseDispatched": false,
+  "hostedAcceptance": false,
+  "laterOwnerStatus": "PR376 closed unmerged; PR377 advanced to dfa29dce582ca4a1ec47c6f09273ef27b38c02d5. Neither changed by this task."
+}

@@ -303,6 +303,27 @@ public sealed class ErasureRootCustodyTests
         (await _custody.LookupAsync(request with { Targets = [new("tenant-a", "changed", "explicit-alias")] }, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
     }
 
+    /// <summary>R11-BH-8: one shared writer holder id is committed by exactly one concurrent unwrap; losers leave no native holder, and completion is final.</summary>
+    [Fact]
+    public async Task ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder()
+    {
+        var root = await RootAsync();
+        var token = TestContext.Current.CancellationToken;
+        string holderId = "erc-write:" + ErasureRootCustody.Hash(new { root.Identity, keyReference = "shared-writer" });
+        var results = await Task.WhenAll(Enumerable.Range(0, 8).Select(_ => Task.Run(() => _custody.UnwrapAsync(root, holderId, token), token)));
+        var winners = results.Where(result => result is not null).ToArray();
+        winners.Length.ShouldBe(1);
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBe(new[] { holderId });
+        var winner = winners[0]!;
+        winner.Dispose();
+        (await _custody.CompleteHolderAsync(root, winner, cancellationToken: token)).ShouldBeTrue();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
+        // A late loser or retry with the same id can never commit a second native holder after completion.
+        (await _custody.UnwrapAsync(root, holderId, cancellationToken: token)).ShouldBeNull();
+        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
+        (await _custody.ConsumeAsync(Request([root]), "reservation", cancellationToken: token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
+    }
+
     [Fact]
     public async Task PostCasAuthorizationFailureRollsTheHolderBackAndALaterUnwrapSucceeds()
     {

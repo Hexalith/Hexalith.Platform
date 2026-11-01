@@ -1,0 +1,23 @@
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
+index c21892f3d..48aef8119 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/TechnicalHttpInvocationFixture.cs
+@@ -1,6 +1,8 @@
+ using System.Net;
+ using System.Net.Http.Headers;
++using System.Net.Http.Json;
+ using System.Text;
++using System.Text.Json;
+ 
+ using Dapr.Client;
+ 
+@@ -53,7 +55,8 @@ internal sealed class TechnicalHttpInvocationFixture : IAsyncDisposable
+             const string prefix = "/v1.0/invoke/eventstore/method/";
+             if (!context.Request.Path.Value!.StartsWith(prefix, StringComparison.Ordinal)) { context.Response.StatusCode = 404; return; }
+             string path = "/" + context.Request.Path.Value[prefix.Length..] + context.Request.QueryString;
+-            using var request = new HttpRequestMessage(new HttpMethod(context.Request.Method), path) { Content = new StringContent(Body, Encoding.UTF8, "application/json") };
++            using var json = JsonDocument.Parse(Body);
++            using var request = new HttpRequestMessage(new HttpMethod(context.Request.Method), path) { Content = JsonContent.Create(json.RootElement) };
+             foreach (var header in context.Request.Headers.Where(header => header.Key.StartsWith("X-Hexalith-", StringComparison.OrdinalIgnoreCase) || header.Key == "Authorization"))
+                 request.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+             if (scenario == "missing-binding") request.Headers.Remove(RouteCatalogInvocationHandler.BindingHeader);

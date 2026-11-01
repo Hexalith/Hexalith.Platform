@@ -1,0 +1,62 @@
+{
+  "base": "d18bb63daf85d4a5b32b0ac322b3ec069570596d",
+  "command": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-parallel",
+    "none",
+    "-noLogo",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/builds-foundation/hosted-env-corrected-tests.xml",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.AllocatedMappingFailurePreservesDeclaredOutcomeAndLegacyCleanupAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.FinalManifestRefusalFinalizesIssuedOwnerAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.ListingReconcilesCommittedFailureAfterResultPublicationFailureAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.ExecutionLifetimeExpiryCommitsFailureBeforeExpiredProcessingAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.LinkedCleanupRequestCannotSuppressFailureRetentionAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.MissingRunBindingPreservesFirstOutcomeAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunSourceReviewTests.StartupTimeoutRecordingRetryPreservesCauseAsync",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.*"
+  ],
+  "environment": {
+    "CI": "true",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "41233840031",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "dotnet",
+    "GITHUB_WORKSPACE": "/tmp/hexalith-story28-builds-foundation",
+    "GITHUB_SHA": "d18bb63daf85d4a5b32b0ac322b3ec069570596d",
+    "GITHUB_REF": "refs/pull/148/merge",
+    "GITHUB_EVENT_NAME": "pull_request",
+    "RUNNER_ENVIRONMENT": "github-hosted",
+    "RUNNER_OS": "Linux",
+    "RUNNER_TEMP": "/tmp/hexalith-story28-hosted-env"
+  },
+  "sourceSha256": {
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleFixture.cs": "16093ebba434e8c8ec6323b29cc41cfe5862e8b29e4377b388ad959d05d6eb3d",
+    "test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs": "5deaf855982e2bb1321be62593ac69a9d909223a64e7b559f45414e1e7995299",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "f371c3ae16b718c3ba725a2072f72f6f35a14d443eb426463fd609a60d85aa3c",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "5f903edea15b3afc15ce1fc046a23dae541297cf4f7c6d862efe2ee025899e27"
+  },
+  "compiledBinariesSha256": {
+    "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "cf1f0e3915cb0bdfee429f293b7ab218111ae634dad0f2d2299a59c802801bfb",
+    "src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "e8cbe06c4e0488de62af5e22fdd7b147bc468963cb76b59047658f9ab818a9fc"
+  },
+  "limit": "Local simulation of relevant GitHub-hosted CI identity variables; existing source test fixtures and already compiled Release binaries, not hosted qualification.",
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

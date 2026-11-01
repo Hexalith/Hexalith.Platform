@@ -1,0 +1,5 @@
+fix(ci): enforce https integration downloads
+
+Restrict both initial download and redirect protocols to HTTPS and retain
+executable workflow assertions. Keep one throwing call in the authorization
+digest refusal control.

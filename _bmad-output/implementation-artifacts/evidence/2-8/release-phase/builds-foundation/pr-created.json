@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/148",
+    "number": 148,
+    "state": "open",
+    "merged": false,
+    "mergeable": false,
+    "draft": false,
+    "body": "Selected CI suites must end attachments before owned resources stop and must\nclean up after success, failure, cancellation and partial startup. Persist an\nexact preallocation owner receipt, allow only same-job CI attachment admission,\nwithdraw durably before stopping, and disable CI failure retention. The helper\nforwards constructor-time cancellation and verifies exact receipt-bound cleanup;\nown CI and release checks exercise it without activating the shared domain\nworkflow.\n\nThe packaged EventStore host skipped HTTP security and route-catalog setup that\nSDK 3.129.0 already provides. Enroll the package host in those published\nboundaries. The real archive probe supplies its own temporary app-channel token\nand requires valid discovery plus missing/wrong credential refusals, while\nretaining the existing subscription, receiver metadata and archive identity\nassertions.\n\nValidation: Release compilation with zero warnings/errors; 238\nlifecycle/admission/engine/regression controls; 15 helper controls; self-CI\ntruth-table checks; publisher contract mutations; real packaged seed discovery\nin configured and declarative modes, actor discovery 200 and credential refusals\n401. Exact committed source/archive/proof hashes are retained in Platform Story\n2.8 release evidence.\n\nDependency boundary: existing published EventStore 3.129.0 remains selected. No\ndependency on the unpublished stream-reader SDK, family pin change, shared\ndomain-ci activation, caller enrollment or hosted candidate acceptance is\nincluded. Merge and publication remain a separate approved stage.\n",
+    "title": "fix(module): clean CI runs and secure packaged hosts",
+    "base": "main",
+    "base_sha": "1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9",
+    "head": "prep/story-2-8-foundation",
+    "head_sha": "ee6074995b7da585f731f938cc295a6f7d3bf6a3",
+    "head_repo_id": 952945989,
+    "head_repo_full_name": "Hexalith/Hexalith.Builds",
+    "merge_commit_sha": null,
+    "user": {
+      "login": "jpiquot",
+      "name": "jpiquot",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "id": 6775094
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-10-31T18:28:46Z",
+    "updated_at": "2026-10-31T18:28:46Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 1,
+    "changed_files": 20,
+    "additions": 1057,
+    "deletions": 65,
+    "display_url": "https://github.com/Hexalith/Hexalith.Builds/pull/148",
+    "display_title": "fix(module): clean CI runs and secure packaged hosts"
+  },
+  "isError": false
+}

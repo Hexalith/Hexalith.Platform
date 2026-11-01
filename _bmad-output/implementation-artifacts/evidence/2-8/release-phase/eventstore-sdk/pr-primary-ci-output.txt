@@ -1,0 +1,1828 @@
+﻿2026-10-31T17:40:30.8494305Z Current runner version: '2.338.2'
+2026-10-31T17:40:30.8513890Z ##[group]Runner Image Provisioner
+2026-10-31T17:40:30.8514467Z Hosted Compute Agent
+2026-10-31T17:40:30.8514894Z Version: 20261021.618
+2026-10-31T17:40:30.8515328Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T17:40:30.8515761Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T17:40:30.8516257Z Worker ID: {028e7c6a-59d8-4104-8874-7830b65abffe}
+2026-10-31T17:40:30.8516692Z Region: centralus
+2026-10-31T17:40:30.8517068Z Cloud: Azure
+2026-10-31T17:40:30.8517423Z ##[endgroup]
+2026-10-31T17:40:30.8518239Z ##[group]Operating System
+2026-10-31T17:40:30.8518862Z Ubuntu
+2026-10-31T17:40:30.8519193Z 26.04.1
+2026-10-31T17:40:30.8519511Z LTS
+2026-10-31T17:40:30.8519885Z ##[endgroup]
+2026-10-31T17:40:30.8520255Z ##[group]Runner Image
+2026-10-31T17:40:30.8520708Z Image: ubuntu-26.04
+2026-10-31T17:40:30.8521064Z Version: 20261025.179.1
+2026-10-31T17:40:30.8521908Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+2026-10-31T17:40:30.8522831Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+2026-10-31T17:40:30.8523479Z ##[endgroup]
+2026-10-31T17:40:30.8524169Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T17:40:30.8525520Z Contents: read
+2026-10-31T17:40:30.8525884Z Metadata: read
+2026-10-31T17:40:30.8526226Z ##[endgroup]
+2026-10-31T17:40:30.8527723Z Secret source: Actions
+2026-10-31T17:40:30.8528411Z Cache mode: write
+2026-10-31T17:40:30.8528925Z Prepare workflow directory
+2026-10-31T17:40:30.8767367Z Prepare all required actions
+2026-10-31T17:40:30.8813646Z Getting action download info
+2026-10-31T17:40:31.1504364Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-31T17:40:31.2480096Z Download action repository 'Hexalith/Hexalith.Builds@e171c5a788eab183b32683431b084198c9b8d373' (SHA:e171c5a788eab183b32683431b084198c9b8d373)
+2026-10-31T17:40:32.8819162Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-10-31T17:40:33.2473801Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-10-31T17:40:33.3620742Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-31T17:40:33.5169499Z Getting action download info
+2026-10-31T17:40:33.6356383Z Download action repository 'dapr/setup-dapr@8d980918fd43a2765c143ce7f687665b2d46a6b9' (SHA:8d980918fd43a2765c143ce7f687665b2d46a6b9)
+2026-10-31T17:40:33.9129930Z Download action repository 'nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60' (SHA:ad984534de44a9489a53aefd81eb77f87c70dc60)
+2026-10-31T17:40:34.2096890Z Uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@refs/heads/main (2132fe0e276059dcd9fc35a7115fd2a1795ce538)
+2026-10-31T17:40:34.2099790Z ##[group] Inputs
+2026-10-31T17:40:34.2099981Z   solution: Hexalith.EventStore.slnx
+2026-10-31T17:40:34.2100151Z   module-manifest: 
+2026-10-31T17:40:34.2100298Z   dotnet-global-json: global.json
+2026-10-31T17:40:34.2100634Z   packages-lock-file: Directory.Packages.props, global.json, references/Hexalith.Builds/Props/Directory.Packages.props
+2026-10-31T17:40:34.2100968Z   dapr-version: 1.18.2
+2026-10-31T17:40:34.2101113Z   dapr-runtime-version: 1.18.7
+2026-10-31T17:40:34.2101304Z   test-platform: microsoft-testing-platform
+2026-10-31T17:40:34.2103558Z   unit-test-projects: tests/Hexalith.EventStore.Client.Tests
+tests/Hexalith.EventStore.ServiceDefaults.Tests
+tests/Hexalith.EventStore.Testing.Tests
+tests/Hexalith.EventStore.SignalR.Tests
+tests/Hexalith.EventStore.Admin.Abstractions.Tests
+tests/Hexalith.EventStore.Admin.Cli.Tests
+tests/Hexalith.EventStore.Admin.Mcp.Tests
+tests/Hexalith.EventStore.Admin.Server.Tests
+tests/Hexalith.EventStore.Operations.Tests
+tests/Hexalith.EventStore.Admin.Server.Host.Tests
+tests/Hexalith.EventStore.Admin.UI.Tests
+tests/Hexalith.EventStore.DomainService.Tests
+tests/Hexalith.EventStore.QueryRouting.Tests
+tests/Hexalith.EventStore.RestApi.Generators.Tests
+tests/Hexalith.EventStore.LoadTests.Tests
+tests/Hexalith.EventStore.Sample.Tests
+tests/Hexalith.EventStore.Testing.Integration.Tests
+tests/Hexalith.EventStore.Server.Tests
+tests/Hexalith.EventStore.ProviderVerification.Tests
+
+2026-10-31T17:40:34.2105673Z   integration-test-projects: tests/Hexalith.EventStore.AppHost.Tests
+
+2026-10-31T17:40:34.2105911Z   aspire-test-project: 
+2026-10-31T17:40:34.2106093Z   aspire-non-performance-filter: Category!=Performance
+2026-10-31T17:40:34.2106304Z   performance-filter: Category=Performance
+2026-10-31T17:40:34.2106503Z   aspire-mtp-excluded-trait: Category=Performance
+2026-10-31T17:40:34.2106715Z   performance-mtp-trait: Category=Performance
+2026-10-31T17:40:34.2107143Z   run-consumer-validation: true
+2026-10-31T17:40:34.2107310Z   package-prepare-script: 
+2026-10-31T17:40:34.2107475Z   run-coverage-gate: false
+2026-10-31T17:40:34.2108012Z   coverage-minimum-line: 80
+2026-10-31T17:40:34.2108180Z   coverage-required-branch: 100
+2026-10-31T17:40:34.2108541Z   coverage-isolation-targets: 
+2026-10-31T17:40:34.2108699Z   coverage-line-scope: 
+2026-10-31T17:40:34.2108880Z   aspire-continue-on-error: true
+2026-10-31T17:40:34.2109071Z   aspire-prepare-script: 
+2026-10-31T17:40:34.2109233Z   aspire-runner-script: 
+2026-10-31T17:40:34.2109394Z   aspire-prepare-timeout-minutes: 30
+2026-10-31T17:40:34.2109573Z   aspire-runner-timeout-minutes: 30
+2026-10-31T17:40:34.2109776Z   aspire-evidence-path: TestResults/aspire-hook-evidence
+2026-10-31T17:40:34.2109984Z   aspire-browser-project: 
+2026-10-31T17:40:34.2110137Z   aspire-fail-skips: false
+2026-10-31T17:40:34.2110294Z   build-timeout-minutes: 180
+2026-10-31T17:40:34.2110457Z   aspire-timeout-minutes: 10
+2026-10-31T17:40:34.2110702Z   performance-timeout-minutes: 60
+2026-10-31T17:40:34.2110862Z   governed-ci: false
+2026-10-31T17:40:34.2111014Z   builds-execution-sha: 
+2026-10-31T17:40:34.2111159Z   candidate-commit: 
+2026-10-31T17:40:34.2111307Z   dependency-policy-repository: 
+2026-10-31T17:40:34.2111474Z   dependency-policy-path: 
+2026-10-31T17:40:34.2111627Z   dependency-policy-commit: 
+2026-10-31T17:40:34.2111785Z   dependency-policy-sha256: 
+2026-10-31T17:40:34.2111940Z   expected-ci-evaluator-digest: 
+2026-10-31T17:40:34.2112104Z ##[endgroup]
+2026-10-31T17:40:34.2112255Z Complete job name: ci / build-and-test
+2026-10-31T17:40:34.2732451Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-31T17:40:34.2732910Z with:
+2026-10-31T17:40:34.2733037Z   fetch-depth: 0
+2026-10-31T17:40:34.2733170Z   submodules: false
+2026-10-31T17:40:34.2733327Z   repository: Hexalith/Hexalith.EventStore
+2026-10-31T17:40:34.2735012Z   token: ***
+2026-10-31T17:40:34.2735136Z   ssh-strict: true
+2026-10-31T17:40:34.2735264Z   ssh-user: git
+2026-10-31T17:40:34.2735397Z   persist-credentials: true
+2026-10-31T17:40:34.2735549Z   clean: true
+2026-10-31T17:40:34.2735719Z   sparse-checkout-cone-mode: true
+2026-10-31T17:40:34.2735877Z   fetch-tags: false
+2026-10-31T17:40:34.2736006Z   show-progress: true
+2026-10-31T17:40:34.2736137Z   lfs: false
+2026-10-31T17:40:34.2736264Z   set-safe-directory: true
+2026-10-31T17:40:34.2736417Z   allow-unsafe-pr-checkout: false
+2026-10-31T17:40:34.2736659Z ##[endgroup]
+2026-10-31T17:40:34.5249057Z Syncing repository: Hexalith/Hexalith.EventStore
+2026-10-31T17:40:34.5250928Z ##[group]Getting Git version info
+2026-10-31T17:40:34.5251408Z Working directory is '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore'
+2026-10-31T17:40:34.5252120Z [command]/usr/bin/git version
+2026-10-31T17:40:34.5261628Z git version 2.56.0
+2026-10-31T17:40:34.5277015Z ##[endgroup]
+2026-10-31T17:40:34.5291260Z Temporarily overriding HOME='/home/runner/work/_temp/b5ca969c-6878-4731-8176-4988dc19ef19' before making global git config changes
+2026-10-31T17:40:34.5292288Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T17:40:34.5293455Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.EventStore/Hexalith.EventStore
+2026-10-31T17:40:34.5361763Z Deleting the contents of '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore'
+2026-10-31T17:40:34.5363902Z ##[group]Determining repository object format
+2026-10-31T17:40:34.5365245Z ##[endgroup]
+2026-10-31T17:40:34.5365625Z ##[group]Initializing the repository
+2026-10-31T17:40:34.5369398Z [command]/usr/bin/git init /home/runner/work/Hexalith.EventStore/Hexalith.EventStore
+2026-10-31T17:40:34.5475978Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T17:40:34.5476648Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T17:40:34.5477214Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T17:40:34.5477590Z hint: call:
+2026-10-31T17:40:34.5477780Z hint:
+2026-10-31T17:40:34.5478110Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T17:40:34.5478643Z hint:
+2026-10-31T17:40:34.5479032Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T17:40:34.5479563Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T17:40:34.5479929Z hint:
+2026-10-31T17:40:34.5480141Z hint: 	git branch -m <name>
+2026-10-31T17:40:34.5480386Z hint:
+2026-10-31T17:40:34.5487456Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T17:40:34.5488082Z Initialized empty Git repository in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/
+2026-10-31T17:40:34.5498009Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.EventStore
+2026-10-31T17:40:34.5552680Z ##[endgroup]
+2026-10-31T17:40:34.5553170Z ##[group]Disabling automatic garbage collection
+2026-10-31T17:40:34.5555840Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T17:40:34.5607950Z ##[endgroup]
+2026-10-31T17:40:34.5608461Z ##[group]Setting up auth
+2026-10-31T17:40:34.5608803Z Removing SSH command configuration
+2026-10-31T17:40:34.5613305Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T17:40:34.5649041Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T17:40:34.6089428Z Removing HTTP extra header
+2026-10-31T17:40:34.6095801Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T17:40:34.6134251Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T17:40:34.6414392Z Removing includeIf entries pointing to credentials config files
+2026-10-31T17:40:34.6420255Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:40:34.6460893Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T17:40:34.6749383Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T17:40:34.6790882Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git.path /home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:40:34.6826535Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:40:34.6860644Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:40:34.6894256Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:40:34.6924325Z ##[endgroup]
+2026-10-31T17:40:34.6924736Z ##[group]Fetching the repository
+2026-10-31T17:40:34.6930708Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +019045159e3b163cbb8cd4c075b5df527cb23bbe:refs/remotes/pull/378/merge
+2026-10-31T17:40:51.5673348Z From https://github.com/Hexalith/Hexalith.EventStore
+2026-10-31T17:40:51.5674632Z  * [new branch]          fix/development-catalog-release-qualification -> origin/fix/development-catalog-release-qualification
+2026-10-31T17:40:51.5677775Z  * [new branch]          fix/story-2-8-sdk-stream-observer        -> origin/fix/story-2-8-sdk-stream-observer
+2026-10-31T17:40:51.5687345Z  * [new branch]          fix/works-routing-catalog                -> origin/fix/works-routing-catalog
+2026-10-31T17:40:51.5688153Z  * [new branch]          main                                     -> origin/main
+2026-10-31T17:40:51.5688769Z  * [new tag]             archive/works-0bb0adf                    -> archive/works-0bb0adf
+2026-10-31T17:40:51.5689263Z  * [new tag]             archive/works-4cf9f6c                    -> archive/works-4cf9f6c
+2026-10-31T17:40:51.5689749Z  * [new tag]             archive/works-6a1d262                    -> archive/works-6a1d262
+2026-10-31T17:40:51.5690175Z  * [new tag]             archive/works-7011082                    -> archive/works-7011082
+2026-10-31T17:40:51.5690629Z  * [new tag]             archive/works-896d3be                    -> archive/works-896d3be
+2026-10-31T17:40:51.5691064Z  * [new tag]             archive/works-aae6b9b                    -> archive/works-aae6b9b
+2026-10-31T17:40:51.5691504Z  * [new tag]             archive/works-b4df05e                    -> archive/works-b4df05e
+2026-10-31T17:40:51.5691976Z  * [new tag]             archive/works-bc7f928                    -> archive/works-bc7f928
+2026-10-31T17:40:51.5692434Z  * [new tag]             archive/works-c0ed219                    -> archive/works-c0ed219
+2026-10-31T17:40:51.5692851Z  * [new tag]             archive/works-c231da0                    -> archive/works-c231da0
+2026-10-31T17:40:51.5693564Z  * [new tag]             archive/works-c7a2757                    -> archive/works-c7a2757
+2026-10-31T17:40:51.5694080Z  * [new tag]             archive/works-c7e699f                    -> archive/works-c7e699f
+2026-10-31T17:40:51.5694573Z  * [new tag]             archive/works-cd3ced6                    -> archive/works-cd3ced6
+2026-10-31T17:40:51.5695049Z  * [new tag]             archive/works-d9235f5                    -> archive/works-d9235f5
+2026-10-31T17:40:51.5695376Z  * [new tag]             archive/works-fbcacfb                    -> archive/works-fbcacfb
+2026-10-31T17:40:51.5695697Z  * [new tag]             v1.0.0                                   -> v1.0.0
+2026-10-31T17:40:51.5695983Z  * [new tag]             v1.1.0                                   -> v1.1.0
+2026-10-31T17:40:51.5696254Z  * [new tag]             v1.1.1                                   -> v1.1.1
+2026-10-31T17:40:51.5696501Z  * [new tag]             v1.2.0                                   -> v1.2.0
+2026-10-31T17:40:51.5696744Z  * [new tag]             v1.2.1                                   -> v1.2.1
+2026-10-31T17:40:51.5697000Z  * [new tag]             v1.2.2                                   -> v1.2.2
+2026-10-31T17:40:51.5697256Z  * [new tag]             v1.2.3                                   -> v1.2.3
+2026-10-31T17:40:51.5697505Z  * [new tag]             v1.2.4                                   -> v1.2.4
+2026-10-31T17:40:51.5697738Z  * [new tag]             v1.2.5                                   -> v1.2.5
+2026-10-31T17:40:51.5698079Z  * [new tag]             v1.2.6                                   -> v1.2.6
+2026-10-31T17:40:51.5698546Z  * [new tag]             v1.3.0                                   -> v1.3.0
+2026-10-31T17:40:51.5698938Z  * [new tag]             v1.4.0                                   -> v1.4.0
+2026-10-31T17:40:51.5699153Z  * [new tag]             v2.0.0                                   -> v2.0.0
+2026-10-31T17:40:51.5699366Z  * [new tag]             v2.1.0                                   -> v2.1.0
+2026-10-31T17:40:51.5699587Z  * [new tag]             v2.1.1                                   -> v2.1.1
+2026-10-31T17:40:51.5699801Z  * [new tag]             v2.1.2                                   -> v2.1.2
+2026-10-31T17:40:51.5700033Z  * [new tag]             v3.0.0                                   -> v3.0.0
+2026-10-31T17:40:51.5700246Z  * [new tag]             v3.0.1                                   -> v3.0.1
+2026-10-31T17:40:51.5700463Z  * [new tag]             v3.0.2                                   -> v3.0.2
+2026-10-31T17:40:51.5700679Z  * [new tag]             v3.1.0                                   -> v3.1.0
+2026-10-31T17:40:51.5700915Z  * [new tag]             v3.10.0                                  -> v3.10.0
+2026-10-31T17:40:51.5701145Z  * [new tag]             v3.100.0                                 -> v3.100.0
+2026-10-31T17:40:51.5701405Z  * [new tag]             v3.100.1                                 -> v3.100.1
+2026-10-31T17:40:51.5701650Z  * [new tag]             v3.101.0                                 -> v3.101.0
+2026-10-31T17:40:51.5701912Z  * [new tag]             v3.102.0                                 -> v3.102.0
+2026-10-31T17:40:51.5702142Z  * [new tag]             v3.103.0                                 -> v3.103.0
+2026-10-31T17:40:51.5702371Z  * [new tag]             v3.104.0                                 -> v3.104.0
+2026-10-31T17:40:51.5702600Z  * [new tag]             v3.105.0                                 -> v3.105.0
+2026-10-31T17:40:51.5702823Z  * [new tag]             v3.106.0                                 -> v3.106.0
+2026-10-31T17:40:51.5703050Z  * [new tag]             v3.107.0                                 -> v3.107.0
+2026-10-31T17:40:51.5703289Z  * [new tag]             v3.108.0                                 -> v3.108.0
+2026-10-31T17:40:51.5703521Z  * [new tag]             v3.108.1                                 -> v3.108.1
+2026-10-31T17:40:51.5703757Z  * [new tag]             v3.109.0                                 -> v3.109.0
+2026-10-31T17:40:51.5704010Z  * [new tag]             v3.11.0                                  -> v3.11.0
+2026-10-31T17:40:51.5704382Z  * [new tag]             v3.11.1                                  -> v3.11.1
+2026-10-31T17:40:51.5704633Z  * [new tag]             v3.110.0                                 -> v3.110.0
+2026-10-31T17:40:51.5704882Z  * [new tag]             v3.111.0                                 -> v3.111.0
+2026-10-31T17:40:51.5705123Z  * [new tag]             v3.112.0                                 -> v3.112.0
+2026-10-31T17:40:51.5705360Z  * [new tag]             v3.113.0                                 -> v3.113.0
+2026-10-31T17:40:51.5705605Z  * [new tag]             v3.114.0                                 -> v3.114.0
+2026-10-31T17:40:51.5705852Z  * [new tag]             v3.115.0                                 -> v3.115.0
+2026-10-31T17:40:51.5706082Z  * [new tag]             v3.116.0                                 -> v3.116.0
+2026-10-31T17:40:51.5706332Z  * [new tag]             v3.117.0                                 -> v3.117.0
+2026-10-31T17:40:51.5706586Z  * [new tag]             v3.117.1                                 -> v3.117.1
+2026-10-31T17:40:51.5706812Z  * [new tag]             v3.118.0                                 -> v3.118.0
+2026-10-31T17:40:51.5707109Z  * [new tag]             v3.118.1                                 -> v3.118.1
+2026-10-31T17:40:51.5707376Z  * [new tag]             v3.119.0                                 -> v3.119.0
+2026-10-31T17:40:51.5707626Z  * [new tag]             v3.12.0                                  -> v3.12.0
+2026-10-31T17:40:51.5707855Z  * [new tag]             v3.120.0                                 -> v3.120.0
+2026-10-31T17:40:51.5708146Z  * [new tag]             v3.121.0                                 -> v3.121.0
+2026-10-31T17:40:51.5708850Z  * [new tag]             v3.122.0                                 -> v3.122.0
+2026-10-31T17:40:51.5709180Z  * [new tag]             v3.123.0                                 -> v3.123.0
+2026-10-31T17:40:51.5709523Z  * [new tag]             v3.124.0                                 -> v3.124.0
+2026-10-31T17:40:51.5709892Z  * [new tag]             v3.125.0                                 -> v3.125.0
+2026-10-31T17:40:51.5710225Z  * [new tag]             v3.125.1                                 -> v3.125.1
+2026-10-31T17:40:51.5710575Z  * [new tag]             v3.126.0                                 -> v3.126.0
+2026-10-31T17:40:51.5710920Z  * [new tag]             v3.126.1                                 -> v3.126.1
+2026-10-31T17:40:51.5711272Z  * [new tag]             v3.127.0                                 -> v3.127.0
+2026-10-31T17:40:51.5711612Z  * [new tag]             v3.128.0                                 -> v3.128.0
+2026-10-31T17:40:51.5711992Z  * [new tag]             v3.128.1                                 -> v3.128.1
+2026-10-31T17:40:51.5712477Z  * [new tag]             v3.128.2                                 -> v3.128.2
+2026-10-31T17:40:51.5712809Z  * [new tag]             v3.128.3                                 -> v3.128.3
+2026-10-31T17:40:51.5713151Z  * [new tag]             v3.128.4                                 -> v3.128.4
+2026-10-31T17:40:51.5713488Z  * [new tag]             v3.129.0                                 -> v3.129.0
+2026-10-31T17:40:51.5713825Z  * [new tag]             v3.13.0                                  -> v3.13.0
+2026-10-31T17:40:51.5714166Z  * [new tag]             v3.13.1                                  -> v3.13.1
+2026-10-31T17:40:51.5714517Z  * [new tag]             v3.13.2                                  -> v3.13.2
+2026-10-31T17:40:51.5714874Z  * [new tag]             v3.13.3                                  -> v3.13.3
+2026-10-31T17:40:51.5715230Z  * [new tag]             v3.13.4                                  -> v3.13.4
+2026-10-31T17:40:51.5715573Z  * [new tag]             v3.13.5                                  -> v3.13.5
+2026-10-31T17:40:51.5715922Z  * [new tag]             v3.14.0                                  -> v3.14.0
+2026-10-31T17:40:51.5716279Z  * [new tag]             v3.14.1                                  -> v3.14.1
+2026-10-31T17:40:51.5716783Z  * [new tag]             v3.14.2                                  -> v3.14.2
+2026-10-31T17:40:51.5717132Z  * [new tag]             v3.15.0                                  -> v3.15.0
+2026-10-31T17:40:51.5717483Z  * [new tag]             v3.15.1                                  -> v3.15.1
+2026-10-31T17:40:51.5717831Z  * [new tag]             v3.16.0                                  -> v3.16.0
+2026-10-31T17:40:51.5718183Z  * [new tag]             v3.16.1                                  -> v3.16.1
+2026-10-31T17:40:51.5718752Z  * [new tag]             v3.17.0                                  -> v3.17.0
+2026-10-31T17:40:51.5719278Z  * [new tag]             v3.18.0                                  -> v3.18.0
+2026-10-31T17:40:51.5719625Z  * [new tag]             v3.19.0                                  -> v3.19.0
+2026-10-31T17:40:51.5719973Z  * [new tag]             v3.2.0                                   -> v3.2.0
+2026-10-31T17:40:51.5720331Z  * [new tag]             v3.20.0                                  -> v3.20.0
+2026-10-31T17:40:51.5720685Z  * [new tag]             v3.21.0                                  -> v3.21.0
+2026-10-31T17:40:51.5721032Z  * [new tag]             v3.22.0                                  -> v3.22.0
+2026-10-31T17:40:51.5721377Z  * [new tag]             v3.23.0                                  -> v3.23.0
+2026-10-31T17:40:51.5721714Z  * [new tag]             v3.24.0                                  -> v3.24.0
+2026-10-31T17:40:51.5722005Z  * [new tag]             v3.25.0                                  -> v3.25.0
+2026-10-31T17:40:51.5722222Z  * [new tag]             v3.26.0                                  -> v3.26.0
+2026-10-31T17:40:51.5722553Z  * [new tag]             v3.27.0                                  -> v3.27.0
+2026-10-31T17:40:51.5722774Z  * [new tag]             v3.28.0                                  -> v3.28.0
+2026-10-31T17:40:51.5722995Z  * [new tag]             v3.29.0                                  -> v3.29.0
+2026-10-31T17:40:51.5723223Z  * [new tag]             v3.3.0                                   -> v3.3.0
+2026-10-31T17:40:51.5723442Z  * [new tag]             v3.30.0                                  -> v3.30.0
+2026-10-31T17:40:51.5723664Z  * [new tag]             v3.31.0                                  -> v3.31.0
+2026-10-31T17:40:51.5723889Z  * [new tag]             v3.32.0                                  -> v3.32.0
+2026-10-31T17:40:51.5724114Z  * [new tag]             v3.33.0                                  -> v3.33.0
+2026-10-31T17:40:51.5724334Z  * [new tag]             v3.33.1                                  -> v3.33.1
+2026-10-31T17:40:51.5724568Z  * [new tag]             v3.33.2                                  -> v3.33.2
+2026-10-31T17:40:51.5724792Z  * [new tag]             v3.33.3                                  -> v3.33.3
+2026-10-31T17:40:51.5725017Z  * [new tag]             v3.33.4                                  -> v3.33.4
+2026-10-31T17:40:51.5725246Z  * [new tag]             v3.33.5                                  -> v3.33.5
+2026-10-31T17:40:51.5725480Z  * [new tag]             v3.33.6                                  -> v3.33.6
+2026-10-31T17:40:51.5725714Z  * [new tag]             v3.34.0                                  -> v3.34.0
+2026-10-31T17:40:51.5725939Z  * [new tag]             v3.35.0                                  -> v3.35.0
+2026-10-31T17:40:51.5726162Z  * [new tag]             v3.36.0                                  -> v3.36.0
+2026-10-31T17:40:51.5726379Z  * [new tag]             v3.37.0                                  -> v3.37.0
+2026-10-31T17:40:51.5726613Z  * [new tag]             v3.38.0                                  -> v3.38.0
+2026-10-31T17:40:51.5726867Z  * [new tag]             v3.39.0                                  -> v3.39.0
+2026-10-31T17:40:51.5727119Z  * [new tag]             v3.4.0                                   -> v3.4.0
+2026-10-31T17:40:51.5727366Z  * [new tag]             v3.40.0                                  -> v3.40.0
+2026-10-31T17:40:51.5727616Z  * [new tag]             v3.41.0                                  -> v3.41.0
+2026-10-31T17:40:51.5727952Z  * [new tag]             v3.41.1                                  -> v3.41.1
+2026-10-31T17:40:51.5728197Z  * [new tag]             v3.42.0                                  -> v3.42.0
+2026-10-31T17:40:51.5728642Z  * [new tag]             v3.43.0                                  -> v3.43.0
+2026-10-31T17:40:51.5728910Z  * [new tag]             v3.43.1                                  -> v3.43.1
+2026-10-31T17:40:51.5729146Z  * [new tag]             v3.44.0                                  -> v3.44.0
+2026-10-31T17:40:51.5729383Z  * [new tag]             v3.45.0                                  -> v3.45.0
+2026-10-31T17:40:51.5729623Z  * [new tag]             v3.46.0                                  -> v3.46.0
+2026-10-31T17:40:51.5729844Z  * [new tag]             v3.47.0                                  -> v3.47.0
+2026-10-31T17:40:51.5730064Z  * [new tag]             v3.48.0                                  -> v3.48.0
+2026-10-31T17:40:51.5730288Z  * [new tag]             v3.49.0                                  -> v3.49.0
+2026-10-31T17:40:51.5730515Z  * [new tag]             v3.5.0                                   -> v3.5.0
+2026-10-31T17:40:51.5730739Z  * [new tag]             v3.50.0                                  -> v3.50.0
+2026-10-31T17:40:51.5730965Z  * [new tag]             v3.50.1                                  -> v3.50.1
+2026-10-31T17:40:51.5731312Z  * [new tag]             v3.50.2                                  -> v3.50.2
+2026-10-31T17:40:51.5731660Z  * [new tag]             v3.50.3                                  -> v3.50.3
+2026-10-31T17:40:51.5732108Z  * [new tag]             v3.50.4                                  -> v3.50.4
+2026-10-31T17:40:51.5732463Z  * [new tag]             v3.51.0                                  -> v3.51.0
+2026-10-31T17:40:51.5732801Z  * [new tag]             v3.52.0                                  -> v3.52.0
+2026-10-31T17:40:51.5733146Z  * [new tag]             v3.53.0                                  -> v3.53.0
+2026-10-31T17:40:51.5733496Z  * [new tag]             v3.54.0                                  -> v3.54.0
+2026-10-31T17:40:51.5733820Z  * [new tag]             v3.55.0                                  -> v3.55.0
+2026-10-31T17:40:51.5734045Z  * [new tag]             v3.56.0                                  -> v3.56.0
+2026-10-31T17:40:51.5734270Z  * [new tag]             v3.57.0                                  -> v3.57.0
+2026-10-31T17:40:51.5734506Z  * [new tag]             v3.58.0                                  -> v3.58.0
+2026-10-31T17:40:51.5734725Z  * [new tag]             v3.59.0                                  -> v3.59.0
+2026-10-31T17:40:51.5734947Z  * [new tag]             v3.6.0                                   -> v3.6.0
+2026-10-31T17:40:51.5735161Z  * [new tag]             v3.60.0                                  -> v3.60.0
+2026-10-31T17:40:51.5735376Z  * [new tag]             v3.61.0                                  -> v3.61.0
+2026-10-31T17:40:51.5735592Z  * [new tag]             v3.61.1                                  -> v3.61.1
+2026-10-31T17:40:51.5735813Z  * [new tag]             v3.61.2                                  -> v3.61.2
+2026-10-31T17:40:51.5736032Z  * [new tag]             v3.61.3                                  -> v3.61.3
+2026-10-31T17:40:51.5736253Z  * [new tag]             v3.61.4                                  -> v3.61.4
+2026-10-31T17:40:51.5736473Z  * [new tag]             v3.61.5                                  -> v3.61.5
+2026-10-31T17:40:51.5736689Z  * [new tag]             v3.61.6                                  -> v3.61.6
+2026-10-31T17:40:51.5736910Z  * [new tag]             v3.62.0                                  -> v3.62.0
+2026-10-31T17:40:51.5737137Z  * [new tag]             v3.63.0                                  -> v3.63.0
+2026-10-31T17:40:51.5737357Z  * [new tag]             v3.64.0                                  -> v3.64.0
+2026-10-31T17:40:51.5737570Z  * [new tag]             v3.64.1                                  -> v3.64.1
+2026-10-31T17:40:51.5737922Z  * [new tag]             v3.64.2                                  -> v3.64.2
+2026-10-31T17:40:51.5738144Z  * [new tag]             v3.64.3                                  -> v3.64.3
+2026-10-31T17:40:51.5738504Z  * [new tag]             v3.65.0                                  -> v3.65.0
+2026-10-31T17:40:51.5738730Z  * [new tag]             v3.66.0                                  -> v3.66.0
+2026-10-31T17:40:51.5738961Z  * [new tag]             v3.67.0                                  -> v3.67.0
+2026-10-31T17:40:51.5739181Z  * [new tag]             v3.67.1                                  -> v3.67.1
+2026-10-31T17:40:51.5739405Z  * [new tag]             v3.67.2                                  -> v3.67.2
+2026-10-31T17:40:51.5739631Z  * [new tag]             v3.67.3                                  -> v3.67.3
+2026-10-31T17:40:51.5739857Z  * [new tag]             v3.68.0                                  -> v3.68.0
+2026-10-31T17:40:51.5740081Z  * [new tag]             v3.68.1                                  -> v3.68.1
+2026-10-31T17:40:51.5740301Z  * [new tag]             v3.68.2                                  -> v3.68.2
+2026-10-31T17:40:51.5740529Z  * [new tag]             v3.68.3                                  -> v3.68.3
+2026-10-31T17:40:51.5740748Z  * [new tag]             v3.68.4                                  -> v3.68.4
+2026-10-31T17:40:51.5740984Z  * [new tag]             v3.68.5                                  -> v3.68.5
+2026-10-31T17:40:51.5741199Z  * [new tag]             v3.68.6                                  -> v3.68.6
+2026-10-31T17:40:51.5741429Z  * [new tag]             v3.69.0                                  -> v3.69.0
+2026-10-31T17:40:51.5741759Z  * [new tag]             v3.7.0                                   -> v3.7.0
+2026-10-31T17:40:51.5741985Z  * [new tag]             v3.70.0                                  -> v3.70.0
+2026-10-31T17:40:51.5742209Z  * [new tag]             v3.70.1                                  -> v3.70.1
+2026-10-31T17:40:51.5742442Z  * [new tag]             v3.70.2                                  -> v3.70.2
+2026-10-31T17:40:51.5742684Z  * [new tag]             v3.71.0                                  -> v3.71.0
+2026-10-31T17:40:51.5742921Z  * [new tag]             v3.72.0                                  -> v3.72.0
+2026-10-31T17:40:51.5743140Z  * [new tag]             v3.73.0                                  -> v3.73.0
+2026-10-31T17:40:51.5743371Z  * [new tag]             v3.74.0                                  -> v3.74.0
+2026-10-31T17:40:51.5743632Z  * [new tag]             v3.75.0                                  -> v3.75.0
+2026-10-31T17:40:51.5743869Z  * [new tag]             v3.76.0                                  -> v3.76.0
+2026-10-31T17:40:51.5744105Z  * [new tag]             v3.76.1                                  -> v3.76.1
+2026-10-31T17:40:51.5744324Z  * [new tag]             v3.77.0                                  -> v3.77.0
+2026-10-31T17:40:51.5744543Z  * [new tag]             v3.77.1                                  -> v3.77.1
+2026-10-31T17:40:51.5744763Z  * [new tag]             v3.77.2                                  -> v3.77.2
+2026-10-31T17:40:51.5744982Z  * [new tag]             v3.78.0                                  -> v3.78.0
+2026-10-31T17:40:51.5745201Z  * [new tag]             v3.79.0                                  -> v3.79.0
+2026-10-31T17:40:51.5745419Z  * [new tag]             v3.8.0                                   -> v3.8.0
+2026-10-31T17:40:51.5745634Z  * [new tag]             v3.80.0                                  -> v3.80.0
+2026-10-31T17:40:51.5745851Z  * [new tag]             v3.81.0                                  -> v3.81.0
+2026-10-31T17:40:51.5746075Z  * [new tag]             v3.82.0                                  -> v3.82.0
+2026-10-31T17:40:51.5746300Z  * [new tag]             v3.83.0                                  -> v3.83.0
+2026-10-31T17:40:51.5746519Z  * [new tag]             v3.84.0                                  -> v3.84.0
+2026-10-31T17:40:51.5746736Z  * [new tag]             v3.85.0                                  -> v3.85.0
+2026-10-31T17:40:51.5747049Z  * [new tag]             v3.85.1                                  -> v3.85.1
+2026-10-31T17:40:51.5747266Z  * [new tag]             v3.86.0                                  -> v3.86.0
+2026-10-31T17:40:51.5747486Z  * [new tag]             v3.87.0                                  -> v3.87.0
+2026-10-31T17:40:51.5747712Z  * [new tag]             v3.88.0                                  -> v3.88.0
+2026-10-31T17:40:51.5747934Z  * [new tag]             v3.89.0                                  -> v3.89.0
+2026-10-31T17:40:51.5748154Z  * [new tag]             v3.9.0                                   -> v3.9.0
+2026-10-31T17:40:51.5748495Z  * [new tag]             v3.9.1                                   -> v3.9.1
+2026-10-31T17:40:51.5748719Z  * [new tag]             v3.90.0                                  -> v3.90.0
+2026-10-31T17:40:51.5748940Z  * [new tag]             v3.91.0                                  -> v3.91.0
+2026-10-31T17:40:51.5749159Z  * [new tag]             v3.91.1                                  -> v3.91.1
+2026-10-31T17:40:51.5749391Z  * [new tag]             v3.92.0                                  -> v3.92.0
+2026-10-31T17:40:51.5749621Z  * [new tag]             v3.93.0                                  -> v3.93.0
+2026-10-31T17:40:51.5749856Z  * [new tag]             v3.94.0                                  -> v3.94.0
+2026-10-31T17:40:51.5750073Z  * [new tag]             v3.94.1                                  -> v3.94.1
+2026-10-31T17:40:51.5750291Z  * [new tag]             v3.95.0                                  -> v3.95.0
+2026-10-31T17:40:51.5750509Z  * [new tag]             v3.96.0                                  -> v3.96.0
+2026-10-31T17:40:51.5750820Z  * [new tag]             v3.96.1                                  -> v3.96.1
+2026-10-31T17:40:51.5751036Z  * [new tag]             v3.96.2                                  -> v3.96.2
+2026-10-31T17:40:51.5751257Z  * [new tag]             v3.97.0                                  -> v3.97.0
+2026-10-31T17:40:51.5751497Z  * [new tag]             v3.98.0                                  -> v3.98.0
+2026-10-31T17:40:51.5751716Z  * [new tag]             v3.99.0                                  -> v3.99.0
+2026-10-31T17:40:51.5751975Z  * [new ref]             019045159e3b163cbb8cd4c075b5df527cb23bbe -> pull/378/merge
+2026-10-31T17:40:51.5752783Z ##[endgroup]
+2026-10-31T17:40:51.5753013Z ##[group]Determining the checkout info
+2026-10-31T17:40:51.5753269Z ##[endgroup]
+2026-10-31T17:40:51.5753416Z [command]/usr/bin/git sparse-checkout disable
+2026-10-31T17:40:51.5775084Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-31T17:40:51.5807329Z ##[group]Checking out the ref
+2026-10-31T17:40:51.5811837Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/378/merge
+2026-10-31T17:40:52.2186133Z Note: switching to 'refs/remotes/pull/378/merge'.
+2026-10-31T17:40:52.2186371Z 
+2026-10-31T17:40:52.2186507Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-31T17:40:52.2186888Z changes and commit them, and you can discard any commits you make in this
+2026-10-31T17:40:52.2187191Z state without impacting any branches by switching back to a branch.
+2026-10-31T17:40:52.2187373Z 
+2026-10-31T17:40:52.2187504Z If you want to create a new branch to retain commits you create, you may
+2026-10-31T17:40:52.2187802Z do so (now or later) by using -c with the switch command. Example:
+2026-10-31T17:40:52.2187965Z 
+2026-10-31T17:40:52.2188041Z   git switch -c <new-branch-name>
+2026-10-31T17:40:52.2188155Z 
+2026-10-31T17:40:52.2188227Z Or undo this operation with:
+2026-10-31T17:40:52.2188556Z 
+2026-10-31T17:40:52.2188612Z   git switch -
+2026-10-31T17:40:52.2188699Z 
+2026-10-31T17:40:52.2188832Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-31T17:40:52.2189032Z 
+2026-10-31T17:40:52.2189250Z HEAD is now at 019045159 Merge 67bab1f13bd26d7fd7fbe390b57006a537e5c5a2 into 61e6fa853d81cf822d67d6abfd6a130bdbb14ce2
+2026-10-31T17:40:52.2264492Z ##[endgroup]
+2026-10-31T17:40:52.2314539Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T17:40:52.2341124Z 019045159e3b163cbb8cd4c075b5df527cb23bbe
+2026-10-31T17:40:52.2558691Z ##[group]Run Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373
+2026-10-31T17:40:52.2559002Z ##[endgroup]
+2026-10-31T17:40:52.2599150Z ##[start-action display=Initialize root-declared submodules;id=__Hexalith_Hexalith_Builds.__run]
+2026-10-31T17:40:52.2627645Z ##[group]Run git -c submodule.recurse=false submodule update --init
+2026-10-31T17:40:52.2627996Z [36;1mgit -c submodule.recurse=false submodule update --init[0m
+2026-10-31T17:40:52.2657466Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T17:40:52.2657682Z ##[endgroup]
+2026-10-31T17:40:52.2952016Z Submodule 'Hexalith.AI.Tools' (https://github.com/Hexalith/Hexalith.AI.Tools.git) registered for path 'references/Hexalith.AI.Tools'
+2026-10-31T17:40:52.2956883Z Submodule 'Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+2026-10-31T17:40:52.2962482Z Submodule 'Hexalith.Commons' (https://github.com/Hexalith/Hexalith.Commons.git) registered for path 'references/Hexalith.Commons'
+2026-10-31T17:40:52.2967734Z Submodule 'Hexalith.FrontComposer' (https://github.com/Hexalith/Hexalith.FrontComposer.git) registered for path 'references/Hexalith.FrontComposer'
+2026-10-31T17:40:52.2973408Z Submodule 'Hexalith.McpCli' (https://github.com/Hexalith/Hexalith.McpCli.git) registered for path 'references/Hexalith.McpCli'
+2026-10-31T17:40:52.2978981Z Submodule 'Hexalith.Memories' (https://github.com/Hexalith/Hexalith.Memories.git) registered for path 'references/Hexalith.Memories'
+2026-10-31T17:40:52.2984936Z Submodule 'Hexalith.Platform' (https://github.com/Hexalith/Hexalith.Platform.git) registered for path 'references/Hexalith.Platform'
+2026-10-31T17:40:52.2991247Z Submodule 'Hexalith.PolymorphicSerializations' (https://github.com/Hexalith/Hexalith.PolymorphicSerializations.git) registered for path 'references/Hexalith.PolymorphicSerializations'
+2026-10-31T17:40:52.2996779Z Submodule 'Hexalith.Tenants' (https://github.com/Hexalith/Hexalith.Tenants.git) registered for path 'references/Hexalith.Tenants'
+2026-10-31T17:40:52.3025630Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.AI.Tools'...
+2026-10-31T17:40:52.6795293Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds'...
+2026-10-31T17:40:55.8093892Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Commons'...
+2026-10-31T17:40:56.4389801Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.FrontComposer'...
+2026-10-31T17:41:23.6342698Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.McpCli'...
+2026-10-31T17:41:28.7321937Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Memories'...
+2026-10-31T17:41:30.2993016Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform'...
+2026-10-31T17:41:32.2397679Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.PolymorphicSerializations'...
+2026-10-31T17:41:32.6726308Z Cloning into '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Tenants'...
+2026-10-31T17:41:34.9685052Z Submodule path 'references/Hexalith.AI.Tools': checked out '9b78aa008cfc62cd88ad0ea4b39b1f07311956ce'
+2026-10-31T17:41:35.2239137Z Submodule path 'references/Hexalith.Builds': checked out 'a22b55f0a4f6d2aaa3a5ccc505896064ac595364'
+2026-10-31T17:41:35.2420338Z Submodule path 'references/Hexalith.Commons': checked out '0604bcf5304fc09a569f7abbd8e5d1b9049c02b7'
+2026-10-31T17:41:35.7934417Z Submodule path 'references/Hexalith.FrontComposer': checked out '5aeae9a93a237a8164b15e0bf54fdbf4855cff2b'
+2026-10-31T17:41:36.3895789Z Submodule path 'references/Hexalith.McpCli': checked out '18fb59490311bcdccfe44f59a77804911b5af302'
+2026-10-31T17:41:37.0395226Z Submodule path 'references/Hexalith.Memories': checked out 'fe8d36446d8081f60806cc15353aa7ca288e9035'
+2026-10-31T17:41:38.1437191Z Submodule path 'references/Hexalith.Platform': checked out 'f2b327edd5cf5d9895d8cce1424f6b6b0c04734f'
+2026-10-31T17:41:38.1556917Z Submodule path 'references/Hexalith.PolymorphicSerializations': checked out '92ede24cc11129379efe52cfe7fd2c820c567f7f'
+2026-10-31T17:41:38.7140931Z Submodule path 'references/Hexalith.Tenants': checked out '31785cb2d2fdcb3a6fd94872b535d1f642911ad6'
+2026-10-31T17:41:38.7163615Z ##[end-action id=__Hexalith_Hexalith_Builds.__run;outcome=success;conclusion=success;duration_ms=46456]
+2026-10-31T17:41:38.7208571Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+2026-10-31T17:41:38.7208802Z with:
+2026-10-31T17:41:38.7208930Z   global-json-file: global.json
+2026-10-31T17:41:38.7209077Z   cache: false
+2026-10-31T17:41:38.7209196Z ##[endgroup]
+2026-10-31T17:41:38.8180510Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-10-31T17:41:39.2163798Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-10-31T17:41:39.2192773Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-10-31T17:41:39.5457875Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-10-31T17:41:39.6052182Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-31T17:41:39.6052432Z with:
+2026-10-31T17:41:39.6052564Z   path: ~/.nuget/packages
+2026-10-31T17:41:39.6052700Z   key: nuget-
+2026-10-31T17:41:39.6052820Z   restore-keys: nuget-
+2026-10-31T17:41:39.6052959Z   enableCrossOsArchive: false
+2026-10-31T17:41:39.6053107Z   fail-on-cache-miss: false
+2026-10-31T17:41:39.6053257Z   lookup-only: false
+2026-10-31T17:41:39.6053382Z   save-always: false
+2026-10-31T17:41:39.6053504Z env:
+2026-10-31T17:41:39.6053630Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:41:39.6053775Z ##[endgroup]
+2026-10-31T17:41:39.8343850Z Cache hit for: nuget-
+2026-10-31T17:41:41.0340496Z Received 125829120 of 1111034735 (11.3%), 119.9 MBs/sec
+2026-10-31T17:41:42.0340574Z Received 343932928 of 1111034735 (31.0%), 163.9 MBs/sec
+2026-10-31T17:41:43.0315803Z Received 532676608 of 1111034735 (47.9%), 169.3 MBs/sec
+2026-10-31T17:41:44.0315846Z Received 658505728 of 1111034735 (59.3%), 157.0 MBs/sec
+2026-10-31T17:41:45.0316797Z Received 805306368 of 1111034735 (72.5%), 153.6 MBs/sec
+2026-10-31T17:41:46.0318977Z Received 1040187392 of 1111034735 (93.6%), 165.3 MBs/sec
+2026-10-31T17:41:46.4756810Z Received 1111034735 of 1111034735 (100.0%), 164.4 MBs/sec
+2026-10-31T17:41:46.4758713Z Cache Size: ~1060 MB (1111034735 B)
+2026-10-31T17:41:46.4850268Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c70a9d1f-9568-4ac7-9813-8dffcc1fe95d/cache.tzst -P -C /home/runner/work/Hexalith.EventStore/Hexalith.EventStore --use-compress-program unzstd
+2026-10-31T17:41:57.5206450Z Cache restored successfully
+2026-10-31T17:41:57.5859510Z Cache restored from key: nuget-
+2026-10-31T17:41:57.7192499Z ##[group]Run dotnet restore "$SOLUTION" -p:Configuration=Release
+2026-10-31T17:41:57.7192975Z [36;1mdotnet restore "$SOLUTION" -p:Configuration=Release[0m
+2026-10-31T17:41:57.7226808Z shell: /usr/bin/bash -e {0}
+2026-10-31T17:41:57.7226979Z env:
+2026-10-31T17:41:57.7227120Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:41:57.7227321Z   SOLUTION: Hexalith.EventStore.slnx
+2026-10-31T17:41:57.7227506Z ##[endgroup]
+2026-10-31T17:42:05.0584849Z   Determining projects to restore...
+2026-10-31T17:42:09.1482722Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 1.93 sec).
+2026-10-31T17:42:09.6967238Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj (in 478 ms).
+2026-10-31T17:42:09.7694979Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj (in 31 ms).
+2026-10-31T17:42:09.8124670Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj (in 12 ms).
+2026-10-31T17:42:09.8423864Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.SignalR/Hexalith.EventStore.SignalR.csproj (in 6 ms).
+2026-10-31T17:42:09.8934982Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj (in 8 ms).
+2026-10-31T17:42:09.9637026Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj (in 9 ms).
+2026-10-31T17:42:10.2276210Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Cli.Tests/Hexalith.EventStore.Admin.Cli.Tests.csproj (in 3.06 sec).
+2026-10-31T17:42:10.2293352Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Abstractions.Tests/Hexalith.EventStore.Admin.Abstractions.Tests.csproj (in 3.06 sec).
+2026-10-31T17:42:10.6301085Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj (in 9 ms).
+2026-10-31T17:42:10.6337780Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Operations/Hexalith.EventStore.Operations.csproj (in 7 ms).
+2026-10-31T17:42:10.7420413Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification.Tests/Hexalith.EventStore.ProviderVerification.Tests.csproj (in 3.37 sec).
+2026-10-31T17:42:10.7456269Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 8 ms).
+2026-10-31T17:42:10.9650423Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj (in 11 ms).
+2026-10-31T17:42:10.9817864Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.RestApi.Generators/Hexalith.EventStore.RestApi.Generators.csproj (in 902 ms).
+2026-10-31T17:42:11.5333739Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj (in 329 ms).
+2026-10-31T17:42:11.6550317Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server/Hexalith.EventStore.Admin.Server.csproj (in 426 ms).
+2026-10-31T17:42:11.7702052Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server.Host/Hexalith.EventStore.Admin.Server.Host.csproj (in 16 ms).
+2026-10-31T17:42:11.9080719Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/Hexalith.EventStore.Admin.Cli.csproj (in 14 ms).
+2026-10-31T17:42:12.0025724Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj (in 7 ms).
+2026-10-31T17:42:12.1599905Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Hexalith.EventStore.Sample.csproj (in 34 ms).
+2026-10-31T17:42:12.1659561Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Mcp/Hexalith.EventStore.Admin.Mcp.csproj (in 405 ms).
+2026-10-31T17:42:12.1770664Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Contracts/Hexalith.EventStore.Sample.Contracts.csproj (in 3 ms).
+2026-10-31T17:42:12.4336837Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Tests/Hexalith.EventStore.Sample.Tests.csproj (in 30 ms).
+2026-10-31T17:42:12.4675181Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Api/Hexalith.EventStore.Sample.Api.csproj (in 13 ms).
+2026-10-31T17:42:12.4819814Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.BlazorUI/Hexalith.EventStore.Sample.BlazorUI.csproj (in 23 ms).
+2026-10-31T17:42:12.7491383Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tools/Hexalith.EventStore.CatalogConstruction/Hexalith.EventStore.CatalogConstruction.csproj (in 111 ms).
+2026-10-31T17:42:12.7588706Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj (in 1.93 sec).
+2026-10-31T17:42:12.8096992Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.csproj (in 21 ms).
+2026-10-31T17:42:12.8764291Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.TestSubscriber/Hexalith.EventStore.TestSubscriber.csproj (in 11 ms).
+2026-10-31T17:42:12.9102625Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.csproj (in 64 ms).
+2026-10-31T17:42:12.9369789Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.SignalR.Tests/Hexalith.EventStore.SignalR.Tests.csproj (in 8 ms).
+2026-10-31T17:42:12.9840474Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ServiceDefaults.Tests/Hexalith.EventStore.ServiceDefaults.Tests.csproj (in 15 ms).
+2026-10-31T17:42:13.1058219Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/perf/Hexalith.EventStore.LoadTests/Hexalith.EventStore.LoadTests.csproj (in 632 ms).
+2026-10-31T17:42:13.1191259Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj (in 134 ms).
+2026-10-31T17:42:13.1210546Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Hexalith.EventStore.Server.LiveSidecar.Tests.csproj (in 114 ms).
+2026-10-31T17:42:13.1374681Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.RestApi.Generators.Tests/Hexalith.EventStore.RestApi.Generators.Tests.csproj (in 10 ms).
+2026-10-31T17:42:13.1549372Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.PublishedCompatibility.Tests/Hexalith.EventStore.PublishedCompatibility.Tests.csproj (in 3 ms).
+2026-10-31T17:42:13.1580521Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.QueryRouting.Tests/Hexalith.EventStore.QueryRouting.Tests.csproj (in 17 ms).
+2026-10-31T17:42:13.1846808Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Operations.Tests/Hexalith.EventStore.Operations.Tests.csproj (in 16 ms).
+2026-10-31T17:42:13.1855916Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification/Hexalith.EventStore.ProviderVerification.csproj (in 16 ms).
+2026-10-31T17:42:13.1991577Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.LoadTests.Tests/Hexalith.EventStore.LoadTests.Tests.csproj (in 7 ms).
+2026-10-31T17:42:13.2228725Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/Hexalith.EventStore.DomainService.Tests.csproj (in 12 ms).
+2026-10-31T17:42:13.2307523Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DeferredWorkGovernance.Tests/Hexalith.EventStore.DeferredWorkGovernance.Tests.csproj (in 4 ms).
+2026-10-31T17:42:13.2670487Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj (in 17 ms).
+2026-10-31T17:42:13.3710279Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Sample.Tests/Hexalith.EventStore.Sample.Tests.csproj (in 230 ms).
+2026-10-31T17:42:13.3870070Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.TestContracts/Hexalith.EventStore.Client.TestContracts.csproj (in 7 ms).
+2026-10-31T17:42:13.4210171Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/Hexalith.EventStore.Client.Tests.csproj (in 138 ms).
+2026-10-31T17:42:13.4661176Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.AppHost/Hexalith.EventStore.AppHost.csproj (in 2.71 sec).
+2026-10-31T17:42:13.4802598Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj (in 71 ms).
+2026-10-31T17:42:13.4829907Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.IntegrationTests/Hexalith.EventStore.IntegrationTests.csproj (in 271 ms).
+2026-10-31T17:42:13.5163251Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Host.Tests/Hexalith.EventStore.Admin.Server.Host.Tests.csproj (in 21 ms).
+2026-10-31T17:42:13.5206379Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/Hexalith.EventStore.Admin.Server.Tests.csproj (in 25 ms).
+2026-10-31T17:42:13.6000692Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/Hexalith.EventStore.Admin.Mcp.Tests.csproj (in 47 ms).
+2026-10-31T17:42:13.6591326Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.Tests/Hexalith.EventStore.Admin.UI.Tests.csproj (in 222 ms).
+2026-10-31T17:42:19.6581887Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.E2E/Hexalith.EventStore.Admin.UI.E2E.csproj (in 6.08 sec).
+2026-10-31T17:42:19.7600527Z ##[group]Run dotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror
+2026-10-31T17:42:19.7600916Z [36;1mdotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror[0m
+2026-10-31T17:42:19.7627669Z shell: /usr/bin/bash -e {0}
+2026-10-31T17:42:19.7627875Z env:
+2026-10-31T17:42:19.7628013Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:42:19.7628215Z   SOLUTION: Hexalith.EventStore.slnx
+2026-10-31T17:42:19.7628759Z ##[endgroup]
+2026-10-31T17:42:25.7921501Z   Hexalith.EventStore.RestApi.Generators -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.RestApi.Generators/bin/Release/netstandard2.0/Hexalith.EventStore.RestApi.Generators.dll
+2026-10-31T17:42:26.0053600Z   Hexalith.EventStore.LoadTests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/perf/Hexalith.EventStore.LoadTests/bin/Release/net10.0/Hexalith.EventStore.LoadTests.dll
+2026-10-31T17:42:26.2568092Z   Hexalith.EventStore.DeferredWorkGovernance.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DeferredWorkGovernance.Tests/bin/Release/net10.0/Hexalith.EventStore.DeferredWorkGovernance.Tests.dll
+2026-10-31T17:42:29.6661279Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:42:30.1841775Z   Hexalith.EventStore.Sample.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Contracts/bin/Release/net10.0/Hexalith.EventStore.Sample.Contracts.dll
+2026-10-31T17:42:30.5810171Z   Hexalith.EventStore.LoadTests.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.LoadTests.Tests/bin/Release/net10.0/Hexalith.EventStore.LoadTests.Tests.dll
+2026-10-31T17:42:30.6104894Z   Hexalith.EventStore.PublishedCompatibility.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.PublishedCompatibility.Tests/bin/Release/net10.0/Hexalith.EventStore.PublishedCompatibility.Tests.dll
+2026-10-31T17:42:38.7070236Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:42:38.9141139Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:42:38.9240118Z   Hexalith.EventStore.Admin.Abstractions -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+2026-10-31T17:42:39.7681788Z   Hexalith.EventStore.SignalR -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.SignalR/bin/Release/net10.0/Hexalith.EventStore.SignalR.dll
+2026-10-31T17:42:40.4260640Z   Hexalith.EventStore.Admin.Mcp -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Mcp/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.dll
+2026-10-31T17:42:40.4980425Z   Hexalith.EventStore.RestApi.Generators.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.RestApi.Generators.Tests/bin/Release/net10.0/Hexalith.EventStore.RestApi.Generators.Tests.dll
+2026-10-31T17:42:45.7135081Z   Hexalith.EventStore.Admin.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.dll
+2026-10-31T17:42:46.2139805Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:42:46.2281422Z   Hexalith.EventStore.Operations -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Operations/bin/Release/net10.0/Hexalith.EventStore.Operations.dll
+2026-10-31T17:42:47.4283960Z   Hexalith.EventStore.ServiceDefaults.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ServiceDefaults.Tests/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.Tests.dll
+2026-10-31T17:42:47.8236784Z   Hexalith.EventStore.Admin.Server.Host -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server.Host/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Host.dll
+2026-10-31T17:42:48.6423949Z   Hexalith.EventStore.Aspire -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/bin/Release/net10.0/Hexalith.EventStore.Aspire.dll
+2026-10-31T17:42:49.2750185Z   Hexalith.EventStore.Admin.Cli -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.dll
+2026-10-31T17:42:56.5177691Z   Hexalith.EventStore.SignalR.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.SignalR.Tests/bin/Release/net10.0/Hexalith.EventStore.SignalR.Tests.dll
+2026-10-31T17:42:57.1007710Z   Hexalith.EventStore.Admin.UI -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.UI/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.dll
+2026-10-31T17:42:57.2257047Z   Hexalith.EventStore.Sample.Api -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Api/bin/Release/net10.0/Hexalith.EventStore.Sample.Api.dll
+2026-10-31T17:43:10.4396064Z   Hexalith.EventStore.Sample.BlazorUI -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.BlazorUI/bin/Release/net10.0/Hexalith.EventStore.Sample.BlazorUI.dll
+2026-10-31T17:43:10.4531295Z   Hexalith.EventStore.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Release/net10.0/Hexalith.EventStore.Server.dll
+2026-10-31T17:43:11.5640960Z   Hexalith.EventStore.Admin.Server.Host.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Host.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Host.Tests.dll
+2026-10-31T17:43:13.0996019Z   Hexalith.EventStore.Testing -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing/bin/Release/net10.0/Hexalith.EventStore.Testing.dll
+2026-10-31T17:43:13.8002982Z   Hexalith.EventStore.Admin.UI.E2E -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.E2E/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.E2E.dll
+2026-10-31T17:43:17.0264734Z   Hexalith.EventStore.Gateway -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/bin/Debug/net10.0/Hexalith.EventStore.Gateway.dll
+2026-10-31T17:43:17.6909998Z   Hexalith.EventStore.Testing.Integration -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.dll
+2026-10-31T17:43:20.0989933Z   Hexalith.EventStore.Contracts.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/bin/Release/net10.0/Hexalith.EventStore.Contracts.Tests.dll
+2026-10-31T17:43:27.0384856Z   Hexalith.EventStore.Admin.Server.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll
+2026-10-31T17:43:27.1654831Z   Hexalith.EventStore.Admin.Cli.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Cli.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.Tests.dll
+2026-10-31T17:43:28.0106330Z   Hexalith.EventStore.Admin.Abstractions.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Abstractions.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.Tests.dll
+2026-10-31T17:43:28.8221059Z   Hexalith.EventStore.Admin.UI.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.Tests.dll
+2026-10-31T17:43:29.0776697Z   Hexalith.EventStore -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore/bin/Release/net10.0/Hexalith.EventStore.dll
+2026-10-31T17:43:30.7779286Z   Hexalith.EventStore.Admin.Mcp.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll
+2026-10-31T17:43:32.0190618Z   Hexalith.EventStore.Client.TestContracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.TestContracts/bin/Debug/net10.0/Hexalith.EventStore.Client.TestContracts.dll
+2026-10-31T17:43:35.8090601Z   Hexalith.EventStore.DomainService.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.Tests.dll
+2026-10-31T17:43:35.9261038Z   Hexalith.EventStore.Sample -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/bin/Release/net10.0/Hexalith.EventStore.Sample.dll
+2026-10-31T17:43:39.8464288Z   Hexalith.EventStore.Operations.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Operations.Tests/bin/Release/net10.0/Hexalith.EventStore.Operations.Tests.dll
+2026-10-31T17:43:40.2310744Z   Hexalith.EventStore.Client.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.Tests.dll
+2026-10-31T17:43:40.3502119Z   Hexalith.EventStore.Testing.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Tests.dll
+2026-10-31T17:43:40.3804487Z   Hexalith.EventStore.QueryRouting.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.QueryRouting.Tests/bin/Release/net10.0/Hexalith.EventStore.QueryRouting.Tests.dll
+2026-10-31T17:43:41.0940475Z   Hexalith.EventStore.TestSubscriber -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.TestSubscriber/bin/Debug/net10.0/Hexalith.EventStore.TestSubscriber.dll
+2026-10-31T17:43:43.9474469Z   Hexalith.EventStore.Server.LiveSidecar.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.LiveSidecar.Tests.dll
+2026-10-31T17:43:44.1571022Z   Hexalith.EventStore.Testing.Integration.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll
+2026-10-31T17:43:45.0886470Z   Hexalith.EventStore.CatalogConstruction -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tools/Hexalith.EventStore.CatalogConstruction/bin/Debug/net10.0/Hexalith.EventStore.CatalogConstruction.dll
+2026-10-31T17:43:45.1101421Z   Hexalith.EventStore.Sample.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Sample.Tests/bin/Release/net10.0/Hexalith.EventStore.Sample.Tests.dll
+2026-10-31T17:43:46.2809625Z   Hexalith.EventStore.Sample.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/samples/Hexalith.EventStore.Sample.Tests/bin/Release/net10.0/Hexalith.EventStore.Sample.Tests.dll
+2026-10-31T17:43:59.9949092Z   Hexalith.EventStore.Server.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll
+2026-10-31T17:44:00.8863672Z   Hexalith.EventStore.ProviderVerification -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification/bin/Release/net10.0/Hexalith.EventStore.ProviderVerification.dll
+2026-10-31T17:44:00.9294669Z   Hexalith.EventStore.AppHost -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.AppHost/bin/Release/net10.0/Hexalith.EventStore.AppHost.dll
+2026-10-31T17:44:03.1810815Z   Hexalith.EventStore.AppHost.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.AppHost.Tests/bin/Release/net10.0/Hexalith.EventStore.AppHost.Tests.dll
+2026-10-31T17:44:03.2121394Z   Hexalith.EventStore.ProviderVerification.Tests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification.Tests/bin/Release/net10.0/Hexalith.EventStore.ProviderVerification.Tests.dll
+2026-10-31T17:44:04.9872384Z   Hexalith.EventStore.IntegrationTests -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.IntegrationTests/bin/Release/net10.0/Hexalith.EventStore.IntegrationTests.dll
+2026-10-31T17:44:05.1168899Z 
+2026-10-31T17:44:05.1172575Z Build succeeded.
+2026-10-31T17:44:05.1173015Z     0 Warning(s)
+2026-10-31T17:44:05.1173272Z     0 Error(s)
+2026-10-31T17:44:05.1174204Z 
+2026-10-31T17:44:05.1174508Z Time Elapsed 00:01:44.97
+2026-10-31T17:44:05.1582025Z ##[group]Run set -euo pipefail
+2026-10-31T17:44:05.1582395Z [36;1mset -euo pipefail[0m
+2026-10-31T17:44:05.1582631Z [36;1mrm -rf ./nupkgs[0m
+2026-10-31T17:44:05.1583004Z [36;1mpython3 scripts/pack-release-packages.py ./nupkgs 0.0.0-ci-test[0m
+2026-10-31T17:44:05.1583445Z [36;1mpython3 scripts/validate-nuget-packages.py ./nupkgs[0m
+2026-10-31T17:44:05.1583892Z [36;1mpython3 scripts/validate-consumer-package-references.py ./nupkgs[0m
+2026-10-31T17:44:05.1632706Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T17:44:05.1632939Z env:
+2026-10-31T17:44:05.1633074Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:44:05.1633240Z ##[endgroup]
+2026-10-31T17:44:05.2022245Z pack-release-packages: normalized shared CI test version 0.0.0-ci-test to 999.0.0-ci-test for package dependency validation.
+2026-10-31T17:44:11.2264040Z dotnet pack src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:11.6989891Z   Determining projects to restore...
+2026-10-31T17:44:12.0481136Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj (in 153 ms).
+2026-10-31T17:44:13.2235925Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:13.5691353Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Contracts.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:13.6080746Z dotnet pack src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:14.0875316Z   Determining projects to restore...
+2026-10-31T17:44:14.5269052Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 186 ms).
+2026-10-31T17:44:14.5295848Z   1 of 2 projects are up-to-date for restore.
+2026-10-31T17:44:14.8812242Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:16.8217885Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:17.1306474Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Client.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:17.1719728Z dotnet pack src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:17.6621094Z   Determining projects to restore...
+2026-10-31T17:44:18.2681483Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj (in 249 ms).
+2026-10-31T17:44:18.2690165Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj (in 249 ms).
+2026-10-31T17:44:18.2691583Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj (in 249 ms).
+2026-10-31T17:44:18.2709479Z   2 of 5 projects are up-to-date for restore.
+2026-10-31T17:44:18.5137796Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:18.6287438Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:19.3940354Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:21.4911044Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:44:27.1933794Z   Hexalith.EventStore.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Release/net10.0/Hexalith.EventStore.Server.dll
+2026-10-31T17:44:27.5377549Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Server.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:27.5849536Z dotnet pack src/Hexalith.EventStore.SignalR/Hexalith.EventStore.SignalR.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:28.0845622Z   Determining projects to restore...
+2026-10-31T17:44:28.4811365Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.SignalR/Hexalith.EventStore.SignalR.csproj (in 170 ms).
+2026-10-31T17:44:28.4829344Z   1 of 2 projects are up-to-date for restore.
+2026-10-31T17:44:28.8247334Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:29.0062732Z   Hexalith.EventStore.SignalR -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.SignalR/bin/Release/net10.0/Hexalith.EventStore.SignalR.dll
+2026-10-31T17:44:29.2381683Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.SignalR.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:29.2726552Z dotnet pack src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:29.7079566Z   Determining projects to restore...
+2026-10-31T17:44:30.2722261Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing/Hexalith.EventStore.Testing.csproj (in 214 ms).
+2026-10-31T17:44:30.2741696Z   5 of 6 projects are up-to-date for restore.
+2026-10-31T17:44:30.6693755Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:30.7442714Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:30.7448602Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:30.8007682Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:44:30.8703525Z   Hexalith.EventStore.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Release/net10.0/Hexalith.EventStore.Server.dll
+2026-10-31T17:44:31.3433934Z   Hexalith.EventStore.Testing -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing/bin/Release/net10.0/Hexalith.EventStore.Testing.dll
+2026-10-31T17:44:31.5579650Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Testing.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:31.6027441Z dotnet pack src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:32.0956395Z   Determining projects to restore...
+2026-10-31T17:44:32.6856968Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj (in 167 ms).
+2026-10-31T17:44:32.6876364Z   6 of 7 projects are up-to-date for restore.
+2026-10-31T17:44:32.9500565Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:33.0519904Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:33.0577775Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:33.1011157Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:44:33.3646157Z   Hexalith.EventStore.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Release/net10.0/Hexalith.EventStore.Server.dll
+2026-10-31T17:44:33.4232628Z   Hexalith.EventStore.Testing -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing/bin/Release/net10.0/Hexalith.EventStore.Testing.dll
+2026-10-31T17:44:33.5947641Z   Hexalith.EventStore.Testing.Integration -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.dll
+2026-10-31T17:44:33.9599858Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Testing.Integration.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:34.0019726Z dotnet pack src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:34.4557064Z   Determining projects to restore...
+2026-10-31T17:44:34.9726953Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj (in 217 ms).
+2026-10-31T17:44:34.9748419Z   3 of 4 projects are up-to-date for restore.
+2026-10-31T17:44:35.1642665Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:35.2446428Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:35.3866137Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:35.8072202Z   Hexalith.EventStore.Aspire -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/bin/Release/net10.0/Hexalith.EventStore.Aspire.dll
+2026-10-31T17:44:36.0361326Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Aspire.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:36.0741074Z dotnet pack src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:36.5427333Z   Determining projects to restore...
+2026-10-31T17:44:36.8045063Z   All projects are up-to-date for restore.
+2026-10-31T17:44:37.1537214Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:37.2557046Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:37.5116238Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.ServiceDefaults.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:37.5446639Z dotnet pack src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:37.9973557Z   Determining projects to restore...
+2026-10-31T17:44:38.3329115Z   All projects are up-to-date for restore.
+2026-10-31T17:44:38.5127154Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:38.5728429Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:38.6993849Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:38.7784507Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:44:38.9601984Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.DomainService.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:38.9960363Z dotnet pack src/Hexalith.EventStore.RestApi.Generators/Hexalith.EventStore.RestApi.Generators.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:39.4585131Z   Determining projects to restore...
+2026-10-31T17:44:39.7811305Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.RestApi.Generators/Hexalith.EventStore.RestApi.Generators.csproj (in 148 ms).
+2026-10-31T17:44:40.1427010Z   Hexalith.EventStore.RestApi.Generators -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.RestApi.Generators/bin/Release/netstandard2.0/Hexalith.EventStore.RestApi.Generators.dll
+2026-10-31T17:44:40.3472555Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.RestApi.Generators.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:40.3813754Z dotnet pack src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:40.8311078Z   Determining projects to restore...
+2026-10-31T17:44:41.3743889Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj (in 151 ms).
+2026-10-31T17:44:41.3766197Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj (in 154 ms).
+2026-10-31T17:44:41.3783361Z   5 of 7 projects are up-to-date for restore.
+2026-10-31T17:44:41.5816640Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:41.9100194Z   Hexalith.EventStore.Client -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+2026-10-31T17:44:41.9351379Z   Hexalith.EventStore.Admin.Abstractions -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+2026-10-31T17:44:41.9460649Z   Hexalith.EventStore.ServiceDefaults -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll
+2026-10-31T17:44:42.0190384Z   Hexalith.EventStore.DomainService -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll
+2026-10-31T17:44:42.0809250Z   Hexalith.EventStore.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Server/bin/Release/net10.0/Hexalith.EventStore.Server.dll
+2026-10-31T17:44:43.4064696Z   Hexalith.EventStore.Gateway -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/bin/Release/net10.0/Hexalith.EventStore.Gateway.dll
+2026-10-31T17:44:43.7626777Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Gateway.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:43.8039817Z dotnet pack src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:44.2474862Z   Determining projects to restore...
+2026-10-31T17:44:44.4931531Z   All projects are up-to-date for restore.
+2026-10-31T17:44:44.8229666Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:44.8816107Z   Hexalith.EventStore.Admin.Abstractions -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+2026-10-31T17:44:45.1522910Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Admin.Abstractions.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:45.1836873Z dotnet pack src/Hexalith.EventStore.Admin.Cli/Hexalith.EventStore.Admin.Cli.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:45.6212998Z   Determining projects to restore...
+2026-10-31T17:44:46.0801709Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/Hexalith.EventStore.Admin.Cli.csproj (in 174 ms).
+2026-10-31T17:44:46.0818831Z   2 of 3 projects are up-to-date for restore.
+2026-10-31T17:44:46.3451850Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:46.4785139Z   Hexalith.EventStore.Admin.Abstractions -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+2026-10-31T17:44:46.8082647Z   Hexalith.EventStore.Admin.Cli -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.dll
+2026-10-31T17:44:46.8700257Z   Hexalith.EventStore.Admin.Cli -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.dll
+2026-10-31T17:44:46.8836606Z   Hexalith.EventStore.Admin.Cli -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Cli/bin/Release/net10.0/publish/
+2026-10-31T17:44:47.1434484Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Admin.Cli.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:47.1805215Z dotnet pack src/Hexalith.EventStore.Admin.Server/Hexalith.EventStore.Admin.Server.csproj --configuration Release --output /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs -p:Version=999.0.0-ci-test -p:GeneratePackageOnBuild=false -p:UseHexalithProjectReferences=false
+2026-10-31T17:44:47.6055342Z   Determining projects to restore...
+2026-10-31T17:44:48.0413392Z   Restored /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server/Hexalith.EventStore.Admin.Server.csproj (in 176 ms).
+2026-10-31T17:44:48.0431323Z   2 of 3 projects are up-to-date for restore.
+2026-10-31T17:44:48.3861240Z   Hexalith.EventStore.Contracts -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll
+2026-10-31T17:44:48.4270762Z   Hexalith.EventStore.Admin.Abstractions -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.dll
+2026-10-31T17:44:48.9860870Z   Hexalith.EventStore.Admin.Server -> /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Server/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.dll
+2026-10-31T17:44:49.1355753Z   Successfully created package '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs/Hexalith.EventStore.Admin.Server.999.0.0-ci-test.nupkg'.
+2026-10-31T17:44:49.2283938Z Validated 14 EventStore NuGet packages at version 999.0.0-ci-test in /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/nupkgs.
+2026-10-31T17:44:49.3072486Z Validating isolated package-only consumer for Hexalith.EventStore.Contracts...
+2026-10-31T17:44:49.7105775Z   Determining projects to restore...
+2026-10-31T17:44:50.1614762Z   Restored /tmp/eventstore-package-consumer-4mn4se6x/PackageConsumer.csproj (in 278 ms).
+2026-10-31T17:44:50.8486344Z   PackageConsumer -> /tmp/eventstore-package-consumer-4mn4se6x/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:44:50.8659483Z 
+2026-10-31T17:44:50.8664386Z Build succeeded.
+2026-10-31T17:44:50.8664672Z     0 Warning(s)
+2026-10-31T17:44:50.8666530Z     0 Error(s)
+2026-10-31T17:44:50.8666644Z 
+2026-10-31T17:44:50.8666766Z Time Elapsed 00:00:00.51
+2026-10-31T17:44:51.4602911Z Validating isolated package-only consumer for Hexalith.EventStore.Client...
+2026-10-31T17:44:51.8892653Z   Determining projects to restore...
+2026-10-31T17:44:52.6439393Z   Restored /tmp/eventstore-package-consumer-zav2r3mc/PackageConsumer.csproj (in 579 ms).
+2026-10-31T17:44:53.4208429Z   PackageConsumer -> /tmp/eventstore-package-consumer-zav2r3mc/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:44:53.4376699Z 
+2026-10-31T17:44:53.4382223Z Build succeeded.
+2026-10-31T17:44:53.4382716Z     0 Warning(s)
+2026-10-31T17:44:53.4382910Z     0 Error(s)
+2026-10-31T17:44:53.4384401Z 
+2026-10-31T17:44:53.4384922Z Time Elapsed 00:00:00.59
+2026-10-31T17:44:54.4478081Z Validating isolated package-only consumer for Hexalith.EventStore.Server...
+2026-10-31T17:44:54.8830148Z   Determining projects to restore...
+2026-10-31T17:44:55.9490400Z   Restored /tmp/eventstore-package-consumer-e654j1l3/PackageConsumer.csproj (in 870 ms).
+2026-10-31T17:44:56.8623259Z   PackageConsumer -> /tmp/eventstore-package-consumer-e654j1l3/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:44:56.8811338Z 
+2026-10-31T17:44:56.8816218Z Build succeeded.
+2026-10-31T17:44:56.8816438Z     0 Warning(s)
+2026-10-31T17:44:56.8816565Z     0 Error(s)
+2026-10-31T17:44:56.8817626Z 
+2026-10-31T17:44:56.8817789Z Time Elapsed 00:00:00.72
+2026-10-31T17:44:57.0566579Z Validating isolated package-only consumer for Hexalith.EventStore.SignalR...
+2026-10-31T17:44:57.4900053Z   Determining projects to restore...
+2026-10-31T17:44:58.0680997Z   Restored /tmp/eventstore-package-consumer-k7gkmkuf/PackageConsumer.csproj (in 385 ms).
+2026-10-31T17:44:58.7860551Z   PackageConsumer -> /tmp/eventstore-package-consumer-k7gkmkuf/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:44:58.8034119Z 
+2026-10-31T17:44:58.8039454Z Build succeeded.
+2026-10-31T17:44:58.8039903Z     0 Warning(s)
+2026-10-31T17:44:58.8040118Z     0 Error(s)
+2026-10-31T17:44:58.8041241Z 
+2026-10-31T17:44:58.8041431Z Time Elapsed 00:00:00.53
+2026-10-31T17:44:58.8491901Z Validating isolated package-only consumer for Hexalith.EventStore.Testing...
+2026-10-31T17:44:59.2739395Z   Determining projects to restore...
+2026-10-31T17:45:00.3920039Z   Restored /tmp/eventstore-package-consumer-yzfgl6w1/PackageConsumer.csproj (in 938 ms).
+2026-10-31T17:45:01.3887791Z   PackageConsumer -> /tmp/eventstore-package-consumer-yzfgl6w1/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:01.4070364Z 
+2026-10-31T17:45:01.4075060Z Build succeeded.
+2026-10-31T17:45:01.4077366Z     0 Warning(s)
+2026-10-31T17:45:01.4077593Z     0 Error(s)
+2026-10-31T17:45:01.4077711Z 
+2026-10-31T17:45:01.4077863Z Time Elapsed 00:00:00.81
+2026-10-31T17:45:01.6007758Z Validating isolated package-only consumer for Hexalith.EventStore.Testing.Integration...
+2026-10-31T17:45:02.0484930Z   Determining projects to restore...
+2026-10-31T17:45:03.1977599Z   Restored /tmp/eventstore-package-consumer-8ce2jopo/PackageConsumer.csproj (in 953 ms).
+2026-10-31T17:45:04.3075492Z   PackageConsumer -> /tmp/eventstore-package-consumer-8ce2jopo/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:04.3253456Z 
+2026-10-31T17:45:04.3258556Z Build succeeded.
+2026-10-31T17:45:04.3258987Z     0 Warning(s)
+2026-10-31T17:45:04.3259389Z     0 Error(s)
+2026-10-31T17:45:04.3259924Z 
+2026-10-31T17:45:04.3260230Z Time Elapsed 00:00:00.91
+2026-10-31T17:45:04.5315862Z Validating isolated package-only consumer for Hexalith.EventStore.Aspire...
+2026-10-31T17:45:04.9719635Z   Determining projects to restore...
+2026-10-31T17:45:06.9988970Z   Restored /tmp/eventstore-package-consumer-cvajryij/PackageConsumer.csproj (in 1.83 sec).
+2026-10-31T17:45:08.4549520Z   PackageConsumer -> /tmp/eventstore-package-consumer-cvajryij/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:08.4754615Z 
+2026-10-31T17:45:08.4759915Z Build succeeded.
+2026-10-31T17:45:08.4760316Z     0 Warning(s)
+2026-10-31T17:45:08.4760655Z     0 Error(s)
+2026-10-31T17:45:08.4761752Z 
+2026-10-31T17:45:08.4761981Z Time Elapsed 00:00:01.27
+2026-10-31T17:45:08.8116923Z Validating isolated package-only consumer for Hexalith.EventStore.ServiceDefaults...
+2026-10-31T17:45:09.2383781Z   Determining projects to restore...
+2026-10-31T17:45:10.0889901Z   Restored /tmp/eventstore-package-consumer-b9haj_3j/PackageConsumer.csproj (in 667 ms).
+2026-10-31T17:45:10.9875504Z   PackageConsumer -> /tmp/eventstore-package-consumer-b9haj_3j/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:11.0042878Z 
+2026-10-31T17:45:11.0048421Z Build succeeded.
+2026-10-31T17:45:11.0048750Z     0 Warning(s)
+2026-10-31T17:45:11.0048985Z     0 Error(s)
+2026-10-31T17:45:11.0049916Z 
+2026-10-31T17:45:11.0050121Z Time Elapsed 00:00:00.70
+2026-10-31T17:45:11.1225004Z Validating isolated package-only consumer for Hexalith.EventStore.DomainService...
+2026-10-31T17:45:11.5548090Z   Determining projects to restore...
+2026-10-31T17:45:12.5304030Z   Restored /tmp/eventstore-package-consumer-hsipkg4j/PackageConsumer.csproj (in 789 ms).
+2026-10-31T17:45:13.4610225Z   PackageConsumer -> /tmp/eventstore-package-consumer-hsipkg4j/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:13.4808556Z 
+2026-10-31T17:45:13.4813190Z Build succeeded.
+2026-10-31T17:45:13.4813703Z     0 Warning(s)
+2026-10-31T17:45:13.4814267Z     0 Error(s)
+2026-10-31T17:45:13.4814628Z 
+2026-10-31T17:45:13.4814954Z Time Elapsed 00:00:00.74
+2026-10-31T17:45:14.9670517Z Validating isolated package-only consumer for Hexalith.EventStore.RestApi.Generators...
+2026-10-31T17:45:15.4106750Z   Determining projects to restore...
+2026-10-31T17:45:15.7518888Z   Restored /tmp/eventstore-package-consumer-v6nvx2cp/PackageConsumer.csproj (in 155 ms).
+2026-10-31T17:45:16.4906135Z   PackageConsumer -> /tmp/eventstore-package-consumer-v6nvx2cp/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:16.5079525Z 
+2026-10-31T17:45:16.5084187Z Build succeeded.
+2026-10-31T17:45:16.5084572Z     0 Warning(s)
+2026-10-31T17:45:16.5084781Z     0 Error(s)
+2026-10-31T17:45:16.5085610Z 
+2026-10-31T17:45:16.5085775Z Time Elapsed 00:00:00.56
+2026-10-31T17:45:16.5310209Z Validating isolated package-only consumer for Hexalith.EventStore.Gateway...
+2026-10-31T17:45:16.9632144Z   Determining projects to restore...
+2026-10-31T17:45:18.0812455Z   Restored /tmp/eventstore-package-consumer-6m6762ao/PackageConsumer.csproj (in 929 ms).
+2026-10-31T17:45:19.1942098Z   PackageConsumer -> /tmp/eventstore-package-consumer-6m6762ao/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:19.2150415Z 
+2026-10-31T17:45:19.2156384Z Build succeeded.
+2026-10-31T17:45:19.2156853Z     0 Warning(s)
+2026-10-31T17:45:19.2157050Z     0 Error(s)
+2026-10-31T17:45:19.2158368Z 
+2026-10-31T17:45:19.2158569Z Time Elapsed 00:00:00.92
+2026-10-31T17:45:19.4156421Z Validating isolated package-only consumer for Hexalith.EventStore.Admin.Abstractions...
+2026-10-31T17:45:19.8583664Z   Determining projects to restore...
+2026-10-31T17:45:20.3460237Z   Restored /tmp/eventstore-package-consumer-6_af4oa2/PackageConsumer.csproj (in 304 ms).
+2026-10-31T17:45:21.0556943Z   PackageConsumer -> /tmp/eventstore-package-consumer-6_af4oa2/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:21.0728746Z 
+2026-10-31T17:45:21.0734708Z Build succeeded.
+2026-10-31T17:45:21.0735062Z     0 Warning(s)
+2026-10-31T17:45:21.0735258Z     0 Error(s)
+2026-10-31T17:45:21.0736485Z 
+2026-10-31T17:45:21.0736673Z Time Elapsed 00:00:00.52
+2026-10-31T17:45:21.1018618Z Validating isolated package-only consumer for Hexalith.EventStore.Admin.Server...
+2026-10-31T17:45:21.5506710Z   Determining projects to restore...
+2026-10-31T17:45:22.3141987Z   Restored /tmp/eventstore-package-consumer-ncwkyfrv/PackageConsumer.csproj (in 571 ms).
+2026-10-31T17:45:23.1719946Z   PackageConsumer -> /tmp/eventstore-package-consumer-ncwkyfrv/bin/Release/net10.0/PackageConsumer.dll
+2026-10-31T17:45:23.1895140Z 
+2026-10-31T17:45:23.1900074Z Build succeeded.
+2026-10-31T17:45:23.1900464Z     0 Warning(s)
+2026-10-31T17:45:23.1900687Z     0 Error(s)
+2026-10-31T17:45:23.1901470Z 
+2026-10-31T17:45:23.1901646Z Time Elapsed 00:00:00.67
+2026-10-31T17:45:23.2644773Z Validating isolated tool consumer for Hexalith.EventStore.Admin.Cli...
+2026-10-31T17:45:24.6978953Z The template "Dotnet local tool manifest file" was created successfully.
+2026-10-31T17:45:24.6987778Z 
+2026-10-31T17:45:25.0673283Z You can invoke the tool from this directory using the following commands: 'dotnet tool run eventstore-admin' or 'dotnet eventstore-admin'.
+2026-10-31T17:45:25.0674469Z Tool 'hexalith.eventstore.admin.cli' (version '999.0.0-ci-test') was successfully installed. Entry is added to the manifest file /tmp/eventstore-package-tool-consumer-_ev6fhto/dotnet-tools.json.
+2026-10-31T17:45:25.0914054Z Validated 13 isolated package-only consumers and 1 isolated tool consumers at version 999.0.0-ci-test.
+2026-10-31T17:45:25.1279212Z ##[group]Run set -euo pipefail
+2026-10-31T17:45:25.1279504Z [36;1mset -euo pipefail[0m
+2026-10-31T17:45:25.1279658Z [36;1mfailures=0[0m
+2026-10-31T17:45:25.1279800Z [36;1m{[0m
+2026-10-31T17:45:25.1279978Z [36;1m  echo "## Tier 1 Unit Tests (Microsoft.Testing.Platform)"[0m
+2026-10-31T17:45:25.1280185Z [36;1m  echo[0m
+2026-10-31T17:45:25.1280334Z [36;1m  echo "| Project | Status | Exit code |"[0m
+2026-10-31T17:45:25.1280531Z [36;1m  echo "| --- | --- | ---: |"[0m
+2026-10-31T17:45:25.1280702Z [36;1m} >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1280868Z [36;1mwhile IFS= read -r proj; do[0m
+2026-10-31T17:45:25.1281039Z [36;1m  [ -z "$proj" ] && continue[0m
+2026-10-31T17:45:25.1281210Z [36;1m  name=$(basename "$proj")[0m
+2026-10-31T17:45:25.1281394Z [36;1m  result_file="TestResults/${name}/${name}.trx"[0m
+2026-10-31T17:45:25.1281589Z [36;1m  rm -f -- "$result_file"[0m
+2026-10-31T17:45:25.1281760Z [36;1m  mkdir -p "TestResults/${name}"[0m
+2026-10-31T17:45:25.1282011Z [36;1m  report_marker="TestResults/${name}/.started"[0m
+2026-10-31T17:45:25.1282218Z [36;1m  touch "$report_marker"[0m
+2026-10-31T17:45:25.1282382Z [36;1m  summary_proj=${proj//\\/\\\\}[0m
+2026-10-31T17:45:25.1282556Z [36;1m  summary_proj=${summary_proj//|/\\|}[0m
+2026-10-31T17:45:25.1282747Z [36;1m  summary_proj=${summary_proj//\`/\\\`}[0m
+2026-10-31T17:45:25.1282934Z [36;1m  coverage_args=()[0m
+2026-10-31T17:45:25.1283107Z [36;1m  if [ "$RUN_COVERAGE_GATE" = "true" ]; then[0m
+2026-10-31T17:45:25.1283455Z [36;1m    coverage_args+=(--coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml)[0m
+2026-10-31T17:45:25.1283762Z [36;1m  fi[0m
+2026-10-31T17:45:25.1283955Z [36;1m  if dotnet test "$proj" --no-build --configuration Release \[0m
+2026-10-31T17:45:25.1284206Z [36;1m      --results-directory "TestResults/${name}" \[0m
+2026-10-31T17:45:25.1284403Z [36;1m      --report-xunit-trx \[0m
+2026-10-31T17:45:25.1284599Z [36;1m      --report-xunit-trx-filename "${name}.trx" \[0m
+2026-10-31T17:45:25.1284957Z [36;1m      "${coverage_args[@]}" </dev/null; then[0m
+2026-10-31T17:45:25.1285137Z [36;1m    status=PASS[0m
+2026-10-31T17:45:25.1285280Z [36;1m    exit_code=0[0m
+2026-10-31T17:45:25.1285416Z [36;1m  else[0m
+2026-10-31T17:45:25.1285547Z [36;1m    exit_code=$?[0m
+2026-10-31T17:45:25.1285704Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-10-31T17:45:25.1285888Z [36;1m    if [ "$exit_code" -eq 10 ]; then[0m
+2026-10-31T17:45:25.1286245Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with infrastructure code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-10-31T17:45:25.1286669Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1286915Z [36;1m      exit "$exit_code"[0m
+2026-10-31T17:45:25.1287069Z [36;1m    fi[0m
+2026-10-31T17:45:25.1287216Z [36;1m    if [ ! -f "$result_file" ]; then[0m
+2026-10-31T17:45:25.1287423Z [36;1m      annotation_result_file=${result_file//%/%25}[0m
+2026-10-31T17:45:25.1287754Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \[0m
+2026-10-31T17:45:25.1288101Z [36;1m        "$annotation_proj" "$exit_code" "$annotation_result_file"[0m
+2026-10-31T17:45:25.1288563Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1288801Z [36;1m      exit "$exit_code"[0m
+2026-10-31T17:45:25.1288948Z [36;1m    fi[0m
+2026-10-31T17:45:25.1289080Z [36;1m    status=FAIL[0m
+2026-10-31T17:45:25.1289227Z [36;1m    failures=$((failures + 1))[0m
+2026-10-31T17:45:25.1289503Z [36;1m    printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-10-31T17:45:25.1289778Z [36;1m  fi[0m
+2026-10-31T17:45:25.1289983Z [36;1m  # A zero child exit is insufficient: require this invocation's nonzero TRX.[0m
+2026-10-31T17:45:25.1290441Z [36;1m  # The heredoc also keeps the verifier from consuming the project-list stdin.[0m
+2026-10-31T17:45:25.1290751Z [36;1m  if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'[0m
+2026-10-31T17:45:25.1290975Z [36;1mimport pathlib[0m
+2026-10-31T17:45:25.1291126Z [36;1mimport sys[0m
+2026-10-31T17:45:25.1291281Z [36;1mimport xml.etree.ElementTree as ET[0m
+2026-10-31T17:45:25.1291455Z [36;1m[0m
+2026-10-31T17:45:25.1291573Z [36;1mtry:[0m
+2026-10-31T17:45:25.1291719Z [36;1m    report = pathlib.Path(sys.argv[1])[0m
+2026-10-31T17:45:25.1291977Z [36;1m    if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:[0m
+2026-10-31T17:45:25.1292236Z [36;1m        raise ValueError("stale report")[0m
+2026-10-31T17:45:25.1292429Z [36;1m    root = ET.parse(report).getroot()[0m
+2026-10-31T17:45:25.1292689Z [36;1m    ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"[0m
+2026-10-31T17:45:25.1292925Z [36;1m    if root.tag != ns + "TestRun":[0m
+2026-10-31T17:45:25.1293121Z [36;1m        raise ValueError("invalid TRX root")[0m
+2026-10-31T17:45:25.1293349Z [36;1m    counters = root.find(f"{ns}ResultSummary/{ns}Counters")[0m
+2026-10-31T17:45:25.1293608Z [36;1m    results = root.findall(f"{ns}Results/{ns}UnitTestResult")[0m
+2026-10-31T17:45:25.1293827Z [36;1m    if counters is None:[0m
+2026-10-31T17:45:25.1294009Z [36;1m        raise ValueError("missing counters")[0m
+2026-10-31T17:45:25.1294231Z [36;1m    total = int(counters.get("total", "-1"))[0m
+2026-10-31T17:45:25.1294447Z [36;1m    executed = int(counters.get("executed", "-1"))[0m
+2026-10-31T17:45:25.1294689Z [36;1m    outcomes = [result.get("outcome") for result in results][0m
+2026-10-31T17:45:25.1295021Z [36;1m    if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):[0m
+2026-10-31T17:45:25.1295364Z [36;1m        raise ValueError("missing or inconsistent test results")[0m
+2026-10-31T17:45:25.1295670Z [36;1m    if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):[0m
+2026-10-31T17:45:25.1296069Z [36;1m        raise ValueError("invalid result outcome")[0m
+2026-10-31T17:45:25.1296287Z [36;1m    summary = root.find(f"{ns}ResultSummary")[0m
+2026-10-31T17:45:25.1296566Z [36;1m    if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:[0m
+2026-10-31T17:45:25.1296855Z [36;1m        raise ValueError("invalid result summary")[0m
+2026-10-31T17:45:25.1297153Z [36;1m    for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):[0m
+2026-10-31T17:45:25.1297517Z [36;1m        if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):[0m
+2026-10-31T17:45:25.1297812Z [36;1m            raise ValueError("contradictory outcome counters")[0m
+2026-10-31T17:45:25.1298056Z [36;1m    failures = [int(counters.get(name, "0")) for name in[0m
+2026-10-31T17:45:25.1298487Z [36;1m                ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")][0m
+2026-10-31T17:45:25.1298818Z [36;1m    if any(value < 0 for value in failures):[0m
+2026-10-31T17:45:25.1299036Z [36;1m        raise ValueError("invalid failure counters")[0m
+2026-10-31T17:45:25.1299350Z [36;1m    if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):[0m
+2026-10-31T17:45:25.1299701Z [36;1m        raise ValueError("failed summary or counters with successful exit")[0m
+2026-10-31T17:45:25.1299964Z [36;1mexcept (OSError, ValueError, ET.ParseError):[0m
+2026-10-31T17:45:25.1300254Z [36;1m    print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)[0m
+2026-10-31T17:45:25.1300517Z [36;1m    sys.exit(1)[0m
+2026-10-31T17:45:25.1300657Z [36;1mPYTRX[0m
+2026-10-31T17:45:25.1300785Z [36;1m  then[0m
+2026-10-31T17:45:25.1300922Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-10-31T17:45:25.1301361Z [36;1m    printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"[0m
+2026-10-31T17:45:25.1301723Z [36;1m    printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1301943Z [36;1m    exit 1[0m
+2026-10-31T17:45:25.1302073Z [36;1m  fi[0m
+2026-10-31T17:45:25.1302289Z [36;1m  printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1302548Z [36;1mdone <<< "$UNIT_TEST_PROJECTS"[0m
+2026-10-31T17:45:25.1302727Z [36;1mecho >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:45:25.1302940Z [36;1mprintf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"[0m
+2026-10-31T17:45:25.1345551Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T17:45:25.1345771Z env:
+2026-10-31T17:45:25.1345903Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:45:25.1347793Z   UNIT_TEST_PROJECTS: tests/Hexalith.EventStore.Client.Tests
+tests/Hexalith.EventStore.ServiceDefaults.Tests
+tests/Hexalith.EventStore.Testing.Tests
+tests/Hexalith.EventStore.SignalR.Tests
+tests/Hexalith.EventStore.Admin.Abstractions.Tests
+tests/Hexalith.EventStore.Admin.Cli.Tests
+tests/Hexalith.EventStore.Admin.Mcp.Tests
+tests/Hexalith.EventStore.Admin.Server.Tests
+tests/Hexalith.EventStore.Operations.Tests
+tests/Hexalith.EventStore.Admin.Server.Host.Tests
+tests/Hexalith.EventStore.Admin.UI.Tests
+tests/Hexalith.EventStore.DomainService.Tests
+tests/Hexalith.EventStore.QueryRouting.Tests
+tests/Hexalith.EventStore.RestApi.Generators.Tests
+tests/Hexalith.EventStore.LoadTests.Tests
+tests/Hexalith.EventStore.Sample.Tests
+tests/Hexalith.EventStore.Testing.Integration.Tests
+tests/Hexalith.EventStore.Server.Tests
+tests/Hexalith.EventStore.ProviderVerification.Tests
+
+2026-10-31T17:45:25.1349744Z   RUN_COVERAGE_GATE: false
+2026-10-31T17:45:25.1349890Z ##[endgroup]
+2026-10-31T17:45:25.7860893Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.Tests.dll (net10.0|x64)
+2026-10-31T17:45:33.4568627Z [33mskipped[m Hexalith.EventStore.Client.Tests.Projections.PendingBatchRecoveryLiveTests.RestartRecoversInterruptedConditionalBatchAndPreservesLaterSharedIndex(committed: True)
+2026-10-31T17:45:33.4630033Z   Requires isolated Dapr endpoints.
+2026-10-31T17:45:33.4690283Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.Tests.dll (net10.0|x64)
+2026-10-31T17:45:33.4780912Z [33mskipped[m Hexalith.EventStore.Client.Tests.Projections.PendingBatchRecoveryLiveTests.RestartRecoversInterruptedConditionalBatchAndPreservesLaterSharedIndex(committed: False)
+2026-10-31T17:45:33.4781959Z   Requires isolated Dapr endpoints.
+2026-10-31T17:45:33.4810289Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.Tests.dll (net10.0|x64)
+2026-10-31T17:46:18.3939155Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Client.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.Tests.dll (net10.0|x64) [32mpassed[m [90m(52s 610ms)[m
+2026-10-31T17:46:18.3991129Z 
+2026-10-31T17:46:18.3992540Z   In process file artifacts produced:
+2026-10-31T17:46:18.3993860Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Client.Tests/Hexalith.EventStore.Client.Tests.trx
+2026-10-31T17:46:18.3994498Z 
+2026-10-31T17:46:18.4001021Z [32mTest run summary: Passed!
+2026-10-31T17:46:18.4004318Z [m  total: 2265
+2026-10-31T17:46:18.4004534Z   failed: 0
+2026-10-31T17:46:18.4005002Z [32m  succeeded: 2263
+2026-10-31T17:46:18.4005306Z [m  skipped: 2
+2026-10-31T17:46:18.4005545Z   duration: 52s 805ms
+2026-10-31T17:46:19.0655660Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ServiceDefaults.Tests/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.Tests.dll (net10.0|x64)
+2026-10-31T17:46:21.1070049Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ServiceDefaults.Tests/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.Tests.dll (net10.0|x64) [32mpassed[m [90m(2s 042ms)[m
+2026-10-31T17:46:21.1119049Z 
+2026-10-31T17:46:21.1120913Z   In process file artifacts produced:
+2026-10-31T17:46:21.1121948Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.ServiceDefaults.Tests/Hexalith.EventStore.ServiceDefaults.Tests.trx
+2026-10-31T17:46:21.1122575Z 
+2026-10-31T17:46:21.1128688Z [32mTest run summary: Passed!
+2026-10-31T17:46:21.1131929Z [m  total: 154
+2026-10-31T17:46:21.1132314Z   failed: 0
+2026-10-31T17:46:21.1132655Z [32m  succeeded: 154
+2026-10-31T17:46:21.1132902Z [m  skipped: 0
+2026-10-31T17:46:21.1133126Z   duration: 2s 228ms
+2026-10-31T17:46:21.7517035Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Tests.dll (net10.0|x64)
+2026-10-31T17:46:22.7786531Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Tests.dll (net10.0|x64) [32mpassed[m [90m(1s 027ms)[m
+2026-10-31T17:46:22.7835387Z 
+2026-10-31T17:46:22.7839075Z   In process file artifacts produced:
+2026-10-31T17:46:22.7839986Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.trx
+2026-10-31T17:46:22.7840625Z 
+2026-10-31T17:46:22.7846195Z [32mTest run summary: Passed!
+2026-10-31T17:46:22.7850169Z [m  total: 263
+2026-10-31T17:46:22.7850391Z   failed: 0
+2026-10-31T17:46:22.7850646Z [32m  succeeded: 263
+2026-10-31T17:46:22.7850901Z [m  skipped: 0
+2026-10-31T17:46:22.7851121Z   duration: 1s 220ms
+2026-10-31T17:46:23.4350969Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.SignalR.Tests/bin/Release/net10.0/Hexalith.EventStore.SignalR.Tests.dll (net10.0|x64)
+2026-10-31T17:46:24.5844853Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.SignalR.Tests/bin/Release/net10.0/Hexalith.EventStore.SignalR.Tests.dll (net10.0|x64) [32mpassed[m [90m(1s 151ms)[m
+2026-10-31T17:46:24.5896252Z 
+2026-10-31T17:46:24.5898041Z   In process file artifacts produced:
+2026-10-31T17:46:24.5899376Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.SignalR.Tests/Hexalith.EventStore.SignalR.Tests.trx
+2026-10-31T17:46:24.5899964Z 
+2026-10-31T17:46:24.5906559Z [32mTest run summary: Passed!
+2026-10-31T17:46:24.5910482Z [m  total: 55
+2026-10-31T17:46:24.5910719Z   failed: 0
+2026-10-31T17:46:24.5910993Z [32m  succeeded: 55
+2026-10-31T17:46:24.5911236Z [m  skipped: 0
+2026-10-31T17:46:24.5911458Z   duration: 1s 359ms
+2026-10-31T17:46:25.2266063Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Abstractions.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.Tests.dll (net10.0|x64)
+2026-10-31T17:46:26.0377335Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Abstractions.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Abstractions.Tests.dll (net10.0|x64) [32mpassed[m [90m(811ms)[m
+2026-10-31T17:46:26.0430226Z 
+2026-10-31T17:46:26.0432182Z   In process file artifacts produced:
+2026-10-31T17:46:26.0433251Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.Abstractions.Tests/Hexalith.EventStore.Admin.Abstractions.Tests.trx
+2026-10-31T17:46:26.0433929Z 
+2026-10-31T17:46:26.0440802Z [32mTest run summary: Passed!
+2026-10-31T17:46:26.0444931Z [m  total: 510
+2026-10-31T17:46:26.0445170Z   failed: 0
+2026-10-31T17:46:26.0445463Z [32m  succeeded: 510
+2026-10-31T17:46:26.0445701Z [m  skipped: 0
+2026-10-31T17:46:26.0445935Z   duration: 998ms
+2026-10-31T17:46:26.7015424Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Cli.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.Tests.dll (net10.0|x64)
+2026-10-31T17:46:28.8355323Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Cli.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Cli.Tests.dll (net10.0|x64) [32mpassed[m [90m(2s 135ms)[m
+2026-10-31T17:46:28.8406887Z 
+2026-10-31T17:46:28.8408677Z   In process file artifacts produced:
+2026-10-31T17:46:28.8409801Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.Cli.Tests/Hexalith.EventStore.Admin.Cli.Tests.trx
+2026-10-31T17:46:28.8410371Z 
+2026-10-31T17:46:28.8416461Z [32mTest run summary: Passed!
+2026-10-31T17:46:28.8420246Z [m  total: 384
+2026-10-31T17:46:28.8420466Z   failed: 0
+2026-10-31T17:46:28.8420705Z [32m  succeeded: 384
+2026-10-31T17:46:28.8420952Z [m  skipped: 0
+2026-10-31T17:46:28.8421243Z   duration: 2s 327ms
+2026-10-31T17:46:29.4871074Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1336240Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.SessionFallback_NoEstablishedContext_DoesNotFabricateScope
+2026-10-31T17:46:30.1360811Z   ATDD red phase — DW2 AC#9 (session fallback classification). Remove Skip after the live transcript captures session-set-context followed by a scope-omitted tool call that uses session values, with absent/broken/blocked classification recorded.
+2026-10-31T17:46:30.1380169Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1410080Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.WritePreviewShape_IsStable_AcrossEvidenceTranscripts
+2026-10-31T17:46:30.1420211Z   ATDD red phase — DW2 AC#8 (write-preview non-mutation proof). Remove Skip after the live evidence captures one approval-gated write tool's preview shape AND a before/after non-mutation pair.
+2026-10-31T17:46:30.1421759Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1423169Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.ConsistencyTrigger_WithoutConfirm_DoesNotInvokeAdminApi
+2026-10-31T17:46:30.1424610Z   ATDD red phase — DW2 AC#8 (write-preview non-mutation proof). Remove Skip after the live evidence captures one approval-gated write tool's preview shape AND a before/after non-mutation pair.
+2026-10-31T17:46:30.1426066Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1427346Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.ToolsAssembly_AdvertisesSessionContextTools
+2026-10-31T17:46:30.1429080Z   ATDD red phase — DW2 AC#9 (session fallback classification). Remove Skip after the live transcript captures session-set-context followed by a scope-omitted tool call that uses session values, with absent/broken/blocked classification recorded.
+2026-10-31T17:46:30.1430605Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1431934Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.ToolsAssembly_AdvertisesAtLeastOneApprovalGatedWriteTool
+2026-10-31T17:46:30.1433613Z   ATDD red phase — DW2 AC#7 (MCP startup + stdio discipline). Remove Skip after the DW2 live MCP transcript captures initialize → tools/list with stdout reserved for JSON-RPC and stderr carrying logs.
+2026-10-31T17:46:30.1434944Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1436208Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.ToolsAssembly_AdvertisesRepresentativeReadTool
+2026-10-31T17:46:30.1437591Z   ATDD red phase — DW2 AC#7 (MCP startup + stdio discipline). Remove Skip after the DW2 live MCP transcript captures initialize → tools/list with stdout reserved for JSON-RPC and stderr carrying logs.
+2026-10-31T17:46:30.1439144Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1440432Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.McpHost_ValidEnvVars_KeepsStdoutEmptyBeforeJsonRpc
+2026-10-31T17:46:30.1441763Z   ATDD red phase — DW2 AC#7 (MCP startup + stdio discipline). Remove Skip after the DW2 live MCP transcript captures initialize → tools/list with stdout reserved for JSON-RPC and stderr carrying logs.
+2026-10-31T17:46:30.1443078Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:30.1444366Z [33mskipped[m Hexalith.EventStore.Admin.Mcp.Tests.Dw2McpProtocolGatesAtddTests.StreamList_OmittedScope_FallsBackToSessionTenantAndDomain
+2026-10-31T17:46:30.1445917Z   ATDD red phase — DW2 AC#9 (session fallback classification). Remove Skip after the live transcript captures session-set-context followed by a scope-omitted tool call that uses session values, with absent/broken/blocked classification recorded.
+2026-10-31T17:46:30.1447401Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64)
+2026-10-31T17:46:32.5396292Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Mcp.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Mcp.Tests.dll (net10.0|x64) [32mpassed[m [90m(3s 054ms)[m
+2026-10-31T17:46:32.5452029Z 
+2026-10-31T17:46:32.5453669Z   In process file artifacts produced:
+2026-10-31T17:46:32.5454615Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.Mcp.Tests/Hexalith.EventStore.Admin.Mcp.Tests.trx
+2026-10-31T17:46:32.5455140Z 
+2026-10-31T17:46:32.5462114Z [32mTest run summary: Passed!
+2026-10-31T17:46:32.5465697Z [m  total: 437
+2026-10-31T17:46:32.5465925Z   failed: 0
+2026-10-31T17:46:32.5466179Z [32m  succeeded: 429
+2026-10-31T17:46:32.5466428Z [m  skipped: 8
+2026-10-31T17:46:32.5466651Z   duration: 3s 238ms
+2026-10-31T17:46:33.2553151Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0895357Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.Components_ProbeTimeout_ProducesDegradedHealth_NotSilentSuccess
+2026-10-31T17:46:34.0897505Z   ATDD red phase — DW2 AC#2 (Admin DAPR component coverage). Remove Skip after live smoke captures observed component/sidecar/actor/pubsub/resiliency rows in the DW2 evidence index.
+2026-10-31T17:46:34.0900875Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0904054Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.PubSub_ParsesLegacyWrappedRulesShape_ForBackwardCompatibility
+2026-10-31T17:46:34.0908169Z   ATDD red phase — DW2 AC#4 (degraded states stay visible). Remove Skip after the smoke captures a degraded sample — empty/Unreachable/parse-error/timeout/4xx/5xx — without flattening it into pass/fail prose.
+2026-10-31T17:46:34.0911227Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0913971Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.PubSub_RemoteMetadataStatus_IsIndependentFromOtherSurfaces
+2026-10-31T17:46:34.0916511Z   ATDD red phase — DW2 AC#3 (per-surface RemoteMetadataStatus). Remove Skip after the live RemoteMetadataStatus matrix is recorded with independent rows for sidecar/actors/pubsub.
+2026-10-31T17:46:34.0918204Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0921677Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.Sidecar_EmitsNotConfigured_WhenRemoteEndpointBlank
+2026-10-31T17:46:34.0924556Z   ATDD red phase — DW2 AC#3 (per-surface RemoteMetadataStatus). Remove Skip after the live RemoteMetadataStatus matrix is recorded with independent rows for sidecar/actors/pubsub.
+2026-10-31T17:46:34.0927138Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0929892Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.Actors_RemoteMetadataStatus_IsIndependentFromSidecarStatus
+2026-10-31T17:46:34.0932387Z   ATDD red phase — DW2 AC#3 (per-surface RemoteMetadataStatus). Remove Skip after the live RemoteMetadataStatus matrix is recorded with independent rows for sidecar/actors/pubsub.
+2026-10-31T17:46:34.0935408Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0939264Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.Sidecar_EmitsUnreachable_WhenRemoteEndpointConfiguredButFetchFails
+2026-10-31T17:46:34.0942030Z   ATDD red phase — DW2 AC#3 (per-surface RemoteMetadataStatus). Remove Skip after the live RemoteMetadataStatus matrix is recorded with independent rows for sidecar/actors/pubsub.
+2026-10-31T17:46:34.0944349Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0947189Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.PubSub_ParsesRulesArrayDirectShape_FromDaprMetadataV117
+2026-10-31T17:46:34.0950344Z   ATDD red phase — DW2 AC#4 (degraded states stay visible). Remove Skip after the smoke captures a degraded sample — empty/Unreachable/parse-error/timeout/4xx/5xx — without flattening it into pass/fail prose.
+2026-10-31T17:46:34.0951959Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:34.0953623Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2RemoteMetadataPerSurfaceAtddTests.Resiliency_FileNotFound_ReportsUnavailableWithStableMarker
+2026-10-31T17:46:34.0955325Z   ATDD red phase — DW2 AC#4 (degraded states stay visible). Remove Skip after the smoke captures a degraded sample — empty/Unreachable/parse-error/timeout/4xx/5xx — without flattening it into pass/fail prose.
+2026-10-31T17:46:34.0959205Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:37.0960147Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2DebuggingTimeoutAtddTests.Bisect_RaisesOperationCanceledException_AfterLongerCap
+2026-10-31T17:46:37.0987892Z   ATDD red phase — DW2 AC#5 (Epic 20 debugging timeout discipline). Remove Skip after the live smoke captures a timeout-classified row for the targeted tool in the DW2 Epic 20 debugging evidence table.
+2026-10-31T17:46:37.0989571Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:37.0991184Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2DebuggingTimeoutAtddTests.TimeoutCapsAreDistinct_LockingPerToolBudget
+2026-10-31T17:46:37.0992983Z   ATDD red phase — DW2 AC#5 (Epic 20 debugging timeout discipline). Remove Skip after the live smoke captures a timeout-classified row for the targeted tool in the DW2 Epic 20 debugging evidence table.
+2026-10-31T17:46:37.1001232Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:37.1002863Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2DebuggingTimeoutAtddTests.TraceMap_RaisesOperationCanceledException_WhenRemoteHangs
+2026-10-31T17:46:37.1004405Z   ATDD red phase — DW2 AC#5 (Epic 20 debugging timeout discipline). Remove Skip after the live smoke captures a timeout-classified row for the targeted tool in the DW2 Epic 20 debugging evidence table.
+2026-10-31T17:46:37.1005897Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:37.1007436Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2DebuggingTimeoutAtddTests.StepThrough_RaisesOperationCanceledException_WhenRemoteHangs
+2026-10-31T17:46:37.1009139Z   ATDD red phase — DW2 AC#5 (Epic 20 debugging timeout discipline). Remove Skip after the live smoke captures a timeout-classified row for the targeted tool in the DW2 Epic 20 debugging evidence table.
+2026-10-31T17:46:37.1011163Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:37.1012651Z [33mskipped[m Hexalith.EventStore.Admin.Server.Tests.Services.Dw2DebuggingTimeoutAtddTests.Blame_RaisesOperationCanceledException_WhenRemoteHangs
+2026-10-31T17:46:37.1014261Z   ATDD red phase — DW2 AC#5 (Epic 20 debugging timeout discipline). Remove Skip after the live smoke captures a timeout-classified row for the targeted tool in the DW2 Epic 20 debugging evidence table.
+2026-10-31T17:46:37.1015800Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:46:39.6349115Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Tests.dll (net10.0|x64) [32mpassed[m [90m(6s 380ms)[m
+2026-10-31T17:46:39.6399591Z 
+2026-10-31T17:46:39.6401506Z   In process file artifacts produced:
+2026-10-31T17:46:39.6402588Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.Server.Tests/Hexalith.EventStore.Admin.Server.Tests.trx
+2026-10-31T17:46:39.6403272Z 
+2026-10-31T17:46:39.6409247Z [32mTest run summary: Passed!
+2026-10-31T17:46:39.6413044Z [m  total: 788
+2026-10-31T17:46:39.6413304Z   failed: 0
+2026-10-31T17:46:39.6413508Z [32m  succeeded: 775
+2026-10-31T17:46:39.6413701Z [m  skipped: 13
+2026-10-31T17:46:39.6413881Z   duration: 6s 574ms
+2026-10-31T17:46:40.2574463Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Operations.Tests/bin/Release/net10.0/Hexalith.EventStore.Operations.Tests.dll (net10.0|x64)
+2026-10-31T17:46:42.6127169Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Operations.Tests/bin/Release/net10.0/Hexalith.EventStore.Operations.Tests.dll (net10.0|x64) [32mpassed[m [90m(2s 356ms)[m
+2026-10-31T17:46:42.6181399Z 
+2026-10-31T17:46:42.6183425Z   In process file artifacts produced:
+2026-10-31T17:46:42.6184317Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Operations.Tests/Hexalith.EventStore.Operations.Tests.trx
+2026-10-31T17:46:42.6184776Z 
+2026-10-31T17:46:42.6190910Z [32mTest run summary: Passed!
+2026-10-31T17:46:42.6194431Z [m  total: 106
+2026-10-31T17:46:42.6194634Z   failed: 0
+2026-10-31T17:46:42.6194857Z [32m  succeeded: 106
+2026-10-31T17:46:42.6195098Z [m  skipped: 0
+2026-10-31T17:46:42.6195301Z   duration: 2s 540ms
+2026-10-31T17:46:43.2855217Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Host.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Host.Tests.dll (net10.0|x64)
+2026-10-31T17:46:50.4550477Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.Server.Host.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.Server.Host.Tests.dll (net10.0|x64) [32mpassed[m [90m(7s 170ms)[m
+2026-10-31T17:46:50.4599682Z 
+2026-10-31T17:46:50.4601131Z   In process file artifacts produced:
+2026-10-31T17:46:50.4602375Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.Server.Host.Tests/Hexalith.EventStore.Admin.Server.Host.Tests.trx
+2026-10-31T17:46:50.4602891Z 
+2026-10-31T17:46:50.4608588Z [32mTest run summary: Passed!
+2026-10-31T17:46:50.4612464Z [m  total: 70
+2026-10-31T17:46:50.4612650Z   failed: 0
+2026-10-31T17:46:50.4612866Z [32m  succeeded: 70
+2026-10-31T17:46:50.4613092Z [m  skipped: 0
+2026-10-31T17:46:50.4613316Z   duration: 7s 355ms
+2026-10-31T17:46:51.1109951Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.Tests.dll (net10.0|x64)
+2026-10-31T17:47:03.4086381Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Admin.UI.Tests/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.Tests.dll (net10.0|x64) [32mpassed[m [90m(12s 298ms)[m
+2026-10-31T17:47:03.4137564Z 
+2026-10-31T17:47:03.4139347Z   In process file artifacts produced:
+2026-10-31T17:47:03.4140605Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Admin.UI.Tests/Hexalith.EventStore.Admin.UI.Tests.trx
+2026-10-31T17:47:03.4141127Z 
+2026-10-31T17:47:03.4146661Z [32mTest run summary: Passed!
+2026-10-31T17:47:03.4150161Z [m  total: 1121
+2026-10-31T17:47:03.4150387Z   failed: 0
+2026-10-31T17:47:03.4150635Z [32m  succeeded: 1121
+2026-10-31T17:47:03.4150901Z [m  skipped: 0
+2026-10-31T17:47:03.4151142Z   duration: 12s 493ms
+2026-10-31T17:47:04.0902877Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.Tests.dll (net10.0|x64)
+2026-10-31T17:47:10.0406044Z [33mskipped[m Hexalith.EventStore.DomainService.Tests.Content.ContentPersistenceQualificationTests.PersistedBytesSurviveSidecarProcessReplacementAndRejectCorruption
+2026-10-31T17:47:10.0407204Z   Enable EVENTSTORE_CONTENT_LIVE=1 for the real Dapr/Redis qualification lane.
+2026-10-31T17:47:10.0408227Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.Tests.dll (net10.0|x64)
+2026-10-31T17:51:27.4379612Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.Tests.dll (net10.0|x64) [32mpassed[m [90m(4m 23s 348ms)[m
+2026-10-31T17:51:27.4430592Z 
+2026-10-31T17:51:27.4432263Z   In process file artifacts produced:
+2026-10-31T17:51:27.4433371Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.DomainService.Tests/Hexalith.EventStore.DomainService.Tests.trx
+2026-10-31T17:51:27.4433859Z 
+2026-10-31T17:51:27.4442704Z [32mTest run summary: Passed!
+2026-10-31T17:51:27.4446697Z [m  total: 1294
+2026-10-31T17:51:27.4446934Z   failed: 0
+2026-10-31T17:51:27.4447174Z [32m  succeeded: 1293
+2026-10-31T17:51:27.4447461Z [m  skipped: 1
+2026-10-31T17:51:27.4447685Z   duration: 4m 23s 542ms
+2026-10-31T17:51:28.1085857Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.QueryRouting.Tests/bin/Release/net10.0/Hexalith.EventStore.QueryRouting.Tests.dll (net10.0|x64)
+2026-10-31T17:51:28.7727179Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.QueryRouting.Tests/bin/Release/net10.0/Hexalith.EventStore.QueryRouting.Tests.dll (net10.0|x64) [32mpassed[m [90m(666ms)[m
+2026-10-31T17:51:28.7777785Z 
+2026-10-31T17:51:28.7779866Z   In process file artifacts produced:
+2026-10-31T17:51:28.7780778Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.QueryRouting.Tests/Hexalith.EventStore.QueryRouting.Tests.trx
+2026-10-31T17:51:28.7781906Z 
+2026-10-31T17:51:28.7788494Z [32mTest run summary: Passed!
+2026-10-31T17:51:28.7791646Z [m  total: 15
+2026-10-31T17:51:28.7791838Z   failed: 0
+2026-10-31T17:51:28.7792065Z [32m  succeeded: 15
+2026-10-31T17:51:28.7792302Z [m  skipped: 0
+2026-10-31T17:51:28.7792496Z   duration: 854ms
+2026-10-31T17:51:29.3999211Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.RestApi.Generators.Tests/bin/Release/net10.0/Hexalith.EventStore.RestApi.Generators.Tests.dll (net10.0|x64)
+2026-10-31T17:51:47.2051615Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.RestApi.Generators.Tests/bin/Release/net10.0/Hexalith.EventStore.RestApi.Generators.Tests.dll (net10.0|x64) [32mpassed[m [90m(17s 806ms)[m
+2026-10-31T17:51:47.2102048Z 
+2026-10-31T17:51:47.2103660Z   In process file artifacts produced:
+2026-10-31T17:51:47.2104854Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.RestApi.Generators.Tests/Hexalith.EventStore.RestApi.Generators.Tests.trx
+2026-10-31T17:51:47.2105321Z 
+2026-10-31T17:51:47.2111455Z [32mTest run summary: Passed!
+2026-10-31T17:51:47.2114961Z [m  total: 136
+2026-10-31T17:51:47.2115163Z   failed: 0
+2026-10-31T17:51:47.2115385Z [32m  succeeded: 136
+2026-10-31T17:51:47.2115603Z [m  skipped: 0
+2026-10-31T17:51:47.2115808Z   duration: 17s 986ms
+2026-10-31T17:51:47.8122160Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.LoadTests.Tests/bin/Release/net10.0/Hexalith.EventStore.LoadTests.Tests.dll (net10.0|x64)
+2026-10-31T17:51:48.3458210Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.LoadTests.Tests/bin/Release/net10.0/Hexalith.EventStore.LoadTests.Tests.dll (net10.0|x64) [32mpassed[m [90m(534ms)[m
+2026-10-31T17:51:48.3509465Z 
+2026-10-31T17:51:48.3511177Z   In process file artifacts produced:
+2026-10-31T17:51:48.3512209Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.LoadTests.Tests/Hexalith.EventStore.LoadTests.Tests.trx
+2026-10-31T17:51:48.3512708Z 
+2026-10-31T17:51:48.3519005Z [32mTest run summary: Passed!
+2026-10-31T17:51:48.3522434Z [m  total: 9
+2026-10-31T17:51:48.3522660Z   failed: 0
+2026-10-31T17:51:48.3522869Z [32m  succeeded: 9
+2026-10-31T17:51:48.3523076Z [m  skipped: 0
+2026-10-31T17:51:48.3523298Z   duration: 704ms
+2026-10-31T17:51:48.9790841Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Sample.Tests/bin/Release/net10.0/Hexalith.EventStore.Sample.Tests.dll (net10.0|x64)
+2026-10-31T17:51:51.4328057Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Sample.Tests/bin/Release/net10.0/Hexalith.EventStore.Sample.Tests.dll (net10.0|x64) [32mpassed[m [90m(2s 454ms)[m
+2026-10-31T17:51:51.4380309Z 
+2026-10-31T17:51:51.4381373Z   In process file artifacts produced:
+2026-10-31T17:51:51.4382491Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Sample.Tests/Hexalith.EventStore.Sample.Tests.trx
+2026-10-31T17:51:51.4382848Z 
+2026-10-31T17:51:51.4390457Z [32mTest run summary: Passed!
+2026-10-31T17:51:51.4394046Z [m  total: 222
+2026-10-31T17:51:51.4394262Z   failed: 0
+2026-10-31T17:51:51.4394507Z [32m  succeeded: 222
+2026-10-31T17:51:51.4394742Z [m  skipped: 0
+2026-10-31T17:51:51.4394958Z   duration: 2s 648ms
+2026-10-31T17:51:52.0687959Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll (net10.0|x64)
+2026-10-31T17:51:52.9430547Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Integration.Tests/bin/Release/net10.0/Hexalith.EventStore.Testing.Integration.Tests.dll (net10.0|x64) [32mpassed[m [90m(875ms)[m
+2026-10-31T17:51:52.9482174Z 
+2026-10-31T17:51:52.9484134Z   In process file artifacts produced:
+2026-10-31T17:51:52.9485316Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.trx
+2026-10-31T17:51:52.9486094Z 
+2026-10-31T17:51:52.9492790Z [32mTest run summary: Passed!
+2026-10-31T17:51:52.9496530Z [m  total: 59
+2026-10-31T17:51:52.9496982Z   failed: 0
+2026-10-31T17:51:52.9497409Z [32m  succeeded: 59
+2026-10-31T17:51:52.9497694Z [m  skipped: 0
+2026-10-31T17:51:52.9497929Z   duration: 1s 048ms
+2026-10-31T17:51:53.6066591Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7697141Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainPublishFailed_ActivityFailureReasonTagIsStableReasonCode
+2026-10-31T17:54:30.7701139Z   ATDD red phase — DW1 AC#8 (drain stable reason codes). Remove Skip when implementing.
+2026-10-31T17:54:30.7702743Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7704783Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainReminder_FiredTwiceForSameCorrelationId_DecrementsPendingCounterAtMostOnce
+2026-10-31T17:54:30.7706192Z   ATDD red phase — DW1 AC#9 (reminder re-entrancy idempotence). Remove Skip when implementing.
+2026-10-31T17:54:30.7707267Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7708829Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainAnyClassifiedFailure_ActivityFailureReasonTagDoesNotContainRawExceptionMessage
+2026-10-31T17:54:30.7709880Z   ATDD red phase — DW1 AC#8 (drain stable reason codes). Remove Skip when implementing.
+2026-10-31T17:54:30.7710859Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7712209Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainEventCountMismatch_DoesNotDecrementPendingCommandCount
+2026-10-31T17:54:30.7712908Z   ATDD red phase — DW1 AC#7 (drain poison disposition). Remove Skip when implementing.
+2026-10-31T17:54:30.7713899Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7714685Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainReminder_FiredTwiceForSameCorrelationId_UnregistersReminderAtMostOnce
+2026-10-31T17:54:30.7715328Z   ATDD red phase — DW1 AC#9 (reminder re-entrancy idempotence). Remove Skip when implementing.
+2026-10-31T17:54:30.7715918Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7716747Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainReminder_FiredTwiceForSameCorrelationId_PublishesAtMostOnce
+2026-10-31T17:54:30.7717347Z   ATDD red phase — DW1 AC#9 (reminder re-entrancy idempotence). Remove Skip when implementing.
+2026-10-31T17:54:30.7717937Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7718970Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainEventCountMismatch_ActivityFailureReasonTagIsStableReasonCode
+2026-10-31T17:54:30.7719533Z   ATDD red phase — DW1 AC#8 (drain stable reason codes). Remove Skip when implementing.
+2026-10-31T17:54:30.7720078Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:30.7720841Z [33mskipped[m Hexalith.EventStore.Server.Tests.Actors.Dw1DrainHardeningAtddTests.DrainMissingEventInRange_ActivityFailureReasonTagIsStableReasonCode
+2026-10-31T17:54:30.7721418Z   ATDD red phase — DW1 AC#8 (drain stable reason codes). Remove Skip when implementing.
+2026-10-31T17:54:30.7722021Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:38.5185444Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1PollerCorruptionAtddTests.PollOnceAsync_ScopeIndexCorruption_EmitsTrackerCorruptScopeIndexReasonCode
+2026-10-31T17:54:38.5186314Z   ATDD red phase — DW1 AC#5 (tracker corruption boundedness). Remove Skip when implementing.
+2026-10-31T17:54:38.5186966Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:38.5187800Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1PollerCorruptionAtddTests.PollOnceAsync_TrackerCorruption_BoundedRetryWithinSameTick
+2026-10-31T17:54:38.5188708Z   ATDD red phase — DW1 AC#5 (tracker corruption boundedness). Remove Skip when implementing.
+2026-10-31T17:54:38.5189365Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:38.5192097Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1PollerCorruptionAtddTests.PollOnceAsync_IdentityIndexCorruption_EmitsTrackerCorruptIdentityIndexReasonCode
+2026-10-31T17:54:38.5193224Z   ATDD red phase — DW1 AC#5 (tracker corruption boundedness). Remove Skip when implementing.
+2026-10-31T17:54:38.5194457Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:54:38.5195892Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1PollerCorruptionAtddTests.PollOnceAsync_TrackerCorruption_AdvancesNextDueToPreventTightRetryStorm
+2026-10-31T17:54:38.5197047Z   ATDD red phase — DW1 AC#5 (tracker corruption boundedness). Remove Skip when implementing.
+2026-10-31T17:54:38.5198783Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5510623Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_PersistedCheckpointAheadOfAggregateStream_EmitsCheckpointDriftReasonCode
+2026-10-31T17:55:11.5511807Z   ATDD red phase — DW1 AC#1 (checkpoint drift). Remove Skip when implementing.
+2026-10-31T17:55:11.5512696Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5514358Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_HttpTimeoutWhileHostStillRunning_LogsProjectTimeoutAndDoesNotThrow
+2026-10-31T17:55:11.5515433Z   ATDD red phase — DW1 AC#3 (cancellation vs timeout). Remove Skip when implementing.
+2026-10-31T17:55:11.5516401Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5517962Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_PersistedCheckpointAheadOfAggregateStream_DoesNotRegressCheckpoint
+2026-10-31T17:55:11.5519213Z   ATDD red phase — DW1 AC#1 (checkpoint drift). Remove Skip when implementing.
+2026-10-31T17:55:11.5520418Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5522096Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_HostTokenCancelled_PropagatesOperationCanceledException
+2026-10-31T17:55:11.5523601Z   ATDD red phase — DW1 AC#3 (cancellation vs timeout). Remove Skip when implementing.
+2026-10-31T17:55:11.5524676Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5526748Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_TwoOverlappingCallsForSameActorId_AreSerializedByKeyedSemaphore
+2026-10-31T17:55:11.5527981Z   ATDD red phase — DW1 AC#4 (per-aggregate serialization). Remove Skip when implementing.
+2026-10-31T17:55:11.5529240Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5530749Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_InvalidCharset_LogsProjectInvalidCharsetReasonCode
+2026-10-31T17:55:11.5531928Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5533028Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5534604Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_EmptyProjectionType_LogsProjectInvalidProjectionTypeReasonCode
+2026-10-31T17:55:11.5535795Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5536861Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5540144Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_UnsupportedContentType_LogsProjectUnsupportedContentTypeReasonCode
+2026-10-31T17:55:11.5541441Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5542815Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5550026Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_Upstream5xx_LogsProjectUpstream5xxReasonCode
+2026-10-31T17:55:11.5551945Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5553154Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5570087Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_NullState_LogsProjectInvalidStateReasonCode
+2026-10-31T17:55:11.5572016Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5573300Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5574880Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_AnyClassifiedFailure_DoesNotLogEventPayload
+2026-10-31T17:55:11.5576067Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5577168Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5580657Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_Upstream4xx_LogsProjectUpstream4xxReasonCode
+2026-10-31T17:55:11.5581776Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5582837Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:55:11.5600030Z [33mskipped[m Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_MalformedJson_LogsProjectMalformedJsonReasonCode
+2026-10-31T17:55:11.5601680Z   ATDD red phase — DW1 AC#2 (/project failure classification). Remove Skip when implementing.
+2026-10-31T17:55:11.5603021Z   from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64)
+2026-10-31T17:56:14.5435287Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64) [32mpassed[m [90m(4m 20s 938ms)[m
+2026-10-31T17:56:14.5542877Z 
+2026-10-31T17:56:14.5544703Z   In process file artifacts produced:
+2026-10-31T17:56:14.5545761Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.trx
+2026-10-31T17:56:14.5546265Z 
+2026-10-31T17:56:14.5552590Z [32mTest run summary: Passed!
+2026-10-31T17:56:14.5556079Z [m  total: 6606
+2026-10-31T17:56:14.5556456Z   failed: 0
+2026-10-31T17:56:14.5556795Z [32m  succeeded: 6581
+2026-10-31T17:56:14.5557061Z [m  skipped: 25
+2026-10-31T17:56:14.5557291Z   duration: 4m 21s 131ms
+2026-10-31T17:56:15.2811440Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification.Tests/bin/Release/net10.0/Hexalith.EventStore.ProviderVerification.Tests.dll (net10.0|x64)
+2026-10-31T17:56:17.9475623Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.ProviderVerification.Tests/bin/Release/net10.0/Hexalith.EventStore.ProviderVerification.Tests.dll (net10.0|x64) [32mpassed[m [90m(2s 668ms)[m
+2026-10-31T17:56:17.9524814Z 
+2026-10-31T17:56:17.9527139Z   In process file artifacts produced:
+2026-10-31T17:56:17.9528085Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.ProviderVerification.Tests/Hexalith.EventStore.ProviderVerification.Tests.trx
+2026-10-31T17:56:17.9528865Z 
+2026-10-31T17:56:17.9534816Z [32mTest run summary: Passed!
+2026-10-31T17:56:17.9538702Z [m  total: 80
+2026-10-31T17:56:17.9538909Z   failed: 0
+2026-10-31T17:56:17.9539151Z [32m  succeeded: 80
+2026-10-31T17:56:17.9539372Z [m  skipped: 0
+2026-10-31T17:56:17.9539580Z   duration: 2s 856ms
+2026-10-31T17:56:18.0032646Z ##[group]Run Hexalith/Hexalith.Builds/Github/dapr-init@e171c5a788eab183b32683431b084198c9b8d373
+2026-10-31T17:56:18.0032923Z with:
+2026-10-31T17:56:18.0033038Z   version: 1.18.2
+2026-10-31T17:56:18.0033165Z   runtime-version: 1.18.7
+2026-10-31T17:56:18.0033296Z env:
+2026-10-31T17:56:18.0033417Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:56:18.0033569Z ##[endgroup]
+2026-10-31T17:56:18.0036317Z ##[start-action display=Install Dapr CLI;id=__Hexalith_Hexalith_Builds_2.__dapr_setup-dapr]
+2026-10-31T17:56:18.0060880Z ##[group]Run dapr/setup-dapr@8d980918fd43a2765c143ce7f687665b2d46a6b9
+2026-10-31T17:56:18.0061096Z with:
+2026-10-31T17:56:18.0061212Z   version: 1.18.2
+2026-10-31T17:56:18.0061339Z env:
+2026-10-31T17:56:18.0061459Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:56:18.0061605Z ##[endgroup]
+2026-10-31T17:56:18.0605713Z Installing Dapr version 1.18.2...
+2026-10-31T17:56:18.0642017Z Downloading Dapr from https://github.com/dapr/cli/releases/download/v1.18.2/dapr_linux_amd64.tar.gz...
+2026-10-31T17:56:18.5248817Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/ba59b9b3-558f-4af7-bdce-80097eac0ff6 -f /home/runner/work/_temp/7e4e9194-7b08-42ce-858e-b42dd8761962
+2026-10-31T17:56:19.5225071Z Dapr installed to /opt/hostedtoolcache/dapr/1.18.2/x64/dapr...
+2026-10-31T17:56:19.5226908Z Dapr CLI version: '1.18.2' has been cached at /opt/hostedtoolcache/dapr/1.18.2/x64/dapr
+2026-10-31T17:56:19.5230924Z 17:56:19 GMT+0000 (Coordinated Universal Time)
+2026-10-31T17:56:19.5337303Z ##[end-action id=__Hexalith_Hexalith_Builds_2.__dapr_setup-dapr;outcome=success;conclusion=success;duration_ms=1530]
+2026-10-31T17:56:19.5345059Z ##[start-action display=Initialize Dapr;id=__Hexalith_Hexalith_Builds_2.__nick-fields_retry]
+2026-10-31T17:56:19.5425652Z ##[group]Run nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60
+2026-10-31T17:56:19.5425992Z with:
+2026-10-31T17:56:19.5426161Z   timeout_minutes: 5
+2026-10-31T17:56:19.5426318Z   max_attempts: 3
+2026-10-31T17:56:19.5426451Z   retry_wait_seconds: 15
+2026-10-31T17:56:19.5428848Z   command: bash <<'BASH'
+set -euo pipefail
+
+runtime_version="${DAPR_RUNTIME_VERSION#v}"
+
+cleanup_dapr() {
+  echo "Cleaning any partial Dapr installation before init..."
+  dapr uninstall --all >/dev/null 2>&1 || true
+  rm -f \
+    "${HOME}/.dapr/bin/daprd" \
+    "${HOME}/.dapr/bin/placement" \
+    "${HOME}/.dapr/bin/scheduler"
+  if command -v docker >/dev/null 2>&1; then
+    docker rm -f dapr_placement dapr_scheduler dapr_redis dapr_zipkin >/dev/null 2>&1 || true
+  fi
+}
+
+port_is_free() {
+  python3 - "$1" <<'PY'
+import socket
+import sys
+
+port = int(sys.argv[1])
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
+    listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        listener.bind(("127.0.0.1", port))
+    except OSError:
+        sys.exit(1)
+PY
+}
+
+wait_for_ports_free() {
+  local timeout_seconds="$1"
+  shift
+  local deadline=$((SECONDS + timeout_seconds))
+
+  while true; do
+    local busy_ports=()
+    local port
+    for port in "$@"; do
+      if ! port_is_free "$port"; then
+        busy_ports+=("$port")
+      fi
+    done
+
+    if [ "${#busy_ports[@]}" -eq 0 ]; then
+      return 0
+    fi
+
+    if [ "$SECONDS" -ge "$deadline" ]; then
+      echo "Dapr init ports still busy after ${timeout_seconds}s: ${busy_ports[*]}" >&2
+      return 1
+    fi
+
+    echo "Waiting for Dapr init ports to become free: ${busy_ports[*]}"
+    sleep 2
+  done
+}
+
+cleanup_dapr
+wait_for_ports_free 60 58080 58081 50005
+
+dapr init --runtime-version "$runtime_version"
+dapr --version
+BASH
+
+2026-10-31T17:56:19.5431242Z   polling_interval_seconds: 1
+2026-10-31T17:56:19.5431383Z   warning_on_retry: true
+2026-10-31T17:56:19.5431512Z   continue_on_error: false
+2026-10-31T17:56:19.5431642Z env:
+2026-10-31T17:56:19.5431765Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:56:19.5431914Z   DAPR_DEFAULT_IMAGE_REGISTRY: ghcr
+2026-10-31T17:56:19.5432068Z   DAPR_RUNTIME_VERSION: 1.18.7
+2026-10-31T17:56:19.5433833Z   GITHUB_TOKEN: ***
+2026-10-31T17:56:19.5434124Z ##[endgroup]
+2026-10-31T17:56:19.6063729Z ##[group]Attempt 1
+2026-10-31T17:56:19.6145533Z Cleaning any partial Dapr installation before init...
+2026-10-31T17:56:19.8681295Z ⌛  Making the jump to hyperspace...
+2026-10-31T17:56:19.8683566Z ℹ️  Container images will be pulled from Dapr GitHub container registry
+2026-10-31T17:56:19.8683935Z ℹ️  Installing runtime version 1.18.7
+2026-10-31T17:56:22.8146778Z 
+2026-10-31T17:56:22.8147564Z Dapr runtime installed to /home/runner/.dapr/bin, you may run the following to add it to your path if you want to run daprd directly:
+2026-10-31T17:56:22.8148019Z     export PATH=$PATH:/home/runner/.dapr/bin
+2026-10-31T17:56:31.8305659Z ✅  Downloading binaries and setting up components...
+2026-10-31T17:56:31.8306554Z ✅  Downloaded binaries and completed components set up.
+2026-10-31T17:56:31.8307211Z ℹ️  daprd binary has been installed to /home/runner/.dapr/bin.
+2026-10-31T17:56:31.8589347Z ℹ️  dapr_placement container is running.
+2026-10-31T17:56:31.8870039Z ℹ️  dapr_redis container is running.
+2026-10-31T17:56:31.9116352Z ℹ️  dapr_zipkin container is running.
+2026-10-31T17:56:31.9368114Z ℹ️  dapr_scheduler container is running.
+2026-10-31T17:56:31.9387728Z ℹ️  Use `docker ps` to check running containers.
+2026-10-31T17:56:31.9388710Z ✅  Success! Dapr is up and running. To get started, go here: https://docs.dapr.io/getting-started
+2026-10-31T17:56:32.0485261Z CLI version: 1.18.2 
+2026-10-31T17:56:32.0485603Z Runtime version: 1.18.7
+2026-10-31T17:56:32.6272622Z Command completed after 1 attempt(s).
+2026-10-31T17:56:32.6273980Z ##[endgroup]
+2026-10-31T17:56:32.6400276Z ##[end-action id=__Hexalith_Hexalith_Builds_2.__nick-fields_retry;outcome=success;conclusion=success;duration_ms=13105]
+2026-10-31T17:56:32.6482786Z ##[group]Run set -euo pipefail
+2026-10-31T17:56:32.6483215Z [36;1mset -euo pipefail[0m
+2026-10-31T17:56:32.6483439Z [36;1mfailures=0[0m
+2026-10-31T17:56:32.6483632Z [36;1m{[0m
+2026-10-31T17:56:32.6483925Z [36;1m  echo "## Tier 2 Integration Tests (Microsoft.Testing.Platform)"[0m
+2026-10-31T17:56:32.6484264Z [36;1m  echo[0m
+2026-10-31T17:56:32.6484496Z [36;1m  echo "| Project | Status | Exit code |"[0m
+2026-10-31T17:56:32.6484778Z [36;1m  echo "| --- | --- | ---: |"[0m
+2026-10-31T17:56:32.6485032Z [36;1m} >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6485281Z [36;1mwhile IFS= read -r proj; do[0m
+2026-10-31T17:56:32.6485523Z [36;1m  [ -z "$proj" ] && continue[0m
+2026-10-31T17:56:32.6485769Z [36;1m  name=$(basename "$proj")[0m
+2026-10-31T17:56:32.6486074Z [36;1m  result_file="TestResults/${name}/${name}.trx"[0m
+2026-10-31T17:56:32.6486361Z [36;1m  rm -f -- "$result_file"[0m
+2026-10-31T17:56:32.6486626Z [36;1m  mkdir -p "TestResults/${name}"[0m
+2026-10-31T17:56:32.6486984Z [36;1m  report_marker="TestResults/${name}/.started"[0m
+2026-10-31T17:56:32.6487274Z [36;1m  touch "$report_marker"[0m
+2026-10-31T17:56:32.6487514Z [36;1m  summary_proj=${proj//\\/\\\\}[0m
+2026-10-31T17:56:32.6487777Z [36;1m  summary_proj=${summary_proj//|/\\|}[0m
+2026-10-31T17:56:32.6488093Z [36;1m  summary_proj=${summary_proj//\`/\\\`}[0m
+2026-10-31T17:56:32.6488507Z [36;1m  coverage_args=()[0m
+2026-10-31T17:56:32.6488789Z [36;1m  if [ "$RUN_COVERAGE_GATE" = "true" ]; then[0m
+2026-10-31T17:56:32.6489317Z [36;1m    coverage_args+=(--coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml)[0m
+2026-10-31T17:56:32.6489806Z [36;1m  fi[0m
+2026-10-31T17:56:32.6490082Z [36;1m  if dotnet test "$proj" --no-build --configuration Release \[0m
+2026-10-31T17:56:32.6490477Z [36;1m      --results-directory "TestResults/${name}" \[0m
+2026-10-31T17:56:32.6490796Z [36;1m      --report-xunit-trx \[0m
+2026-10-31T17:56:32.6491108Z [36;1m      --report-xunit-trx-filename "${name}.trx" \[0m
+2026-10-31T17:56:32.6491468Z [36;1m      "${coverage_args[@]}" </dev/null; then[0m
+2026-10-31T17:56:32.6491752Z [36;1m    status=PASS[0m
+2026-10-31T17:56:32.6491980Z [36;1m    exit_code=0[0m
+2026-10-31T17:56:32.6492220Z [36;1m  else[0m
+2026-10-31T17:56:32.6492419Z [36;1m    exit_code=$?[0m
+2026-10-31T17:56:32.6492663Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-10-31T17:56:32.6492978Z [36;1m    if [ "$exit_code" -eq 10 ]; then[0m
+2026-10-31T17:56:32.6493560Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with infrastructure code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-10-31T17:56:32.6494270Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6494675Z [36;1m      exit "$exit_code"[0m
+2026-10-31T17:56:32.6494912Z [36;1m    fi[0m
+2026-10-31T17:56:32.6495127Z [36;1m    if [ ! -f "$result_file" ]; then[0m
+2026-10-31T17:56:32.6495447Z [36;1m      annotation_result_file=${result_file//%/%25}[0m
+2026-10-31T17:56:32.6495968Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \[0m
+2026-10-31T17:56:32.6496536Z [36;1m        "$annotation_proj" "$exit_code" "$annotation_result_file"[0m
+2026-10-31T17:56:32.6497023Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6497420Z [36;1m      exit "$exit_code"[0m
+2026-10-31T17:56:32.6497666Z [36;1m    fi[0m
+2026-10-31T17:56:32.6497868Z [36;1m    status=FAIL[0m
+2026-10-31T17:56:32.6498102Z [36;1m    failures=$((failures + 1))[0m
+2026-10-31T17:56:32.6528998Z [36;1m    printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-10-31T17:56:32.6529844Z [36;1m  fi[0m
+2026-10-31T17:56:32.6530175Z [36;1m  # A zero child exit is insufficient: require this invocation's nonzero TRX.[0m
+2026-10-31T17:56:32.6531051Z [36;1m  # The heredoc also keeps the verifier from consuming the project-list stdin.[0m
+2026-10-31T17:56:32.6531574Z [36;1m  if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'[0m
+2026-10-31T17:56:32.6531958Z [36;1mimport pathlib[0m
+2026-10-31T17:56:32.6532193Z [36;1mimport sys[0m
+2026-10-31T17:56:32.6532441Z [36;1mimport xml.etree.ElementTree as ET[0m
+2026-10-31T17:56:32.6532715Z [36;1m[0m
+2026-10-31T17:56:32.6532903Z [36;1mtry:[0m
+2026-10-31T17:56:32.6533128Z [36;1m    report = pathlib.Path(sys.argv[1])[0m
+2026-10-31T17:56:32.6533553Z [36;1m    if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:[0m
+2026-10-31T17:56:32.6533998Z [36;1m        raise ValueError("stale report")[0m
+2026-10-31T17:56:32.6534314Z [36;1m    root = ET.parse(report).getroot()[0m
+2026-10-31T17:56:32.6534709Z [36;1m    ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"[0m
+2026-10-31T17:56:32.6535093Z [36;1m    if root.tag != ns + "TestRun":[0m
+2026-10-31T17:56:32.6535409Z [36;1m        raise ValueError("invalid TRX root")[0m
+2026-10-31T17:56:32.6535772Z [36;1m    counters = root.find(f"{ns}ResultSummary/{ns}Counters")[0m
+2026-10-31T17:56:32.6536194Z [36;1m    results = root.findall(f"{ns}Results/{ns}UnitTestResult")[0m
+2026-10-31T17:56:32.6536531Z [36;1m    if counters is None:[0m
+2026-10-31T17:56:32.6536819Z [36;1m        raise ValueError("missing counters")[0m
+2026-10-31T17:56:32.6537143Z [36;1m    total = int(counters.get("total", "-1"))[0m
+2026-10-31T17:56:32.6537484Z [36;1m    executed = int(counters.get("executed", "-1"))[0m
+2026-10-31T17:56:32.6537875Z [36;1m    outcomes = [result.get("outcome") for result in results][0m
+2026-10-31T17:56:32.6538641Z [36;1m    if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):[0m
+2026-10-31T17:56:32.6539219Z [36;1m        raise ValueError("missing or inconsistent test results")[0m
+2026-10-31T17:56:32.6539706Z [36;1m    if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):[0m
+2026-10-31T17:56:32.6540165Z [36;1m        raise ValueError("invalid result outcome")[0m
+2026-10-31T17:56:32.6540513Z [36;1m    summary = root.find(f"{ns}ResultSummary")[0m
+2026-10-31T17:56:32.6540964Z [36;1m    if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:[0m
+2026-10-31T17:56:32.6541431Z [36;1m        raise ValueError("invalid result summary")[0m
+2026-10-31T17:56:32.6541900Z [36;1m    for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):[0m
+2026-10-31T17:56:32.6542466Z [36;1m        if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):[0m
+2026-10-31T17:56:32.6542922Z [36;1m            raise ValueError("contradictory outcome counters")[0m
+2026-10-31T17:56:32.6543310Z [36;1m    failures = [int(counters.get(name, "0")) for name in[0m
+2026-10-31T17:56:32.6543844Z [36;1m                ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")][0m
+2026-10-31T17:56:32.6544340Z [36;1m    if any(value < 0 for value in failures):[0m
+2026-10-31T17:56:32.6544661Z [36;1m        raise ValueError("invalid failure counters")[0m
+2026-10-31T17:56:32.6545124Z [36;1m    if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):[0m
+2026-10-31T17:56:32.6545646Z [36;1m        raise ValueError("failed summary or counters with successful exit")[0m
+2026-10-31T17:56:32.6546033Z [36;1mexcept (OSError, ValueError, ET.ParseError):[0m
+2026-10-31T17:56:32.6546476Z [36;1m    print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)[0m
+2026-10-31T17:56:32.6547166Z [36;1m    sys.exit(1)[0m
+2026-10-31T17:56:32.6547370Z [36;1mPYTRX[0m
+2026-10-31T17:56:32.6547542Z [36;1m  then[0m
+2026-10-31T17:56:32.6547743Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-10-31T17:56:32.6548532Z [36;1m    printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"[0m
+2026-10-31T17:56:32.6549051Z [36;1m    printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6549372Z [36;1m    exit 1[0m
+2026-10-31T17:56:32.6549562Z [36;1m  fi[0m
+2026-10-31T17:56:32.6549860Z [36;1m  printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6550257Z [36;1mdone <<< "$INTEGRATION_TEST_PROJECTS"[0m
+2026-10-31T17:56:32.6550536Z [36;1mecho >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-31T17:56:32.6550852Z [36;1mprintf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"[0m
+2026-10-31T17:56:32.6584705Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T17:56:32.6585044Z env:
+2026-10-31T17:56:32.6585256Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:56:32.6585599Z   INTEGRATION_TEST_PROJECTS: tests/Hexalith.EventStore.AppHost.Tests
+
+2026-10-31T17:56:32.6585964Z   RUN_COVERAGE_GATE: false
+2026-10-31T17:56:32.6586177Z ##[endgroup]
+2026-10-31T17:56:33.5946905Z Running tests from /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.AppHost.Tests/bin/Release/net10.0/Hexalith.EventStore.AppHost.Tests.dll (net10.0|x64)
+2026-10-31T17:57:23.0160258Z [m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.AppHost.Tests/bin/Release/net10.0/Hexalith.EventStore.AppHost.Tests.dll (net10.0|x64) [32mpassed[m [90m(49s 422ms)[m
+2026-10-31T17:57:23.0208511Z 
+2026-10-31T17:57:23.0210288Z   In process file artifacts produced:
+2026-10-31T17:57:23.0211247Z     - /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/TestResults/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.trx
+2026-10-31T17:57:23.0212686Z 
+2026-10-31T17:57:23.0218223Z [32mTest run summary: Passed!
+2026-10-31T17:57:23.0221728Z [m  total: 217
+2026-10-31T17:57:23.0221935Z   failed: 0
+2026-10-31T17:57:23.0222171Z [32m  succeeded: 217
+2026-10-31T17:57:23.0222441Z [m  skipped: 0
+2026-10-31T17:57:23.0222654Z   duration: 49s 730ms
+2026-10-31T17:57:23.0696113Z ##[group]Run set -euo pipefail
+2026-10-31T17:57:23.0696344Z [36;1mset -euo pipefail[0m
+2026-10-31T17:57:23.0696507Z [36;1mif [ "$TEST_PLATFORM" = "vstest" ]; then[0m
+2026-10-31T17:57:23.0696752Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_VSTEST_FAILURE_COUNT" ]; then[0m
+2026-10-31T17:57:23.0697084Z [36;1m    echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'[0m
+2026-10-31T17:57:23.0697344Z [36;1m    exit 1[0m
+2026-10-31T17:57:23.0697465Z [36;1m  fi[0m
+2026-10-31T17:57:23.0697670Z [36;1m  if [ -n "$INTEGRATION_TEST_PROJECTS" ] && [ -z "$INTEGRATION_VSTEST_FAILURE_COUNT" ]; then[0m
+2026-10-31T17:57:23.0698025Z [36;1m    echo '::error title=Missing test shard output::Tier 2 VSTest did not report a failure count.'[0m
+2026-10-31T17:57:23.0698502Z [36;1m    exit 1[0m
+2026-10-31T17:57:23.0698670Z [36;1m  fi[0m
+2026-10-31T17:57:23.0698845Z [36;1melif [ "$TEST_PLATFORM" = "microsoft-testing-platform" ]; then[0m
+2026-10-31T17:57:23.0699247Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_MTP_FAILURE_COUNT" ]; then[0m
+2026-10-31T17:57:23.0699603Z [36;1m    echo '::error title=Missing test shard output::Tier 1 Microsoft.Testing.Platform did not report a failure count.'[0m
+2026-10-31T17:57:23.0699896Z [36;1m    exit 1[0m
+2026-10-31T17:57:23.0700019Z [36;1m  fi[0m
+2026-10-31T17:57:23.0700220Z [36;1m  if [ -n "$INTEGRATION_TEST_PROJECTS" ] && [ -z "$INTEGRATION_MTP_FAILURE_COUNT" ]; then[0m
+2026-10-31T17:57:23.0700588Z [36;1m    echo '::error title=Missing test shard output::Tier 2 Microsoft.Testing.Platform did not report a failure count.'[0m
+2026-10-31T17:57:23.0701018Z [36;1m    exit 1[0m
+2026-10-31T17:57:23.0701142Z [36;1m  fi[0m
+2026-10-31T17:57:23.0701255Z [36;1mfi[0m
+2026-10-31T17:57:23.0701372Z [36;1m[0m
+2026-10-31T17:57:23.0701489Z [36;1mtotal_failures=0[0m
+2026-10-31T17:57:23.0701645Z [36;1mfor failure_count in \[0m
+2026-10-31T17:57:23.0701807Z [36;1m  "$UNIT_VSTEST_FAILURE_COUNT" \[0m
+2026-10-31T17:57:23.0701976Z [36;1m  "$UNIT_MTP_FAILURE_COUNT" \[0m
+2026-10-31T17:57:23.0702146Z [36;1m  "$INTEGRATION_VSTEST_FAILURE_COUNT" \[0m
+2026-10-31T17:57:23.0702340Z [36;1m  "$INTEGRATION_MTP_FAILURE_COUNT"; do[0m
+2026-10-31T17:57:23.0702524Z [36;1m  [ -z "$failure_count" ] && continue[0m
+2026-10-31T17:57:23.0702714Z [36;1m  if [[ ! "$failure_count" =~ ^[0-9]+$ ]]; then[0m
+2026-10-31T17:57:23.0703028Z [36;1m    printf '::error title=Invalid test shard output::Expected a numeric failure count, received %s.\n' "$failure_count"[0m
+2026-10-31T17:57:23.0703321Z [36;1m    exit 1[0m
+2026-10-31T17:57:23.0703443Z [36;1m  fi[0m
+2026-10-31T17:57:23.0703611Z [36;1m  total_failures=$((total_failures + 10#$failure_count))[0m
+2026-10-31T17:57:23.0703798Z [36;1mdone[0m
+2026-10-31T17:57:23.0703915Z [36;1m[0m
+2026-10-31T17:57:23.0704040Z [36;1mif [ "$total_failures" -ne 0 ]; then[0m
+2026-10-31T17:57:23.0704358Z [36;1m  printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\n' "$total_failures"[0m
+2026-10-31T17:57:23.0704648Z [36;1m  exit 1[0m
+2026-10-31T17:57:23.0704770Z [36;1mfi[0m
+2026-10-31T17:57:23.0730318Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T17:57:23.0730513Z env:
+2026-10-31T17:57:23.0730640Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:57:23.0730810Z   TEST_PLATFORM: microsoft-testing-platform
+2026-10-31T17:57:23.0733556Z   UNIT_TEST_PROJECTS: tests/Hexalith.EventStore.Client.Tests
+tests/Hexalith.EventStore.ServiceDefaults.Tests
+tests/Hexalith.EventStore.Testing.Tests
+tests/Hexalith.EventStore.SignalR.Tests
+tests/Hexalith.EventStore.Admin.Abstractions.Tests
+tests/Hexalith.EventStore.Admin.Cli.Tests
+tests/Hexalith.EventStore.Admin.Mcp.Tests
+tests/Hexalith.EventStore.Admin.Server.Tests
+tests/Hexalith.EventStore.Operations.Tests
+tests/Hexalith.EventStore.Admin.Server.Host.Tests
+tests/Hexalith.EventStore.Admin.UI.Tests
+tests/Hexalith.EventStore.DomainService.Tests
+tests/Hexalith.EventStore.QueryRouting.Tests
+tests/Hexalith.EventStore.RestApi.Generators.Tests
+tests/Hexalith.EventStore.LoadTests.Tests
+tests/Hexalith.EventStore.Sample.Tests
+tests/Hexalith.EventStore.Testing.Integration.Tests
+tests/Hexalith.EventStore.Server.Tests
+tests/Hexalith.EventStore.ProviderVerification.Tests
+
+2026-10-31T17:57:23.0735411Z   INTEGRATION_TEST_PROJECTS: tests/Hexalith.EventStore.AppHost.Tests
+
+2026-10-31T17:57:23.0735628Z   UNIT_VSTEST_FAILURE_COUNT: 
+2026-10-31T17:57:23.0735778Z   UNIT_MTP_FAILURE_COUNT: 0
+2026-10-31T17:57:23.0735929Z   INTEGRATION_VSTEST_FAILURE_COUNT: 
+2026-10-31T17:57:23.0736093Z   INTEGRATION_MTP_FAILURE_COUNT: 0
+2026-10-31T17:57:23.0736241Z ##[endgroup]
+2026-10-31T17:57:23.0818455Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-31T17:57:23.0818805Z with:
+2026-10-31T17:57:23.0818932Z   name: blocking-test-results
+2026-10-31T17:57:23.0819135Z   path: TestResults/**/*.trx
+TestResults/**/coverage.cobertura.xml
+
+2026-10-31T17:57:23.0819337Z   retention-days: 7
+2026-10-31T17:57:23.0819466Z   if-no-files-found: warn
+2026-10-31T17:57:23.0819601Z   compression-level: 6
+2026-10-31T17:57:23.0819728Z   overwrite: false
+2026-10-31T17:57:23.0819853Z   include-hidden-files: false
+2026-10-31T17:57:23.0819993Z   archive: true
+2026-10-31T17:57:23.0820104Z env:
+2026-10-31T17:57:23.0820222Z   DOTNET_ROOT: /usr/share/dotnet
+2026-10-31T17:57:23.0820362Z ##[endgroup]
+2026-10-31T17:57:23.1919640Z With the provided path, there will be 20 files uploaded
+2026-10-31T17:57:23.1923822Z Artifact name is valid!
+2026-10-31T17:57:23.1924143Z Root directory input is valid!
+2026-10-31T17:57:23.4718028Z Uploading artifact: blocking-test-results.zip
+2026-10-31T17:57:23.4741412Z Beginning upload of artifact content to blob storage
+2026-10-31T17:57:24.0121361Z Uploaded bytes 2242967
+2026-10-31T17:57:24.0496062Z Finished uploading artifact content to blob storage!
+2026-10-31T17:57:24.0496693Z SHA256 digest of uploaded artifact is faa0f2d860dda3ea612a2a3aa62e6412a5774ad91cefc5012933e75800021239
+2026-10-31T17:57:24.0497215Z Finalizing artifact upload
+2026-10-31T17:57:24.5181671Z Artifact blocking-test-results successfully finalized. Artifact ID 13052255930
+2026-10-31T17:57:24.5182142Z Artifact blocking-test-results has been successfully uploaded! Final size is 2242967 bytes. Artifact ID is 13052255930
+2026-10-31T17:57:24.5184845Z Artifact download URL: https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41224995459/artifacts/13052255930
+2026-10-31T17:57:24.5737416Z Post job cleanup.
+2026-10-31T17:57:24.6565261Z Cache hit occurred on the primary key nuget-, not saving cache.
+2026-10-31T17:57:24.6662001Z Post job cleanup.
+2026-10-31T17:57:24.7610937Z Post job cleanup.
+2026-10-31T17:57:24.8351757Z [command]/usr/bin/git version
+2026-10-31T17:57:24.8392833Z git version 2.56.0
+2026-10-31T17:57:24.8419157Z Temporarily overriding HOME='/home/runner/work/_temp/49fc3d46-de82-4a55-83e5-3d7330ca0797' before making global git config changes
+2026-10-31T17:57:24.8420493Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T17:57:24.8423081Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.EventStore/Hexalith.EventStore
+2026-10-31T17:57:24.8462464Z Removing SSH command configuration
+2026-10-31T17:57:24.8468800Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T17:57:24.8513687Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T17:57:24.8794263Z Entering 'references/Hexalith.AI.Tools'
+2026-10-31T17:57:24.8840230Z Entering 'references/Hexalith.Builds'
+2026-10-31T17:57:24.8897349Z Entering 'references/Hexalith.Commons'
+2026-10-31T17:57:24.8941696Z Entering 'references/Hexalith.FrontComposer'
+2026-10-31T17:57:24.8990049Z Entering 'references/Hexalith.McpCli'
+2026-10-31T17:57:24.9048946Z Entering 'references/Hexalith.Memories'
+2026-10-31T17:57:24.9097006Z Entering 'references/Hexalith.Platform'
+2026-10-31T17:57:24.9159542Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-10-31T17:57:24.9201005Z Entering 'references/Hexalith.Tenants'
+2026-10-31T17:57:24.9257692Z Removing HTTP extra header
+2026-10-31T17:57:24.9261975Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T17:57:24.9295380Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T17:57:24.9531418Z Entering 'references/Hexalith.AI.Tools'
+2026-10-31T17:57:24.9569144Z Entering 'references/Hexalith.Builds'
+2026-10-31T17:57:24.9610327Z Entering 'references/Hexalith.Commons'
+2026-10-31T17:57:24.9648187Z Entering 'references/Hexalith.FrontComposer'
+2026-10-31T17:57:24.9693747Z Entering 'references/Hexalith.McpCli'
+2026-10-31T17:57:24.9750862Z Entering 'references/Hexalith.Memories'
+2026-10-31T17:57:24.9798692Z Entering 'references/Hexalith.Platform'
+2026-10-31T17:57:24.9860369Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-10-31T17:57:24.9898997Z Entering 'references/Hexalith.Tenants'
+2026-10-31T17:57:24.9953580Z Removing includeIf entries pointing to credentials config files
+2026-10-31T17:57:24.9959389Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:24.9984408Z includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git.path
+2026-10-31T17:57:24.9985329Z includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/worktrees/*.path
+2026-10-31T17:57:24.9986169Z includeif.gitdir:/github/workspace/.git.path
+2026-10-31T17:57:24.9986766Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-31T17:57:24.9993132Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git.path
+2026-10-31T17:57:25.0016302Z /home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:57:25.0027513Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-994dcb19\-0e5f\-46a1\-b67f\-b285d98e443c\.config
+2026-10-31T17:57:25.0062260Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/worktrees/*.path
+2026-10-31T17:57:25.0084402Z /home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:57:25.0092890Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-994dcb19\-0e5f\-46a1\-b67f\-b285d98e443c\.config
+2026-10-31T17:57:25.0124026Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-31T17:57:25.0145301Z /github/runner_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:57:25.0151043Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-994dcb19\-0e5f\-46a1\-b67f\-b285d98e443c\.config
+2026-10-31T17:57:25.0181406Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-31T17:57:25.0202467Z /github/runner_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config
+2026-10-31T17:57:25.0208619Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-994dcb19\-0e5f\-46a1\-b67f\-b285d98e443c\.config
+2026-10-31T17:57:25.0240867Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T17:57:25.0471927Z Entering 'references/Hexalith.AI.Tools'
+2026-10-31T17:57:25.0488098Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.AI.Tools/config	remote.origin.url
+2026-10-31T17:57:25.0503954Z Entering 'references/Hexalith.Builds'
+2026-10-31T17:57:25.0520110Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Builds/config	remote.origin.url
+2026-10-31T17:57:25.0539574Z Entering 'references/Hexalith.Commons'
+2026-10-31T17:57:25.0555463Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Commons/config	remote.origin.url
+2026-10-31T17:57:25.0571866Z Entering 'references/Hexalith.FrontComposer'
+2026-10-31T17:57:25.0588465Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.FrontComposer/config	remote.origin.url
+2026-10-31T17:57:25.0612070Z Entering 'references/Hexalith.McpCli'
+2026-10-31T17:57:25.0628550Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.McpCli/config	remote.origin.url
+2026-10-31T17:57:25.0663471Z Entering 'references/Hexalith.Memories'
+2026-10-31T17:57:25.0679862Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Memories/config	remote.origin.url
+2026-10-31T17:57:25.0703814Z Entering 'references/Hexalith.Platform'
+2026-10-31T17:57:25.0720105Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Platform/config	remote.origin.url
+2026-10-31T17:57:25.0757232Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-10-31T17:57:25.0773700Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.PolymorphicSerializations/config	remote.origin.url
+2026-10-31T17:57:25.0790026Z Entering 'references/Hexalith.Tenants'
+2026-10-31T17:57:25.0805972Z file:/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Tenants/config	remote.origin.url
+2026-10-31T17:57:25.0842212Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.AI.Tools/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.0872867Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.0899783Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Commons/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.0926346Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.FrontComposer/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.0953450Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.McpCli/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.0980194Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Memories/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.1006179Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Platform/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.1030888Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.PolymorphicSerializations/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.1055071Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.EventStore/Hexalith.EventStore/.git/modules/Hexalith.Tenants/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T17:57:25.1077518Z Removing credentials config '/home/runner/work/_temp/git-credentials-994dcb19-0e5f-46a1-b67f-b285d98e443c.config'
+2026-10-31T17:57:25.1216217Z Evaluate and set job outputs
+2026-10-31T17:57:25.1221332Z Cleaning up orphan processes
+2026-10-31T17:57:25.1560610Z Terminate orphan process: pid (2563) (dotnet)
+2026-10-31T17:57:25.1586223Z Terminate orphan process: pid (2564) (dotnet)
+2026-10-31T17:57:25.1604883Z Terminate orphan process: pid (2565) (dotnet)
+2026-10-31T17:57:25.1866029Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: dapr/setup-dapr@8d980918fd43a2765c143ce7f687665b2d46a6b9. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,226 @@
+{
+  "observedAt": "2026-10-31T22:07:55.552665+00:00",
+  "main": "1de42b706f52af0da6513f0b7663002606d17156",
+  "tree": "4194080f05165b864060149091ac56c622fee6f3",
+  "exactPushProofs": [
+    {
+      "id": 41244694290,
+      "name": "CI",
+      "path": ".github/workflows/ci.yml",
+      "head_sha": "1de42b706f52af0da6513f0b7663002606d17156",
+      "event": "push",
+      "head_branch": "main",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41244694290",
+      "updated_at": "2026-10-31T22:06:31Z"
+    },
+    {
+      "id": 41244694281,
+      "name": "Commitlint",
+      "path": ".github/workflows/commitlint.yml",
+      "head_sha": "1de42b706f52af0da6513f0b7663002606d17156",
+      "event": "push",
+      "head_branch": "main",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41244694281",
+      "updated_at": "2026-10-31T21:43:22Z"
+    }
+  ],
+  "noActiveRelease": true,
+  "productionEnvironment": {
+    "id": 18422589799,
+    "can_admins_bypass": false,
+    "protection_rules": [
+      {
+        "id": 60395583,
+        "node_id": "GA_kwDORNpC784DmZA_",
+        "type": "required_reviewers",
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "type": "User",
+            "reviewer": {
+              "login": "jpiquot",
+              "id": 6775094,
+              "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+              "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/jpiquot",
+              "html_url": "https://github.com/jpiquot",
+              "followers_url": "https://api.github.com/users/jpiquot/followers",
+              "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+              "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+              "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+              "repos_url": "https://api.github.com/users/jpiquot/repos",
+              "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+              "type": "User",
+              "user_view_type": "public",
+              "site_admin": false
+            }
+          }
+        ]
+      },
+      {
+        "id": 60395585,
+        "node_id": "GA_kwDORNpC784DmZBB",
+        "type": "branch_policy"
+      }
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "releasePublishEnabled": true,
+  "sourceCiActualTestSummaries": [
+    {
+      "total": 2267,
+      "failed": 0,
+      "succeeded": 2265,
+      "skipped": 2
+    },
+    {
+      "total": 157,
+      "failed": 0,
+      "succeeded": 157,
+      "skipped": 0
+    },
+    {
+      "total": 263,
+      "failed": 0,
+      "succeeded": 263,
+      "skipped": 0
+    },
+    {
+      "total": 55,
+      "failed": 0,
+      "succeeded": 55,
+      "skipped": 0
+    },
+    {
+      "total": 510,
+      "failed": 0,
+      "succeeded": 510,
+      "skipped": 0
+    },
+    {
+      "total": 384,
+      "failed": 0,
+      "succeeded": 384,
+      "skipped": 0
+    },
+    {
+      "total": 437,
+      "failed": 0,
+      "succeeded": 429,
+      "skipped": 8
+    },
+    {
+      "total": 823,
+      "failed": 0,
+      "succeeded": 810,
+      "skipped": 13
+    },
+    {
+      "total": 106,
+      "failed": 0,
+      "succeeded": 106,
+      "skipped": 0
+    },
+    {
+      "total": 70,
+      "failed": 0,
+      "succeeded": 70,
+      "skipped": 0
+    },
+    {
+      "total": 1121,
+      "failed": 0,
+      "succeeded": 1121,
+      "skipped": 0
+    },
+    {
+      "total": 1301,
+      "failed": 0,
+      "succeeded": 1300,
+      "skipped": 1
+    },
+    {
+      "total": 15,
+      "failed": 0,
+      "succeeded": 15,
+      "skipped": 0
+    },
+    {
+      "total": 136,
+      "failed": 0,
+      "succeeded": 136,
+      "skipped": 0
+    },
+    {
+      "total": 9,
+      "failed": 0,
+      "succeeded": 9,
+      "skipped": 0
+    },
+    {
+      "total": 222,
+      "failed": 0,
+      "succeeded": 222,
+      "skipped": 0
+    },
+    {
+      "total": 59,
+      "failed": 0,
+      "succeeded": 59,
+      "skipped": 0
+    },
+    {
+      "total": 6680,
+      "failed": 0,
+      "succeeded": 6655,
+      "skipped": 25
+    },
+    {
+      "total": 80,
+      "failed": 0,
+      "succeeded": 80,
+      "skipped": 0
+    },
+    {
+      "total": 217,
+      "failed": 0,
+      "succeeded": 217,
+      "skipped": 0
+    }
+  ],
+  "sourceCiTotals": {
+    "total": 14912,
+    "failed": 0,
+    "succeeded": 14863,
+    "skipped": 49
+  },
+  "sourceCiRawLog": {
+    "path": "/tmp/story28-sdk-main1de-build-test-rest.log",
+    "bytes": 190055,
+    "sha256": "7f0404368dd4babdf72cf247631b4bee4643a10681530eec542f17236729fae5"
+  },
+  "sameTreeRequiredPrLiveProof": {
+    "run": 41236793296,
+    "passed": 304,
+    "failed": 0,
+    "existingSkips": 4,
+    "serializedControlPassed": 1
+  },
+  "knownHistoricalPublishedMatrix": "One real unchanged historical test failure remains recorded; supplies no passing compatibility credit. Not an effective release.yml push-proof workflow. No expectation or gate altered.",
+  "selection": "Only normally merged helper on the already published 3.130.0 source. Separate owner technical PR380 is not included. Parties server/adapter build using official selected SDK3.130.0 succeeded; no private-source fallback.",
+  "dispatchAuthorized": "User approved necessary prerequisite releases and normal protected environment review; existing prior release explicitly separate and completed.",
+  "dispatchInputs": {},
+  "version": "Selected by existing semantic-release; not invented by coordinator",
+  "candidateAcceptance": false
+}

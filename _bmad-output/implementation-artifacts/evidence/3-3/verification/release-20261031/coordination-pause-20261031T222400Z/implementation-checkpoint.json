@@ -1,0 +1,106 @@
+{
+  "status": "paused by explicit coordination request; no automatic resume",
+  "utc": "2026-10-31T22:23:06.908201+00:00",
+  "repositories": {
+    "Hexalith.EventStore-final": {
+      "head": "316da6cf7c12582dc4cddeecb6f2f06f64588817",
+      "branch": "fix/development-catalog-owner-qualification",
+      "status": "",
+      "indexPath": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.EventStore/worktrees/Hexalith.EventStore-final/index",
+      "indexSha256": "92c6b290891b45fc2aaf07802e8e855059288aa87c02dae8acffce837be1f1d1"
+    },
+    "Hexalith.Tenants-final": {
+      "head": "74e6cb21598fdd14c9aa261f74970f5c5b63f55d",
+      "branch": "fix/development-catalog-owner-qualification",
+      "status": "",
+      "indexPath": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.Tenants/worktrees/Hexalith.Tenants-final/index",
+      "indexSha256": "19bbae5794701e42ac92257b50d2b3fd952a1e7e0f4110ebaacd473082c300f4"
+    },
+    "Hexalith.Builds-final": {
+      "head": "57255b502fdd546bb09851d04fc1830175d897f3",
+      "branch": "fix/development-catalog-owner-qualification",
+      "status": "M  Tools/G4PackageQualification.functions.ps1\nM  src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs\nMM src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj\n M src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs\nM  src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs\n M test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs\n?? src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs\n?? src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs\n?? test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs",
+      "indexPath": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.Builds/worktrees/Hexalith.Builds-final/index",
+      "indexSha256": "a05b0b012343b8a7cce8ca4ee145f41991469b14f96084616d12409ae1633bed"
+    },
+    "Hexalith.Platform-final": {
+      "head": "68b785b6a929050771e70d78f83ff10fea3daabc",
+      "branch": "fix/run-scoped-routing-catalog-delivery",
+      "status": "M  Hexalith.Platform.slnx\nM  eng/tuple-ci-suites.json\nM  src/Hexalith.Platform.CatalogBuilder/Program.cs\nM  src/Hexalith.Platform.Composition/Declarations/eventstore.json\nM  src/Hexalith.Platform.Composition/Declarations/memories.json\nM  src/Hexalith.Platform.Composition/Declarations/provenance.json\nMM src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\nMM src/Hexalith.Platform.Composition/PlatformAppModel.cs\nM  src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs\nMM src/Hexalith.Platform.Composition/PlatformNativeInvocationAccess.cs\nMM src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs\nMM src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs\nMM src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs\nMM src/Hexalith.Platform.Composition/PlatformTenantBootstrapAccess.cs\nMM src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj\nMM src/Hexalith.Platform.EventStoreHost/Program.cs\nMM tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj\n M tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs\nMM tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs\nM  tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs\nMM tests/Hexalith.Platform.Composition.Tests/PlatformNativeTestPreparationTests.cs\n?? eng/Hexalith.Platform.CatalogProof/\n?? src/Hexalith.Platform.Composition/PlatformCommittedCatalogProof.cs\n?? src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs\n?? tests/Hexalith.Platform.Composition.Tests/CatalogMetadataResponseHandler.cs\n?? tests/Hexalith.Platform.Composition.Tests/CatalogMetadataStallingStream.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformCatalogContractBindingTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformCommittedCatalogProofTests.cs\n?? tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogMetadataTests.cs",
+      "indexPath": "/home/administrator/projects/hexalith/platform/.git/worktrees/Hexalith.Platform-final/index",
+      "indexSha256": "27466385026d83653a3fb6d564261886180870fb21116bd0cbde34c5195afcc9"
+    },
+    "Hexalith.Parties-final": {
+      "head": "4e2b2e8dae4835944adb55ccc8a86acbc470897e",
+      "branch": "fix/development-catalog-owner-qualification",
+      "status": "",
+      "indexPath": "/home/administrator/projects/hexalith/platform/.git/modules/references/Hexalith.Parties/worktrees/Hexalith.Parties-final/index",
+      "indexSha256": "26247473dfe90547869ea217787cdd0454b293c156e4193a17bc7a575d921cfa"
+    }
+  },
+  "ownedTopology": "none started",
+  "ownedActiveBuilds": "owned source mapping build session47066 terminated at safe checkpoint; no remaining owned command session",
+  "pendingMutation": "None executing. Later SDK merge/publication and owner delivery remain pending; no merge/release was performed.",
+  "notes": [
+    "Shared root and shared indexes untouched. Isolated Party-final source remains clean; no Parties source was edited.",
+    "Platform source-build3 was interrupted by explicit pause. Its script printed exitCode0 after targeted process termination but its log has no completed build summary; it is NOT passing evidence.",
+    "Latest normal SDK head316da6cf7; Tenants74e6cb21. Existing GitHub workflows were left running, never cancelled."
+  ],
+  "verification": {
+    "/tmp/story33-platform-technical-seed-focused.xml": {
+      "sha256": "9f577d510e293bcff6d0dc2af32f9e0682757b3db5da53cfc81dec3f39d27127",
+      "assembly": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "d4e83c0f-712e-4aa3-acbe-7934ce5a8cfb",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "22:16:44",
+        "start-rtf": "2026-10-31T22:16:44.8433950+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "10",
+        "finish-rtf": "2026-10-31T22:16:47.0485827+00:00",
+        "not-run": "0",
+        "passed": "51",
+        "skipped": "0",
+        "time": "2.206",
+        "time-rtf": "00:00:02.2060000",
+        "total": "61"
+      },
+      "log": "/tmp/story33-platform-technical-seed-focused.log"
+    },
+    "/tmp/story33-platform-technical-seed-focused2.xml": {
+      "sha256": "a4bb99f41d16450f564a613e1949e9f83078a038b0ad52e04fe81132391bf564",
+      "assembly": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "7a27754a-7851-40b1-990f-5f57308c1442",
+        "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Platform-final/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "22:21:47",
+        "start-rtf": "2026-10-31T22:21:47.8902877+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "4",
+        "finish-rtf": "2026-10-31T22:21:50.2152522+00:00",
+        "not-run": "0",
+        "passed": "57",
+        "skipped": "0",
+        "time": "2.325",
+        "time-rtf": "00:00:02.3250000",
+        "total": "61"
+      },
+      "log": "/tmp/story33-platform-technical-seed-focused2.log"
+    }
+  },
+  "evidence": [
+    "/tmp/story33-sdk-split-owner-final-20261031/handoff.json",
+    "/tmp/story33-sdk-split-owner-scan-20261031/receipt.json",
+    "/tmp/story33-tenants-current-candidate-20261031.patch",
+    "/tmp/story33-tenants-final-verification.json",
+    "/tmp/story33-platform-technical-seed-build.json",
+    "/tmp/story33-platform-technical-seed-build2.json",
+    "/tmp/story33-platform-technical-seed-build3.json"
+  ]
+}

@@ -297,9 +297,70 @@ class PreparationTests(unittest.TestCase):
         storage = json.loads((directory / "dynamic-storage-proof.json").read_text())["collectionRequirements"]
         self.assertIsNone(storage["requiredDynamicStorageClassesFromFreshCensus"])
         transition = json.loads((directory / "maintenance-transition.json").read_text())
-        self.assertEqual(transition["quiesce"]["state"], "not-started")
+        self.assertTrue(all(entry["quiesce"]["state"] == "not-started"
+                            for entry in transition["perHopTransitions"]))
         self.assertIsNone(transition["collectionRequirements"]["approvedSuccessorProcedureSha256"])
         self.assertIsNone(transition["collectionRequirements"]["accountableStopRecoveryDecisionSha256"])
+
+    def test_each_hop_requires_its_own_ordered_terminal_transition(self):
+        directory = self.run_preparation()
+        transition = json.loads((directory / "maintenance-transition.json").read_text())
+        self.assertTrue(transition["collectionRequirements"]["freshEvidenceRequiredForEveryHop"])
+        entries = transition["perHopTransitions"]
+        self.assertEqual([(entry["fromMinor"], entry["toMinor"]) for entry in entries],
+                         [("1.34", "1.35"), ("1.35", "1.36")])
+        for entry in entries:
+            suffix = f"{entry['fromMinor']}-to-{entry['toMinor']}"
+            outcome = json.loads((directory / f"minor-hop-{suffix}.json").read_text())
+            binding = outcome["maintenanceTransition"]
+            self.assertEqual(entry["approvedGateRecord"], outcome["approvedGateRecord"])
+            self.assertEqual((binding["fromMinor"], binding["toMinor"]),
+                             (entry["fromMinor"], entry["toMinor"]))
+            self.assertEqual(binding["record"], "maintenance-transition.json")
+            for key in ("recordSha256", "entrySha256"):
+                self.assertIsNone(binding[key])
+            for key in ("acceptedTargetPatch", "approvedGateSha256", "approvedSuccessorProcedureSha256",
+                        "accountableStopRecoveryDecisionSha256"):
+                self.assertIsNone(entry[key])
+            self.assertFalse(entry["terminalSuccessEstablished"])
+            self.assertFalse(binding["terminalSuccessEstablished"])
+            self.assertEqual(binding["verificationResult"], "not-run")
+            self.assertEqual(len(entry["requiredOrder"]), 5)
+            for phase in ("quiesce", "cordon", "drain"):
+                self.assertEqual(entry[phase]["state"], "not-started")
+                self.assertTrue(all(entry[phase][key] is None
+                                    for key in ("startedAt", "finishedAt", "evidenceSha256")))
+            self.assertIsNone(entry["quiesce"]["allTrackedWorkflowsTerminal"])
+            self.assertIsNone(entry["cordon"]["observedUnschedulable"])
+            self.assertIsNone(entry["drain"]["exitCode"])
+            self.assertIsNone(entry["drain"]["approvedExceptions"])
+        # A first-hop declaration cannot populate the independent later-hop placeholder.
+        entries[0]["quiesce"]["state"] = "succeeded"
+        self.assertEqual(entries[1]["quiesce"]["state"], "not-started")
+
+    def test_storage_requires_distinct_before_and_after_proofs_for_each_hop(self):
+        directory = self.run_preparation()
+        storage = json.loads((directory / "dynamic-storage-proof.json").read_text())["collectionRequirements"]
+        for entry in storage["perHopEvidence"]:
+            suffix = f"{entry['fromMinor']}-to-{entry['toMinor']}"
+            self.assertIsNone(entry["requiredDynamicStorageClassesFromFreshCensus"])
+            self.assertEqual(set(entry["phases"]), {"before-hop", "after-hop-before-uncordon"})
+            for file, key, phase in ((f"hop-gate-{suffix}.json", "preHopStorage", "before-hop"),
+                                     (f"minor-hop-{suffix}.json", "postHopStorage", "after-hop-before-uncordon")):
+                binding = json.loads((directory / file).read_text())[key]
+                self.assertEqual((binding["fromMinor"], binding["toMinor"]),
+                                 (entry["fromMinor"], entry["toMinor"]))
+                self.assertEqual(binding["phase"], phase)
+                self.assertEqual(binding["record"], "dynamic-storage-proof.json")
+                self.assertIsNone(binding["evidenceSha256"])
+                self.assertEqual(binding["verificationResult"], "not-run")
+                self.assertIsNone(entry["phases"][phase]["capturedAt"])
+                self.assertIsNone(entry["phases"][phase]["evidenceSha256"])
+                self.assertFalse(entry["phases"][phase]["providerCleanupEstablished"])
+        storage["perHopEvidence"][0]["phases"]["before-hop"]["verificationResult"] = "pass"
+        self.assertEqual(storage["perHopEvidence"][0]["phases"]["after-hop-before-uncordon"]["verificationResult"], "not-run")
+        storage["perHopEvidence"][0]["phases"]["after-hop-before-uncordon"]["verificationResult"] = "pass"
+        self.assertEqual(storage["perHopEvidence"][1]["phases"]["before-hop"]["verificationResult"], "not-run")
 
     def test_malformed_and_expired_inputs_do_not_expose_values(self):
         bundle = self.root / "bundle"

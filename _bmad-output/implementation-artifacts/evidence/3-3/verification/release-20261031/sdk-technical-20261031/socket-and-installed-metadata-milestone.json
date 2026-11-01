@@ -1,0 +1,52 @@
+{
+  "status": "executed-local-milestone",
+  "total": 124,
+  "failed": 0,
+  "skipped": 0,
+  "seconds": 32.183,
+  "productionAdminSocketCases": 17,
+  "parentRead": [
+    "Complete real DaprStorageCommandService/request builder/factory-send HTTP bridge fixture and tests",
+    "pre-capture actual MVC endpoint-source/delegate, binding, filter and policy tests",
+    "conditional DomainRouteCatalogGuard peer binding tests",
+    "exact early HTTP security validator refusal expectation retained"
+  ],
+  "scope": "Local ephemeral Kestrel sockets with explicit HTTP sidecar bridge and real receiver action/state effects. This does not claim a real Dapr sidecar or ordinary delivered package cohort.",
+  "negatives": [
+    "inactive",
+    "same root+epoch different activation attempt",
+    "receiver/caller observation drift",
+    "committed action and peer identity tamper",
+    "missing/tampered binding",
+    "wrong target/scheme/host/port/basepath",
+    "wrong verb/route constraint",
+    "redirect before redirected sink",
+    "copied actual MVC metadata on minimal delegate",
+    "pre-capture parameter type/binder/source/model name/filter/human/control weakening",
+    "domain missing/foreign/duplicate v2 header"
+  ],
+  "remaining": [
+    "actual SDK CommandsController v2 peer execution cases",
+    "required live CI fixture fixes",
+    "full source owner preflight and final combined suites/scanners",
+    "normal current-base PR/source/release and owner/Builds/Platform delivery gates"
+  ],
+  "publicationAcceptance": false,
+  "logs": [
+    {
+      "path": "story33-sdk-technical-socket-build3.log",
+      "bytes": 2665,
+      "sha256": "e218957fb484314423738eac2a814727121f429b64d4abed11790ae4af5d8f60"
+    },
+    {
+      "path": "story33-sdk-technical-socket-run2.log",
+      "bytes": 477,
+      "sha256": "14505ca05807a369aba875f78176b8a5ade012ad39d33a1b7fa6860e4ebdde22"
+    },
+    {
+      "path": "story33-sdk-technical-socket-run2.xml",
+      "bytes": 91614,
+      "sha256": "c05af78dfffdec6901d707061c0c7ccdfce2a796e18ba5965f6d83ad999383ad"
+    }
+  ]
+}

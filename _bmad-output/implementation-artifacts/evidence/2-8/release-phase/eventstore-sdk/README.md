@@ -1,0 +1,13 @@
+## EventStore SDK prerequisite release
+
+This receipt covers only the first approved prerequisite step for Story 2.8. The story remains in progress; hosted module CI qualification and all later repository activation/pin changes remain pending.
+
+Source: [PR 378](https://github.com/Hexalith/Hexalith.EventStore/pull/378), branch `fix/story-2-8-sdk-stream-observer`, exact commit `67bab1f13bd26d7fd7fbe390b57006a537e5c5a2`, based on live main `61e6fa853d81cf822d67d6abfd6a130bdbb14ce2`. The commit contains only the SDK csproj, `TestEnvironmentStreamReader.cs`, and descriptor fixture tests. No caller workflow/tool configuration, solution activation, module manifest, native reference test project or dependency pins are included.
+
+The original EventStore working tree stays at `ad383a96394307154b0026643245fdbb9a24dd4e`. Its ten dirty-file byte hashes were recorded before isolation and rechecked unchanged. A linked worktree holds the release branch, so staged enrollment is preserved.
+
+Local verification: Release build succeeded with zero warnings/errors; all 15 descriptor controls passed; the local SDK nupkg packed successfully with the Redis dependency. The exact owner gitlink Builds package props (`a22b55f0a4f6d2aaa3a5ccc505896064ac595364`) were extracted read-only for package versions; cross-repository dependencies use published packages. The local nupkg version `3.128.4` is a compilation identity, not a publication claim. The normal existing release workflow chooses the eventual semantic version. Exact commands, outputs, source and binary hashes are retained here.
+
+Owning pinned Commitlint 21.2.4 accepted the exact commit message, PR title, and proposed squash message. Normal repository hooks and staged-file guard ran. The active branch rules require a squash PR with seven named checks; no admin bypass, force push, protection edit or run cancellation was used.
+
+Current remote state: six of seven required PR checks are green, and the complete owner CI workflow succeeded at the exact PR head. Its full integration-testing SDK suite passed all 59 cases. The sole pending required gate is `live-sidecar` in Integration Tests run `41224995195`, job `124607183097`. The earlier current-main run failed that gate with seven cases; baseline source, observed failures, run/job links and a full-log hash are retained separately. Its failures are outside the three-file prerequisite diff. The PR run is still executing; no merge, fresh main push proof or publication is claimed. The existing `production` environment review will be submitted through its normal API only if the authenticated approved reviewer is permitted by GitHub.

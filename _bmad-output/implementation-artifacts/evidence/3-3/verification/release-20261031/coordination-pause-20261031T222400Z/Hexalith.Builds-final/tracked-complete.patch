@@ -1,0 +1,1397 @@
+diff --git a/Tools/G4PackageQualification.functions.ps1 b/Tools/G4PackageQualification.functions.ps1
+index 51b2a61..56e46cd 100644
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -1,540 +1,540 @@
+-# G-4 tool package qualification/publication helper functions.
+-#
+-# Dot-sourced by both the official qualification gate
+-# (test-g4-tool-package-contracts.ps1) and its isolated regression suite
+-# (test-g4-tool-package-artifact-validator.ps1) so the exact same logic that
+-# gates a real candidate is what the regression tests exercise -- never a
+-# duplicated, driftable copy.
+-
+-Set-StrictMode -Version Latest
+-$ErrorActionPreference = 'Stop'
+-
+-function Assert-ReleaseEligibleInventory {
+-    # Keep an ineligible candidate from being tagged by semantic-release before
+-    # the publisher performs its independent inventory validation.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $InventoryPath,
+-        [Parameter(Mandatory = $true)][string] $Version
+-    )
+-
+-    $inventory = Get-Content -LiteralPath $InventoryPath -Raw | ConvertFrom-Json
+-    $qualification = $inventory.qualification
+-    if ($inventory.schema -cne 'hexalith.g4-tool-package-inventory.v1' -or
+-        $inventory.version -cne $Version -or $inventory.configuration -cne 'Release' -or
+-        $null -eq $qualification -or
+-        [string] $qualification.packageBuild.mode -cne 'official' -or
+-        [string] $qualification.packageBuild.result -cne 'passed' -or
+-        [string] $qualification.sourceValidation.mode -cne 'executed' -or
+-        [string] $qualification.sourceValidation.result -cne 'passed' -or
+-        [string] $qualification.controls.mode -cne 'executed' -or
+-        [string] $qualification.controls.result -cne 'passed' -or
+-        $qualification.releaseEligible -isnot [bool] -or $qualification.releaseEligible -ne $true) {
+-        $reasons = if ($null -ne $qualification -and $null -ne $qualification.ineligibilityReasons -and
+-            @($qualification.ineligibilityReasons).Count -gt 0) {
+-            [string]::Join('; ', @($qualification.ineligibilityReasons))
+-        }
+-        else {
+-            'qualification inventory is incomplete or bypassed'
+-        }
+-        throw "Pre-tag G-4 package qualification is not release eligible for '$Version': $reasons"
+-    }
+-
+-    return $inventory
+-}
+-
+-function Save-QualificationEvidence {
+-    # Persists a control's raw output and returns its recorded hash/size. Coverage is
+-    # only "satisfied" once Assert-QualificationEvidenceContent has independently
+-    # parsed and validated what was written here -- hash, size, and filename alone
+-    # never suffice.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $EvidenceDirectory,
+-        [Parameter(Mandatory = $true)][string] $Name,
+-        [Parameter(Mandatory = $true)][AllowEmptyString()][string] $Content
+-    )
+-
+-    $fileName = "$Name.json"
+-    $filePath = Join-Path $EvidenceDirectory $fileName
+-    [System.IO.File]::WriteAllText($filePath, $Content, [Text.UTF8Encoding]::new($false))
+-    $bytes = [System.IO.File]::ReadAllBytes($filePath)
+-    return [ordered] @{
+-        file = "qualification-evidence/$fileName"
+-        sha256 = (Get-FileHash -LiteralPath $filePath -Algorithm SHA256).Hash
+-        sizeBytes = $bytes.Length
+-    }
+-}
+-
+-function Assert-QualificationEvidenceContent {
+-    # Parses and validates the CONTENT of a captured qualification-evidence artifact
+-    # against the real hexalith.module-run/evidence-cli `--output json` shape
+-    # (top-level "status"; the causal rule lives at "outcome.ruleId", not at the
+-    # document root, and "diagnostics[]" can be non-empty even on success). A
+-    # hash/size/filename triple proves an artifact was retained unmodified; it
+-    # proves nothing about whether the artifact actually contains a coherent,
+-    # rule-bearing result. This is the content-parsing leg that coverage requires.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $FilePath,
+-        [Parameter(Mandatory = $true)][ValidateSet('Negative', 'Positive', 'ExactNonPassing')][string] $Kind,
+-        [string] $ExpectedStatus = '',
+-        [string] $ExpectedOutcomeExitCode = '',
+-        [string] $ExpectedPhase = '',
+-        [string] $ExpectedCategory = '',
+-        [string] $ExpectedRuleId = '',
+-        [switch] $RequireNullRuleId,
+-        [AllowEmptyCollection()][string[]] $ExpectedDiagnosticRuleIds
+-    )
+-
+-    $text = [System.IO.File]::ReadAllText($FilePath)
+-    if ([string]::IsNullOrWhiteSpace($text)) {
+-        throw "Qualification evidence '$FilePath' is empty; content cannot be validated."
+-    }
+-
+-    try {
+-        $document = $text | ConvertFrom-Json -ErrorAction Stop
+-    }
+-    catch {
+-        throw "Qualification evidence '$FilePath' is not valid JSON. $($_.Exception.GetBaseException().Message)"
+-    }
+-
+-    if ($document.PSObject.Properties.Name -notcontains 'status') {
+-        throw "Qualification evidence '$FilePath' does not declare a status."
+-    }
+-    if ($document.status -isnot [string] -or
+-        [string]::IsNullOrWhiteSpace([string] $document.status)) {
+-        throw "Qualification evidence '$FilePath' status must be a non-blank JSON string."
+-    }
+-
+-    if ($document.PSObject.Properties.Name -notcontains 'outcome' -or $null -eq $document.outcome) {
+-        throw "Qualification evidence '$FilePath' does not declare an outcome."
+-    }
+-
+-    foreach ($outcomeField in @('exitCode', 'phase', 'category', 'ruleId')) {
+-        if ($document.outcome.PSObject.Properties.Name -notcontains $outcomeField) {
+-            throw "Qualification evidence '$FilePath' outcome does not declare '$outcomeField'."
+-        }
+-    }
+-
+-    if ($document.outcome.exitCode -isnot [string] -or
+-        [string]::IsNullOrWhiteSpace([string] $document.outcome.exitCode)) {
+-        throw "Qualification evidence '$FilePath' outcome.exitCode must be a non-blank JSON string."
+-    }
+-    if ($document.outcome.phase -isnot [string] -or
+-        [string]::IsNullOrWhiteSpace([string] $document.outcome.phase)) {
+-        throw "Qualification evidence '$FilePath' outcome.phase must be a non-blank JSON string."
+-    }
+-    if ($document.outcome.category -isnot [string] -or
+-        [string]::IsNullOrWhiteSpace([string] $document.outcome.category)) {
+-        throw "Qualification evidence '$FilePath' outcome.category must be a non-blank JSON string."
+-    }
+-    if ($null -ne $document.outcome.ruleId -and
+-        ($document.outcome.ruleId -isnot [string] -or
+-            [string]::IsNullOrWhiteSpace([string] $document.outcome.ruleId))) {
+-        throw "Qualification evidence '$FilePath' outcome.ruleId must be null or a non-blank JSON string."
+-    }
+-    if ($document.PSObject.Properties.Name -notcontains 'diagnostics' -or $null -eq $document.diagnostics) {
+-        throw "Qualification evidence '$FilePath' does not declare diagnostics."
+-    }
+-
+-    $status = [string] $document.status
+-    $outcomeExitCode = [string] $document.outcome.exitCode
+-    $phase = [string] $document.outcome.phase
+-    $category = [string] $document.outcome.category
+-    $ruleId = if ($null -eq $document.outcome.ruleId) { $null } else { [string] $document.outcome.ruleId }
+-    $diagnosticRuleIds = @(
+-        foreach ($diagnostic in @($document.diagnostics)) {
+-            if ($null -eq $diagnostic -or
+-                $diagnostic.PSObject.Properties.Name -notcontains 'ruleId' -or
+-                $diagnostic.ruleId -isnot [string] -or
+-                [string]::IsNullOrWhiteSpace([string] $diagnostic.ruleId)) {
+-                throw "Qualification evidence '$FilePath' contains a diagnostic without a non-blank string ruleId."
+-            }
+-
+-            [string] $diagnostic.ruleId
+-        }
+-    )
+-
+-    switch ($Kind) {
+-        'Negative' {
+-            if ($status -cne 'failed') {
+-                throw "Qualification evidence '$FilePath' status '$status' does not represent a failed negative control."
+-            }
+-            if ($outcomeExitCode -ceq 'Success') {
+-                throw "Qualification evidence '$FilePath' reports a successful outcome for a failed negative control."
+-            }
+-            if ([string]::IsNullOrWhiteSpace([string] $ruleId)) {
+-                throw "Qualification evidence '$FilePath' does not carry a causal outcome.ruleId for a negative control."
+-            }
+-            if (-not [string]::IsNullOrWhiteSpace($ExpectedRuleId) -and $ruleId -cne $ExpectedRuleId) {
+-                throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected '$ExpectedRuleId'."
+-            }
+-        }
+-        'ExactNonPassing' {
+-            if ($status -cne 'unavailable') {
+-                throw "Qualification evidence '$FilePath' status '$status' represents a non-passing control as passing."
+-            }
+-            if ($outcomeExitCode -ceq 'Success' -or [string]::IsNullOrWhiteSpace([string] $ruleId)) {
+-                throw "Qualification evidence '$FilePath' does not carry a non-success outcome and causal rule for a non-passing control."
+-            }
+-            if (-not [string]::IsNullOrWhiteSpace($ExpectedRuleId) -and $ruleId -cne $ExpectedRuleId) {
+-                throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected '$ExpectedRuleId'."
+-            }
+-        }
+-        'Positive' {
+-            if ($status -cnotin @('passed', 'completed')) {
+-                throw "Qualification evidence '$FilePath' status '$status' represents a positive control as failed."
+-            }
+-            if ($outcomeExitCode -cne 'Success' -or $null -ne $ruleId) {
+-                throw "Qualification evidence '$FilePath' does not carry the canonical successful outcome with a null ruleId."
+-            }
+-        }
+-    }
+-
+-    foreach ($exactValue in @(
+-            [pscustomobject] @{ Name = 'status'; Actual = $status; Expected = $ExpectedStatus },
+-            [pscustomobject] @{ Name = 'outcome.exitCode'; Actual = $outcomeExitCode; Expected = $ExpectedOutcomeExitCode },
+-            [pscustomobject] @{ Name = 'outcome.phase'; Actual = $phase; Expected = $ExpectedPhase },
+-            [pscustomobject] @{ Name = 'outcome.category'; Actual = $category; Expected = $ExpectedCategory }
+-        )) {
+-        if (-not [string]::IsNullOrWhiteSpace($exactValue.Expected) -and
+-            $exactValue.Actual -cne $exactValue.Expected) {
+-            throw "Qualification evidence '$FilePath' reports $($exactValue.Name) '$($exactValue.Actual)'; expected '$($exactValue.Expected)'."
+-        }
+-    }
+-
+-    if ($RequireNullRuleId -and $null -ne $ruleId) {
+-        throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected null."
+-    }
+-
+-    if ($PSBoundParameters.ContainsKey('ExpectedDiagnosticRuleIds') -and
+-        [string]::Join('|', $diagnosticRuleIds) -cne [string]::Join('|', @($ExpectedDiagnosticRuleIds))) {
+-        throw "Qualification evidence '$FilePath' reports diagnostic rule IDs '$($diagnosticRuleIds -join ', ')'; expected '$(@($ExpectedDiagnosticRuleIds) -join ', ')'."
+-    }
+-
+-    return $document
+-}
+-
+-function Assert-ModuleRunEvidenceContent {
+-    # Validates a retained hexalith.module-run-evidence.v1 artifact at publication
+-    # time. The publisher supplies the exact expected invocation, source revision,
+-    # tool build identity, manifest hash, and typed outcome; merely retaining JSON
+-    # with the right filename cannot satisfy this contract.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $FilePath,
+-        [Parameter(Mandatory = $true)][string] $ExpectedFinalStatus,
+-        [Parameter(Mandatory = $true)][long] $ExpectedExitCode,
+-        [AllowNull()][object] $ExpectedRuleId,
+-        [Parameter(Mandatory = $true)][string] $ExpectedPhase,
+-        [Parameter(Mandatory = $true)][string] $ExpectedCategory,
+-        [Parameter(Mandatory = $true)][string] $ExpectedCommand,
+-        [Parameter(Mandatory = $true)][string] $ExpectedToolVersion,
+-        [Parameter(Mandatory = $true)][string] $ExpectedRepositoryRevision,
+-        [Parameter(Mandatory = $true)][string] $ExpectedRepositoryDirtyMarker,
+-        [Parameter(Mandatory = $true)][string] $ExpectedManifestHash,
+-        [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string] $ExpectedEventStoreVersion
+-    )
+-
+-    $bytes = [IO.File]::ReadAllBytes($FilePath)
+-    if ($bytes.Length -eq 0 -or $bytes[$bytes.Length - 1] -ne [byte][char]"`n") {
+-        throw "Module-run evidence '$FilePath' must be non-empty canonical JSON with a final newline."
+-    }
+-
+-    try {
+-        $evidence = [IO.File]::ReadAllText($FilePath) | ConvertFrom-Json -DateKind String -ErrorAction Stop
+-    }
+-    catch {
+-        throw "Module-run evidence '$FilePath' is not valid JSON. $($_.Exception.GetBaseException().Message)"
+-    }
+-
+-    $numericExitCode = $evidence.outcome.exitCode -is [int] -or
+-        $evidence.outcome.exitCode -is [long] -or
+-        $evidence.outcome.exitCode -is [decimal]
+-    $hasExactRuleId = if ($null -eq $ExpectedRuleId) {
+-        $null -eq $evidence.outcome.ruleId
+-    }
+-    else {
+-        $evidence.outcome.ruleId -is [string] -and $evidence.outcome.ruleId -ceq [string] $ExpectedRuleId
+-    }
+-
+-    if ($evidence.schema -isnot [string] -or $evidence.schema -cne 'hexalith.module-run-evidence.v1' -or
+-        $evidence.finalStatus -isnot [string] -or $evidence.finalStatus -cne $ExpectedFinalStatus -or
+-        -not $numericExitCode -or [long] $evidence.outcome.exitCode -ne $ExpectedExitCode -or
+-        $evidence.outcome.phase -isnot [string] -or $evidence.outcome.phase -cne $ExpectedPhase -or
+-        $evidence.outcome.category -isnot [string] -or $evidence.outcome.category -cne $ExpectedCategory -or
+-        -not $hasExactRuleId -or
+-        $evidence.invocation.command -isnot [string] -or $evidence.invocation.command -cne $ExpectedCommand -or
+-        $evidence.invocation.manifestHash -isnot [string] -or $evidence.invocation.manifestHash -cne $ExpectedManifestHash -or
+-        $evidence.environment.toolVersion -isnot [string] -or $evidence.environment.toolVersion -cne $ExpectedToolVersion -or
+-        $evidence.environment.repositoryRevision -isnot [string] -or $evidence.environment.repositoryRevision -cne $ExpectedRepositoryRevision -or
+-        $evidence.environment.repositoryDirtyMarker -isnot [string] -or $evidence.environment.repositoryDirtyMarker -cne $ExpectedRepositoryDirtyMarker -or
+-        $evidence.topology.platform.eventStoreVersion -isnot [string] -or
+-        $evidence.topology.platform.eventStoreVersion -cne $ExpectedEventStoreVersion) {
+-        throw "Module-run evidence '$FilePath' does not match its exact typed outcome, invocation, manifest, tool, source-revision, dirty-marker, and platform binding."
+-    }
+-
+-    return $evidence
+-}
+-
+-function Assert-QualificationLogContent {
+-    # The log is the one required non-JSON qualification artifact. Parse it as an
+-    # ordered command transcript and require every packaged positive/control lane,
+-    # while retaining the existing redaction contract.
+-    param([Parameter(Mandatory = $true)][string] $FilePath)
+-
+-    $content = [IO.File]::ReadAllText($FilePath)
+-    if ([string]::IsNullOrWhiteSpace($content)) {
+-        throw "Qualification log '$FilePath' is empty."
+-    }
+-    if ($content.Contains('packaged-redaction-control', [StringComparison]::Ordinal) -or
+-        $content.Contains('Bearer', [StringComparison]::Ordinal)) {
+-        throw "Qualification log '$FilePath' contains unredacted filter or credential material."
+-    }
+-
+-    foreach ($requiredCommand in @(
+-            'dotnet tool run hexalith-module -- down',
+-            'dotnet tool run hexalith-module -- test',
+-            'dotnet tool run hexalith-module -- run',
+-            'dotnet tool run hexalith-evidence -- validate'
+-        )) {
+-        if (-not $content.Contains($requiredCommand, [StringComparison]::Ordinal)) {
+-            throw "Qualification log '$FilePath' does not contain required command '$requiredCommand'."
+-        }
+-    }
+-
+-    return $content
+-}
+-
+-function Assert-PackagedSeedSubscriptionEvidence {
+-    # Recheck observed semantics AND bind them to the exact archive/entry that will
+-    # be published. A source-host result or a renamed generic passing JSON fails.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $FilePath,
+-        [Parameter(Mandatory = $true)][string] $PackagePath,
+-        [Parameter(Mandatory = $true)][string] $Version
+-    )
+-
+-    $proof = Get-Content -LiteralPath $FilePath -Raw | ConvertFrom-Json -NoEnumerate
+-    # The [pscustomobject] accelerator also matches some wrapped arrays. Compare
+-    # the underlying runtime type so -NoEnumerate cannot disguise a root array.
+-    if ($null -eq $proof -or $proof.GetType() -ne [System.Management.Automation.PSCustomObject] -or
+-        $proof.package.GetType() -ne [System.Management.Automation.PSCustomObject] -or
+-        $proof.seed.GetType() -ne [System.Management.Automation.PSCustomObject] -or $proof.checks -isnot [object[]]) {
+-        throw 'Packaged seed subscription proof requires object identities and an array of object checks.'
+-    }
+-    foreach ($check in $proof.checks) {
+-        if ($null -eq $check -or $check.GetType() -ne [System.Management.Automation.PSCustomObject]) {
+-            throw 'Packaged seed subscription proof requires object identities and an array of object checks.'
+-        }
+-    }
+-    foreach ($value in @($proof.schema, $proof.status, $proof.package.id, $proof.package.version,
+-            $proof.package.sha256, $proof.seed.entry, $proof.seed.sha256, $proof.seed.loadedSha256)) {
+-        if ($value -isnot [string]) { throw 'Packaged seed subscription proof requires scalar string identities.' }
+-    }
+-    $seedEntry = 'tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll'
+-    $archive = [IO.Compression.ZipFile]::OpenRead($PackagePath)
+-    try {
+-        $entries = @($archive.Entries | Where-Object FullName -CEQ $seedEntry)
+-        if ($entries.Count -ne 1) { throw 'Packaged seed subscription proof requires exactly one seed archive entry.' }
+-        $stream = $entries[0].Open()
+-        try { $seedHash = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($stream)) }
+-        finally { $stream.Dispose() }
+-    }
+-    finally { $archive.Dispose() }
+-
+-    if ($proof.schema -cne 'hexalith.g4-packaged-seed-subscriptions.v1' -or $proof.status -cne 'passed' -or
+-        $proof.package.id -cne 'Hexalith.Builds.Module.Cli' -or $proof.package.version -cne $Version -or
+-        $proof.package.sha256 -cne (Get-FileHash -LiteralPath $PackagePath -Algorithm SHA256).Hash -or
+-        $proof.seed.entry -cne $seedEntry -or $proof.seed.sha256 -cne $seedHash -or
+-        $proof.seed.loadedSha256 -cne $seedHash) {
+-        throw 'Packaged seed subscription proof does not bind the exact package and loaded seed.'
+-    }
+-
+-    $checks = @($proof.checks)
+-    if ($checks.Count -ne 2) { throw 'Packaged seed subscription proof must cover both modes exactly once.' }
+-    foreach ($declarative in @($false, $true)) {
+-        $cases = @($checks | Where-Object { $_.declarative -is [bool] -and $_.declarative -eq $declarative })
+-        if ($cases.Count -ne 1) { throw 'Packaged seed subscription proof must cover both modes exactly once.' }
+-        $case = $cases[0]
+-        foreach ($field in @('missingChannelStatusCode', 'invalidChannelStatusCode')) {
+-            if ($case.PSObject.Properties.Name -cnotcontains $field -or $case.$field -isnot [long] -or $case.$field -ne 401) {
+-                throw 'Packaged seed subscription proof does not satisfy the exact typed HTTP and receiver metadata assertions.'
+-            }
+-        }
+-        $status = if ($declarative) { 404 } else { 200 }
+-        $count = if ($declarative) { 0 } else { 1 }
+-        $pubsub = if ($declarative) { $null } else { 'configured-seed-events' }
+-        if (($declarative -and ($null -ne $case.subscriptionPubsubName -or $null -ne $case.receiverPubsubName)) -or
+-            (-not $declarative -and ($case.subscriptionPubsubName -isnot [string] -or $case.receiverPubsubName -isnot [string]))) {
+-            throw 'Packaged seed subscription proof requires exact scalar or null pubsub names.'
+-        }
+-        if ($case.discoveryStatusCode -isnot [long] -or $case.discoveryStatusCode -ne $status -or
+-            $case.projectionSubscriptionCount -isnot [long] -or $case.projectionSubscriptionCount -ne $count -or
+-            $case.subscriptionPubsubName -cne $pubsub -or
+-            $case.receiverPresent -isnot [bool] -or $case.receiverPresent -ne $true -or
+-            $case.receiverTopicMetadataCount -isnot [long] -or $case.receiverTopicMetadataCount -ne $count -or
+-            $case.receiverPubsubName -cne $pubsub -or
+-            $case.startupIndexWriterAliasRemoved -isnot [bool] -or $case.startupIndexWriterAliasRemoved -ne $true) {
+-            throw 'Packaged seed subscription proof does not satisfy the exact typed HTTP and receiver metadata assertions.'
+-        }
+-    }
+-    return $proof
+-}
+-
+-function Get-SourceTreeState {
+-    # Reports whether the qualified source tree is clean and binds the exact
+-    # revision the candidate was qualified against. A dirty tree does not abort the
+-    # run -- an external/untracked candidate may still exercise every control -- but
+-    # it does mean releaseEligible can never become true for this run, because its
+-    # tracked-byte proofs could not be reproduced from a fresh clone at the same
+-    # revision. Only a Git environment that cannot answer the question at all (no
+-    # work tree, `git status`/`git rev-parse` failing outright) is a hard error.
+-    param([Parameter(Mandatory = $true)][string] $RepositoryRoot)
+-
+-    & git -C $RepositoryRoot rev-parse --is-inside-work-tree *> $null
+-    if ($LASTEXITCODE -ne 0) {
+-        throw 'Source revision binding requires a Git work tree; none was found.'
+-    }
+-
+-    $status = @(& git -C $RepositoryRoot status --porcelain=v1 2>&1)
+-    if ($LASTEXITCODE -ne 0) {
+-        throw "git status failed with exit code $LASTEXITCODE."
+-    }
+-
+-    $statusLines = @($status | Where-Object { -not [string]::IsNullOrWhiteSpace([string] $_) })
+-
+-    $revisionOutput = @(& git -C $RepositoryRoot rev-parse HEAD 2>&1)
+-    if ($LASTEXITCODE -ne 0) {
+-        throw "git rev-parse HEAD failed with exit code $LASTEXITCODE."
+-    }
+-
+-    return [pscustomobject] @{
+-        Clean = $statusLines.Count -eq 0
+-        Revision = ([string] $revisionOutput[0]).Trim()
+-        Reasons = @($statusLines)
+-    }
+-}
+-
+-function Assert-TrackedFixtureBytesMatchHead {
+-    # Proves each fixture matches its tracked Git blob after the path's declared
+-    # clean filter. This accounts for .gitattributes checkout line endings while
+-    # still rejecting any change that Git would commit. Publication fails closed
+-    # on drift between qualified fixtures and the source revision.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $RepositoryRoot,
+-        [Parameter(Mandatory = $true)][string] $SourceRevision,
+-        [Parameter(Mandatory = $true)][string] $FixtureDirectory,
+-        [Parameter(Mandatory = $true)][string] $RepositoryRelativeRoot
+-    )
+-
+-    $mismatches = [System.Collections.Generic.List[string]]::new()
+-    $files = @(Get-ChildItem -LiteralPath $FixtureDirectory -File -Recurse | Sort-Object -Property FullName)
+-    foreach ($file in $files) {
+-        $relativePath = ([IO.Path]::GetRelativePath($FixtureDirectory, $file.FullName)).Replace('\', '/')
+-        $trackedPath = "$RepositoryRelativeRoot/$relativePath"
+-
+-        $trackedObjectIds = @(& git --no-replace-objects -C $RepositoryRoot rev-parse --verify "${SourceRevision}:${trackedPath}" 2>$null)
+-        if ($LASTEXITCODE -ne 0 -or $trackedObjectIds.Count -ne 1 -or
+-            [string] $trackedObjectIds[0] -notmatch '^[0-9a-f]{40,64}$') {
+-            $mismatches.Add("'$trackedPath' is not readable at $SourceRevision (not tracked, renamed, or removed).")
+-            continue
+-        }
+-
+-        $workingObjectIds = @(& git -C $RepositoryRoot hash-object "--path=$trackedPath" -- $file.FullName 2>$null)
+-        if ($LASTEXITCODE -ne 0 -or $workingObjectIds.Count -ne 1 -or
+-            [string] $workingObjectIds[0] -cne [string] $trackedObjectIds[0]) {
+-            $mismatches.Add("'$trackedPath' working-tree bytes differ from the bytes tracked at $SourceRevision.")
+-        }
+-    }
+-
+-    if ($mismatches.Count -gt 0) {
+-        throw "Tracked-fixture-vs-HEAD proof failed: $([string]::Join('; ', $mismatches))"
+-    }
+-
+-    return $files.Count
+-}
+-
+-function Get-NuGetPackageRole {
+-    # Opens a .nupkg/.snupkg archive and determines its canonical identity and role
+-    # entirely from its nuspec content and payload -- never from its file name or
+-    # extension -- so a swapped or relabeled artifact cannot pass by sharing a
+-    # plausible name.
+-    param([Parameter(Mandatory = $true)][string] $ArchivePath)
+-
+-    Add-Type -AssemblyName System.IO.Compression -ErrorAction SilentlyContinue
+-    Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
+-    $archive = [System.IO.Compression.ZipFile]::OpenRead($ArchivePath)
+-    try {
+-        $nuspecEntries = @($archive.Entries | Where-Object { $_.FullName -match '(^|/)[^/]+\.nuspec$' })
+-        if ($nuspecEntries.Count -eq 0) {
+-            throw "'$ArchivePath' contains no .nuspec entry; a NuGet package must contain exactly one."
+-        }
+-
+-        if ($nuspecEntries.Count -gt 1) {
+-            $names = [string]::Join(', ', @($nuspecEntries | ForEach-Object { $_.FullName }))
+-            throw "'$ArchivePath' contains $($nuspecEntries.Count) .nuspec entries ($names); exactly one is required."
+-        }
+-
+-        $entryStream = $nuspecEntries[0].Open()
+-        try {
+-            $reader = New-Object System.IO.StreamReader($entryStream)
+-            $nuspecText = $reader.ReadToEnd()
+-        }
+-        finally {
+-            $entryStream.Dispose()
+-        }
+-
+-        try {
+-            [xml] $nuspecXml = $nuspecText
+-        }
+-        catch {
+-            throw "'$ArchivePath' nuspec entry is not valid XML. $($_.Exception.GetBaseException().Message)"
+-        }
+-
+-        $metadata = $nuspecXml.package.metadata
+-        $id = [string] $metadata.id
+-        $version = [string] $metadata.version
+-        if ([string]::IsNullOrWhiteSpace($id) -or [string]::IsNullOrWhiteSpace($version)) {
+-            throw "'$ArchivePath' nuspec is missing a package id or version."
+-        }
+-
+-        $packageTypeNames = @()
+-        if ($null -ne $metadata.packageTypes) {
+-            $packageTypeNames = @($metadata.packageTypes.packageType | ForEach-Object { [string] $_.name })
+-        }
+-
+-        return [pscustomobject] @{
+-            Id = $id
+-            Version = $version
+-            IsSymbolsPackage = $packageTypeNames -contains 'SymbolsPackage'
+-        }
+-    }
+-    finally {
+-        $archive.Dispose()
+-    }
+-}
+-
+-function Assert-CanonicalNuGetArtifact {
+-    # Rejects a swapped or canonical-role-invalid artifact: the primary .nupkg must
+-    # not be a symbols package and the .snupkg must declare the SymbolsPackage
+-    # nuspec type, and both must match the expected package identity exactly.
+-    param(
+-        [Parameter(Mandatory = $true)][string] $ArchivePath,
+-        [Parameter(Mandatory = $true)][ValidateSet('Package', 'Symbols')][string] $ExpectedRole,
+-        [Parameter(Mandatory = $true)][string] $ExpectedId,
+-        [Parameter(Mandatory = $true)][string] $ExpectedVersion
+-    )
+-
+-    $role = Get-NuGetPackageRole -ArchivePath $ArchivePath
+-    if ($role.Id -cne $ExpectedId -or $role.Version -cne $ExpectedVersion) {
+-        throw "'$ArchivePath' nuspec identity '$($role.Id) $($role.Version)' does not match expected '$ExpectedId $ExpectedVersion'."
+-    }
+-
+-    if ($ExpectedRole -eq 'Package' -and $role.IsSymbolsPackage) {
+-        throw "'$ArchivePath' declares the SymbolsPackage nuspec type; a symbols package was swapped in as the primary artifact."
+-    }
+-
+-    if ($ExpectedRole -eq 'Symbols' -and -not $role.IsSymbolsPackage) {
+-        throw "'$ArchivePath' does not declare the SymbolsPackage nuspec type; the primary artifact was swapped in as symbols."
+-    }
+-
+-    return $role
+-}
++# G-4 tool package qualification/publication helper functions.
++#
++# Dot-sourced by both the official qualification gate
++# (test-g4-tool-package-contracts.ps1) and its isolated regression suite
++# (test-g4-tool-package-artifact-validator.ps1) so the exact same logic that
++# gates a real candidate is what the regression tests exercise -- never a
++# duplicated, driftable copy.
++
++Set-StrictMode -Version Latest
++$ErrorActionPreference = 'Stop'
++
++function Assert-ReleaseEligibleInventory {
++    # Keep an ineligible candidate from being tagged by semantic-release before
++    # the publisher performs its independent inventory validation.
++    param(
++        [Parameter(Mandatory = $true)][string] $InventoryPath,
++        [Parameter(Mandatory = $true)][string] $Version
++    )
++
++    $inventory = Get-Content -LiteralPath $InventoryPath -Raw | ConvertFrom-Json
++    $qualification = $inventory.qualification
++    if ($inventory.schema -cne 'hexalith.g4-tool-package-inventory.v1' -or
++        $inventory.version -cne $Version -or $inventory.configuration -cne 'Release' -or
++        $null -eq $qualification -or
++        [string] $qualification.packageBuild.mode -cne 'official' -or
++        [string] $qualification.packageBuild.result -cne 'passed' -or
++        [string] $qualification.sourceValidation.mode -cne 'executed' -or
++        [string] $qualification.sourceValidation.result -cne 'passed' -or
++        [string] $qualification.controls.mode -cne 'executed' -or
++        [string] $qualification.controls.result -cne 'passed' -or
++        $qualification.releaseEligible -isnot [bool] -or $qualification.releaseEligible -ne $true) {
++        $reasons = if ($null -ne $qualification -and $null -ne $qualification.ineligibilityReasons -and
++            @($qualification.ineligibilityReasons).Count -gt 0) {
++            [string]::Join('; ', @($qualification.ineligibilityReasons))
++        }
++        else {
++            'qualification inventory is incomplete or bypassed'
++        }
++        throw "Pre-tag G-4 package qualification is not release eligible for '$Version': $reasons"
++    }
++
++    return $inventory
++}
++
++function Save-QualificationEvidence {
++    # Persists a control's raw output and returns its recorded hash/size. Coverage is
++    # only "satisfied" once Assert-QualificationEvidenceContent has independently
++    # parsed and validated what was written here -- hash, size, and filename alone
++    # never suffice.
++    param(
++        [Parameter(Mandatory = $true)][string] $EvidenceDirectory,
++        [Parameter(Mandatory = $true)][string] $Name,
++        [Parameter(Mandatory = $true)][AllowEmptyString()][string] $Content
++    )
++
++    $fileName = "$Name.json"
++    $filePath = Join-Path $EvidenceDirectory $fileName
++    [System.IO.File]::WriteAllText($filePath, $Content, [Text.UTF8Encoding]::new($false))
++    $bytes = [System.IO.File]::ReadAllBytes($filePath)
++    return [ordered] @{
++        file = "qualification-evidence/$fileName"
++        sha256 = (Get-FileHash -LiteralPath $filePath -Algorithm SHA256).Hash
++        sizeBytes = $bytes.Length
++    }
++}
++
++function Assert-QualificationEvidenceContent {
++    # Parses and validates the CONTENT of a captured qualification-evidence artifact
++    # against the real hexalith.module-run/evidence-cli `--output json` shape
++    # (top-level "status"; the causal rule lives at "outcome.ruleId", not at the
++    # document root, and "diagnostics[]" can be non-empty even on success). A
++    # hash/size/filename triple proves an artifact was retained unmodified; it
++    # proves nothing about whether the artifact actually contains a coherent,
++    # rule-bearing result. This is the content-parsing leg that coverage requires.
++    param(
++        [Parameter(Mandatory = $true)][string] $FilePath,
++        [Parameter(Mandatory = $true)][ValidateSet('Negative', 'Positive', 'ExactNonPassing')][string] $Kind,
++        [string] $ExpectedStatus = '',
++        [string] $ExpectedOutcomeExitCode = '',
++        [string] $ExpectedPhase = '',
++        [string] $ExpectedCategory = '',
++        [string] $ExpectedRuleId = '',
++        [switch] $RequireNullRuleId,
++        [AllowEmptyCollection()][string[]] $ExpectedDiagnosticRuleIds
++    )
++
++    $text = [System.IO.File]::ReadAllText($FilePath)
++    if ([string]::IsNullOrWhiteSpace($text)) {
++        throw "Qualification evidence '$FilePath' is empty; content cannot be validated."
++    }
++
++    try {
++        $document = $text | ConvertFrom-Json -ErrorAction Stop
++    }
++    catch {
++        throw "Qualification evidence '$FilePath' is not valid JSON. $($_.Exception.GetBaseException().Message)"
++    }
++
++    if ($document.PSObject.Properties.Name -notcontains 'status') {
++        throw "Qualification evidence '$FilePath' does not declare a status."
++    }
++    if ($document.status -isnot [string] -or
++        [string]::IsNullOrWhiteSpace([string] $document.status)) {
++        throw "Qualification evidence '$FilePath' status must be a non-blank JSON string."
++    }
++
++    if ($document.PSObject.Properties.Name -notcontains 'outcome' -or $null -eq $document.outcome) {
++        throw "Qualification evidence '$FilePath' does not declare an outcome."
++    }
++
++    foreach ($outcomeField in @('exitCode', 'phase', 'category', 'ruleId')) {
++        if ($document.outcome.PSObject.Properties.Name -notcontains $outcomeField) {
++            throw "Qualification evidence '$FilePath' outcome does not declare '$outcomeField'."
++        }
++    }
++
++    if ($document.outcome.exitCode -isnot [string] -or
++        [string]::IsNullOrWhiteSpace([string] $document.outcome.exitCode)) {
++        throw "Qualification evidence '$FilePath' outcome.exitCode must be a non-blank JSON string."
++    }
++    if ($document.outcome.phase -isnot [string] -or
++        [string]::IsNullOrWhiteSpace([string] $document.outcome.phase)) {
++        throw "Qualification evidence '$FilePath' outcome.phase must be a non-blank JSON string."
++    }
++    if ($document.outcome.category -isnot [string] -or
++        [string]::IsNullOrWhiteSpace([string] $document.outcome.category)) {
++        throw "Qualification evidence '$FilePath' outcome.category must be a non-blank JSON string."
++    }
++    if ($null -ne $document.outcome.ruleId -and
++        ($document.outcome.ruleId -isnot [string] -or
++            [string]::IsNullOrWhiteSpace([string] $document.outcome.ruleId))) {
++        throw "Qualification evidence '$FilePath' outcome.ruleId must be null or a non-blank JSON string."
++    }
++    if ($document.PSObject.Properties.Name -notcontains 'diagnostics' -or $null -eq $document.diagnostics) {
++        throw "Qualification evidence '$FilePath' does not declare diagnostics."
++    }
++
++    $status = [string] $document.status
++    $outcomeExitCode = [string] $document.outcome.exitCode
++    $phase = [string] $document.outcome.phase
++    $category = [string] $document.outcome.category
++    $ruleId = if ($null -eq $document.outcome.ruleId) { $null } else { [string] $document.outcome.ruleId }
++    $diagnosticRuleIds = @(
++        foreach ($diagnostic in @($document.diagnostics)) {
++            if ($null -eq $diagnostic -or
++                $diagnostic.PSObject.Properties.Name -notcontains 'ruleId' -or
++                $diagnostic.ruleId -isnot [string] -or
++                [string]::IsNullOrWhiteSpace([string] $diagnostic.ruleId)) {
++                throw "Qualification evidence '$FilePath' contains a diagnostic without a non-blank string ruleId."
++            }
++
++            [string] $diagnostic.ruleId
++        }
++    )
++
++    switch ($Kind) {
++        'Negative' {
++            if ($status -cne 'failed') {
++                throw "Qualification evidence '$FilePath' status '$status' does not represent a failed negative control."
++            }
++            if ($outcomeExitCode -ceq 'Success') {
++                throw "Qualification evidence '$FilePath' reports a successful outcome for a failed negative control."
++            }
++            if ([string]::IsNullOrWhiteSpace([string] $ruleId)) {
++                throw "Qualification evidence '$FilePath' does not carry a causal outcome.ruleId for a negative control."
++            }
++            if (-not [string]::IsNullOrWhiteSpace($ExpectedRuleId) -and $ruleId -cne $ExpectedRuleId) {
++                throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected '$ExpectedRuleId'."
++            }
++        }
++        'ExactNonPassing' {
++            if ($status -cne 'unavailable') {
++                throw "Qualification evidence '$FilePath' status '$status' represents a non-passing control as passing."
++            }
++            if ($outcomeExitCode -ceq 'Success' -or [string]::IsNullOrWhiteSpace([string] $ruleId)) {
++                throw "Qualification evidence '$FilePath' does not carry a non-success outcome and causal rule for a non-passing control."
++            }
++            if (-not [string]::IsNullOrWhiteSpace($ExpectedRuleId) -and $ruleId -cne $ExpectedRuleId) {
++                throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected '$ExpectedRuleId'."
++            }
++        }
++        'Positive' {
++            if ($status -cnotin @('passed', 'completed')) {
++                throw "Qualification evidence '$FilePath' status '$status' represents a positive control as failed."
++            }
++            if ($outcomeExitCode -cne 'Success' -or $null -ne $ruleId) {
++                throw "Qualification evidence '$FilePath' does not carry the canonical successful outcome with a null ruleId."
++            }
++        }
++    }
++
++    foreach ($exactValue in @(
++            [pscustomobject] @{ Name = 'status'; Actual = $status; Expected = $ExpectedStatus },
++            [pscustomobject] @{ Name = 'outcome.exitCode'; Actual = $outcomeExitCode; Expected = $ExpectedOutcomeExitCode },
++            [pscustomobject] @{ Name = 'outcome.phase'; Actual = $phase; Expected = $ExpectedPhase },
++            [pscustomobject] @{ Name = 'outcome.category'; Actual = $category; Expected = $ExpectedCategory }
++        )) {
++        if (-not [string]::IsNullOrWhiteSpace($exactValue.Expected) -and
++            $exactValue.Actual -cne $exactValue.Expected) {
++            throw "Qualification evidence '$FilePath' reports $($exactValue.Name) '$($exactValue.Actual)'; expected '$($exactValue.Expected)'."
++        }
++    }
++
++    if ($RequireNullRuleId -and $null -ne $ruleId) {
++        throw "Qualification evidence '$FilePath' reports outcome.ruleId '$ruleId'; expected null."
++    }
++
++    if ($PSBoundParameters.ContainsKey('ExpectedDiagnosticRuleIds') -and
++        [string]::Join('|', $diagnosticRuleIds) -cne [string]::Join('|', @($ExpectedDiagnosticRuleIds))) {
++        throw "Qualification evidence '$FilePath' reports diagnostic rule IDs '$($diagnosticRuleIds -join ', ')'; expected '$(@($ExpectedDiagnosticRuleIds) -join ', ')'."
++    }
++
++    return $document
++}
++
++function Assert-ModuleRunEvidenceContent {
++    # Validates a retained hexalith.module-run-evidence.v1 artifact at publication
++    # time. The publisher supplies the exact expected invocation, source revision,
++    # tool build identity, manifest hash, and typed outcome; merely retaining JSON
++    # with the right filename cannot satisfy this contract.
++    param(
++        [Parameter(Mandatory = $true)][string] $FilePath,
++        [Parameter(Mandatory = $true)][string] $ExpectedFinalStatus,
++        [Parameter(Mandatory = $true)][long] $ExpectedExitCode,
++        [AllowNull()][object] $ExpectedRuleId,
++        [Parameter(Mandatory = $true)][string] $ExpectedPhase,
++        [Parameter(Mandatory = $true)][string] $ExpectedCategory,
++        [Parameter(Mandatory = $true)][string] $ExpectedCommand,
++        [Parameter(Mandatory = $true)][string] $ExpectedToolVersion,
++        [Parameter(Mandatory = $true)][string] $ExpectedRepositoryRevision,
++        [Parameter(Mandatory = $true)][string] $ExpectedRepositoryDirtyMarker,
++        [Parameter(Mandatory = $true)][string] $ExpectedManifestHash,
++        [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string] $ExpectedEventStoreVersion
++    )
++
++    $bytes = [IO.File]::ReadAllBytes($FilePath)
++    if ($bytes.Length -eq 0 -or $bytes[$bytes.Length - 1] -ne [byte][char]"`n") {
++        throw "Module-run evidence '$FilePath' must be non-empty canonical JSON with a final newline."
++    }
++
++    try {
++        $evidence = [IO.File]::ReadAllText($FilePath) | ConvertFrom-Json -DateKind String -ErrorAction Stop
++    }
++    catch {
++        throw "Module-run evidence '$FilePath' is not valid JSON. $($_.Exception.GetBaseException().Message)"
++    }
++
++    $numericExitCode = $evidence.outcome.exitCode -is [int] -or
++        $evidence.outcome.exitCode -is [long] -or
++        $evidence.outcome.exitCode -is [decimal]
++    $hasExactRuleId = if ($null -eq $ExpectedRuleId) {
++        $null -eq $evidence.outcome.ruleId
++    }
++    else {
++        $evidence.outcome.ruleId -is [string] -and $evidence.outcome.ruleId -ceq [string] $ExpectedRuleId
++    }
++
++    if ($evidence.schema -isnot [string] -or $evidence.schema -cne 'hexalith.module-run-evidence.v1' -or
++        $evidence.finalStatus -isnot [string] -or $evidence.finalStatus -cne $ExpectedFinalStatus -or
++        -not $numericExitCode -or [long] $evidence.outcome.exitCode -ne $ExpectedExitCode -or
++        $evidence.outcome.phase -isnot [string] -or $evidence.outcome.phase -cne $ExpectedPhase -or
++        $evidence.outcome.category -isnot [string] -or $evidence.outcome.category -cne $ExpectedCategory -or
++        -not $hasExactRuleId -or
++        $evidence.invocation.command -isnot [string] -or $evidence.invocation.command -cne $ExpectedCommand -or
++        $evidence.invocation.manifestHash -isnot [string] -or $evidence.invocation.manifestHash -cne $ExpectedManifestHash -or
++        $evidence.environment.toolVersion -isnot [string] -or $evidence.environment.toolVersion -cne $ExpectedToolVersion -or
++        $evidence.environment.repositoryRevision -isnot [string] -or $evidence.environment.repositoryRevision -cne $ExpectedRepositoryRevision -or
++        $evidence.environment.repositoryDirtyMarker -isnot [string] -or $evidence.environment.repositoryDirtyMarker -cne $ExpectedRepositoryDirtyMarker -or
++        $evidence.topology.platform.eventStoreVersion -isnot [string] -or
++        $evidence.topology.platform.eventStoreVersion -cne $ExpectedEventStoreVersion) {
++        throw "Module-run evidence '$FilePath' does not match its exact typed outcome, invocation, manifest, tool, source-revision, dirty-marker, and platform binding."
++    }
++
++    return $evidence
++}
++
++function Assert-QualificationLogContent {
++    # The log is the one required non-JSON qualification artifact. Parse it as an
++    # ordered command transcript and require every packaged positive/control lane,
++    # while retaining the existing redaction contract.
++    param([Parameter(Mandatory = $true)][string] $FilePath)
++
++    $content = [IO.File]::ReadAllText($FilePath)
++    if ([string]::IsNullOrWhiteSpace($content)) {
++        throw "Qualification log '$FilePath' is empty."
++    }
++    if ($content.Contains('packaged-redaction-control', [StringComparison]::Ordinal) -or
++        $content.Contains('Bearer', [StringComparison]::Ordinal)) {
++        throw "Qualification log '$FilePath' contains unredacted filter or credential material."
++    }
++
++    foreach ($requiredCommand in @(
++            'dotnet tool run hexalith-module -- down',
++            'dotnet tool run hexalith-module -- test',
++            'dotnet tool run hexalith-module -- run',
++            'dotnet tool run hexalith-evidence -- validate'
++        )) {
++        if (-not $content.Contains($requiredCommand, [StringComparison]::Ordinal)) {
++            throw "Qualification log '$FilePath' does not contain required command '$requiredCommand'."
++        }
++    }
++
++    return $content
++}
++
++function Assert-PackagedSeedSubscriptionEvidence {
++    # Recheck observed semantics AND bind them to the exact archive/entry that will
++    # be published. A source-host result or a renamed generic passing JSON fails.
++    param(
++        [Parameter(Mandatory = $true)][string] $FilePath,
++        [Parameter(Mandatory = $true)][string] $PackagePath,
++        [Parameter(Mandatory = $true)][string] $Version
++    )
++
++    $proof = Get-Content -LiteralPath $FilePath -Raw | ConvertFrom-Json -NoEnumerate
++    # The [pscustomobject] accelerator also matches some wrapped arrays. Compare
++    # the underlying runtime type so -NoEnumerate cannot disguise a root array.
++    if ($null -eq $proof -or $proof.GetType() -ne [System.Management.Automation.PSCustomObject] -or
++        $proof.package.GetType() -ne [System.Management.Automation.PSCustomObject] -or
++        $proof.seed.GetType() -ne [System.Management.Automation.PSCustomObject] -or $proof.checks -isnot [object[]]) {
++        throw 'Packaged seed subscription proof requires object identities and an array of object checks.'
++    }
++    foreach ($check in $proof.checks) {
++        if ($null -eq $check -or $check.GetType() -ne [System.Management.Automation.PSCustomObject]) {
++            throw 'Packaged seed subscription proof requires object identities and an array of object checks.'
++        }
++    }
++    foreach ($value in @($proof.schema, $proof.status, $proof.package.id, $proof.package.version,
++            $proof.package.sha256, $proof.seed.entry, $proof.seed.sha256, $proof.seed.loadedSha256)) {
++        if ($value -isnot [string]) { throw 'Packaged seed subscription proof requires scalar string identities.' }
++    }
++    $seedEntry = 'tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll'
++    $archive = [IO.Compression.ZipFile]::OpenRead($PackagePath)
++    try {
++        $entries = @($archive.Entries | Where-Object FullName -CEQ $seedEntry)
++        if ($entries.Count -ne 1) { throw 'Packaged seed subscription proof requires exactly one seed archive entry.' }
++        $stream = $entries[0].Open()
++        try { $seedHash = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($stream)) }
++        finally { $stream.Dispose() }
++    }
++    finally { $archive.Dispose() }
++
++    if ($proof.schema -cne 'hexalith.g4-packaged-seed-subscriptions.v1' -or $proof.status -cne 'passed' -or
++        $proof.package.id -cne 'Hexalith.Builds.Module.Cli' -or $proof.package.version -cne $Version -or
++        $proof.package.sha256 -cne (Get-FileHash -LiteralPath $PackagePath -Algorithm SHA256).Hash -or
++        $proof.seed.entry -cne $seedEntry -or $proof.seed.sha256 -cne $seedHash -or
++        $proof.seed.loadedSha256 -cne $seedHash) {
++        throw 'Packaged seed subscription proof does not bind the exact package and loaded seed.'
++    }
++
++    $checks = @($proof.checks)
++    if ($checks.Count -ne 2) { throw 'Packaged seed subscription proof must cover both modes exactly once.' }
++    foreach ($declarative in @($false, $true)) {
++        $cases = @($checks | Where-Object { $_.declarative -is [bool] -and $_.declarative -eq $declarative })
++        if ($cases.Count -ne 1) { throw 'Packaged seed subscription proof must cover both modes exactly once.' }
++        $case = $cases[0]
++        foreach ($field in @('missingChannelStatusCode', 'invalidChannelStatusCode')) {
++            if ($case.PSObject.Properties.Name -cnotcontains $field -or $case.$field -isnot [long] -or $case.$field -ne 401) {
++                throw 'Packaged seed subscription proof does not satisfy the exact typed HTTP and receiver metadata assertions.'
++            }
++        }
++        $status = if ($declarative) { 404 } else { 200 }
++        $count = if ($declarative) { 0 } else { 1 }
++        $pubsub = if ($declarative) { $null } else { 'configured-seed-events' }
++        if (($declarative -and ($null -ne $case.subscriptionPubsubName -or $null -ne $case.receiverPubsubName)) -or
++            (-not $declarative -and ($case.subscriptionPubsubName -isnot [string] -or $case.receiverPubsubName -isnot [string]))) {
++            throw 'Packaged seed subscription proof requires exact scalar or null pubsub names.'
++        }
++        if ($case.discoveryStatusCode -isnot [long] -or $case.discoveryStatusCode -ne $status -or
++            $case.projectionSubscriptionCount -isnot [long] -or $case.projectionSubscriptionCount -ne $count -or
++            $case.subscriptionPubsubName -cne $pubsub -or
++            $case.receiverPresent -isnot [bool] -or $case.receiverPresent -ne $true -or
++            $case.receiverTopicMetadataCount -isnot [long] -or $case.receiverTopicMetadataCount -ne $count -or
++            $case.receiverPubsubName -cne $pubsub -or
++            $case.startupIndexWriterAliasRemoved -isnot [bool] -or $case.startupIndexWriterAliasRemoved -ne $true) {
++            throw 'Packaged seed subscription proof does not satisfy the exact typed HTTP and receiver metadata assertions.'
++        }
++    }
++    return $proof
++}
++
++function Get-SourceTreeState {
++    # Reports whether the qualified source tree is clean and binds the exact
++    # revision the candidate was qualified against. A dirty tree does not abort the
++    # run -- an external/untracked candidate may still exercise every control -- but
++    # it does mean releaseEligible can never become true for this run, because its
++    # tracked-byte proofs could not be reproduced from a fresh clone at the same
++    # revision. Only a Git environment that cannot answer the question at all (no
++    # work tree, `git status`/`git rev-parse` failing outright) is a hard error.
++    param([Parameter(Mandatory = $true)][string] $RepositoryRoot)
++
++    & git -C $RepositoryRoot rev-parse --is-inside-work-tree *> $null
++    if ($LASTEXITCODE -ne 0) {
++        throw 'Source revision binding requires a Git work tree; none was found.'
++    }
++
++    $status = @(& git -C $RepositoryRoot status --porcelain=v1 2>&1)
++    if ($LASTEXITCODE -ne 0) {
++        throw "git status failed with exit code $LASTEXITCODE."
++    }
++
++    $statusLines = @($status | Where-Object { -not [string]::IsNullOrWhiteSpace([string] $_) })
++
++    $revisionOutput = @(& git -C $RepositoryRoot rev-parse HEAD 2>&1)
++    if ($LASTEXITCODE -ne 0) {
++        throw "git rev-parse HEAD failed with exit code $LASTEXITCODE."
++    }
++
++    return [pscustomobject] @{
++        Clean = $statusLines.Count -eq 0
++        Revision = ([string] $revisionOutput[0]).Trim()
++        Reasons = @($statusLines)
++    }
++}
++
++function Assert-TrackedFixtureBytesMatchHead {
++    # Proves each fixture matches its tracked Git blob after the path's declared
++    # clean filter. This accounts for .gitattributes checkout line endings while
++    # still rejecting any change that Git would commit. Publication fails closed
++    # on drift between qualified fixtures and the source revision.
++    param(
++        [Parameter(Mandatory = $true)][string] $RepositoryRoot,
++        [Parameter(Mandatory = $true)][string] $SourceRevision,
++        [Parameter(Mandatory = $true)][string] $FixtureDirectory,
++        [Parameter(Mandatory = $true)][string] $RepositoryRelativeRoot
++    )
++
++    $mismatches = [System.Collections.Generic.List[string]]::new()
++    $files = @(Get-ChildItem -LiteralPath $FixtureDirectory -File -Recurse | Sort-Object -Property FullName)
++    foreach ($file in $files) {
++        $relativePath = ([IO.Path]::GetRelativePath($FixtureDirectory, $file.FullName)).Replace('\', '/')
++        $trackedPath = "$RepositoryRelativeRoot/$relativePath"
++
++        $trackedObjectIds = @(& git --no-replace-objects -C $RepositoryRoot rev-parse --verify "${SourceRevision}:${trackedPath}" 2>$null)
++        if ($LASTEXITCODE -ne 0 -or $trackedObjectIds.Count -ne 1 -or
++            [string] $trackedObjectIds[0] -notmatch '^[0-9a-f]{40,64}$') {
++            $mismatches.Add("'$trackedPath' is not readable at $SourceRevision (not tracked, renamed, or removed).")
++            continue
++        }
++
++        $workingObjectIds = @(& git -C $RepositoryRoot hash-object "--path=$trackedPath" -- $file.FullName 2>$null)
++        if ($LASTEXITCODE -ne 0 -or $workingObjectIds.Count -ne 1 -or
++            [string] $workingObjectIds[0] -cne [string] $trackedObjectIds[0]) {
++            $mismatches.Add("'$trackedPath' working-tree bytes differ from the bytes tracked at $SourceRevision.")
++        }
++    }
++
++    if ($mismatches.Count -gt 0) {
++        throw "Tracked-fixture-vs-HEAD proof failed: $([string]::Join('; ', $mismatches))"
++    }
++
++    return $files.Count
++}
++
++function Get-NuGetPackageRole {
++    # Opens a .nupkg/.snupkg archive and determines its canonical identity and role
++    # entirely from its nuspec content and payload -- never from its file name or
++    # extension -- so a swapped or relabeled artifact cannot pass by sharing a
++    # plausible name.
++    param([Parameter(Mandatory = $true)][string] $ArchivePath)
++
++    Add-Type -AssemblyName System.IO.Compression -ErrorAction SilentlyContinue
++    Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
++    $archive = [System.IO.Compression.ZipFile]::OpenRead($ArchivePath)
++    try {
++        $nuspecEntries = @($archive.Entries | Where-Object { $_.FullName -match '(^|/)[^/]+\.nuspec$' })
++        if ($nuspecEntries.Count -eq 0) {
++            throw "'$ArchivePath' contains no .nuspec entry; a NuGet package must contain exactly one."
++        }
++
++        if ($nuspecEntries.Count -gt 1) {
++            $names = [string]::Join(', ', @($nuspecEntries | ForEach-Object { $_.FullName }))
++            throw "'$ArchivePath' contains $($nuspecEntries.Count) .nuspec entries ($names); exactly one is required."
++        }
++
++        $entryStream = $nuspecEntries[0].Open()
++        try {
++            $reader = New-Object System.IO.StreamReader($entryStream)
++            $nuspecText = $reader.ReadToEnd()
++        }
++        finally {
++            $entryStream.Dispose()
++        }
++
++        try {
++            [xml] $nuspecXml = $nuspecText
++        }
++        catch {
++            throw "'$ArchivePath' nuspec entry is not valid XML. $($_.Exception.GetBaseException().Message)"
++        }
++
++        $metadata = $nuspecXml.package.metadata
++        $id = [string] $metadata.id
++        $version = [string] $metadata.version
++        if ([string]::IsNullOrWhiteSpace($id) -or [string]::IsNullOrWhiteSpace($version)) {
++            throw "'$ArchivePath' nuspec is missing a package id or version."
++        }
++
++        $packageTypeNames = @()
++        if ($null -ne $metadata.packageTypes) {
++            $packageTypeNames = @($metadata.packageTypes.packageType | ForEach-Object { [string] $_.name })
++        }
++
++        return [pscustomobject] @{
++            Id = $id
++            Version = $version
++            IsSymbolsPackage = $packageTypeNames -contains 'SymbolsPackage'
++        }
++    }
++    finally {
++        $archive.Dispose()
++    }
++}
++
++function Assert-CanonicalNuGetArtifact {
++    # Rejects a swapped or canonical-role-invalid artifact: the primary .nupkg must
++    # not be a symbols package and the .snupkg must declare the SymbolsPackage
++    # nuspec type, and both must match the expected package identity exactly.
++    param(
++        [Parameter(Mandatory = $true)][string] $ArchivePath,
++        [Parameter(Mandatory = $true)][ValidateSet('Package', 'Symbols')][string] $ExpectedRole,
++        [Parameter(Mandatory = $true)][string] $ExpectedId,
++        [Parameter(Mandatory = $true)][string] $ExpectedVersion
++    )
++
++    $role = Get-NuGetPackageRole -ArchivePath $ArchivePath
++    if ($role.Id -cne $ExpectedId -or $role.Version -cne $ExpectedVersion) {
++        throw "'$ArchivePath' nuspec identity '$($role.Id) $($role.Version)' does not match expected '$ExpectedId $ExpectedVersion'."
++    }
++
++    if ($ExpectedRole -eq 'Package' -and $role.IsSymbolsPackage) {
++        throw "'$ArchivePath' declares the SymbolsPackage nuspec type; a symbols package was swapped in as the primary artifact."
++    }
++
++    if ($ExpectedRole -eq 'Symbols' -and -not $role.IsSymbolsPackage) {
++        throw "'$ArchivePath' does not declare the SymbolsPackage nuspec type; the primary artifact was swapped in as symbols."
++    }
++
++    return $role
++}
+diff --git a/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs b/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs
+index 4fd1bd6..c7bab2d 100644
+--- a/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs
++++ b/src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs
+@@ -410,6 +410,7 @@ internal static class RunReadiness
+                     RefreshId = refreshId,
+                     SelectedTest = plan.SelectedTest,
+                     TestObservation = testObservation,
++                    RoutingCatalogObservationsRequired = preparedOwners.Any(owner => owner.RoutingCatalogObservationsRequired),
+                     NativeHttpEndpoints = nativeEndpoints,
+                     NativeEndpointCredentialsPath = endpointCredentialPath,
+                     NativeTestScope = app.Services.GetServices<ICompositionRunPreparation>().Select(owner => owner.NativeTestScope).OfType<CompositionNativeTestScope>().SingleOrDefault(),
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+index fc06c2b..6a8abbb 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj
+@@ -5,7 +5,9 @@
+     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+     <Description>Builds-owned EventStore composition root over the Hexalith.EventStore.Gateway package for G-4 runs.</Description>
+     <BuildsCatalogFromMappedSource Condition="'$(Configuration)' == 'Debug' and Exists('$(HexalithEventStoreRoot)/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj')">true</BuildsCatalogFromMappedSource>
+-    <DefineConstants Condition="'$(BuildsCatalogFromMappedSource)' == 'true'">$(DefineConstants);HEXALITH_EVENTSTORE_MAPPED_SOURCE</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(BuildsCatalogFromMappedSource)' == 'true'">
++    <DefineConstants>$(DefineConstants);HEXALITH_BUILD_TECHNICAL_CATALOG_SDK</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="Hexalith.EventStore.Gateway" Condition="'$(BuildsCatalogFromMappedSource)' != 'true'" />
+diff --git a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+index aeef871..04778cb 100644
+--- a/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
++++ b/src/hosts/Hexalith.Builds.Module.EventStoreHost/Program.cs
+@@ -44,9 +44,20 @@ app.UseEventStoreHttpHostSecurity();
+ app.UseAuthorization();
+ if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
+ {
+-    _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
+-        app,
+-        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++#if HEXALITH_BUILD_TECHNICAL_CATALOG_SDK
++    if (Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.IsEnabled(app.Configuration))
++    {
++        _ = Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.UseDevelopmentTechnicalHttpCatalogReceiver(
++            app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++    }
++    else
++#endif
++    {
++        _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(
++            app,
++            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
++    }
+ }
+ 
+ app.UseCloudEvents();
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
+index a9bc231..5bb06f6 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
+@@ -23,10 +23,16 @@ public sealed record CompositionDeclarationOptions(SourceMapping Mapping, IReadO
+         ["eventstore/3.120.0"] = "9b26956f9e825fd6771b62a79c7b81323ba856cf",
+         ["tenants/5.8.0"] = "032573384d3df4bc7a5bc0e69945ecca4e00967f",
+         ["memories/2.27.1"] = "d54dba5be30a3626e871b4fc56dd78e76a7acf71",
++        ["eventstore/3.129.0"] = "c02afa0fce310ccdb696232f18829df96cba088e",
++        ["memories/3.0.12"] = "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7",
+     }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
+     /// <summary>Gets the shared released declaration hashes; absent entries have no released v2 declaration.</summary>
+-    public static IReadOnlyDictionary<string, string> DefaultReleaseSnapshotHashes { get; } = new Dictionary<string, string>(StringComparer.Ordinal).ToFrozenDictionary(StringComparer.Ordinal);
++    public static IReadOnlyDictionary<string, string> DefaultReleaseSnapshotHashes { get; } = new Dictionary<string, string>(StringComparer.Ordinal)
++    {
++        ["eventstore/3.129.0"] = "a56951dcc4a8c53f22e449a2399516e51c4d2569bec1357f8197593a8d9e44a2",
++        ["memories/3.0.12"] = "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
++    }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
+     /// <summary>Gets the selected Platform checkout.</summary>
+     public string PlatformRoot { get; init; } = Mapping.PlatformIdentity?.PlatformPath
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+index 3657e59..c7bd522 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+@@ -1209,14 +1209,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+         // Never reread child-writable entry files during terminal recording or cleanup.
+     }
+ 
+-    private static bool SafeMetadata(System.Text.Json.JsonElement value) => value.ValueKind switch
+-    {
+-        System.Text.Json.JsonValueKind.String => !ManifestSecretDetector.ContainsSecret(value.GetString()!),
+-        System.Text.Json.JsonValueKind.Array => value.EnumerateArray().All(SafeMetadata),
+-        System.Text.Json.JsonValueKind.Object => value.EnumerateObject().All(property => !ManifestSecretDetector.ContainsSecret(property.Name) && SafeMetadata(property.Value)),
+-        System.Text.Json.JsonValueKind.Number or System.Text.Json.JsonValueKind.True or System.Text.Json.JsonValueKind.False or System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => true,
+-        _ => false,
+-    };
++    private static bool SafeMetadata(System.Text.Json.JsonElement value) => SelectedMetadataSafety.IsSafe(value);
+ 
+     private static void CopyDiagnostic(string source, string destination)
+     {
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs
+index 2517bcc..28c554b 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs
+@@ -5,6 +5,8 @@
+ 
+ namespace Hexalith.Builds.Tooling.Runtime;
+ 
++using System.Text.Json.Serialization;
++
+ /// <summary>
+ /// The metadata-only readiness document written by the AppHost once every resource is healthy.
+ /// </summary>
+@@ -31,6 +33,10 @@ public sealed record CompositionReadiness(
+     /// <summary>Gets actual selected-composition test measurements and scoped access, when supported.</summary>
+     public CompositionTestObservation? TestObservation { get; init; }
+ 
++    /// <summary>Gets a value indicating whether successful native owner preparation requires public routing proofs.</summary>
++    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
++    public bool RoutingCatalogObservationsRequired { get; init; }
++
+     /// <summary>Gets actual owner-derived consumer scopes after startup preparation; this never grants an administrator role.</summary>
+     public CompositionNativeTestScope? NativeTestScope { get; init; }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs
+index 313fda0..b730f90 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs
+@@ -8,6 +8,9 @@ namespace Hexalith.Builds.Tooling.Runtime;
+ /// <summary>Owner preparation required after writer activation and before publishing native-test readiness.</summary>
+ public interface ICompositionRunPreparation
+ {
++    /// <summary>Gets a value indicating whether this prepared native profile requires held public routing proofs.</summary>
++    bool RoutingCatalogObservationsRequired => false;
++
+     /// <summary>Gets the owner-derived native scope after successful preparation, or null when this composition supplies none.</summary>
+     CompositionNativeTestScope? NativeTestScope => null;
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
+index a330d99..6bc194d 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs
+@@ -19,6 +19,9 @@ internal sealed record NativeTestExecutionResult(ToolCommandResult Result, Nativ
+     /// <summary>Gets the bounded inspected detailed native observations, retained beside TRX through existing artifact custody.</summary>
+     internal byte[]? ObservationBytes { get; init; }
+ 
++    /// <summary>Gets bounded public routing files held before the selected child starts.</summary>
++    internal IReadOnlyDictionary<string, byte[]>? RoutingCatalogSnapshot { get; init; }
++
+     /// <summary>Gets the runner-observed terminal cause, independent of later processing time.</summary>
+     internal string? TerminalCause { get; init; }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+index 5403765..f101453 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+@@ -260,6 +260,7 @@ internal static class NativeTestExecutor
+                 await ArchiveAsync(durableEntry, archiveDirectory).ConfigureAwait(false);
+                 await WriteSnapshotAsync(Path.Combine(archiveDirectory, "test-environment.json"), archiveDirectory, descriptorSnapshot, processingToken).ConfigureAwait(false);
+                 await WriteSnapshotAsync(Path.Combine(archiveDirectory, "execution-timing.json"), archiveDirectory, timingBytes, processingToken).ConfigureAwait(false);
++                await ArchiveRoutingAsync(archiveDirectory, archiveDirectory).ConfigureAwait(false);
+             }
+ 
+             await WriteSnapshotAsync(Path.Combine(session.Plan.Workspace, "execution-timing.json"), session.Plan.Workspace, timingBytes, processingToken).ConfigureAwait(false);
+@@ -278,6 +279,16 @@ internal static class NativeTestExecutor
+                 {
+                     await WriteSnapshotAsync(Path.Combine(directory, "functional-observations.json"), ownedRoot, observationBytes, processingToken).ConfigureAwait(false);
+                 }
++
++                await ArchiveRoutingAsync(directory, ownedRoot).ConfigureAwait(false);
++            }
++
++            async Task ArchiveRoutingAsync(string directory, string ownedRoot)
++            {
++                foreach (KeyValuePair<string, byte[]> file in inspected.RoutingCatalogSnapshot ?? new Dictionary<string, byte[]>())
++                {
++                    await WriteSnapshotAsync(Path.Combine(directory, "routing-catalog", file.Key), ownedRoot, file.Value, processingToken).ConfigureAwait(false);
++                }
+             }
+         }
+         catch (Exception failure) when (failure is IOException or UnauthorizedAccessException or OperationCanceledException or NotSupportedException)
+@@ -373,6 +384,7 @@ internal static class NativeTestExecutor
+         await CompositionDocumentStore.WriteAsync(session.Plan.ReadinessPath, session.Readiness, cancellationToken).ConfigureAwait(false);
+         string descriptorPath;
+         byte[] descriptorSnapshot;
++        IReadOnlyDictionary<string, byte[]> routingCatalogSnapshot;
+         try
+         {
+             descriptorPath = await TestEnvironment.TestEnvironmentDescriptorWriter.WriteAsync(session, archiveDirectory, cancellationToken).ConfigureAwait(false);
+@@ -383,6 +395,7 @@ internal static class NativeTestExecutor
+             }
+ 
+             descriptorSnapshot = Encoding.UTF8.GetBytes(validated.Document!.Value.GetRawText());
++            routingCatalogSnapshot = await SelectedRoutingCatalogSnapshot.ReadAsync(session.Plan, descriptorSnapshot, cancellationToken, session.Readiness.RoutingCatalogObservationsRequired).ConfigureAwait(false);
+             session.EnvironmentBindings = validated.Document.Value.GetProperty("bindings").Clone();
+         }
+         catch (InvalidDataException exception)
+@@ -563,7 +576,7 @@ internal static class NativeTestExecutor
+ 
+         timing = timing with { ActualDurationSeconds = Math.Max(0, (DateTimeOffset.UtcNow - timing.StartedAtUtc).TotalSeconds - System.Diagnostics.Stopwatch.GetElapsedTime(stoppingTimestamp).TotalSeconds) };
+         session.Plan = session.Plan with { ExecutionTiming = timing };
+-        NativeTestExecutionResult inspected = evaluated with { Report = report.Report, ReportBytes = bytes, ObservationBytes = observations, StoppingTimestamp = stoppingTimestamp, TerminalCause = process.TimedOut && !cancelled && !gate.Failed ? "execution-timeout" : null };
++        NativeTestExecutionResult inspected = evaluated with { Report = report.Report, ReportBytes = bytes, ObservationBytes = observations, RoutingCatalogSnapshot = routingCatalogSnapshot, StoppingTimestamp = stoppingTimestamp, TerminalCause = process.TimedOut && !cancelled && !gate.Failed ? "execution-timeout" : null };
+         if (onOutcome is not null)
+         {
+             inspected = inspected with { MetadataRecordingTimestamp = System.Diagnostics.Stopwatch.GetTimestamp() };
+diff --git a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+index 7ac9032..1a97e55 100644
+--- a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+@@ -310,6 +310,97 @@ public sealed class NativeTestExecutorTests
+         }
+     }
+ 
++    /// <summary>Malformed public routing observations return the existing pre-child refusal instead of escaping the executor.</summary>
++    /// <param name="fault">The malformed proof, or the launched control.</param>
++    /// <returns>The refusal, never-launched child and removable owned workspace assertions.</returns>
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("metadata-missing-status")]
++    [InlineData("metadata-wrong-kind")]
++    [InlineData("metadata-overflow")]
++    [InlineData("closure-missing-hosts")]
++    [InlineData("closure-wrong-kind")]
++    [InlineData("preparation-missing-flag")]
++    [InlineData("preparation-wrong-kind")]
++    [InlineData("malformed-json")]
++    public async Task RoutingProofShapeGatesChildExecutionAsync(string fault)
++    {
++        string ownedRoot;
++        using (PlatformManifestTestWorkspace workspace = new())
++        {
++            ownedRoot = workspace.Root;
++            string marker = Path.Combine(workspace.Root, "child-executed");
++            (CompositionRunPlan plan, ModuleTestSelection selection, string manifest) = await PrepareSelectedRunAsync(workspace, _markerRunner).ConfigureAwait(true);
++            string directory = Path.Combine(plan.Workspace, "platform-components", plan.EnvironmentId + "-catalog");
++            _ = Directory.CreateDirectory(directory);
++            foreach (string name in new[] { "catalog.json", "receipt.json", "owner.committed.json" })
++            {
++                await File.WriteAllTextAsync(Path.Combine(directory, name), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            }
++
++            // These offline fields qualify only the pre-child handoff contract, never an active owner cohort.
++            JsonObject closure = new() { ["RunId"] = plan.RunId, ["hosts"] = new JsonArray(new JsonObject { ["ResourceId"] = "owner" }) };
++            JsonObject preparation = new() { ["RunId"] = plan.RunId, ["routingCatalogMetadataObserved"] = true };
++            JsonObject metadata = new() { ["method"] = "GET", ["path"] = "/api/v1/routing/catalog", ["status"] = 200 };
++            if (fault == "metadata-missing-status")
++            {
++                _ = metadata.Remove("status");
++            }
++
++            if (fault == "metadata-wrong-kind")
++            {
++                metadata["status"] = "200";
++            }
++
++            if (fault == "metadata-overflow")
++            {
++                metadata["status"] = long.MaxValue;
++            }
++
++            if (fault == "closure-missing-hosts")
++            {
++                _ = closure.Remove("hosts");
++            }
++
++            if (fault == "closure-wrong-kind")
++            {
++                closure["hosts"] = new JsonObject();
++            }
++
++            if (fault == "preparation-missing-flag")
++            {
++                _ = preparation.Remove("routingCatalogMetadataObserved");
++            }
++
++            if (fault == "preparation-wrong-kind")
++            {
++                preparation["routingCatalogMetadataObserved"] = "true";
++            }
++
++            await File.WriteAllTextAsync(Path.Combine(directory, "selected-closure.json"), closure.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            await File.WriteAllTextAsync(Path.Combine(directory, "preparation.json"), preparation.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            await File.WriteAllTextAsync(Path.Combine(directory, "metadata-http.json"), fault == "malformed-json" ? "{" : metadata.ToJsonString(), TestContext.Current.CancellationToken).ConfigureAwait(true);
++            string assets = Path.Combine(plan.Workspace, "platform-components", "catalog-reader", "obj");
++            _ = Directory.CreateDirectory(assets);
++            await File.WriteAllTextAsync(Path.Combine(assets, "project.assets.json"), "{}", TestContext.Current.CancellationToken).ConfigureAwait(true);
++            using Process process = new();
++            CompositionReadiness readiness = HealthyReadiness(plan) with { RoutingCatalogObservationsRequired = true };
++            NativeTestExecutionResult result = await NativeTestExecutor.ExecuteAsync(new CompositionRunSession(plan, readiness, "private-signing-key-value", process), new PersistedProfileNativeTests("runner.py", "python3"), manifest, TestContext.Current.CancellationToken, selection: selection).ConfigureAwait(true);
++            if (fault == "valid")
++            {
++                File.Exists(marker).ShouldBeTrue();
++                result.Result.Outcome.RuleId.ShouldBe("HXT002", "The marker-only control launches without writing a native report.");
++            }
++            else
++            {
++                AssertNotPassing(result, "HXT009", ToolExitCode.ProductOrTest);
++                File.Exists(marker).ShouldBeFalse();
++            }
++        }
++
++        Directory.Exists(ownedRoot).ShouldBeFalse("Malformed proof reads must release every owned file before cleanup.");
++    }
++
+     private static async Task<(CompositionRunPlan Plan, ModuleTestSelection Selection, string Manifest)> PrepareSelectedRunAsync(PlatformManifestTestWorkspace workspace, string runner)
+     {
+         workspace.Document["modules"]![0]!["tests"] = JsonNode.Parse("""
+@@ -337,4 +428,4 @@ public sealed class NativeTestExecutorTests
+         result.Report.ShouldBeNull();
+         result.ReportBytes.ShouldBeNull();
+     }
+-}
+\ No newline at end of file
++}

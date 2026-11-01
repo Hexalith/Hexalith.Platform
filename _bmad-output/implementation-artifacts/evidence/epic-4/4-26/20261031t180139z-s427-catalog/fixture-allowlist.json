@@ -1,0 +1,30 @@
+{
+  "actions": [
+    {
+      "action": "delete",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "name": "s426-managed",
+      "namespace": "s426-management",
+      "order": 1,
+      "propagation": "Foreground",
+      "resourceVersion": "1961",
+      "uid": "5b280020-2b1c-4061-bfe1-1bd7fb12c699"
+    },
+    {
+      "action": "delete",
+      "apiVersion": "qualification.hexalith.io/v1",
+      "kind": "Workspace",
+      "name": "s426-owner",
+      "namespace": null,
+      "order": 2,
+      "propagation": "Foreground",
+      "resourceVersion": "1950",
+      "uid": "8959fc26-bef4-4c49-a290-6a6a9efcfc86"
+    }
+  ],
+  "productionActions": [],
+  "scope": "synthetic fixture only",
+  "scriptSha256": "474c2192ad5d967a85530559632957043595e782588a9d277b53ee143c73e4eb",
+  "sourceInventorySha256": "2b8de1d9ea148180ad8f8c068dc09a5b226cd7757d7e9d8cef85cebe31fa2abc"
+}

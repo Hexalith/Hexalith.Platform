@@ -143,6 +143,15 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public void Dispose() { if (_ownsHttp) { _http.Dispose(); } _pinnedCa?.Dispose(); }
 
+    /// <summary>Test-only observation point for the native response buffers owned by <see cref="TrimAsync"/> and key-metadata reads.
+    /// Null by default; it receives the actual buffer while it is in use and never changes behavior, wire format or configuration.</summary>
+    internal Action<string, byte[]>? ResponseBufferObserver { get; set; }
+
+    private void ObserveResponse(string name, byte[]? buffer)
+    {
+        if (buffer is not null) { ResponseBufferObserver?.Invoke(name, buffer); }
+    }
+
     /// <inheritdoc />
     public async Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)
     {
@@ -279,11 +288,8 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     }
 
     /// <inheritdoc />
-    public async Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken)
-    {
-        using var metadata = await ReadKeyAsync(tenantId, cancellationToken).ConfigureAwait(false);
-        return metadata.RootElement.GetProperty("data").GetProperty("latest_version").GetInt32();
-    }
+    public Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken)
+        => ReadKeyAsync(tenantId, data => data.GetProperty("latest_version").GetInt32(), cancellationToken);
 
     /// <inheritdoc />
     public async Task RotateAsync(string tenantId, CancellationToken cancellationToken)
@@ -338,8 +344,10 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
         try
         {
             configured = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/config", config, false, cancellationToken).ConfigureAwait(false);
+            ObserveResponse("trim:config", configured);
             trim = JsonSerializer.SerializeToUtf8Bytes(new { min_available_version = epoch });
             trimmed = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/trim", trim, false, cancellationToken).ConfigureAwait(false);
+            ObserveResponse("trim:trim", trimmed);
         }
         finally
         {
@@ -351,24 +359,23 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     }
 
     /// <inheritdoc />
-    public async Task<bool> VerifyTrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
-    {
-        using var metadata = await ReadKeyAsync(tenantId, cancellationToken).ConfigureAwait(false);
-        var data = metadata.RootElement.GetProperty("data");
-        return data.GetProperty("min_available_version").GetInt32() == epoch
+    public Task<bool> VerifyTrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
+        => ReadKeyAsync(tenantId, data => data.GetProperty("min_available_version").GetInt32() == epoch
             && data.GetProperty("min_decryption_version").GetInt32() == epoch
             && data.GetProperty("min_encryption_version").GetInt32() == epoch
             && data.GetProperty("latest_version").GetInt32() >= epoch
-            && data.GetProperty("keys").EnumerateObject().All(entry => int.TryParse(entry.Name, NumberStyles.None, CultureInfo.InvariantCulture, out int version) && version >= epoch);
-    }
+            && data.GetProperty("keys").EnumerateObject().All(entry => int.TryParse(entry.Name, NumberStyles.None, CultureInfo.InvariantCulture, out int version) && version >= epoch),
+            cancellationToken);
 
-    private async Task<JsonDocument> ReadKeyAsync(string tenantId, CancellationToken token)
+    /// <summary>Projects verified key metadata while the parsed document still borrows the native response, so no copy outlives the read and every buffer is zeroed.</summary>
+    private async Task<T> ReadKeyAsync<T>(string tenantId, Func<JsonElement, T> project, CancellationToken token)
     {
         byte[]? health = null;
         byte[]? response = null;
         try
         {
             health = await SendAsync(HttpMethod.Get, "v1/sys/health", null, false, token).ConfigureAwait(false);
+            ObserveResponse("read-key:health", health);
             using (var status = JsonDocument.Parse(health!))
             {
                 if (status.RootElement.GetProperty("version").GetString() != "2.6.2"
@@ -376,27 +383,14 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
                 { throw new InvalidOperationException("Exact unsealed OpenBao 2.6.2 ERC required."); }
             }
             response = await SendAsync(HttpMethod.Get, KeyPath(tenantId), null, false, token).ConfigureAwait(false);
-            byte[] retained = response!.ToArray();
-            JsonDocument? document = JsonDocument.Parse(retained);
-            try
-            {
-                var data = document.RootElement.GetProperty("data");
-                if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
-                    || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
-                    || data.GetProperty("deletion_allowed").GetBoolean())
-                { throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment."); }
-                var published = document;
-                document = null;
-                return published;
-            }
-            finally
-            {
-                if (document is not null)
-                {
-                    document.Dispose();
-                    CryptographicOperations.ZeroMemory(retained);
-                }
-            }
+            ObserveResponse("read-key:metadata", response);
+            using var document = JsonDocument.Parse(response!);
+            var data = document.RootElement.GetProperty("data");
+            if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
+                || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
+                || data.GetProperty("deletion_allowed").GetBoolean())
+            { throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment."); }
+            return project(data);
         }
         finally
         {

@@ -1362,5 +1362,14 @@ class LocalTests(unittest.TestCase):
                     a.render_proposal(value)
 
 
+class TimestampPrecisionTests(unittest.TestCase):
+    def test_known_utc_fractional_precision_is_retained_and_strictly_ordered(self):
+        base=a.timestamp('2026-10-31T20:00:00Z')
+        self.assertEqual(a.timestamp('2026-10-31T20:00:00.616Z')-base,timedelta(microseconds=616000))
+        self.assertEqual(a.timestamp('2026-10-31T20:00:00.123456Z').microsecond,123456)
+        self.assertLess(a.timestamp('2026-10-31T20:00:00.123455Z'),a.timestamp('2026-10-31T20:00:00.123456Z'))
+        for invalid in ['2026-10-31T20:00:00.1234567Z','2026-10-31T20:00:00.Z','2026-10-31T20:00:00+00:00','2026-02-30T20:00:00Z']:
+            with self.subTest(invalid=invalid),self.assertRaises(a.Refusal):a.timestamp(invalid)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

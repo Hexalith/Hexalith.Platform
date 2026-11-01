@@ -1,0 +1,74 @@
+{
+  "status": "executed-local-milestone",
+  "total": 113,
+  "failed": 0,
+  "skipped": 0,
+  "seconds": 24.047,
+  "separateRealInventoryActions": {
+    "gateway": 28,
+    "adminServer": 68
+  },
+  "oldPeerTest": "Hexalith.EventStore.Server.Tests.Routing.TechnicalHttpPreviousPeerTests.ActualPreviousPeerAcceptsLegacyActivationAndRefusesTechnicalV2Trust",
+  "oldPeerGenuineBinaries": [
+    {
+      "package": "Hexalith.EventStore.ServiceDefaults",
+      "version": "3.129.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "c02afa0fce310ccdb696232f18829df96cba088e"
+      },
+      "archiveSha256": "a1feb763a76e01a5bf7d723342da3df58d7612c473ee6fd7de1c8a03792fc65e",
+      "dllSha256": "27eaf7c72322b13d33b98aa726535e1a392e95a67c99788e76c468fa2e16f124",
+      "repositorySignaturePresent": true
+    },
+    {
+      "package": "Hexalith.EventStore.Contracts",
+      "version": "3.129.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "c02afa0fce310ccdb696232f18829df96cba088e"
+      },
+      "archiveSha256": "afc30fea1b194cabde98b77608251adba65c572aeb34ac120937f85a0aae4c80",
+      "dllSha256": "f6fabeba9600e44b6a3d5be56b8a7707438943e2b74bf6a496151e9bb4ee3942",
+      "repositorySignaturePresent": true
+    }
+  ],
+  "parentRead": "Read complete previous SDK isolated load-context/test, test-only PackageDownload csproj entries, native lost-response tests, receiver lease scope, snapshot-policy/native manual-snapshot/checkpoint-store wrapper diffs. Read NuGet verify logs and independently compared signed archive nuspec repository commit and DLL hashes.",
+  "remaining": [
+    "detached consistency background lease and remaining marked Backup/Consistency native sinks",
+    "genuine production factory/socket sink and peer refusals",
+    "full pre-capture and modeled config downgrade cases",
+    "required live CI fixture corrections",
+    "final source audit/suites/source owner preflight/normal CI/release"
+  ],
+  "publicationAcceptance": false,
+  "logs": [
+    {
+      "path": "story33-sdk-technical-native-build2.log",
+      "bytes": 2912,
+      "sha256": "3a1d6f753c16d657aed06e1ebe06455d516598744a7ecce010d03e883c8eeab3"
+    },
+    {
+      "path": "story33-sdk-technical-native-run2.log",
+      "bytes": 477,
+      "sha256": "f1df2eaf6fa8b1b35252329d1806e0fbf539560500f241c25c24e8323ea880d6"
+    },
+    {
+      "path": "story33-sdk-technical-native-run2.xml",
+      "bytes": 82200,
+      "sha256": "c1b64d2843c86ff262b88bda227b461c30ce45a3d7b3027f5320b9267435f74c"
+    },
+    {
+      "path": "story33-old-sdk-servicedefaults-verification.log",
+      "bytes": 444,
+      "sha256": "974ea5fe7cf41a806e827bcf3acda42d99b3089d5f9985c63874b2026426fd26"
+    },
+    {
+      "path": "story33-old-sdk-contracts-verification.log",
+      "bytes": 438,
+      "sha256": "72d71ffc9d2ac2da6b2df57057b1220f878e6c1a8888b188b08121f36f660c9d"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/378",
+    "number": 378,
+    "state": "open",
+    "merged": false,
+    "mergeable": false,
+    "draft": false,
+    "body": "Native module integration suites need to inspect the exact synthetic event stream through their descriptor-owned Redis endpoint. Add `TestEnvironmentStreamReader` to the shared EventStore integration testing SDK, refuse foreign tenants before opening persistence, and declare its centrally versioned Redis dependency.\n\nValidation: the isolated three-file prerequisite builds in Release with zero warnings/errors against the owner's pinned Builds package props and published cross-repository dependencies; all 15 descriptor fixture tests pass, including the foreign-tenant refusal control. The owning pinned Commitlint 21.2.4 and staged-file guard pass.\n\nThis PR is the first SDK prerequisite release input for Platform Story 2.8. Caller enrollment, workflow/tool configuration, module manifests, solution activation and consumer pins remain for later approved steps. Publication will use the existing protected release workflow only after current-main exact-source push proofs succeed. Hosted module CI qualification remains pending.",
+    "title": "fix(testing): publish descriptor stream observation helper",
+    "base": "main",
+    "base_sha": "61e6fa853d81cf822d67d6abfd6a130bdbb14ce2",
+    "head": "fix/story-2-8-sdk-stream-observer",
+    "head_sha": "67bab1f13bd26d7fd7fbe390b57006a537e5c5a2",
+    "head_repo_id": 1155154671,
+    "head_repo_full_name": "Hexalith/Hexalith.EventStore",
+    "merge_commit_sha": null,
+    "user": {
+      "login": "jpiquot",
+      "name": "jpiquot",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "id": 6775094
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-10-31T17:32:06Z",
+    "updated_at": "2026-10-31T17:32:06Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 1,
+    "changed_files": 3,
+    "additions": 105,
+    "deletions": 0,
+    "display_url": "https://github.com/Hexalith/Hexalith.EventStore/pull/378",
+    "display_title": "fix(testing): publish descriptor stream observation helper"
+  },
+  "isError": false
+}

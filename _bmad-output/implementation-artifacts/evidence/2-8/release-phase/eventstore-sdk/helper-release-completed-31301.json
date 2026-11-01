@@ -1,0 +1,128 @@
+{
+  "verifiedAt": "2026-10-31T22:17:33.659370+00:00",
+  "run": 41246774822,
+  "runConclusion": "success",
+  "source": "1de42b706f52af0da6513f0b7663002606d17156",
+  "version": "3.130.1",
+  "release": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.130.1",
+  "tagExactSource": true,
+  "publicationIdentityVerified": true,
+  "oci": {
+    "children": [
+      {
+        "config_digest": "sha256:46b1dd6545fdeba8fce173abd19079be259a82aa84aefe6e4ac2ffc0cd5f7646",
+        "config_media_type": "application/vnd.oci.image.config.v1+json",
+        "config_raw_file": "child-linux-amd64.config.raw",
+        "config_raw_sha256": "46b1dd6545fdeba8fce173abd19079be259a82aa84aefe6e4ac2ffc0cd5f7646",
+        "config_size": 4149,
+        "digest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca",
+        "manifest_raw_file": "child-linux-amd64.manifest.raw",
+        "manifest_raw_sha256": "ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca",
+        "media_type": "application/vnd.oci.image.manifest.v1+json",
+        "platform": "linux/amd64",
+        "provenance_labels": {
+          "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.EventStore/blob/1de42b706f52af0da6513f0b7663002606d17156/README.md",
+          "org.opencontainers.image.revision": "1de42b706f52af0da6513f0b7663002606d17156",
+          "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.EventStore",
+          "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.130.1",
+          "org.opencontainers.image.version": "3.130.1"
+        },
+        "size": 1399
+      },
+      {
+        "config_digest": "sha256:29cca282dc59b6bb97b9a0d8757e88436189aa2ba1b824e1e5e45721a2bed11c",
+        "config_media_type": "application/vnd.oci.image.config.v1+json",
+        "config_raw_file": "child-linux-arm64.config.raw",
+        "config_raw_sha256": "29cca282dc59b6bb97b9a0d8757e88436189aa2ba1b824e1e5e45721a2bed11c",
+        "config_size": 4150,
+        "digest": "sha256:f3acb4ad4cf981fc7f54ecf1e934c0bc732e4a93fb66ef62216639118219347d",
+        "manifest_raw_file": "child-linux-arm64.manifest.raw",
+        "manifest_raw_sha256": "f3acb4ad4cf981fc7f54ecf1e934c0bc732e4a93fb66ef62216639118219347d",
+        "media_type": "application/vnd.oci.image.manifest.v1+json",
+        "platform": "linux/arm64",
+        "provenance_labels": {
+          "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.EventStore/blob/1de42b706f52af0da6513f0b7663002606d17156/README.md",
+          "org.opencontainers.image.revision": "1de42b706f52af0da6513f0b7663002606d17156",
+          "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.EventStore",
+          "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.130.1",
+          "org.opencontainers.image.version": "3.130.1"
+        },
+        "size": 1399
+      }
+    ],
+    "image": "registry.hexalith.com/eventstore:3.130.1",
+    "index_digest": "sha256:cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+    "index_size": 493,
+    "media_type": "application/vnd.oci.image.index.v1+json",
+    "platforms": [
+      "linux/amd64",
+      "linux/arm64"
+    ],
+    "raw_index_file": "index.raw",
+    "raw_index_sha256": "cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+    "result": "pass"
+  },
+  "smoke": {
+    "endpoint": "/alive",
+    "environment": "Development",
+    "image_repository": "registry.hexalith.com/eventstore",
+    "platforms": [
+      {
+        "cleanup": "pass",
+        "digest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca",
+        "outcome": "pass",
+        "platform": "linux/amd64"
+      },
+      {
+        "cleanup": "pass",
+        "digest": "sha256:f3acb4ad4cf981fc7f54ecf1e934c0bc732e4a93fb66ef62216639118219347d",
+        "outcome": "pass",
+        "platform": "linux/arm64"
+      }
+    ],
+    "result": "pass",
+    "timeout_seconds": 180.0
+  },
+  "rawSourceHashes": [
+    {
+      "file": "eventstore/index.raw",
+      "bytes": 493,
+      "sha256": "cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86"
+    },
+    {
+      "file": "eventstore/child-linux-amd64.manifest.raw",
+      "bytes": 1399,
+      "sha256": "ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca"
+    },
+    {
+      "file": "eventstore/child-linux-amd64.config.raw",
+      "bytes": 4149,
+      "sha256": "46b1dd6545fdeba8fce173abd19079be259a82aa84aefe6e4ac2ffc0cd5f7646"
+    },
+    {
+      "file": "eventstore/child-linux-arm64.manifest.raw",
+      "bytes": 1399,
+      "sha256": "f3acb4ad4cf981fc7f54ecf1e934c0bc732e4a93fb66ef62216639118219347d"
+    },
+    {
+      "file": "eventstore/child-linux-arm64.config.raw",
+      "bytes": 4150,
+      "sha256": "29cca282dc59b6bb97b9a0d8757e88436189aa2ba1b824e1e5e45721a2bed11c"
+    }
+  ],
+  "artifact": {
+    "id": 13060085326,
+    "name": "release-evidence-41246774822-1",
+    "downloadDirectory": "/tmp/story28-sdk31301-release-evidence/3.130.1"
+  },
+  "nugetArchives": {
+    "officialArchivesVerified": 14,
+    "inventory": "../owner-packages/eventstore-3.130.1/inventory.json",
+    "identitiesVersionsRepositoryCommitExact": true,
+    "signaturesValid": true,
+    "streamHelperPresentInAssembly": true,
+    "initialPropagationFailureRetained": "../owner-packages/eventstore-3.130.1/initial-propagation-observation.json"
+  },
+  "referenceHostedAcceptance": false,
+  "candidateAcceptance": false
+}

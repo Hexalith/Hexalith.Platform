@@ -1,0 +1,7 @@
+# Hexalith.EventStore.Testing.Integration.TestEnvironmentStreamReader
+
+## Methods
+
+| Name | Digest | Signature |
+| ---- | ------ | --------- |
+| ReadStoredStreamAsync | `fb2e7f4442` | `public static System.Threading.Tasks.Task<(Hexalith.EventStore.Server.Events.AggregateMetadata Metadata, Hexalith.EventStore.Server.Events.EventEnvelope[] Events)> ReadStoredStreamAsync(Hexalith.EventStore.Testing.TestEnvironmentDescriptor descriptor, string resourceId, string moduleId, Hexalith.EventStore.Contracts.Identity.AggregateIdentity identity, System.Threading.CancellationToken cancellationToken)` |

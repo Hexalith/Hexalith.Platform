@@ -231,6 +231,22 @@ def canary_bytes(records):
     return b''.join(a.canonical({'category': key, 'payload': value}) + b'\n' for key, value in records.items())
 
 
+def renamed_bootstrap_canaries():
+    value = fixture()
+    value['source']['user'] = 'synthetic_source_bootstrap'
+    value['source']['roles'][0]['name'] = value['source']['user']
+    value['source']['roles'].append({'name': 'pg_read_all_settings', 'canLogin': False, 'superuser': False})
+    repin(value)
+    source, target = canary_records(value), canary_records(value, target=True)
+    source['roleIsolation']['roles'][0].update({flag: True for flag in a.ROLE_FLAGS})
+    target['roleIsolation']['roles'].append({'name': 'postgres', **{flag: True for flag in a.ROLE_FLAGS}})
+    edge = {'role': 'pg_read_all_settings', 'member': 'pg_monitor',
+            'grantor': value['source']['user'], 'admin': False, 'inherit': True, 'set': True}
+    source['roleIsolation']['memberships'] = [edge]
+    target['roleIsolation']['memberships'] = [dict(edge, grantor='postgres')]
+    return value, source, target
+
+
 def add_index(records, table_index=0, index_name='synthetic_access_index'):
     table = records['tableCensus'][table_index]
     index = {**table, 'name': index_name}
@@ -383,7 +399,11 @@ class PlannerTests(unittest.TestCase):
         commands = a.snapshot_commands(v, snapshot_binding(v))
         self.assertIn('--snapshot=00000003-0000001B-1', commands['dumpArgv'])
         self.assertIn('--format=custom', commands['dumpArgv'])
-        self.assertIn('--file=-', commands['dumpArgv'])
+        # Custom-format pg_dump opens every nonempty filename literally,
+        # including '-'. Omission is the stdout contract; no source file.
+        self.assertFalse(any(v=='-f' or v=='--file' or v.startswith('--file=') for v in commands['dumpArgv']))
+        self.assertFalse(any(item=='-f' or item=='--file' or (isinstance(item,str) and item.startswith('--file='))
+                             for item in capture['dumpArgvTemplate']))
         self.assertNotIn('--schema', ' '.join(commands['dumpArgv']))
         self.assertNotIn('--table', ' '.join(commands['dumpArgv']))
         sql = commands['canaryStdin']
@@ -552,6 +572,23 @@ class PlannerTests(unittest.TestCase):
         self.assertEqual(command['stdinContract']['immutableArtifact'], b['artifact'])
         self.assertEqual(command['stdinContract']['sha256'], J)
         self.assertFalse(command['executionAuthorized'])
+
+    def test_fractional_provider_retention_and_capture_expiry_keep_exact_inequalities(self):
+        from datetime import datetime, timedelta
+        value=fixture();binding=restore_binding(value)
+        captured=datetime.fromisoformat('2026-10-23T12:00:01.123456+00:00')
+        stamp=lambda v:v.isoformat().replace('+00:00','Z')
+        record=binding['authenticatedCaptureRecord']
+        record.update(capturedAt=stamp(captured),expiresAt=stamp(captured+timedelta(days=1)))
+        retain=stamp(captured+timedelta(days=30))
+        binding['artifact']['retainUntil']=retain;binding['independentlyReadBack']['retainUntil']=retain
+        a.restore_command(value,binding)
+        record['expiresAt']=stamp(captured+timedelta(days=1,microseconds=1))
+        with self.assertRaises(a.Refusal):a.restore_command(value,binding)
+        record['expiresAt']=stamp(captured+timedelta(days=1))
+        early=stamp(captured+timedelta(days=30,microseconds=-1))
+        binding['artifact']['retainUntil']=early;binding['independentlyReadBack']['retainUntil']=early
+        with self.assertRaises(a.Refusal):a.restore_command(value,binding)
 
     def test_restore_refuses_unknown_or_reused_uids_empty_schema_image_storage_and_artifact_drift(self):
         v = fixture()
@@ -1158,6 +1195,60 @@ class PlannerTests(unittest.TestCase):
             change(altered)
             with self.assertRaises(a.Refusal):
                 a.compare_canaries(value, canary_bytes(source), canary_bytes(altered))
+
+    def test_renamed_source_bootstrap_preserves_builtin_edges_and_inert_target_roles(self):
+        value, source, target = renamed_bootstrap_canaries()
+        source_raw, target_raw = canary_bytes(source), canary_bytes(target)
+        with patch.object(socket, 'socket', side_effect=AssertionError('network forbidden')), \
+                patch.object(subprocess, 'Popen', side_effect=AssertionError('process forbidden')):
+            result = a.compare_canaries(value, source_raw, target_raw)
+        self.assertTrue(result['consistent'])
+        self.assertFalse(result['executionAuthorized'])
+        self.assertIsNone(result['recoveryAcceptance'])
+        self.assertEqual(canary_bytes(source), source_raw)
+        self.assertEqual(canary_bytes(target), target_raw)
+        self.assertTrue(all(not row[flag] for row in target['roleIsolation']['roles']
+                            if row['name'] == value['source']['user'] for flag in a.ROLE_FLAGS))
+
+    def test_renamed_bootstrap_does_not_normalize_wrong_grantor_or_edge_semantics(self):
+        value, source, target = renamed_bootstrap_canaries()
+        for side, change in (
+            ('source', lambda r: r['memberships'][0].update(grantor='synthetic_admin')),
+            ('source', lambda r: r['roles'][0].update(createRole=False)),
+            ('target', lambda r: r['memberships'][0].update(grantor=value['source']['user'])),
+            ('target', lambda r: r['memberships'][0].update(admin=True)),
+            ('target', lambda r: r['memberships'][0].update(inherit=False)),
+            ('target', lambda r: r['memberships'][0].update(set=False)),
+            ('target', lambda r: r['memberships'].clear()),
+            ('target', lambda r: r['roles'][0].update(canLogin=True)),
+            ('source', lambda r: r['memberships'][0].update(member=value['source']['user'])),
+        ):
+            left, right = deepcopy(source), deepcopy(target)
+            change((left if side == 'source' else right)['roleIsolation'])
+            with self.subTest(side=side, change=change), self.assertRaises(a.Refusal):
+                a.compare_canaries(value, canary_bytes(left), canary_bytes(right))
+
+    def test_renamed_bootstrap_requires_unambiguous_pinned_source_authority(self):
+        value, source, target = renamed_bootstrap_canaries()
+        value['source']['roles'][1]['superuser'] = True
+        repin(value)
+        source['roleIsolation']['roles'][1].update({flag: True for flag in a.ROLE_FLAGS})
+        with self.assertRaises(a.Refusal):
+            a.compare_canaries(value, canary_bytes(source), canary_bytes(target))
+
+    def test_restore_binding_preserves_fractional_utc_timestamps_and_exclusive_expiry(self):
+        value = fixture()
+        binding = restore_binding(value)
+        binding['authenticatedCaptureRecord'].update(capturedAt='2026-10-23T12:00:00.123456Z',
+                                                     expiresAt='2026-10-24T12:00:00.123456Z')
+        binding['artifact']['retainUntil'] = '2026-11-22T12:00:00.123456Z'
+        binding['independentlyReadBack']['retainUntil'] = binding['artifact']['retainUntil']
+        before = deepcopy(binding)
+        self.assertFalse(a.restore_command(value, binding)['executionAuthorized'])
+        self.assertEqual(binding, before)
+        binding['authenticatedCaptureRecord']['expiresAt'] = '2026-10-24T12:00:00.123455Z'
+        with self.assertRaises(a.Refusal):
+            a.restore_command(value, binding)
 
     def test_cleanup_owned_roots_align_with_common_and_generated_pod_is_census_only(self):
         plan = a.render_proposal(fixture())

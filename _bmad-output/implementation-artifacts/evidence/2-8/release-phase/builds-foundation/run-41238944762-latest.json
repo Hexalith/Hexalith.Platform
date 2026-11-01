@@ -1,0 +1,57 @@
+{
+  "observedAt": "2026-10-31T20:41:53.168055+00:00",
+  "id": 41238944762,
+  "head": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "status": "in_progress",
+  "conclusion": null,
+  "jobs": [
+    {
+      "id": 124648563969,
+      "name": "Python contract tests",
+      "status": "completed",
+      "conclusion": "success",
+      "currentSteps": []
+    },
+    {
+      "id": 124648564218,
+      "name": ".NET tests",
+      "status": "in_progress",
+      "conclusion": null,
+      "currentSteps": [
+        "Test Hexalith.Builds.Module.Tests"
+      ]
+    },
+    {
+      "id": 124648564281,
+      "name": "Package catalog contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "currentSteps": [
+        "Test package version exception validator"
+      ]
+    },
+    {
+      "id": 124648564351,
+      "name": "Build and package contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "currentSteps": [
+        "Qualify G-4 tool source and Release packages"
+      ]
+    },
+    {
+      "id": 124648564390,
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "currentSteps": []
+    },
+    {
+      "id": 124648565027,
+      "name": "Dependency review",
+      "status": "completed",
+      "conclusion": "skipped",
+      "currentSteps": []
+    }
+  ]
+}

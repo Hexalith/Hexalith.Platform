@@ -1,0 +1,182 @@
+[
+  {
+    "owner": "Commons",
+    "number": 51,
+    "comment": {
+      "id": 6548955223
+    },
+    "closed": {
+      "url": "https://github.com/Hexalith/Hexalith.Commons/pull/51",
+      "number": 51,
+      "state": "closed",
+      "merged": false,
+      "mergeable": true,
+      "draft": false,
+      "body": "The shared workflow rollout adds required integration inputs and registry secrets.\nCommons still uses the existing caller interface. Pin its domain-ci workflow to\nverified Builds revision 1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9 before the\nshared interface changes. Producer push CI passed on that exact main revision:\nhttps://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095\n\nOnly jobs.ci.uses changes. Preserve every caller input, job, permission, test,\npackage/tool pin and protection. This compatibility fence supplies no Story 2.8\nintegration or candidate acceptance; caller merge and global activation remain\npending separate normal gates.\n\nValidation: actionlint syntax check, exact single-reference byte comparison,\nparsed YAML equivalence, pinned-interface input compatibility, git diff checks,\nand the owning lockfile-pinned commitlint CLI.\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Single-line CI workflow pin with no application or security logic changes; reduces drift risk from unpinned `@main`.\n> \n> **Overview**\n> **Pins** the Commons CI job’s reusable workflow reference from `@main` to commit `1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9` on `Hexalith/Hexalith.Builds`.\n> \n> This keeps the existing caller inputs (`solution`, `run-consumer-validation`, `test-platform`, `unit-test-projects`) working while the shared `domain-ci` workflow gains new required integration inputs and registry secrets. No other workflow jobs, permissions, or inputs change.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 6820f0a0365636284aa5c160b23a6d4373033b9f. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+      "title": "fix(ci): pin the legacy domain workflow",
+      "base": "main",
+      "base_sha": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+      "head": "fix/story-2-8-legacy-ci",
+      "head_sha": "6820f0a0365636284aa5c160b23a6d4373033b9f",
+      "head_repo_id": 952960148,
+      "head_repo_full_name": "Hexalith/Hexalith.Commons",
+      "merge_commit_sha": "d7cfa5c712155025b14fb3c7c427970be24125b8",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": null,
+      "comments": null,
+      "created_at": "2026-10-31T20:07:07Z",
+      "updated_at": "2026-10-31T20:49:48Z",
+      "closed_at": "2026-10-31T20:49:48Z",
+      "merged_at": null,
+      "commits": 1,
+      "changed_files": 1,
+      "additions": 1,
+      "deletions": 1,
+      "display_url": "https://github.com/Hexalith/Hexalith.Commons/pull/51",
+      "display_title": "fix(ci): pin the legacy domain workflow"
+    }
+  },
+  {
+    "owner": "Folders",
+    "number": 15,
+    "comment": {
+      "id": 6548955709
+    },
+    "closed": {
+      "url": "https://github.com/Hexalith/Hexalith.Folders/pull/15",
+      "number": 15,
+      "state": "closed",
+      "merged": false,
+      "mergeable": true,
+      "draft": false,
+      "body": "The shared workflow rollout adds required integration inputs and registry secrets.\nFolders still uses the existing caller interface. Pin its domain-ci workflow to\nverified Builds revision 1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9 before the\nshared interface changes. Producer push CI passed on that exact main revision:\nhttps://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095\n\nOnly jobs.ci.uses changes. Preserve every caller input, job, permission, test,\npackage/tool pin and protection. This compatibility fence supplies no Story 2.8\nintegration or candidate acceptance; caller merge and global activation remain\npending separate normal gates.\n\nValidation: actionlint syntax check, exact single-reference byte comparison,\nparsed YAML equivalence, pinned-interface input compatibility, git diff checks,\nand the owning lockfile-pinned commitlint CLI.\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Single-line CI reference pin with no application or test logic changes; reduces surprise breakage from upstream workflow interface changes.\n> \n> **Overview**\n> Pins the **Folders** CI job’s reusable workflow from floating `@main` to commit **`1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9`** on `Hexalith/Hexalith.Builds`, so CI keeps using the **legacy `domain-ci` caller contract** while the shared workflow on `main` picks up new required inputs and registry secrets.\n> \n> **No other workflow changes**: concurrency, permissions, all `with:` inputs (solution, timeouts, coverage gates, test project lists), and the local `folders-specialized-gates`, `accessibility-gates`, and `e2e-gates` jobs stay the same.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 35b1228a6b7832dd92b9ca255b4c710c1b5a1430. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+      "title": "fix(ci): pin the legacy domain workflow",
+      "base": "main",
+      "base_sha": "765544efc5c8aa395895f3a3d5911d4364658639",
+      "head": "fix/story-2-8-legacy-ci",
+      "head_sha": "35b1228a6b7832dd92b9ca255b4c710c1b5a1430",
+      "head_repo_id": 1229485448,
+      "head_repo_full_name": "Hexalith/Hexalith.Folders",
+      "merge_commit_sha": "5b85e0e19df2746c218fcc0859856fbfdf508f8e",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": null,
+      "comments": null,
+      "created_at": "2026-10-31T20:08:55Z",
+      "updated_at": "2026-10-31T20:49:51Z",
+      "closed_at": "2026-10-31T20:49:51Z",
+      "merged_at": null,
+      "commits": 1,
+      "changed_files": 1,
+      "additions": 1,
+      "deletions": 1,
+      "display_url": "https://github.com/Hexalith/Hexalith.Folders/pull/15",
+      "display_title": "fix(ci): pin the legacy domain workflow"
+    }
+  },
+  {
+    "owner": "Conversations",
+    "number": 11,
+    "comment": {
+      "id": 6548956322
+    },
+    "closed": {
+      "url": "https://github.com/Hexalith/Hexalith.Conversations/pull/11",
+      "number": 11,
+      "state": "closed",
+      "merged": false,
+      "mergeable": true,
+      "draft": false,
+      "body": "The shared workflow rollout adds required integration inputs and registry secrets.\nConversations still uses the existing caller interface. Pin its domain-ci workflow to\nverified Builds revision 1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9 before the\nshared interface changes. Producer push CI passed on that exact main revision:\nhttps://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095\n\nChange only jobs.ci.uses and its matching security-tooling expectation. The\nexisting test now requires the full approved immutable workflow reference; every\nother security, job and input assertion remains unchanged. Preserve every caller\ninput, job, permission, package/tool pin and protection. This compatibility fence supplies no Story 2.8\nintegration or candidate acceptance; caller merge and global activation remain\npending separate normal gates.\n\nValidation: actionlint syntax check, exact single-reference byte comparison,\nparsed YAML equivalence, pinned-interface input compatibility, git diff checks,\nthe owning lockfile-pinned commitlint CLI, and all 28 existing release-tooling\ntests (including the exact-reference security control).\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> CI-only pin to a known-good shared workflow revision; no runtime or application logic changes.\n> \n> **Overview**\n> **Pins** the reusable `domain-ci` workflow reference from `@main` to commit `1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9` so CI keeps the current caller contract while Hexalith.Builds rolls out a newer workflow interface (extra inputs and registry secrets).\n> \n> All existing `with:` inputs, jobs, permissions, and other workflow pins are unchanged. The release-tooling security test now asserts the full immutable `uses:` string instead of `@main`.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 21dd4bdc7430e11e348675ca4fa5d1c34131c781. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+      "title": "fix(ci): pin the legacy domain workflow",
+      "base": "main",
+      "base_sha": "8a26cb03ee1d5413c034eb60aee71618f3ebd31a",
+      "head": "fix/story-2-8-legacy-ci",
+      "head_sha": "21dd4bdc7430e11e348675ca4fa5d1c34131c781",
+      "head_repo_id": 1231551514,
+      "head_repo_full_name": "Hexalith/Hexalith.Conversations",
+      "merge_commit_sha": "ebb355ee9dd8b2f1370c44d345036b073f9c3ca6",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": null,
+      "comments": null,
+      "created_at": "2026-10-31T20:15:00Z",
+      "updated_at": "2026-10-31T20:49:54Z",
+      "closed_at": "2026-10-31T20:49:54Z",
+      "merged_at": null,
+      "commits": 1,
+      "changed_files": 2,
+      "additions": 5,
+      "deletions": 2,
+      "display_url": "https://github.com/Hexalith/Hexalith.Conversations/pull/11",
+      "display_title": "fix(ci): pin the legacy domain workflow"
+    }
+  },
+  {
+    "owner": "Tenants",
+    "number": 58,
+    "comment": {
+      "id": 6548956809
+    },
+    "closed": {
+      "url": "https://github.com/Hexalith/Hexalith.Tenants/pull/58",
+      "number": 58,
+      "state": "closed",
+      "merged": false,
+      "mergeable": true,
+      "draft": false,
+      "body": "The shared workflow rollout adds required integration inputs and registry secrets.\nTenants still uses the existing caller interface. Pin its domain-ci workflow to\nverified Builds revision 1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9 before the\nshared interface changes. Producer push CI passed on that exact main revision:\nhttps://github.com/Hexalith/Hexalith.Builds/actions/runs/41226277095\n\nOnly jobs.ci.uses changes. Preserve every caller input, job, permission, test,\npackage/tool pin and protection. This compatibility fence supplies no Story 2.8\nintegration or candidate acceptance; caller merge and global activation remain\npending separate normal gates.\n\nValidation: actionlint syntax check, exact single-reference byte comparison,\nparsed YAML equivalence, pinned-interface input compatibility, git diff checks,\nand the owning lockfile-pinned commitlint CLI.\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Single CI workflow pin with no application or runtime changes; risk is limited to drift from Builds `main` until the pin is updated.\n> \n> **Overview**\n> Pins the **`ci`** job’s reusable workflow reference from **`@main`** to commit **`1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9`** on `Hexalith/Hexalith.Builds`, so Tenants keeps calling the older **`domain-ci.yml`** interface while the shared workflow on **`main`** picks up new required inputs and registry secrets.\n> \n> All **`with:`** inputs, timeouts, test project lists, and other local CI jobs are unchanged—only the **`uses`** ref moves.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 5902a22e416f8c36f9de1365d9b9dd5b3555a22e. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+      "title": "fix(ci): pin the legacy domain workflow",
+      "base": "main",
+      "base_sha": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "head": "fix/story-2-8-legacy-ci",
+      "head_sha": "5902a22e416f8c36f9de1365d9b9dd5b3555a22e",
+      "head_repo_id": 1174267565,
+      "head_repo_full_name": "Hexalith/Hexalith.Tenants",
+      "merge_commit_sha": "ecd75ac8fa640c9805b0c272cb8f886223aa779e",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": null,
+      "comments": null,
+      "created_at": "2026-10-31T20:12:42Z",
+      "updated_at": "2026-10-31T20:49:57Z",
+      "closed_at": "2026-10-31T20:49:57Z",
+      "merged_at": null,
+      "commits": 1,
+      "changed_files": 1,
+      "additions": 1,
+      "deletions": 1,
+      "display_url": "https://github.com/Hexalith/Hexalith.Tenants/pull/58",
+      "display_title": "fix(ci): pin the legacy domain workflow"
+    }
+  }
+]

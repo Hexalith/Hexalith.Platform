@@ -1,0 +1,51 @@
+{
+  "base": "829f1a3d827763e09d437e92274fe790918553e2",
+  "sourceSha256": {
+    "Github/run-module-integration/run_module_integration.py": "a4d0fd045ec16e4838fb952d86154b950a7823b7654918211ac31bbed3222789",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "3906dad5e93e93aa84acb3fda9a0c75aec12924a03754258b9410897c11902eb",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "08bb1e8f01349eb471b24b14e464bdc19f95f94cf1bfd6cce122b86159670b4e",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": "dca68b5be0dadb33a4f91837257183a08f0774535b31ffd36f81b6675d90596f"
+  },
+  "build": {
+    "warnings": 0,
+    "errors": 0,
+    "output": "hardening-build.txt"
+  },
+  "ciLifecycle": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "xml": "hardening-ci-tests.xml"
+  },
+  "helper": {
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "output": "helper-tests-hardened.txt"
+  },
+  "pythonStyle": {
+    "rules": [
+      "E501",
+      "E306"
+    ],
+    "maxLineLength": 159,
+    "findings": 0
+  },
+  "pythonComplexity": {
+    "helperMax": 15,
+    "testsMax": 9,
+    "report": "python-complexity.json"
+  },
+  "bandit": {
+    "findings": 0,
+    "report": "python-security.json",
+    "reviewPractice": "Fixed executable/argument contract; exact owner-style B404/B603 comments on intentional subprocess use. Actual path and argument flaws are corrected and negatively tested, with no NOSONAR or blanket exclusions."
+  },
+  "sourceLimits": "Same-job CI identity is simulated. Existing source fixtures execute real local native and stop-observer processes. This is not hosted Aspire/Dapr/container qualification. The broader 238-case runtime baseline remains recorded at ee6074995b7da585f731f938cc295a6f7d3bf6a3.",
+  "candidateAcceptance": false,
+  "testedBinariesSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll": "21470b541ce3a96594a4dbfb64edc40169e9d3903401bdecb2555ab31a735918",
+    "test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll": "ebdbeeb7c870615bc8e72d5d586b06db2f165fef10abb1c580f451b09c47b550"
+  },
+  "compiledSourceIdentity": "829f1a3d827763e09d437e92274fe790918553e2 plus the four exact source hashes above"
+}

@@ -1,0 +1,6 @@
+Domain workflow test-platform checks failed with 5 error(s):
+- domain-ci-v2.yml VSTest prerequisite order does not run Tier 1, Dapr initialization, Tier 2, coverage, and the final gate in order.
+- domain-ci-v2.yml Microsoft.Testing.Platform prerequisite order does not run Tier 1, Dapr initialization, Tier 2, coverage, and the final gate in order.
+- domain-ci-v2.yml failing failure gate annotation is missing '::error title=Blocking test failures::3 test project(s) failed across the blocking tiers.'.
+- domain-ci-v2.yml is missing '--filter-not-trait'.
+- domain-ci-v2.yml is missing '--filter-trait'.

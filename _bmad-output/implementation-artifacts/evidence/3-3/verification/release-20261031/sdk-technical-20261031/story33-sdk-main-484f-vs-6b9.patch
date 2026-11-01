@@ -1,0 +1,1341 @@
+diff --git a/_bmad-output/implementation-artifacts/spec-parties-catalog-sdk-prerequisite.md b/_bmad-output/implementation-artifacts/spec-parties-catalog-sdk-prerequisite.md
+new file mode 100644
+index 000000000..16f9ad6b4
+--- /dev/null
++++ b/_bmad-output/implementation-artifacts/spec-parties-catalog-sdk-prerequisite.md
+@@ -0,0 +1,117 @@
++---
++title: Qualify the finite Parties catalog SDK prerequisite
++status: locally-verified-awaiting-protected-ci
++baseline_commit: 6b9004d942e280724ca5bf554f3862ab23af68a0
++story_key: parties-catalog-sdk-prerequisite
++---
++
++# Finite release prerequisite
++
++Preserve the complete qualified native catalog/Admin/callback/Direct-notifier work
++through 6b9004d94 and add only the selected Parties compatibility dependencies.
++PartiesServiceCollectionExtensions.AddHexalithParties calls AddHexalithTenants;
++Tenants.Client then registers AddEventStoreDomainEvents. The real SDK subscription
++must therefore be observed and fenced even though Parties does not call that
++registration directly. ResolvePartyIdentity and the other owner identity readers
++are compiled internal schema3 queries and still require their configured exact
++identity-admission proof. Signed owner-authority queries retain their configured
++caller/query allowlist, request proof, service surface and actual action binding.
++
++The prerequisite is intended to merge normally before PR377. All PR377 Works
++DomainAuxiliary/Operations/HA/restart/resume changes, PR378 stream helper, their
++private workspaces and bounded review fixes remain preserved on their branches.
++Their complete four-logical-role and physical-HA source/private-package evidence
++is pending and is not claimed by this prerequisite. No Works HTTP trie, auxiliary
++extractor, executable-replica digest, Operations witness or stream helper is in
++this file scope. No new production trust, eligibility or authority policy is added.
++
++## File Scope
++
++- `_bmad-output/implementation-artifacts/spec-parties-catalog-sdk-prerequisite.md`
++- `src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuxiliaryOperation.cs`
++- `src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs`
++- `src/Hexalith.EventStore.Contracts/Routing/RouteCatalogSidecarTransport.cs`
++- `src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs`
++- `src/Hexalith.EventStore.DomainService/DomainRouteCatalogSidecarMetadata.cs`
++- `src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs`
++- `src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs`
++- `src/Hexalith.EventStore.DomainService/RouteCatalogDomainObservation.cs`
++- `src/Hexalith.EventStore.Server/Commands/DaprCommandCorrelationIndex.cs`
++- `src/Hexalith.EventStore.Server/Events/DeadLetterPublisher.cs`
++- `src/Hexalith.EventStore.Server/Events/EventPublisher.cs`
++- `src/Hexalith.EventStore.Server/Projections/DaprProjectionChangeNotifier.cs`
++- `src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs`
++- `src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs`
++- `src/Hexalith.EventStore/Controllers/QueriesController.cs`
++- `src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs`
++- `tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.ProtectedCatalogIdentity.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogAdmissionTests.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogQueryHandler.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Routing/CatalogRemoteAdapterCancellationTests.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarCatalogLeaseTests.cs`
++- `tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarLeaseTestHost.cs`
++
++## Behavior and constraints
++
++The SDK-created subscription witness binds the actual delegate, concrete POST,
++channel policy, configured component/topic and actual Dapr topic metadata, including
++programmatic/declarative mode. Schema3 activation compares the actual finite
++receiver witness. Actual native delivery then acquires the local committed lease,
++compares its exact subscription binding and enters the existing remote-call scope.
++No synthetic workload Root/Epoch stamps are required for native pub/sub. Missing
++commit, pending activation or changed subscription metadata refuses before business
++processing. Ambiguous dispatched work retains its durable fence; known completion
++releases normally. Existing channel/envelope/handler checks remain effective.
++
++The query compatibility slice uses the existing exact identity-admission authority
++and a private in-flight owner marker bound to the actual context/request/principal,
++endpoint, payload hash and captured root/epoch. Copied markers, changed payload or
++scope, unsupported caller and unconfigured or empty proof refuse. Four already
++wrapped actual Dapr boundaries now pass the caller cancellation token to the
++existing remote fence, preventing pre-cancelled requests from enrolling or calling.
++
++## Verification
++
++All work and producer outputs are in the isolated prerequisite checkout; original
++SDK/Root producers and nested submodules are untouched. Only ordinary selected
++Builds a22 source is used for compilation. The release-workflow tests explicitly
++read a separate exact-a22 standalone Builds clone through their existing supported
++source override; no nested dependency is initialized.
++
++- Before query/pre-cancel source fixes: 38 cases, 13 failures, 25 passes.
++  After fixes: all38 pass, zero skips.
++- Before Sidecar committed-lease guard: seven real HTTP cases, four failures.
++  Actual mapper, processor, channel auth and real CAS authority pass afterward.
++  The final twelve cases also cover topic/component/code/method/operation drift,
++  exact pending rollback, pending actual remote work and uncertain completion.
++- Same actual delegate with seven altered topic metadata forms: all seven fail
++  before the witness correction; all17 subscription mapping/metadata cases and
++  six existing HTTP/channel security cases pass afterward.
++- Topic/component replacement metadata explicitly retains the actual SDK
++  EnableRawPayload=false value. Removing only the component/topic comparisons
++  now produces exactly two failures among17 cases; restoring them gives17/17.
++  The unrelated flag cannot mask a missing topic-specific validation anymore.
++- Normal isolated whole-solution Release build: zero warnings/errors.
++- Exact final routing/query/notifier suite: 643 pass, zero skips.
++- Exact real native actor/callback suite: three pass, zero skips.
++- Source header ownership: four pass, zero skips.
++
++Logs and XML are /tmp/es-parties-prereq-{server,domain,client,native}.*;
++red logs are /tmp/es-parties-prereq-query-cancel-red.log and
++/tmp/es-parties-prereq-topic-red.log. The Sidecar original red is
++/tmp/es377-sidecar-red.log. ABI and release packaging proof are finalized in the
++local /tmp/es-parties-prereq-verification.json receipt before commit.
++
++An initial whole-solution --artifacts-path build collided on the two existing
++Sample.Tests project basenames; the normal per-project bin/obj build passes.
++An overbroad packaging namespace probe encountered intentionally absent Git
++metadata in ordinary dependency snapshots; only the required exact workflow
++inventory suite is rerun with its supported explicit exact-source override.
++Neither environment issue was concealed by changing product code or validators.
++
++The complete exact-head protected PR CI and Integration workflows, normal merge,
++fresh-main CI/commitlint, protected Release and fourteen official source-matching
++NuGet archives remain mandatory before publication is claimed. Actual public SDK
++Root runtime qualification follows publication and retains all existing assertions.
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuxiliaryOperation.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuxiliaryOperation.cs
+index 419317b25..25c1021bf 100644
+--- a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuxiliaryOperation.cs
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogAuxiliaryOperation.cs
+@@ -9,6 +9,9 @@ namespace Hexalith.EventStore.Contracts.Routing;
+ /// <param name="Domain">Exact owning domain.</param>
+ public sealed record RouteCatalogAuxiliaryOperation(string AppId, string Method, string Operation, string Domain)
+ {
++    /// <summary>Gets the actual SDK subscription delegate, component and topic binding.</summary>
++    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
++    public RouteCatalogSidecarTransport? Sidecar { get; init; }
+     /// <summary>Gets the closed existing SDK HTTP transport binding; absent for legacy auxiliary calls.</summary>
+     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+     public RouteCatalogHttpTransport? Http { get; init; }
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs
+index 08e95936e..dd19364fd 100644
+--- a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogReceiverEndpoint.cs
+@@ -13,6 +13,9 @@ namespace Hexalith.EventStore.Contracts.Routing;
+ public sealed record RouteCatalogReceiverEndpoint(string Pattern, IReadOnlyList<string> Methods, string? Operation,
+     IReadOnlyList<string> Policies, bool Anonymous, bool IsPattern, bool Admitted)
+ {
++    /// <summary>Gets the actual SDK subscription delegate, component and topic binding.</summary>
++    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
++    public RouteCatalogSidecarTransport? Sidecar { get; init; }
+     /// <summary>Gets independently captured SDK controller/code/verb identity, never message eligibility.</summary>
+     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+     public RouteCatalogHttpTransport? Http { get; init; }
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogSidecarTransport.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogSidecarTransport.cs
+new file mode 100644
+index 000000000..65f402af9
+--- /dev/null
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogSidecarTransport.cs
+@@ -0,0 +1,4 @@
++namespace Hexalith.EventStore.Contracts.Routing;
++
++/// <summary>Actual SDK subscription delegate and configured topic for an existing channel-protected callback.</summary>
++public sealed record RouteCatalogSidecarTransport(string Owner, string CodeDigest, string PubSubName, string TopicName);
+diff --git a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
+index 7c3ad6959..5833ae998 100644
+--- a/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
++++ b/src/Hexalith.EventStore.Contracts/Routing/RouteCatalogTopologyValidator.cs
+@@ -64,7 +64,15 @@ public static class RouteCatalogTopologyValidator
+                 methods[method] = target.Operation;
+             }
+             foreach (var operation in auxiliary ?? [])
+-                if (operation.AppId == localAppId) methods[operation.Method] = operation.Operation;
++                if (operation.AppId == localAppId)
++                {
++                    if (operation.Sidecar is { } subscription && (receiver is null
++                        || !receiver.Endpoints.Any(endpoint => endpoint.Pattern == "/" + operation.Method && endpoint.Admitted
++                            && !endpoint.Anonymous && !endpoint.IsPattern && endpoint.Methods.SequenceEqual(["POST"], StringComparer.Ordinal)
++                            && endpoint.Operation == operation.Operation && endpoint.Sidecar == subscription)))
++                        throw Failure("sidecar-subscription-owner-binding-drift");
++                    methods[operation.Method] = operation.Operation;
++                }
+             methods["internal/routing/catalog-generation"] = EventStoreOperationIdentifiers.RouteCatalogRead;
+             foreach (string stage in new[] { "prepare", "ready", "commit", "rollback", "reconcile" }) methods["internal/routing/catalog/" + stage] = EventStoreOperationIdentifiers.RouteCatalogActivate;
+             if (!acl.TryGetProperty("policies", out JsonElement policies)) return;
+diff --git a/src/Hexalith.EventStore.DomainService/DomainRouteCatalogSidecarMetadata.cs b/src/Hexalith.EventStore.DomainService/DomainRouteCatalogSidecarMetadata.cs
+new file mode 100644
+index 000000000..f3862d6ae
+--- /dev/null
++++ b/src/Hexalith.EventStore.DomainService/DomainRouteCatalogSidecarMetadata.cs
+@@ -0,0 +1,42 @@
++using System.Security.Cryptography;
++
++using Dapr;
++
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Http;
++using Microsoft.AspNetCore.Routing;
++
++namespace Hexalith.EventStore.DomainService;
++
++/// <summary>Private witness created only by the actual SDK subscription mapper.</summary>
++internal sealed class DomainRouteCatalogSidecarMetadata(RequestDelegate? actualRequest, string path, string pubsub, string topic, bool declarative)
++{
++    internal const string Operation = "sdk-sidecar:domain-events";
++
++    internal RouteCatalogSidecarTransport Observe(RouteEndpoint endpoint)
++    {
++        if (actualRequest is null || !ReferenceEquals(actualRequest, endpoint.RequestDelegate)
++            || endpoint.RoutePattern.RawText != path || endpoint.RoutePattern.Parameters.Count != 0
++            || endpoint.Metadata.GetMetadata<IHttpMethodMetadata>()?.HttpMethods.SequenceEqual(["POST"], StringComparer.Ordinal) != true
++            || endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null
++            || !endpoint.Metadata.GetOrderedMetadata<IAuthorizeData>().Any(policy => policy.Policy == EventStoreDomainServicePolicies.SidecarChannel))
++            throw new RouteCatalogUnavailableException("The SDK subscription delegate or channel policy differs from its actual receiver.");
++        var topics = endpoint.Metadata.GetOrderedMetadata<ITopicMetadata>();
++        if (endpoint.Metadata.GetOrderedMetadata<IOriginalTopicMetadata>().Count != 0
++            || endpoint.Metadata.GetOrderedMetadata<Dapr.AspNetCore.IBulkSubscribeMetadata>().Count != 0
++            || (declarative ? topics.Count != 0 : topics.Count != 1 || topics[0] is not TopicAttribute actual
++                || actual.GetType() != typeof(TopicAttribute) || actual.PubsubName != pubsub || actual.Name != topic
++                || actual.EnableRawPayload != false || actual.DeadLetterTopic is not null || actual.MetadataSeparator is not null
++                || actual.OwnedMetadatas is { Length: > 0 } || !string.IsNullOrEmpty(actual.Match) || actual.Priority != 0))
++            throw new RouteCatalogUnavailableException("The actual SDK subscription metadata differs from its configured component, topic or mode.");
++        var assembly = typeof(EventStoreDomainEventsEndpointExtensions).Assembly;
++        return new(typeof(EventStoreDomainEventsEndpointExtensions).FullName!,
++            Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(assembly.Location))), pubsub, topic);
++    }
++
++    internal static RouteCatalogSidecarTransport? ObserveEndpoint(RouteEndpoint endpoint)
++        => endpoint.Metadata.GetMetadata<DomainRouteCatalogSidecarMetadata>()?.Observe(endpoint);
++}
+diff --git a/src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs b/src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs
+index 0d822c398..8a6e922f3 100644
+--- a/src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs
++++ b/src/Hexalith.EventStore.DomainService/EventStoreDomainEventsEndpointExtensions.cs
+@@ -46,7 +46,13 @@ public static class EventStoreDomainEventsEndpointExtensions {
+             // Pub/sub delivery is sidecar-originated: it must present the Dapr app-channel token.
+             .RequireEventStoreSidecarChannel();
+ 
+-        if (endpoints.ServiceProvider.GetService<IConfiguration>()?.GetValue<bool>("Dapr:DeclarativeSubscriptions") != true)
++        string path = options.SubscriptionRoute;
++        string pubsub = options.PubSubName;
++        string topic = options.TopicName;
++        bool declarative = endpoints.ServiceProvider.GetService<IConfiguration>()?.GetValue<bool>("Dapr:DeclarativeSubscriptions") == true;
++        endpoint.Finally(builder => builder.Metadata.Add(new DomainRouteCatalogSidecarMetadata(builder.RequestDelegate, path, pubsub, topic, declarative)));
++
++        if (!declarative)
+         {
+             _ = endpoint.WithTopic(options.PubSubName, options.TopicName);
+         }
+diff --git a/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs b/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs
+index 32c6c2696..2939a7ff4 100644
+--- a/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs
++++ b/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs
+@@ -224,7 +224,10 @@ public static class EventStoreDomainServiceExtensions {
+         _ = app.MapEventStoreDomainService();
+ 
+         _ = Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+-            endpoint => EventStoreDomainServiceRoutes.Operational.SingleOrDefault(route => route.Route == endpoint.RoutePattern.RawText)?.Operation);
++            endpoint => endpoint.Metadata.GetMetadata<DomainRouteCatalogSidecarMetadata>() is not null
++                ? DomainRouteCatalogSidecarMetadata.Operation
++                : EventStoreDomainServiceRoutes.Operational.SingleOrDefault(route => route.Route == endpoint.RoutePattern.RawText)?.Operation,
++            DomainRouteCatalogSidecarMetadata.ObserveEndpoint);
+ 
+         // Typed-reminder actor routes (AD-20 R6), wired only when AddEventStoreReminders registered the runtime.
+         // MapEventStoreReminders skips the Dapr actor handlers when the host already mapped them; the
+diff --git a/src/Hexalith.EventStore.DomainService/RouteCatalogDomainObservation.cs b/src/Hexalith.EventStore.DomainService/RouteCatalogDomainObservation.cs
+index 66cd6db44..f9d19b273 100644
+--- a/src/Hexalith.EventStore.DomainService/RouteCatalogDomainObservation.cs
++++ b/src/Hexalith.EventStore.DomainService/RouteCatalogDomainObservation.cs
+@@ -60,6 +60,13 @@ public static class RouteCatalogDomainObservation
+         var result = new List<RouteCatalogAuxiliaryOperation>();
+         foreach (var endpoint in endpoints.OfType<RouteEndpoint>())
+         {
++            if (endpoint.Metadata.GetMetadata<DomainRouteCatalogSidecarMetadata>() is { } subscription)
++            {
++                var owner = subscription.Observe(endpoint);
++                foreach (string domain in domains) result.Add(new(appId, endpoint.RoutePattern.RawText!.TrimStart('/'),
++                    DomainRouteCatalogSidecarMetadata.Operation, domain) { Sidecar = owner });
++                continue;
++            }
+             var route = EventStoreDomainServiceRoutes.Operational.SingleOrDefault(r => r.Route == endpoint.RoutePattern.RawText);
+             if (route is null) continue;
+             if (endpoint.Metadata.GetMetadata<IAllowAnonymous>() is not null
+diff --git a/src/Hexalith.EventStore.Server/Commands/DaprCommandCorrelationIndex.cs b/src/Hexalith.EventStore.Server/Commands/DaprCommandCorrelationIndex.cs
+index f27fc67db..fd78448d9 100644
+--- a/src/Hexalith.EventStore.Server/Commands/DaprCommandCorrelationIndex.cs
++++ b/src/Hexalith.EventStore.Server/Commands/DaprCommandCorrelationIndex.cs
+@@ -185,6 +185,6 @@ public sealed class DaprCommandCorrelationIndex(
+             etag ?? string.Empty,
+             s_stateOptions,
+             metadata,
+-            cancellationToken));
++            cancellationToken), cancellationToken);
+     }
+ }
+diff --git a/src/Hexalith.EventStore.Server/Events/DeadLetterPublisher.cs b/src/Hexalith.EventStore.Server/Events/DeadLetterPublisher.cs
+index 6c5fa78df..cf8856b0c 100644
+--- a/src/Hexalith.EventStore.Server/Events/DeadLetterPublisher.cs
++++ b/src/Hexalith.EventStore.Server/Events/DeadLetterPublisher.cs
+@@ -63,7 +63,7 @@ public partial class DeadLetterPublisher(
+                 deadLetterTopic,
+                 safeMessage,
+                 metadata,
+-                cancellationToken)).ConfigureAwait(false);
++                cancellationToken), cancellationToken).ConfigureAwait(false);
+ 
+             // Rule #5: Never log command payload or event payload data (SEC-5).
+             // Rule #9: correlationId in every structured log entry.
+diff --git a/src/Hexalith.EventStore.Server/Events/EventPublisher.cs b/src/Hexalith.EventStore.Server/Events/EventPublisher.cs
+index 62d653f4d..1d0bba8eb 100644
+--- a/src/Hexalith.EventStore.Server/Events/EventPublisher.cs
++++ b/src/Hexalith.EventStore.Server/Events/EventPublisher.cs
+@@ -230,7 +230,7 @@ public partial class EventPublisher(
+                     topic,
+                     publishEnvelope,
+                     metadata,
+-                    cancellationToken)).ConfigureAwait(false);
++                    cancellationToken), cancellationToken).ConfigureAwait(false);
+ 
+                 publishedCount++;
+             }
+diff --git a/src/Hexalith.EventStore.Server/Projections/DaprProjectionChangeNotifier.cs b/src/Hexalith.EventStore.Server/Projections/DaprProjectionChangeNotifier.cs
+index caa6a8f98..e89d12947 100644
+--- a/src/Hexalith.EventStore.Server/Projections/DaprProjectionChangeNotifier.cs
++++ b/src/Hexalith.EventStore.Server/Projections/DaprProjectionChangeNotifier.cs
+@@ -58,7 +58,7 @@ public partial class DaprProjectionChangeNotifier(
+                 options.Value.PubSubName,
+                 topic,
+                 notification,
+-                cancellationToken)).ConfigureAwait(false);
++                cancellationToken), cancellationToken).ConfigureAwait(false);
+             return;
+         }
+ 
+@@ -149,7 +149,7 @@ public partial class DaprProjectionChangeNotifier(
+                 currentOptions.PubSubName,
+                 topic,
+                 notification,
+-                cancellationToken)).ConfigureAwait(false);
++                cancellationToken), cancellationToken).ConfigureAwait(false);
+             return;
+         }
+ 
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs
+index 2d7d942b4..7a94f40a5 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/FiniteRouteCatalogReceiver.cs
+@@ -21,13 +21,14 @@ public sealed class FiniteRouteCatalogReceiver
+     public const string Version = "eventstore-finite-dapr-receiver-v1";
+     /// <summary>Explicit SDK-owned technical HTTP qualification; ordinary finite receivers retain v1 refusal rules.</summary>
+     public const string TechnicalVersion = "eventstore-finite-sdk-http-receiver-v2";
+-    private readonly Dictionary<(string Path, string Verb), (RouteEndpoint Endpoint, string Operation, string[] Policies, RouteCatalogHttpTransport? Http, RouteCatalogNativeActorTransport? Native, RouteCatalogDaprCallbackTransport? Callback)> _allowed = new();
++    private readonly Dictionary<(string Path, string Verb), (RouteEndpoint Endpoint, string Operation, string[] Policies, RouteCatalogHttpTransport? Http, RouteCatalogNativeActorTransport? Native, RouteCatalogSidecarTransport? Sidecar, RouteCatalogDaprCallbackTransport? Callback)> _allowed = new();
+     private readonly List<(string Prefix, string[] Verbs, string Method)> _grants = [];
+     private bool _technical;
+     private IDevelopmentNativeActorReceiver? _native;
+     private IDevelopmentDaprCallbackReceiver? _callbacks;
+     private readonly TaskCompletionSource _captured = new(TaskCreationOptions.RunContinuationsAsynchronously);
+     private Func<RouteEndpoint, string?>? _operation;
++    private Func<RouteEndpoint, RouteCatalogSidecarTransport?>? _sidecar;
+     private Func<IEnumerable<Endpoint>>? _currentEndpoints;
+     private string[] _prefixes = [];
+     private RouteCatalogReceiverSurface? _surface;
+@@ -38,12 +39,22 @@ public sealed class FiniteRouteCatalogReceiver
+ 
+     /// <summary>Opts a private Development SDK host into code-bound existing administrative HTTP transports.</summary>
+     public static WebApplication UseFiniteDevelopmentRouteCatalogReceiver(WebApplication app, Func<RouteEndpoint, string?> operation, bool technical)
++        => UseFiniteDevelopmentRouteCatalogReceiver(app, operation, technical, null);
++
++    /// <summary>Binds the actual SDK channel-only subscription through its finite committed receiver.</summary>
++    public static WebApplication UseFiniteDevelopmentRouteCatalogReceiver(WebApplication app, Func<RouteEndpoint, string?> operation,
++        Func<RouteEndpoint, RouteCatalogSidecarTransport?> sidecar)
++        => UseFiniteDevelopmentRouteCatalogReceiver(app, operation, false, sidecar);
++
++    private static WebApplication UseFiniteDevelopmentRouteCatalogReceiver(WebApplication app, Func<RouteEndpoint, string?> operation,
++        bool technical, Func<RouteEndpoint, RouteCatalogSidecarTransport?>? sidecar)
+     {
+         ArgumentNullException.ThrowIfNull(app);
+         ArgumentNullException.ThrowIfNull(operation);
+         if (string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"])) return app;
+         var fence = app.Services.GetRequiredService<FiniteRouteCatalogReceiver>();
+         fence._technical = technical;
++        fence._sidecar = sidecar;
+         fence._native = technical ? app.Services.GetService<IDevelopmentNativeActorReceiver>() : null;
+         fence._callbacks = technical ? app.Services.GetService<IDevelopmentDaprCallbackReceiver>() : null;
+         if (technical && !app.Environment.IsDevelopment()) throw new RouteCatalogUnavailableException("Technical HTTP qualification is private Development only.");
+@@ -154,6 +165,35 @@ public sealed class FiniteRouteCatalogReceiver
+                 }
+                 return;
+             }
++            if (context.Request.Headers.ContainsKey(DaprAppChannelToken.HeaderName)
++                && context.GetEndpoint() is RouteEndpoint sidecarEndpoint && fence._sidecar?.Invoke(sidecarEndpoint) is { } sidecar)
++            {
++                // Native pub/sub delivery carries the real app-channel token, not a fabricated
++                // workload sender stamp. Bind its actual delegate/topic to the committed local host.
++                RouteCatalogDispatchLease? sidecarLease = null;
++                try
++                {
++                    sidecarLease = await app.Services.GetRequiredService<IRouteCatalogAuthority>().AcquireAsync(context.RequestAborted).ConfigureAwait(false);
++                    var snapshot = sidecarLease.Snapshot;
++                    if (snapshot.Envelope.SchemaVersion != 3 || snapshot.Envelope.Profile != "Development" || snapshot.LocalAppId is null
++                        || !snapshot.AuxiliaryOperations.Any(operation => operation.AppId == snapshot.LocalAppId
++                            && operation.Method == sidecarEndpoint.RoutePattern.RawText!.Trim('/')
++                            && operation.Operation == "sdk-sidecar:domain-events" && operation.Sidecar == sidecar))
++                        throw new RouteCatalogUnavailableException("The actual SDK subscription code, component and topic are not committed.");
++                }
++                catch (RouteCatalogUnavailableException)
++                {
++                    if (sidecarLease is not null) await sidecarLease.DisposeAsync().ConfigureAwait(false);
++                    context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable; return;
++                }
++                await using (sidecarLease.ConfigureAwait(false))
++                using (RouteCatalogRemoteCall.Enter(sidecarLease))
++                {
++                    try { await next(context).ConfigureAwait(false); }
++                    catch { sidecarLease.Retain(); throw; }
++                }
++                return;
++            }
+             if (fence._technical && context.Request.Headers.ContainsKey(DaprAppChannelToken.HeaderName)
+                 && context.GetEndpoint() is RouteEndpoint endpoint && DevelopmentTechnicalHttpTransport.Observe(endpoint) is { } http)
+             {
+@@ -247,6 +287,7 @@ public sealed class FiniteRouteCatalogReceiver
+             bool isPattern = route.RoutePattern.Parameters.Count > 0 || pattern.Contains('{', StringComparison.Ordinal) || pattern.Contains('*', StringComparison.Ordinal);
+             var native = _technical ? _native?.Observe(route) : null;
+             var callback = _technical ? _callbacks?.Observe(route) : null;
++            var sidecar = _sidecar?.Invoke(route);
+             if (native?.Kind == "health" && methods.Length == 0) methods = ["GET"];
+             string? canonical = callback is not null ? "sdk-dapr-callback:" + callback.Kind : native is null ? _operation!(route) : "sdk-native-actor:" + native.Kind;
+             var http = _technical ? DevelopmentTechnicalHttpTransport.Observe(route) : null;
+@@ -257,10 +298,10 @@ public sealed class FiniteRouteCatalogReceiver
+                 && DevelopmentTechnicalHttpTransport.GrantReaches(grant.Method, pattern)));
+             if (admitted && enroll)
+                 foreach (string verb in methods)
+-                    if (!_allowed.TryAdd((pattern.ToLowerInvariant(), verb), (route, canonical!, policies, http, native, callback)))
++                    if (!_allowed.TryAdd((pattern.ToLowerInvariant(), verb), (route, canonical!, policies, http, native, sidecar, callback)))
+                         throw new RouteCatalogUnavailableException("The finite receiver has ambiguous concrete operations.");
+             if (!enroll) admitted = admitted && methods.All(verb => RefusalBoundary(pattern, verb, route, runtime: false) is null);
+-            inventory.Add(new(pattern, methods, canonical, policies, anonymous, isPattern, admitted) { Http = http, NativeActor = native, DaprCallback = callback });
++            inventory.Add(new(pattern, methods, canonical, policies, anonymous, isPattern, admitted) { Http = http, NativeActor = native, Sidecar = sidecar, DaprCallback = callback });
+         }
+         return inventory.OrderBy(e => e.Pattern, StringComparer.Ordinal).ThenBy(e => string.Join(',', e.Methods), StringComparer.Ordinal).ToArray();
+     }
+@@ -281,6 +322,7 @@ public sealed class FiniteRouteCatalogReceiver
+         if (runtime && actual.Http is not null && !_grants.Any(grant => grant.Verbs.Contains(verb, StringComparer.Ordinal)
+             && DevelopmentTechnicalHttpTransport.GrantAllows(grant.Method, path))) return "finite-acl-path-ungranted";
+         if (actual.Native is not null && _native?.Observe((RouteEndpoint)endpoint!) != actual.Native) return "finite-native-inventory-changed";
++        if (actual.Sidecar is not null && _sidecar?.Invoke((RouteEndpoint)endpoint!) != actual.Sidecar) return "finite-subscription-owner-changed";
+         if (actual.Callback is not null && _callbacks?.Observe((RouteEndpoint)endpoint!) != actual.Callback) return "finite-callback-inventory-changed";
+         if (!ReferenceEquals(actual.Endpoint, endpoint)) return "finite-endpoint-changed";
+         if (endpoint!.Metadata.GetMetadata<IAllowAnonymous>() is not null
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs
+index 7a9c1b5ee..a47a02495 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs
+@@ -24,6 +24,10 @@ public static class RouteCatalogActivationBinding
+             || (activation.AuxiliaryOperations is { } auxiliary && (auxiliary.Any(a => a is null
+                 || !activation.RequiredHosts.Any(h => h.AppId == a.AppId) || string.IsNullOrWhiteSpace(a.Method)
+                 || string.IsNullOrWhiteSpace(a.Operation) || string.IsNullOrWhiteSpace(a.Domain)
++                || a.Sidecar is { } sidecar && (envelope.SchemaVersion != 3 || !Digest(sidecar.CodeDigest)
++                    || string.IsNullOrWhiteSpace(sidecar.Owner) || string.IsNullOrWhiteSpace(sidecar.PubSubName)
++                    || string.IsNullOrWhiteSpace(sidecar.TopicName) || a.Operation != "sdk-sidecar:domain-events"
++                    || a.Method.IndexOfAny(['*', '{', '}']) >= 0 || a.Http is not null || a.NativeActor is not null || a.DaprCallback is not null)
+                 || a.DaprCallback is { } callback && (envelope.SchemaVersion != 3 || a.Http is not null || a.NativeActor is not null
+                     || callback.Kind is not ("subscribe" or "projection-notification")
+                     || a.Method != (callback.Kind == "subscribe" ? "dapr/subscribe" : "projections/changed")
+diff --git a/src/Hexalith.EventStore/Controllers/QueriesController.cs b/src/Hexalith.EventStore/Controllers/QueriesController.cs
+index fa59f19e0..38542fd6f 100644
+--- a/src/Hexalith.EventStore/Controllers/QueriesController.cs
++++ b/src/Hexalith.EventStore/Controllers/QueriesController.cs
+@@ -2,6 +2,7 @@
+ using System.Globalization;
+ using System.Net.Http.Headers;
+ using System.Security.Claims;
++using System.Security.Cryptography;
+ using System.Text.Json;
+ 
+ using Hexalith.EventStore.Authorization;
+@@ -31,6 +32,27 @@ namespace Hexalith.EventStore.Controllers;
+ [Consumes("application/json")]
+ [Tags("Queries")]
+ public partial class QueriesController : ControllerBase {
++    private static readonly object BoundOwnerCatalogAdmissionKey = new();
++
++    /// <summary>Recognizes only this controller's verified, exact in-flight owner-query admission under the same captured generation.</summary>
++    internal static bool HasVerifiedBoundOwnerCatalogAdmission(HttpContext context, SubmitQuery request,
++        Hexalith.EventStore.ServiceDefaults.Routing.CommittedRouteCatalogSnapshot snapshot)
++    {
++        if (!context.Items.TryGetValue(BoundOwnerCatalogAdmissionKey, out var value)
++            || value is not ValueTuple<HttpContext, SubmitQuery, ClaimsPrincipal, Endpoint?, byte[], string, long> admitted
++            || !ReferenceEquals(admitted.Item1, context) || !ReferenceEquals(admitted.Item2, request)
++            || !ReferenceEquals(admitted.Item3, context.User) || !ReferenceEquals(admitted.Item4, context.GetEndpoint())
++            || admitted.Item6 != snapshot.RootDigest || admitted.Item7 != snapshot.Epoch
++            || !CryptographicOperations.FixedTimeEquals(admitted.Item5, SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(request)))
++            || RouteCatalogSurfacePolicy.Surface(context.User) != "service" || !request.IsDelegated
++            || string.IsNullOrWhiteSpace(request.OriginalActorId) || request.AuthenticatedWorkloadId != context.User.FindFirst(EventStoreWorkloadAuthenticationDefaults.WorkloadClaimType)?.Value
++            || context.Request.Method != "POST" || context.Request.Path != "/api/v1/queries/owner-authority/workload"
++            || !context.User.HasClaim(EventStoreWorkloadAuthenticationDefaults.OperationClaimType, EventStoreWorkloadOperations.GatewayOwnerAuthorityQuery)) return false;
++        var action = context.GetEndpoint()?.Metadata.GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
++        return action is not null && action.MethodInfo == typeof(QueriesController).GetMethod(nameof(SubmitBoundOwnerAuthorityAsync))
++            && action.ControllerTypeInfo.AsType() == typeof(QueriesController);
++    }
++
+     private IMediator mediator { get; }
+     private IETagService eTagService { get; }
+     private ITenantValidator tenantValidator { get; }
+@@ -156,7 +178,23 @@ public partial class QueriesController : ControllerBase {
+                 ? [audience.Trim()] : null) { CallerAuthority = ownerAuthority };
+         if (query.QueryType == Hexalith.EventStore.Contracts.Projections.InspectProjectionCurrentQuery.QueryType)
+             return await InspectProjectionCurrentAsync(request, ownerAuthority, correlationId, cancellationToken).ConfigureAwait(false);
+-        SubmitQueryResult result = await mediator.Send(submitted, cancellationToken).ConfigureAwait(false);
++        var catalogLease = catalogAuthority is null ? null : await catalogAuthority.AcquireAsync(cancellationToken).ConfigureAwait(false);
++        await using var catalogRelease = new Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogLeaseReleaser(catalogLease).ConfigureAwait(false);
++        bool hadPriorAdmission = HttpContext.Items.TryGetValue(BoundOwnerCatalogAdmissionKey, out object? priorAdmission);
++        if (catalogLease?.Snapshot.Envelope.SchemaVersion == 3)
++        {
++            if (RouteCatalogSurfacePolicy.Surface(User) != "service") return Forbid();
++            _ = catalogLease.Snapshot.Resolve("query", query.Tenant, query.Domain, query.QueryType);
++            HttpContext.Items[BoundOwnerCatalogAdmissionKey] = (HttpContext, submitted, User, HttpContext.GetEndpoint(),
++                SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(submitted)), catalogLease.Snapshot.RootDigest, catalogLease.Snapshot.Epoch);
++        }
++        SubmitQueryResult result;
++        try { result = await mediator.Send(submitted, cancellationToken).ConfigureAwait(false); }
++        finally
++        {
++            if (hadPriorAdmission) HttpContext.Items[BoundOwnerCatalogAdmissionKey] = priorAdmission;
++            else HttpContext.Items.Remove(BoundOwnerCatalogAdmissionKey);
++        }
+         Response.Headers.CacheControl = "no-store";
+         return Ok(new SubmitQueryResponse(result.CorrelationId, result.Payload,
+             Metadata: NormalizeProducerMetadata(result.Metadata)));
+@@ -203,14 +241,25 @@ public partial class QueriesController : ControllerBase {
+         var catalogLease = catalogAuthority is null ? null
+             : await catalogAuthority.AcquireAsync(cancellationToken).ConfigureAwait(false);
+         await using var catalogRelease = new Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogLeaseReleaser(catalogLease).ConfigureAwait(false);
++        bool protectedInternalIdentity = false;
+         if (catalogLease is not null)
+         {
+             var selected = catalogLease.Snapshot.Resolve("query", request.Tenant, request.Domain, request.QueryType);
+-            if (catalogLease.Snapshot.Envelope.SchemaVersion == 3
+-                && !Hexalith.EventStore.ServiceDefaults.Authentication.RouteCatalogSurfacePolicy.Allows(
+-                    catalogLease.Snapshot.Envelope.Operations!.Single(o => o.RouteId == selected.Declaration.RouteId), User))
+-                return Forbid();
+-            if ((!string.IsNullOrWhiteSpace(request.ProjectionType) && request.ProjectionType != selected.Declaration.ProjectionType)
++            if (catalogLease.Snapshot.Envelope.SchemaVersion == 3)
++            {
++                var operation = catalogLease.Snapshot.Envelope.Operations!.Single(o => o.RouteId == selected.Declaration.RouteId);
++                // The existing exact-scope identity reader protocol has always used this wire.
++                // This candidate is not admitted until the configured authority issues its bound proof below.
++                protectedInternalIdentity = operation.Ingress == "internal"
++                    && Hexalith.EventStore.ServiceDefaults.Authentication.RouteCatalogSurfacePolicy.Surface(User) == "service"
++                    && IdentityOperationCatalog.RequiresAdmission(request.QueryType)
++                    && identityAdmission?.RequiresAdmission(request.Domain, request.QueryType) == true;
++                if (!protectedInternalIdentity && !Hexalith.EventStore.ServiceDefaults.Authentication.RouteCatalogSurfacePolicy.Allows(operation, User))
++                    return Forbid();
++            }
++            bool legacyIdentityHint = protectedInternalIdentity && selected.Declaration.ProjectionType is null
++                && request.ProjectionType == request.Domain && string.IsNullOrWhiteSpace(request.ProjectionActorType);
++            if ((!legacyIdentityHint && !string.IsNullOrWhiteSpace(request.ProjectionType) && request.ProjectionType != selected.Declaration.ProjectionType)
+                 || (!string.IsNullOrWhiteSpace(request.ProjectionActorType) && request.ProjectionActorType != selected.Declaration.Execution!.ActorType))
+                 throw new Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogUnavailableException("The selected query target differs from committed authority.");
+         }
+@@ -240,7 +289,7 @@ public partial class QueriesController : ControllerBase {
+             var scope = new IdentityAdmissionScope(request.Tenant, request.Domain, request.AggregateId,
+                 request.QueryType, correlationId, correlationId, IdentityAdmissionProof.Digest(payloadBytes));
+             identityProof = await identityAdmission.AdmitAsync(User, scope, payloadBytes, cancellationToken).ConfigureAwait(false);
+-            if (identityProof is null)
++            if (string.IsNullOrWhiteSpace(identityProof))
+             {
+                 return StatusCode(StatusCodes.Status403Forbidden);
+             }
+@@ -248,6 +297,8 @@ public partial class QueriesController : ControllerBase {
+             Response.Headers.CacheControl = "no-store";
+         }
+ 
++        if (protectedInternalIdentity && string.IsNullOrWhiteSpace(identityProof)) return Forbid();
++
+         QueryCallerAuthority? callerAuthority;
+         try
+         {
+@@ -267,7 +318,7 @@ public partial class QueriesController : ControllerBase {
+             CorrelationId: correlationId,
+             UserId: userId,
+             EntityId: entityId,
+-            ProjectionType: string.IsNullOrWhiteSpace(request.ProjectionType)
++            ProjectionType: protectedInternalIdentity ? null : string.IsNullOrWhiteSpace(request.ProjectionType)
+                 ? (catalogAuthority is null ? request.Domain : null)
+                 : request.ProjectionType,
+             ProjectionActorType: request.ProjectionActorType,
+diff --git a/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs b/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs
+index 171345d4e..09a0e9708 100644
+--- a/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs
++++ b/src/Hexalith.EventStore/Pipeline/RouteCatalogEligibilityBehavior.cs
+@@ -39,7 +39,10 @@ public sealed class RouteCatalogEligibilityBehavior<TRequest, TResponse>(IHttpCo
+                 && context.User.Identity?.IsAuthenticated == true;
+             bool verifiedOrigin = request is SubmitCommand c && c.Extensions?.ContainsKey(EventStoreGatewayVerifiedOrigin.ActorExtensionKey) == true
+                 || request is SubmitQuery { IsDelegated: true, OriginalActorId: not null, AuthenticatedWorkloadId: not null };
+-            if (!(operation.Ingress == "internal" && workload) && !RouteCatalogSurfacePolicy.Allows(operation, context.User, verifiedOrigin))
++            bool verifiedOwnerQuery = operation.Ingress == "public" && operation.Eligibility == "UI-only"
++                && request is SubmitQuery ownerQuery && workload
++                && Hexalith.EventStore.Controllers.QueriesController.HasVerifiedBoundOwnerCatalogAdmission(context, ownerQuery, lease.Snapshot);
++            if (!(operation.Ingress == "internal" && workload) && !verifiedOwnerQuery && !RouteCatalogSurfacePolicy.Allows(operation, context.User, verifiedOrigin))
+                 throw new CommandAuthorizationException(tenant, domain, discriminator, "The authenticated surface cannot invoke this operation.");
+         }
+         return await next().ConfigureAwait(false);
+diff --git a/tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs b/tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs
+index 4b74334c4..63e177b0f 100644
+--- a/tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs
++++ b/tests/Hexalith.EventStore.DomainService.Tests/EventStoreDomainEventsEndpointExtensionsTests.cs
+@@ -4,6 +4,7 @@ using Dapr.Client;
+ using Hexalith.EventStore.Client.Registration;
+ using Hexalith.EventStore.Client.Subscriptions;
+ using Hexalith.EventStore.DomainService.Tests.Fixtures;
++using Hexalith.EventStore.ServiceDefaults.Routing;
+ 
+ using Microsoft.AspNetCore.Builder;
+ using Microsoft.AspNetCore.Http;
+@@ -58,6 +59,39 @@ public sealed class EventStoreDomainEventsEndpointExtensionsTests {
+         topicMetadata.Name.ShouldBe("widgets.events");
+     }
+ 
++    [Theory]
++    [InlineData("removed")]
++    [InlineData("component")]
++    [InlineData("topic")]
++    [InlineData("extra")]
++    [InlineData("raw")]
++    [InlineData("dead-letter")]
++    [InlineData("declarative-extra")]
++    public async Task SameActualDelegateCannotHideChangedSubscriptionMetadata(string mutation)
++    {
++        var builder = WebApplication.CreateBuilder();
++        builder.Configuration["Dapr:DeclarativeSubscriptions"] = (mutation == "declarative-extra").ToString();
++        builder.Services.AddEventStoreDomainEvents(typeof(WidgetCreated).Assembly, options => {
++            options.SubscriptionRoute = "/widgets/events"; options.PubSubName = "event-pubsub"; options.TopicName = "widgets.events";
++        });
++        await using var app = builder.Build();
++        app.MapEventStoreDomainEvents();
++        var endpoint = ((IEndpointRouteBuilder)app).DataSources.SelectMany(source => source.Endpoints).OfType<RouteEndpoint>().Single();
++        var witness = endpoint.Metadata.GetMetadata<DomainRouteCatalogSidecarMetadata>().ShouldNotBeNull();
++        witness.Observe(endpoint).TopicName.ShouldBe("widgets.events");
++        var metadata = endpoint.Metadata.Where(item => item is not ITopicMetadata).ToList();
++        if (mutation != "removed") metadata.Add(mutation switch {
++            "component" => new TopicAttribute("foreign-component", "widgets.events") { EnableRawPayload = false },
++            "topic" => new TopicAttribute("event-pubsub", "foreign.events") { EnableRawPayload = false },
++            "raw" => new TopicAttribute("event-pubsub", "widgets.events") { EnableRawPayload = true },
++            "dead-letter" => new TopicAttribute("event-pubsub", "widgets.events") { EnableRawPayload = false, DeadLetterTopic = "foreign.dead-letter" },
++            _ => new TopicAttribute("event-pubsub", "widgets.events") { EnableRawPayload = false },
++        });
++        if (mutation == "extra") metadata.Add(new TopicAttribute("event-pubsub", "widgets.events") { EnableRawPayload = false });
++        var changed = new RouteEndpoint(endpoint.RequestDelegate, endpoint.RoutePattern, endpoint.Order, new EndpointMetadataCollection(metadata), endpoint.DisplayName);
++        Should.Throw<RouteCatalogUnavailableException>(() => witness.Observe(changed));
++    }
++
+     [Theory]
+     [InlineData(EventStoreDomainEventProcessingResult.Processed, StatusCodes.Status200OK)]
+     [InlineData(EventStoreDomainEventProcessingResult.Duplicate, StatusCodes.Status200OK)]
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.ProtectedCatalogIdentity.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.ProtectedCatalogIdentity.cs
+new file mode 100644
+index 000000000..4013e06d2
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.ProtectedCatalogIdentity.cs
+@@ -0,0 +1,87 @@
++using System.Security.Claims;
++using System.Text.Json;
++using Hexalith.EventStore.Client.Security;
++
++using Hexalith.EventStore.Contracts.Authorization;
++using Hexalith.EventStore.Contracts.Queries;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Contracts.Security;
++using Hexalith.EventStore.Contracts.Serialization;
++using Hexalith.EventStore.Server.Identity;
++using Hexalith.EventStore.Server.Pipeline.Queries;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using MediatR;
++using Microsoft.AspNetCore.Mvc;
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Controllers;
++
++public partial class QueriesControllerTests
++{
++    /// <summary>The legacy identity-reader wire gains no generic internal-operation exception.</summary>
++    [Theory]
++    [InlineData("allowed")]
++    [InlineData("missing-surface")]
++    [InlineData("ui-surface")]
++    [InlineData("forged-header")]
++    [InlineData("unprotected-query")]
++    [InlineData("unconfigured-owner")]
++    [InlineData("denied-proof")]
++    [InlineData("empty-proof")]
++    [InlineData("tenant-scope")]
++    [InlineData("legacy-projection-hint")]
++    [InlineData("foreign-projection-hint")]
++    [InlineData("actor-override")]
++    public async Task InternalIdentityCatalogRequiresExistingOwnerAdmissionAndSignedServiceSurface(string scenario)
++    {
++        string queryType = scenario == "unprotected-query" ? "OtherQuery" : "ResolvePartyIdentity";
++        var declaration = new RouteContractDeclaration("identity-fixture", "query", "party", queryType, null, "v1", null,
++            "workload", EventStoreOperationIdentifiers.DomainServiceQuery, null, [],
++            new(typeof(IdentityReaderFixtureRequest).FullName!, "exact", [queryType], "domain-service", "computed", []));
++        var operation = RouteOperationSchema.Create(declaration, typeof(IdentityReaderFixtureRequest), typeof(IdentityReaderFixtureResult),
++            "internal", "UI-only", EventStorePayloadSerialization.Options);
++        var envelope = RouteCatalogCodec.Seal(new(3, 1, "Development", false, [declaration],
++            [new(declaration.RouteId, 1, RouteCatalogCodec.ComputeDeclarationDigest(declaration), "parties", "query", "v1", "workload",
++                declaration.Operation, false, "test-tenant", operation.Digest)], [], string.Empty, string.Empty, [operation], []));
++        var snapshot = new CommittedRouteCatalogSnapshot(RouteCatalogCodec.Encode(envelope), RouteCatalogCodec.ComputeRootDigest(envelope), 1);
++        var authority = Substitute.For<IRouteCatalogAuthority>();
++        authority.AcquireAsync(Arg.Any<CancellationToken>()).Returns(_ => new RouteCatalogDispatchLease(snapshot, static () => Task.CompletedTask));
++        var admission = Substitute.For<IIdentityGatewayAdmission>();
++        admission.RequiresAdmission("party", queryType).Returns(scenario != "unconfigured-owner");
++        admission.AdmitAsync(Arg.Any<ClaimsPrincipal>(), Arg.Any<IdentityAdmissionScope>(), Arg.Any<byte[]>(), Arg.Any<CancellationToken>())
++            .Returns(scenario == "denied-proof" ? null : scenario == "empty-proof" ? "" : "unit-owner-proof");
++        var claims = new List<Claim> { new("sub", "reader") };
++        if (scenario is not ("missing-surface" or "forged-header")) claims.Add(new("eventstore:surface", scenario == "ui-surface" ? "ui" : "service"));
++        var mediator = Substitute.For<IMediator>();
++        mediator.Send(Arg.Any<SubmitQuery>(), Arg.Any<CancellationToken>()).Returns(new SubmitQueryResult("correlation", JsonSerializer.SerializeToElement(new { })));
++        var controller = CreateController(mediator, principal: new ClaimsPrincipal(new ClaimsIdentity(claims, "validated-reader")),
++            catalogAuthority: authority, identityAdmission: admission);
++        if (scenario == "forged-header") controller.Request.Headers["eventstore:surface"] = "service";
++        var request = new SubmitQueryRequest(scenario == "tenant-scope" ? "other-tenant" : "test-tenant", "party", "party-a", queryType,
++            ProjectionType: scenario == "legacy-projection-hint" ? "party" : scenario == "foreign-projection-hint" ? "foreign" : null,
++            Payload: JsonSerializer.SerializeToElement(new IdentityReaderFixtureRequest("test-tenant", "party-a", "actor-a")),
++            ProjectionActorType: scenario == "actor-override" ? "ForeignActor" : null);
++        if (scenario is "tenant-scope" or "foreign-projection-hint" or "actor-override")
++            await Should.ThrowAsync<RouteCatalogUnavailableException>(() => controller.Submit(request, null, TestContext.Current.CancellationToken));
++        else if (scenario is "allowed" or "legacy-projection-hint")
++        {
++            (await controller.Submit(request, null, TestContext.Current.CancellationToken)).ShouldBeOfType<OkObjectResult>();
++            await mediator.Received(1).Send(Arg.Is<SubmitQuery>(query => query.IdentityAdmissionProof == "unit-owner-proof" && query.ProjectionType == null), Arg.Any<CancellationToken>());
++        }
++        else if (scenario is "denied-proof" or "empty-proof")
++            (await controller.Submit(request, null, TestContext.Current.CancellationToken)).ShouldBeOfType<StatusCodeResult>().StatusCode.ShouldBe(403);
++        else (await controller.Submit(request, null, TestContext.Current.CancellationToken)).ShouldBeOfType<ForbidResult>();
++        if (scenario is not ("allowed" or "legacy-projection-hint")) await mediator.DidNotReceive().Send(Arg.Any<SubmitQuery>(), Arg.Any<CancellationToken>());
++        bool ownerCalled = scenario is "allowed" or "legacy-projection-hint" or "denied-proof" or "empty-proof";
++        await admission.Received(ownerCalled ? 1 : 0).AdmitAsync(Arg.Any<ClaimsPrincipal>(),
++            Arg.Is<IdentityAdmissionScope>(scope => scope.TenantId == request.Tenant && scope.Domain == request.Domain
++                && scope.AggregateId == request.AggregateId && scope.Operation == request.QueryType
++                && scope.PayloadDigest == IdentityAdmissionProof.Digest(JsonSerializer.SerializeToUtf8Bytes(request.Payload!.Value))),
++            Arg.Any<byte[]>(), Arg.Any<CancellationToken>());
++    }
++
++    private sealed record IdentityReaderFixtureRequest(string TenantId, string PartyId, string ExpectedActorId);
++    private sealed record IdentityReaderFixtureResult(bool Allowed);
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
+index 5ec981d21..0564a7bf3 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
+@@ -60,7 +60,8 @@ public partial class QueriesControllerTests {
+         ITenantValidator? tenantValidator = null,
+         IRbacValidator? rbacValidator = null,
+         Microsoft.Extensions.Configuration.IConfiguration? configuration = null,
+-        Hexalith.EventStore.ServiceDefaults.Routing.IRouteCatalogAuthority? catalogAuthority = null) {
++        Hexalith.EventStore.ServiceDefaults.Routing.IRouteCatalogAuthority? catalogAuthority = null,
++        Hexalith.EventStore.Server.Identity.IIdentityGatewayAdmission? identityAdmission = null) {
+         eTagService ??= Substitute.For<IETagService>();
+         if (tenantValidator is null) {
+             tenantValidator = Substitute.For<ITenantValidator>();
+@@ -74,8 +75,8 @@ public partial class QueriesControllerTests {
+                 .Returns(RbacValidationResult.Allowed);
+         }
+         var controller = catalogAuthority is null
+-            ? new QueriesController(mediator, eTagService, tenantValidator, rbacValidator, NullLogger<QueriesController>.Instance, configuration: configuration)
+-            : new QueriesController(catalogAuthority, mediator, eTagService, tenantValidator, rbacValidator, NullLogger<QueriesController>.Instance, configuration: configuration);
++            ? new QueriesController(mediator, eTagService, tenantValidator, rbacValidator, NullLogger<QueriesController>.Instance, identityAdmission: identityAdmission, configuration: configuration)
++            : new QueriesController(catalogAuthority, mediator, eTagService, tenantValidator, rbacValidator, NullLogger<QueriesController>.Instance, identityAdmission: identityAdmission, configuration: configuration);
+         var httpContext = new DefaultHttpContext {
+             User = principal ?? new ClaimsPrincipal(new ClaimsIdentity(
+                 [new Claim("sub", "test-user")], "test")),
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogAdmissionTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogAdmissionTests.cs
+new file mode 100644
+index 000000000..218ee4dba
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogAdmissionTests.cs
+@@ -0,0 +1,158 @@
++using System.Security.Claims;
++using System.Security.Cryptography;
++using System.Text.Json;
++
++using Hexalith.EventStore.Authorization;
++using Hexalith.EventStore.Client.Gateway;
++using Hexalith.EventStore.Client.Routing;
++using Hexalith.EventStore.Contracts.Queries;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.Controllers;
++using Hexalith.EventStore.ErrorHandling;
++using Hexalith.EventStore.Extensions;
++using Hexalith.EventStore.Server.Pipeline.Queries;
++using Hexalith.EventStore.Server.Queries;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using MediatR;
++
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Http;
++using Microsoft.AspNetCore.Mvc;
++using Microsoft.AspNetCore.Routing;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.DependencyInjection.Extensions;
++using Microsoft.Extensions.Logging.Abstractions;
++
++using NSubstitute;
++
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Public UI-only metadata preserves only the existing signed, allowlisted owner-query protocol.</summary>
++public sealed class BoundOwnerCatalogAdmissionTests
++{
++    [Theory]
++    [InlineData("valid")]
++    [InlineData("signature")]
++    [InlineData("unconfigured-caller")]
++    [InlineData("actor")]
++    [InlineData("tenant")]
++    [InlineData("query")]
++    [InlineData("payload")]
++    [InlineData("missing-surface")]
++    [InlineData("human-surface")]
++    [InlineData("copied-marker")]
++    [InlineData("mutated-actor")]
++    [InlineData("mutated-tenant")]
++    [InlineData("mutated-query")]
++    [InlineData("mutated-payload")]
++    [InlineData("foreign-route")]
++    [InlineData("stale-authority")]
++    public async Task ControllerProofBindsExactInFlightQueryBeforeRealMediatorEligibility(string scenario)
++    {
++        var original = new RouteCatalogTestFixture().Envelope;
++        var operations = original.Declarations.Select(declaration => new RouteOperationContract(declaration.RouteId, declaration.ContractVersion,
++            declaration.Kind == "projection" || declaration.Execution!.RequiresDelegatedContext ? "internal" : "public", "UI-only",
++            JsonSerializer.SerializeToElement(new { type = "object" }), JsonSerializer.SerializeToElement(new { type = "object" }), string.Empty,
++            declaration.Kind, declaration.Domain, declaration.MessageType ?? declaration.ProjectionType))
++            .Select(operation => operation with { Digest = RouteCatalogCodec.ComputeOperationContractDigest(operation) }).ToArray();
++        var envelope = VersionedRouteCatalogBuilder.Build(new(1, "Development", original.Declarations, operations,
++            original.Routes.Select(route => new RouteCompositionBinding(route.RouteId, route.AppId, route.Method, route.ContractVersion, false, route.ResolverTenantPattern)).ToArray(), original.Idempotency));
++        byte[] canonical = RouteCatalogCodec.Encode(envelope);
++        string root = RouteCatalogCodec.ComputeRootDigest(envelope);
++        var declaration = envelope.Declarations.First(route => route.Kind == "query" && operations.Single(operation => operation.RouteId == route.RouteId).Ingress == "public");
++        using RSA key = RSA.Create(2048);
++        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
++        {
++            ["Authentication:BoundStreamRead:PublicKeys:owner"] = Convert.ToBase64String(key.ExportSubjectPublicKeyInfo()),
++            ["Authentication:BoundOwnerQuery:AllowedQueries:owner"] = declaration.MessageType,
++        }).Build();
++        int leases = 0;
++        long epoch = 1;
++        IRouteCatalogAuthority authority = Substitute.For<IRouteCatalogAuthority>();
++        authority.AcquireAsync(Arg.Any<CancellationToken>()).Returns(_ =>
++        { leases++; return new RouteCatalogDispatchLease(new(canonical, root, epoch), () => { leases--; return Task.CompletedTask; }); });
++        var services = new ServiceCollection();
++        services.AddLogging();
++        services.AddSingleton<IConfiguration>(configuration);
++        services.AddEventStore();
++        services.AddHttpContextAccessor();
++        services.AddSingleton(authority);
++        services.RemoveAll<IRequestHandler<SubmitQuery, SubmitQueryResult>>();
++        var terminal = new BoundOwnerCatalogQueryHandler(() => leases >= 2);
++        services.AddSingleton<IRequestHandler<SubmitQuery, SubmitQueryResult>>(terminal);
++        await using var provider = services.BuildServiceProvider();
++        var accessor = provider.GetRequiredService<IHttpContextAccessor>();
++        var builder = WebApplication.CreateBuilder();
++        builder.Services.AddControllers().AddApplicationPart(typeof(QueriesController).Assembly);
++        await using var app = builder.Build(); app.MapControllers();
++        var endpoint = ((IEndpointRouteBuilder)app).DataSources.SelectMany(source => source.Endpoints).OfType<RouteEndpoint>()
++            .Single(endpoint => endpoint.RoutePattern.RawText == "api/v1/queries/owner-authority/workload");
++        var context = new DefaultHttpContext();
++        context.SetEndpoint(endpoint);
++        context.Request.Method = "POST";
++        context.Request.Path = "/api/v1/queries/owner-authority/workload";
++        var claims = new List<Claim> { new(ClaimTypes.NameIdentifier, "workload:owner"),
++            new(EventStoreWorkloadAuthenticationDefaults.WorkloadClaimType, scenario == "unconfigured-caller" ? "foreign" : "owner"),
++            new(EventStoreWorkloadAuthenticationDefaults.OperationClaimType, EventStoreWorkloadOperations.GatewayOwnerAuthorityQuery) };
++        if (scenario != "missing-surface") claims.Add(new(RouteCatalogSurfacePolicy.ClaimType, scenario == "human-surface" ? "ui" : "service"));
++        context.User = new ClaimsPrincipal(new ClaimsIdentity(claims, "validated-workload"));
++        accessor.HttpContext = context;
++        IMediator realMediator = provider.GetRequiredService<IMediator>();
++        IMediator bridge = Substitute.For<IMediator>();
++        SubmitQuery? dispatched = null;
++        bridge.Send(Arg.Any<SubmitQuery>(), Arg.Any<CancellationToken>()).Returns(call =>
++        {
++            var query = call.Arg<SubmitQuery>();
++            dispatched = query;
++            if (scenario == "mutated-actor") query = query with { OriginalActorId = "foreign-actor" };
++            if (scenario == "mutated-tenant") query = query with { Tenant = "foreign-tenant" };
++            if (scenario == "mutated-query") query = query with { QueryType = "foreign-query" };
++            if (scenario == "mutated-payload") query.Payload[0] ^= 1;
++            if (scenario == "stale-authority") epoch = 2;
++            if (scenario == "foreign-route") context.Request.Path = "/api/v1/queries";
++            if (scenario == "copied-marker")
++            {
++                var copied = new DefaultHttpContext { User = context.User };
++                copied.SetEndpoint(endpoint); copied.Request.Method = context.Request.Method; copied.Request.Path = context.Request.Path;
++                foreach (var item in context.Items) copied.Items[item.Key] = item.Value;
++                accessor.HttpContext = copied;
++            }
++            return realMediator.Send(query, call.Arg<CancellationToken>());
++        });
++        var controller = new QueriesController(authority, bridge, Substitute.For<IETagService>(), new ClaimsTenantValidator(), new ClaimsRbacValidator(),
++            NullLogger<QueriesController>.Instance, configuration: configuration) { ControllerContext = new() { HttpContext = context } };
++        var request = new BoundOwnerQueryRequest(new SubmitQueryRequest("tenant-a", declaration.Domain, "aggregate-one", declaration.MessageType!,
++            Payload: JsonSerializer.SerializeToElement(new { selector = "one" })), "actor-one");
++        context.Request.Headers[BoundOwnerQueryProof.HeaderName] = BoundOwnerQueryProof.Issue(request, "owner", Convert.ToBase64String(key.ExportPkcs8PrivateKey()), DateTimeOffset.UtcNow);
++        request = scenario switch
++        {
++            "actor" => request with { PrincipalId = "different-actor" },
++            "tenant" => request with { Query = request.Query with { Tenant = "different-tenant" } },
++            "query" => request with { Query = request.Query with { QueryType = "different-query" } },
++            "payload" => request with { Query = request.Query with { Payload = JsonSerializer.SerializeToElement(new { selector = "other" }) } },
++            _ => request,
++        };
++        if (scenario == "signature") context.Request.Headers[BoundOwnerQueryProof.HeaderName] = "invalid";
++        if (scenario is "copied-marker" or "mutated-actor" or "mutated-tenant" or "mutated-query" or "mutated-payload" or "foreign-route" or "stale-authority")
++            await Should.ThrowAsync<CommandAuthorizationException>(() => controller.SubmitBoundOwnerAuthorityAsync(request, default));
++        else
++        {
++            var response = await controller.SubmitBoundOwnerAuthorityAsync(request, default);
++            if (scenario == "valid") response.ShouldBeOfType<OkObjectResult>();
++            else response.ShouldBeOfType<ForbidResult>();
++        }
++        leases.ShouldBe(0);
++        terminal.Calls.ShouldBe(scenario == "valid" ? 1 : 0);
++        if (dispatched is not null)
++        {
++            accessor.HttpContext = context;
++            await Should.ThrowAsync<CommandAuthorizationException>(() => realMediator.Send(dispatched));
++            leases.ShouldBe(0);
++        }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogQueryHandler.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogQueryHandler.cs
+new file mode 100644
+index 000000000..00b6f50fe
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/BoundOwnerCatalogQueryHandler.cs
+@@ -0,0 +1,20 @@
++using System.Text.Json;
++
++using Hexalith.EventStore.Server.Pipeline.Queries;
++
++using MediatR;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Records the isolated terminal after the real controller proof and MediatR authorization/eligibility pipeline.</summary>
++internal sealed class BoundOwnerCatalogQueryHandler(Func<bool> leased) : IRequestHandler<SubmitQuery, SubmitQueryResult>
++{
++    internal int Calls { get; private set; }
++
++    public Task<SubmitQueryResult> Handle(SubmitQuery request, CancellationToken cancellationToken)
++    {
++        Assert.True(leased());
++        Calls++;
++        return Task.FromResult(new SubmitQueryResult(request.CorrelationId, JsonSerializer.SerializeToElement(new { allowed = true }), null, null));
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogRemoteAdapterCancellationTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogRemoteAdapterCancellationTests.cs
+new file mode 100644
+index 000000000..87ade07e3
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogRemoteAdapterCancellationTests.cs
+@@ -0,0 +1,122 @@
++using Dapr.Actors.Client;
++using Dapr.Client;
++
++using Hexalith.EventStore.Client.Projections;
++using Hexalith.EventStore.Contracts.Commands;
++using Hexalith.EventStore.Contracts.Projections;
++using Hexalith.EventStore.Contracts.Identity;
++using Hexalith.EventStore.Server.Commands;
++using Hexalith.EventStore.Server.Configuration;
++using Hexalith.EventStore.Server.Events;
++using Hexalith.EventStore.Server.Projections;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Microsoft.Extensions.Logging.Abstractions;
++using Microsoft.Extensions.Options;
++
++using NSubstitute;
++
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++public sealed class CatalogRemoteAdapterCancellationTests
++{
++    [Theory]
++    [InlineData("events", false)]
++    [InlineData("dead-letter", false)]
++    [InlineData("projection", false)]
++    [InlineData("projection-detail", false)]
++    [InlineData("correlation", false)]
++    [InlineData("events", true)]
++    [InlineData("dead-letter", true)]
++    [InlineData("projection", true)]
++    [InlineData("projection-detail", true)]
++    [InlineData("correlation", true)]
++    public async Task ActualAdapterDistinguishesPreCancellationFromDispatchedLostResponse(string adapter, bool dispatched)
++    {
++        var fixture = new RouteCatalogTestFixture();
++        var first = fixture.Candidate();
++        await fixture.ActivateAsync(first);
++        DaprClient backend = Substitute.For<DaprClient>();
++        ConfigureLostResponses(backend);
++        Func<CancellationToken, Task> invoke = Adapter(adapter, backend);
++        using var cancellation = new CancellationTokenSource();
++        if (!dispatched) await cancellation.CancelAsync();
++
++        await using (var lease = await fixture.Authorities[0].AcquireAsync())
++        {
++            using var scope = RouteCatalogRemoteCall.Enter(lease);
++            if (!dispatched)
++                await Should.ThrowAsync<OperationCanceledException>(() => invoke(cancellation.Token));
++            else if (adapter is "events" or "dead-letter")
++                await invoke(cancellation.Token); // These publishers preserve their advisory failure results.
++            else
++                await Should.ThrowAsync<TimeoutException>(() => invoke(cancellation.Token));
++        }
++
++        int writes = backend.ReceivedCalls().Count(call => call.GetMethodInfo().Name is "PublishEventAsync" or "TrySaveStateAsync");
++        writes.ShouldBe(dispatched ? 1 : 0);
++        var leases = (await fixture.Store.ReadAsync(default)).State.Leases;
++        if (dispatched)
++        {
++            leases.ShouldHaveSingleItem();
++            var successor = fixture.Candidate(2, first.RootDigest);
++            await fixture.Authorities[0].PrepareAsync(successor);
++            await Should.ThrowAsync<RouteCatalogUnavailableException>(() => fixture.Authorities[0].ReadyAsync(successor.AttemptId));
++        }
++        else leases.ShouldBeEmpty();
++    }
++
++    private static Func<CancellationToken, Task> Adapter(string adapter, DaprClient backend)
++    {
++        var identity = new AggregateIdentity("tenant-a", "counter", "counter-one");
++        switch (adapter)
++        {
++            case "events":
++                var events = new EventPublisher(backend, Options.Create(new EventPublisherOptions()),
++                    NullLogger<EventPublisher>.Instance, new NoOpEventPayloadProtectionService(), new NoOpProjectionUpdateOrchestrator());
++                var envelope = new EventEnvelope("event-one", identity.AggregateId, "counter", identity.TenantId, identity.Domain,
++                    1, 0, DateTimeOffset.UtcNow, "correlation-one", "cause-one", "service", "v1", "incremented", 1, "json", [123, 125], null);
++                return token => events.PublishEventsAsync(identity, [envelope], "correlation-one", token, triggerProjectionUpdate: false);
++            case "dead-letter":
++                var letters = new DeadLetterPublisher(backend, Options.Create(new EventPublisherOptions()), NullLogger<DeadLetterPublisher>.Instance);
++                var command = new CommandEnvelope("command-one", identity.TenantId, identity.Domain, identity.AggregateId,
++                    "increment-counter", [123, 125], "correlation-one", null, "service", null);
++                var message = DeadLetterMessage.FromException(command, CommandStatus.Processing, new InvalidOperationException("Fixture failure."));
++                return token => letters.PublishDeadLetterAsync(identity, message, token);
++            case "projection":
++            case "projection-detail":
++                IWorkloadAssertionIssuer issuer = Substitute.For<IWorkloadAssertionIssuer>();
++                issuer.IssueAsync(Arg.Any<WorkloadAssertionRequest>(), Arg.Any<CancellationToken>()).Returns(ValueTask.FromResult<string?>("fixture-provenance"));
++                var notifier = new DaprProjectionChangeNotifier(backend, Substitute.For<IActorProxyFactory>(),
++                    Substitute.For<IProjectionChangedBroadcaster>(), Options.Create(new ProjectionChangeNotifierOptions { Transport = ProjectionChangeTransport.PubSub }),
++                    NullLogger<DaprProjectionChangeNotifier>.Instance, issuer);
++                return adapter == "projection"
++                    ? token => notifier.NotifyProjectionChangedAsync("counter", identity.TenantId, identity.AggregateId, token)
++                    : token => notifier.NotifyProjectionChangedAsync(new ProjectionChangedDetail("counter", identity.TenantId, null, new Dictionary<string, string>()), token);
++            case "correlation":
++                var index = new DaprCommandCorrelationIndex(backend, Options.Create(new CommandStatusOptions()),
++                    Options.Create(new CommandCorrelationIndexOptions()), NullLogger<DaprCommandCorrelationIndex>.Instance);
++                return token => index.AddAsync(identity.TenantId, "correlation-one", "command-one", token);
++            default:
++                throw new ArgumentOutOfRangeException(nameof(adapter));
++        }
++    }
++
++    private static void ConfigureLostResponses(DaprClient backend)
++    {
++        backend.PublishEventAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<EventEnvelope>(),
++            Arg.Any<Dictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(_ => Task.FromException(new TimeoutException("Publish response lost.")));
++        backend.PublishEventAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<DeadLetterMessage>(),
++            Arg.Any<Dictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns(_ => Task.FromException(new TimeoutException("Publish response lost.")));
++        backend.PublishEventAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<Hexalith.EventStore.Contracts.Projections.ProjectionChangedNotification>(),
++            Arg.Any<CancellationToken>()).Returns(_ => Task.FromException(new TimeoutException("Publish response lost.")));
++        backend.GetStateAndETagAsync<CommandCorrelationIndexRecord>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<ConsistencyMode?>(),
++            Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>()).Returns((default(CommandCorrelationIndexRecord)!, string.Empty));
++        backend.TrySaveStateAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CommandCorrelationIndexRecord>(), Arg.Any<string>(),
++            Arg.Any<StateOptions>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
++            .Returns(_ => Task.FromException<bool>(new TimeoutException("State persisted; response lost.")));
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarCatalogLeaseTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarCatalogLeaseTests.cs
+new file mode 100644
+index 000000000..3d2235a2b
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarCatalogLeaseTests.cs
+@@ -0,0 +1,112 @@
++using System.Net;
++
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Native channel-only callbacks require actual committed code and retain real durable dispatch fences.</summary>
++public sealed class DomainSidecarCatalogLeaseTests
++{
++    [Fact]
++    public async Task UncommittedCallbackCannotExecuteRealProcessor()
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        using var response = await host.DeliverAsync();
++        response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
++        host.Calls.ShouldBe(0);
++    }
++
++    [Fact]
++    public async Task ExactCommittedSidecarExecutesWithoutSyntheticSenderHeaders()
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        await host.ActivateAsync(host.Candidate());
++        using var response = await host.DeliverAsync();
++        response.StatusCode.ShouldBe(HttpStatusCode.OK);
++        host.Calls.ShouldBe(1);
++        (await host.Store.ReadAsync(default)).State!.Leases.ShouldBeEmpty();
++    }
++
++    [Theory]
++    [InlineData(null)]
++    [InlineData("wrong")]
++    public async Task MissingOrWrongRealChannelStillRefuses(string? token)
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        await host.ActivateAsync(host.Candidate());
++        host.Client.DefaultRequestHeaders.Remove(DaprAppChannelToken.HeaderName);
++        if (token is not null) host.Client.DefaultRequestHeaders.Add(DaprAppChannelToken.HeaderName, token);
++        using var response = await host.DeliverAsync();
++        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
++        host.Calls.ShouldBe(0);
++    }
++
++    [Theory]
++    [InlineData("topic")]
++    [InlineData("component")]
++    [InlineData("code")]
++    [InlineData("method")]
++    [InlineData("operation")]
++    public async Task MutatedSubscriptionBindingCannotActivateOrExecute(string mutation)
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        await Should.ThrowAsync<RouteCatalogUnavailableException>(() => host.ActivateAsync(host.Candidate(mutation: mutation)));
++        using var response = await host.DeliverAsync();
++        response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
++        host.Calls.ShouldBe(0);
++    }
++
++    [Fact]
++    public async Task PendingGenerationRefusesAndExactPendingRollbackRestoresCommittedCallback()
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        var committed = host.Candidate();
++        await host.ActivateAsync(committed);
++        var pending = host.Candidate(2, committed.RootDigest);
++        await host.Authority.PrepareAsync(pending);
++        using (var refused = await host.DeliverAsync()) refused.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
++        host.Calls.ShouldBe(0);
++        await host.Authority.RollbackAsync(new(pending.AttemptId, RouteCatalogActivationBinding.ComputeDigest(pending), 1, "pending"));
++        using var restored = await host.DeliverAsync();
++        restored.StatusCode.ShouldBe(HttpStatusCode.OK);
++        host.Calls.ShouldBe(1);
++        (await host.Store.ReadAsync(default)).State!.Leases.ShouldBeEmpty();
++    }
++
++    [Fact]
++    public async Task ActualPendingRemoteMutationBlocksRetirementUntilKnownCompletion()
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        var committed = host.Candidate();
++        await host.ActivateAsync(committed);
++        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
++        var complete = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
++        host.Work = () => RouteCatalogRemoteCall.InvokeAsync(() => { entered.SetResult(); return complete.Task; });
++        Task<HttpResponseMessage> delivery = host.DeliverAsync();
++        await entered.Task.WaitAsync(TestContext.Current.CancellationToken);
++        (await host.Store.ReadAsync(default)).State!.Leases.Count.ShouldBe(1);
++        var next = host.Candidate(2, committed.RootDigest);
++        await host.Authority.PrepareAsync(next);
++        await Should.ThrowAsync<RouteCatalogUnavailableException>(() => host.Authority.ReadyAsync(next.AttemptId));
++        complete.SetResult(true);
++        using var response = await delivery;
++        response.StatusCode.ShouldBe(HttpStatusCode.OK);
++        (await host.Store.ReadAsync(default)).State!.Leases.ShouldBeEmpty();
++    }
++
++    [Fact]
++    public async Task AmbiguousRealRemoteCompletionRetainsFenceAfterProcessorCatchesFailure()
++    {
++        await using var host = await DomainSidecarLeaseTestHost.StartAsync();
++        await host.ActivateAsync(host.Candidate());
++        host.Work = () => RouteCatalogRemoteCall.InvokeAsync<bool>(() => Task.FromException<bool>(new TimeoutException("ambiguous remote completion")));
++        using var response = await host.DeliverAsync();
++        response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
++        host.Calls.ShouldBe(1);
++        (await host.Store.ReadAsync(default)).State!.Leases.Count.ShouldBe(1);
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarLeaseTestHost.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarLeaseTestHost.cs
+new file mode 100644
+index 000000000..de5045f09
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/DomainSidecarLeaseTestHost.cs
+@@ -0,0 +1,124 @@
++using System.Net.Http.Json;
++using System.Text;
++using System.Text.Json;
++
++using Hexalith.EventStore.Client.Registration;
++using Hexalith.EventStore.Client.Subscriptions;
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.DomainService;
++using Hexalith.EventStore.Sample.Counter.Events;
++using Hexalith.EventStore.ServiceDefaults.Authentication;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Microsoft.AspNetCore.Builder;
++using Microsoft.AspNetCore.Hosting;
++using Microsoft.AspNetCore.TestHost;
++using Microsoft.Extensions.Configuration;
++using Microsoft.Extensions.DependencyInjection;
++using Microsoft.Extensions.Logging;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Actual SDK subscription mapper, processor, channel authorization and durable catalog authority.</summary>
++internal sealed class DomainSidecarLeaseTestHost : IAsyncDisposable, IEventStoreDomainEventHandler<CounterIncremented>
++{
++    private const string ChannelToken = "domain-sidecar-lease-channel";
++    private readonly string _directory = Path.Combine(Path.GetTempPath(), "domain-sidecar-lease-" + Guid.NewGuid().ToString("N"));
++    private readonly RouteCatalogTestFixture _fixture = new();
++    private WebApplication _app = null!;
++    private RouteCatalogAuxiliaryOperation _sidecar = null!;
++    internal HttpClient Client { get; private set; } = null!;
++    internal int Calls { get; private set; }
++    internal Func<Task>? Work { get; set; }
++    internal RouteCatalogAuthority Authority => _fixture.Authorities[0];
++    internal RouteCatalogTestStateStore Store => _fixture.Store;
++
++    internal static async Task<DomainSidecarLeaseTestHost> StartAsync()
++    {
++        var host = new DomainSidecarLeaseTestHost();
++        Directory.CreateDirectory(host._directory);
++        string aclPath = Path.Combine(host._directory, "acl.json");
++        byte[] acl = JsonSerializer.SerializeToUtf8Bytes(new { spec = new { accessControl = new {
++            defaultAction = "deny", trustDomain = "public", policies = new[] { new { appId = "eventstore", defaultAction = "deny",
++                operations = new[] { new { name = "counter/events", httpVerb = new[] { "POST" }, action = "allow" } } } } } } });
++        await File.WriteAllBytesAsync(aclPath, acl);
++        var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
++        builder.WebHost.UseTestServer();
++        builder.Logging.ClearProviders();
++        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?> {
++            [DaprAppChannelToken.ConfigurationKey] = ChannelToken,
++            ["EventStore:DomainService:AppId"] = "eventstore",
++            ["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"] = host._directory,
++            ["EventStore:RouteCatalog:DevelopmentBootstrap:AccessControlPath"] = aclPath,
++            ["Dapr:DeclarativeSubscriptions"] = "true",
++            ["Authentication:JwtBearer:Issuer"] = "sidecar-test", ["Authentication:JwtBearer:Audience"] = "sidecar-test",
++            ["Authentication:JwtBearer:SigningKey"] = "__HEXALITH_TEST_SIGNING_KEY_PLACEHOLDER__",
++        });
++        builder.AddEventStoreDomainService(typeof(CounterIncremented).Assembly);
++        builder.Services.AddEventStoreDomainEvents(typeof(CounterIncremented).Assembly, options => {
++            options.SubscriptionRoute = "/counter/events"; options.PubSubName = "pubsub"; options.TopicName = "counter.events";
++        });
++        builder.Services.AddSingleton<IEventStoreDomainEventHandler<CounterIncremented>>(host);
++        builder.Services.AddSingleton<FiniteRouteCatalogReceiver>();
++        builder.Services.AddSingleton<IRouteCatalogAuthority>(_ => host.Authority);
++        host._app = builder.Build();
++        host._app.UseEventStoreDomainService();
++        await host._app.StartAsync(TestContext.Current.CancellationToken);
++        RouteCatalogReceiverSurface receiver = host._app.Services.GetRequiredService<FiniteRouteCatalogReceiver>().Observe();
++        var endpoint = receiver.Endpoints.Single(endpoint => endpoint.Pattern == "/counter/events");
++        host._sidecar = new("eventstore", "counter/events", DomainRouteCatalogSidecarMetadata.Operation, "counter") { Sidecar = endpoint.Sidecar! };
++        RouteCatalogEnvelope envelope = CatalogSchemaThreeFixture.Create(host._fixture.Envelope);
++        for (int index = 0; index < host._fixture.Observations.Length; index++)
++        {
++            var original = host._fixture.Observations[index];
++            var observed = original with { Operations = envelope.Operations!.Where(operation => original.Declarations.Any(declaration => declaration.RouteId == operation.RouteId)).ToArray() };
++            if (index == 0) observed = observed with { TopologyDocuments = [original.TopologyDocuments[0], acl], ReceiverSurface = receiver, AuxiliaryOperations = [host._sidecar] };
++            host._fixture.Observations[index] = observed;
++            host._fixture.Hosts[index] = ObservedRouteCatalogHost.Identity(observed);
++            host._fixture.Authorities[index] = host._fixture.CreateAuthority(host._fixture.Hosts[index]);
++        }
++        host.Client = host._app.GetTestClient();
++        host.Client.DefaultRequestHeaders.Add(DaprAppChannelToken.HeaderName, ChannelToken);
++        return host;
++    }
++
++    internal RouteCatalogActivation Candidate(long generation = 1, string? predecessor = null, string? mutation = null)
++    {
++        var candidate = _fixture.Candidate(generation, predecessor);
++        var envelope = CatalogSchemaThreeFixture.Create(RouteCatalogCodec.Decode(candidate.CanonicalCatalog));
++        var sidecar = mutation switch {
++            "topic" => _sidecar with { Sidecar = _sidecar.Sidecar! with { TopicName = "foreign.events" } },
++            "component" => _sidecar with { Sidecar = _sidecar.Sidecar! with { PubSubName = "foreign-pubsub" } },
++            "code" => _sidecar with { Sidecar = _sidecar.Sidecar! with { CodeDigest = new string('a', 64) } },
++            "method" => _sidecar with { Method = "foreign/events" },
++            "operation" => _sidecar with { Operation = "foreign-operation" },
++            _ => _sidecar,
++        };
++        candidate = candidate with { CanonicalCatalog = RouteCatalogCodec.Encode(envelope), RootDigest = RouteCatalogCodec.ComputeRootDigest(envelope),
++            AuxiliaryOperations = [sidecar] };
++        return candidate with { TrustProof = RouteCatalogActivationBinding.ComputeDigest(candidate) };
++    }
++
++    internal Task ActivateAsync(RouteCatalogActivation candidate) => _fixture.ActivateAsync(candidate);
++
++    internal Task<HttpResponseMessage> DeliverAsync()
++    {
++        string id = Guid.NewGuid().ToString("N");
++        var envelope = new EventStoreDomainEventEnvelope("01ARZ3NDEKTSV4RRFFQ69G5FAV", id, "tenant-a", typeof(CounterIncremented).FullName!,
++            1, DateTimeOffset.UtcNow, "01ARZ3NDEKTSV4RRFFQ69G5FAW", "json", Encoding.UTF8.GetBytes("{}")) { Domain = "counter", AggregateType = "Counter" };
++        return Client.PostAsJsonAsync("/counter/events", envelope, TestContext.Current.CancellationToken);
++    }
++
++    public async Task HandleAsync(CounterIncremented @event, EventStoreDomainEventContext context, CancellationToken cancellationToken = default)
++    {
++        Calls++;
++        if (Work is not null) await Work();
++    }
++
++    public async ValueTask DisposeAsync()
++    {
++        Client?.Dispose();
++        if (_app is not null) await _app.DisposeAsync();
++        Directory.Delete(_directory, recursive: true);
++    }
++}

@@ -1,0 +1,33 @@
+{
+  "base": "2132fe0e276059dcd9fc35a7115fd2a1795ce538",
+  "originalBase": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+  "reconciledTrackedFiles": [
+    ".github/workflows/build-release.yml",
+    ".github/workflows/ci.yml",
+    "Tools/test-self-ci.py",
+    "src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachAdmission.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionAttachmentStore.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCommandOptions.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunListing.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs",
+    "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs"
+  ],
+  "copiedNewFiles": [
+    "Github/run-module-integration/run_module_integration.py",
+    "Github/run-module-integration/tests/test_run_module_integration.py",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs",
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs"
+  ],
+  "excluded": [
+    ".github/workflows/domain-ci.yml",
+    ".github/workflows/domain-ci.md",
+    "Tools/test-domain-workflow-test-platforms.ps1",
+    "Github/prepare-module-build/tests/test_prepare_module_build.py",
+    "README.md",
+    "Props/Directory.Packages.props"
+  ],
+  "status": "local preparation only; no commit/push/merge/release/pin change"
+}

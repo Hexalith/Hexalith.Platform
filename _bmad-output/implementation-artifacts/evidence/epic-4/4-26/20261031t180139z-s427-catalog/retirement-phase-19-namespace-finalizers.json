@@ -1,0 +1,81 @@
+{
+  "controllersRunning": false,
+  "delta": {
+    "additions": [],
+    "expectedRemovals": [],
+    "recreated": [],
+    "retainedExpected": [],
+    "transientRemovals": [],
+    "unexpectedRemovals": []
+  },
+  "expectedAbsentWithinTimeout": true,
+  "licensedApplicationWritesUsed": false,
+  "mode": "namespace-finalizer",
+  "order": 19,
+  "phase": "namespace-finalizers",
+  "phaseAllowlistSha256": "23d078bf0d1936782da50d269ac9c540b1d35109962501fe74f1a52d820f7623",
+  "productionAccepted": false,
+  "requests": [
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kubesphere-controls-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1443",
+      "uid": "2692db8a-b8db-4227-8fe1-999a6baf8679"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kubesphere-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1433",
+      "uid": "4ffac864-0e17-4dcb-9195-534f30cb15d7"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-node-lease",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1461",
+      "uid": "6421f741-e19f-4cfb-becb-30da8c9c1440"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/default",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1453",
+      "uid": "bb601e75-bac7-41eb-84d3-9631a235ea44"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-system",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1483",
+      "uid": "ca10d945-8e7e-41be-8825-0e48b8305b9c"
+    },
+    {
+      "deleteRequested": false,
+      "finalizer": "kubesphere.io/cascading-deletion",
+      "object": "v1/Namespace/-/kube-public",
+      "otherFinalizersRetained": [],
+      "outcome": "namespace-retained-named-finalizer-removed",
+      "privateFullContentVerified": true,
+      "resourceVersion": "1470",
+      "uid": "cdcc27d2-e4a2-4a3a-88c2-a98dff2b90c5"
+    }
+  ],
+  "settled": true
+}

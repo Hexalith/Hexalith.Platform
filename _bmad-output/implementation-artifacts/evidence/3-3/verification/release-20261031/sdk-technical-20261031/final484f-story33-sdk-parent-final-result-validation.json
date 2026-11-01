@@ -1,0 +1,84 @@
+[
+  {
+    "name": "apphost",
+    "counts": {
+      "Pass": 71,
+      "Fail": 0,
+      "Skip": 0
+    },
+    "failures": [],
+    "skips": [],
+    "logSha256": "7cd2ab94f3d2f46cf371fdf70b3fd338ff1cf23c17ec535a5cbf2bcbc68e9a9e",
+    "xmlSha256": "128f3acfb897c44c1213c42297464ee5011bc828f4ea1fb19add0dc75f3de06f"
+  },
+  {
+    "name": "servicedefaults",
+    "counts": {
+      "Pass": 157,
+      "Fail": 0,
+      "Skip": 0
+    },
+    "failures": [],
+    "skips": [],
+    "logSha256": "4b619fe52e326bf6a04de93443a08cb1916a1f1159e9c881f9490dce133fca91",
+    "xmlSha256": "79d87e462f67426957191649f3b9dc5f6297c572cf612542bdb2533ef6557c65"
+  },
+  {
+    "name": "contracts-routing",
+    "counts": {
+      "Pass": 161,
+      "Fail": 0,
+      "Skip": 0
+    },
+    "failures": [],
+    "skips": [],
+    "logSha256": "691fc855f8d06b3601876cbb0488cb63e387a12f7c1e5297c2e88eec6a21a95c",
+    "xmlSha256": "13a21e71c03185e82f0e4ac7ae6206a9334c7220a7a491535265154005e1ada3"
+  },
+  {
+    "name": "domainservice",
+    "counts": {
+      "Pass": 1299,
+      "Fail": 1,
+      "Skip": 1
+    },
+    "failures": [
+      {
+        "name": "Hexalith.EventStore.DomainService.Tests.DomainModuleAuthoringGuardrailTests.TenantsDomainService_DoesNotReferenceGeneratedApiHostOrDeclarePerMessageControllers",
+        "failure": "Shouldly.ShouldAssertException : File.Exists(csproj)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Expected the root-declared Tenants submodule project at /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/references/Hexalith.Tenants/src/Hexalith.Tenants/Hexalith.Tenants.csproj; boundary verification must not pass without its subject.   at Hexalith.EventStore.DomainService.Tests.DomainModuleAuthoringGuardrailTests.TenantsDomainService_DoesNotReferenceGeneratedApiHostOrDeclarePerMessageControllers() in /tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore-final/tests/Hexalith.EventStore.DomainService.Tests/DomainModuleAuthoringGuardrailTests.cs:line 423\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)"
+      }
+    ],
+    "skips": [
+      {
+        "name": "Hexalith.EventStore.DomainService.Tests.Content.ContentPersistenceQualificationTests.PersistedBytesSurviveSidecarProcessReplacementAndRejectCorruption",
+        "reason": "Enable EVENTSTORE_CONTENT_LIVE=1 for the real Dapr/Redis qualification lane."
+      }
+    ],
+    "logSha256": "c7ffde8cbe92427c06add63458b16eb2f6cfa9056e9c4c8bb3ba5596502355f8",
+    "xmlSha256": "1a127e175af9f61b4d8f1abcbe3ef4b895ff5624867227e665c9d0247a7de13c"
+  },
+  {
+    "name": "server-full",
+    "counts": {
+      "Pass": 6815,
+      "Fail": 0,
+      "Skip": 25
+    },
+    "failures": [],
+    "skips": {
+      "count": 25,
+      "first": [
+        {
+          "name": "Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_PersistedCheckpointAheadOfAggregateStream_DoesNotRegressCheckpoint",
+          "reason": "ATDD red phase \u2014 DW1 AC#1 (checkpoint drift). Remove Skip when implementing."
+        },
+        {
+          "name": "Hexalith.EventStore.Server.Tests.Projections.Dw1ProjectionDeliveryAtddTests.DeliverProjection_InvalidCharset_LogsProjectInvalidCharsetReasonCode",
+          "reason": "ATDD red phase \u2014 DW1 AC#2 (/project failure classification). Remove Skip when implementing."
+        }
+      ]
+    },
+    "logSha256": "3998ac182cd653ca7879c15922b5aba865c197bb04769be8602e47dc44329e09",
+    "xmlSha256": "49476f87fde2e20507aa0d93c23c934668087195ab1dbc0c410d879463a65811"
+  }
+]

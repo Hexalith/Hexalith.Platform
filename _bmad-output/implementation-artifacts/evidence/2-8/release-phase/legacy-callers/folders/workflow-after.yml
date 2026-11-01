@@ -1,0 +1,184 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@1cc94bbb932be0d08a31b4e1393fcfc450a0b1c9
+    with:
+      solution: Hexalith.Folders.CI.slnx
+      build-timeout-minutes: 45
+      test-platform: microsoft-testing-platform
+      run-consumer-validation: true
+      run-coverage-gate: true
+      coverage-minimum-line: 75
+      coverage-required-branch: 80
+      coverage-isolation-targets: |
+        src/Hexalith.Folders/Aggregates/Folder/FolderArchiveTenantGate.cs
+      coverage-line-scope: |
+        src/Hexalith.Folders.Contracts/
+        src/Hexalith.Folders/
+        src/Hexalith.Folders.Client/
+        src/Hexalith.Folders.Aspire/
+        src/Hexalith.Folders.Testing/
+      unit-test-projects: |
+        tests/Hexalith.Folders.Contracts.Tests
+        tests/Hexalith.Folders.Tests
+        tests/Hexalith.Folders.Cli.Tests
+        tests/Hexalith.Folders.EventStore.Tests
+        tests/Hexalith.Folders.LoadTests.Tests
+        tests/Hexalith.Folders.Mcp.Tests
+        tests/Hexalith.Folders.Server.Tests
+        tests/Hexalith.Folders.Testing.Tests
+        tests/Hexalith.Folders.UI.Tests
+        tests/Hexalith.Folders.Workers.Tests
+        tests/Hexalith.Folders.AppHost.Tests
+        samples/Hexalith.Folders.Sample.Tests
+      integration-test-projects: |
+        tests/Hexalith.Folders.IntegrationTests
+
+  folders-specialized-gates:
+    name: folders-specialized-gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init --checkout
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: |
+            Directory.Packages.props
+            global.json
+            nuget.config
+            references/Hexalith.Builds/Props/Directory.Packages.props
+            **/*.csproj
+
+      - name: Run CI/CD tooling unit tests
+        run: python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+
+      - name: Run baseline build, format, analyzers, tests, and dependency-mode gates
+        shell: pwsh
+        timeout-minutes: 45
+        run: ./tests/tools/run-baseline-ci-gates.ps1
+
+      - name: Run contract and parity gates
+        shell: pwsh
+        timeout-minutes: 30
+        run: ./tests/tools/run-contract-parity-ci-gates.ps1
+
+      - name: Run security and redaction gates
+        shell: pwsh
+        timeout-minutes: 20
+        run: ./tests/tools/run-security-redaction-ci-gates.ps1
+
+      - name: Run capacity smoke gates
+        shell: pwsh
+        timeout-minutes: 15
+        run: ./tests/tools/run-capacity-smoke-ci-gates.ps1
+
+      - name: Run capacity calibration gates
+        shell: pwsh
+        timeout-minutes: 20
+        run: ./tests/tools/run-capacity-calibration-gates.ps1
+
+      - name: Run retention and tenant-deletion gates
+        shell: pwsh
+        timeout-minutes: 10
+        run: ./tests/tools/run-retention-deletion-gates.ps1
+
+      - name: Run NFR traceability gates
+        shell: pwsh
+        timeout-minutes: 10
+        run: ./tests/tools/run-nfr-traceability-gates.ps1 -SkipRestoreBuild
+
+      - name: Run safety invariant gates
+        shell: pwsh
+        timeout-minutes: 20
+        run: ./tests/tools/run-safety-invariant-gates.ps1 -SkipRestoreBuild
+
+      - name: Run governance completeness gates
+        shell: pwsh
+        timeout-minutes: 20
+        run: ./tests/tools/run-governance-completeness-gates.ps1 -SkipRestoreBuild
+
+  accessibility-gates:
+    name: accessibility-gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init --checkout
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Provision Playwright Chromium browser
+        shell: pwsh
+        timeout-minutes: 15
+        run: ./tests/install-playwright.ps1
+
+      - name: Run accessibility gate
+        shell: pwsh
+        timeout-minutes: 30
+        run: ./tests/tools/run-accessibility-ci-gates.ps1 -SkipBrowserInstall
+
+  e2e-gates:
+    name: e2e-gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init --checkout
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Provision Playwright Chromium browser
+        shell: pwsh
+        timeout-minutes: 15
+        run: ./tests/install-playwright.ps1
+
+      - name: Run full UI end-to-end gate
+        shell: pwsh
+        timeout-minutes: 30
+        run: ./tests/tools/run-e2e-ci-gates.ps1 -SkipBrowserInstall

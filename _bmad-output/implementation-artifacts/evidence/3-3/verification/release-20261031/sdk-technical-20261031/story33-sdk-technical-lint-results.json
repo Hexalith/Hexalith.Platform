@@ -1,0 +1,46 @@
+{
+  "authoritativeConfigSha256": "796a04abdd8c35e645f654c9d8d571556f34ccf4ab3611c9327697a452add38d",
+  "dependencyLockSha256": "e877c67676479a3f2535ba74e1402f3213af693c1900a458443d0b88ca13587a",
+  "identity": "Original SDK installed tools with byte-identical config/package/lock to active integration worktree; cli/config-conventional21.2.4",
+  "results": [
+    {
+      "label": "commit",
+      "candidate": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-commit.txt",
+      "sha256": "a6fe06635047e747e6e9f169ec43c8f1aeb32303b23b207a4f4d0a8d8eeebf4e",
+      "exitCode": 0,
+      "log": "/tmp/story33-sdk-technical-lint-commit.log",
+      "command": [
+        "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/node_modules/.bin/commitlint",
+        "--edit",
+        "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-commit.txt",
+        "--verbose"
+      ]
+    },
+    {
+      "label": "pr-title",
+      "candidate": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-pr-title.txt",
+      "sha256": "b802bed4ebc86f4e13c6f64da856f52b6f026d678c2bd42541db13d6b1e7ef13",
+      "exitCode": 0,
+      "log": "/tmp/story33-sdk-technical-lint-pr-title.log",
+      "command": [
+        "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/node_modules/.bin/commitlint",
+        "--edit",
+        "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-pr-title.txt",
+        "--verbose"
+      ]
+    },
+    {
+      "label": "squash",
+      "candidate": "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-squash.txt",
+      "sha256": "a6fe06635047e747e6e9f169ec43c8f1aeb32303b23b207a4f4d0a8d8eeebf4e",
+      "exitCode": 0,
+      "log": "/tmp/story33-sdk-technical-lint-squash.log",
+      "command": [
+        "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.EventStore/node_modules/.bin/commitlint",
+        "--edit",
+        "/tmp/hexalith-story33-release-0_wjbwkj/eventstore-technical-qualification-squash.txt",
+        "--verbose"
+      ]
+    }
+  ]
+}

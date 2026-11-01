@@ -1,0 +1,51 @@
+{
+  "pausedAt": "2026-10-31T22:23:22.981871+00:00",
+  "instruction": "Operator requested all other sessions paused until separate Parties publication completes; explicit resume required, no timer.",
+  "coordinationThread": "01a19065-cca3-7051-801f-fa2e62875924",
+  "storyStatus": "in-progress",
+  "executionStatus": "paused-by-user",
+  "pendingOutboundMutations": [],
+  "ownedLiveInfrastructure": [],
+  "registryAccountCreated": false,
+  "registryConfigChanged": false,
+  "githubSecretsChanged": false,
+  "sdkHelperRelease": {
+    "version": "3.130.1",
+    "source": "1de42b706f52af0da6513f0b7663002606d17156",
+    "all14OfficialArchivesAndSignaturesVerified": true
+  },
+  "buildsProducerMerged": "d8d0d70f26d79c95b544a64a74e329149711cb7d",
+  "partiesSevenSourceSelectionsRatified": "parties-preflight/owner-selection-proposal.json; ledger implementation queued, not applied by this session",
+  "preparedRegistryPaths": [
+    "eng/ci-registry-reader/prepare.py",
+    "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/registry-reader/configuration.ci-reader.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/registry-reader/plan.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/registry-reader/configmap.patch.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/registry-reader/configuration.current.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/registry-reader/reload.patch.json"
+  ],
+  "workflowObservations": [
+    {
+      "repo": "Hexalith/Hexalith.Builds",
+      "run": 41246834980,
+      "conclusion": "",
+      "headSha": "d8d0d70f26d79c95b544a64a74e329149711cb7d",
+      "status": "in_progress",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41246834980"
+    },
+    {
+      "repo": "Hexalith/Hexalith.EventStore",
+      "run": 41246774822,
+      "conclusion": "success",
+      "headSha": "1de42b706f52af0da6513f0b7663002606d17156",
+      "status": "completed",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41246774822"
+    }
+  ],
+  "workflowCancellationPerformed": false,
+  "allSharedChangesPreserved": true,
+  "candidateAcceptance": false,
+  "childAgentPauseConfirmed": true,
+  "ownedLiveProcesses": [],
+  "registryPreparationState": "Partial: prepare.py and guarded source/patch artifacts preserved; README, offline validation and final handoff unfinished. No apply/account/secret operation performed."
+}

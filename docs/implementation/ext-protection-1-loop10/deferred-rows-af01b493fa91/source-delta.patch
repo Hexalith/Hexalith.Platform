@@ -1,0 +1,694 @@
+--- a/platform/deploy/erasure-root/bootstrap.py
++++ b/platform/deploy/erasure-root/bootstrap.py
+@@ -207,12 +207,13 @@
+             existing = read_optional(path)
+             data = existing.get('data') if isinstance(existing, dict) else None
+             # Only this invocation's new mount may move from native KV-v2
+-            # defaults to the enrolled configuration. An existing mismatch is
+-            # still a conflict and must never be silently overwritten.
++            # defaults (or an absent configuration) to the enrolled
++            # configuration. On an existing mount, a mismatch or an unreadable
++            # configuration without data is a conflict and is never overwritten.
+             native_defaults = isinstance(data, dict) and type(data.get('max_versions')) is int \
+                 and data['max_versions'] == 0 and data.get('cas_required') is False \
+                 and data.get('delete_version_after', '0s') == '0s'
+-            if data is None or newly_created and native_defaults:
++            if newly_created and (data is None or native_defaults):
+                 call('POST', path, expected)
+                 response = call('GET', path)
+                 readback = response.get('data') if isinstance(response, dict) else None
+--- a/platform/eng/ext-protection-1/test_bootstrap.py
++++ b/platform/eng/ext-protection-1/test_bootstrap.py
+@@ -478,5 +478,66 @@
+             finally:
+                 server.shutdown(); server.server_close(); thread.join(timeout=2)
+ 
++
++class PreexistingHeadConfigReadbackTests(unittest.TestCase):
++    """R11-EC-3: a pre-existing head mount whose configuration read has no data is never overwritten."""
++
++    def test_preexisting_mount_config_without_data_refuses_before_any_write(self):
++        import os
++        import ssl
++        import subprocess
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory); cert = root / 'cert.pem'; key = root / 'key.pem'
++            subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', str(key), '-out', str(cert), '-days', '1',
++                            '-subj', '/CN=127.0.0.1', '-addext', 'subjectAltName=IP:127.0.0.1'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
++
++            class Native(BaseHTTPRequestHandler):
++                records = []
++                mode = 'empty-object'
++
++                def _json(self, payload, status=200):
++                    raw = json.dumps(payload).encode(); self.send_response(status)
++                    self.send_header('Content-Type', 'application/json'); self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)
++
++                def _dispatch(self, method):
++                    length = int(self.headers.get('Content-Length', 0) or 0)
++                    Native.records.append((method, self.path, self.rfile.read(length) if length else b''))
++                    if self.path.endswith('/sys/health'):
++                        self._json({'version': '2.6.2', 'initialized': True, 'sealed': False}); return
++                    if self.path.endswith('/sys/mounts'):
++                        # Both mounts already exist, so this invocation creates neither of them.
++                        self._json({'data': {'erc-transit/': {'type': 'transit', 'options': {}}, 'erc-heads/': {'type': 'kv', 'options': {'version': '2'}}}}); return
++                    if self.path.endswith('/erc-heads/config') and method == 'GET':
++                        if Native.mode == 'empty-object':
++                            self._json({}); return
++                        if Native.mode == 'null-data':
++                            self._json({'data': None}); return
++                        self.send_response(404); self.end_headers(); return
++                    if method == 'POST':
++                        self.send_response(204); self.end_headers(); return
++                    self.send_response(404); self.end_headers()
++
++                def do_GET(self): self._dispatch('GET')
++                def do_POST(self): self._dispatch('POST')
++                def log_message(self, *args): pass
++
++            server = HTTPServer(('127.0.0.1', 0), Native)
++            context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER); context.load_cert_chain(cert, key); server.socket = context.wrap_socket(server.socket, server_side=True)
++            thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
++            try:
++                value = CanonicalEnrollmentAndDefaultCliTests.valid(); value['address'] = 'https://127.0.0.1:' + str(server.server_port)
++                path = root / 'enrollment.json'; path.write_text(json.dumps(value))
++                environment = dict(os.environ, ERC_BOOTSTRAP_TOKEN='synthetic-local-test-credential')
++                for mode in ('empty-object', 'null-data', 'missing'):
++                    with self.subTest(mode=mode):
++                        Native.mode = mode; Native.records.clear()
++                        result = subprocess.run(['python3', str(Path(bootstrap.__file__)), '--enrollment', str(path), '--apply', '--ca-certificate', str(cert)],
++                                                env=environment, capture_output=True, text=True, timeout=20)
++                        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
++                        self.assertEqual(json.loads(result.stdout)['step'], 'head-config')
++                        self.assertEqual([path for method, path, _ in Native.records if method == 'POST'], [])
++            finally:
++                server.shutdown(); server.server_close(); thread.join(timeout=2)
++
+ if __name__ == '__main__':
+     unittest.main()
+--- a/platform/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs
++++ b/platform/src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs
+@@ -143,6 +143,15 @@
+     /// <inheritdoc />
+     public void Dispose() { if (_ownsHttp) { _http.Dispose(); } _pinnedCa?.Dispose(); }
+ 
++    /// <summary>Test-only observation point for the native response buffers owned by <see cref="TrimAsync"/> and key-metadata reads.
++    /// Null by default; it receives the actual buffer while it is in use and never changes behavior, wire format or configuration.</summary>
++    internal Action<string, byte[]>? ResponseBufferObserver { get; set; }
++
++    private void ObserveResponse(string name, byte[]? buffer)
++    {
++        if (buffer is not null) { ResponseBufferObserver?.Invoke(name, buffer); }
++    }
++
+     /// <inheritdoc />
+     public async Task<ErasureRootHeadSnapshot?> ReadHeadAsync(string tenantId, CancellationToken cancellationToken)
+     {
+@@ -279,11 +288,8 @@
+     }
+ 
+     /// <inheritdoc />
+-    public async Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken)
+-    {
+-        using var metadata = await ReadKeyAsync(tenantId, cancellationToken).ConfigureAwait(false);
+-        return metadata.RootElement.GetProperty("data").GetProperty("latest_version").GetInt32();
+-    }
++    public Task<int> ReadEpochAsync(string tenantId, CancellationToken cancellationToken)
++        => ReadKeyAsync(tenantId, data => data.GetProperty("latest_version").GetInt32(), cancellationToken);
+ 
+     /// <inheritdoc />
+     public async Task RotateAsync(string tenantId, CancellationToken cancellationToken)
+@@ -338,8 +344,10 @@
+         try
+         {
+             configured = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/config", config, false, cancellationToken).ConfigureAwait(false);
++            ObserveResponse("trim:config", configured);
+             trim = JsonSerializer.SerializeToUtf8Bytes(new { min_available_version = epoch });
+             trimmed = await SendAsync(HttpMethod.Post, KeyPath(tenantId) + "/trim", trim, false, cancellationToken).ConfigureAwait(false);
++            ObserveResponse("trim:trim", trimmed);
+         }
+         finally
+         {
+@@ -351,24 +359,23 @@
+     }
+ 
+     /// <inheritdoc />
+-    public async Task<bool> VerifyTrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
+-    {
+-        using var metadata = await ReadKeyAsync(tenantId, cancellationToken).ConfigureAwait(false);
+-        var data = metadata.RootElement.GetProperty("data");
+-        return data.GetProperty("min_available_version").GetInt32() == epoch
++    public Task<bool> VerifyTrimAsync(string tenantId, int epoch, CancellationToken cancellationToken)
++        => ReadKeyAsync(tenantId, data => data.GetProperty("min_available_version").GetInt32() == epoch
+             && data.GetProperty("min_decryption_version").GetInt32() == epoch
+             && data.GetProperty("min_encryption_version").GetInt32() == epoch
+             && data.GetProperty("latest_version").GetInt32() >= epoch
+-            && data.GetProperty("keys").EnumerateObject().All(entry => int.TryParse(entry.Name, NumberStyles.None, CultureInfo.InvariantCulture, out int version) && version >= epoch);
+-    }
+-
+-    private async Task<JsonDocument> ReadKeyAsync(string tenantId, CancellationToken token)
++            && data.GetProperty("keys").EnumerateObject().All(entry => int.TryParse(entry.Name, NumberStyles.None, CultureInfo.InvariantCulture, out int version) && version >= epoch),
++            cancellationToken);
++
++    /// <summary>Projects verified key metadata while the parsed document still borrows the native response, so no copy outlives the read and every buffer is zeroed.</summary>
++    private async Task<T> ReadKeyAsync<T>(string tenantId, Func<JsonElement, T> project, CancellationToken token)
+     {
+         byte[]? health = null;
+         byte[]? response = null;
+         try
+         {
+             health = await SendAsync(HttpMethod.Get, "v1/sys/health", null, false, token).ConfigureAwait(false);
++            ObserveResponse("read-key:health", health);
+             using (var status = JsonDocument.Parse(health!))
+             {
+                 if (status.RootElement.GetProperty("version").GetString() != "2.6.2"
+@@ -376,27 +383,14 @@
+                 { throw new InvalidOperationException("Exact unsealed OpenBao 2.6.2 ERC required."); }
+             }
+             response = await SendAsync(HttpMethod.Get, KeyPath(tenantId), null, false, token).ConfigureAwait(false);
+-            byte[] retained = response!.ToArray();
+-            JsonDocument? document = JsonDocument.Parse(retained);
+-            try
+-            {
+-                var data = document.RootElement.GetProperty("data");
+-                if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
+-                    || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
+-                    || data.GetProperty("deletion_allowed").GetBoolean())
+-                { throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment."); }
+-                var published = document;
+-                document = null;
+-                return published;
+-            }
+-            finally
+-            {
+-                if (document is not null)
+-                {
+-                    document.Dispose();
+-                    CryptographicOperations.ZeroMemory(retained);
+-                }
+-            }
++            ObserveResponse("read-key:metadata", response);
++            using var document = JsonDocument.Parse(response!);
++            var data = document.RootElement.GetProperty("data");
++            if (data.GetProperty("type").GetString() != "aes256-gcm96" || !data.GetProperty("derived").GetBoolean()
++                || data.GetProperty("exportable").GetBoolean() || data.GetProperty("allow_plaintext_backup").GetBoolean()
++                || data.GetProperty("deletion_allowed").GetBoolean())
++            { throw new InvalidOperationException("Native key does not match the dedicated ERC enrollment."); }
++            return project(data);
+         }
+         finally
+         {
+--- a/platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs
++++ b/platform/src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs
+@@ -247,11 +247,11 @@
+             {
+                 var request = original.Deserialize<CustodyKeyLifecycleRequest>(CustodyBindingContract.Json)!;
+                 allowed &= request.Identity.TenantId == tenant && ErasureRootCustody.Hash(request) == requestDigest && request.FenceRevision > 0
+-                    && current.QualificationBindings!.TryGetValue("erc.fence." + request.FenceTokenId, out var fence) && fence == requestDigest;
++                    && current.QualificationBindings is { } fenceBindings && fenceBindings.TryGetValue("erc.fence." + request.FenceTokenId, out var fence) && fence == requestDigest;
+             }
+             if (operation == "VerifyReservedManifestAndCopyPolicy")
+             {
+-                allowed &= current.QualificationBindings!.TryGetValue("erc.copyPolicySha256", out var qualified) && qualified == acceptedCopyPolicySha256;
++                allowed &= current.QualificationBindings is { } copyBindings && copyBindings.TryGetValue("erc.copyPolicySha256", out var qualified) && qualified == acceptedCopyPolicySha256;
+                 var read = await custody.ReadAsync(tenant, token).ConfigureAwait(false);
+                 allowed &= read is { } actual && actual.Head.Anchors.TryGetValue(DeletionConsumptionActor.GetOwnerScope(tenant), out var owner)
+                     && owner.Revision == original.GetProperty("ownerRevision").GetInt64() && owner.Digest == original.GetProperty("ownerStateDigest").GetString();
+--- a/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs
++++ b/platform/tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs
+@@ -295,6 +295,150 @@
+             string refused = await ExchangeAsync(leaf, different, token);
+             refused.ShouldNotContain(token);
+         }
++    }
++
++    /// <summary>R11-BH-9: TrimAsync zeroes both native response buffers after success and after a refused trim.</summary>
++    [Theory]
++    [InlineData("success")]
++    [InlineData("trim-refused")]
++    public async Task TrimResponseBuffersAreNonzeroInUseAndZeroAfterward(string outcome)
++    {
++        string variable = "ERC_TRIM_CLEAR_" + Guid.NewGuid().ToString("N");
++        Environment.SetEnvironmentVariable(variable, "component-test-credential");
++        var observed = new List<(string Name, byte[] Buffer, bool NonzeroInUse)>();
++        try
++        {
++            using var handler = new ErasureRootTransportHandler((request, _) => request.RequestUri!.AbsolutePath.EndsWith("/trim", StringComparison.Ordinal) && outcome == "trim-refused"
++                ? ErasureRootTransportHandler.Json("{\"errors\":[\"permission denied\"]}", HttpStatusCode.Forbidden)
++                : ErasureRootTransportHandler.Json("{\"data\":{\"name\":\"epoch\",\"latest_version\":2}}"));
++            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
++            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable)
++            { ResponseBufferObserver = (name, buffer) => observed.Add((name, buffer, buffer.Any(value => value != 0))) };
++            if (outcome == "success") { await store.TrimAsync("tenant", 2, Token); }
++            else { await Should.ThrowAsync<InvalidOperationException>(() => store.TrimAsync("tenant", 2, Token)); }
++            observed.Select(item => item.Name).ShouldBe(outcome == "success" ? new[] { "trim:config", "trim:trim" } : new[] { "trim:config" });
++            observed.ShouldAllBe(item => item.NonzeroInUse);
++            observed.ShouldAllBe(item => item.Buffer.All(value => value == 0));
++        }
++        finally { Environment.SetEnvironmentVariable(variable, null); }
++    }
++
++    /// <summary>R11-BH-9: key-metadata reads zero every native response buffer after success and after each refusal.</summary>
++    [Theory]
++    [InlineData("epoch-success")]
++    [InlineData("verify-trim-success")]
++    [InlineData("metadata-refused")]
++    [InlineData("health-refused")]
++    public async Task KeyMetadataResponseBuffersAreNonzeroInUseAndZeroAfterward(string outcome)
++    {
++        string variable = "ERC_KEY_CLEAR_" + Guid.NewGuid().ToString("N");
++        Environment.SetEnvironmentVariable(variable, "component-test-credential");
++        var observed = new List<(string Name, byte[] Buffer, bool NonzeroInUse)>();
++        try
++        {
++            using var handler = new ErasureRootTransportHandler((request, _) =>
++            {
++                if (request.RequestUri!.AbsolutePath == "/v1/sys/health")
++                { return ErasureRootTransportHandler.Json("{\"version\":\"2.6.2\",\"initialized\":true,\"sealed\":" + (outcome == "health-refused" ? "true" : "false") + "}"); }
++                return ErasureRootTransportHandler.Json(JsonSerializer.Serialize(new { data = new {
++                    type = "aes256-gcm96", derived = true, exportable = false, allow_plaintext_backup = false, deletion_allowed = outcome == "metadata-refused",
++                    latest_version = 2, min_available_version = 2, min_decryption_version = 2, min_encryption_version = 2,
++                    keys = new Dictionary<string, int> { ["2"] = 123 } } }));
++            });
++            using var http = new HttpClient(handler) { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) };
++            using var store = new OpenBaoErasureRootStore(http, _installation, "env:" + variable)
++            { ResponseBufferObserver = (name, buffer) => observed.Add((name, buffer, buffer.Any(value => value != 0))) };
++            switch (outcome)
++            {
++                case "epoch-success": (await store.ReadEpochAsync("tenant", Token)).ShouldBe(2); break;
++                case "verify-trim-success": (await store.VerifyTrimAsync("tenant", 2, Token)).ShouldBeTrue(); break;
++                default: await Should.ThrowAsync<InvalidOperationException>(() => store.ReadEpochAsync("tenant", Token)); break;
++            }
++            observed.Select(item => item.Name).ShouldContain("read-key:health");
++            if (outcome == "health-refused") { observed.Select(item => item.Name).ShouldNotContain("read-key:metadata"); }
++            else { observed.Select(item => item.Name).ShouldContain("read-key:metadata"); }
++            observed.ShouldAllBe(item => item.NonzeroInUse);
++            foreach (var item in observed) { item.Buffer.ShouldAllBe(value => value == 0, item.Name); }
++        }
++        finally { Environment.SetEnvironmentVariable(variable, null); }
++    }
++
++    /// <summary>R11-EC-7: production stores built sequentially or concurrently keep their own pinned CA; a later store never adopts or disposes another store's pin.</summary>
++    [Fact]
++    public async Task SequentialAndConcurrentStoresKeepOnlyTheirOwnPinnedCa()
++    {
++        var (leafA, caA) = IssueCa("erc-ca-a");
++        var (leafB, caB) = IssueCa("erc-ca-b");
++        using (leafA)
++        using (leafB)
++        {
++            string token = "erc-ec7-token-" + Guid.NewGuid().ToString("N");
++            string variable = "ERC_EC7_" + Guid.NewGuid().ToString("N");
++            Environment.SetEnvironmentVariable(variable, token);
++            try
++            {
++                // One flow: A, then a synthetic internal-handler store, then B. Disposing the later stores leaves A's pin intact.
++                var serverA = ServeOnce(leafA);
++                var serverB = ServeOnce(leafB);
++                using var storeA = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{serverA.Port}/"), _installation with { TrustedCaCertificatePem = caA }, "env:" + variable, TimeSpan.FromSeconds(5));
++                var synthetic = new OpenBaoErasureRootStore(new HttpClient(new ErasureRootTransportHandler((_, _) => ErasureRootTransportHandler.Json("{}")))
++                    { BaseAddress = new("https://erc.invalid/"), Timeout = TimeSpan.FromSeconds(5) }, _installation, "env:" + variable, ownsHttp: true);
++                var storeB = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{serverB.Port}/"), _installation with { TrustedCaCertificatePem = caB }, "env:" + variable, TimeSpan.FromSeconds(5));
++                await ReadIgnoringTransportAsync(storeB);
++                (await serverB.Received).ShouldContain(token);
++                storeB.Dispose();
++                synthetic.Dispose();
++                await ReadIgnoringTransportAsync(storeA);
++                (await serverA.Received).ShouldContain(token);
++
++                // Concurrent construction: each store accepts only a server issued by its own CA.
++                var runs = Enumerable.Range(0, 8).Select(index => Task.Run(async () =>
++                {
++                    bool useA = index % 2 == 0, matching = index % 4 < 2;
++                    var server = ServeOnce(matching == useA ? leafA : leafB);
++                    using var store = new OpenBaoErasureRootStore(new Uri($"https://127.0.0.1:{server.Port}/"),
++                        _installation with { TrustedCaCertificatePem = useA ? caA : caB }, "env:" + variable, TimeSpan.FromSeconds(5));
++                    await ReadIgnoringTransportAsync(store);
++                    return (Matching: matching, Seen: (await server.Received).Contains(token, StringComparison.Ordinal));
++                }, Token)).ToArray();
++                foreach (var (matching, seen) in await Task.WhenAll(runs)) { seen.ShouldBe(matching); }
++            }
++            finally { Environment.SetEnvironmentVariable(variable, null); }
++        }
++    }
++
++    private static async Task ReadIgnoringTransportAsync(OpenBaoErasureRootStore store)
++    {
++        try { await store.ReadHeadAsync("tenant", Token); }
++        catch (HttpRequestException) { }
++    }
++
++    private static (int Port, Task<string> Received) ServeOnce(X509Certificate2 leaf)
++    {
++        var listener = new TcpListener(IPAddress.Loopback, 0);
++        listener.Start();
++        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
++        var received = Task.Run(async () =>
++        {
++            try
++            {
++                using var tcp = await listener.AcceptTcpClientAsync(Token);
++                await using var ssl = new SslStream(tcp.GetStream(), false);
++                await ssl.AuthenticateAsServerAsync(new SslServerAuthenticationOptions
++                {
++                    ServerCertificate = leaf,
++                    ClientCertificateRequired = false,
++                    EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
++                }, Token);
++                var buffer = new byte[8192];
++                int count = await ssl.ReadAsync(buffer, Token);
++                await ssl.WriteAsync("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"u8.ToArray(), Token);
++                return Encoding.ASCII.GetString(buffer, 0, count);
++            }
++            catch (Exception) { return ""; }
++            finally { listener.Stop(); }
++        });
++        return (port, received.WaitAsync(TimeSpan.FromSeconds(10), Token));
+     }
+ 
+     private async Task<string> ExchangeAsync(X509Certificate2 leaf, string pem, string token)
+--- a/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs
++++ b/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs
+@@ -303,6 +303,27 @@
+         (await _custody.LookupAsync(request with { Targets = [new("tenant-a", "changed", "explicit-alias")] }, "reservation", cancellationToken: TestContext.Current.CancellationToken)).State.ShouldBe(DeletionManifestProviderState.Unknown);
+     }
+ 
++    /// <summary>R11-BH-8: one shared writer holder id is committed by exactly one concurrent unwrap; losers leave no native holder, and completion is final.</summary>
++    [Fact]
++    public async Task ConcurrentUnwrapsOfOneSharedWriterHolderCommitExactlyOneNativeHolder()
++    {
++        var root = await RootAsync();
++        var token = TestContext.Current.CancellationToken;
++        string holderId = "erc-write:" + ErasureRootCustody.Hash(new { root.Identity, keyReference = "shared-writer" });
++        var results = await Task.WhenAll(Enumerable.Range(0, 8).Select(_ => Task.Run(() => _custody.UnwrapAsync(root, holderId, token), token)));
++        var winners = results.Where(result => result is not null).ToArray();
++        winners.Length.ShouldBe(1);
++        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBe(new[] { holderId });
++        var winner = winners[0]!;
++        winner.Dispose();
++        (await _custody.CompleteHolderAsync(root, winner, cancellationToken: token)).ShouldBeTrue();
++        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
++        // A late loser or retry with the same id can never commit a second native holder after completion.
++        (await _custody.UnwrapAsync(root, holderId, cancellationToken: token)).ShouldBeNull();
++        (await _store.RetainedHeadAsync("tenant-a")).Targets.Single().Value.Holders.ShouldBeEmpty();
++        (await _custody.ConsumeAsync(Request([root]), "reservation", cancellationToken: token)).State.ShouldBe(DeletionManifestProviderState.Consumed);
++    }
++
+     [Fact]
+     public async Task PostCasAuthorizationFailureRollsTheHolderBackAndALaterUnwrapSucceeds()
+     {
+--- a/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs
++++ b/platform/tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs
+@@ -116,4 +116,100 @@
+         receiver.State = receiver.State with { Callers = [receiver.State.Callers[0] with { Revoked = true }] };
+         (await client.AuthorizeAsync("tenant-a", "root-original", "WrapDek", new string('B', 64), TestContext.Current.CancellationToken)).ShouldBeFalse();
+     }
++
++    /// <summary>R11-EC-1: absent qualification bindings deny the binding-dependent permission checks as a signed denial instead of throwing.</summary>
++    [Theory]
++    [InlineData("VerifyReservedManifestAndCopyPolicy")]
++    [InlineData("VerifyLifecycle")]
++    public async Task AbsentQualificationBindingsDenyWithoutThrowing(string operation)
++    {
++        var token = TestContext.Current.CancellationToken;
++        using var fixture = new ErasureRootEngineFixture(); using var native = Substitute.For<DaprClient>();
++        var handler = new ErasureRootAuthorityOperationHandler(fixture.Custody, new(fixture.Custody, fixture.Permissions, native, fixture.Digests), Substitute.For<IGovernanceScopeGuard>(),
++            Substitute.For<IDeletionCapabilityRevocationAuthenticator>(), new string('A', 64), TimeProvider.System);
++        using var receiver = new ReceivingAuthorityFixture("erc-owner", handlers: [handler]);
++        var grant = new IndependentCallerGrant(new string('0', 64), "erc-owner-identity", "tenant-a|erc", "erc-owner", [.. handler.Methods], DateTimeOffset.UtcNow.AddHours(1), false);
++        object original;
++        string digest;
++        if (operation == "VerifyLifecycle")
++        {
++            // Every earlier conjunct holds, so only the bindings lookup decides the result.
++            var request = new CustodyKeyLifecycleRequest(new CustodyKeyObjectIdentity("tenant-a", "interaction-a", PlatformKeyPurpose.InteractionRootDek, "alias-a", "root-v1",
++                "lifecycle", "erc-test", "custody-1"), "lifecycle-operation", CustodyKeyLifecycleAction.Pin, 0, "hold-1", "fence-1", 1, "decision-1");
++            original = request;
++            digest = ErasureRootCustody.Hash(request);
++        }
++        else
++        {
++            original = new { ownerRevision = 1L, ownerStateDigest = new string('C', 64) };
++            digest = new string('B', 64);
++        }
++        var payload = JsonSerializer.SerializeToElement(new { tenantId = "tenant-a", identity = "deferred-row", operation, requestDigest = digest, original }, CustodyBindingContract.Json);
++        foreach (var bindings in new Dictionary<string, string>?[] { null, new() })
++        {
++            var result = await handler.HandleAsync("erc-permission", payload, grant, receiver.State with { QualificationBindings = bindings }, token);
++            var evidence = result.ShouldBeOfType<ErasureRootPermissionEvidence>();
++            evidence.Permitted.ShouldBeFalse();
++            evidence.Operation.ShouldBe(operation);
++            evidence.TenantId.ShouldBe("tenant-a");
++        }
++    }
++
++    /// <summary>R11-BH-7: erased reads keep the resolve identity checks; a source original for another owner, occurrence, key reference or store is never adopted.</summary>
++    [Fact]
++    public async Task ErasedReadsRefuseEverySubstitutedSourceIdentity()
++    {
++        var token = TestContext.Current.CancellationToken;
++        using var fixture = new ErasureRootEngineFixture();
++        var original = fixture.Enroll() with { Writer = new("source-proof", "exact-writer", new Dictionary<string, string>()) };
++        var installation = new ErasureRootInstallation("erc-test", "enrollment", "transit", "heads", new Dictionary<string, string> { ["tenant-a"] = "epoch" });
++        var loss = new ErasureRootPermanentLossReceipt("erc-test", "enrollment", "tenant-a", "retired-volume-uid", "final-independent-retirement", new string('A', 64));
++        var authorization = Substitute.For<IErasureRootAuthorization>();
++        authorization.ReadPermanentLossAsync("tenant-a", "erc-test", "enrollment", Arg.Any<CancellationToken>()).Returns(loss);
++        var custody = new ErasureRootCustody(fixture.Store, installation, authorization);
++        var source = Substitute.For<IErasureRootOccurrenceSource>();
++        ErasureRootOccurrenceEnrollment? returned = original;
++        source.ResolveErasedStoredAsync(Arg.Any<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(), Arg.Any<PayloadProtectionOccurrenceContext>(), Arg.Any<string>(), Arg.Any<string>(),
++            Arg.Any<ErasureRootPermanentLossReceipt>(), Arg.Any<CancellationToken>()).Returns(_ => returned);
++        var bindings = new ErasureRootOccurrenceBindings(custody, authorization, source);
++        var identity = original.Binding.Identity;
++        var occurrence = ErasureRootOccurrenceBindings.Occurrence(identity);
++        byte[] sealedPayload = "{\"ProtectedContent\":{\"Value\":{\"$pdenc\":\"sealed\"}}}"u8.ToArray();
++        (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBe(original.Binding);
++        ErasureRootOccurrenceEnrollment[] substitutions =
++        [
++            original with { Binding = original.Binding with { Identity = identity with { Owner = new Hexalith.EventStore.Contracts.Identity.AggregateIdentity("tenant-a", "conversations", "other-directory") } } },
++            original with { Binding = original.Binding with { Identity = identity with { Sequence = identity.Sequence + 1 } } },
++            original with { Binding = original.Binding with { Identity = identity with { Kind = PayloadProtectionPayloadKind.Snapshot } } },
++            original with { Binding = original.Binding with { Identity = identity with { PayloadTypeId = "Other.Type" } } },
++            original with { Binding = original.Binding with { KeyReference = "01ARZ3NDEKTSV4RRFFQ69G5FAW" } },
++            original with { RootIdentity = original.RootIdentity with { StoreTarget = "other-store" } },
++        ];
++        foreach (var substituted in substitutions)
++        {
++            returned = substituted;
++            (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBeNull();
++        }
++
++        // The native skeleton read binds the caller's exact binding before reading any persisted-writer proof.
++        using var native = Substitute.For<DaprClient>();
++        var independent = new ErasureRootSourceOriginals("tenant-a", "erc-test", new() { [ErasureRootOccurrenceBindings.Id(identity.Owner, occurrence)] = original });
++        native.GetStateAsync<ErasureRootSourceOriginals>("source-originals", "source-index", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>())
++            .Returns(_ => independent);
++        var nativeSource = new ErasureRootNativeOccurrenceSource(fixture.Custody, fixture.Permissions, native, fixture.Digests,
++            new Dictionary<string, ProtectionQualificationNativeCell> { ["tenant-a"] = new("source-originals", "source-index", new()) });
++        string sealedDigest = Convert.ToHexString(SHA256.HashData(sealedPayload));
++        (await nativeSource.ReadErasedSnapshotSkeletonAsync(original.Binding with { KeyReference = "01ARZ3NDEKTSV4RRFFQ69G5FAW" }, sealedDigest, loss, token)).ShouldBeNull();
++        await native.DidNotReceive().GetStateAsync<ErasureRootWriterProof>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>());
++        (await nativeSource.ReadErasedSnapshotSkeletonAsync(original.Binding, sealedDigest, loss, token)).ShouldBeNull();
++        await native.Received(1).GetStateAsync<ErasureRootWriterProof>("source-proof", "exact-writer", Arg.Any<ConsistencyMode?>(), Arg.Any<IReadOnlyDictionary<string, string>>(), Arg.Any<CancellationToken>());
++
++        // Without an authenticated permanent loss no erased read is attempted.
++        authorization.ReadPermanentLossAsync("tenant-a", "erc-test", "enrollment", Arg.Any<CancellationToken>()).Returns((ErasureRootPermanentLossReceipt?)null);
++        returned = original;
++        source.ClearReceivedCalls();
++        (await bindings.ResolveErasedStoredAsync(identity.Owner, occurrence, sealedPayload, original.Binding.KeyReference, token)).ShouldBeNull();
++        await source.DidNotReceive().ResolveErasedStoredAsync(Arg.Any<Hexalith.EventStore.Contracts.Identity.AggregateIdentity>(), Arg.Any<PayloadProtectionOccurrenceContext>(),
++            Arg.Any<string>(), Arg.Any<string>(), Arg.Any<ErasureRootPermanentLossReceipt>(), Arg.Any<CancellationToken>());
++    }
+ }
+--- a/eventstore/src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs
++++ b/eventstore/src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs
+@@ -323,7 +323,10 @@
+                     || issued.GuardStreamId != capability.GuardStreamId || !SameTargets(batch.Targets, captured.Targets)
+                     || !state.CompromisedKeyVersions.Contains(capability.CapabilityKeyVersion, StringComparer.Ordinal)
+                     || !state.Revocations.Any(value => DeletionConsumptionIdentity.Digest(value) == DeletionConsumptionIdentity.Digest(captured.RevocationReceipt))
+-                    || state.Receipts.Any(value => value.Status == "Committed" && (value.Capability == capability || value.SigningRequestId == captured.SigningRequestId))) { return false; }
++                    || state.Receipts.Any(value => value.Status == "Committed" && (value.Capability == capability || value.SigningRequestId == captured.SigningRequestId))
++                    // Same independent nonrollback currentness as the issued branch; the repeated guard reads above cannot supply it.
++                    || !await _revocations.VerifyCurrentBlockedReplacementAsync(captured, state.Revision,
++                        DeletionConsumptionIdentity.Digest(state), cancellationToken).ConfigureAwait(false)) { return false; }
+                 return await _journal.VerifyTransitionAsync(Proof("blocked-replacement", capability.TenantId, capability.BatchId,
+                     state.Revision, DeletionConsumptionIdentity.Digest(captured)), cancellationToken).ConfigureAwait(false);
+             }
+--- a/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs
++++ b/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs
+@@ -572,6 +572,60 @@
+     {
+         var f = new PublishedTrustReplacementFixture();
+         var token = TestContext.Current.CancellationToken;
++        var (request, proof, setAcceptBlockedProof) = PrepareUnissued(f);
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeTrue();
++        setAcceptBlockedProof(false);
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
++        setAcceptBlockedProof(true);
++        f.State = f.State with { Revision = f.State.Revision + 1 };
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
++        f.State = f.State with { Revision = proof.CurrentGuardRevision, EpochId = "epoch-mutated" };
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
++    }
++
++    /// <summary>R11-BH-2: the unissued branch requires the same independent current blocked-replacement evidence as the issued branch, and its refusal status stays enforced.</summary>
++    [Fact]
++    public async Task UnissuedProofRequiresIndependentCurrentnessAndARefusalStatus()
++    {
++        var f = new PublishedTrustReplacementFixture();
++        var token = TestContext.Current.CancellationToken;
++        var (request, proof, _) = PrepareUnissued(f);
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeTrue();
++        await f.Evidence.Received().VerifyCurrentBlockedReplacementAsync(Arg.Any<DeletionBlockedReplacementReconciliation>(), f.State.Revision,
++            DeletionConsumptionIdentity.Digest(f.State), Arg.Any<CancellationToken>());
++
++        // A permissive journal cannot replace denied independent current evidence (repeated guard reads are not that proof).
++        f.Evidence.VerifyCurrentBlockedReplacementAsync(Arg.Any<DeletionBlockedReplacementReconciliation>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(false);
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
++
++        // The refusal-status half of the claim: a committed (issued) receipt never satisfies the unissued branch.
++        f.RetainCurrentGuard();
++        f.Evidence.VerifyCurrentBlockedReplacementAsync(Arg.Any<DeletionBlockedReplacementReconciliation>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(true);
++        var committed = request with { UnissuedProof = proof with { Refusal = proof.Refusal with { Status = "Committed" } } };
++        (await f.Authority.VerifyBlockedReplacementAsync(committed, token)).ShouldBeFalse();
++    }
++
++    /// <summary>R11-EC-6: an unissued proof carrying a nonzero issued revision is refused before the journal is consulted.</summary>
++    [Fact]
++    public async Task UnissuedProofWithNonzeroIssuedRevisionIsRefusedBeforeTheJournal()
++    {
++        var f = new PublishedTrustReplacementFixture();
++        var token = TestContext.Current.CancellationToken;
++        var (request, _, _) = PrepareUnissued(f);
++        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeTrue();
++        f.Journal.ClearReceivedCalls();
++        foreach (long issued in new[] { 1L, request.UnissuedProof!.CurrentGuardRevision, long.MaxValue })
++        {
++            Should.Throw<ArgumentException>(() => DeletionConsumptionIdentity.Capture(request with { CommittedIssuedGuardRevision = issued }));
++            (await f.Authority.VerifyBlockedReplacementAsync(request with { CommittedIssuedGuardRevision = issued }, token)).ShouldBeFalse();
++        }
++        await f.Journal.DidNotReceive().VerifyTransitionAsync(Arg.Any<AnchoredStateTransition>(), Arg.Any<CancellationToken>());
++    }
++
++    private static (DeletionBlockedReplacementReconciliation Request, GovernanceRejectedIssueOriginal Proof, Action<bool> SetAcceptBlockedProof) PrepareUnissued(PublishedTrustReplacementFixture f)
++    {
+         f.SetBatch(f.Batch with { ProtectionOutcome = "ConsumptionBlocked:CapabilityKeyCompromise" });
+         var successor = f.Replacement.Capability with { AttestationOrdinal = f.Batch.AttestationOrdinal + 1 };
+         var signed = f.SignedSubstitution(successor, f.Replacement.Targets);
+@@ -610,14 +664,9 @@
+                 && Encoding.UTF8.GetString(proof.TargetBytes) == expected;
+             return blocked && acceptBlockedProof;
+         });
+-        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeTrue();
+-        acceptBlockedProof = false;
+-        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
+-        acceptBlockedProof = true;
+-        f.State = f.State with { Revision = f.State.Revision + 1 };
+-        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
+-        f.State = f.State with { Revision = proof.CurrentGuardRevision, EpochId = "epoch-mutated" };
+-        (await f.Authority.VerifyBlockedReplacementAsync(request, token)).ShouldBeFalse();
++        // Independent current evidence observes this exact guard snapshot.
++        f.RetainCurrentGuard();
++        return (request, proof, value => acceptBlockedProof = value);
+     }
+ 
+     private static Task<bool> VerifySuccessorAsync(PublishedTrustReplacementFixture fixture, bool activation,
+--- a/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs
++++ b/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs
+@@ -303,6 +303,43 @@
+         ((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).Revision.ShouldBe(newer.Revision);
+     }
+ 
++    /// <summary>R11-BH-3: when post-persist validation fails, the stored snapshot is only the exact independently validated original and is never served without fresh validation.</summary>
++    [Fact]
++    public async Task RecoveredOriginalThatFailsPostPersistValidationStaysExactAndIsNeverServedUnvalidated()
++    {
++        var f = new InteractionOccurrenceFixture();
++        var request = InteractionOccurrenceFixture.Request();
++        await f.Actor.ReserveAsync(request);
++        await f.Actor.RetainSealedAsync(request.Identity, InteractionOccurrenceFixture.Sealed());
++        var stored = (InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value;
++        long olderRevision = stored.Revision;
++        var newer = stored with { Revision = olderRevision + 1, Records = [stored.Records[0] with { RegistryRevision = olderRevision + 1 }] };
++        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(newer);
++        string digest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes));
++        string olderDigest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(stored)));
++        string scope = InteractionOccurrenceRegistryActor.GetActorId("tenant-a") + "|candidate-interaction-occurrences-v1";
++        f.Authority.ReadCurrentOriginalAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(new AnchoredStateTransition(scope, olderRevision, newer.Revision, olderDigest, digest, bytes));
++        f.Head = newer.Revision;
++        f.AnchorDigest = digest;
++        bool persisted() => ((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).Revision == newer.Revision;
++        // The independent anchor validates the exact original, then advances concurrently right after the primary store is written.
++        f.Authority.ValidateStateAsync("tenant-a", Arg.Any<string>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(call => !persisted() && call.ArgAt<string>(1) == f.Epoch && call.Arg<long>() == f.Head && call.ArgAt<string>(3) == f.AnchorDigest);
++        (await f.Actor.LookupAsync(request.Identity)).Status.ShouldBe(InteractionOccurrenceReservationStatus.Unavailable);
++        persisted().ShouldBeTrue();
++        // What stays stored is byte-identical to the independently committed original, not a locally derived state.
++        JsonSerializer.SerializeToUtf8Bytes((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).ShouldBe(bytes);
++        // Still unvalidated: every later read refuses and does not rewrite the store.
++        (await f.Actor.LookupAsync(request.Identity)).Status.ShouldBe(InteractionOccurrenceReservationStatus.Unavailable);
++        JsonSerializer.SerializeToUtf8Bytes((InteractionOccurrenceRegistrySnapshot)f.Backend.CommittedState.Single().Value).ShouldBe(bytes);
++        // Once the independent anchor validates that exact state again, it is served unchanged.
++        f.Authority.ValidateStateAsync("tenant-a", Arg.Any<string>(), Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
++            .Returns(call => call.ArgAt<string>(1) == f.Epoch && call.Arg<long>() == f.Head && call.ArgAt<string>(3) == f.AnchorDigest);
++        var lookup = await f.Actor.LookupAsync(request.Identity);
++        lookup.Status.ShouldBe(InteractionOccurrenceReservationStatus.Sealed);
++        lookup.Record!.RegistryRevision.ShouldBe(newer.Revision);
++    }
++
+     /// <summary>A recovered snapshot that deserializes to null is unavailable, including the argument-null refusal.</summary>
+     [Fact]
+     public async Task NullRecoveredSnapshotReturnsUnavailable()
+--- a/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs
++++ b/eventstore/tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs
+@@ -295,6 +295,48 @@
+         }
+     }
+ 
++    /// <summary>R11-BH-5: the forwarder passes the enrolled owner's result through unchanged, and a foreign-scope original from that owner is refused by every consumer before any persistence.</summary>
++    [Fact]
++    public async Task ForeignScopeOwnerOriginalsAreRefusedByEveryConsumerBeforePersistence()
++    {
++        var token = TestContext.Current.CancellationToken;
++        PublishedTrustDispatchFixture world = PublishedTrustDispatchFixture.Create();
++        string scope = DeletionConsumptionActor.GetOwnerScope("tenant-a");
++        string foreign = DeletionConsumptionActor.GetOwnerScope("tenant-b");
++        var genesis = new DeletionConsumptionLedger("tenant-a", 0, 0, [], [], []);
++        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(new DeletionConsumptionLedger("tenant-a", 1, 0, [], [], []));
++        string digest = Convert.ToHexString(SHA256.HashData(bytes));
++        string returnedScope = foreign;
++        var owner = Substitute.For<IDeletionConsumptionOwnerStateAuthority>();
++        owner.TenantId.Returns("tenant-a");
++        owner.ScopeId.Returns(scope);
++        owner.AuthorizeOperationAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
++        owner.ValidateStateAsync(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(call => call.Arg<long>() == 1 && call.ArgAt<string>(1) == digest);
++        owner.ReadCurrentOriginalAsync(scope, Arg.Any<CancellationToken>()).Returns(_ => new AnchoredStateTransition(returnedScope, 0, 1, DeletionConsumptionIdentity.Digest(genesis), digest, bytes.ToArray()));
++        owner.ReadAdmittedOriginalAsync(scope, Arg.Any<CancellationToken>()).Returns(_ => new AnchoredStateTransition(returnedScope, 0, 1, DeletionConsumptionIdentity.Digest(genesis), digest, bytes.ToArray()));
++        var authority = new PublishedTrustDeletionConsumptionAuthority([world.Trust], world.Guard, null, null, [owner]);
++        (await authority.ReadCurrentOriginalAsync(scope, token))!.ScopeId.ShouldBe(foreign);
++        (await authority.ReadAdmittedOriginalAsync(scope, token))!.ScopeId.ShouldBe(foreign);
++
++        // Consumer 1: admitted-original recovery validates the exact scope before deserializing or persisting.
++        int persisted = 0;
++        await Should.ThrowAsync<InvalidOperationException>(() => RecoverableAnchoredState.ReconcileAsync(scope, genesis, null, value => value, _ => Task.FromResult(true),
++            authority, value => { persisted++; return Task.FromResult(value); }, recoverAdmittedOriginal: true));
++        persisted.ShouldBe(0);
++
++        // Consumer 2: the actual consumption actor with a rolled-back primary store never adopts the foreign-scope current original.
++        var backend = new InMemoryStateManager();
++        var actor = DeletionConsumptionFixture.Create(backend, authority);
++        try { (await actor.LookupAsync("tenant-a", "batch-1")).Status.ShouldBe(DeletionConsumptionStatus.Unavailable); }
++        catch (InvalidOperationException) { }
++        backend.CommittedState.ShouldBeEmpty();
++
++        // Control: the same bytes under the exact scope are recovered, so the refusal above is the scope check.
++        returnedScope = scope;
++        _ = await actor.LookupAsync("tenant-a", "batch-1");
++        backend.CommittedState.Values.OfType<DeletionConsumptionLedger>().Single().Revision.ShouldBe(1);
++    }
++
+     /// <summary>Current-original reads forward only to the single canonical owner enrolled for that exact scope; foreign tenant, foreign scope, duplicate or absent enrollment returns unknown.</summary>
+     [Theory]
+     [InlineData("exact")][InlineData("foreign-scope")][InlineData("foreign-tenant")][InlineData("duplicate")][InlineData("absent")]

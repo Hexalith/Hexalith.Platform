@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-method",
+    "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync",
+    "-parallelMode",
+    "none",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/cleanup-contention/reproduction-tests.xml"
+  ],
+  "environment": {
+    "CI": "true",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "41238944762",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "dotnet-tests",
+    "GITHUB_WORKFLOW": "CI",
+    "GITHUB_SHA": "26ba857a74d75b184a0340a07f280dca3bb08874",
+    "GITHUB_REF": "refs/heads/feat/story-2-8-domain-ci-v2",
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "X64",
+    "GITHUB_WORKSPACE": "/tmp/hexalith-story28-cleanup-contention",
+    "RUNNER_ENVIRONMENT": "github-hosted"
+  },
+  "runtimeSourceSha256": "59cf140827401e4b5dba3fa49f83bc0fd247e87ce4b7f850946b00eb9504ae93",
+  "testSourceSha256": "d6107f84a314c85c53573efec1740b00a57848990ab44580266fd4a495dad7c1",
+  "binariesSha256": {
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": "6d4346c4b02d8946ad472fe6bea891a93f054905e98aad0662ddf2e63d2e620c",
+    "src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "051d4522a6cc1b7eacd22215dc24928d6f939d30c03f4f7c6959034493812134"
+  },
+  "sourceLimits": "Fresh Debug graph build at base runtime with modified deterministic tests; simulated GitHub environment, no hosted acceptance.",
+  "exitCode": 1
+}

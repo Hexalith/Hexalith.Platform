@@ -1,0 +1,183 @@
+{
+  "root": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final",
+  "base": "57255b502fdd546bb09851d04fc1830175d897f3",
+  "sourceFiles": [
+    {
+      "path": "Tools/G4PackageQualification.functions.ps1",
+      "sha256": "d120c1348868a47d0ea6be11d1220b6b1f6be1ee32c7bf0892d0ffe4bc8ae968"
+    },
+    {
+      "path": "src/hosts/Hexalith.Builds.Module.AppHost/RunReadiness.cs",
+      "sha256": "cbcbbebaad2dfedb3836be4ceb42e060a78b97eb2e218797a8883f467a3124c9"
+    },
+    {
+      "path": "src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj",
+      "sha256": "3a85e18a3bc7563cbe19de2129247b3858cecd5b0e33dc43380d5d6a9e0a5ae3"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+      "sha256": "54f7c5a74c779b4e5da719d0fc5806333292d45f5a22985803deea47d6919c3f"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+      "sha256": "2ca2a529c1d1bb5bf9c3618feb8128aa3497ae99f680169fa0c93511b92ddce5"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionReadiness.cs",
+      "sha256": "459f46619b7d3b7afa2b8346bb636b09327f663f593eb010affc90be9bda0803"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/ICompositionRunPreparation.cs",
+      "sha256": "8d81f8bda32ba8cff9e7e881ab07efde63b4bca2b157ad77cd2dbea0ff501e3f"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs",
+      "sha256": "b3b7e5913dbd1537f745e4a8788783c0a67c47dfd9344a8c0e13951dfaeb324e"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+      "sha256": "62ef88da46762950b67deb8981eee7c7d30eb3c3ca82999082333c16e822622a"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedMetadataSafety.cs",
+      "sha256": "b806087de5797468a6d5be35cdfee672b8efff66580c73ea240eb06083c0fc26"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs",
+      "sha256": "805aec61b7f104ed40e22005a65416ecc13dc544b44c348e30890cba69c7d8ff"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs",
+      "sha256": "cdc3095b9ae4310f3c24b1f81e03753217bffd2899577b12cfc37d75363f5761"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs",
+      "sha256": "3850ce8188cf0025c2a72c90726599197d7d3b451100a82c7ccfe35388823dd0"
+    }
+  ],
+  "builds": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "--disable-build-servers",
+        "-p:NuGetAudit=false"
+      ],
+      "log": "/tmp/story33-builds-final-build1.log",
+      "exitCode": 1,
+      "sha256": "7f47be6304e1eec471f25d77d3f42f6e2cceddc7368eff3b2024cf82d44b6b9d"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "--disable-build-servers",
+        "-p:NuGetAudit=false"
+      ],
+      "log": "/tmp/story33-builds-final-build2.log",
+      "exitCode": 1,
+      "sha256": "207216b869f2815e677264d21b2c93798b0142b648f8dcff03ab5686c3925f9b"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "--disable-build-servers",
+        "-p:NuGetAudit=false"
+      ],
+      "log": "/tmp/story33-builds-final-build3.log",
+      "exitCode": 1,
+      "sha256": "57cdb7a9bd105a69203bd63c83b663d1dc340c8416d5ac1f133d2598d8de0f91"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "--disable-build-servers",
+        "-p:NuGetAudit=false"
+      ],
+      "log": "/tmp/story33-builds-final-build4.log",
+      "exitCode": 1,
+      "sha256": "df9f574bd4c0d2541779e934dfd76be98314a5fb663503e6bccd6e46146bd9bd"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "--disable-build-servers",
+        "-p:NuGetAudit=false"
+      ],
+      "log": "/tmp/story33-builds-final-build5.log",
+      "exitCode": 0,
+      "sha256": "91f07f87386a3f45c72e2c0df79575984961dce7d0abed5ec68887392129badd"
+    }
+  ],
+  "run": {
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "*SelectedRoutingCatalogSnapshotTests",
+      "-class",
+      "*NativeTestExecutorTests",
+      "-class",
+      "*CiRunLifecycleTests",
+      "-xml",
+      "/tmp/story33-builds-final-focused.xml"
+    ],
+    "rawAssembly": {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "4e16901a-79f6-4cb4-a8d3-709ef938860e",
+      "name": "/tmp/hexalith-story33-release-0_wjbwkj/Hexalith.Builds-final/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "run-date": "2026-10-31",
+      "run-time": "21:07:21",
+      "start-rtf": "2026-10-31T21:07:21.5156271+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-10-31T21:07:37.2910928+00:00",
+      "not-run": "0",
+      "passed": "76",
+      "skipped": "0",
+      "time": "15.777",
+      "time-rtf": "00:00:15.7770000",
+      "total": "76"
+    },
+    "counts": {
+      "Pass": 76,
+      "Fail": 0,
+      "Skip": 0
+    },
+    "classes": {
+      "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests": 16,
+      "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests": 23,
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests": 37
+    },
+    "xml": "/tmp/story33-builds-final-focused.xml",
+    "log": "/tmp/story33-builds-final-focused.log",
+    "xmlSha256": "dcf6fb42c98658765bb763b998bd5c0684d578a7ba61582a1820aace851f286a",
+    "logSha256": "db4e6f993d482cb00685f5618eb51375b2660f01a3a1303da6da2a6002cee745"
+  },
+  "limit": "Local bounded file/executor and owned process/CI cleanup regressions only; no native Dapr/owner/package acceptance. Released owner pins still pending."
+}

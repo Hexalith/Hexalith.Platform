@@ -1,0 +1,9 @@
+fix(module): clean CI runs and secure packaged hosts
+
+Persist exact CI ownership before allocation and withdraw attachments before
+stopping owned resources on completion, cancellation or partial startup.
+
+Enroll the packaged EventStore host in the published security and route-catalog
+boundaries. Probe its owned app channel and require negative credential checks.
+
+Keep shared workflow activation and consumer version pins for later enrollment.
