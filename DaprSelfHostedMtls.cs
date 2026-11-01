@@ -31,8 +31,22 @@ public static class DaprSelfHostedMtls
         IDistributedApplicationBuilder builder,
         string repositoryRoot,
         string sentryConfigurationPath)
+        => AddLocalApplicationInfrastructure(builder, repositoryRoot, sentryConfigurationPath, "default");
+
+    /// <summary>Adds shared private mTLS infrastructure for an exact selected application namespace.</summary>
+    /// <param name="builder">The complete local application model.</param>
+    /// <param name="repositoryRoot">The owning repository, where credentials must never be written.</param>
+    /// <param name="sentryConfigurationPath">The Sentry configuration selecting mTLS.</param>
+    /// <param name="applicationNamespace">The actual namespace shared by these application sidecars.</param>
+    /// <returns>The exact private directories owned by this call.</returns>
+    public static (string RunDirectory, string CertificateDirectory) AddLocalApplicationInfrastructure(
+        IDistributedApplicationBuilder builder,
+        string repositoryRoot,
+        string sentryConfigurationPath,
+        string applicationNamespace)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        ArgumentException.ThrowIfNullOrWhiteSpace(applicationNamespace);
         if (!builder.ExecutionContext.IsRunMode)
             throw new InvalidOperationException("Self-hosted Dapr identity infrastructure is local-run only.");
         ProjectResource[] applications = builder.Resources.OfType<ProjectResource>()
@@ -68,10 +82,10 @@ public static class DaprSelfHostedMtls
                     DaprInternalGrpcPort = annotation.Options.DaprInternalGrpcPort ?? allocated.InternalGrpc,
                     MetricsPort = annotation.Options.MetricsPort ?? allocated.Metrics,
                 });
-                ConfigureSidecar(builder.CreateResourceBuilder(application), sidecar, sentry, certificates, placement, scheduler);
+                ConfigureSidecar(builder.CreateResourceBuilder(application), sidecar, sentry, certificates, placement, scheduler, applicationNamespace);
             }
             builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(
-                new DaprSelfHostedMtlsSubscriber(applications, certificates, "localhost:" + ports.PlacementHealth));
+                new DaprSelfHostedMtlsSubscriber(applications, certificates, "localhost:" + ports.PlacementHealth, applicationNamespace));
             return (runDirectory, certificates);
         }
         catch
@@ -93,8 +107,24 @@ public static class DaprSelfHostedMtls
         IResource application,
         string? certificateDirectory = null,
         string? sentryAddress = null)
+        => BindGeneratedSidecar(model, application, certificateDirectory, sentryAddress, "default");
+
+    /// <summary>Binds the generated runtime to the exact selected application namespace, retaining the control-plane namespace.</summary>
+    /// <param name="model">The prepared model containing the generated executable.</param>
+    /// <param name="application">The sidecar's owning application.</param>
+    /// <param name="certificateDirectory">The private Sentry issuer directory.</param>
+    /// <param name="sentryAddress">The isolated Sentry endpoint.</param>
+    /// <param name="applicationNamespace">The actual application namespace.</param>
+    /// <returns>The generated sidecar executable.</returns>
+    public static ExecutableResource BindGeneratedSidecar(
+        DistributedApplicationModel model,
+        IResource application,
+        string? certificateDirectory,
+        string? sentryAddress,
+        string applicationNamespace)
     {
         ArgumentNullException.ThrowIfNull(model);
+        ArgumentException.ThrowIfNullOrWhiteSpace(applicationNamespace);
         ArgumentNullException.ThrowIfNull(application);
         ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>()
             .Single(resource => resource.Name == application.Name + "-dapr-cli");
@@ -141,7 +171,7 @@ public static class DaprSelfHostedMtls
                         context.CancellationToken).ConfigureAwait(false);
                 context.EnvironmentVariables["DAPR_CONTROLPLANE_TRUST_DOMAIN"] = "localhost";
                 context.EnvironmentVariables["DAPR_CONTROLPLANE_NAMESPACE"] = "default";
-                context.EnvironmentVariables["NAMESPACE"] = "default";
+                context.EnvironmentVariables["NAMESPACE"] = applicationNamespace;
             }));
         return sidecar;
     }
@@ -294,8 +324,29 @@ public static class DaprSelfHostedMtls
         IResourceBuilder<ContainerResource>? placement = null,
         IResourceBuilder<ContainerResource>? scheduler = null)
         where T : IResourceWithWaitSupport
+        => ConfigureSidecar(project, sidecar, sentry, certificateDirectory, placement, scheduler, "default");
+
+    /// <summary>Configures real issuer credentials for a selected application namespace without changing control-plane identity.</summary>
+    /// <typeparam name="T">The owning application resource.</typeparam>
+    /// <param name="project">The owning application.</param>
+    /// <param name="sidecar">The declared sidecar.</param>
+    /// <param name="sentry">The actual Sentry resource.</param>
+    /// <param name="certificateDirectory">The private issuer directory.</param>
+    /// <param name="placement">The selected placement resource.</param>
+    /// <param name="scheduler">The selected scheduler resource.</param>
+    /// <param name="applicationNamespace">The actual application namespace.</param>
+    public static void ConfigureSidecar<T>(
+        IResourceBuilder<T> project,
+        IDaprSidecarResource sidecar,
+        IResourceBuilder<ContainerResource> sentry,
+        string certificateDirectory,
+        IResourceBuilder<ContainerResource>? placement,
+        IResourceBuilder<ContainerResource>? scheduler,
+        string applicationNamespace)
+        where T : IResourceWithWaitSupport
     {
         ArgumentNullException.ThrowIfNull(project);
+        ArgumentException.ThrowIfNullOrWhiteSpace(applicationNamespace);
         ArgumentNullException.ThrowIfNull(sidecar);
         ArgumentNullException.ThrowIfNull(sentry);
         ArgumentException.ThrowIfNullOrWhiteSpace(certificateDirectory);
@@ -321,7 +372,7 @@ public static class DaprSelfHostedMtls
                 await ReadCredentialAsync(certificateDirectory, "issuer.key", context.CancellationToken).ConfigureAwait(false);
             context.EnvironmentVariables["DAPR_CONTROLPLANE_TRUST_DOMAIN"] = "localhost";
             context.EnvironmentVariables["DAPR_CONTROLPLANE_NAMESPACE"] = "default";
-            context.EnvironmentVariables["NAMESPACE"] = "default";
+            context.EnvironmentVariables["NAMESPACE"] = applicationNamespace;
         }));
     }
 
