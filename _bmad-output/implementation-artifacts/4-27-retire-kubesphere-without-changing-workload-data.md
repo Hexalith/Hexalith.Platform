@@ -1597,3 +1597,22 @@ recovery, later Administrator-only signatures/readbacks, non-dry validation and
 honest M1/M2 remain unfinished. **4.27 stays in-progress, 4.1 closed and Timesheets
 3.6 open/FAIL**. No retirement, upgrade, Rancher or deployment ran; frozen intent
 and original production tasks remain unchanged.
+
+
+## Publisher-owner handoff; recovery still stopped — 2026-11-01
+
+The [concrete publisher-owner handoff](../../eng/cluster-management/MEMORIES-DRAIN-OWNER-HANDOFF.md) names the exact unowned
+EventStore Job/Pod, the owner's required disposition and the separately reviewed
+conditions for a new recovery continuation. Owner release alone cannot authorize
+replaying the failed drain. The unchanged global predicate counts every matching
+Pod object; no exclusion, acceptance relaxation or unrelated mutation is proposed.
+
+The [local-only reconciliation](evidence/epic-4/4-27/20261101t180645z-s427-drain-owner-handoff/verification.json) passed all 23 accepted input hashes,
+the five pre-append tracking hashes, the single intake restoration intent/result/
+decision, unchanged failed quiescence and exact three-stage stopped journal.
+These are retained-byte checks. Source/publisher readiness remains the historical
+**2026-11-01T17:21:29Z** observation; this continuation made no live reads or
+operational requests. Original records and clocks remain fixed, with the exclusive
+attempt end **2026-11-01T23:00:00Z**. No new owner/incident approval or recovery
+continuation is supplied. **4.27 stays in-progress, 4.1 closed and Timesheets
+3.6 open/FAIL**; original production tasks and frozen intent remain unchanged.
