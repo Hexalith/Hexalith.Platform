@@ -5,6 +5,16 @@ using System.Reflection;
 /// <summary>Resolves the effective repository root recorded in the collecting binary.</summary>
 internal static class PlatformTestRepository
 {
+    /// <summary>Resolves a source owner from the collecting binary's selected roots without initializing dependencies.</summary>
+    internal static string ReferenceRoot(string platformRoot, string repository)
+    {
+        string? declared = platformRoot == Root
+            ? typeof(PlatformTestRepository).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+                .SingleOrDefault(metadata => metadata.Key == "PlatformTestRoot:" + repository)?.Value
+            : null;
+        return string.IsNullOrEmpty(declared) ? Path.Combine(platformRoot, "references", repository) : Path.GetFullPath(declared);
+    }
+
     /// <summary>Gets the build-declared root, then the requested override, then the nearest repository ancestor.</summary>
     internal static string Root
     {

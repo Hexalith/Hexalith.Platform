@@ -12,7 +12,7 @@ internal sealed class PlatformPackageFixture : IDisposable
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-synthetic-package-" + Guid.NewGuid().ToString("N"));
         string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
-        string catalog = Path.Combine(Root, "references", "Hexalith.Builds", "Props");
+        string catalog = Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "Props");
         Directory.CreateDirectory(declarations);
         Directory.CreateDirectory(catalog);
         File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
@@ -30,7 +30,7 @@ internal sealed class PlatformPackageFixture : IDisposable
         foreach (string owner in Versions.Keys)
         {
             string snapshot = Path.Combine(declarations, owner + ".json");
-            File.Copy(Path.Combine(platformRoot, "references", PlatformServerBindings.Repository(owner), "module", "hexalith.module-manifest.v2.json"), snapshot);
+            File.Copy(Path.Combine(PlatformTestRepository.ReferenceRoot(platformRoot, PlatformServerBindings.Repository(owner)), "module", "hexalith.module-manifest.v2.json"), snapshot);
             PlatformOwnerFixture.MaterializeDeclaredFiles(Root, JsonNode.Parse(File.ReadAllText(snapshot))!);
             string hash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(snapshot)));
             string commit = new(owner[0] == 'e' ? 'a' : owner[0] == 't' ? 'b' : 'c', 40);
@@ -48,14 +48,14 @@ internal sealed class PlatformPackageFixture : IDisposable
         // explicitly mapped actual owner source. This fixture confers no package acceptance.
         SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(platformRoot, "references"), "Hexalith.*")
             .Select(path => Path.GetFileName(path) is "Hexalith.EventStore" or "Hexalith.Tenants" or "Hexalith.Memories" or "Hexalith.Builds"
-                ? new SourceMappingEntry(Path.GetFileName(path), "source", path)
+                ? new SourceMappingEntry(Path.GetFileName(path), "source", PlatformTestRepository.ReferenceRoot(platformRoot, Path.GetFileName(path)))
                 : new SourceMappingEntry(Path.GetFileName(path), "package", null)).ToArray();
         Options = new PlatformCompositionOptions
         {
             PlatformRoot = Root,
             Mapping = new SourceMapping(WorkspaceMode.Package, Root, "Hexalith.Platform", Versions.Keys.Select(owner => new SourceMappingEntry(PlatformServerBindings.Repository(owner), "package", null)).ToArray(), false),
             ComponentsDirectory = Path.Combine(platformRoot, "DaprComponents", "reference"),
-            EventStoreSeedProject = Path.Combine(platformRoot, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
+            EventStoreSeedProject = Path.Combine(PlatformTestRepository.ReferenceRoot(platformRoot, "Hexalith.Builds"), "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
             ReleaseCommits = commits, ReleaseSnapshotHashes = hashes,
         };
         SourceCatalogOptions = Options with { Mapping = new SourceMapping(WorkspaceMode.Package, Root, "Hexalith.Platform", entries, true) };

@@ -28,7 +28,7 @@ builder.Services.AddEventStoreSignalR(builder.Configuration);
 builder.Services.AddPlatformIdentity(builder.Configuration);
 builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
 
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+#if HEXALITH_PLATFORM_CATALOG_SDK
 if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
     Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.AddEventStoreRunScopedCatalogGateway(builder.Services, builder.Configuration);
 #else
@@ -47,7 +47,7 @@ app.UseAuthentication();
 app.UseRateLimiter();
 // OpenAPI/Swagger UI (gated by configuration, H13)
 if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+#if HEXALITH_PLATFORM_CATALOG_SDK
     _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
     _ = app.UseEventStoreHumanSurface("/swagger");
 #else
@@ -64,14 +64,22 @@ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
     });
 }
 
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+#if HEXALITH_PLATFORM_CATALOG_SDK
 app.UseEventStoreHttpHostSecurity();
 #endif
 app.UseAuthorization();
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+#if HEXALITH_PLATFORM_CATALOG_SDK
 if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
-    Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
-        Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+{
+#if HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK
+    if (Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.IsEnabled(app.Configuration))
+        Hexalith.EventStore.ServiceDefaults.Routing.TechnicalHttpRouteCatalogReceiver.UseDevelopmentTechnicalHttpCatalogReceiver(app,
+            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+    else
+#endif
+        Hexalith.EventStore.ServiceDefaults.Routing.FiniteRouteCatalogReceiver.UseFiniteDevelopmentRouteCatalogReceiver(app,
+            Hexalith.EventStore.Server.Routing.RunScopedRouteCatalogGateway.Operation);
+}
 #endif
 app.UseCloudEvents();
 
@@ -88,7 +96,7 @@ app.MapControllers().Add(endpoint =>
 });
 app.MapErrorReferences();
 app.MapApiVersionFallback();
-#if HEXALITH_PLATFORM_SOURCE_CATALOG
+#if HEXALITH_PLATFORM_CATALOG_SDK
 if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
 app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
 #else

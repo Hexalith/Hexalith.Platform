@@ -23,7 +23,7 @@ internal sealed class PlatformOwnerFixture : IDisposable
     public static PlatformOwnerFixture Copy(string platformRoot, string module, string? rootDirectory = null)
     {
         string repository = PlatformServerBindings.Repository(module);
-        string original = Path.Combine(platformRoot, "references", repository);
+        string original = PlatformTestRepository.ReferenceRoot(platformRoot, repository);
         string root = rootDirectory ?? Path.Combine(Path.GetTempPath(), "platform-synthetic-owner-" + Guid.NewGuid().ToString("N"));
         string manifest = Path.Combine(root, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
@@ -45,7 +45,7 @@ internal sealed class PlatformOwnerFixture : IDisposable
     {
         string root = Path.Combine(Path.GetTempPath(), "platform-synthetic-enrollment-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
-        string sample = File.ReadAllText(Path.Combine(platformRoot, "references", "Hexalith.Builds", "test", "fixtures", "module", "platform", "valid.json"));
+        string sample = File.ReadAllText(Path.Combine(PlatformTestRepository.ReferenceRoot(platformRoot, "Hexalith.Builds"), "test", "fixtures", "module", "platform", "valid.json"));
         JsonNode document = JsonNode.Parse(sample.Replace("sample", module, StringComparison.Ordinal))!;
         document["modules"]![0]!["lifecycle"]!["tasks"] = new JsonArray();
         document["modules"]![0]!["lifecycle"]!["recoveryHooks"] = new JsonArray();

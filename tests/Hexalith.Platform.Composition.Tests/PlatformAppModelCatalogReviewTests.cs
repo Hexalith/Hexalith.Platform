@@ -26,6 +26,19 @@ public sealed partial class PlatformAppModelTests
         owners.Select(owner => owner.AdapterReference).ShouldContain("Hexalith.Tenants.Server");
     }
 
+
+    [Fact]
+    public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
+    {
+        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
+        var builder = Builder();
+        builder.Environment.EnvironmentName = Environments.Development;
+        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+        failure.Message.ShouldContain("owner SDK");
+        failure.Message.ShouldContain("Builds catalog pins");
+        builder.Resources.ShouldBeEmpty();
+    }
+
     [Fact]
     public void SelectedTimesheetsCallerRefusesBeforeCatalogGeneration()
     {
@@ -44,8 +57,13 @@ public sealed partial class PlatformAppModelTests
         string workspace = Path.Combine(Path.GetTempPath(), "catalog-bootstrap-contract-" + Guid.NewGuid().ToString("N"));
         try
         {
-            var options = await PlatformRoutingCatalogTests.OptionsAsync(includeParties: true);
-            var mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
+            string partiesRoot = PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Parties");
+            var options = Options(active: "parties") with
+            {
+                DeclarationPaths = [Path.Combine(partiesRoot, "module", "hexalith.module-manifest.v2.json")],
+            };
+            var mapping = options.Mapping with { Entries = [.. options.Mapping.Entries,
+                new SourceMappingEntry("Hexalith.Parties", "source", partiesRoot), new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [], mapping,
                 options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location) with
@@ -54,7 +72,7 @@ public sealed partial class PlatformAppModelTests
             };
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             var builder = Builder();
-            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), Path.Combine(Root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"));
+            PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"));
             var resources = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
             var environments = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
             foreach (var resource in resources)
@@ -76,12 +94,18 @@ public sealed partial class PlatformAppModelTests
                 environment.Where(pair => pair.Key.StartsWith(prefix + "RequiredHostIds__", StringComparison.Ordinal)).Select(pair => (string)pair.Value).Order().ShouldBe(participants);
                 environment[prefix + "InstanceId"].ShouldBe(plan.EnvironmentId + "-catalog");
                 environment[prefix + "RootDigest"].ShouldBe(gateway[prefix + "RootDigest"]);
+#if HEXALITH_PLATFORM_V2_CATALOG
+                environment[prefix + "BindingVersion"].ShouldBe("2");
+#endif
                 foreach (var wait in resource.Annotations.OfType<WaitAnnotation>().Where(wait => resources.Contains(wait.Resource)))
                 {
                     participants.ShouldContain(wait.Resource.Name, resource.Name);
                     wait.WaitType.ShouldBe(WaitType.WaitUntilStarted, resource.Name + " -> " + wait.Resource.Name);
                 }
             }
+#if HEXALITH_PLATFORM_V2_CATALOG
+            gateway[prefix + "ReceiverProfile"].ShouldBe(RouteCatalogTechnicalHttpPolicy.FenceVersion);
+#endif
             resources.Single(resource => resource.Name == "tenants").Annotations.OfType<WaitAnnotation>()
                 .ShouldContain(wait => wait.Resource.Name == "eventstore" && wait.WaitType == WaitType.WaitUntilStarted);
             string authority = PlatformRoutingCatalogBootstrap.AuthorityName(plan.EnvironmentId + "-catalog");
@@ -132,9 +156,9 @@ public sealed partial class PlatformAppModelTests
             closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()).Order().ShouldBe(participants);
             closure.RootElement.GetProperty("callerClosure").EnumerateArray().Select(value => value.GetString()).ShouldBe(plan.Modules.Select(module => module.ModuleId));
 #if HEXALITH_PLATFORM_SOURCE_CATALOG
-            string firstHost = closure.RootElement.GetProperty("hosts")[0].GetProperty("ResourceId").GetString()!;
-            File.WriteAllBytes(Path.Combine(catalogDirectory, firstHost + ".committed.json"), JsonSerializer.SerializeToUtf8Bytes(new
-            { Serving = true, RootDigest = new string('0', 64), Generation = envelope.Generation, Epoch = 1 }));
+            foreach (string host in participants)
+                File.WriteAllBytes(Path.Combine(catalogDirectory, host + ".committed.json"), JsonSerializer.SerializeToUtf8Bytes(new
+                { Serving = true, RootDigest = new string('0', 64), Generation = envelope.Generation, Epoch = 1 }));
             using var provider = builder.Services.BuildServiceProvider();
             var preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().Single();
             var refusal = await Should.ThrowAsync<InvalidOperationException>(() => preparation.PrepareAsync(provider, TestContext.Current.CancellationToken));
@@ -142,6 +166,16 @@ public sealed partial class PlatformAppModelTests
             preparation.NativeTestScope.ShouldBeNull();
             File.Exists(Path.Combine(workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
 #endif
+        }
+        catch
+        {
+            string reader = Path.Combine(workspace, "platform-components", "catalog-reader");
+            foreach (string name in new[] { "build.log", "generation.log" })
+            {
+                string log = Path.Combine(reader, name);
+                if (File.Exists(log)) Console.WriteLine(File.ReadAllText(log));
+            }
+            throw;
         }
         finally { if (Directory.Exists(workspace)) Directory.Delete(workspace, true); }
     }

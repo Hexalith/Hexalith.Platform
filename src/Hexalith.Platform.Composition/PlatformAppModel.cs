@@ -121,7 +121,9 @@ public static class PlatformAppModel
         var declarations = PlatformDeclarationSet.Load(options);
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
-        _ = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+        IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+        if (catalogParticipants.Count > 0 && options.Mapping.Mode != WorkspaceMode.Source)
+            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
             IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
@@ -166,7 +168,7 @@ public static class PlatformAppModel
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
-                    servers.Single(server => server.ResourceId == "memories")));
+                    servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts));
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");

@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition;
 
+using System.Collections.Frozen;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -29,9 +30,14 @@ using Microsoft.Extensions.Options;
 
 /// <summary>Prepares synthetic owner state through the real native APIs before the runner publishes readiness.</summary>
 internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, string catalogDirectory, string signingKey,
-    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding) : ICompositionRunPreparation
+    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding, IReadOnlyDictionary<string, string> expectedCatalogHosts) : ICompositionRunPreparation
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
+
+    private readonly FrozenDictionary<string, string> _expectedCatalogHosts = expectedCatalogHosts.ToFrozenDictionary(StringComparer.Ordinal);
+
+    /// <inheritdoc />
+    public bool RoutingCatalogObservationsRequired => true;
 
     /// <inheritdoc />
     public CompositionNativeTestScope? NativeTestScope { get; private set; }
@@ -67,7 +73,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             || scope.Domains.Contains(TenantIdentity.GlobalAdministratorsDomain, StringComparer.Ordinal)
             || !scope.Tenants.Contains(plan.TenantNamespace, StringComparer.Ordinal))
             throw new InvalidOperationException("The native consumer scope differs from this owning run.");
-        var catalog = RouteCatalogCodec.Decode(await ReadRequiredAsync(Path.Combine(catalogDirectory, "catalog.json"), cancellationToken).ConfigureAwait(false), scope.RoutingCatalogRoot);
+        byte[] canonical = await ReadRequiredAsync(Path.Combine(catalogDirectory, "catalog.json"), cancellationToken).ConfigureAwait(false);
+        var catalog = RouteCatalogCodec.Decode(canonical, scope.RoutingCatalogRoot);
         var tenantQuery = TenantCatalogDeclarations.Queries.Single(declaration => declaration.Execution!.HandlerType == typeof(Hexalith.Tenants.Contracts.Queries.GetTenantQuery).FullName);
         if (!catalog.Declarations.Any(declaration => declaration.RouteId == tenantQuery.RouteId
                 && RouteCatalogCodec.ComputeDeclarationDigest(declaration) == RouteCatalogCodec.ComputeDeclarationDigest(tenantQuery))
@@ -80,12 +87,28 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             Tenants = scope.Tenants.Append(TenantIdentity.DefaultTenantId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
         };
         using var closure = JsonDocument.Parse(await ReadRequiredAsync(Path.Combine(catalogDirectory, "selected-closure.json"), cancellationToken).ConfigureAwait(false));
-        foreach (string host in closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()!))
+        JsonElement[] selectedHosts = closure.RootElement.GetProperty("hosts").EnumerateArray().ToArray();
+        if (_expectedCatalogHosts.Count == 0 || selectedHosts.Length != _expectedCatalogHosts.Count
+            || selectedHosts.Select(host => host.GetProperty("ResourceId").GetString()).Distinct(StringComparer.Ordinal).Count() != selectedHosts.Length
+            || selectedHosts.Any(host => !_expectedCatalogHosts.TryGetValue(host.GetProperty("ResourceId").GetString()!, out string? appId)
+                || host.GetProperty("AppId").GetString() != appId))
+            throw new InvalidOperationException("The retained catalog closure differs from the owning composition.");
+        Dictionary<string, RouteCatalogGenerationReadback> readbacks = new(StringComparer.Ordinal);
+        foreach (string host in _expectedCatalogHosts.Keys)
         {
-            var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(await ReadRequiredAsync(Path.Combine(catalogDirectory, host + ".committed.json"), cancellationToken).ConfigureAwait(false));
-            if (readback is not { Serving: true } || readback.RootDigest != scope.RoutingCatalogRoot)
+            var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(await ReadRequiredAsync(Path.Combine(catalogDirectory, host + ".committed.json"), cancellationToken).ConfigureAwait(false))
+                ?? throw new InvalidOperationException("A real catalog participant readback is absent.");
+            if (!readback.Serving || readback.RootDigest != scope.RoutingCatalogRoot
+                || readback.Generation != catalog.Generation || readback.Profile != catalog.Profile
+                || readback.RouteFacetDigest != catalog.RouteFacetDigest || readback.IdempotencyFacetDigest != catalog.IdempotencyFacetDigest)
                 throw new InvalidOperationException("A real catalog participant did not commit the selected native scope.");
+            readbacks.Add(host, readback);
         }
+#if HEXALITH_PLATFORM_V2_CATALOG
+        var activation = JsonSerializer.Deserialize<RouteCatalogActivation>(await ReadRequiredAsync(Path.Combine(catalogDirectory, "activation.json"), cancellationToken).ConfigureAwait(false))
+            ?? throw new InvalidOperationException("The complete committed catalog activation is absent.");
+        PlatformCommittedCatalogProof.Validate(activation, canonical, scope.RoutingCatalogRoot, plan.AttemptId, _expectedCatalogHosts, readbacks);
+#endif
         await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
         DateTimeOffset now = DateTimeOffset.UtcNow;
         TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, now);
@@ -99,6 +122,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             ["command:submit", "query:read"], true, remaining) { Surface = "ui" }, now);
         string nativeProbe = CompositionTokenFactory.Create(signingKey, new("g4-native-tests", scope.Tenants, scope.Domains,
             ["command:submit", "query:read"], false, remaining) { Surface = "agent" }, now);
+        using var catalogHttp = Client(Endpoint(services, "eventstore"), nativeProbe);
+        await PlatformRoutingCatalogMetadata.ObserveAsync(catalogHttp, catalog, scope.RoutingCatalogRoot, catalogDirectory, cancellationToken).ConfigureAwait(false);
         using var gatewayHttp = Client(Endpoint(services, "eventstore"), operatorToken);
         var gateway = new EventStoreGatewayClient(gatewayHttp, Options.Create(new EventStoreGatewayClientOptions { BaseAddress = gatewayHttp.BaseAddress! }));
         var receipts = new List<CommandStatusQueryResponse>();
@@ -144,6 +169,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             nativeGlobalAdministrator = false, nativeRole = nameof(TenantRole.TenantReader),
             nativeSurface = "agent", consumedTenantsQuery = tenantQuery.RouteId, nativeDomains = scope.Domains,
             commands = receipts.Select(receipt => new { receipt.MessageId, receipt.Domain, receipt.AggregateId, receipt.Status, receipt.CommittedEventSequence, receipt.EventCount }).ToArray(),
+            routingCatalogMetadataObserved = true,
             tenantsNativeQueryObserved = true, memoriesRegistryObserved = nameof(Hexalith.Memories.Contracts.V1.TenantStatus.Active), observedAtUtc = DateTimeOffset.UtcNow,
         }), cancellationToken).ConfigureAwait(false);
         await WriteEndpointCredentialsAsync(credentialPath, plan, memoriesEndpoint, daprToken, cancellationToken).ConfigureAwait(false);
@@ -335,10 +361,49 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         }
     }
 
-    private static async Task<byte[]> ReadRequiredAsync(string path, CancellationToken token)
+    private async Task<byte[]> ReadRequiredAsync(string path, CancellationToken token)
     {
-        while (!File.Exists(path)) await Task.Delay(50, token).ConfigureAwait(false);
-        return await File.ReadAllBytesAsync(path, token).ConfigureAwait(false);
+        path = Path.GetFullPath(path);
+        RequireOwnedInput(path);
+        while (!File.Exists(path))
+        {
+            await Task.Delay(50, token).ConfigureAwait(false);
+            RequireOwnedInput(path);
+        }
+        var file = new FileInfo(path);
+        if (file.LinkTarget is not null || (file.Attributes & (FileAttributes.Directory | FileAttributes.Device | FileAttributes.ReparsePoint)) != 0
+            || file.Length is <= 0 or > 8388608)
+            throw new InvalidOperationException("A native catalog input is linked, empty or exceeds its bounded contract.");
+        var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.Asynchronous);
+        await using (stream.ConfigureAwait(false))
+        {
+            RequireOwnedInput(path);
+            byte[] bytes = new byte[checked((int)file.Length)];
+            await stream.ReadExactlyAsync(bytes, token).ConfigureAwait(false);
+            if (await stream.ReadAsync(new byte[1], token).ConfigureAwait(false) != 0)
+                throw new InvalidOperationException("A native catalog input changed while it was read.");
+            RequireOwnedInput(path);
+            return bytes;
+        }
+    }
+
+    private void RequireOwnedInput(string path)
+    {
+        string root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(plan.Workspace));
+        string relative = Path.GetRelativePath(root, path);
+        if (Path.IsPathRooted(relative) || relative == ".." || relative.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+            throw new InvalidOperationException("A native catalog input is outside the owned workspace.");
+        if (new FileInfo(path).LinkTarget is not null)
+            throw new InvalidOperationException("A native catalog input is linked inside the owned workspace.");
+        DirectoryInfo? parent = new(Path.GetDirectoryName(path)!);
+        while (parent is not null)
+        {
+            if (parent.LinkTarget is not null || File.Exists(parent.FullName) || (parent.Exists && (parent.Attributes & (FileAttributes.ReparsePoint | FileAttributes.Device)) != 0))
+                throw new InvalidOperationException("A native catalog input has a linked parent inside the owned workspace.");
+            if (string.Equals(parent.FullName, root, OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) return;
+            parent = parent.Parent;
+        }
+        throw new InvalidOperationException("A native catalog input is outside the owned workspace.");
     }
 
     private static HttpClient Client(Uri endpoint, string token)

@@ -64,6 +64,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         {
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
+            sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
             committedPredecessor = options.CommittedRoutingCatalogPath is { } predecessor ? Path.GetFullPath(predecessor) : null,
             committedPredecessorRootDigest = options.CommittedRoutingCatalogRootDigest,
             owners = owners.Select(owner => new { assembly = owner.Assembly, adapterAssembly = owner.AdapterAssembly, appId = owner.AppId }).ToArray(),

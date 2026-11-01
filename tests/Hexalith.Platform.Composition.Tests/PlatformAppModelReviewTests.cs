@@ -153,7 +153,7 @@ public sealed partial class PlatformAppModelTests
             Directory.CreateDirectory(Path.GetDirectoryName(project)!);
             string targetServer = targetOwner == "tenants" ? "domain" : "gateway";
             File.Delete(project);
-            File.CreateSymbolicLink(project, Path.Combine(Root, "references", PlatformServerBindings.Repository(targetOwner), PlatformServerBindings.ReferenceProjects[targetOwner + "/" + targetServer]));
+            File.CreateSymbolicLink(project, Path.Combine(PlatformTestRepository.ReferenceRoot(Root, PlatformServerBindings.Repository(targetOwner)), PlatformServerBindings.ReferenceProjects[targetOwner + "/" + targetServer]));
             options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == repository ? entry with { Path = owner } : entry).ToArray() } };
             options.Mapping.ContainsProject(project).ShouldBeTrue("the complete mapping admits the other owner's physical project");
             IDistributedApplicationBuilder builder = Builder();
@@ -418,7 +418,7 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public async Task SignedPackageCatalogRequiresReaderAndStillChecksMappingDriftAsync()
+    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
@@ -455,7 +455,7 @@ public sealed partial class PlatformAppModelTests
             File.Delete(readerProject);
             IDistributedApplicationBuilder builder = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
-                .Message.ShouldContain("Hexalith.Platform.CatalogBuilder.csproj");
+                .Message.ShouldContain("owner SDK");
             builder.Resources.ShouldBeEmpty();
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
             IDistributedApplicationBuilder refused = Builder();
@@ -469,14 +469,14 @@ public sealed partial class PlatformAppModelTests
     [Theory]
     [InlineData(1, false)]
     [InlineData(0, true)]
-    public void UnavailableReleasedImageRefusesBeforePreparingCatalog(int exit, bool timedOut)
+    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
     {
         bool inspected = false;
         var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
         { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
         var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("unavailable from its released registry");
-        inspected.ShouldBeTrue();
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        inspected.ShouldBeFalse();
         builder.Resources.ShouldBeEmpty();
     }
 
@@ -488,7 +488,7 @@ public sealed partial class PlatformAppModelTests
         {
             PlatformCompositionOptions options = Options();
             SourceMapping mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
-            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [], mapping, [Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json")], null, typeof(PlatformAppModel).Assembly.Location);
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [], mapping, [Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.EventStore"), "module", "hexalith.module-manifest.v2.json")], null, typeof(PlatformAppModel).Assembly.Location);
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = Builder();
             int hostedServicesBeforeCompose = builder.Services.Count(service => service.ServiceType == typeof(IHostedService));

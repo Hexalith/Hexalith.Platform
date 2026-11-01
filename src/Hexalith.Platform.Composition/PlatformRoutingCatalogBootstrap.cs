@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition;
 
+using System.Collections.Frozen;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Aspire.Hosting;
@@ -17,10 +18,14 @@ internal sealed class PlatformRoutingCatalogBootstrap
         ?? throw new InvalidOperationException("The actual Tenants bootstrap delegation is unavailable.");
     internal string Directory { get; }
 
+    /// <summary>Gets the immutable receiver cohort resolved by the owning composition.</summary>
+    internal IReadOnlyDictionary<string, string> ExpectedHosts { get; }
+
     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
         PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
     {
         Directory = catalog.Directory;
+        ExpectedHosts = participants.ToFrozenDictionary(server => server.ResourceId, server => server.AppId, StringComparer.Ordinal);
         string[] hosts = participants.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ToArray();
         foreach (var server in participants)
         {
@@ -41,6 +46,11 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 ["EventStore__DomainService__ServiceVersion"] = "v1",
                 ["Authentication__Workload__Audience"] = server.AppId,
             };
+#if HEXALITH_PLATFORM_V2_CATALOG
+            environment["EventStore__RouteCatalog__DevelopmentBootstrap__BindingVersion"] = "2";
+            if (server.ResourceId == "eventstore")
+                environment["EventStore__RouteCatalog__DevelopmentBootstrap__ReceiverProfile"] = Hexalith.EventStore.Contracts.Routing.RouteCatalogTechnicalHttpPolicy.FenceVersion;
+#endif
             for (int index = 0; index < hosts.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__RequiredHostIds__" + index] = hosts[index];
             string[] selected = servers.Select(item => item.AppId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
             for (int index = 0; index < selected.Length; index++) environment["EventStore__RouteCatalog__DevelopmentBootstrap__SelectedAppIds__" + index] = selected[index];
@@ -103,7 +113,14 @@ internal sealed class PlatformRoutingCatalogBootstrap
             }
             File.WriteAllBytes(Path.Combine(catalog.Directory, "selected-closure.json"), JsonSerializer.SerializeToUtf8Bytes(new
             {
-                plan.RunId, hosts = participants.Select(server => new { server.ResourceId, server.AppId }).ToArray(),
+                plan.RunId, hosts = participants.Select(server => new
+                {
+                    server.ResourceId, server.AppId, artifact = server.Image ?? server.ProjectPath,
+                    artifactKind = server.Image is not null ? "released-image"
+                        : options.Mapping.Mode == WorkspaceMode.Package ? "published-seed" : "mapped-project",
+                    artifactSha256 = server.ProjectPath is null ? null
+                        : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(server.ProjectPath))),
+                }).ToArray(),
                 callerClosure = plan.Modules.Select(module => module.ModuleId).ToArray(),
             }));
         }
@@ -111,7 +128,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
 
     internal static string AuthorityName(string instance) => "routing-" + instance.ToLowerInvariant();
 
-    /// <summary>Refuses unavailable package runtimes and selected callers without catalog enrollment before any composition effects.</summary>
+    /// <summary>Resolves the declared receiver cohort and refuses selected callers without catalog enrollment before composition effects.</summary>
     internal static IReadOnlyList<PlatformServerBinding> ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
         PlatformDaprBindings dapr)
     {

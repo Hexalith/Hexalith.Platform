@@ -109,6 +109,80 @@ public sealed class PlatformNativeTestPreparationTests
         workspace.ShouldBeUnprepared(preparation);
     }
 
+#if HEXALITH_PLATFORM_V2_CATALOG
+    /// <summary>The preparation entry point must reject complete activation/readback drift before credentials or source-validated progress.</summary>
+    [Theory]
+    [InlineData("activation-attempt")]
+    [InlineData("activation-binding")]
+    [InlineData("readback-attempt")]
+    [InlineData("readback-binding")]
+    public async Task CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(string mutation)
+    {
+        using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
+        workspace.WriteSource(workspace.Scope);
+        string activationPath = Path.Combine(workspace.Catalog, "activation.json");
+        if (mutation.StartsWith("activation-", StringComparison.Ordinal))
+        {
+            var activation = JsonSerializer.Deserialize<RouteCatalogActivation>(File.ReadAllBytes(activationPath))!;
+            activation = mutation == "activation-attempt" ? activation with { AttemptId = "foreign-attempt" }
+                : activation with { TrustProof = new string('f', 64) };
+            File.WriteAllBytes(activationPath, JsonSerializer.SerializeToUtf8Bytes(activation));
+        }
+        else
+        {
+            string readbackPath = Path.Combine(workspace.Catalog, "eventstore.committed.json");
+            var readback = JsonSerializer.Deserialize<RouteCatalogGenerationReadback>(File.ReadAllBytes(readbackPath))!;
+            readback = mutation == "readback-attempt" ? readback with { AttemptId = "foreign-attempt" }
+                : readback with { ActivationBindingDigest = new string('f', 64) };
+            File.WriteAllBytes(readbackPath, JsonSerializer.SerializeToUtf8Bytes(readback));
+        }
+        workspace.WriteStaleCredentials();
+        PlatformNativeTestPreparation preparation = workspace.Preparation();
+        using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
+        using CancellationTokenSource bound = Bound();
+
+        Exception failure = await CaptureAsync(preparation.PrepareAsync(services, bound.Token));
+
+        failure.ShouldBeOfType<InvalidOperationException>();
+        File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+        workspace.ShouldBeUnprepared(preparation);
+    }
+#endif
+
+    /// <summary>Required owner inputs stay inside the real owned workspace even when their containing directory is linked.</summary>
+    [Theory]
+    [InlineData("parent-link")]
+    [InlineData("outside-root")]
+    public async Task RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(string mutation)
+    {
+        if (OperatingSystem.IsWindows() && mutation == "parent-link") return;
+        using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
+        workspace.WriteSource(workspace.Scope);
+        workspace.WriteStaleCredentials();
+        string outside = Path.Combine(Path.GetTempPath(), "native-proof-outside-" + Guid.NewGuid().ToString("N"));
+        Directory.Move(workspace.Catalog, outside);
+        if (mutation == "parent-link") Directory.CreateSymbolicLink(workspace.Catalog, outside);
+        byte[] originalScope = File.ReadAllBytes(Path.Combine(outside, "native-scope.json"));
+        try
+        {
+            PlatformNativeTestPreparation preparation = workspace.Preparation(mutation == "parent-link" ? workspace.Catalog : outside);
+            using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
+            using CancellationTokenSource bound = Bound();
+
+            Exception failure = await CaptureAsync(preparation.PrepareAsync(services, bound.Token));
+
+            failure.ShouldBeOfType<InvalidOperationException>().Message.ShouldContain("owned workspace");
+            File.Exists(Path.Combine(outside, "preparation-progress.json")).ShouldBeFalse();
+            File.ReadAllBytes(Path.Combine(outside, "native-scope.json")).ShouldBe(originalScope);
+            workspace.ShouldBeUnprepared(preparation);
+        }
+        finally
+        {
+            if (new DirectoryInfo(workspace.Catalog).LinkTarget is not null) Directory.Delete(workspace.Catalog);
+            Directory.Delete(outside, recursive: true);
+        }
+    }
+
     /// <summary>Writes the private endpoint channel exactly as the independent Builds consumer reads it.</summary>
     [Fact]
     public async Task EndpointCredentialWriterProducesTheChannelTheBuildsReaderAcceptsAsync()
@@ -213,13 +287,34 @@ public sealed class PlatformNativeTestPreparationTests
         public CompositionNativeTestScope Scope { get; }
 
         // Neither delegated Tenants transport nor the Memories binding is reached before the network boundary.
-        public PlatformNativeTestPreparation Preparation() => new(Plan, Catalog, CompositionSigningKey.Create(),
-            new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-bootstrap-key", null, "unused-issuer"), null!);
+        public PlatformNativeTestPreparation Preparation(string? catalogDirectory = null) => new(Plan, catalogDirectory ?? Catalog, CompositionSigningKey.Create(),
+            new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-bootstrap-key", null, "unused-issuer"), null!, new Dictionary<string, string> { ["fixture-tenants"] = "tenants", ["eventstore"] = "eventstore" });
 
         public void WriteSource(CompositionNativeTestScope scope)
         {
             File.WriteAllBytes(Path.Combine(Catalog, "catalog.json"), TenantsCatalog.Value.Bytes);
-            File.WriteAllText(Path.Combine(Catalog, "selected-closure.json"), """{"hosts":[]}""");
+            var envelope = RouteCatalogCodec.Decode(TenantsCatalog.Value.Bytes, TenantsCatalog.Value.Root);
+            var identity = new RouteCatalogHostIdentity("fixture-tenants", "tenants", new string('a', 64), new string('b', 64), new string('c', 64));
+            var gateway = identity with { HostId = "eventstore", AppId = "eventstore" };
+            var readback = new RouteCatalogGenerationReadback(1, envelope.Generation, TenantsCatalog.Value.Root,
+                envelope.RouteFacetDigest, envelope.IdempotencyFacetDigest, "Development", [gateway, identity], true);
+#if HEXALITH_PLATFORM_V2_CATALOG
+            // This is structural unit evidence only; it never establishes an actual observed receiver or active runtime.
+            var activation = new RouteCatalogActivation(Plan.AttemptId, TenantsCatalog.Value.Bytes, TenantsCatalog.Value.Root, null,
+                [gateway, identity], "Development-fixture", "")
+            {
+                TechnicalHttpReceivers = [new("eventstore", RouteCatalogTechnicalHttpPolicy.FenceVersion,
+                    [new("/unit/structural", ["GET"], "unit-file-proof-not-runtime-acceptance", new string('a', 64), new string('a', 64),
+                        ["EventStoreHuman"], new string('a', 64), new string('a', 64))])],
+            };
+            string binding = Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogActivationBinding.ComputeDigest(activation);
+            activation = activation with { TrustProof = binding };
+            readback = readback with { AttemptId = Plan.AttemptId, ActivationBindingDigest = binding };
+            File.WriteAllBytes(Path.Combine(Catalog, "activation.json"), JsonSerializer.SerializeToUtf8Bytes(activation));
+#endif
+            File.WriteAllBytes(Path.Combine(Catalog, "fixture-tenants.committed.json"), JsonSerializer.SerializeToUtf8Bytes(readback));
+            File.WriteAllBytes(Path.Combine(Catalog, "eventstore.committed.json"), JsonSerializer.SerializeToUtf8Bytes(readback));
+            File.WriteAllText(Path.Combine(Catalog, "selected-closure.json"), """{"hosts":[{"ResourceId":"eventstore","AppId":"eventstore"},{"ResourceId":"fixture-tenants","AppId":"tenants"}]}""");
             // Publish the scope last and atomically: a waiting owner may poll for it concurrently.
             string staged = Path.Combine(Catalog, "native-scope.staged");
             File.WriteAllBytes(staged, JsonSerializer.SerializeToUtf8Bytes(scope));

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Reflection;
 using System.Text.Json;
 
@@ -75,4 +76,13 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
 {
     instanceId = input.GetProperty("instanceId").GetString(), rootDigest = RouteCatalogCodec.ComputeRootDigest(catalog),
     ownerAssemblies = owners, adapterAssemblies = adapters,
+    sourceMappingHash = input.TryGetProperty("sourceMappingHash", out var sourceMappingHash) ? sourceMappingHash.GetString() : null,
+    mode = input.TryGetProperty("mode", out var mode) ? mode.GetString() : null,
+    loadedArtifacts = owners.Concat(adapters).Append(typeof(RouteCatalogCodec).Assembly.Location).Distinct(StringComparer.Ordinal).Select(path => new
+    {
+        path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
+        assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,
+        informationalVersion = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => !assembly.IsDynamic && assembly.Location == path)
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
+    }).ToArray(),
 }));
