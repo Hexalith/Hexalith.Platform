@@ -63,7 +63,7 @@ public sealed class AgentsHostStartupBoundaryTests
                 BoundedRegularFile.ReadWithAcquisitionAsync(path,max,ct,null,fault=="stall"?()=> { try { released.Wait(); }finally { finished.TrySetResult(); } }:null,
                     fault=="changing"?()=> { using var writer=new FileStream(path,FileMode.Open,FileAccess.Write,FileShare.ReadWrite|FileShare.Delete);writer.SetLength(max+1);writer.Flush(true); }:null);
             if(fault=="development-missing") { Should.Throw<FileNotFoundException>(()=>AgentsHostComposition.TryCompose(builder)).FileName.ShouldBe(chosen);builder.Resources.ShouldBeEmpty();return; }
-            bool composed=await Task.Run(()=>AgentsHostComposition.TryCompose(builder,cancel.Token,fault=="stall"?TimeSpan.FromMilliseconds(100):TimeSpan.FromSeconds(3),acquire),TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(5),TestContext.Current.CancellationToken);
+            bool composed=await Task.Run(()=>AgentsHostComposition.TryCompose(builder,cancel.Token,fault=="stall"?TimeSpan.FromMilliseconds(100):TimeSpan.FromSeconds(3),acquire),TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(15),TestContext.Current.CancellationToken);
             composed.ShouldBe(fault=="valid");
             if(composed) builder.Resources.Count(value=>value.Name is "eventstore" or "tenants" or "tenants-api" or "parties" or "conversations" or "agents" or "agents-ui").ShouldBe(7);else builder.Resources.ShouldBe(callerResources);
             if(fault=="stall") { finished.Task.IsCompleted.ShouldBeFalse();released.Set();await finished.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken); }

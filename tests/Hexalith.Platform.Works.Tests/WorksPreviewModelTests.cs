@@ -2,6 +2,8 @@ namespace Hexalith.Platform.Works.Tests;
 
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using System.Security.Cryptography;
+using System.Text.Json;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.EventStore.Aspire;
 using Hexalith.Platform.Composition;
@@ -12,8 +14,10 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 
 /// <summary>Checks the Platform-owned target composition and its admission refusals.</summary>
-public sealed class WorksPreviewModelTests
+public sealed class WorksPreviewModelTests : IDisposable
 {
+    private string? _profileRoot;
+
     /// <summary>A manifest cannot grant a production preview exception or fabricate qualified providers.</summary>
     [Fact]
     public void ProductionIsRefusedBeforeComposingAnyResource()
@@ -239,10 +243,44 @@ public sealed class WorksPreviewModelTests
         builder.Resources.ShouldBeEmpty();
     }
 
-    private static IDistributedApplicationBuilder Builder(string environment)
-        => DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+    private IDistributedApplicationBuilder Builder(string environment)
+    {
+        IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
             Args = ["--environment=" + environment], ProjectDirectory = WorksProductionProfileTests.Root,
             AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
         });
+        if (environment == "Development") builder.Configuration["Platform:Works:DevelopmentCatalogProfile"] = CreateTestProfile();
+        return builder;
+    }
+
+    private string CreateTestProfile()
+    {
+        _profileRoot = Path.Combine(Path.GetTempPath(), "hexalith-works-model-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(_profileRoot);
+        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(_profileRoot, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        string Component(string name)
+        {
+            string path = Path.Combine(_profileRoot, name + ".yaml");
+            // These tests inspect composition only. The unreachable endpoint prevents accidental execution.
+            File.WriteAllText(path, File.ReadAllText(Path.Combine(WorksProductionProfileTests.Root, "DaprComponents", name + ".yaml"))
+                .Replace("localhost:6379", "127.0.0.1:1", StringComparison.Ordinal));
+            if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(path, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            return path;
+        }
+        var profile = new WorksDevelopmentCatalogProfile(Component("statestore"),
+            new DevelopmentRouteCatalogCompositionOptions(Path.Combine(_profileRoot, "catalog-custody"),
+                "routing-model-test", "works-model-test", "test-v1",
+                new Dictionary<string, string> { ["test-v1"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)) }, "test-v1"),
+            PubSubComponentPath: Component("pubsub"), ConfigStoreComponentPath: Component("configstore"));
+        string selected = Path.Combine(_profileRoot, "profile.json");
+        File.WriteAllText(selected, JsonSerializer.Serialize(profile));
+        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(selected, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        return selected;
+    }
+
+    public void Dispose()
+    {
+        if (_profileRoot is not null && Directory.Exists(_profileRoot)) Directory.Delete(_profileRoot, recursive: true);
+    }
 }
