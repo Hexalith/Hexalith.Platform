@@ -288,7 +288,32 @@
       ],
       "installedIssuerAndPublicTrustEvidenceReference": null,
       "currentRolesAndRevocationEvidenceReference": null,
-      "custodianMayMintApprovals": false
+      "custodianMayMintApprovals": false,
+      "businessApproverNomination": {
+        "status": "NominatedOnlyNotEnrolledAsDecisionAuthority",
+        "userNomination": "jpiquot",
+        "displayName": "Jerome Piquot",
+        "directoryPrincipalName": "jpiquot@itaneo.com",
+        "directoryObjectId": "b054ec7b-1145-4e87-a50d-112b82c154f4",
+        "provenance": {
+          "nomination": "Direct user instruction: jpiquot",
+          "directoryResolution": "Authenticated Teams directory lookup reported in the approved preparation spec",
+          "sourceSpec": "../../../../agents/_bmad-output/implementation-artifacts/spec-5-4-prepare-owner-validation-deliveries.md"
+        },
+        "readOnlyIdentityObservation": {
+          "issuer": "https://auth.tache.ai/realms/tache",
+          "subject": "5eec1154-ae14-4041-8c08-3c51df8e5550",
+          "scope": "Current authenticated administrative directory observations of the nominated person only; no authenticated human-session possession, business approval role, issued decision, independent decision-signing service or Human/Party history is established.",
+          "evidenceReference": "../story-5-4-owner-validation-2026-11-02/identity-evidence/known-subject-identity-observation.json",
+          "evidenceSha256": "531e3ed2fa67d4f0d5a1a857e824a1ffffce1e96d39d65743f2212f7d751b8bb",
+          "limitation": "Staged exact-subject tache observation only; no human-session possession, Human/Party history, independent business authority or approval established. Original aggregate 403 receipt is retained unchanged and has no request-stage attribution.",
+          "captureScriptReference": "../story-5-4-owner-validation-2026-11-02/identity-evidence/capture-known-subject.py.txt",
+          "captureScriptSha256": "167a345bb77ad93b15f3669fc30b9e66c2e7ef01ddab3258da9bddd9894a2c42"
+        },
+        "businessApprovalEvidenceReference": null,
+        "humanPartyBindingEvidenceReference": null,
+        "grantsAuthority": false
+      }
     },
     "authenticatedIngressAndReplay": {
       "status": "PendingInstalledOwnerDelivery",

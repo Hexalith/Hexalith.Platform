@@ -1,0 +1,81 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests.StaticValidityRequiresExplicitProjectAndScopedConfigurationBeforeComposition [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentBindingTests.cs(21,0): at Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentBindingTests.cs(28,0): at Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests.StaticValidityRequiresExplicitProjectAndScopedConfigurationBeforeComposition()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: "Hexalith.Parties") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(213,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(String name)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(name: "renamed-parties-checkout") [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(213,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ResolvedStandaloneRootsBindTheirActualPartiesProjectAsync(String name)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.MissingOrOverriddenPartiesSourceRefusesBeforeComposition [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.<>c.<Options>b__2_0(String name)
+           at System.Linq.Enumerable.ArraySelectIterator`2.Fill(ReadOnlySpan`1 source, Span`1 destination, Func`2 func)
+           at System.Linq.Enumerable.ArraySelectIterator`2.ToArray()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(28,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.Options()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(199,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.MissingOrOverriddenPartiesSourceRefusesBeforeComposition()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ActualPartiesDeclarationValidatesAndSelectsEightMappedServers [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.<>c.<Options>b__2_0(String name)
+           at System.Linq.Enumerable.ArraySelectIterator`2.Fill(ReadOnlySpan`1 source, Span`1 destination, Func`2 func)
+           at System.Linq.Enumerable.ArraySelectIterator`2.ToArray()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(28,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.Options()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(42,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.ActualPartiesDeclarationValidatesAndSelectsEightMappedServers()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.NativeSourceSuiteRequiresTheExactMappedRunnerSeed [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.<>c.<Options>b__2_0(String name)
+           at System.Linq.Enumerable.ArraySelectIterator`2.Fill(ReadOnlySpan`1 source, Span`1 destination, Func`2 func)
+           at System.Linq.Enumerable.ArraySelectIterator`2.ToArray()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(28,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.Options()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(139,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.NativeSourceSuiteRequiresTheExactMappedRunnerSeed()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.<>c.<Options>b__2_0(String name)
+           at System.Linq.Enumerable.ArraySelectIterator`2.Fill(ReadOnlySpan`1 source, Span`1 destination, Func`2 func)
+           at System.Linq.Enumerable.ArraySelectIterator`2.ToArray()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(28,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.Options()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.SignedPartiesRunUsesTheRunnerJwtSettingsAsync [FAIL]
+      System.NullReferenceException : Object reference not set to an instance of an object.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.get_Root()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.<>c.<Options>b__2_0(String name)
+           at System.Linq.Enumerable.ArraySelectIterator`2.Fill(ReadOnlySpan`1 source, Span`1 destination, Func`2 func)
+           at System.Linq.Enumerable.ArraySelectIterator`2.ToArray()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(28,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.Options()
+        tests/Hexalith.Platform.Composition.Tests/PartiesAdoptionTests.cs(167,0): at Hexalith.Platform.Composition.Tests.PartiesAdoptionTests.SignedPartiesRunUsesTheRunnerJwtSettingsAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '2b1afe1c90e1fea9e3b4e1074a4659de411f7826a8f5b85a7c22cf515577d0d3')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 30, Errors: 0, Failed: 8, Skipped: 0, Not Run: 0, Time: 0.548s

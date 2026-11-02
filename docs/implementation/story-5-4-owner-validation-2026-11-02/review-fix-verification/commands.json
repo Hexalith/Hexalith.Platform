@@ -1,0 +1,82 @@
+[
+  {
+    "name": "restore",
+    "argv": [
+      "dotnet",
+      "restore",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:Configuration=Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:MinVerVersionOverride=1.0.0",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "--artifacts-path",
+      "/tmp/story-5-4-review-fix-m1g_lox5/artifacts"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "environmentOverrides": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "startedAtUtc": "2026-11-02T17:21:59.626641+00:00",
+    "finishedAtUtc": "2026-11-02T17:22:04.157989+00:00",
+    "exitCode": 0,
+    "log": "review-fix-verification/restore.log.txt",
+    "logSha256": "19c787d75874db76a9f0ec829566372eac8e25696b7e178004cc38cdc8ac6ce3"
+  },
+  {
+    "name": "build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "--no-restore",
+      "--no-incremental",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:Configuration=Debug",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:MinVerVersionOverride=1.0.0",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+      "--artifacts-path",
+      "/tmp/story-5-4-review-fix-m1g_lox5/artifacts"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "environmentOverrides": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "startedAtUtc": "2026-11-02T17:22:24.082328+00:00",
+    "finishedAtUtc": "2026-11-02T17:23:30.225028+00:00",
+    "exitCode": 0,
+    "log": "review-fix-verification/build.log.txt",
+    "logSha256": "425648488b39ea23b2cbde1a0937a47f08914c81272eb3d9f389262a19696233"
+  },
+  {
+    "name": "focused-tests",
+    "argv": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/obj/story-5-4-focused-review-fix-6d74y24v/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-owner-validation-2026-11-02/review-fix-verification/conversations-tests.xml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "environmentOverrides": {
+      "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+    },
+    "startedAtUtc": "2026-11-02T17:23:30.502208+00:00",
+    "finishedAtUtc": "2026-11-02T17:23:32.367600+00:00",
+    "exitCode": 0,
+    "log": "review-fix-verification/focused-tests.log.txt",
+    "logSha256": "2cc3fd49a3b76b5a8b2c6ee35d9574e0ea9dd4aba1dd1963e6cfeb9f11cb86a1"
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "name": "composition-debug-source-build",
+  "argv": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:NuGetAudit=false",
+    "-p:MinVerVersionOverride=1.0.0",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+    "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+    "--artifacts-path",
+    "/tmp/story-5-4-owner-validation-0yhs1dwh"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "environmentOverrides": {
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons"
+  },
+  "startedAtUtc": "2026-11-02T17:05:09.127852+00:00",
+  "finishedAtUtc": "2026-11-02T17:06:24.712281+00:00",
+  "exitCode": 0,
+  "log": "build.log.txt",
+  "logSha256": "49391678f3bb70053fd80fbebcbd43174681d0259a8792a3ee239c49b2195590",
+  "artifactsPath": "/tmp/story-5-4-owner-validation-0yhs1dwh"
+}

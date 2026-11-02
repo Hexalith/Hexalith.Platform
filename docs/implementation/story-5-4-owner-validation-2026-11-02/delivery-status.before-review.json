@@ -1,0 +1,182 @@
+{
+  "schema": "platform.story-5.4.owner-validation-delivery.v1",
+  "preparedOn": "2026-11-02",
+  "status": "PreparedForHumanValidationPartialSourcePrerequisiteDelivery",
+  "observedPlatformHead": "38de4c15aa5990d169cd20be34e37ef6cc823491",
+  "delivered": {
+    "ordinaryConversationsSourceEnrollment": {
+      "status": "Verified",
+      "moduleServer": "conversations/domain",
+      "project": "src/Hexalith.Conversations.Server/Hexalith.Conversations.Server.csproj",
+      "appId": "conversation",
+      "resourceId": "conversations",
+      "readinessEndpoint": "/ready",
+      "explicitExtensionInputCount": 28,
+      "sourceManifestSha256": "01b1b52b9084c23132b311adecaff86fac747f89ff4898c903bfa21f4d413d41",
+      "verification": "conversations-tests.xml"
+    },
+    "businessApproverNomination": {
+      "status": "NominatedOnlyNotEnrolledAsDecisionAuthority",
+      "principal": "jpiquot",
+      "displayName": "Jerome Piquot",
+      "directoryPrincipalName": "jpiquot@itaneo.com",
+      "directoryObjectId": "b054ec7b-1145-4e87-a50d-112b82c154f4",
+      "observedOidcIssuer": "https://auth.tache.ai/realms/tache",
+      "observedOidcSubject": "5eec1154-ae14-4041-8c08-3c51df8e5550",
+      "identityReceipt": "identity-evidence/nominated-human-email-upn-lookup.json",
+      "wholeIdentityReceiptOutcome": "UnavailableAfterSubsequentMasterRealm403",
+      "scopedTacheLookup": "OneMatchingEnabledVerifiedIdentityForExactUpnAndEmail",
+      "installedDecisionAuthorityEvidence": null,
+      "humanPartyBindingEvidence": null,
+      "approvalEvidence": null
+    }
+  },
+  "verification": {
+    "build": "build-command.json",
+    "buildExitCode": 0,
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "focused": {
+      "passed": 37,
+      "total": 37,
+      "failed": 0,
+      "skipped": 0,
+      "commands": "test-commands.json"
+    },
+    "regression": {
+      "passed": 30,
+      "total": 30,
+      "failed": 0,
+      "skipped": 0,
+      "commands": "relocated-test-command.json",
+      "originalExternalPathResult": {
+        "passed": 22,
+        "failed": 8,
+        "total": 30,
+        "cause": "Unchanged legacy Root getters dereference null outside repository ancestry before binding. Exact same 852-file runtime passes beneath Platform; all files unchanged."
+      }
+    },
+    "runtimeObservation": {
+      "timing": "AfterSourceEditsNoPrechangeAspireBaselineCaptured",
+      "commands": "aspire-commands.json",
+      "status": "BlockedBeforeResources",
+      "reason": "PreExistingInitializedNestedChatBotWorksSubmoduleDetectedByWorkspaceResolver",
+      "unrelatedEventStoreApplicationPreserved": true
+    }
+  },
+  "unimplementedCodeGaps": [
+    {
+      "id": "CONVERSATIONS-CATALOG",
+      "status": "UnimplementedOwnerInventoryRequired",
+      "owner": "Conversations Maintainer",
+      "path": "src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs",
+      "required": "Real Contracts route/operation/receiver-method/command-intent declarations and Conversations-owned EventStoreExtensions SDK adapters; complete source catalog generation and full composition.",
+      "observedFailure": "Hexalith.Conversations.EventStoreExtensions project absent or outside mapped owner; zero composed resources",
+      "runtimeClaim": false
+    },
+    {
+      "id": "HOST-OWNING-PROCESS",
+      "status": "UnimplementedCallerAndInstalledProviders",
+      "owner": "Platform Maintainer with service owners",
+      "required": "Actual launched owning-process call to AddInstalledAgentsOwningProcess with constructible private ingress/HMAC/replay/spool/worker/FR-34 graph; host-compatible accepted static-ELF launch closure. A .NET startup hook does not satisfy that protocol."
+    },
+    {
+      "id": "PROTECTION-FRESH-NATIVE",
+      "status": "NotRun",
+      "owner": "EventStore and Platform protection maintainers",
+      "required": "Fresh current-source owned OpenBao bootstrap and unchanged full five-case native evidence; pinned image prepared only.",
+      "recipe": "native-verification-recipe.json"
+    },
+    {
+      "id": "PROTECTION-UNISSUED-AUTHORITY",
+      "status": "MissingEndToEndCoverage",
+      "owner": "Platform protection maintainer",
+      "required": "Drive the production unissued authority branch and independent currentness check without substituting the real authority."
+    },
+    {
+      "id": "R7-BH-7",
+      "status": "DeferredUnchanged",
+      "required": "Generic subprocess capture_output stderr bound."
+    }
+  ],
+  "protection": {
+    "retainedFocusedResults": {
+      "platform": {
+        "passed": 96,
+        "total": 96
+      },
+      "eventstore": {
+        "passed": 370,
+        "total": 370
+      }
+    },
+    "evidenceScope": "protection-evidence-scope.json",
+    "freshNativeRun": false,
+    "productionUnissuedRealAuthorityCoverage": false,
+    "acceptedInstalledProfile": null,
+    "installed41CaseQualified": false,
+    "physicalCopyQualified": false
+  },
+  "installedPrerequisites": {
+    "independentBusinessIssuerAndCurrentRoleTrust": null,
+    "currentHumanPartyAndLivenessBindings": null,
+    "freshAcceptedOperationalProfileAndAuthorizedReadiness": null,
+    "authenticHistoricalPreservationAndBackupRestoreDispositions": null,
+    "distinctQualifiedHumanRecoveryDeputy": null,
+    "conversationsPartiesAndSeparateOqReceiverInstalledBindings": null,
+    "completeHostFourteenSlotsAndFiveServiceInstallations": null,
+    "replicatedSpoolPlacementAndFailureModelEvidence": null,
+    "protectionV3ProfileAndRoleV2ClosuresDedicatedCaKeyGenesisAndPrivateGrants": null,
+    "independentAllCopyRestoreAndRetirementEvidence": null
+  },
+  "installationOrder": [
+    "Conversations owner catalog/adapter inventory and real source composition",
+    "Current operational custody/preservation/recovery inputs and independently governed identity/business authority returns",
+    "Real owning-process/providers plus fresh protection native and real-authority coverage",
+    "Only after narrowInstallationEntryGate: within existing bounded authorization, pin isolated namespace/stores/Dapr/EventStore/Tenants/Memories, then Parties/Conversations, then separate target/rollover receiver with independent lookup",
+    "Separately obtain full coupled protection/custody/currentness/all-copy owner inputs and applicable authorization before any such provisioning",
+    "Complete strict detached packet preparation only after actual immutable targets, dates and installed context",
+    "Explicit replacement acceptance, then exactly bounded qualification in protection/secrets/host/mutual order"
+  ],
+  "replacement": {
+    "submitted": false,
+    "completePacketPrepared": false,
+    "platformTarget": null,
+    "protectionTarget": null,
+    "conversationsReplacementTarget": null,
+    "integrationDate": null,
+    "installedProfileSha256": null,
+    "exactNewLiveCommand": null
+  },
+  "preservedGates": {
+    "installationAuthorization": "Existing bounded authorization retained; no deployment performed",
+    "qualificationAuthorized": false,
+    "attemptReserved": false,
+    "dependencyAvailable": false,
+    "qualificationEffects": 0,
+    "consumerSeamsExecuted": 0,
+    "businessApprovalsIssued": 0,
+    "credentialRenewals": 0,
+    "productionLaunchBoundaryChanged": false,
+    "registerSnapshot": "external-dependency-register.snapshot.md",
+    "registerAcceptedFields": "accepted-contracts.json",
+    "agentsSprintStatusChanged": false,
+    "staged": false,
+    "committed": false,
+    "pushed": false
+  },
+  "sourceAndPriorEvidence": "source-and-prior-evidence.json",
+  "packageIntegrity": "artifact-inventory.json",
+  "narrowInstallationEntryGate": {
+    "status": "UnsatisfiedNoDeploymentAuthorizedByThisPackage",
+    "required": [
+      "Independently accepted EXT-PROTECTION-1 immutable target, integration date, executable command and actual installed profile",
+      "Genuine Host Live passPath:true pinned to the accepted target/profile",
+      "Actual Branch B identity and worker principal inputs",
+      "Actual independently authenticated issuer/trust and source feed inputs",
+      "Separate receiver and independent durable receipt lookup inputs"
+    ],
+    "permissionDoesNotSupplyPrerequisites": true,
+    "fullCoupledProtectionCustodyCurrentnessAllCopyProvisioning": "Requires actual owner inputs and applicable separate authorization; explicitly excluded from narrow receiver installation authorization."
+  }
+}

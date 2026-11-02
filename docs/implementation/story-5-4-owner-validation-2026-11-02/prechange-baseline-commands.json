@@ -1,0 +1,33 @@
+{
+  "sourceCopy": "/tmp/story-5-4-prechange-3th7rra_/source",
+  "copiedPrechangeBindingSha256": "e57525432d964c89c695e873a5a8ba42317b45c317742935e12619dc7c63da63",
+  "commands": [
+    {
+      "name": "prechange-baseline-build",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+        "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+        "--artifacts-path",
+        "/tmp/story-5-4-prechange-3th7rra_/artifacts"
+      ],
+      "cwd": "/tmp/story-5-4-prechange-3th7rra_/source",
+      "startedAtUtc": "2026-11-02T17:07:53.794869+00:00",
+      "finishedAtUtc": "2026-11-02T17:08:11.495119+00:00",
+      "exitCode": 1,
+      "log": "prechange-baseline-build.log.txt",
+      "logSha256": "d5f2c4c572328bb8e1eccfe8f0103d97bba055794e3e94439e13f47aba68b2fa"
+    }
+  ]
+}

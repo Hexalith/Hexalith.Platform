@@ -1,0 +1,50 @@
+{
+  "observedAtUtc": "2026-11-02T17:00:03.834336+00:00",
+  "url": "https://auth.tache.ai/realms/tache/.well-known/openid-configuration",
+  "realmSource": "keycloak/keycloak-ingress /realms/tache and Platform local-profile token endpoint",
+  "readOnly": true,
+  "credentialSent": false,
+  "tlsVerificationDisabled": false,
+  "redirectsAllowed": false,
+  "businessApprovalIssuerEstablished": false,
+  "httpStatus": 200,
+  "discoverySha256": "5edc4a93792f3920970606a085083211a6fc21f2995cb8a6dab4dc79ad86c94f",
+  "issuer": "https://auth.tache.ai/realms/tache",
+  "jwksUri": "https://auth.tache.ai/realms/tache/protocol/openid-connect/certs",
+  "authorizationEndpoint": "https://auth.tache.ai/realms/tache/protocol/openid-connect/auth",
+  "tokenEndpoint": "https://auth.tache.ai/realms/tache/protocol/openid-connect/token",
+  "supportedIdTokenSigningAlgorithms": [
+    "PS384",
+    "RS384",
+    "EdDSA",
+    "ES384",
+    "HS256",
+    "HS512",
+    "ES256",
+    "RS256",
+    "HS384",
+    "ES512",
+    "PS256",
+    "PS512",
+    "RS512"
+  ],
+  "publicKeyRead": {
+    "httpStatus": 200,
+    "sha256": "09a3ef7528407b838918a1a49c50e9c4acc16ddd9fd5cc44afcc00854b91a513",
+    "keys": [
+      {
+        "kid": "U6C7-0uvcrEgCxe-ot0KvXoI1iba5PnGZPcBvk8dWDg",
+        "use": "enc",
+        "kty": "RSA",
+        "alg": "RSA-OAEP"
+      },
+      {
+        "kid": "A54hxJeCg28d6anXEgY_C6JhLBy-RoVNSDnM83TGUM0",
+        "use": "sig",
+        "kty": "RSA",
+        "alg": "RS256"
+      }
+    ]
+  },
+  "outcome": "PublicOidcDiscoveryOnly"
+}

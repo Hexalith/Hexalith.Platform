@@ -1,0 +1,57 @@
+{
+  "status": "PrerequisiteImagePreparedNativeAttemptsNotStarted",
+  "imageReceipt": "identity-evidence/native-test-prerequisite.json",
+  "scope": "Next local source verification only; never an installed owner Live command or protection-profile substitute.",
+  "build": {
+    "project": "tests/Hexalith.Platform.Protection.Tests/Hexalith.Platform.Protection.Tests.csproj",
+    "configuration": "Debug",
+    "projectReferences": true,
+    "requiredArguments": [
+      "--no-incremental",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+      "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+      "-p:HexalithTenantsBasePath=/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src"
+    ],
+    "HexalithEventStoreRoot": "/home/administrator/projects/hexalith/eventstore",
+    "HexalithCommonsRoot": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Commons",
+    "HexalithTenantsBasePath": "/home/administrator/projects/hexalith/eventstore/references/Hexalith.Tenants/src",
+    "uniqueArtifactsPath": null
+  },
+  "freezeBeforeRun": {
+    "completeOutputRuntime": true,
+    "completeSourceAndBuildClosure": true,
+    "inputs": [
+      "eng/ext-protection-1/probe_erc_native.py",
+      "eng/ext-secrets-1/probe_raft_non_revival.py",
+      "deploy/erasure-root/bootstrap.py",
+      "deploy/erasure-root/custody-policy.hcl"
+    ],
+    "runtimePath": null,
+    "assemblySha256": null,
+    "runtimeManifestPath": null,
+    "runtimeManifestSha256": null
+  },
+  "harness": "eng/ext-protection-1/probe_erc_native.py",
+  "bootstrapArguments": [
+    "--bootstrap",
+    "--test-assembly",
+    "--test-assembly-sha256",
+    "--runtime-manifest",
+    "--runtime-manifest-sha256",
+    "--output"
+  ],
+  "fiveCaseDifference": "Omit only --bootstrap; use the exact same freshly frozen and hashed runtime. Historical duration approximately 47 minutes.",
+  "requiredAfterRun": [
+    "Independent owned-container cleanup and tmpfs removal verification",
+    "Full runtime/source/input rehash and exact evidence retention"
+  ],
+  "patternReferences": [
+    "../ext-protection-1-loop10/source-gaps-7b5a4e938648/freeze_runtime.py",
+    "../ext-protection-1-loop10/deferred-rows-af01b493fa91/phase.py"
+  ],
+  "hardcodedHistoricalRunMustNotBeReplayed": true
+}

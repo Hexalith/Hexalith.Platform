@@ -1,0 +1,88 @@
+[
+  {
+    "name": "conversations",
+    "argv": [
+      "dotnet",
+      "/tmp/story-5-4-owner-validation-0yhs1dwh/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-owner-validation-2026-11-02/conversations-tests.xml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:06:52.084907+00:00",
+    "finishedAtUtc": "2026-11-02T17:06:54.831056+00:00",
+    "exitCode": 0,
+    "log": "conversations-tests.log.txt",
+    "logSha256": "93a840784a1f661d9a666a1ed84a19c6d5c8f2126dfc26dddc89867d422db71e",
+    "xml": "conversations-tests.xml",
+    "xmlSha256": "9be01bd7c4d351207b57f31fb2523fde63438e25936b13bc9af9f2444179c117",
+    "assemblySha256": "add16f42cd124189179f5cc2cb44f5ceeaed6b77e5514915c139443a1110d94a",
+    "summary": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "50446efe-1702-4ba7-8e8d-8179a7409b0a",
+        "name": "/tmp/story-5-4-owner-validation-0yhs1dwh/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-02",
+        "run-time": "17:06:52",
+        "start-rtf": "2026-11-02T17:06:52.4417184+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-02T17:06:54.7781407+00:00",
+        "not-run": "0",
+        "passed": "37",
+        "skipped": "0",
+        "time": "2.338",
+        "time-rtf": "00:00:02.3380000",
+        "total": "37"
+      }
+    ]
+  },
+  {
+    "name": "enrollment-regression",
+    "argv": [
+      "dotnet",
+      "/tmp/story-5-4-owner-validation-0yhs1dwh/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-owner-validation-2026-11-02/enrollment-regression-tests.xml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:06:54.832625+00:00",
+    "finishedAtUtc": "2026-11-02T17:06:55.630949+00:00",
+    "exitCode": 1,
+    "log": "enrollment-regression-tests.log.txt",
+    "logSha256": "6d6ef9074a9166a794066eb15363797a8b04c9de64a04d88beb1e5954b575ff3",
+    "xml": "enrollment-regression-tests.xml",
+    "xmlSha256": "f7613ad2ba4802998a976976251bf62bb1f29558ebf1b6992c02593b19f24808",
+    "assemblySha256": "add16f42cd124189179f5cc2cb44f5ceeaed6b77e5514915c139443a1110d94a",
+    "summary": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "e3eacdf9-63dd-496a-b0e3-6abaac6fe5a3",
+        "name": "/tmp/story-5-4-owner-validation-0yhs1dwh/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-02",
+        "run-time": "17:06:55",
+        "start-rtf": "2026-11-02T17:06:55.0242135+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "8",
+        "finish-rtf": "2026-11-02T17:06:55.5717173+00:00",
+        "not-run": "0",
+        "passed": "22",
+        "skipped": "0",
+        "time": "0.548",
+        "time-rtf": "00:00:00.5480000",
+        "total": "30"
+      }
+    ]
+  }
+]

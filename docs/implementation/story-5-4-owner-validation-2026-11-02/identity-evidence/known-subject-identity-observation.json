@@ -1,0 +1,94 @@
+{
+  "kind": "ScopedNominatedHumanIdentityObservation",
+  "startedAtUtc": "2026-11-02T17:20:54.080793+00:00",
+  "context": "jpiquot@local",
+  "service": "keycloak/keycloak",
+  "serviceUid": "0ac9cd04-9d7e-41ed-8ac7-5a74ca659fd0",
+  "realm": "tache",
+  "issuer": "https://auth.tache.ai/realms/tache",
+  "subject": "5eec1154-ae14-4041-8c08-3c51df8e5550",
+  "userNomination": "jpiquot",
+  "directoryObjectId": "b054ec7b-1145-4e87-a50d-112b82c154f4",
+  "steps": [
+    {
+      "stage": "authenticate-existing-read-transport",
+      "realm": "master",
+      "method": "POST",
+      "path": "/realms/master/protocol/openid-connect/token",
+      "startedAtUtc": "2026-11-02T17:20:54.993319+00:00",
+      "httpStatus": 200,
+      "finishedAtUtc": "2026-11-02T17:20:55.011612+00:00"
+    },
+    {
+      "stage": "read-exact-nominated-subject",
+      "realm": "tache",
+      "method": "GET",
+      "path": "/admin/realms/tache/users/5eec1154-ae14-4041-8c08-3c51df8e5550",
+      "startedAtUtc": "2026-11-02T17:20:55.011640+00:00",
+      "httpStatus": 200,
+      "responseSha256": "b88ff935a44c190214d73cb56f930f5000f5da25817f710dd420400af6b0b745",
+      "finishedAtUtc": "2026-11-02T17:20:55.032712+00:00"
+    },
+    {
+      "stage": "read-effective-realm-roles",
+      "realm": "tache",
+      "method": "GET",
+      "path": "/admin/realms/tache/users/5eec1154-ae14-4041-8c08-3c51df8e5550/role-mappings/realm/composite",
+      "startedAtUtc": "2026-11-02T17:20:55.032737+00:00",
+      "httpStatus": 200,
+      "responseSha256": "509982cfacd8659e9b0c068f8b4a37d2e2adacd65a868cfb4d8ea8956a76a64e",
+      "finishedAtUtc": "2026-11-02T17:20:55.045213+00:00"
+    },
+    {
+      "stage": "read-direct-role-mappings",
+      "realm": "tache",
+      "method": "GET",
+      "path": "/admin/realms/tache/users/5eec1154-ae14-4041-8c08-3c51df8e5550/role-mappings",
+      "startedAtUtc": "2026-11-02T17:20:55.045244+00:00",
+      "httpStatus": 200,
+      "responseSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "finishedAtUtc": "2026-11-02T17:20:55.062405+00:00"
+    },
+    {
+      "stage": "read-federated-identity-mapping",
+      "realm": "tache",
+      "method": "GET",
+      "path": "/admin/realms/tache/users/5eec1154-ae14-4041-8c08-3c51df8e5550/federated-identity",
+      "startedAtUtc": "2026-11-02T17:20:55.062444+00:00",
+      "httpStatus": 200,
+      "responseSha256": "91be4daadc938bf7b4247778ebcefcd93a10c18f3b568e19adae56e865e89655",
+      "finishedAtUtc": "2026-11-02T17:20:55.074297+00:00"
+    }
+  ],
+  "credentialsPersisted": false,
+  "realmRoleOrCredentialMutations": 0,
+  "credentialRenewalInvocations": 0,
+  "businessApprovalIssuerEstablished": false,
+  "humanPartyBindingEstablished": false,
+  "identity": {
+    "subject": "5eec1154-ae14-4041-8c08-3c51df8e5550",
+    "username": "jpiquot@itaneo.com",
+    "emailMatchesNomination": true,
+    "enabled": true,
+    "emailVerified": true,
+    "requiredActions": []
+  },
+  "effectiveRealmRoleNames": [
+    "default-roles-tache",
+    "itaneo-user"
+  ],
+  "directRealmRoleNames": [],
+  "directClientRoleNames": {},
+  "federatedIdentityObservation": [
+    {
+      "provider": "Microsoft",
+      "externalObjectEqualsNominatedDirectoryObject": true,
+      "externalUsernameEqualsNomination": true
+    }
+  ],
+  "outcome": "ObservedIdentityCandidateOnly",
+  "ownedForwardTerminated": true,
+  "completedAtUtc": "2026-11-02T17:20:55.081719+00:00",
+  "captureScriptSha256": "167a345bb77ad93b15f3669fc30b9e66c2e7ef01ddab3258da9bddd9894a2c42",
+  "scope": "Current authenticated administrative directory observations of the nominated person only; no authenticated human-session possession, business approval role, issued decision, independent decision-signing service or Human/Party history is established."
+}

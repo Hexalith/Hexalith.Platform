@@ -1,0 +1,130 @@
+{
+  "scope": "Retained loop-10 focused results; no tests or native/installed protection operations rerun by this preparation. Equality applies only to the selected files below, not the complete current build/runtime graph.",
+  "checks": [
+    {
+      "repository": "platform",
+      "path": "deploy/erasure-root/bootstrap.py",
+      "loop10AfterSha256": "c00a334125d083d9a3675bb72ce6d991fcde8946401958a07980b1baac7958ff",
+      "observedSha256": "c00a334125d083d9a3675bb72ce6d991fcde8946401958a07980b1baac7958ff",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "eng/ext-protection-1/test_bootstrap.py",
+      "loop10AfterSha256": "10af2a3fe4b1ff1ed92c263abb7bebd1c32ebc48038817c78ae7d5f073d13a07",
+      "observedSha256": "10af2a3fe4b1ff1ed92c263abb7bebd1c32ebc48038817c78ae7d5f073d13a07",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+      "loop10AfterSha256": "9025baa0eeb13b2b724f49d6a10dfb6cb2a108b39a60f90cb9f01c76604fecb4",
+      "observedSha256": "9025baa0eeb13b2b724f49d6a10dfb6cb2a108b39a60f90cb9f01c76604fecb4",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+      "loop10AfterSha256": "e149d00537e2182507610c8ac6b87ec9a537ae28f2539fa09ccfb34c7812f811",
+      "observedSha256": "e149d00537e2182507610c8ac6b87ec9a537ae28f2539fa09ccfb34c7812f811",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/OpenBaoErasureRootStoreTests.cs",
+      "loop10AfterSha256": "79b948c273a39befc3439e468b8d4ea37c4291c552926ab35b7132000e7ea0f1",
+      "observedSha256": "79b948c273a39befc3439e468b8d4ea37c4291c552926ab35b7132000e7ea0f1",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootCustodyTests.cs",
+      "loop10AfterSha256": "e0d01b3d11990ad6d58ae47ca13c2b652b27e2740cd0f141b5425e16e3cf2b02",
+      "observedSha256": "e0d01b3d11990ad6d58ae47ca13c2b652b27e2740cd0f141b5425e16e3cf2b02",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "platform",
+      "path": "tests/Hexalith.Platform.Protection.Tests/ErasureRootReceivingTests.cs",
+      "loop10AfterSha256": "5aa9b9b85b4011d2fec47b2daab6f226f0f92a92fa0503a382a62137217e8895",
+      "observedSha256": "5aa9b9b85b4011d2fec47b2daab6f226f0f92a92fa0503a382a62137217e8895",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "src/Hexalith.EventStore.Server/Security/PublishedTrustDeletionConsumptionAuthority.cs",
+      "loop10AfterSha256": "56538dca20086023d2a2dbbbeef81c6ad7a8d7f5f45d365d318fb6b0bc5cec2b",
+      "observedSha256": "56538dca20086023d2a2dbbbeef81c6ad7a8d7f5f45d365d318fb6b0bc5cec2b",
+      "matchesSelectedLoop10File": true
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustReplacementAuthorityTests.cs",
+      "loop10AfterSha256": "1570f6934d5943018c6994394b685eab053c5578ab47b216a845322ffaa77737",
+      "observedSha256": "57f1c640265d2debc11c279048186040e2d38e68f075c1cb5605a09e8d6715eb",
+      "matchesSelectedLoop10File": false
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/InteractionOccurrenceRegistryActorTests.cs",
+      "loop10AfterSha256": "685b6d061c8700149199b9d3ea6989798cc0319390f9a257567ed16b74177e2e",
+      "observedSha256": "8bf42295f2731424c433f90bb6ffb245c613678dc57ff2959397d902378393cb",
+      "matchesSelectedLoop10File": false
+    },
+    {
+      "repository": "eventstore",
+      "path": "tests/Hexalith.EventStore.Server.Tests/Security/PublishedTrustOwnerStateAuthorityTests.cs",
+      "loop10AfterSha256": "2a1900c4b5fb418ed072fb14a295049a5b118fc6bb4a28a6ea554a9750d10515",
+      "observedSha256": "2a1900c4b5fb418ed072fb14a295049a5b118fc6bb4a28a6ea554a9750d10515",
+      "matchesSelectedLoop10File": true
+    }
+  ],
+  "retainedFocusedResults": {
+    "platform": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "b6bdffa7-dcd2-41f2-9e30-ca8fb2c593e0",
+        "name": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-deferred-rows-af01b493fa91/final/runtime/platform/Hexalith.Platform.Protection.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "17:44:00",
+        "start-rtf": "2026-10-31T17:44:00.6533995+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T17:44:04.9980342+00:00",
+        "not-run": "0",
+        "passed": "96",
+        "skipped": "0",
+        "time": "4.347",
+        "time-rtf": "00:00:04.3470000",
+        "total": "96"
+      }
+    ],
+    "eventstore": [
+      {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]",
+        "id": "3a53198e-1e13-4ddf-b51b-5a03ba116db3",
+        "name": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/b949fb33-be78-47f5-84d2-3974588e5fdf/scratchpad/ext-protection-loop10-deferred-rows-af01b493fa91/final/runtime/eventstore/Hexalith.EventStore.Server.Tests.dll",
+        "run-date": "2026-10-31",
+        "run-time": "17:44:05",
+        "start-rtf": "2026-10-31T17:44:05.5089617+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-10-31T17:44:10.4899755+00:00",
+        "not-run": "0",
+        "passed": "370",
+        "skipped": "0",
+        "time": "4.981",
+        "time-rtf": "00:00:04.9810000",
+        "total": "370"
+      }
+    ]
+  },
+  "freshNativeBootstrapAndFiveCaseRun": false,
+  "productionUnissuedRealAuthorityEndToEndCoverage": false,
+  "installed41CaseQualification": false,
+  "physicalCopyQualification": false
+}

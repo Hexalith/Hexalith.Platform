@@ -1,0 +1,48 @@
+{
+  "startedAtUtc": "2026-11-02T17:01:12.565882+00:00",
+  "kind": "ExactNominatedHumanEmailAndUpnRead",
+  "context": "jpiquot@local",
+  "serviceUid": "0ac9cd04-9d7e-41ed-8ac7-5a74ca659fd0",
+  "readOnly": true,
+  "credentialsPersisted": false,
+  "roleOrRealmMutations": 0,
+  "credentialRenewalInvocations": 0,
+  "businessApprovalIssuerEstablished": false,
+  "queries": [
+    {
+      "realm": "tache",
+      "field": "username",
+      "value": "jpiquot@itaneo.com",
+      "count": 1
+    },
+    {
+      "realm": "tache",
+      "field": "email",
+      "value": "jpiquot@itaneo.com",
+      "count": 1
+    }
+  ],
+  "identities": [
+    {
+      "realm": "tache",
+      "subject": "5eec1154-ae14-4041-8c08-3c51df8e5550",
+      "username": "jpiquot@itaneo.com",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "effectiveRealmRoleNames": [
+        "default-roles-tache",
+        "itaneo-user"
+      ],
+      "federatedProviderAliases": [
+        "Microsoft"
+      ],
+      "scope": "Current administrative directory lookup; no Human Party binding, current app authorization or business approval credential established"
+    }
+  ],
+  "outcome": "Unavailable",
+  "errorType": "HTTPError",
+  "httpStatus": 403,
+  "ownedForwardTerminated": true,
+  "completedAtUtc": "2026-11-02T17:01:13.397746+00:00"
+}

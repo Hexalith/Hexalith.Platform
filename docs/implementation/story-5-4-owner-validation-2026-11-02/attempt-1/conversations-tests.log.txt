@@ -1,0 +1,19 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests.RealDeclarationComposesOnlyItsOrdinaryServerWithCompleteExplicitConfigurationAsync [FAIL]
+      System.IO.InvalidDataException : conversations: Contracts project Hexalith.Conversations.EventStoreExtensions is absent or outside its mapped owner.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(28,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.<>c__DisplayClass27_1.<Resolve>g__Reference|2(String assembly, <>c__DisplayClass27_0&)
+        src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs(32,0): at Hexalith.Platform.Composition.PlatformCatalogContractBinding.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 servers)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(29,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(154,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(167,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/ConversationsEnrollmentTests.cs(35,0): at Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests.RealDeclarationComposesOnlyItsOrdinaryServerWithCompleteExplicitConfigurationAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '1b66c1416b6ea7b72ce5b607e6c2b510acd1c7478da4e0913bfa2838b7dc4c5b')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 36, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 1.580s

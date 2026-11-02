@@ -1,0 +1,103 @@
+"""Read the nominated installed identity; no realm, role or credential mutation."""
+from pathlib import Path
+import base64
+import datetime
+import hashlib
+import json
+import os
+import select
+import socket
+import subprocess
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+OUTPUT=Path(__file__).resolve().parent
+CONTEXT='jpiquot@local'
+SERVICE_UID='0ac9cd04-9d7e-41ed-8ac7-5a74ca659fd0'
+SUBJECT='5eec1154-ae14-4041-8c08-3c51df8e5550'
+UPN='jpiquot@itaneo.com'
+DIRECTORY_OBJECT='b054ec7b-1145-4e87-a50d-112b82c154f4'
+def now(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
+receipt={'kind':'ScopedNominatedHumanIdentityObservation','startedAtUtc':now(),'context':CONTEXT,'service':'keycloak/keycloak','serviceUid':SERVICE_UID,'realm':'tache','issuer':'https://auth.tache.ai/realms/tache','subject':SUBJECT,'userNomination':'jpiquot','directoryObjectId':DIRECTORY_OBJECT,'steps':[],'credentialsPersisted':False,'realmRoleOrCredentialMutations':0,'credentialRenewalInvocations':0,'businessApprovalIssuerEstablished':False,'humanPartyBindingEstablished':False}
+forward=None
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self,*args,**kwargs): return None
+http=urllib.request.build_opener(NoRedirect())
+def kube(*args):
+    result=subprocess.run(['kubectl','--context',CONTEXT,*args,'--request-timeout=10s'],capture_output=True,timeout=15)
+    if result.returncode: raise RuntimeError('Kubernetes read unavailable')
+    return json.loads(result.stdout)
+def request(origin,path,stage,token=None,form=None,retain_digest=True):
+    step={'stage':stage,'realm':'master' if path.startswith('/realms/master/') else 'tache','method':'POST' if form else 'GET','path':path,'startedAtUtc':now()}
+    receipt['steps'].append(step)
+    headers={'Accept':'application/json'}
+    if token: headers['Authorization']='Bearer '+token
+    data=None
+    if form:
+        data=urllib.parse.urlencode(form).encode()
+        headers['Content-Type']='application/x-www-form-urlencoded'
+    try:
+        with http.open(urllib.request.Request(origin+path,data=data,headers=headers),timeout=10) as response:
+            raw=response.read(131073)
+            step['httpStatus']=response.status
+            if len(raw)>131072: raise RuntimeError('Response bound exceeded')
+            if retain_digest: step['responseSha256']=hashlib.sha256(raw).hexdigest()
+            return json.loads(raw)
+    except urllib.error.HTTPError as error:
+        step['httpStatus']=error.code
+        raise
+    finally: step['finishedAtUtc']=now()
+try:
+    if kube('get','svc','keycloak','-n','keycloak','-o','json')['metadata']['uid']!=SERVICE_UID:
+        raise RuntimeError('Source service identity changed')
+    secret=kube('get','secret','keycloak-admin-api','-n','keycloak','-o','json')['data']
+    client=base64.b64decode(secret['client-id']).decode().strip()
+    credential=base64.b64decode(secret['client-secret']).decode().strip()
+    secret=None
+    with socket.socket() as selector:
+        selector.bind(('127.0.0.1',0));port=selector.getsockname()[1]
+    forward=subprocess.Popen(['kubectl','--context',CONTEXT,'-n','keycloak','port-forward','--address','127.0.0.1','svc/keycloak',str(port)+':8080'],stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    os.set_blocking(forward.stdout.fileno(),False)
+    output=bytearray();deadline=time.monotonic()+15;ready=False
+    while time.monotonic()<deadline and forward.poll() is None:
+        if select.select([forward.stdout],[],[],0.2)[0]:
+            output.extend(os.read(forward.stdout.fileno(),4096))
+            if len(output)>8192: raise RuntimeError('Forward output bound exceeded')
+            if ('Forwarding from 127.0.0.1:'+str(port)+' -> 8080').encode() in output:
+                ready=True;break
+    if not ready: raise RuntimeError('Owned loopback forward unavailable')
+    origin='http://127.0.0.1:'+str(port)
+    auth=request(origin,'/realms/master/protocol/openid-connect/token','authenticate-existing-read-transport',form={'grant_type':'client_credentials','client_id':client,'client_secret':credential},retain_digest=False)
+    client=None;credential=None;token=auth['access_token'];auth=None
+    identity=request(origin,'/admin/realms/tache/users/'+SUBJECT,'read-exact-nominated-subject',token)
+    if identity.get('id')!=SUBJECT or identity.get('username')!=UPN or identity.get('email','').lower()!=UPN:
+        raise RuntimeError('Nominated identity mismatch')
+    receipt['identity']={'subject':identity['id'],'username':identity['username'],'emailMatchesNomination':True,'enabled':identity.get('enabled'),'emailVerified':identity.get('emailVerified'),'requiredActions':identity.get('requiredActions',[])}
+    roles=request(origin,'/admin/realms/tache/users/'+SUBJECT+'/role-mappings/realm/composite','read-effective-realm-roles',token)
+    receipt['effectiveRealmRoleNames']=sorted(role['name'] for role in roles)
+    direct=request(origin,'/admin/realms/tache/users/'+SUBJECT+'/role-mappings','read-direct-role-mappings',token)
+    receipt['directRealmRoleNames']=sorted(role['name'] for role in direct.get('realmMappings',[]))
+    receipt['directClientRoleNames']={name:sorted(role['name'] for role in mapping.get('mappings',[])) for name,mapping in direct.get('clientMappings',{}).items()}
+    federation=request(origin,'/admin/realms/tache/users/'+SUBJECT+'/federated-identity','read-federated-identity-mapping',token)
+    receipt['federatedIdentityObservation']=[{'provider':item.get('identityProvider'),'externalObjectEqualsNominatedDirectoryObject':item.get('userId')==DIRECTORY_OBJECT,'externalUsernameEqualsNomination':str(item.get('userName','')).lower()==UPN} for item in federation]
+    token=None;identity=None;direct=None;federation=None
+    receipt['outcome']='ObservedIdentityCandidateOnly'
+except Exception as error:
+    receipt['outcome']='Unavailable'
+    receipt['errorType']=type(error).__name__
+    receipt['failedStage']=next((step['stage'] for step in reversed(receipt['steps']) if step.get('httpStatus',200)!=200),receipt['steps'][-1]['stage'] if receipt['steps'] else 'source-service-or-transport-preflight')
+finally:
+    if forward:
+        if forward.poll() is None:
+            forward.terminate()
+            try: forward.wait(5)
+            except subprocess.TimeoutExpired: forward.kill();forward.wait(5)
+        forward.stdout.close()
+        receipt['ownedForwardTerminated']=forward.poll() is not None
+    receipt['completedAtUtc']=now()
+    receipt['captureScriptSha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    receipt['scope']='Current authenticated administrative directory observations of the nominated person only; no authenticated human-session possession, business approval role, issued decision, independent decision-signing service or Human/Party history is established.'
+    (OUTPUT/'known-subject-identity-observation.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    print(json.dumps(receipt,indent=2))

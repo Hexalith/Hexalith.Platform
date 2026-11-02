@@ -1,0 +1,160 @@
+{
+  "status": "Passed",
+  "sourceSelection": "Package verifier only; no .NET/native/Live/OQ tests.",
+  "checks": [
+    {
+      "case": "clean",
+      "optimized": false,
+      "expectedSuccess": true,
+      "exitCode": 0,
+      "result": "{\n  \"status\": \"Passed\",\n  \"focusedPassed\": 37,\n  \"retainedBroadPassed\": 30,\n  \"freshRuntimeManifestFiles\": 852,\n  \"bracketedSourceBuildInputFiles\": 4053,\n  \"exactArtifactMembership\": 66,\n  \"nominationOnlyOwnerDelta\": true,\n  \"historicalBroadRuntimeEquality\": \"Recorder booleans only; distinct historical before/after manifests were not retained and are not re-derived.\"\n}"
+    },
+    {
+      "case": "clean",
+      "optimized": true,
+      "expectedSuccess": true,
+      "exitCode": 0,
+      "result": "{\n  \"status\": \"Passed\",\n  \"focusedPassed\": 37,\n  \"retainedBroadPassed\": 30,\n  \"freshRuntimeManifestFiles\": 852,\n  \"bracketedSourceBuildInputFiles\": 4053,\n  \"exactArtifactMembership\": 66,\n  \"nominationOnlyOwnerDelta\": true,\n  \"historicalBroadRuntimeEquality\": \"Recorder booleans only; distinct historical before/after manifests were not retained and are not re-derived.\"\n}"
+    },
+    {
+      "case": "extra-uninventoried-file",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Artifact inventory differs from exact on-disk membership"
+    },
+    {
+      "case": "extra-uninventoried-file",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Artifact inventory differs from exact on-disk membership"
+    },
+    {
+      "case": "missing-inventoried-file",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Artifact inventory differs from exact on-disk membership"
+    },
+    {
+      "case": "missing-inventoried-file",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Artifact inventory differs from exact on-disk membership"
+    },
+    {
+      "case": "extra-assembly",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Exactly one xUnit assembly required: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "extra-assembly",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Exactly one xUnit assembly required: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "case-not-run",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Case did not pass cleanly: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "case-not-run",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Case did not pass cleanly: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "aggregate-not-run",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Assembly not-run mismatch: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "aggregate-not-run",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Assembly not-run mismatch: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "foreign-case-class",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Unexpected class/method: Foreign.Tests.PackageImageAndConformanceReceiverRemainUnavailable"
+    },
+    {
+      "case": "foreign-case-class",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Unexpected class/method: Foreign.Tests.PackageImageAndConformanceReceiverRemainUnavailable"
+    },
+    {
+      "case": "missing-case",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Incomplete or extra case list: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "missing-case",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Incomplete or extra case list: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "foreign-command-selection",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Incomplete, duplicate or foreign class selection: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "foreign-command-selection",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Incomplete, duplicate or foreign class selection: review-fix-verification/conversations-tests.xml"
+    },
+    {
+      "case": "runtime-manifest-substitution",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Original/relocated before/after runtime manifests differ"
+    },
+    {
+      "case": "runtime-manifest-substitution",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Original/relocated before/after runtime manifests differ"
+    },
+    {
+      "case": "source-manifest-substitution",
+      "optimized": false,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Build source/input closure changed during verification"
+    },
+    {
+      "case": "source-manifest-substitution",
+      "optimized": true,
+      "expectedSuccess": false,
+      "exitCode": 1,
+      "result": "Package verification failed: Build source/input closure changed during verification"
+    }
+  ]
+}

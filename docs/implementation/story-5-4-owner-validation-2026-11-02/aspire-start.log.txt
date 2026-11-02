@@ -1,0 +1,58 @@
+Starting Aspire AppHost in the background...
+❌ Failed to start the AppHost.
+ℹ️ Recent AppHost startup output:
+NativeCertificateToolRunner: Failed to trust the certificate in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium 
+family of browsers. This likely indicates that the database already contains an entry for the certificate under a different name. Please remove it and try 
+again.
+NativeCertificateToolRunner: The certificate is only partially trusted - some clients will not accept it.
+NativeCertificateToolRunner: The certificate is not trusted by OpenSSL.  Ensure that the SSL_CERT_DIR environment variable is set correctly.
+NativeCertificateToolRunner: The certificate is not trusted in the NSS database in '/home/administrator/.pki/nssdb'. This will likely affect the Chromium family
+of browsers.
+  Determining projects to restore...
+  Restored /home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 
+367 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 367 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 367 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 367 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 367 ms).
+  Restored /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 373 ms).
+  Restored /home/administrator/projects/hexalith/platform/apphost.cs.csproj (in 384 ms).
+/home/administrator/.nuget/packages/aspire.hosting.apphost/13.6.4/build/Aspire.Hosting.AppHost.targets(157,5): warning ASPIRE010: apphost.cs is configured with 
+AspireUseCliBundle=false. Some Aspire features require the Aspire CLI bundle. Set AspireUseCliBundle=true to enable those features, or suppress ASPIRE010 to 
+continue without the bundle. See https://aka.ms/aspire/diagnostics/aspire010 for more information.
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.133.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 
+for net10.0.
+  Hexalith.Builds.Tooling -> 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.Platform.Works.Runtime -> 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Works.Runtime/bin/Debug/net10.0/Hexalith.Platform.Works.Runtime.dll
+  Hexalith.Platform.Custody -> /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody/bin/Debug/net10.0/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Custody.Component/bin/Debug/net10.0/Hexalith.Platform.Custody.Component.dll
+  Hexalith.Platform.Secrets.Runtime -> 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Secrets.Runtime/bin/Debug/net10.0/Hexalith.Platform.Secrets.Runtime.dll
+  Hexalith.Platform.Composition -> 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net10.0/Hexalith.Platform.Composition.dll
+  apphost.cs -> /home/administrator/.local/share/dotnet/runfile/apphost-64d78ff15c60f908966809cab1c0259fcef00a20caa68f4e7fe68119e055a4f4/bin/debug/apphost.dll
+Using launch settings from /home/administrator/projects/hexalith/platform/apphost.run.json...
+Unhandled exception. Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException: Nested submodule 
+'/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot/references/Hexalith.Works' is initialized below direct reference 
+'/home/administrator/projects/hexalith/platform/references/Hexalith.ChatBot'.
+   at Hexalith.Builds.Tooling.Workspace.SubmoduleInitializer.CheckNestedAsync(String root, String repository, CancellationToken cancellationToken) in 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:line 231
+   at Hexalith.Builds.Tooling.Workspace.SubmoduleInitializer.CheckNestedReferencesAsync(String root, IReadOnlyList`1 references, CancellationToken 
+cancellationToken) in 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/SubmoduleInitializer.cs:line 173
+   at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, 
+CancellationToken cancellationToken) in 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:line 191
+   at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken) in 
+/home/administrator/projects/hexalith/platform/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:line 27
+   at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder) in 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs:line 65
+   at Hexalith.Platform.Composition.PlatformAppModel.ComposeEntry(IDistributedApplicationBuilder builder) in 
+/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs:line 40
+   at Program.<Main>$(String[] args) in /home/administrator/projects/hexalith/platform/apphost.cs:line 15
+❌ AppHost process exited with code 134.
+📄 See logs at /home/administrator/.aspire/logs/cli_20261102T170634_879933a2.log
+🔍 See AppHost logs at /home/administrator/.aspire/logs/cli_20261102T170634762_detach-child_780e27bff1694ffcaf60c86efebc9de6.log

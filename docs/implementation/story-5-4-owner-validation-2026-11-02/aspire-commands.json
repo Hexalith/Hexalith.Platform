@@ -1,0 +1,87 @@
+[
+  {
+    "name": "aspire-before",
+    "argv": [
+      "aspire",
+      "ps",
+      "--format",
+      "Json",
+      "--non-interactive",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:06:34.426697+00:00",
+    "finishedAtUtc": "2026-11-02T17:06:34.712721+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "log": "aspire-before.log.txt",
+    "logSha256": "f91595f8e5c656c9c978a3bc30ebecbd68c9ff1529b5bd828530e70389603cf3",
+    "dashboardTokensRedacted": true
+  },
+  {
+    "name": "aspire-start",
+    "argv": [
+      "aspire",
+      "start",
+      "--apphost",
+      "/home/administrator/projects/hexalith/platform/apphost.cs",
+      "--isolated",
+      "--format",
+      "Json",
+      "--non-interactive",
+      "--nologo",
+      "--",
+      "--Platform:ActiveModule=conversations",
+      "--Platform:DeclarationPath=/home/administrator/projects/hexalith/platform/references/Hexalith.Conversations/module/hexalith.module-manifest.v2.json"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:06:34.712882+00:00",
+    "finishedAtUtc": "2026-11-02T17:07:29.694656+00:00",
+    "exitCode": 2,
+    "timedOut": false,
+    "log": "aspire-start.log.txt",
+    "logSha256": "768523d8e7a022953b8d5744ec9cb343e8f5bef8955e7d1ac9c3575e19301722",
+    "dashboardTokensRedacted": true
+  },
+  {
+    "name": "aspire-describe",
+    "argv": [
+      "aspire",
+      "describe",
+      "--apphost",
+      "/home/administrator/projects/hexalith/platform/apphost.cs",
+      "--include-hidden",
+      "--format",
+      "Json",
+      "--non-interactive",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:07:29.694893+00:00",
+    "finishedAtUtc": "2026-11-02T17:07:29.964503+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "log": "aspire-describe.log.txt",
+    "logSha256": "c201ac93af41c559317f5ea3e9fb147acbe4340019661c15b8e235763bd0ee2c",
+    "dashboardTokensRedacted": true
+  },
+  {
+    "name": "aspire-after",
+    "argv": [
+      "aspire",
+      "ps",
+      "--format",
+      "Json",
+      "--non-interactive",
+      "--nologo"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedAtUtc": "2026-11-02T17:07:29.964704+00:00",
+    "finishedAtUtc": "2026-11-02T17:07:30.247532+00:00",
+    "exitCode": 0,
+    "timedOut": false,
+    "log": "aspire-after.log.txt",
+    "logSha256": "b3cdbc3dc31fc434aa9f524bfe2e78801e985559f7343602d18651c63912011c",
+    "dashboardTokensRedacted": true
+  }
+]

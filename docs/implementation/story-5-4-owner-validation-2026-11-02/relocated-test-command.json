@@ -1,0 +1,48 @@
+{
+  "name": "same-regression-selection-under-owning-root",
+  "argv": [
+    "dotnet",
+    "/home/administrator/projects/hexalith/platform/obj/story-5-4-owner-validation-runtime-1opxsl5r/Hexalith.Platform.Composition.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.DomainEnrollmentBindingTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PartiesAdoptionTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests",
+    "-xml",
+    "/home/administrator/projects/hexalith/platform/docs/implementation/story-5-4-owner-validation-2026-11-02/enrollment-relocated-tests.xml"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "startedAtUtc": "2026-11-02T17:08:32.538761+00:00",
+  "finishedAtUtc": "2026-11-02T17:09:56.232142+00:00",
+  "exitCode": 0,
+  "log": "enrollment-relocated-tests.log.txt",
+  "logSha256": "b10fd39f10a1b237134b2adfe453f0b94c206f798798419f67b3acb8c5586519",
+  "xml": "enrollment-relocated-tests.xml",
+  "xmlSha256": "504b00d4207e12789f653d663b6ac427cc99bddfed2d989e20fcff43051e7742",
+  "exactRuntimeCopied": true,
+  "runtimeUnchangedAfterTests": true,
+  "runtimeFileCount": 852,
+  "runtimeManifestSha256": "69b7c1c406e97bb367f800af3d458ff95c61e57b11355fffdfdca86c88d459e9",
+  "summary": [
+    {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "96631cde-a4d4-4d8f-ada5-54d1df5242a2",
+      "name": "/home/administrator/projects/hexalith/platform/obj/story-5-4-owner-validation-runtime-1opxsl5r/Hexalith.Platform.Composition.Tests.dll",
+      "run-date": "2026-11-02",
+      "run-time": "17:08:32",
+      "start-rtf": "2026-11-02T17:08:32.7366257+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-11-02T17:09:56.1080825+00:00",
+      "not-run": "0",
+      "passed": "30",
+      "skipped": "0",
+      "time": "83.375",
+      "time-rtf": "00:01:23.3750000",
+      "total": "30"
+    }
+  ]
+}
