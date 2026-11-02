@@ -9,6 +9,14 @@ ROOT = Path(__file__).resolve().parents[1]
 BINDING = ROOT / "eng/builds-tuple.json"
 
 
+def resolve_builds_root(platform_root):
+    """Prefer the existing workspace producer; callers must still verify its identity."""
+    sibling = platform_root.parent / "Hexalith.Builds"
+    if (sibling / "Props/Directory.Packages.props").is_file():
+        return sibling
+    return platform_root / "references/Hexalith.Builds"
+
+
 def load_binding(path=BINDING, require_publication=True):
     binding = json.loads(path.read_bytes())
     if binding.get("schemaVersion") != 1 or binding.get("candidateAcceptance") is not False:

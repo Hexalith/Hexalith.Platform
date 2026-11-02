@@ -7,7 +7,7 @@ import subprocess
 import urllib.request
 import zipfile
 
-from builds_tuple import load_binding, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -39,7 +39,7 @@ def main():
     if args.require_recorded:
         pin = subprocess.check_output(["git", "rev-parse", "HEAD:references/Hexalith.Builds"], cwd=ROOT, text=True).strip()
         validate_recorded_source(binding, pin, state["dirty"])
-        verify_catalog(binding, ROOT / "references/Hexalith.Builds")
+        verify_catalog(binding, resolve_builds_root(ROOT))
     output.mkdir(parents=True)
     archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
     if args.archive:
