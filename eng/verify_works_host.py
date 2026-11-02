@@ -1261,7 +1261,7 @@ def run_verification(args):
         runtime_properties = ["-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
             "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version,
-            "-p:HexalithAspireHostingDaprVersion=" + adapter]
+            "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output)]
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
             properties = runtime_properties + (["-p:BuildProjectReferences=false"] if "Hexalith.Works.AppHost" in project.stem else [])
@@ -1324,6 +1324,14 @@ def run_verification(args):
             "-result-xml", binary_xml], works, environment)
         summary["checks"]["selectedRuntimeBinaries"] = require_passed_tests(binary_xml,
             ["ActualSelectedRuntimeBinariesCaptureWithoutMutation"])
+        telemetry_xml = artifacts / "platform-telemetry.xml"
+        telemetry_output = artifacts / "telemetry-composition"
+        run("platform-telemetry", [executable, "-noLogo", "-explicit", "on", "-method",
+            "Hexalith.Works.IntegrationTests.WorksPlatformTelemetryAdmissionTests.ActualPreviewComposesExporterKeysAndRefusesForeignFixtureTelemetry",
+            "-result-xml", telemetry_xml], works,
+            environment | {"ArtifactsPath": str(telemetry_output), "WORKS_PLATFORM_RUNTIME_ARTIFACTS": str(telemetry_output)})
+        summary["checks"]["platformTelemetry"] = require_passed_tests(telemetry_xml,
+            ["ActualPreviewComposesExporterKeysAndRefusesForeignFixtureTelemetry"])
         # The archive must actually start before expensive write/snapshot/restore scenarios begin.
         # Its isolated evidence never enters the matrix's actualStarts or rollback phase records.
         preflight_runtime = artifacts / "isolated-daprd-retained-preflight"
