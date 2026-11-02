@@ -11,8 +11,11 @@
     <ProjectReference Include="../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
-    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG;HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK</DefineConstants>
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.132.1'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK</DefineConstants>
   </PropertyGroup>
   <!-- Qualify exact SDK cohorts; future packages remain unqualified. -->
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '3.133.0'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants></PropertyGroup>
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '3.133.0'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants></PropertyGroup>
 </Project>

@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sdk: ['3.130.0', '3.130.1', '3.130.2']
+        sdk: ['3.130.0', '3.130.1', '3.130.2', '3.132.1']
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -36,6 +36,11 @@ jobs:
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json
+      - name: Verify every finite capability gate once
+        if: matrix.sdk == '3.132.1'
+        run: >-
+          python3 tests/catalog-builder/verify_sdk_gates.py
+          --evidence "$RUNNER_TEMP/catalog-sdk-gates.json"
       - name: Build the owning tool against the published SDK without warnings
         env:
           NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
@@ -57,5 +62,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: catalog-builder-consumer-binding-${{ matrix.sdk }}
-          path: ${{ runner.temp }}/catalog-builder-evidence
+          path: |
+            ${{ runner.temp }}/catalog-builder-evidence
+            ${{ runner.temp }}/catalog-sdk-gates.json
           if-no-files-found: error

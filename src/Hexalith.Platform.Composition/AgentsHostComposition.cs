@@ -33,10 +33,14 @@ public static class AgentsHostComposition
     public static bool TryCompose(IDistributedApplicationBuilder builder)
         =>TryCompose(builder,CancellationToken.None,TimeSpan.FromSeconds(30));
     internal static bool TryCompose(IDistributedApplicationBuilder builder,CancellationToken cancellationToken,TimeSpan startupTimeout,
-        Func<string,int,CancellationToken,Task<byte[]>>? acquire=null)
+        Func<string,int,CancellationToken,Task<byte[]>>? acquire=null,TimeProvider? startupClock=null)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(startupTimeout);var utf8=new UTF8Encoding(false,true);
+        // Production keeps its original linked-token/System timer path. The internal clock is only a deterministic test seam.
+        using CancellationTokenSource? startupDeadline=startupClock is null?null:new CancellationTokenSource(startupTimeout,startupClock);
+        using var budget=startupDeadline is null?CancellationTokenSource.CreateLinkedTokenSource(cancellationToken):CancellationTokenSource.CreateLinkedTokenSource(cancellationToken,startupDeadline.Token);
+        if(startupDeadline is null) budget.CancelAfter(startupTimeout);
+        var utf8=new UTF8Encoding(false,true);
         byte[] Read(string path)=>(acquire is not null?acquire(path,1024*1024,budget.Token):builder.Environment.IsDevelopment()?BoundedDevelopmentFile.ReadAsync(path,1024*1024,budget.Token):BoundedRegularFile.ReadAsync(path,1024*1024,budget.Token)).WaitAsync(budget.Token).GetAwaiter().GetResult();
         string? configured = builder.Configuration[ProfilePathKey];
         if (string.IsNullOrWhiteSpace(configured))
