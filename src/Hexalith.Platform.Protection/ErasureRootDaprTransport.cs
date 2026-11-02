@@ -7,6 +7,9 @@ namespace Hexalith.Platform.Protection;
 public static class ErasureRootDaprTransport
 {
     /// <summary>Configures exact bounded source-state transport, retaining SDK authentication and endpoint configuration.</summary>
-    public static DaprClientBuilder Configure(DaprClientBuilder builder) => builder.UseGrpcChannelOptions(new GrpcChannelOptions
+    public static DaprClientBuilder Configure(DaprClientBuilder builder) {
+        ArgumentNullException.ThrowIfNull(builder);
+        return builder.UseGrpcChannelOptions(new GrpcChannelOptions
     { MaxReceiveMessageSize = 8 * 1024 * 1024 });
+    }
 }

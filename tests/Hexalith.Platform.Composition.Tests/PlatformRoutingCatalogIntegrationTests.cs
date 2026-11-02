@@ -121,7 +121,7 @@ public class PlatformRoutingCatalogIntegrationTests
 
         async Task<CompositionProcessResult> RunAsync(string command, string[] arguments, IReadOnlyDictionary<string, string>? values, TimeSpan timeout, CancellationToken? cancellationToken = null)
         {
-            var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", [command, .. arguments, "--apphost", apphost, "--non-interactive"], root, values), timeout, cancellationToken ?? TestContext.Current.CancellationToken);
+            var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("aspire", [command, .. arguments, "--apphost", apphost, "--non-interactive"], root, values), timeout, cancellationToken ?? TestContext.Current.CancellationToken).ConfigureAwait(false);
             string safe = result.Output + result.ErrorOutput;
             if (command == "describe" && result.ExitCode == 0 && safe.TrimStart().StartsWith('{'))
             {
@@ -154,7 +154,7 @@ public class PlatformRoutingCatalogIntegrationTests
                     cancellation.CanBeCanceled.ShouldBeFalse();
                     stopped = true;
                     return Task.FromResult(new CompositionProcessResult(true, 0, "stopped", false));
-                });
+                }).ConfigureAwait(false);
             }
         });
         stopped.ShouldBeTrue();
@@ -179,7 +179,7 @@ public class PlatformRoutingCatalogIntegrationTests
     internal static async Task StopStartedHostAsync(bool started, Func<TimeSpan, CancellationToken, Task<CompositionProcessResult>> stop)
     {
         if (!started) return;
-        CompositionProcessResult result = await stop(TimeSpan.FromSeconds(30), CancellationToken.None);
+        CompositionProcessResult result = await stop(TimeSpan.FromSeconds(30), CancellationToken.None).ConfigureAwait(false);
         result.TimedOut.ShouldBeFalse(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldBe(0, result.Output + result.ErrorOutput);
     }

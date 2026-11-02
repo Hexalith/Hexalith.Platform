@@ -14,7 +14,9 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     public static string ResourceId(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence)=>Hash(new { owner,occurrence });
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> FindRetainedAsync(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
-    { var read=await Read(owner,occurrence,token).ConfigureAwait(false);return read?.Record.Binding ?? (enrolledResources.ContainsKey(ResourceId(owner,occurrence)) || dynamicEnrollment is null?null:(await dynamicEnrollment.ResolveAsync(owner,occurrence,token).ConfigureAwait(false))?.Binding); }
+    {
+        ArgumentNullException.ThrowIfNull(occurrence);
+         var read=await Read(owner,occurrence,token).ConfigureAwait(false);return read?.Record.Binding ?? (enrolledResources.ContainsKey(ResourceId(owner,occurrence)) || dynamicEnrollment is null?null:(await dynamicEnrollment.ResolveAsync(owner,occurrence,token).ConfigureAwait(false))?.Binding); }
     private async Task<(CustodyInteractionBindingResource Resource,CustodyInteractionBindingRecord Record,string ETag)?> Read(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
     {
         string id=ResourceId(owner,occurrence);if(!enrolledResources.TryGetValue(id,out var resource)
@@ -92,6 +94,7 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     /// <inheritdoc />
     public async Task<bool> TryAcquireCompletionLeaseAsync(InteractionProtectionBinding binding,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         var occurrence=new PayloadProtectionOccurrenceContext(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId);
         if(!enrolledResources.ContainsKey(ResourceId(binding.Identity.Owner,occurrence))) return dynamicEnrollment is not null && await dynamicEnrollment.AcquireLeaseAsync(binding,true,token).ConfigureAwait(false);
         var read=await Read(binding.Identity.Owner,occurrence,token).ConfigureAwait(false);if(read is not { } observed || observed.Record.Binding!=binding || observed.Record.CompletionLeaseId is not null) return false;
@@ -107,6 +110,8 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     /// <summary>Acquires the one independently anchored encryption lease for the exact registry original. A restored/repeated reservation never obtains another lease.</summary>
     public async Task<bool> TryAcquireEncryptionLeaseAsync(InteractionOccurrenceRecord record,IInteractionOccurrenceRegistry registry,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(record);
+        ArgumentNullException.ThrowIfNull(registry);
         var identity=record.Request.Identity;var occurrence=new PayloadProtectionOccurrenceContext(identity.Sequence,identity.Kind,identity.PayloadTypeId);
         var current=await registry.LookupAsync(identity,token).ConfigureAwait(false);
         if(!enrolledResources.ContainsKey(ResourceId(identity.Owner,occurrence)))
@@ -129,6 +134,7 @@ public sealed class CustodyInteractionProtectionBindingSource(DaprClient dapr,IR
     /// <inheritdoc />
     public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         var read=await Read(binding.Identity.Owner,new(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId),token).ConfigureAwait(false);
         return read?.Record.Binding==binding?read.Value.Record.Erasure:!enrolledResources.ContainsKey(ResourceId(binding.Identity.Owner,new(binding.Identity.Sequence,binding.Identity.Kind,binding.Identity.PayloadTypeId)))
             && dynamicEnrollment is not null?await dynamicEnrollment.ReadErasureAsync(binding,token).ConfigureAwait(false):null;

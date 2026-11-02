@@ -13,6 +13,7 @@ public sealed class QualificationNativeSourceReader(IEventStoreGatewayClient pri
     /// <summary>Reads each independently enrolled exact identity and measures actual persisted bytes, preserving native incarnation/head evidence.</summary>
     public async Task<IReadOnlyList<QualificationNativeStream>?> ReadAsync(IReadOnlyList<AggregateIdentity> enrolledTargets,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(enrolledTargets);
         if(enrolledTargets.Count is 0 or >32 || enrolledTargets.Distinct().Count()!=enrolledTargets.Count) return null;
         var observations=new List<QualificationNativeStream>();
         foreach(var identity in enrolledTargets)

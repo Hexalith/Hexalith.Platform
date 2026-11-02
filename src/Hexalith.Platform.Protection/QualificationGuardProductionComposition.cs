@@ -14,6 +14,7 @@ public static class QualificationGuardProductionComposition
     /// <summary>Captures explicit already enrolled authorities. Missing source/policy/restore proofs refuse at their real ports; no genesis or native binding is inferred.</summary>
     public static QualificationGuardProductionPorts Create(DaprClient dapr,SecretsRuntimeConfiguration runtime,QualificationProtectionInstallation installed,IQualificationOriginalStore originals,TimeProvider? clock=null)
     {
+        ArgumentNullException.ThrowIfNull(installed);
         var time=clock??TimeProvider.System;var transport=new DaprSecretsInvoker(dapr);
         // Exact independently installed original/cell/receipt scopes are captured privately; missing inputs keep new commits denied.
         if(installed is not { GuardTarget:{ } target,GuardTargetAuthority:{ } targetOwner,GuardCellAuthorities:{ } cells,GuardReceiptAuthorities:{ } receipts,

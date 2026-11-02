@@ -69,6 +69,7 @@ public static class ProtectionQualificationActionCatalog
     /// <summary>Validates the entire 41-case installed native recipe inventory before any fixture effect; missing or mislabelled operations refuse.</summary>
     public static void Validate(IReadOnlyDictionary<string, Dictionary<string, ProtectionQualificationActionRecipe>> recipes)
     {
+        ArgumentNullException.ThrowIfNull(recipes);
         using Stream stream = typeof(ProtectionQualificationActionCatalog).Assembly.GetManifestResourceStream("ExtProtectionOwnerPlan")!;
         using var plan = JsonDocument.Parse(stream);
         var cases = plan.RootElement.GetProperty("cases").EnumerateArray().ToArray();

@@ -10,6 +10,8 @@ public static class QualificationGuardRecipeCatalog
     public static QualificationGuardCaseDefinition Compile(string caseId,string tenant,string batch,string scopeSha256,
         IReadOnlyDictionary<string,JsonElement> exactArguments)
     {
+        ArgumentNullException.ThrowIfNull(caseId);
+        ArgumentNullException.ThrowIfNull(exactArguments);
         var recipe=Recipe(caseId);
         QualificationGuardStep Resolve(string token,int ordinal)
         {

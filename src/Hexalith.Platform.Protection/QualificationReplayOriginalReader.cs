@@ -11,6 +11,7 @@ public sealed class QualificationReplayOriginalReader(IQualificationOriginalStor
     /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         string? requestId=SecretsProof.Text(request,"requestId");if(requestId is null) return null;
         var retained=await originals.LookupResultAsync("executor",requestId+":case-result",token).ConfigureAwait(false);var actual=await replay.ReadOriginalAsync(request,token).ConfigureAwait(false);
         var native=await audit.ReadAsync(request,token).ConfigureAwait(false);

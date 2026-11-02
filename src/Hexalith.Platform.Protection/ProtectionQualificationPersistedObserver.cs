@@ -16,6 +16,8 @@ public sealed class ProtectionQualificationPersistedObserver(DaprClient readOnly
     /// <summary>Reads actual persisted facts and projects the owner-verifier wire fields without performing a native mutation.</summary>
     public async Task<JsonObject> ObserveAsync(ProtectionQualificationObservationRecipe recipe, IReadOnlyList<ProtectionTarget> targets, CancellationToken token, ProtectionQualificationProducerIdentity? expectedProducer = null, IReadOnlySet<string>? expectedOperationIds = null, IReadOnlyDictionary<string, string>? componentBackings = null)
     {
+        ArgumentNullException.ThrowIfNull(recipe);
+        ArgumentNullException.ThrowIfNull(targets);
         _ = loadedEngine;
         var before = await erasureRoot.ReadObservationVersionAsync(recipe.TenantId, token).ConfigureAwait(false)
             ?? throw new InvalidOperationException("Current ERC observation unavailable.");

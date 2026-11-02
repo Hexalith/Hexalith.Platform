@@ -11,6 +11,7 @@ public sealed class QualificationGuardedOriginalReader(DaprGuardedStateTransacti
     /// <summary>Reads immutable exact physical commit positions, including stale/no-effect commits, and authenticates decoded logical receipt correlation.</summary>
     public async Task<IReadOnlyList<QualificationGuardedOriginal>?> ReadAsync(string tenant,IReadOnlyList<QualificationGuardStep> enrolledOperations,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(enrolledOperations);
         if(enrolledOperations.Count>1000 || enrolledOperations.Any(value=>value.Kind!=QualificationGuardStepKind.Guard || value.Transition?.TenantId!=tenant)
             || enrolledOperations.Select(value=>value.Transition!.OperationId).Distinct(StringComparer.Ordinal).Count()!=enrolledOperations.Count) return null;
         var result=new List<QualificationGuardedOriginal>();

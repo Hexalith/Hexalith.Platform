@@ -28,7 +28,7 @@ internal sealed class CatalogMetadataStallingStream(TaskCompletionSource started
     public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
     {
         started.TrySetResult();
-        await Task.Delay(Timeout.Infinite, cancellationToken);
+        await Task.Delay(Timeout.Infinite, cancellationToken).ConfigureAwait(false);
         return 0;
     }
 }

@@ -14,6 +14,7 @@ public sealed class Fr34CommandAuthorizationHandler(Fr34OccurrenceRecipe recipe,
     /// <inheritdoc />
     public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
     {
+        ArgumentNullException.ThrowIfNull(current);
         var request=payload.Deserialize<Request>(CustodyBindingContract.Json);
         var workload=request is null?[]:current.Callers.Where(value=>value.Identity==request.caller && value.ScopeReference==request.principal).ToArray();
         // Capture the exact consulted grant, including its purpose, expiry and revocation.
@@ -31,6 +32,8 @@ public sealed class Fr34CommandAuthorizationHandler(Fr34OccurrenceRecipe recipe,
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(current);
         var request=payload.Deserialize<Request>(CustodyBindingContract.Json);
         if(method!="fr34-command-authorize" || request is null || caller.Role!="fr34-engine" || caller.Revoked || caller.ValidUntil<=clock.GetUtcNow()
             || current.ValidUntil<=clock.GetUtcNow() || current.Fr34Target!=recipe.Target || string.IsNullOrWhiteSpace(current.Fr34AuthorizationRevision)

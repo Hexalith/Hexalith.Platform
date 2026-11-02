@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Aspire.Hosting;
@@ -12,6 +13,36 @@ using Shouldly;
 [Collection("Platform file entry")]
 public sealed class PlatformHostedPublishingTests
 {
+    private static IReadOnlyDictionary<string, string> SourceRoots => new Dictionary<string, string>(StringComparer.Ordinal)
+    {
+        ["EventStore"] = SelectedRoot("EventStore"),
+        ["Tenants"] = SelectedRoot("Tenants"),
+        ["Memories"] = SelectedRoot("Memories"),
+        ["Parties"] = SelectedRoot("Parties"),
+    };
+
+    private static string SelectedRoot(string name) => Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_HOSTED_" + name.ToUpperInvariant() + "_ROOT")
+        ?? throw new InvalidDataException($"HEXALITH_PLATFORM_HOSTED_{name.ToUpperInvariant()}_ROOT is required for hosted qualification tests.");
+
+    private static PlatformCompositionOptions ReferenceOptions() => PlatformHostedPublishing.ReferenceOptions(Root, SourceRoots);
+
+    private static void RunGit(string root, params string[] arguments)
+    {
+        ProcessStartInfo start = new("git") { WorkingDirectory = root, RedirectStandardError = true, RedirectStandardOutput = true, UseShellExecute = false };
+        foreach (string argument in arguments) start.ArgumentList.Add(argument);
+        using Process process = Process.Start(start) ?? throw new InvalidOperationException("Git could not prepare a hosted test fixture.");
+        string error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+        if (process.ExitCode != 0) throw new InvalidOperationException($"Git fixture preparation failed: {error}");
+    }
+
+    private static string CloneParties(string directory)
+    {
+        string clone = Path.Combine(directory, "parties");
+        RunGit(directory, "clone", "--quiet", "--local", SourceRoots["Parties"], clone);
+        return clone;
+    }
+
     private static string Root
     {
         get
@@ -25,7 +56,7 @@ public sealed class PlatformHostedPublishingTests
     [Fact]
     public void NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness()
     {
-        PlatformCompositionOptions options = PlatformHostedPublishing.ReferenceOptions(Root);
+        PlatformCompositionOptions options = ReferenceOptions();
         PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(options);
         IReadOnlyList<PlatformServerBinding> local = PlatformAppModel.Prepare(options);
         graph.Workloads.Count.ShouldBe(8);
@@ -45,7 +76,7 @@ public sealed class PlatformHostedPublishingTests
     [Fact]
     public void HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput()
     {
-        PlatformCompositionOptions options = PlatformHostedPublishing.ReferenceOptions(Root) with { ComponentsDirectory = "/nonexistent-local-components" };
+        PlatformCompositionOptions options = ReferenceOptions() with { ComponentsDirectory = "/nonexistent-local-components" };
         string actual = PlatformHostedPublishing.Describe(PlatformApplicationGraph.Resolve(options)).GetRawText();
         string snapshot = File.ReadAllText(Path.Combine(Root, "eng/helm-qualification/chart/reference-graph.json"));
         JsonElement.DeepEquals(JsonDocument.Parse(actual).RootElement, JsonDocument.Parse(snapshot).RootElement).ShouldBeTrue("the maintained chart must use the current canonical metadata");
@@ -59,7 +90,7 @@ public sealed class PlatformHostedPublishingTests
     [Fact]
     public void HostedPublicRoutesMatchOnlyTheDeclaredPublicServers()
     {
-        JsonElement description = PlatformHostedPublishing.Describe(PlatformApplicationGraph.Resolve(PlatformHostedPublishing.ReferenceOptions(Root)));
+        JsonElement description = PlatformHostedPublishing.Describe(PlatformApplicationGraph.Resolve(ReferenceOptions()));
         Dictionary<string, string[]> expected = new()
         {
             ["eventstore/gateway"] = ["/api/v1"],
@@ -115,6 +146,11 @@ public sealed class PlatformHostedPublishingTests
             ProjectDirectory = Root, DisableDashboard = true,
         });
         builder.Configuration["Platform:Hosted:Enabled"] = "true";
+        foreach (KeyValuePair<string, string> owner in SourceRoots)
+        {
+            builder.Configuration["Platform:Hosted:SourceRoots:" + owner.Key] = owner.Value;
+        }
+
         builder.ExecutionContext.IsPublishMode.ShouldBeTrue();
         return builder;
     }
@@ -130,7 +166,7 @@ public sealed class PlatformHostedPublishingTests
             IDistributedApplicationBuilder builder = PublishBuilder();
             builder.Configuration["Platform:Hosted:GraphPath"] = path;
             PlatformAppModel.ComposeEntry(builder);
-            PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(PlatformHostedPublishing.ReferenceOptions(Root));
+            PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions());
             JsonElement.DeepEquals(JsonDocument.Parse(File.ReadAllText(path)).RootElement, PlatformHostedPublishing.Describe(graph)).ShouldBeTrue();
             builder.Resources.Count.ShouldBe(17); // One environment, eight workloads and their native Dapr sidecar resources.
             builder.Resources.ShouldAllBe(r => r is ContainerResource || r is IDaprSidecarResource || r.Name == "qualification");
@@ -154,11 +190,80 @@ public sealed class PlatformHostedPublishingTests
     }
 
     [Fact]
-    public void HostedPublishRequiresGraphPathBeforeAddingResources()
+    public void HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources()
     {
+        string missingPath = Path.Combine(Path.GetTempPath(), "refused-hosted-missing-" + Guid.NewGuid().ToString("N") + ".json");
+        IDistributedApplicationBuilder missing = PublishBuilder();
+        missing.Configuration["Platform:Hosted:SourceRoots:Memories"] = "";
+        missing.Configuration["Platform:Hosted:GraphPath"] = missingPath;
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeEntry(missing)).Message.ShouldContain("SourceRoots:Memories is required");
+        missing.Resources.ShouldBeEmpty();
+        File.Exists(missingPath).ShouldBeFalse();
+
+        string fixtureDirectory = Path.Combine(Path.GetTempPath(), "hosted-source-drift-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(fixtureDirectory);
+        try
+        {
+            string alternateParties = CloneParties(fixtureDirectory);
+            RunGit(alternateParties, "-c", "user.name=Hosted Test", "-c", "user.email=hosted@example.invalid", "commit", "--quiet", "--allow-empty", "-m", "alternate revision");
+            File.ReadAllBytes(Path.Combine(alternateParties, "module", "hexalith.module-manifest.v2.json"))
+                .ShouldBe(File.ReadAllBytes(Path.Combine(SourceRoots["Parties"], "module", "hexalith.module-manifest.v2.json")));
+            string refusedPath = Path.Combine(fixtureDirectory, "refused-graph.json");
+            IDistributedApplicationBuilder drift = PublishBuilder();
+            drift.Configuration["Platform:Hosted:SourceRoots:Parties"] = alternateParties;
+            drift.Configuration["Platform:Hosted:GraphPath"] = refusedPath;
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeEntry(drift)).Message.ShouldContain("source revision");
+            drift.Resources.ShouldBeEmpty();
+            File.Exists(refusedPath).ShouldBeFalse();
+        }
+        finally { Directory.Delete(fixtureDirectory, true); }
+
         IDistributedApplicationBuilder builder = PublishBuilder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("Platform:Hosted:GraphPath is required");
         builder.Resources.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void HostedReferenceOptionsReadsApprovedEnvironmentRoots()
+    {
+        PlatformCompositionOptions options = PlatformHostedPublishing.ReferenceOptions(Root);
+        options.Mapping.Entries.Select(entry => entry.Path).ShouldBe(SourceRoots.Values);
+        PlatformApplicationGraph.Resolve(options).Workloads.Count.ShouldBe(8);
+    }
+
+    [Fact]
+    public void HostedPublishRejectsDirtyApprovedRevisionSources()
+    {
+        string fixtureDirectory = Path.Combine(Path.GetTempPath(), "hosted-dirty-source-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(fixtureDirectory);
+        try
+        {
+            string dirtyParties = CloneParties(fixtureDirectory);
+            File.AppendAllText(Path.Combine(dirtyParties, "README.md"), Environment.NewLine + "dirty hosted fixture" + Environment.NewLine);
+            string refusedPath = Path.Combine(fixtureDirectory, "refused-graph.json");
+            IDistributedApplicationBuilder dirty = PublishBuilder();
+            dirty.Configuration["Platform:Hosted:SourceRoots:Parties"] = dirtyParties;
+            dirty.Configuration["Platform:Hosted:GraphPath"] = refusedPath;
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeEntry(dirty)).Message.ShouldContain("source revision or tracked bytes");
+            dirty.Resources.ShouldBeEmpty();
+            File.Exists(refusedPath).ShouldBeFalse();
+        }
+        finally { Directory.Delete(fixtureDirectory, true); }
+    }
+
+    [Fact]
+    public void HostedReferenceOptionsRejectsChangedMappingBytes()
+    {
+        string fixtureDirectory = Path.Combine(Path.GetTempPath(), "hosted-mapping-drift-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(fixtureDirectory, "eng"));
+        try
+        {
+            string mapping = Path.Combine(fixtureDirectory, "eng", "story-1-17-main-reference-mapping.json");
+            File.WriteAllText(mapping, "{}");
+            Should.Throw<InvalidDataException>(() => PlatformHostedPublishing.ReferenceOptions(fixtureDirectory, SourceRoots))
+                .Message.ShouldContain("mapping is missing or differs");
+        }
+        finally { Directory.Delete(fixtureDirectory, true); }
     }
 
     [Theory]
@@ -184,14 +289,14 @@ public sealed class PlatformHostedPublishingTests
         if (disabled)
             foreach (JsonNode? server in module["identity"]!["servers"]!.AsArray()) server!["enabled"] = false;
         PlatformModuleDeclaration declaration = new("timesheets-fixture", JsonSerializer.SerializeToElement(module));
-        PlatformCompositionOptions options = PlatformHostedPublishing.ReferenceOptions(Root);
+        PlatformCompositionOptions options = ReferenceOptions();
         Should.Throw<InvalidDataException>(() => PlatformServerBindings.Resolve(options, [declaration])).Message.ShouldContain("explicit Development/source opt-in is required");
     }
 
     [Fact]
     public void SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain()
     {
-        PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(PlatformHostedPublishing.ReferenceOptions(Root));
+        PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions());
         JsonElement acl = graph.Dapr.AccessControl("parties", "qualified", "fixture.invalid");
         acl.GetProperty("defaultAction").GetString().ShouldBe("deny");
         JsonElement[] policies = acl.GetProperty("policies").EnumerateArray().ToArray();

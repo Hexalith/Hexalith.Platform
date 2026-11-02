@@ -19,15 +19,19 @@ task to render the current complete closure without changing that policy.
 From the owning Platform root, export a new canonical graph to a fresh path:
 
 ```sh
-DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
+HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/absolute/path/to/approved/Hexalith.EventStore \
+HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/absolute/path/to/approved/Hexalith.Tenants \
+HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/absolute/path/to/approved/Hexalith.Memories \
+HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/absolute/path/to/approved/Hexalith.Parties \
   dotnet run --project eng/mcpcli-operator-setup/graph-export/GraphExport.csproj \
-  --configuration Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false \
-  -p:RunAnalyzers=false -- "$PWD" /tmp/mcpcli-417-new-graph.json
+  --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true \
+  -- "$PWD" /tmp/mcpcli-417-new-graph.json
 HELM_BIN=/absolute/path/to/verified/helm-4.2.0 python3 -m unittest discover -v \
   -s eng/mcpcli-operator-setup -p 'test_*.py'
 ```
 
-The source resolver reads declared root checkouts only. Initialize no nested
+Each approved root must match the active `eng/story-1-17-main-reference-mapping.json` and be a
+clean, absolute Git checkout outside Platform's nested references. The source resolver reads declared root checkouts only. Initialize no nested
 submodules and change no dependency versions. Before preparing, compare the new
 graph semantically with `chart/reference-graph.json`; update only this task copy
 when actual declarations change. Record source revisions and SHA-256 inputs. The

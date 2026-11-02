@@ -16,7 +16,8 @@ public static class ProtectionQualificationRoleApplication
     /// <summary>Runs an already composed native role. Missing signer, installed scope, private credentials or native enrollment cannot create a server.</summary>
     public static async Task RunAsync(ProtectionQualificationRoleService service, string credentialReference, CancellationToken token = default, IReadOnlyList<IHostedService>? workers = null)
     {
-        await using var app = Build(service, credentialReference, workers);
+        var app = Build(service, credentialReference, workers);
+        await using var appDisposal = app.ConfigureAwait(false);
         await app.RunAsync(token).ConfigureAwait(false);
     }
     /// <summary>Builds the actual role route. Credential resolution remains current for every request; redirects, alternate roles and unbounded frames are unavailable.</summary>

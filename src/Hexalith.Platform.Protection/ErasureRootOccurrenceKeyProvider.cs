@@ -21,11 +21,13 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <summary>Validates actual native digest inventory and current source-write permission before source enrollment or root issue.</summary>
     public async Task<bool> PreflightEnrollmentAsync(ErasureRootOccurrenceEnrollment enrollment, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(enrollment);
         return await bindings.PreflightAsync(enrollment, token).ConfigureAwait(false);
     }
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveDigestAsync(InteractionOccurrenceIdentity identity, string version, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         var original = await bindings.FindAsync(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity), token).ConfigureAwait(false);
         if (original?.Enrollment.Binding.Identity != identity || !await IsCurrentAsync(identity, "Read", token).ConfigureAwait(false)) { return null; }
         return await digests.ResolveAsync(original.Enrollment, version, token).ConfigureAwait(false);
@@ -34,6 +36,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <inheritdoc />
     public async Task<bool> AcquireEncryptionLeaseAsync(InteractionOccurrenceRecord record, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(record);
         var identity = record.Request.Identity;
         var original = await bindings.FindAsync(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity), token).ConfigureAwait(false);
         if (original?.Enrollment.Binding.Identity != identity || original.Enrollment.Binding.KeyReference != record.KeyReference) { return false; }
@@ -45,6 +48,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveRootAsync(InteractionOccurrenceIdentity identity, string keyReference, bool writing, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         using var acquisition = _quiescence.Enter();
         if (acquisition is null) { return null; }
         await CompleteDisposedUsesAsync(token).ConfigureAwait(false);
@@ -86,6 +90,7 @@ public sealed class ErasureRootOccurrenceKeyProvider(ErasureRootCustody custody,
     /// <inheritdoc />
     public async Task<bool> IsCurrentAsync(InteractionOccurrenceIdentity identity, string operation, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if (operation is not ("Read" or "Write")) { return false; }
         var original = await bindings.FindAsync(identity.Owner, ErasureRootOccurrenceBindings.Occurrence(identity), token).ConfigureAwait(false);
         if (original?.Enrollment.Binding.Identity != identity || operation == "Write" && original.EncryptionRequestDigest is null) { return false; }

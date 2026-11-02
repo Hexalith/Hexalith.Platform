@@ -26,6 +26,8 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <inheritdoc />
     public async Task<Fr34OccurrenceClaim?> ResolveAsync(AggregateIdentity owner,PayloadProtectionOccurrenceContext occurrence,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(occurrence);
+        ArgumentNullException.ThrowIfNull(owner);
         if(!Valid() || !ValidOwner(owner,occurrence)) return null;string canary=owner.AggregateId;
         var request=Node(new { recipe.RecipeId,owner,occurrence });
         var exact=ExactBinding(owner,occurrence);
@@ -98,12 +100,14 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <inheritdoc />
     public async Task<bool> AcquireLeaseAsync(InteractionProtectionBinding binding,bool completion,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         if(await Claim(binding.Identity,token).ConfigureAwait(false) is not { } claim || claim.Binding!=binding) return false;
         return await claims.BeginFinalAsync("fr34-recipes",recipe.RecipeId+":"+claim.SlotId+(completion?":completion":":encryption"),Node(binding),token).ConfigureAwait(false);
     }
     /// <inheritdoc />
     public async Task<CustodyInteractionMaterialProfile?> MaterialAsync(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if(await Claim(identity,token).ConfigureAwait(false) is not { } claim || claim.Binding.Identity!=identity) return null;
         if(writing) return claim.Write;
         for(int ordinal=0;ordinal<claim.Reads.Count;ordinal++)
@@ -123,6 +127,8 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <inheritdoc />
     public async Task<bool> AdmitReleaseAsync(InteractionOccurrenceIdentity identity,CustodyInteractionMaterialProfile profile,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
+        ArgumentNullException.ThrowIfNull(profile);
         if(await Claim(identity,token).ConfigureAwait(false) is not { } claim || claim.Binding.Identity!=identity || profile!=claim.Write && !claim.Reads.Contains(profile)) return false;
         return await readUses.BeginFinalAsync("occurrence-read-use",recipe.RecipeId+":"+claim.SlotId+":release:"+Id(profile.KeyUse),Node(new { identity,profile }),token).ConfigureAwait(false);
     }
@@ -142,6 +148,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <summary>Read-only command claim verification. It can neither allocate a claim nor accept an arbitrary caller target.</summary>
     public async Task<bool> VerifyCommandAsync(Hexalith.EventStore.Contracts.Commands.SubmitCommandRequest command,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(command);
         if(!Valid() || command.Domain!="fr34-canary" || command.Tenant!=recipe.Target.TenantId || command.CommandType!=typeof(PersistFr34Canary).FullName
             || command.AggregateId is not { Length:64 } || !command.AggregateId.All(char.IsAsciiHexDigit)
             || command.MessageId!=EventStorePrivateRecordingPort.StableUlid("fr34",command.Tenant,command.AggregateId) || command.IdempotencyKey!=command.MessageId || command.Extensions is { Count:>0 }) return false;
@@ -158,6 +165,7 @@ public sealed class Fr34OccurrenceProducer(Fr34OccurrenceRecipe recipe,IQualific
     /// <inheritdoc />
     public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         if(custody is null || manifests is null || await Claim(binding.Identity,token).ConfigureAwait(false) is not { } claim || claim.Binding!=binding
             || claim.NativeManifest is not { } expected || expected.Original.Targets.Count!=1 || expected.Original.Targets[0]!=binding.Identity.Target
             || await manifests.FindAsync(expected.ReservationReceiptId,token).ConfigureAwait(false) is not { } found || Id(found)!=Id(expected.Original)) return null;

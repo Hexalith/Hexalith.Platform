@@ -23,10 +23,18 @@ public sealed class ErasureRootAuthorityOperationHandler(ErasureRootCustody cust
     public bool RequiresCurrentResultAdmission(string method) => true;
     /// <inheritdoc />
     public Task<object?> RecoverAsync(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, CancellationToken token)
-        => HandleCoreAsync(method, payload, caller, current, true, token);
+    {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(current);
+        return HandleCoreAsync(method, payload, caller, current, true, token);
+    }
     /// <inheritdoc />
     public Task<object?> HandleAsync(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, CancellationToken token)
-        => HandleCoreAsync(method, payload, caller, current, false, token);
+    {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(current);
+        return HandleCoreAsync(method, payload, caller, current, false, token);
+    }
     private async Task<object?> HandleCoreAsync(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, bool recovery, CancellationToken token)
     {
         if (current.ValidUntil <= clock.GetUtcNow() || caller.ValidUntil <= clock.GetUtcNow() || caller.Revoked

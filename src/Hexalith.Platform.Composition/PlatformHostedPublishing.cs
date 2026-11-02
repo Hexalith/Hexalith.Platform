@@ -35,15 +35,38 @@ public static class PlatformHostedPublishing
         });
     }
 
-    /// <summary>Selects the same four-owner reference composition, without calling the local binder.</summary>
-    public static PlatformCompositionOptions ReferenceOptions(string root) => new()
+    /// <summary>Selects verified direct-revision roots supplied explicitly through the hosted environment.</summary>
+    public static PlatformCompositionOptions ReferenceOptions(string root)
     {
-        PlatformRoot = root,
-        Mapping = new SourceMapping(WorkspaceMode.Source, root, "Hexalith.Platform", new[] { "EventStore", "Tenants", "Memories", "Parties" }
-            .Select(name => new SourceMappingEntry("Hexalith." + name, "source", Path.Combine(root, "references", "Hexalith." + name))).ToArray(), false),
-        ActiveModule = "parties",
-        DeclarationPaths = [Path.Combine(root, "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json")],
-    };
+        Dictionary<string, string> sourceRoots = new(StringComparer.Ordinal);
+        foreach (string name in new[] { "EventStore", "Tenants", "Memories", "Parties" })
+        {
+            string? selected = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_HOSTED_" + name.ToUpperInvariant() + "_ROOT");
+            if (string.IsNullOrWhiteSpace(selected))
+            {
+                throw new InvalidDataException($"HEXALITH_PLATFORM_HOSTED_{name.ToUpperInvariant()}_ROOT is required for the approved direct-revision graph.");
+            }
+
+            sourceRoots.Add(name, selected);
+        }
+
+        return ReferenceOptions(root, sourceRoots);
+    }
+
+    /// <summary>Selects the approved four-owner reference composition from verified direct-revision source roots.</summary>
+    public static PlatformCompositionOptions ReferenceOptions(string root, IReadOnlyDictionary<string, string> sourceRoots)
+    {
+        IReadOnlyList<(string Name, string Root)> owners = PlatformHostedReferenceMapping.Verify(root, sourceRoots);
+        string partiesRoot = owners.Single(owner => owner.Name == "Parties").Root;
+        return new PlatformCompositionOptions
+        {
+            PlatformRoot = root,
+            Mapping = new SourceMapping(WorkspaceMode.Source, root, "Hexalith.Platform", owners
+                .Select(owner => new SourceMappingEntry("Hexalith." + owner.Name, "source", owner.Root)).ToArray(), false),
+            ActiveModule = "parties",
+            DeclarationPaths = [Path.Combine(partiesRoot, "module", "hexalith.module-manifest.v2.json")],
+        };
+    }
 
     /// <summary>Probes the pinned native integration. No publish/deploy operation is triggered here.</summary>
     public static void ComposeNativeProbe(IDistributedApplicationBuilder builder)
@@ -55,7 +78,19 @@ public static class PlatformHostedPublishing
             throw new InvalidOperationException("Hosted qualification is publish-only; deploy is forbidden.");
         if (builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled") || builder.Configuration.GetValue<bool>("Platform:Works:Enabled") || builder.Configuration.GetValue<bool>("Platform:Agents:Enabled"))
             throw new InvalidDataException("Hosted reference publishing cannot combine local composition selections.");
-        PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions(builder.AppHostDirectory));
+        Dictionary<string, string> sourceRoots = new(StringComparer.Ordinal);
+        foreach (string name in new[] { "EventStore", "Tenants", "Memories", "Parties" })
+        {
+            string? selected = builder.Configuration["Platform:Hosted:SourceRoots:" + name];
+            if (string.IsNullOrWhiteSpace(selected))
+            {
+                throw new InvalidDataException($"Platform:Hosted:SourceRoots:{name} is required for the approved direct-revision graph.");
+            }
+
+            sourceRoots.Add(name, selected);
+        }
+
+        PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions(builder.AppHostDirectory, sourceRoots));
         string graphPath = builder.Configuration["Platform:Hosted:GraphPath"] ?? throw new InvalidDataException("Platform:Hosted:GraphPath is required for the native probe.");
         File.WriteAllText(Path.GetFullPath(graphPath), Describe(graph).GetRawText() + Environment.NewLine);
         builder.AddKubernetesEnvironment("qualification").WithDashboard(false);

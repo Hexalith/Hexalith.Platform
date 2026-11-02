@@ -20,7 +20,7 @@ public sealed class WriterProtocolStartupTests
     {
         using CancellationTokenSource owner = new();
         var failure = await Assert.ThrowsAsync<TimeoutException>(() => CompositionWriterProtocolCutover.ActivateAsync(
-            async token => { await Task.Delay(Timeout.InfiniteTimeSpan, token); return new Uri("http://127.0.0.1"); },
+            async token => { await Task.Delay(Timeout.InfiniteTimeSpan, token).ConfigureAwait(false); return new Uri("http://127.0.0.1"); },
             "unit-test", "UnitTestSigningKeyOfAtLeast32Characters", TimeSpan.FromMilliseconds(50), owner.Token));
         failure.Message.ShouldBe("cutover-timeout;endpoint-unallocated");
         owner.IsCancellationRequested.ShouldBeFalse();

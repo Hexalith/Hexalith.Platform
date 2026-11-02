@@ -10,6 +10,7 @@ public static class ProtectionQualificationSubstitutions
     /// <summary>Builds all concrete canonical/header, immutable dispatch and manifest substitutions for the exact owner action.</summary>
     public static IReadOnlyList<ProtectionQualificationSubstitution> Create(string action, DeletionBatchConsumptionRequest original, string otherTenant)
     {
+        ArgumentNullException.ThrowIfNull(original);
         var result = new List<ProtectionQualificationSubstitution>(); var cap = original.Capability;
         void Add(string label, DeletionBatchConsumptionRequest request) => result.Add(new(label, request));
         void Capability(string label, DeletionBatchCapabilityV1 changed) => Add(label, original with { Capability = changed });

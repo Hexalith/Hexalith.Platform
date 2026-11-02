@@ -115,6 +115,7 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     public async Task<CustodyKeyRegistration?> WrapAsync(CustodyKeyObjectIdentity identity, string operationId,
         long expectedLifecycleRevision, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         ValidateIdentity(identity);
         if (await ReadPermanentLossAsync(identity.TenantId, cancellationToken).ConfigureAwait(false) is not null) { return null; }
         ArgumentException.ThrowIfNullOrWhiteSpace(operationId);
@@ -159,6 +160,7 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     public async Task<OwnedErasureRootKey?> UnwrapAsync(CustodyKeyRegistration registration, string holderId,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(registration);
         using var acquisition = _quiescence.Enter();
         if (acquisition is null) { return null; }
         ValidateIdentity(registration.Identity);
@@ -228,6 +230,8 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     public async Task<bool> CompleteHolderAsync(CustodyKeyRegistration registration, OwnedErasureRootKey holder,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(holder);
+        ArgumentNullException.ThrowIfNull(registration);
         if (!_issuedHolders.TryGetValue(holder, out var issued) || issued != registration || !holder.IsDisposed
             || holder.Bytes.Length != 32 || holder.Bytes.AsSpan().IndexOfAnyExcept((byte)0) >= 0) { return false; }
         string tenant = registration.Identity.TenantId;
@@ -286,6 +290,7 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
     /// <summary>Reads the exact independent erasure index. Missing installation, outage or an unfinished manifest never establishes erasure.</summary>
     public async Task<DeletionTargetReceipt?> ReadErasureAsync(ProtectionTarget target, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(target);
         try
         {
             if (!await authorization.AuthorizeAsync(target.TenantId, TargetId(target), "ReadErasure", Hash(target), cancellationToken).ConfigureAwait(false)) { return null; }
@@ -299,11 +304,17 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
 
     /// <inheritdoc />
     public Task<DeletionManifestProviderResult> ConsumeAsync(DeletionBatchConsumptionRequest request, string reservationReceiptId, CancellationToken cancellationToken = default)
-        => ManifestAsync(request, reservationReceiptId, true, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return ManifestAsync(request, reservationReceiptId, true, cancellationToken);
+    }
 
     /// <inheritdoc />
     public Task<DeletionManifestProviderResult> LookupAsync(DeletionBatchConsumptionRequest request, string reservationReceiptId, CancellationToken cancellationToken = default)
-        => ManifestAsync(request, reservationReceiptId, false, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return ManifestAsync(request, reservationReceiptId, false, cancellationToken);
+    }
 
     private async Task<DeletionManifestProviderResult> ManifestAsync(DeletionBatchConsumptionRequest supplied, string reservation, bool start, CancellationToken token)
     {
@@ -424,11 +435,19 @@ public sealed partial class ErasureRootCustody(IErasureRootStore store, ErasureR
 
     /// <inheritdoc />
     public Task<CustodyKeyLifecycleOutcome> ExecuteAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest original, string requestDigest, CancellationToken cancellationToken = default)
-        => LifecycleAsync(registration, original, requestDigest, true, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(original);
+        ArgumentNullException.ThrowIfNull(registration);
+        return LifecycleAsync(registration, original, requestDigest, true, cancellationToken);
+    }
 
     /// <inheritdoc />
     public Task<CustodyKeyLifecycleOutcome> LookupAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest original, string requestDigest, CancellationToken cancellationToken = default)
-        => LifecycleAsync(registration, original, requestDigest, false, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(original);
+        ArgumentNullException.ThrowIfNull(registration);
+        return LifecycleAsync(registration, original, requestDigest, false, cancellationToken);
+    }
 
     private async Task<CustodyKeyLifecycleOutcome> LifecycleAsync(CustodyKeyRegistration registration, CustodyKeyLifecycleRequest request, string digest, bool effect, CancellationToken token)
     {

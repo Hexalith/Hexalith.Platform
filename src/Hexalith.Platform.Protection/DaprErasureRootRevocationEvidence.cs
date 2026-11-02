@@ -17,16 +17,28 @@ public sealed class DaprErasureRootRevocationEvidence(ErasureRootTenantAuthority
     public bool PendingActivation(DeletionReattestationActivation activation) => true;
     /// <inheritdoc />
     public Task<bool> VerifyRevocationEvidenceAsync(DeletionCapabilityRevocationEnvelope envelope, CancellationToken cancellationToken)
-        => VerifyAsync(envelope.TenantId, envelope.EventIdentity, "VerifyRevocationEvidence", envelope, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(envelope);
+        return VerifyAsync(envelope.TenantId, envelope.EventIdentity, "VerifyRevocationEvidence", envelope, cancellationToken);
+    }
     /// <inheritdoc />
     public Task<bool> VerifyActivationEvidenceAsync(DeletionReattestationActivation activation, CancellationToken cancellationToken)
-        => VerifyAsync(activation.Replacement.Capability.TenantId, activation.OperationId, "VerifyActivationEvidence", activation, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(activation);
+        return VerifyAsync(activation.Replacement.Capability.TenantId, activation.OperationId, "VerifyActivationEvidence", activation, cancellationToken);
+    }
     /// <inheritdoc />
     public Task<bool> VerifyBlockedReplacementEvidenceAsync(DeletionBlockedReplacementReconciliation request, CancellationToken cancellationToken)
-        => VerifyAsync(request.Capability.TenantId, request.OperationId, "VerifyBlockedReplacementEvidence", request, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return VerifyAsync(request.Capability.TenantId, request.OperationId, "VerifyBlockedReplacementEvidence", request, cancellationToken);
+    }
     /// <inheritdoc />
     public Task<bool> VerifyCurrentBlockedReplacementAsync(DeletionBlockedReplacementReconciliation request, long guardRevision, string guardStateDigest, CancellationToken cancellationToken = default)
-        => VerifyAsync(request.Capability.TenantId, request.OperationId, "VerifyCurrentBlockedReplacement", new { request, guardRevision, guardStateDigest }, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return VerifyAsync(request.Capability.TenantId, request.OperationId, "VerifyCurrentBlockedReplacement", new { request, guardRevision, guardStateDigest }, cancellationToken);
+    }
     private async Task<bool> VerifyAsync(string tenant, string identity, string operation, object original, CancellationToken token)
     {
         string digest = ErasureRootCustody.Hash(original);

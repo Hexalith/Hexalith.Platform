@@ -31,6 +31,10 @@ public sealed class CustodyGuardedTransactionAnchors(DaprClient dapr,IQualificat
     public async Task<bool> AdmitAsync(GuardedStateTransactionTarget target,GuardedStateCommitRequest request,
         IReadOnlyDictionary<string,ICustodyOwnerStateAuthority> cells,IReadOnlyDictionary<string,ICustodyOwnerStateAuthority> receipts,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(cells);
+        ArgumentNullException.ThrowIfNull(receipts);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(target);
         if(await Read(request.OperationId,token).ConfigureAwait(false) is { } prior)
         {
             if(!Exact(prior,target,request)) return false;
@@ -69,6 +73,10 @@ public sealed class CustodyGuardedTransactionAnchors(DaprClient dapr,IQualificat
     public async Task<bool> ReconcileAsync(GuardedStateTransactionTarget target,GuardedStateCommitReceipt receipt,
         IReadOnlyDictionary<string,ICustodyOwnerStateAuthority> cells,IReadOnlyDictionary<string,ICustodyOwnerStateAuthority> receipts,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(cells);
+        ArgumentNullException.ThrowIfNull(receipt);
+        ArgumentNullException.ThrowIfNull(receipts);
+        ArgumentNullException.ThrowIfNull(target);
         var plan=await Read(receipt.OperationId,token).ConfigureAwait(false);
         if(plan is null || Hash(plan.Target)!=Hash(target) || Hash(plan.Receipt)!=Hash(receipt) || !receipts.TryGetValue(receipt.OperationId,out var receiptOwner)) return false;
         if(await originals.LookupResultAsync(Role,receipt.OperationId,token).ConfigureAwait(false) is { } completed)

@@ -19,7 +19,10 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     private readonly Dictionary<string,InteractionOccurrenceOwnedKey> _ownedUses=new(StringComparer.Ordinal);
     private readonly HashSet<string> _completedUses=new(StringComparer.Ordinal);
     /// <summary>Gets the exact independently enrolled material profile identity.</summary>
-    public static string ProfileId(InteractionOccurrenceIdentity identity,bool writing)=>CustodyInteractionProtectionBindingSource.ResourceId(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId))+"|"+(writing?"write":"read");
+    public static string ProfileId(InteractionOccurrenceIdentity identity,bool writing){
+        ArgumentNullException.ThrowIfNull(identity);
+        return CustodyInteractionProtectionBindingSource.ResourceId(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId))+"|"+(writing?"write":"read");
+    }
     private async Task<(InteractionProtectionBinding Binding,CustodyInteractionMaterialProfile Profile)?> Current(InteractionOccurrenceIdentity identity,bool writing,CancellationToken token,bool allocate=false)
     {
         enrolledProfiles.TryGetValue(ProfileId(identity,writing),out var profile);
@@ -41,6 +44,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     /// <inheritdoc />
     public async Task<bool> AcquireEncryptionLeaseAsync(InteractionOccurrenceRecord record,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(record);
         if(await Current(record.Request.Identity,true,token).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=record.KeyReference) return false;
         if(!await bindings.TryAcquireEncryptionLeaseAsync(record,registry,token).ConfigureAwait(false)) return false;
         lock(_gate) return _leases.Add(ProfileId(record.Request.Identity,true)+"|"+record.KeyReference);
@@ -48,6 +52,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveRootAsync(InteractionOccurrenceIdentity identity,string keyReference,bool writing,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if(writing) { lock(_gate) if(!_leases.Contains(ProfileId(identity,true)+"|"+keyReference)) return null; }
         if(await Current(identity,writing,token,true).ConfigureAwait(false) is not { } current || current.Binding.KeyReference!=keyReference) return null;
         string materialAttempt=MaterialId(current.Profile.KeyUse);
@@ -89,6 +94,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     /// <inheritdoc />
     public async Task<bool> IsCurrentAsync(InteractionOccurrenceIdentity identity,string operation,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if(operation is not ("Read" or "Write")) return false;
         if(operation=="Write") { lock(_gate) if(!_leases.Any(value=>value.StartsWith(ProfileId(identity,true)+"|",StringComparison.Ordinal))) return false; }
         return await Current(identity,operation=="Write",token).ConfigureAwait(false) is not null;
@@ -96,6 +102,7 @@ public sealed class CustodyInteractionOccurrenceKeyProvider(DaprClient dapr,ICus
     /// <inheritdoc />
     public async Task<InteractionOccurrenceOwnedKey?> ResolveDigestAsync(InteractionOccurrenceIdentity identity,string version,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         var current=await Current(identity,true,token).ConfigureAwait(false)??await Current(identity,false,token).ConfigureAwait(false);if(current is not { } exact) return null;
         var reference=exact.Profile.DigestReference;var key=reference.InventoryKey;
         if(!ulong.TryParse(reference.NativeVersion,NumberStyles.None,CultureInfo.InvariantCulture,out ulong nativeVersion) || nativeVersion==0

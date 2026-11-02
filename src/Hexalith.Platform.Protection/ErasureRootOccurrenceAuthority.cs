@@ -25,8 +25,11 @@ public sealed class ErasureRootOccurrenceAuthority(ErasureRootCustody custody, E
     private ErasureRootTransitionAuthority Journal(string tenant) => new(custody, authorization, tenant, Scope(tenant));
     /// <inheritdoc />
     public async Task<bool> AuthorizeOperationAsync(InteractionOccurrenceIdentity identity, string operation, CancellationToken cancellationToken = default)
-        => operation is "Reserve" or "RetainSealed" or "CompleteWriter" or "Lookup" && registryEpochs.ContainsKey(identity.Target.TenantId)
+    {
+        ArgumentNullException.ThrowIfNull(identity);
+        return operation is "Reserve" or "RetainSealed" or "CompleteWriter" or "Lookup" && registryEpochs.ContainsKey(identity.Target.TenantId)
             && await authorization.AuthorizeAsync(identity.Target.TenantId, ErasureRootCustody.Hash(identity), operation, ErasureRootCustody.Hash(new { identity, operation }), cancellationToken).ConfigureAwait(false);
+    }
     /// <inheritdoc />
     public Task<bool> ValidateStateAsync(string tenantId, string epochId, long revision, string exactStateDigest, CancellationToken cancellationToken = default)
         => registryEpochs.TryGetValue(tenantId, out string? enrolled) && enrolled == epochId
@@ -42,6 +45,7 @@ public sealed class ErasureRootOccurrenceAuthority(ErasureRootCustody custody, E
     /// <inheritdoc />
     public async Task<bool> AuthorizeReservationAsync(InteractionOccurrenceRequest request, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var retained = await bindings.FindAsync(request.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(request.Identity), cancellationToken).ConfigureAwait(false);
         return retained?.Enrollment.Binding.Identity == request.Identity && retained.Enrollment.Binding.KeyReference == request.ProposedKeyReference
             && retained.Enrollment.Binding.DigestKeyVersion == request.DigestKeyVersion && retained.Enrollment.Binding.ReservationAttemptOrdinal == request.ReservationAttemptOrdinal
@@ -50,6 +54,8 @@ public sealed class ErasureRootOccurrenceAuthority(ErasureRootCustody custody, E
     /// <inheritdoc />
     public async Task<bool> VerifySealedAsync(InteractionOccurrenceRecord reservation, InteractionOccurrenceSealedResult sealedResult, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(sealedResult);
         if (reservation.WriterState != InteractionOccurrenceWriterState.Reserved || sealedResult.KeyReference != reservation.KeyReference
             || sealedResult.SerializationFormat != "json+pdenc-v2" || sealedResult.PayloadBytes is not { Length: > 0 and <= 16777216 }
             || sealedResult.ProtectedPathCount <= 0) { return false; }
@@ -60,6 +66,7 @@ public sealed class ErasureRootOccurrenceAuthority(ErasureRootCustody custody, E
     /// <inheritdoc />
     public async Task<bool> VerifyWriterAsync(InteractionOccurrenceRecord record, string proofId, bool persisted, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(record);
         var retained = await bindings.FindAsync(record.Request.Identity.Owner, ErasureRootOccurrenceBindings.Occurrence(record.Request.Identity), cancellationToken).ConfigureAwait(false);
         return retained is { CompletionLease: true } && retained.Enrollment.Binding.OperationId == proofId
             && retained.Enrollment.Binding.Identity == record.Request.Identity && await source.VerifyWriterAsync(record, proofId, persisted, cancellationToken).ConfigureAwait(false);

@@ -23,19 +23,29 @@ public sealed class DaprErasureRootOccurrenceSource(ErasureRootTenantAuthority s
     /// <inheritdoc />
     public async Task<ErasureRootOccurrenceEnrollment?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(occurrence);
         var value = await source.InvokeAsync<ErasureRootOccurrenceEnrollment>("erc-occurrence-original", new { owner, occurrence }, token).ConfigureAwait(false);
         return value?.Binding.Identity.Owner == owner && value.Binding.Identity.Sequence == occurrence.RecordSequence
             && value.Binding.Identity.Kind == occurrence.PayloadKind && value.Binding.Identity.PayloadTypeId == occurrence.PayloadTypeId ? value : null;
     }
     /// <inheritdoc />
     public Task<bool> VerifyReservationAsync(InteractionOccurrenceRequest request, CancellationToken token)
-        => VerifyAsync(request.Identity.Target.TenantId, request.ProposedKeyReference, "VerifyOccurrenceReservation", request, token);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return VerifyAsync(request.Identity.Target.TenantId, request.ProposedKeyReference, "VerifyOccurrenceReservation", request, token);
+    }
     /// <inheritdoc />
     public Task<bool> VerifyWriterAsync(InteractionOccurrenceRecord original, string proofId, bool persisted, CancellationToken token)
-        => VerifyAsync(original.Request.Identity.Target.TenantId, proofId, persisted ? "VerifyPersistedWriter" : "VerifyNeverWritten", new { original, proofId, persisted }, token);
+    {
+        ArgumentNullException.ThrowIfNull(original);
+        return VerifyAsync(original.Request.Identity.Target.TenantId, proofId, persisted ? "VerifyPersistedWriter" : "VerifyNeverWritten", new { original, proofId, persisted }, token);
+    }
     /// <inheritdoc />
     public Task<bool> VerifySealedAsync(InteractionOccurrenceRecord original, InteractionOccurrenceSealedResult result, CancellationToken token)
-        => VerifyAsync(original.Request.Identity.Target.TenantId, original.KeyReference, "VerifyOriginalSealedOutput", new { original, result }, token);
+    {
+        ArgumentNullException.ThrowIfNull(original);
+        return VerifyAsync(original.Request.Identity.Target.TenantId, original.KeyReference, "VerifyOriginalSealedOutput", new { original, result }, token);
+    }
     private async Task<bool> VerifyAsync(string tenant, string identity, string operation, object original, CancellationToken token)
     {
         string digest = ErasureRootCustody.Hash(original);

@@ -11,6 +11,7 @@ public sealed class Fr34IndependentOriginalCollector(EventStoreFr34CanaryEngine 
     /// <summary>Records actual original engine identity, native bytes/plaintext absence and the concrete handler's unseal result before erasure. This method issues no second unseal or key delivery.</summary>
     public async Task<Fr34MeasuredCanaryOriginal?> RecordUnsealAsync(Fr34CanaryReference reference,ReadOnlyMemory<byte> actualUnsealedBytes,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         if(!actualEngine.IsActualTarget(reference.Target)) return null;
         string id=EventStorePrivateRecordingPort.StableUlid("fr34",reference.Target.TenantId,reference.CanaryId);
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-engine",requestId=id },token).ConfigureAwait(false);
@@ -45,6 +46,7 @@ public sealed class Fr34IndependentOriginalCollector(EventStoreFr34CanaryEngine 
     /// <summary>Reads the exact retained measured comparison only; it cannot unseal or reproduce a missing original.</summary>
     public async Task<Fr34MeasuredCanaryOriginal?> LookupAsync(Fr34CanaryReference reference,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         string id=EventStorePrivateRecordingPort.StableUlid("fr34",reference.Target.TenantId,reference.CanaryId)+":native-comparison";
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-observer",requestId=id },token).ConfigureAwait(false);
         var result=original?.Result?.Deserialize<Fr34MeasuredCanaryOriginal>(CustodyBindingContract.Json);

@@ -141,6 +141,7 @@ public sealed class PlatformNativeTestPreparationTests
     [InlineData("readback-binding")]
     public async Task CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(string mutation)
     {
+        ArgumentNullException.ThrowIfNull(mutation);
         using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
         workspace.WriteSource(workspace.Scope);
         string activationPath = Path.Combine(workspace.Catalog, "activation.json");
@@ -263,7 +264,7 @@ public sealed class PlatformNativeTestPreparationTests
 
     private static async Task<Exception> CaptureAsync(Task task)
     {
-        try { await task; }
+        try { await task.ConfigureAwait(false); }
         catch (Exception exception) { return exception; }
         throw new ShouldAssertException("Native owner preparation completed without a network-backed application model.");
     }
@@ -275,7 +276,7 @@ public sealed class PlatformNativeTestPreparationTests
             .GetType("Hexalith.Builds.Tooling.Runtime.CompositionEndpointCredentials", throwOnError: true)!
             .GetMethod("ReadSecretsAsync", BindingFlags.NonPublic | BindingFlags.Static, [typeof(CompositionRunPlan), typeof(CompositionReadiness), typeof(CancellationToken)])
             ?? throw new MissingMethodException("CompositionEndpointCredentials", "ReadSecretsAsync");
-        return await (Task<IReadOnlyList<string>?>)reader.Invoke(null, [plan, readiness, TestContext.Current.CancellationToken])!;
+        return await ((Task<IReadOnlyList<string>?>)reader.Invoke(null, [plan, readiness, TestContext.Current.CancellationToken])!).ConfigureAwait(false);
     }
 
     /// <summary>Owns one temporary run workspace with the actual owner source files native preparation reads first.</summary>

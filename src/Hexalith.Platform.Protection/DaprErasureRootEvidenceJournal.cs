@@ -9,6 +9,7 @@ public sealed class DaprErasureRootEvidenceJournal(ErasureRootTenantAuthority ev
     /// <inheritdoc />
     public async Task<bool> VerifyTransitionAsync(AnchoredStateTransition transition, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(transition);
         string digest = ErasureRootCustody.Hash(transition);
         var proof = await evidence.InvokeAsync<ErasureRootPermissionEvidence>("erc-current-protocol-evidence", new { transition, requestDigest = digest }, cancellationToken).ConfigureAwait(false);
         return proof is { Permitted: true } && proof.Identity == transition.ScopeId && proof.Operation == "VerifyProtocolEvidence"

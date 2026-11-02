@@ -26,6 +26,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     /// <summary>Checks every enrollment and required plaintext/seed input without retaining operation, source, root or call state.</summary>
     public async Task ValidateInputsAsync(ProtectionQualificationActionRecipe recipe, JsonObject request, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(recipe);
+        ArgumentNullException.ThrowIfNull(request);
         string preflightTenant = request["targets"]![0]!["TenantId"]!.GetValue<string>();
         var priorHead = await custody.ReadAsync(preflightTenant, token).ConfigureAwait(false) ?? throw new InvalidOperationException("Current recipe enrollment required.");
         await custody.LoadQualificationAsync(priorHead.Head, request["bindingDigest"]?.GetValue<string>() ?? Producer.BindingDigest, token).ConfigureAwait(false);
@@ -211,6 +213,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     /// <summary>Captures the actual source-owned compare/census before the durable native-call admission. Execution never refreshes an admitted compare.</summary>
     public async Task<ProtectionQualificationNativeCall> PrepareCallAsync(ProtectionQualificationNativeCall input, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(input);
         var payload = (JsonObject)input.Payload.DeepClone();
         if (input.Kind is ProtectionQualificationNativeCallKind.Reserve or ProtectionQualificationNativeCallKind.ReserveIfDispatched)
         {
@@ -285,6 +288,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     public async Task<(ProtectionQualificationNativeCall Effect, ProtectionQualificationNativeCall Race)> PrepareRaceAsync(
         ProtectionQualificationNativeCall effect, ProtectionQualificationNativeCall race, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(effect);
+        ArgumentNullException.ThrowIfNull(race);
         if (effect.Kind == ProtectionQualificationNativeCallKind.Guard && race.Kind == ProtectionQualificationNativeCallKind.Guard
             && effect.Payload["transition"]!.Deserialize<GovernanceGuardTransition>() is { Operation: GovernanceGuardOperation.CommitDispatch } dispatch
             && race.Payload["transition"]!.Deserialize<GovernanceGuardTransition>() is { Operation: GovernanceGuardOperation.RegisterHold } hold)
@@ -309,6 +314,7 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     /// <summary>Resolves only actual retained original outcomes. It never repeats a native effect, signs, reserves, restores, unwraps or arms another fault.</summary>
     public async Task<JsonNode?> RecoverAsync(ProtectionQualificationNativeCall step, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(step);
         T Read<T>() => step.Payload.Deserialize<T>(ErasureRootCustody.Json) ?? throw new InvalidOperationException("Exact original native input required.");
         object? result = null;
         if (step.Kind == ProtectionQualificationNativeCallKind.Fault) { return await faults.LookupAsync(step, token).ConfigureAwait(false); }
@@ -479,6 +485,8 @@ public sealed class ProtectionQualificationNativeDriver(InteractionPayloadProtec
     /// <summary>Runs an exact native operation once. Native failures remain unknown and are never converted into a passing label.</summary>
     public async Task<JsonNode?> ExecuteAsync(ProtectionQualificationNativeCall step, JsonObject request, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(step);
         if (step.Kind is ProtectionQualificationNativeCallKind.SealEvent or ProtectionQualificationNativeCallKind.SealSnapshot)
         { await ValidateInputsAsync(new([], step, null, []), request, token).ConfigureAwait(false); }
         await faults.CheckAsync(step.Id, "before", token).ConfigureAwait(false);

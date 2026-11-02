@@ -15,7 +15,10 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
     public bool RequiresCurrentResultAdmission(string method)=>Methods.Contains(method);
     /// <inheritdoc />
     public string? ResultPolicy(string method,JsonElement payload,IndependentAuthorityState current)
-        =>QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision },CustodyBindingContract.Json)!);
+    {
+        ArgumentNullException.ThrowIfNull(current);
+        return QualificationProtocolSchema.Digest(JsonSerializer.SerializeToNode(new { current.Fr34Target,current.Fr34AuthorizationRevision,current.Fr34RecipeSha256,current.TrustRevision },CustodyBindingContract.Json)!);
+    }
     /// <inheritdoc />
     public void ReleaseResult(string method,object? result)
     {
@@ -33,6 +36,8 @@ public sealed class Fr34OwnerOperationHandler(EventStoreFr34CanaryEngine engine,
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method, JsonElement payload, IndependentCallerGrant caller, IndependentAuthorityState current, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(current);
         var target = current.Fr34Target;
         if (target is null || current.ValidUntil <= clock.GetUtcNow() || !engine.IsActualTarget(target)
             || caller.ScopeReference != target.TenantId + "|fr34" || string.IsNullOrWhiteSpace(current.Fr34AuthorizationRevision)) throw new InvalidOperationException("Exact current FR-34 enrollment and common authorization revision required.");

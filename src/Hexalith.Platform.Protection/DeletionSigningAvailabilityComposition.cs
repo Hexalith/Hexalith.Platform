@@ -11,6 +11,7 @@ public static class DeletionSigningAvailabilityComposition
     public static IServiceCollection AddDeletionSigningAvailability(this IServiceCollection services, IDeletionCapabilitySigningAuthority signingAuthority,
         IndependentDaprAuthority readinessAuthority, SecretsRuntimeConfiguration configuration, ISecretsDaprInvoker transport, TimeProvider? clock = null)
     {
+        ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(signingAuthority); ArgumentNullException.ThrowIfNull(readinessAuthority);
         if (string.IsNullOrWhiteSpace(configuration.CapabilitySignerReference) || string.IsNullOrWhiteSpace(configuration.CapabilitySignerCredentialReference)
             || string.IsNullOrWhiteSpace(configuration.PublicTrustReference) || transport is not ISecretsCredentialBoundDaprInvoker)

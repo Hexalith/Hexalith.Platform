@@ -13,12 +13,21 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
     IndependentDaprAuthority currentScopes, TimeProvider clock) : IEventStoreGatewayBoundCommandProofSource,IPrivateRecoveryCommandProofSource,IPrivateReplayRecoveryCommandProofSource
 {
     /// <inheritdoc />
-    public ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken)=>IssueCoreAsync(request,null,cancellationToken);
+    public ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken){
+        ArgumentNullException.ThrowIfNull(request);
+        return IssueCoreAsync(request,null,cancellationToken);
+    }
     /// <inheritdoc />
     public ValueTask<string?> IssueRecoveryAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant grant,CancellationToken cancellationToken)
-        =>IssueCoreAsync(request,grant,cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return IssueCoreAsync(request,grant,cancellationToken);
+    }
     /// <inheritdoc />
-    public ValueTask<string?> IssueReplayRecoveryAsync(BoundWorkloadCommandRequest request,PrivateReplayRecoveryProof proof,CancellationToken token)=>IssueCoreAsync(request,null,token,proof);
+    public ValueTask<string?> IssueReplayRecoveryAsync(BoundWorkloadCommandRequest request,PrivateReplayRecoveryProof proof,CancellationToken token){
+        ArgumentNullException.ThrowIfNull(request);
+        return IssueCoreAsync(request,null,token,proof);
+    }
     private async ValueTask<string?> IssueCoreAsync(BoundWorkloadCommandRequest request,SecurityObservationRecoveryGrant? grant,CancellationToken cancellationToken,PrivateReplayRecoveryProof? replayRecovery=null)
     {
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));cancellationToken=budget.Token;
@@ -55,9 +64,9 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
         else return null;
         if(command.AggregateId!=aggregate || grant is not null && (command.Domain is not ("security-event-log" or "agents") || command.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant))) return null;
         if(replayRecovery is not null && (command.Domain!="trusted-envelope-replay" || command.MessageId!=PrivateRecordingIdentity.ReplayRecoveryMessageId(replayRecovery))) return null;
-        bool admitted=replayRecovery is not null?await currentScopes.InvokeAsync<Permission>("recording-replay-recovery-command-authorize",new { caller,principal,command,proof=replayRecovery },cancellationToken) is { Allowed:true }:grant is null
-            ? await currentScopes.InvokeAsync<Permission>("recording-command-authorize",new { caller,principal,command },cancellationToken) is { Allowed:true }
-            : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken) is { Allowed:true };
+        bool admitted=replayRecovery is not null?await currentScopes.InvokeAsync<Permission>("recording-replay-recovery-command-authorize",new { caller,principal,command,proof=replayRecovery },cancellationToken).ConfigureAwait(false) is { Allowed:true }:grant is null
+            ? await currentScopes.InvokeAsync<Permission>("recording-command-authorize",new { caller,principal,command },cancellationToken).ConfigureAwait(false) is { Allowed:true }
+            : await currentScopes.InvokeAsync<Permission>("recording-recovery-command-authorize",new { caller,principal,command,grant },cancellationToken).ConfigureAwait(false) is { Allowed:true };
         if(!admitted) return null;
         // Independent workload RSA key; this is not a decision approval issuer or capability signing family.
         return await BoundedRegularFile.TryUseUtf8SpanAsync(mountedRsaKeyFile,16384,key=>

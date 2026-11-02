@@ -16,6 +16,9 @@ public sealed class ProtectionQualificationActionRunner(ProtectionQualificationN
     public async Task PrepareAsync(ProtectionQualificationNativeCall original, JsonObject request,
         Func<ProtectionQualificationNativeCall, CancellationToken, Task<bool>> admit, Func<ProtectionQualificationNativeCall, JsonNode?, CancellationToken, Task> retain, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(admit);
+        ArgumentNullException.ThrowIfNull(original);
+        ArgumentNullException.ThrowIfNull(retain);
         if (original.Kind != ProtectionQualificationNativeCallKind.LookupProvider || !await admit(original, token).ConfigureAwait(false))
         { throw new InvalidOperationException("Exact prior reservation preparation admission required."); }
         var result = await driver.ExecuteAsync(original, request, token).ConfigureAwait(false);

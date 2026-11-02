@@ -26,6 +26,9 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<Fr34CanaryReference?> SealAndPersistAsync(Fr34ProtectionTarget target, string canaryId, byte[] plaintext, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(canaryId);
+        ArgumentNullException.ThrowIfNull(plaintext);
+        ArgumentNullException.ThrowIfNull(target);
         if (!IsActualTarget(target) || canaryId.Length != 64 || !canaryId.All(char.IsAsciiHexDigit) || plaintext.Length is 0 or > 8192) return null;
         var protectionTarget=new ProtectionTarget(target.TenantId,canaryId,"fr34-"+canaryId);
         if(dynamicEnrollment is not null)
@@ -66,6 +69,7 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<bool> DestroyAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         if (!IsActualTarget(reference.Target) || !await SafeOriginalAsync(reference,cancellationToken).ConfigureAwait(false) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } stored) return false;
         // The independent control owner publishes this complete signed/reserved original; a locator is never authority.
         Fr34NativeManifestBinding? expected=null;
@@ -87,6 +91,7 @@ public sealed class EventStoreFr34CanaryEngine(InteractionPayloadProtectionServi
     /// <inheritdoc />
     public async Task<PayloadUnprotectionOutcome?> ReplayAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         if (!IsActualTarget(reference.Target) || !await SafeOriginalAsync(reference,cancellationToken).ConfigureAwait(false) || await reader.ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is not { } original) return null;
         return await engine.TryUnprotectEventPayloadAsync(original.Owner, original.Occurrence.PayloadTypeId, original.Protected.PayloadBytes,
             original.Protected.SerializationFormat, original.Protected.Metadata, original.Occurrence, cancellationToken).ConfigureAwait(false);

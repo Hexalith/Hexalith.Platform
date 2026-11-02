@@ -15,6 +15,7 @@ public sealed class QualificationGuardOriginalReader(IGovernanceScopeGuard guard
     /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
         if(id is null || requestId is null || !definitions.TryGetValue(id,out var definition) || request["enrolledScope"] is not JsonObject scope
             || QualificationProtocolSchema.Digest(scope)!=definition.EnrolledScopeSha256) return null;

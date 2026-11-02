@@ -27,8 +27,8 @@ internal static class PlatformCatalogOwnerParity
         {
             var assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(server.ProjectPath)!));
             var entry = assembly.EntryPoint!.DeclaringType!;
-            await (Task)typeof(PlatformCatalogOwnerParity).GetMethod(nameof(AssertHostAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-                .MakeGenericMethod(entry).Invoke(null, [catalog, server])!;
+            await ((Task)typeof(PlatformCatalogOwnerParity).GetMethod(nameof(AssertHostAsync), BindingFlags.Static | BindingFlags.NonPublic)!
+                .MakeGenericMethod(entry).Invoke(null, [catalog, server])!).ConfigureAwait(false);
         }
         var services = new ServiceCollection();
         foreach (string path in catalog.AdapterAssemblies)
@@ -46,13 +46,13 @@ internal static class PlatformCatalogOwnerParity
         services.AddSingleton<IIdempotencyDigestKeyProvider, ConfigurationIdempotencyDigestKeyProvider>();
         using var provider = services.BuildServiceProvider();
         _ = new IdempotencyIntentAdapterRegistry(NSubstitute.Substitute.For<IRouteCatalogAuthority>(), provider.GetServices<IIdempotencyIntentAdapter>(), new CanonicalIdempotencyIntentEncoder());
-        var observed = await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore", TestContext.Current.CancellationToken);
+        var observed = await RouteCatalogAdmissionObservation.CaptureAsync(provider, "eventstore", TestContext.Current.CancellationToken).ConfigureAwait(false);
         observed.Select(entry => entry.ContentDigest).Order().ShouldBe(catalog.Envelope.Idempotency.Select(entry => entry.ContentDigest).Order());
     }
 
     private static async Task AssertHostAsync<T>(PlatformRoutingCatalog catalog, PlatformServerBinding server) where T : class
     {
-        await using var factory = new WebApplicationFactory<T>().WithWebHostBuilder(builder =>
+        var factory = new WebApplicationFactory<T>().WithWebHostBuilder(builder =>
         {
             builder.UseEnvironment("Development");
             foreach (var (name, value) in new Dictionary<string, string?>
@@ -69,6 +69,7 @@ internal static class PlatformCatalogOwnerParity
             // Startup workers require live sidecars and are covered separately by the live lane.
             builder.ConfigureServices(services => services.RemoveAll<IHostedService>());
         });
+        await using var disposal = factory.ConfigureAwait(false);
         using var client = factory.CreateClient();
         using var scope = factory.Services.CreateScope();
         var expected = catalog.Envelope.Routes.Where(route => route.AppId == server.AppId).ToArray();

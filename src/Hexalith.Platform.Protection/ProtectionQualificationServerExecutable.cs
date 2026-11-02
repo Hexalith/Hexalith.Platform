@@ -64,7 +64,8 @@ public static class ProtectionQualificationServerExecutable
                     return new ProtectionQualificationControlledErasureRootStore(new OpenBaoErasureRootStore(new Uri(host.Endpoint), host.Native, host.CredentialReference), controls);
                 }));
             }
-            await using var provider = services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
+            await using var providerDisposal = provider.ConfigureAwait(false);
             var custody = provider.GetRequiredService<ErasureRootCustody>(); var permission = provider.GetRequiredService<IErasureRootAuthorization>();
             var journal = new ProtectionQualificationOperationJournal(custody, permission);
             var engine = provider.GetRequiredService<InteractionPayloadProtectionService>();
@@ -130,7 +131,8 @@ public static class ProtectionQualificationServerExecutable
                 ErasureRootCustody.Hash(new { scope.BindingDigest, installed.HostInstallationSha256, installed.ScopeSha256 }),
                 provider.GetRequiredService<SecretsRuntimeConfiguration>().CapabilitySignerReference ?? "", new QualificationSigningActorRouter(), cancellation, ProtectionQualificationSigningPreflight.RequiredKeyVersions(scope, request["action"]?.GetValue<string>() == "PrepareFixture"
                     ? request["caseId"]?.GetValue<string>() ?? throw new InvalidOperationException("Exact owner case required before fixture preparation.") : null)).ConfigureAwait(false));
-            await using var application = BuildApplication(provider, service, installed.CredentialReference);
+            var application = BuildApplication(provider, service, installed.CredentialReference);
+            await using var applicationDisposal = application.ConfigureAwait(false);
             await application.RunAsync(token).ConfigureAwait(false); return 0;
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }

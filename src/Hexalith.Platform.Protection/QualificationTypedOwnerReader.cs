@@ -14,6 +14,7 @@ public sealed class QualificationTypedOwnerReader(IGovernanceScopeGuard guard,ID
     /// <inheritdoc />
     public async Task<QualificationObservedOriginal?> ReadAsync(JsonObject request,CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         string? caseId=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
         if(caseId is null || requestId is null || !enrolledScopes.TryGetValue(caseId,out var scope) || request["enrolledScope"] is not JsonObject enrolled
             || SecretsProof.Text(enrolled,"tenantId")!=scope.TenantId || SecretsProof.Text(enrolled,"batchId")!=scope.BatchId) return null;

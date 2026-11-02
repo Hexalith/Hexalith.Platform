@@ -13,6 +13,7 @@ public sealed class ErasureRootDigestKeyResolver(DaprClient dapr, IPlatformKeyIn
     /// <summary>Transfers one exact privately owned tenant-digest buffer after independent current inventory checks before and after native read.</summary>
     public async Task<InteractionOccurrenceOwnedKey?> ResolveAsync(ErasureRootOccurrenceEnrollment enrollment, string version, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(enrollment);
         if (enrollment.Binding.DigestKeyVersion != version) { return null; }
         byte[]? bytes = await ResolveNativeAsync(enrollment.Digest, enrollment.Binding.Identity.Target.TenantId, version, token).ConfigureAwait(false);
         return bytes is null ? null : new(enrollment.Binding.Identity.Target, "tenant-digest", version, bytes);
@@ -20,6 +21,7 @@ public sealed class ErasureRootDigestKeyResolver(DaprClient dapr, IPlatformKeyIn
     /// <summary>Validates actual native inventory, current permissions and exact key bytes before role enrollment, without issuing roots or retaining originals.</summary>
     public async Task<bool> IsAvailableAsync(CustodyInteractionDigestReference reference, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         byte[]? bytes = await ResolveNativeAsync(reference, reference.InventoryKey.TenantId, reference.InventoryKey.Version, token).ConfigureAwait(false);
         if (bytes is null) { return false; }
         CryptographicOperations.ZeroMemory(bytes); return true;

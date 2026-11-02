@@ -8,12 +8,18 @@ public static class Fr34AuthorityApplication
 {
     /// <summary>Builds the owning host with the same automatic holder-completion registration used by the installed service.</summary>
     public static Microsoft.AspNetCore.Builder.WebApplication BuildOwningApplication(IndependentAuthorityReceiver receiver,Fr34ProductionPorts production)
-        =>IndependentAuthorityHttpApplication.BuildApplication(receiver,new CustodyOccurrenceHolderCompletionWorker(production.Keys));
+    {
+        ArgumentNullException.ThrowIfNull(production);
+        return IndependentAuthorityHttpApplication.BuildApplication(receiver,new CustodyOccurrenceHolderCompletionWorker(production.Keys));
+    }
     /// <summary>Serves the concrete Platform-owned source composition; no default candidate delivery provider is used.</summary>
     public static Task<int> RunAsync(string installation,Fr34ProductionPorts production,Fr34EventStoreCanaryReader reader,
         Hexalith.EventStore.Client.Gateway.IEventStoreGatewayClient privateWriteGateway,Hexalith.EventStore.Client.Gateway.IEventStoreGatewayBoundCommandProofSource proof,
         IndependentDaprAuthority originals,string principal,CustodyLifecycleClient custody,ICustodyReservedManifestSource manifests,TimeProvider? clock=null,IndependentDaprAuthority? independentMeasurementOriginals=null,IFr34OccurrenceEnrollment? dynamicEnrollment=null,IReadOnlyDictionary<string,Fr34NativeManifestBinding>? installedManifests=null)
-        =>RunAsync(installation,production.Engine,reader,production.Bindings,privateWriteGateway,proof,originals,principal,custody,manifests,clock,independentMeasurementOriginals,new CustodyOccurrenceHolderCompletionWorker(production.Keys),dynamicEnrollment??production.DynamicEnrollment,installedManifests);
+    {
+        ArgumentNullException.ThrowIfNull(production);
+        return RunAsync(installation,production.Engine,reader,production.Bindings,privateWriteGateway,proof,originals,principal,custody,manifests,clock,independentMeasurementOriginals,new CustodyOccurrenceHolderCompletionWorker(production.Keys),dynamicEnrollment??production.DynamicEnrollment,installedManifests);
+    }
     /// <summary>Serves authenticated current engine and observer requests without startup enrollment or a no-op fallback.</summary>
     public static Task<int> RunAsync(string independentServiceInstallationPath, InteractionPayloadProtectionService actualEngine,
         Fr34EventStoreCanaryReader independentReader, IInteractionProtectionBindingProvider independentBindings,
