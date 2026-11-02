@@ -156,6 +156,13 @@ def make_project(path, *, probe=False, program=None):
     ET.ElementTree(project).write(path, encoding="unicode")
 
 
+def invalid_adapter_replacements(owners):
+    """Choose absent/foreign adapter sources, including a valid one-owner fixture."""
+    foreign = next((owner["adapterAssembly"] for owner in owners[1:]
+                    if owner["adapterAssembly"] != owners[0]["adapterAssembly"]), "Hexalith.EventStore.Contracts")
+    return [owners[0]["assembly"], foreign]
+
+
 def qualify(args):
     with tempfile.TemporaryDirectory(prefix="catalog-builder-check-") as temporary:
         work = Path(temporary)
@@ -240,6 +247,18 @@ def qualify(args):
             for filename in ["catalog.json", "receipt.json"]:
                 shutil.copyfile(target / filename, args.evidence / f"{name}-{filename}")
             cases.append({"case": name, **json.loads(result.stdout)})
+        for index, replacement in enumerate(invalid_adapter_replacements(owners)):
+            target = work / f"invalid-adapter-{index}"
+            target.mkdir()
+            wrong = [dict(owner) for owner in owners]
+            wrong[0]["adapterAssembly"] = replacement
+            request = {"generation": 1, "instanceId": "catalog-binding-check", "gatewayAppId": "eventstore-binding-check",
+                       "outputDirectory": str(target), "owners": wrong}
+            path = work / f"invalid-adapter-{index}.json"
+            path.write_text(json.dumps(request))
+            execute(["dotnet", str(outputs["actual"]), str(path)], args.evidence / f"invalid-adapter-{index}.log", expected=1)
+            assert not list(target.iterdir()), "Invalid adapter emitted output"
+            cases.append({"case": f"invalid-adapter-{index}", "refusedBeforeOutput": True})
         before = json.loads((args.evidence / "baseline-0-catalog.json").read_text())
         after = json.loads((args.evidence / "actual-1-catalog.json").read_text())
         for key in ["schemaVersion", "generation", "profile", "allowRuntimeOverrides", "declarations", "routes",

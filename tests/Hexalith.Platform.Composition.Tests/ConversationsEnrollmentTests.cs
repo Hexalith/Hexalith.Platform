@@ -8,7 +8,7 @@ using Shouldly;
 
 /// <summary>Verifies ordinary Conversations source enrollment without executing a live dependency seam.</summary>
 [Collection("Platform file entry")]
-public sealed class ConversationsEnrollmentTests
+public sealed partial class ConversationsEnrollmentTests
 {
     private static string Root => PlatformTestRepository.Root;
 

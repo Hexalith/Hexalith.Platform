@@ -5,6 +5,7 @@ using System.Text.Json;
 using Hexalith.EventStore.Client.Routing;
 using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.EventStore.ServiceDefaults.Routing;
+using Hexalith.EventStore.DomainService;
 
 using var document = JsonDocument.Parse(File.ReadAllBytes(args.Single()));
 var input = document.RootElement;
@@ -27,7 +28,8 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
 {
     var assembly = Assembly.Load(new AssemblyName(owner.GetProperty("assembly").GetString()!));
     owners.Add(assembly.Location);
-    adapters.Add(Assembly.Load(new AssemblyName(owner.GetProperty("adapterAssembly").GetString()!)).Location);
+    var adapterAssembly = Assembly.Load(new AssemblyName(owner.GetProperty("adapterAssembly").GetString()!));
+    adapters.Add(adapterAssembly.Location);
     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
     declarations.AddRange(routes);
     operations.AddRange(CompiledRouteCatalogDeclarations.ReadOperations([assembly]));
@@ -54,15 +56,46 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
         }
         bindings.Add(new(route.RouteId, appId, method, route.ContractVersion, false, "*"));
     }
+    var declaredCommands = new List<CommandIntentDeclaration>();
     foreach (var source in sources)
     {
         if (source.SourceType.GetProperty("Commands", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IEnumerable<CommandIntentDeclaration> commands)
             throw new InvalidDataException($"Owner {source.SourceType.FullName} has no declared command policies.");
+        declaredCommands.AddRange(commands);
 #if HEXALITH_SCOPED_CONSUMER_BINDING
         policies.AddRange(commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, generation, gatewayAppId)));
 #else
         policies.AddRange(commands.Select(command => DevelopmentIdempotencyBindings.Bind(command, generation)));
 #endif
+    }
+    var installed = adapterAssembly.GetCustomAttributes<RouteCatalogAdapterSourceAttribute>().SelectMany(source =>
+    {
+        if (source.SourceType.Assembly != adapterAssembly
+            || source.SourceType.GetMethod("Create", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, null)
+                is not IEnumerable<IDeclaredIdempotencyIntentAdapter> factoryAdapters)
+            throw new InvalidDataException("The selected owner adapter factory is absent or foreign.");
+        return factoryAdapters;
+    }).ToArray();
+    if (installed.Length != declaredCommands.Count
+        || installed.Select(adapter => adapter.Declaration.Route.RouteId).Distinct(StringComparer.Ordinal).Count() != installed.Length)
+        throw new InvalidDataException("The selected owner adapter inventory differs from its declared commands.");
+    foreach (var adapter in installed)
+    {
+        var declaration = adapter.Declaration;
+        var expected = declaredCommands.SingleOrDefault(command => command.Route.RouteId == declaration.Route.RouteId)
+            ?? throw new InvalidDataException("The selected owner adapter has no declared command.");
+#if HEXALITH_SCOPED_CONSUMER_BINDING
+        string actualPolicy = DevelopmentIdempotencyBindings.Bind(declaration, generation, gatewayAppId).ContentDigest;
+        string expectedPolicy = DevelopmentIdempotencyBindings.Bind(expected, generation, gatewayAppId).ContentDigest;
+#else
+        string actualPolicy = DevelopmentIdempotencyBindings.Bind(declaration, generation).ContentDigest;
+        string expectedPolicy = DevelopmentIdempotencyBindings.Bind(expected, generation).ContentDigest;
+#endif
+        if (RouteCatalogCodec.ComputeDeclarationDigest(declaration.Route) != RouteCatalogCodec.ComputeDeclarationDigest(expected.Route)
+            || actualPolicy != expectedPolicy || adapter.CommandType != declaration.Route.MessageType
+            || adapter.AdapterId != declaration.AdapterId || adapter.OperationId != declaration.OperationId
+            || adapter.DescriptorVersion != declaration.DescriptorSchema.Version || adapter.RetentionTier != declaration.RetentionTier)
+            throw new InvalidDataException("The selected owner adapter differs from its declared route or semantic policy.");
     }
 }
 byte[]? predecessor = input.TryGetProperty("committedPredecessor", out var previous) && previous.ValueKind == JsonValueKind.String
@@ -78,7 +111,10 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
     ownerAssemblies = owners, adapterAssemblies = adapters,
     sourceMappingHash = input.TryGetProperty("sourceMappingHash", out var sourceMappingHash) ? sourceMappingHash.GetString() : null,
     mode = input.TryGetProperty("mode", out var mode) ? mode.GetString() : null,
-    loadedArtifacts = owners.Concat(adapters).Append(typeof(RouteCatalogCodec).Assembly.Location).Distinct(StringComparer.Ordinal).Select(path => new
+    // This records actual reader-output dependencies, not an installed execution image measurement.
+    loadedArtifacts = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => !assembly.IsDynamic && assembly.Location.Length > 0
+        && Path.GetDirectoryName(assembly.Location) == Path.GetDirectoryName(typeof(RouteCatalogCodec).Assembly.Location))
+        .Select(assembly => assembly.Location).Concat(owners).Concat(adapters).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(path => new
     {
         path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
         assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,

@@ -21,6 +21,10 @@
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
   <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /><PackageReference Include="NSubstitute" /><PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" /><PackageReference Include="Dapr.Client" /></ItemGroup>
   <ItemGroup><Using Include="Xunit" /></ItemGroup>
+  <!-- This source integration requires an explicit producer mapping and retains its evidence without launching resources. -->
+  <ItemGroup Condition="'$(ConversationsCatalogSourceVerification)' != 'true'">
+    <Compile Remove="ConversationsCatalogSourceVerificationTests.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj" Aliases="platformseed" />
     <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" Condition="'$(BuildsEventStoreHostAssemblyPath)' == ''" />
