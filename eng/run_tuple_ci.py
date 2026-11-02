@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from prepare_builds_artifacts import source_state
-from builds_tuple import load_binding, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -89,7 +89,8 @@ def main():
         validate_owner_pins(binding, ROOT)
         pin = run("builds-pin", ["git", "rev-parse", "HEAD:references/Hexalith.Builds"]).strip()
         validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
-        catalog = verify_catalog(binding, ROOT / "references/Hexalith.Builds")
+        builds_root = resolve_builds_root(ROOT)
+        catalog = verify_catalog(binding, builds_root)
         profile = json.loads((ROOT / "eng/tuple-ci-suites.json").read_bytes())
         required_total = validate_profile(profile)
         if not args.audit_only:
@@ -117,7 +118,8 @@ def main():
         else:
             tool = Path(run("published-artifacts", [sys.executable, str(ROOT / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds"), "--require-recorded"]).strip())
         result["toolRoot"] = str(tool)
-        properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false", "-p:HexalithBuildsPublishedToolRoot=" + str(tool)]
+        properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
+                      "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool)]
         projects = [ROOT / x.attrib["Path"] for x in ET.parse(ROOT / "Hexalith.Platform.slnx").iter("Project")]
         seen = {project.resolve() for project in projects}
         for number, project in enumerate(projects):

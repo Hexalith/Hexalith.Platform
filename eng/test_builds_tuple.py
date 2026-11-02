@@ -15,7 +15,7 @@ import prepare_builds_artifacts
 import run_tuple_ci
 from unittest.mock import patch
 
-from builds_tuple import BINDING, ROOT, load_binding, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import BINDING, ROOT, load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 
 class BuildsTupleTests(unittest.TestCase):
@@ -125,6 +125,137 @@ class BuildsTupleTests(unittest.TestCase):
             with self.subTest(pin=pin, dirty=dirty), self.assertRaisesRegex(ValueError, "clean recorded Platform"):
                 validate_recorded_source(self.binding, pin, dirty)
 
+    def test_workspace_producer_is_selected_before_owner_nested_checkout(self):
+        owner = self.root / "workspace/references/Hexalith.Platform"
+        sibling = owner.parent / "Hexalith.Builds"
+        for root in (sibling, owner / "references/Hexalith.Builds"):
+            catalog = root / "Props/Directory.Packages.props"
+            catalog.parent.mkdir(parents=True)
+            catalog.write_bytes(b"synthetic catalog selection control")
+        self.assertEqual(resolve_builds_root(owner), sibling)
+
+    def test_standalone_owner_is_selected_without_a_sibling_catalog(self):
+        owner = self.root / "workspace/Hexalith.Platform"
+        (owner.parent / "Hexalith.Builds").mkdir(parents=True)
+        self.assertEqual(resolve_builds_root(owner), owner / "references/Hexalith.Builds")
+
+    def test_stale_selected_sibling_refuses_before_artifact_side_effects(self):
+        owner = self.root / "workspace/references/Hexalith.Platform"
+        sibling = owner.parent / "Hexalith.Builds"
+        catalog = sibling / "Props/Directory.Packages.props"
+        catalog.parent.mkdir(parents=True)
+        catalog.write_bytes(b"synthetic stale producer control")
+        (owner / ".config").mkdir(parents=True)
+        (owner / ".config/dotnet-tools.json").write_text(json.dumps({
+            "tools": {"hexalith.builds.module.cli": {"version": "4.38.3"}}}))
+        (owner / "hexalith-platform.json").write_text(json.dumps({
+            "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
+        nested = owner / "references/Hexalith.Builds"
+        nested_catalog = nested / "Props/Directory.Packages.props"
+        nested_catalog.parent.mkdir(parents=True)
+        valid_catalog = b"<Project />\n"
+        nested_catalog.write_bytes(valid_catalog)
+        self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(valid_catalog).hexdigest()
+        self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
+
+        def git_read(argv, cwd, **_kwargs):
+            if cwd == owner:
+                return "3" * 40 if argv[-1] == "HEAD" else self.binding["producer"]["sourceRevision"]
+            if cwd == sibling:
+                return b"4" * 40
+            if cwd == nested:
+                if argv[1] == "show":
+                    return valid_catalog
+                return (self.binding["producer"]["sourceRevision"] if argv[-1] == "HEAD"
+                        else self.binding["producer"]["catalog"]["blob"]).encode()
+            self.fail("Unexpected Git source lookup")
+
+        output = self.root / "stale-sibling-artifacts"
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.object(sys, "argv", ["prepare", "--output", str(output), "--require-recorded"]))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "ROOT", owner))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "source_state", return_value={"dirty": False}))
+            reads = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output",
+                side_effect=git_read))
+            signature = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run"))
+            download = stack.enter_context(patch.object(prepare_builds_artifacts.urllib.request, "urlopen"))
+            with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
+                prepare_builds_artifacts.main()
+            self.assertEqual(reads.call_count, 3)
+            self.assertEqual(reads.call_args_list[2].kwargs["cwd"], sibling)
+            signature.assert_not_called()
+            download.assert_not_called()
+        self.assertFalse(output.exists())
+
+    def test_preflight_verifies_selected_sibling_and_binds_its_msbuild_root(self):
+        owner = self.root / "workspace/references/Hexalith.Platform"
+        sibling = owner.parent / "Hexalith.Builds"
+        catalog = sibling / "Props/Directory.Packages.props"
+        catalog.parent.mkdir(parents=True)
+        catalog_bytes = b"<Project />\n"
+        catalog.write_bytes(catalog_bytes)
+        self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(catalog_bytes).hexdigest()
+        self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
+        (owner / ".config").mkdir(parents=True)
+        (owner / ".config/dotnet-tools.json").write_text(json.dumps({
+            "tools": {"hexalith.builds.module.cli": {"version": "4.38.3"}}}))
+        (owner / "hexalith-platform.json").write_text(json.dumps({
+            "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
+        (owner / "eng").mkdir()
+        (owner / "eng/tuple-ci-suites.json").write_text(json.dumps({"groups": [{
+            "requiredCount": 1, "filter": "-class", "selectors": ["Synthetic.Control"]}]}))
+        (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
+        source = self.binding["producer"]["sourceRevision"]
+        for name, observed_source in (("matching", source), ("stale", "4" * 40)):
+            with self.subTest(source=name), contextlib.ExitStack() as stack:
+                evidence = self.root / ("preflight-" + name)
+                commands = []
+
+                def command(argv, **kwargs):
+                    commands.append(argv)
+                    if argv[:2] == ["git", "diff"]:
+                        return subprocess.CompletedProcess(argv, 0, "", "")
+                    if argv[0] == "git":
+                        output = "3" * 40 if argv[-1] == "HEAD" else source
+                    elif len(argv) > 1 and argv[1].endswith("prepare_builds_artifacts.py"):
+                        output = str(self.root / "synthetic-verified-tool")
+                    elif argv[:2] == ["dotnet", "msbuild"]:
+                        output = json.dumps({"Items": {"ProjectReference": [], "Reference": []}})
+                    else:
+                        self.assertEqual(argv, ["dotnet", "--info"])
+                        output = "synthetic dotnet info"
+                    kwargs["stdout"].write(output)
+                    return subprocess.CompletedProcess(argv, 0)
+
+                stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only"]))
+                stack.enter_context(patch.object(run_tuple_ci, "ROOT", owner))
+                stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=self.binding))
+                stack.enter_context(patch.object(run_tuple_ci, "source_state", return_value={"dirty": False}))
+                stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
+                stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic-platform"))
+                stack.enter_context(patch.dict(run_tuple_ci.os.environ, {"HexalithBuildsRoot": str(self.root / "unverified-root")}))
+                reads = stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", side_effect=[
+                    observed_source.encode(), self.binding["producer"]["catalog"]["blob"].encode(), catalog_bytes]))
+                stack.enter_context(patch.object(run_tuple_ci.subprocess, "run", side_effect=command))
+                if name == "stale":
+                    with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
+                        run_tuple_ci.main()
+                else:
+                    run_tuple_ci.main()
+                result = json.loads((evidence / "tuple-ci-result.json").read_bytes())
+                self.assertIs(result["candidateAcceptance"], False)
+                self.assertTrue(all(call.kwargs["cwd"] == sibling for call in reads.call_args_list))
+                if name == "stale":
+                    self.assertEqual(result["status"], "failed")
+                    self.assertIn("Builds checkout differs", result["blocker"])
+                    self.assertEqual([item["name"] for item in result["commands"]], ["revision", "dotnet-info", "builds-pin"])
+                else:
+                    self.assertEqual(result["status"], "graph-verified")
+                    graphs = [argv for argv in commands if argv[:2] == ["dotnet", "msbuild"]]
+                    self.assertEqual(len(graphs), 1)
+                    self.assertIn("-p:HexalithBuildsRoot=" + str(sibling), graphs[0])
+
     def test_checkout_catalog_source_and_blob_are_checked(self):
         for outputs, message in (([b"wrong\n"], "checkout differs"),
                                  ([self.binding["producer"]["sourceRevision"].encode(), b"wrong\n"], "catalog blob differs"),
@@ -134,8 +265,7 @@ class BuildsTupleTests(unittest.TestCase):
 
     def test_real_catalog_checkout_returns_path_with_git_crlf_normalization(self):
         # Read the existing dependency only; never create fixture commits or change its checkout/index.
-        sibling = ROOT.parent / "Hexalith.Builds"
-        builds = sibling if (sibling / "Props/Directory.Packages.props").is_file() else ROOT / "references/Hexalith.Builds"
+        builds = resolve_builds_root(ROOT)
         catalog = builds / "Props/Directory.Packages.props"
         def git(*arguments):
             return subprocess.check_output(["git", *arguments], cwd=builds)
