@@ -1,0 +1,12 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Custody.Tests
+  Discovered:  Hexalith.Platform.Custody.Tests
+  Starting:    Hexalith.Platform.Custody.Tests
+    Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.ConcurrentRolloverRetainsOnePageAndBothNewIntents [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Custody.Tests/ReplicatedSecurityObservationSpoolTests.cs(362,0): at Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.ConcurrentRolloverRetainsOnePageAndBothNewIntents()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Custody.Tests (ID = '8126feb84a31edec52f68a6d6ef493e0187ec33dd6879588def619d63de1427a')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Custody.Tests  Total: 783, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 142.137s

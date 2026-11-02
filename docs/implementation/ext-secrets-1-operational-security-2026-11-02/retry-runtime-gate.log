@@ -1,0 +1,150 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Secrets.Runtime.Tests
+  Discovered:  Hexalith.Platform.Secrets.Runtime.Tests
+  Starting:    Hexalith.Platform.Secrets.Runtime.Tests
+    Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.PublicationAdmissionPreservesCompletionReserveAtSerializedHeadBoundary [FAIL]
+      Shouldly.ShouldAssertException : fixture.State.Registrations.Count
+          should be
+      1
+          but was
+      2
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyRegistrationPublicationTests.cs(126,0): at Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.PublicationAdmissionPreservesCompletionReserveAtSerializedHeadBoundary()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.MissingVerifierOrOriginalAndAllChangedRegistrationFieldsDenyIndexMutation [FAIL]
+      Shouldly.ShouldAssertException : fixture.State.Registrations.Values.Single()
+          should be
+      1
+          but was
+      2
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyRegistrationPublicationTests.cs(50,0): at Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.MissingVerifierOrOriginalAndAllChangedRegistrationFieldsDenyIndexMutation()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.ScopeRoleRevocationAndExpiredCurrentHeadDenyBeforeOriginalVerificationOrDisclosure [FAIL]
+      Shouldly.ShouldAssertException : fixture.Saves
+          should be
+      1
+          but was
+      3
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyRegistrationPublicationTests.cs(82,0): at Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.ScopeRoleRevocationAndExpiredCurrentHeadDenyBeforeOriginalVerificationOrDisclosure()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.VerifiedOriginalPersistsAcrossRestartAndLostPublicationAcknowledgement [FAIL]
+      Shouldly.ShouldAssertException : fixture.Saves
+          should be
+      2
+          but was
+      5
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/CustodyRegistrationPublicationTests.cs(30,0): at Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.VerifiedOriginalPersistsAcrossRestartAndLostPublicationAcknowledgement()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(role: "executor", blocked: "body") [FAIL]
+      Shouldly.ShouldAssertException : Task `results[index].ExecuteAsync(contexts[index])`
+          should throw
+      System.OperationCanceledException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHttpOwnershipTests.cs(45,0): at Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(String role, String blocked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(role: "executor", blocked: "retain") [FAIL]
+      Shouldly.ShouldAssertException : Task `results[index].ExecuteAsync(contexts[index])`
+          should throw
+      System.OperationCanceledException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/QualificationHttpOwnershipTests.cs(45,0): at Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(String role, String blocked)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.BoundedInstallationAndPublicationTests.StalledAcquisitionBoundsCallersAndWorkersUntilKernelWorkReturns [FAIL]
+      System.TimeoutException : The operation has timed out.
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/BoundedInstallationAndPublicationTests.cs(75,0): at Hexalith.Platform.Secrets.Runtime.Tests.BoundedInstallationAndPublicationTests.StalledAcquisitionBoundsCallersAndWorkersUntilKernelWorkReturns()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Secrets.Runtime.Tests.JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect(mode: "phase-timeout") [FAIL]
+      Shouldly.ShouldAssertException : else { await Should.ThrowAsync<OperationCanceledException>(Run());secrets.Effects
+          should be
+      1
+          but was
+      0
+      Stack Trace:
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseFinalizerEntrypointTests.cs(63,0): at Hexalith.Platform.Secrets.Runtime.Tests.JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/JointPhaseFinalizerEntrypointTests.cs(113,0): at Hexalith.Platform.Secrets.Runtime.Tests.JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect(String mode)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualArchivePreflightAndSpoolReadUseOneCallerBudgetAndRetainStalledWorker(method: "qualification-observation-original-preflight") [FAIL]
+      Shouldly.ShouldAssertException : Task `pending.WaitAsync(TimeSpan.FromSeconds(1),TestContext.Current.CancellationToken)`
+          should throw
+      System.OperationCanceledException
+          but did not
+      Stack Trace:
+           at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+        --- End of stack trace from previous location ---
+           at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+           at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+        --- End of stack trace from previous location ---
+        tests/Hexalith.Platform.Secrets.Runtime.Tests/IndependentAuthorityReceiverTests.cs(45,0): at Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualArchivePreflightAndSpoolReadUseOneCallerBudgetAndRetainStalledWorker(String method)
+        --- End of stack trace from previous location ---

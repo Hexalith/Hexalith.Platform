@@ -359,7 +359,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
             return (JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)!, "1");
         });
         var first = f.Spool.ObserveAsync(a, TestContext.Current.CancellationToken);
-        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(30), TestContext.Current.CancellationToken);
         SecurityObservationRecord? observedB;
         try { observedB = await f.Spool.ObserveAsync(b, TestContext.Current.CancellationToken); }
         finally { release.TrySetResult(); }

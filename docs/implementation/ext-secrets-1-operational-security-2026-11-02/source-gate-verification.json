@@ -1,0 +1,82 @@
+{
+  "schema": "EXT-SECRETS-1.operational-source-gate.v1",
+  "recordedAtUtc": "2026-11-02T12:28:54.094526+00:00",
+  "sourceRevisionAtStart": "f5929380f0fadc2d6efc3f252e966888cd33523c",
+  "firstLocalGate": {
+    "exitCode": 1,
+    "custodyTotal": 783,
+    "custodyFailed": 1,
+    "failure": "ReplicatedSecurityObservationSpoolTests.ConcurrentRolloverRetainsOnePageAndBothNewIntents timed out at a 5-second synchronization wait",
+    "log": "first-custody-gate.log",
+    "logSha256": "806bfe8a177206d6a087870c61cfc881912188d83936b408f56f04e056edcbc1"
+  },
+  "focusedRolloverAfterFirstFailure": {
+    "total": 1,
+    "passed": 1,
+    "durationSeconds": 3.445,
+    "sourceChange": "The test-only synchronization wait was widened from 5 to 30 seconds; no production spool behavior changed."
+  },
+  "retryLocalGate": {
+    "exitCode": 1,
+    "custody": {
+      "total": 783,
+      "passed": 783,
+      "failed": 0,
+      "log": "retry-custody-gate.log",
+      "logSha256": "b14dfba4f246f70fa66aeaf2c099caebd5eeb4680e418d123e88b8e8265589a7",
+      "xmlSha256": "df59d5ab15cb83dc22139bd7f0215d206adb046753f660dd2e0156162f20b483"
+    },
+    "runtime": {
+      "status": "FailedAndStoppedAfterMoreThanFiveMinutesWithNoNewResultLines",
+      "observedFailures": [
+        "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.PublicationAdmissionPreservesCompletionReserveAtSerializedHeadBoundary",
+        "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.MissingVerifierOrOriginalAndAllChangedRegistrationFieldsDenyIndexMutation",
+        "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.ScopeRoleRevocationAndExpiredCurrentHeadDenyBeforeOriginalVerificationOrDisclosure",
+        "Hexalith.Platform.Secrets.Runtime.Tests.CustodyRegistrationPublicationTests.VerifiedOriginalPersistsAcrossRestartAndLostPublicationAcknowledgement",
+        "Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(role: \"executor\", blocked: \"body\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.QualificationHttpOwnershipTests.ActualOuterReceiverKeepsLateChildrenChargedAfterOneAcquisitionDeadline(role: \"executor\", blocked: \"retain\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.BoundedInstallationAndPublicationTests.StalledAcquisitionBoundsCallersAndWorkersUntilKernelWorkReturns",
+        "Hexalith.Platform.Secrets.Runtime.Tests.JointPhaseFinalizerEntrypointTests.AcyclicPinnedInstallationsAdmitRealMetadataOnlyEntrypointWithoutNormalRuntimeOrSecondEffect(mode: \"phase-timeout\")",
+        "Hexalith.Platform.Secrets.Runtime.Tests.IndependentAuthorityReceiverTests.ActualArchivePreflightAndSpoolReadUseOneCallerBudgetAndRetainStalledWorker(method: \"qualification-observation-original-preflight\")"
+      ],
+      "failureCount": 9,
+      "log": "retry-runtime-gate.log",
+      "logSha256": "adbf676161250475c364047a16c4120751106dffe850cb085c10d7a7732a23be",
+      "xmlProduced": false
+    },
+    "pythonTestsRun": false,
+    "testFileSha256": "6e7ea54f3b81ab2a8e2a8f9ed2e178be239219a4f63b11f3b9383dc84cd63d6f",
+    "testOnlyDiffSha256": "7d67d0422e79ffcdad47a51bf2a633a8020b71b03240ba2e6ee36548f90d3273",
+    "sourceRevisionDescription": "f5929380f0fadc2d6efc3f252e966888cd33523c plus the one-line test wait change; not a clean immutable replacement target"
+  },
+  "focusedRegistration": {
+    "test": "CustodyRegistrationPublicationTests.VerifiedOriginalPersistsAcrossRestartAndLostPublicationAcknowledgement",
+    "total": 1,
+    "failed": 1,
+    "failure": "fixture.Saves expected 2, observed 5",
+    "xml": "focused-registration.xml",
+    "xmlSha256": "1971339c38e4d3055930d86be28034aecb8a5e66e15a1e49cc5747fcaf25ab50"
+  },
+  "installedLevel4": {
+    "status": "BlockedNotRun",
+    "reason": "No complete accepted Secrets/Host packets; EXT-PROTECTION-1 prerequisite uncommitted; local runtime gate failed."
+  },
+  "liveOrInstallationEffects": 0,
+  "dependencyAvailable": false,
+  "focusedOperationalRuntime": {
+    "classes": [
+      "SecretsRuntimeAdapterTests",
+      "SecretsAuthorityFailureTests",
+      "PrivateReplayCredentialBindingTests",
+      "QualificationDecisionSemanticTests"
+    ],
+    "total": 80,
+    "passed": 80,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "xml": "focused-operational-runtime.xml",
+    "xmlSha256": "15f7f8bb4a6a4d4bab18a13a67b5c12b12cdafe27d5c9531c5aa9a712b064331",
+    "scope": "Source tests only; no installed profile, scoped credential, replay ACL, or independent issuer is proven."
+  }
+}
