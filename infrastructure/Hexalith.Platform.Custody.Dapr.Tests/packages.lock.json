@@ -336,13 +336,13 @@
         "dependencies": {
           "Dapr.Actors": "[1.19.0, )",
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Contracts": "[3.132.2, )"
+          "Hexalith.EventStore.Contracts": "[3.133.0, )"
         }
       },
       "hexalith.platform.custody.component": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Contracts": "[3.132.2, )",
+          "Hexalith.EventStore.Contracts": "[3.133.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )"
         }
       },
@@ -361,7 +361,7 @@
       "hexalith.platform.protection": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Server": "[3.132.2, )",
+          "Hexalith.EventStore.Server": "[3.133.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )",
           "Hexalith.Platform.Secrets.Runtime": "[1.0.0, )"
@@ -371,7 +371,7 @@
         "type": "Project",
         "dependencies": {
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Client": "[3.132.2, )",
+          "Hexalith.EventStore.Client": "[3.133.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )"
         }
@@ -536,14 +536,14 @@
       },
       "Hexalith.EventStore.Client": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "co/RyxfCMoa0vBNiW3igfSUZHbf1OooS2Y2l0pYYIMRFXwlPotnjmSCKdddqkiyyPr75jlu6gD/p9Jo9zd3Jww==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "6AwwPqwfhLFAWRXmKz5lBtN74pTsNHnI2KSHXGg4ZGuQnygSmKH/oSz4aZMKaxftMMgUnrMjryWMRo2pFyjNgg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Contracts": "3.132.2",
+          "Hexalith.EventStore.Contracts": "3.133.0",
           "Microsoft.AspNetCore.DataProtection.Abstractions": "10.0.14",
           "Microsoft.Extensions.Configuration": "10.0.14",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.14",
@@ -560,9 +560,9 @@
       },
       "Hexalith.EventStore.Contracts": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "JLMEl5rNDot+PJFWPTdKS2SEeZiInnkUzahBo5kBs5JCoCHfBorXaPLaeyjGegq+MWTVJZYDwe2MRdD/MoF65A==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "HEM8GPWUYjAA9KkUzCDKj3tb6Gp30DZaz3Kpy99SrozTTvNjrcwhF06FlDZlokNrcv3UxM9uSLPl4dzZij7uYg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Hexalith.Commons.UniqueIds": "2.30.10"
@@ -570,9 +570,9 @@
       },
       "Hexalith.EventStore.DomainService": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "SkZpdNnFEZrkcRRPrnwFDAcW6KMGxEJ3r3KXDarFJJKrLtxqDKsp2A0PJw3sJ2oYsgt/R4xmmeaNYN0cTT4Ffg==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "rp3MQjFhCfBSfEng3+KqxROkcU0gyLoNL+cX2rGEvz4vSogb+ACrxKaF9KaxDIVOyQwJYor7+Rn0hS3mqZ/OyA==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Actors": "1.19.0",
@@ -580,8 +580,8 @@
           "Dapr.AspNetCore": "1.19.0",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Client": "3.132.2",
-          "Hexalith.EventStore.ServiceDefaults": "3.132.2",
+          "Hexalith.EventStore.Client": "3.133.0",
+          "Hexalith.EventStore.ServiceDefaults": "3.133.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.Extensions.Http.Resilience": "10.11.0",
           "Microsoft.Extensions.ServiceDiscovery": "10.11.0",
@@ -602,9 +602,9 @@
       },
       "Hexalith.EventStore.Server": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "F45GLWQTGTgWFz5IoC3A8P5SpQlnzcW5gl3EX74b8qMiA/ouI/nSXlZn6/rIPDAKQGgimc9JDSc9ReERkf+5AQ==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "5T8YCP8O8qL7E3PZ6C1sIapZzkzKpp/zAPj/U2T1dxOILLq8em01DZHRpdVJVa4YpYuFmwSHBZeESuQ1UN5FoA==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Actors": "1.19.0",
@@ -612,9 +612,9 @@
           "Dapr.AspNetCore": "1.19.0",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Client": "3.132.2",
-          "Hexalith.EventStore.Contracts": "3.132.2",
-          "Hexalith.EventStore.DomainService": "3.132.2",
+          "Hexalith.EventStore.Client": "3.133.0",
+          "Hexalith.EventStore.Contracts": "3.133.0",
+          "Hexalith.EventStore.DomainService": "3.133.0",
           "MediatR": "14.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.AspNetCore.DataProtection.Abstractions": "10.0.14",
@@ -648,13 +648,13 @@
       },
       "Hexalith.EventStore.ServiceDefaults": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "R6LcBdt7iwJju279IbcILTW+zt6DS2XjF/hHaKx1xStfdbHSBegbqIvfUCTlomgA9IqhpvKYbkfhARUBBYbBfg==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "TPg8cDv2HKLcIHXOoA0kV9Qh9WUEkS5K/wVK2iXxF1wDRs2WMuuuMP0sPlU6hCHsCuzt7MCihAodIAV+V366Ag==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Contracts": "3.132.2",
+          "Hexalith.EventStore.Contracts": "3.133.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.Extensions.Http.Resilience": "10.11.0",
           "Microsoft.Extensions.ServiceDiscovery": "10.11.0",

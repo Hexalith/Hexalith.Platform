@@ -150,13 +150,13 @@
         "dependencies": {
           "Dapr.Actors": "[1.19.0, )",
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Contracts": "[3.132.2, )"
+          "Hexalith.EventStore.Contracts": "[3.133.0, )"
         }
       },
       "hexalith.platform.custody.component": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Contracts": "[3.132.2, )",
+          "Hexalith.EventStore.Contracts": "[3.133.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )"
         }
       },
@@ -164,7 +164,7 @@
         "type": "Project",
         "dependencies": {
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Client": "[3.132.2, )",
+          "Hexalith.EventStore.Client": "[3.133.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )"
         }
@@ -223,21 +223,21 @@
       },
       "Hexalith.EventStore.Client": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "co/RyxfCMoa0vBNiW3igfSUZHbf1OooS2Y2l0pYYIMRFXwlPotnjmSCKdddqkiyyPr75jlu6gD/p9Jo9zd3Jww==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "6AwwPqwfhLFAWRXmKz5lBtN74pTsNHnI2KSHXGg4ZGuQnygSmKH/oSz4aZMKaxftMMgUnrMjryWMRo2pFyjNgg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Contracts": "3.132.2"
+          "Hexalith.EventStore.Contracts": "3.133.0"
         }
       },
       "Hexalith.EventStore.Contracts": {
         "type": "CentralTransitive",
-        "requested": "[3.132.2, )",
-        "resolved": "3.132.2",
-        "contentHash": "JLMEl5rNDot+PJFWPTdKS2SEeZiInnkUzahBo5kBs5JCoCHfBorXaPLaeyjGegq+MWTVJZYDwe2MRdD/MoF65A==",
+        "requested": "[3.133.0, )",
+        "resolved": "3.133.0",
+        "contentHash": "HEM8GPWUYjAA9KkUzCDKj3tb6Gp30DZaz3Kpy99SrozTTvNjrcwhF06FlDZlokNrcv3UxM9uSLPl4dzZij7uYg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Hexalith.Commons.UniqueIds": "2.30.10"
