@@ -1,0 +1,54 @@
+{
+  "kind": "OwnerValidationIntegrationObservationV1",
+  "observedAtUtc": "2026-11-02T18:35:29.755953+00:00",
+  "retainedBundle": "docs/implementation/story-5-4-owner-validation-2026-11-02",
+  "preparedCheckoutHead": "9ef374ce1bb92bff4537717c1d1b270a6871ef4c",
+  "integratedRemoteHead": "759bb89753de7e70cb0b0db61c7142e96ec5bac0",
+  "integrationObservationHead": "89b146b532d07f5d7982e261a88aa1c68a4b22b8",
+  "packageValidationBeforeIntegration": {
+    "status": "Passed",
+    "retainedFocusedTests": 37,
+    "retainedBroadTests": 30,
+    "artifactMembershipChecked": 67
+  },
+  "packageValidationAfterIntegration": {
+    "status": "RefusedChangedSourceEvidence",
+    "command": "python3 -B docs/implementation/story-5-4-owner-validation-2026-11-02/verify-package.py",
+    "exitCode": 1,
+    "firstFailure": "Changed source/evidence: src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+    "sourceDrift": [
+      {
+        "path": "src/Hexalith.Platform.Protection/OpenBaoErasureRootStore.cs",
+        "expectedSha256": "9025baa0eeb13b2b724f49d6a10dfb6cb2a108b39a60f90cb9f01c76604fecb4",
+        "actualSha256": "5292a25c4fb0f3bb6cb4e2e04922be97af0797291915faf547311f903e6b4e66",
+        "lineEndingOnlyChangeFromPreparedBase": false
+      },
+      {
+        "path": "src/Hexalith.Platform.Protection/ErasureRootAuthorityOperationHandler.cs",
+        "expectedSha256": "e149d00537e2182507610c8ac6b87ec9a537ae28f2539fa09ccfb34c7812f811",
+        "actualSha256": "aef77eeab63c36fd76923cd60f84e3b6e1e0a07cea132883ceeb42f10540383c",
+        "lineEndingOnlyChangeFromPreparedBase": false
+      },
+      {
+        "path": "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+        "expectedSha256": "bad68f95e675f41eb202f9fa24a53ebded3242ed9d4caa20b06fffa94322d0e5",
+        "actualSha256": "3fe06566d2e81627041d602e3bfef7304f2a334cf981d8519ce4ead2a3ac651b",
+        "lineEndingOnlyChangeFromPreparedBase": false
+      }
+    ],
+    "meaning": "Remote integration changed the selected source graph. Retained test results and hashes describe the prepared graph; they are not a passing qualification of the integrated checkout."
+  },
+  "preservation": {
+    "originalReceiptsChanged": false,
+    "historicalResultsRewritten": false,
+    "gatesAdvanced": false
+  },
+  "stagingTestsAfterIntegration": {
+    "foundationPassed": 107,
+    "secretsPassed": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "nextOwnerAction": "Requalify the changed Protection and catalog graph and issue fresh evidence in a separate package; preserve the retained preparation and its refusal guard."
+}
