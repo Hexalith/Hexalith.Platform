@@ -47,26 +47,15 @@ app.UseAuthentication();
 app.UseRateLimiter();
 // OpenAPI/Swagger UI (gated by configuration, H13)
 if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
-#if HEXALITH_PLATFORM_CATALOG_SDK
     _ = app.MapOpenApi().RequireAuthorization(EventStoreHttpHostSecurityExtensions.HumanPolicy);
     _ = app.UseEventStoreHumanSurface("/swagger");
-#else
-    _ = app.MapOpenApi().RequireAuthorization();
-    _ = app.UseWhen(context => context.Request.Path.StartsWithSegments("/swagger"), branch => branch.Use(async (context, next) =>
-    {
-        if (context.User.Identity?.IsAuthenticated != true) { context.Response.StatusCode = 401; return; }
-        await next(context);
-    }));
-#endif
     _ = app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/openapi/v1.json", "Hexalith EventStore API v1");
         options.RoutePrefix = "swagger";
     });
 }
 
-#if HEXALITH_PLATFORM_CATALOG_SDK
 app.UseEventStoreHttpHostSecurity();
-#endif
 app.UseAuthorization();
 #if HEXALITH_PLATFORM_CATALOG_SDK
 if (!string.IsNullOrEmpty(app.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))
@@ -96,13 +85,8 @@ app.MapControllers().Add(endpoint =>
 });
 app.MapErrorReferences();
 app.MapApiVersionFallback();
-#if HEXALITH_PLATFORM_CATALOG_SDK
 if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
 app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
-#else
-if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
-app.MapActorsHandlers().RequireAuthorization(EventStoreWorkloadAuthenticationDefaults.SidecarChannelPolicy);
-#endif
 app.MapApplicationRuntimeProofEndpoints();
 
 // SignalR hub for real-time projection change notifications (conditional)
