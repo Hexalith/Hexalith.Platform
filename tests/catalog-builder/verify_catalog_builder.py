@@ -193,7 +193,7 @@ def qualify(args):
                        "appId": "tenants-binding-check"},
                       {"assembly": "Hexalith.Platform.CatalogBuilder.SampleFixture",
                        "adapterAssembly": "Hexalith.Platform.CatalogBuilder.SampleFixture", "appId": "sample-binding-check"}]
-            for package in ["Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server", "Hexalith.EventStore.DomainService"]:
+            for package in ["Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server"]:
                 ET.SubElement(items, "PackageReference", {"Include": package})
             for assembly in ["Hexalith.Platform.CatalogBuilder.SampleFixture", "Hexalith.EventStore.Sample.Contracts"]:
                 reference = ET.SubElement(items, "Reference", {"Include": assembly})
