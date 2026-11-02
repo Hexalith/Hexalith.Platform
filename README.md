@@ -36,35 +36,14 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The local bootstrap tool is published `hexalith.builds.module.cli` `4.41.1`, with
-the unchanged range `[4.38.3, 5.0.0-0)` in `hexalith-platform.json`. Restore keeps
-the exact pin with roll-forward disabled. The Builds gitlink records the selected
-catalog separately. This maintenance establishes a package-build catalog identity;
-it does not grant runtime or deployment qualification or replace the retained
-unqualified tuple in [`eng/builds-tuple.json`](eng/builds-tuple.json).
-
-The earlier `4.38.3` bootstrap was explicitly **unqualified for its source
-catalog**. Its recorded Builds gitlink
-`cc0db51b800be1d0d5badc3780395cfb5953d0f5` could not be retrieved from the official
-producer. Neither that pin nor current source may be relabeled as published 4.38.3.
-
-[Builds release `v4.38.3`](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.38.3)
-identifies exact source `d1931b1e803144048d927fff16cb8119afde541e`. Its historical
-signed-archive qualification remains valid only for those inputs. The later
-historical source preparation selected newer catalog versions, including Commons
-`2.30.7` and Memories `3.0.10`, without a verified compatible published tool.
-
-That historical official producer preparation is recorded in
-[`eng/builds-tuple.json`](eng/builds-tuple.json): source
-`6cc96b4ff23c40c77651e1e4f85ed3170c25c7a4` and committed catalog SHA-256
-`abe630443a9f095a1bce171c4b10314a714a8bba9f3bde8980a5c40ef46ef172`.
-Its publication fields remain unavailable and its evidence is unchanged. No
-runtime acceptance is inferred from the current tool restore or catalog identity.
-See the [qualification and recording sequence](docs/current-tuple-preparation.md).
-The direct file AppHost already selects Aspire `13.6.4` and Toolkit
-`13.6.2-beta.959`; TenantRegistry inherits the selected root catalog's transitive
-pinning while retaining Gateway `3.128.4`. Both generated and direct launch paths
-require fresh integration qualification after the actual publication is bound.
+The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.2`,
+with range `[4.43.2, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
+records the exact [v4.43.2 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.2)
+source `6585f5860e87c146c26aa066d3a52b94eb56f271`. The catalog and signed
+package identities are recorded in [`eng/builds-tuple.json`](eng/builds-tuple.json).
+The [tuple preflight](#exact-tuple-ci-preflight) verifies those published bytes
+against this Platform revision. Runtime and deployment qualification require
+their own integration evidence.
 
 The configured range permits later 4.x versions, including prereleases, and excludes
 5.0 prereleases. Each accepted tool carries its own catalog; matching the range
