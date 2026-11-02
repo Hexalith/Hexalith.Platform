@@ -75,7 +75,7 @@ if [[ "$MODE" == Full ]]; then
     full_args+=(--profile "$PROFILE")
   fi
   python3 "$ROOT/eng/ext-host-1/verify_full.py" "${full_args[@]}"
-  echo "Component qualification passed. Live qualification and the OQ-5.4-1 cohort remain gated."
+  echo "OQ-5.4-1 joint owner qualification passed; dependency availability requires register acceptance."
 else
   echo "Building local Platform scaffold ($CONFIGURATION)..."
   # The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.

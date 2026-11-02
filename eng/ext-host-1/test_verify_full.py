@@ -245,14 +245,14 @@ class QualificationMatrixTests(unittest.TestCase):
             artifacts = root / "attempt"
             with patch.object(verify, "git_head", return_value=head), \
                     patch.object(verify, "run_suite", side_effect=passed_suite) as started:
-                self.assertEqual(verify.verify(root, artifacts, selected), 0)
+                self.assertEqual(verify.verify(root, artifacts, selected), 1)
                 self.assertEqual(started.call_count, 2)
                 recorded = {path.relative_to(artifacts): path.read_bytes() for path in artifacts.rglob("*") if path.is_file()}
                 self.assertEqual(verify.verify(root, artifacts, selected, "Release"), 1)
                 self.assertEqual(started.call_count, 2)
                 self.assertEqual(recorded, {path.relative_to(artifacts): path.read_bytes() for path in artifacts.rglob("*") if path.is_file()})
                 release_artifacts = root / "release-attempt"
-                self.assertEqual(verify.verify(root, release_artifacts, selected, "Release"), 0)
+                self.assertEqual(verify.verify(root, release_artifacts, selected, "Release"), 1)
                 self.assertTrue(all(call.args[-1] == "Release" for call in started.call_args_list[-2:]))
             attempt = json.loads((release_artifacts / verify.ATTEMPT_NAME).read_text())
             self.assertEqual(attempt["configuration"], "Release")
@@ -347,20 +347,22 @@ class QualificationMatrixTests(unittest.TestCase):
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
                     code = verify.verify(self.platform, artifacts, profile)
-                self.assertEqual(0, code)
-                self.assertNotIn(verify.REFUSAL, stderr.getvalue())
+                self.assertEqual(1, code)
+                self.assertIn(verify.REFUSAL, stderr.getvalue())
                 self.assertEqual(2, started.call_count)
                 blocked_bytes = (artifacts / "evidence" / "blocked.json").read_bytes()
                 attempt_bytes = (artifacts / verify.ATTEMPT_NAME).read_bytes()
                 stderr = StringIO()
                 with patch.object(verify.sys, "stderr", stderr):
                     again = verify.verify(self.platform, artifacts, profile)
-            self.assertEqual(0, again)
+            self.assertEqual(1, again)
             self.assertEqual("", stderr.getvalue())
             self.assertEqual(2, started.call_count)
             self.assertEqual(blocked_bytes, (artifacts / "evidence" / "blocked.json").read_bytes())
             self.assertEqual(attempt_bytes, (artifacts / verify.ATTEMPT_NAME).read_bytes())
             blocked = json.loads(blocked_bytes)
+            self.assertTrue(blocked["blocked"])
+            self.assertEqual("DependencyNotAvailable", blocked["code"])
             self.assertTrue(blocked["componentQualification"])
             self.assertFalse(blocked["dependencyAvailable"])
             self.assertFalse(blocked["productionEngineRegistered"])
@@ -381,7 +383,7 @@ class QualificationMatrixTests(unittest.TestCase):
             self.assertEqual(set(verify.LOST_ACK_CELLS), {item["name"].split("(", 1)[0].rsplit(".", 1)[-1] for item in lost["matchedTests"]})
             self.assertFalse(any("RecoverSomething" in item["name"] or "AclFence" in item["name"] for item in lost["matchedTests"]))
             attempt = json.loads(attempt_bytes)
-            self.assertEqual(0, attempt["exitCode"])
+            self.assertEqual(1, attempt["exitCode"])
             self.assertFalse(attempt["dependencyAvailable"])
             self.assertEqual(0, attempt["effects"])
             self.assertEqual(0, attempt["liveEffects"])
@@ -470,7 +472,7 @@ class QualificationMatrixTests(unittest.TestCase):
                 with patch.object(verify.sys, "stderr", stderr):
                     code = verify.verify(platform, failed_artifacts, profile)
             self.assertEqual(1, code)
-            self.assertIn("required cell", stderr.getvalue())
+            self.assertIn("component attempt cannot pass", stderr.getvalue())
             self.assertEqual(0, replayed.call_count)
 
             def mixed(root, project, test_filter, results, log_name, configuration="Debug"):
@@ -516,7 +518,7 @@ class QualificationMatrixTests(unittest.TestCase):
             artifacts = Path(temp) / "artifacts"
             platform = self.platform
             with patch.object(verify, "run_suite", side_effect=passed_suite) as started:
-                self.assertEqual(0, verify.verify(platform, artifacts, first))
+                self.assertEqual(1, verify.verify(platform, artifacts, first))
                 snapshot = {
                     path.relative_to(artifacts).as_posix(): path.read_bytes()
                     for path in artifacts.rglob("*") if path.is_file()
@@ -534,7 +536,7 @@ class QualificationMatrixTests(unittest.TestCase):
             }
             self.assertEqual(snapshot, current)
             attempt = json.loads((artifacts / verify.ATTEMPT_NAME).read_text())
-            self.assertEqual(0, attempt["exitCode"])
+            self.assertEqual(1, attempt["exitCode"])
             self.assertFalse(attempt["dependencyAvailable"])
             pending_body = complete_profile()
             pending_body["partiesBinding"] = "pending"
@@ -618,7 +620,7 @@ class QualificationMatrixTests(unittest.TestCase):
                 ["bash", str(script), "--mode", "Full", "--profile", str(profile), "--artifacts-path", str(fake_dir / "pass")],
                 cwd=platform, env=env, capture_output=True, text=True)
             self.assertEqual(0, completed.returncode)
-            self.assertIn("Component qualification passed. Live qualification and the OQ-5.4-1 cohort remain gated.", completed.stdout)
+            self.assertIn("OQ-5.4-1 joint owner qualification passed; dependency availability requires register acceptance.", completed.stdout)
             self.assertNotIn("unavailable", completed.stdout)
             self.assertNotIn("Available", completed.stdout)
             self.assertFalse(dotnet_log.exists())

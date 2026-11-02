@@ -1,6 +1,6 @@
 # EXT-HOST-1 — Agents platform host composition
 
-The expanded owner artifact is Committed at immutable Platform target `f448db29493c1b30b0f18380188fe99b8b7606fe` with the Full command pinned in the Agents external dependency register. The register's exact-target Full command still exits at the closed gate. A successful build of the default empty scaffold does not prove Agents composition or Levels 4/5 qualification. Earlier Uncommitted statements in dated source evidence describe historical state.
+The expanded owner artifact is Committed at immutable Platform target `abbec4093715c1db854433119b32d4e16df20d08` with the Full command pinned in the Agents external dependency register. That accepted target predates this checkout's later changes. The register's exact-target Full command still exits at the closed gate. A successful build of the default empty scaffold does not prove Agents composition or Levels 4/5 qualification. Earlier Uncommitted statements in dated source evidence describe historical state.
 
 The complete requirement is H1–H4: Platform-owned Agents DomainService/UI composition with accepted EventStore, Parties, Conversations, Tenants, Provider/Safety, Workflow, custody, identity and health/telemetry; a replicated durable security-audit spool and private exact-target replay/recorder/worker credentials; real payload protection and persisted FR-34 startup/every-readiness attestation; migration/fences/guard protocols, all-or-none manifest destruction, v21/v23 compromise/dispatch/reserve/activation/completion and restore qualification. The target, date and command are accepted; installed bindings and passing qualification remain required. Local signing fixtures do not supply S3/S4 or these host protocols.
 
@@ -21,7 +21,7 @@ Component qualification pins a complete deployment profile:
 
 The default artifacts directory keeps one complete attempt. A later commit or profile needs a fresh `--artifacts-path`.
 
-It exits 0 only when every required custody and guard cell passed. That result is component qualification, and `dependencyAvailable` stays false. Live qualification and cohort `OQ-5.4-1` remain gated on `EXT-PROTECTION-1`, trust anchors, and the cohort prerequisites.
+The component route retains the required custody and guard results, but exits 1 even when every cell passes. Its evidence names component qualification and `dependencyAvailable:false`. Only the installed `OQ-5.4-1` joint route can return success for Full. The joint route remains gated on a Committed `EXT-PROTECTION-1` record, exact accepted profile, plan, trust anchors and installed inputs; a successful joint result still requires register acceptance before either record becomes Available.
 
 Explicit local scaffold verification builds Debug into isolated artifacts:
 

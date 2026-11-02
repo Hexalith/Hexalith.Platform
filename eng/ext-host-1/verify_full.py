@@ -154,16 +154,13 @@ def coverage_gaps(names, custody_code, guard_code, started):
 
 
 def result_code(qualified, started, gaps):
-    if qualified:
-        return "ComponentQualification"
-    if not started or gaps:
-        return "DependencyNotAvailable"
-    return "QualificationNotAccepted"
+    # A component suite cannot establish the registered Full dependency.
+    return "DependencyNotAvailable"
 
 
 def result_fields(qualified, gaps, coverage, cells):
     return {
-        "blocked": not qualified,
+        "blocked": True,
         "componentQualification": qualified,
         "coverageGaps": coverage,
         "dependency": "EXT-HOST-1",
@@ -343,10 +340,10 @@ def read_attempt(artifacts):
     return document
 
 
-def write_attempt(artifacts, key, head, profile, code, configuration="Debug"):
+def write_attempt(artifacts, key, head, profile, code, qualified, configuration="Debug"):
     document = {
         "attemptKey": key,
-        "componentQualification": code == 0,
+        "componentQualification": qualified,
         "dependencyAvailable": False,
         "effects": 0,
         "evidenceDigest": evidence_digest(Path(artifacts) / "evidence"),
@@ -425,8 +422,8 @@ def verify(root, artifacts, profile, configuration="Debug"):
                     print("ERROR: EXT-HOST-1 evidence digest does not match the persisted attempt.", file=sys.stderr)
                     return 1
                 code = int(stored["exitCode"])
-                if code == 0 and not required_cells_passed(evidence):
-                    print("ERROR: EXT-HOST-1 evidence does not show every required cell Passed.", file=sys.stderr)
+                if code == 0:
+                    print("ERROR: EXT-HOST-1 component attempt cannot pass Full qualification.", file=sys.stderr)
                     return 1
                 return code
             print("ERROR: EXT-HOST-1 keeps the first complete attempt.", file=sys.stderr)
@@ -436,10 +433,13 @@ def verify(root, artifacts, profile, configuration="Debug"):
         coverage = coverage_gaps(names, custody_code, guard_code, True)
         qualified = not gaps and not coverage and custody_code == 0 and guard_code == 0
         publish(evidence, gaps, suites, names, qualified, coverage)
-        code = 0 if qualified else 1
-        write_attempt(artifacts, key, head, loaded, code, configuration)
+        # Component tests are evidence, not a Full owner qualification. Only the
+        # installed OQ-5.4-1 route above can return success for --mode Full.
+        code = 1
+        write_attempt(artifacts, key, head, loaded, code, qualified, configuration)
         if qualified:
-            return 0
+            print("ERROR: " + REFUSAL, file=sys.stderr)
+            return code
         if custody_code != 0 or guard_code != 0:
             print("ERROR: EXT-HOST-1 evidence suites failed.", file=sys.stderr)
         print("ERROR: EXT-HOST-1 component qualification incomplete.", file=sys.stderr)
