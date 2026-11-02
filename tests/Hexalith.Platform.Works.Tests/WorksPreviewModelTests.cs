@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.EventStore.Aspire;
+using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.Platform.Composition;
 using Hexalith.Platform.Works.Runtime;
 using Microsoft.Extensions.DependencyInjection;
@@ -146,6 +147,25 @@ public sealed class WorksPreviewModelTests : IDisposable
             await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, works, worksEnvironment,
                 TestContext.Current.CancellationToken));
         worksEnvironment.Keys.ShouldNotContain(key => key.StartsWith("EventStore__RateLimiting__", StringComparison.Ordinal));
+    }
+
+    /// <summary>Gateway and Admin advertise the v2 technical HTTP receiver profile required by the retained catalog.</summary>
+    [Fact]
+    public async Task GatewayAndAdminComposeTechnicalHttpReceiverProfile()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        WorksPreviewModel.Compose(builder);
+        foreach (string name in new[] { "eventstore", "eventstore-admin" })
+        {
+            ProjectResource receiver = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == name);
+            Dictionary<string, object> environment = new(StringComparer.Ordinal);
+            foreach (EnvironmentCallbackAnnotation callback in receiver.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, receiver, environment,
+                    TestContext.Current.CancellationToken));
+            const string prefix = "EventStore__RouteCatalog__DevelopmentBootstrap__";
+            environment[prefix + "ReceiverProfile"].ShouldBe(RouteCatalogTechnicalHttpPolicy.FenceVersion, name);
+            environment[prefix + "BindingVersion"].ShouldBe("2", name);
+        }
     }
 
     /// <summary>Every receiver requires a distinct secret app-channel credential even in Development.</summary>

@@ -316,9 +316,9 @@ public static class WorksPreviewModel
             // one project would race the shared static-web-assets intermediates.
             foreach (var host in worksHosts) host.WithArgs("--no-build", "--no-restore");
             var catalog = builder.AddEventStoreDevelopmentRouteCatalog(eventStore, [preparedOwner.Owner],
-                [eventStore.CaptureEventStoreDevelopmentReceiver([.. worksHosts, admin]),
+                [eventStore.CaptureEventStoreDevelopmentReceiver([.. worksHosts, admin]) with { TechnicalHttp = true },
                     .. worksHosts.Select(host => host.CaptureEventStoreDevelopmentReceiver(eventStore, operations, admin)),
-                    admin.CaptureEventStoreDevelopmentReceiver(),
+                    admin.CaptureEventStoreDevelopmentReceiver() with { TechnicalHttp = true },
                     operations.CaptureEventStoreDevelopmentReceiver(admin)], eventStoreResources.StateStore, developmentProfile.Catalog);
             builder.Services.AddSingleton<IHostedService>(_ => new WorksRoutingCatalogLifetime(preparedOwner, catalog));
         }
