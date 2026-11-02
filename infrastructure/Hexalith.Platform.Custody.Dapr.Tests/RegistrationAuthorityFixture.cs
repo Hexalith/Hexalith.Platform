@@ -15,6 +15,7 @@ internal sealed class RegistrationAuthorityFixture : ISecretsCredentialBoundDapr
     private readonly Fixture _component;
     private readonly ECDsa _signer=ECDsa.Create(ECCurve.NamedCurves.nistP256),_guard=ECDsa.Create(ECCurve.NamedCurves.nistP256);
     private readonly string _channel=Path.GetTempFileName();
+    private readonly string _archive=Path.Combine(Path.GetTempPath(),"joined-authority-"+Guid.NewGuid().ToString("N"));
     private readonly DaprClient _stateClient,_componentClient;
     private readonly RegistrationAuthorityStateTransport _state;
     private readonly IndependentAuthorityReceiverInstallation _installation;
@@ -32,6 +33,11 @@ internal sealed class RegistrationAuthorityFixture : ISecretsCredentialBoundDapr
     internal RegistrationAuthorityFixture(Fixture component)
     {
         _component=component;File.WriteAllText(_channel,"joined-channel");
+        Directory.CreateDirectory(_archive);
+        byte[] archiveEnrollment=Encoding.UTF8.GetBytes("joined-enrollment");
+        File.WriteAllBytes(Path.Combine(_archive,"enrollment.json"),archiveEnrollment);
+        string archiveEnrollmentSha=Hash(archiveEnrollment);
+        File.WriteAllBytes(Path.Combine(_archive,"capacity.json"),CustodyJson.Bytes(new IndependentArchiveCapacity.Ledger { EnrollmentSha256=archiveEnrollmentSha }));
         component.Profile=component.Profile with { Trust=component.Profile.Trust.Append(new TrustedSigner("joined-guard","guard-control-original",_guard.ExportSubjectPublicKeyInfoPem())).ToArray() };
         component.Verifier=new(component.Profile,TimeProvider.System);component.RestartPublication(component.Publisher);
         IndependentCallerGrant Grant(string token,string role,string scope,string[] methods)=>new(Hash(Encoding.UTF8.GetBytes(token)),token,scope,role,methods,DateTimeOffset.UtcNow.AddHours(1),false);
@@ -47,10 +53,21 @@ internal sealed class RegistrationAuthorityFixture : ISecretsCredentialBoundDapr
         _verifier=new DaprCustodyRegistrationOriginalVerifier(new CustodyLifecycleClient(_componentClient,new Dictionary<string,string> { [CustodyLifecycleClient.LogicalRole]="custody" },component.OwnerScope,
             Encoding.UTF8.GetString(CustodyJson.Bytes(component.Profile.Enrollment)),component.Profile.ComponentPublicKeyPem,
             new DaprCustodyAuthorizerClient(this,new Dictionary<string,string> { [DaprCustodyAuthorizerClient.LogicalRole]="joined-authorizer" },"file:/lookup")));
-        _installation=new("joined-enrollment","joined-scope","joined-trust","joined-store","head","unused",_signer.ExportSubjectPublicKeyInfoPem(),"file:"+_channel,CompletionReserveBytes:1024*1024);
+        _installation=new("joined-enrollment","joined-scope","joined-trust","joined-store","head","unused",_signer.ExportSubjectPublicKeyInfoPem(),"file:"+_channel,
+            OriginalArchiveDirectory:_archive,ArchiveEnrollmentSha256:archiveEnrollmentSha,CompletionReserveBytes:1024*1024,
+            ArchiveCapacity:new("LinuxSharedPhysicalArchiveCapacityV1",_archive,archiveEnrollmentSha,1024L*1024*1024,
+                VolumeFenceIdentity:ArchiveVolumeFence.ReadIdentityAsync(_archive,default).GetAwaiter().GetResult()));
         _receiver=Receiver();
     }
-    private IndependentAuthorityReceiver Receiver()=>new(_stateClient,_installation,_signer,TimeProvider.System,registrationVerifier:_verifier);
+    private IndependentAuthorityReceiver Receiver()=>new(_stateClient,_installation,_signer,TimeProvider.System,registrationVerifier:_verifier)
+    {
+        // The joined protocol fixture retains its real state and archive IO; physical allocation is tested separately.
+        CapacityFactory=(config,directory,owner)=>new(config,directory,owner)
+        {
+            AvailableBytesOverride=()=>1024L*1024*1024,
+            AllocationOverride=(_,_)=>{ }
+        }
+    };
     internal void Restart()=>_receiver=Receiver();
     private IndependentDaprAuthorityBinding Binding(string token)=>new("joined-authority","file:/"+token,_signer.ExportSubjectPublicKeyInfoPem(),"joined-enrollment","joined-scope","joined-trust");
     private IndependentDaprAuthority Authority(string token)=>new(this,Binding(token),TimeProvider.System);
@@ -98,5 +115,5 @@ internal sealed class RegistrationAuthorityFixture : ISecretsCredentialBoundDapr
         _state.Replace(State with { Revision=State.Revision+1,Originals=originals });
     }
     private static string Hash(byte[] bytes)=>Convert.ToHexString(SHA256.HashData(bytes));
-    public void Dispose() { _stateClient.Dispose();_componentClient.Dispose();_signer.Dispose();_guard.Dispose();File.Delete(_channel); }
+    public void Dispose() { _stateClient.Dispose();_componentClient.Dispose();_signer.Dispose();_guard.Dispose();File.Delete(_channel);Directory.Delete(_archive,true); }
 }

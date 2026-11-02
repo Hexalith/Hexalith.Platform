@@ -103,7 +103,9 @@ internal static class RegistrationPublicationTests
         Check(await authority.Locator.FindAsync(original.Identity,default)==original,"Restart locator lost cancelled publication.");
         var intent=component.Store.State.Checkpoint.NativeIntents.Values.Single();
         var recovery=new WorkerOperation("recover-wrap-result",original.OperationId,intent.IntentId,intent.SourceGeneration,intent.DestinationGeneration,"","executor-process-1");
-        component.Qualify();await component.Exchange.RecoverWrapAsync("tenant",recovery,component.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default);
+        component.Qualify();
+        try { await component.Exchange.RecoverWrapAsync("tenant",recovery,component.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default); }
+        catch(AuthorityUnavailableException failure) { throw new Exception("Joined recovery refused: "+string.Join(", ",authority.Calls),failure); }
         Check(component.Native.Encrypts==1 && authority.State.Registrations.Values.Single()==original,"Joined restart recovery repeated wrapping or changed original.");
         authority.RevokeAfterPrepare=true;
         Check(await authority.Publisher.PublishAsync(original,default) is null,"Publisher revoked during actual prepare was admitted after verification.");

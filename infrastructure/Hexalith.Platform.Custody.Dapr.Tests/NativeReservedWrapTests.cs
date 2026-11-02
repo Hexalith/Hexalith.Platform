@@ -45,7 +45,7 @@ internal static class NativeReservedWrapTests
             var request=fixture.Wrap("reserved-wrap");var input=request.WrapInput!;
             var admission=new KeyAdmission(input.KeyUse,request.Envelope.RequestDigest,profile.ProfileDigest,
                 new[]{"caller","sdk","sidecar","uds","grpc","tls","component","native"}.Select(role=>new KeyHolder("copy-"+role,role,input.KeyUse.RecipientProcessIncarnation,input.KeyUse.TransportIncarnation,"owner",Fixture.Digest)).ToArray());
-            var exchange=new KeyExchange(profile,store,native,fixture.Native,new StatementVerifier(profile,TimeProvider.System));
+            var exchange=new KeyExchange(profile,store,native,fixture.Native,new StatementVerifier(profile,TimeProvider.System),fixture.Publisher);
             try { await exchange.ExecuteAsync(request,current,fixture.Sign("independent-observer",CustodyJson.Hash(CustodyJson.Bytes(admission)),admission),default);throw new Exception("First wrap response loss was not exercised."); }
             catch(IOException error) when(error.Message=="fixture lost first wrap response") { }
             if(store.OrdinaryRefusals<2 || fixture.Native.Encrypts!=1) throw new Exception("Admitted wrap did not use reserved exact completion after ordinary publication refused.");
