@@ -1318,6 +1318,12 @@ def run_verification(args):
         summary["runtimeEnvironment"] = runtime_environment
         save()
         executable = consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests"
+        binary_xml = artifacts / "selected-runtime-binaries.xml"
+        run("selected-runtime-binaries", [executable, "-noLogo", "-explicit", "on", "-method",
+            "Hexalith.Works.IntegrationTests.WorksPlatformRollbackBinaryTests.ActualSelectedRuntimeBinariesCaptureWithoutMutation",
+            "-result-xml", binary_xml], works, environment)
+        summary["checks"]["selectedRuntimeBinaries"] = require_passed_tests(binary_xml,
+            ["ActualSelectedRuntimeBinariesCaptureWithoutMutation"])
         # The archive must actually start before expensive write/snapshot/restore scenarios begin.
         # Its isolated evidence never enters the matrix's actualStarts or rollback phase records.
         preflight_runtime = artifacts / "isolated-daprd-retained-preflight"
