@@ -109,6 +109,29 @@ public sealed class PlatformNativeTestPreparationTests
         workspace.ShouldBeUnprepared(preparation);
     }
 
+    /// <summary>Validates complete source proofs before requiring the network-backed application model.</summary>
+    [Fact]
+    public async Task FutureStartupDeadlineValidatesSourceBeforeRequiringApplicationModelAsync()
+    {
+        using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
+        workspace.WriteSource(workspace.Scope);
+        workspace.WriteStaleCredentials();
+        PlatformNativeTestPreparation preparation = workspace.Preparation();
+        using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
+        using CancellationTokenSource bound = Bound();
+
+        Task preparing = preparation.PrepareAsync(services, bound.Token);
+        Exception failure = await CaptureAsync(preparing);
+
+        bound.IsCancellationRequested.ShouldBeFalse();
+        preparing.IsFaulted.ShouldBeTrue();
+        failure.ShouldBeOfType<InvalidOperationException>().Message.ShouldContain(
+            "Aspire.Hosting.ApplicationModel.DistributedApplicationModel");
+        using (JsonDocument progress = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(workspace.Catalog, "preparation-progress.json"))))
+            progress.RootElement.GetProperty("step").GetString().ShouldBe("source-validated");
+        workspace.ShouldBeUnprepared(preparation);
+    }
+
 #if HEXALITH_PLATFORM_V2_CATALOG
     /// <summary>The preparation entry point must reject complete activation/readback drift before credentials or source-validated progress.</summary>
     [Theory]
