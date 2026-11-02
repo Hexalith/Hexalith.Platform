@@ -22,7 +22,7 @@ public sealed class AgentsHostStartupBoundaryTests
     {
         ArgumentNullException.ThrowIfNull(fault);
         string root=Path.Combine(Path.GetTempPath(),"apphost-boundary-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
-        using var released=new ManualResetEventSlim();using var cancel=new CancellationTokenSource();var finished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var released=new ManualResetEventSlim();using var cancel=new CancellationTokenSource();var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var finished=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         try
         {
             var input=AgentsAcceptedDeploymentContextTests.Inputs(root);
@@ -60,13 +60,13 @@ public sealed class AgentsHostStartupBoundaryTests
             if(fault=="cancel") cancel.Cancel();
             Func<string,int,CancellationToken,Task<byte[]>>? acquire=null;
             if(fault is "changing" or "stall") acquire=(path,max,ct)=>path!=chosen?BoundedRegularFile.ReadAsync(path,max,ct):
-                BoundedRegularFile.ReadWithAcquisitionAsync(path,max,ct,null,fault=="stall"?()=> { try { released.Wait(); }finally { finished.TrySetResult(); } }:null,
+                BoundedRegularFile.ReadWithAcquisitionAsync(path,max,ct,null,fault=="stall"?()=> { entered.TrySetResult();try { released.Wait(); }finally { finished.TrySetResult(); } }:null,
                     fault=="changing"?()=> { using var writer=new FileStream(path,FileMode.Open,FileAccess.Write,FileShare.ReadWrite|FileShare.Delete);writer.SetLength(max+1);writer.Flush(true); }:null);
             if(fault=="development-missing") { Should.Throw<FileNotFoundException>(()=>AgentsHostComposition.TryCompose(builder)).FileName.ShouldBe(chosen);builder.Resources.ShouldBeEmpty();return; }
             bool composed=await Task.Run(()=>AgentsHostComposition.TryCompose(builder,cancel.Token,fault=="stall"?TimeSpan.FromMilliseconds(100):TimeSpan.FromSeconds(3),acquire),TestContext.Current.CancellationToken).WaitAsync(TimeSpan.FromSeconds(15),TestContext.Current.CancellationToken);
             composed.ShouldBe(fault=="valid");
             if(composed) builder.Resources.Count(value=>value.Name is "eventstore" or "tenants" or "tenants-api" or "parties" or "conversations" or "agents" or "agents-ui").ShouldBe(7);else builder.Resources.ShouldBe(callerResources);
-            if(fault=="stall") { finished.Task.IsCompleted.ShouldBeFalse();released.Set();await finished.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken); }
+            if(fault=="stall") { finished.Task.IsCompleted.ShouldBeFalse();released.Set();if(entered.Task.IsCompleted) await finished.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken); }
         }
         finally { AcceptedLaunchArtifactLease.KernelProofOverride=null;released.Set();Directory.Delete(root,true); }
     }
