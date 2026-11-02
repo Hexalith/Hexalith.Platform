@@ -1,0 +1,23 @@
+{
+  "BuildArguments": [
+    "build",
+    "/tmp/hexalith-platform-ext-secrets-1-sourcegate/infrastructure/Hexalith.Platform.Custody.Dapr.Tests/Hexalith.Platform.Custody.Dapr.Tests.csproj",
+    "-c",
+    "Debug",
+    "--artifacts-path",
+    "/tmp/ext-secrets-1-local-repair3-artifacts/native-3adc1d59930244e5ba771360ba2ca2ab",
+    "-m:1",
+    "-p:NuGetAudit=false",
+    "-p:MinVerVersionOverride=1.0.0",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+    "-p:UseNuGetDeps=false",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:HexalithCommonsRoot=/tmp/hexalith-platform-ext-secrets-1-sourcegate/references/Hexalith.Commons",
+    "-p:NuGetLockFilePath=/tmp/ext-secrets-1-local-repair3-artifacts/native-3adc1d59930244e5ba771360ba2ca2ab/locks/$(MSBuildProjectName).lock.json"
+  ],
+  "Passed": 33,
+  "LogSha256": "6798acf9f5f5eb89c5d634a472ecc7698ae3aa4a1bf9403e983883c0e0d33e82",
+  "SourceComponentOnly": true,
+  "InstalledQualification": false
+}

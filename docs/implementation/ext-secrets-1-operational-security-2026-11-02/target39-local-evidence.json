@@ -1,0 +1,171 @@
+{
+  "XmlSha256": "937746928ce7a4d9966f06d342d83d77cae1eddc2a929265b2384d6ea6ba1a15",
+  "ModelReportPath": "/tmp/ext-secrets-1-local-39c3337d-evidence/custody-shared-cut-model.json",
+  "DependencyAvailable": false,
+  "TestArguments": [
+    "/tmp/ext-secrets-1-local-39c3337d-artifacts/bin/Hexalith.Platform.Custody.Tests/debug/Hexalith.Platform.Custody.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.DaprPlatformHmacBindingTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.CustodySharedCutModelTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.DeletionBatchExecutionCoordinatorTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.ExportKeyDeliveryActorTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.Fr34ProtectionGateTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.PrivateOwnerOperationDeadlineTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.IndependentDecisionManifestVerifierTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.PlatformAcceptedEnvelopeTimingTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.PlatformKeyInventoryActorTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.PlatformSecurityDenialRecorderTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolWorkerTests",
+    "-class",
+    "Hexalith.Platform.Custody.Tests.TrustedEnvelopeReplayVerifierTests",
+    "-result-xml",
+    "/tmp/ext-secrets-1-local-39c3337d-evidence/local-tests.xml"
+  ],
+  "Passed": 783,
+  "NativePassed": 33,
+  "Mode": "Local",
+  "LiveReady": false,
+  "ModelReportSha256": "95b2c3cb0d9e115234a29c5440cedd745c855d0263c32a0f53e176f70565eb52",
+  "NativeEvidence": "/tmp/ext-secrets-1-local-39c3337d-evidence/native-be4ee16a1a0049e9893cb3d52614363e",
+  "RuntimePassed": 847,
+  "Scope": "Configured S1/S2/S3/S4, lifecycle/inventory/delivery/signing/decision/private-credential/spool/FR34/replay/denial/compromise source simulations; no live qualification",
+  "RequiredClasses": [
+    {
+      "Passed": 29,
+      "Class": "Hexalith.Platform.Custody.Tests.DaprPlatformHmacBindingTests"
+    },
+    {
+      "Passed": 43,
+      "Class": "Hexalith.Platform.Custody.Tests.CustodyKeyLifecycleTests"
+    },
+    {
+      "Passed": 38,
+      "Class": "Hexalith.Platform.Custody.Tests.CustodySharedCutModelTests"
+    },
+    {
+      "Passed": 68,
+      "Class": "Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests"
+    },
+    {
+      "Passed": 16,
+      "Class": "Hexalith.Platform.Custody.Tests.DeletionBatchCapabilityCodecTests"
+    },
+    {
+      "Passed": 38,
+      "Class": "Hexalith.Platform.Custody.Tests.DeletionBatchExecutionCoordinatorTests"
+    },
+    {
+      "Passed": 26,
+      "Class": "Hexalith.Platform.Custody.Tests.DeletionCapabilityRevocationSubscriberTests"
+    },
+    {
+      "Passed": 52,
+      "Class": "Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests"
+    },
+    {
+      "Passed": 49,
+      "Class": "Hexalith.Platform.Custody.Tests.ExportCustodyCryptographyTests"
+    },
+    {
+      "Passed": 28,
+      "Class": "Hexalith.Platform.Custody.Tests.ExportKeyDeliveryActorTests"
+    },
+    {
+      "Passed": 34,
+      "Class": "Hexalith.Platform.Custody.Tests.Fr34ProtectionGateTests"
+    },
+    {
+      "Passed": 9,
+      "Class": "Hexalith.Platform.Custody.Tests.PrivateOwnerOperationDeadlineTests"
+    },
+    {
+      "Passed": 47,
+      "Class": "Hexalith.Platform.Custody.Tests.IdentityHistoryCleanupTests"
+    },
+    {
+      "Passed": 89,
+      "Class": "Hexalith.Platform.Custody.Tests.IdentityHistoryCustodyPolicyTests"
+    },
+    {
+      "Passed": 47,
+      "Class": "Hexalith.Platform.Custody.Tests.IndependentDecisionManifestVerifierTests"
+    },
+    {
+      "Passed": 2,
+      "Class": "Hexalith.Platform.Custody.Tests.PlatformAcceptedEnvelopeTimingTests"
+    },
+    {
+      "Passed": 13,
+      "Class": "Hexalith.Platform.Custody.Tests.PlatformKeyInventoryActorTests"
+    },
+    {
+      "Passed": 11,
+      "Class": "Hexalith.Platform.Custody.Tests.PlatformSecurityDenialRecorderTests"
+    },
+    {
+      "Passed": 59,
+      "Class": "Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests"
+    },
+    {
+      "Passed": 63,
+      "Class": "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests"
+    },
+    {
+      "Passed": 3,
+      "Class": "Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolWorkerTests"
+    },
+    {
+      "Passed": 19,
+      "Class": "Hexalith.Platform.Custody.Tests.TrustedEnvelopeReplayVerifierTests"
+    }
+  ],
+  "Total": 783,
+  "RuntimeXmlSha256": "00c2c3692fb806eb6cdb587cdb92d336fb31954b20f4a530a064e8112b2b7480",
+  "BuildArguments": [
+    "build",
+    "/tmp/hexalith-platform-ext-secrets-1-target39/tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj",
+    "-c",
+    "Debug",
+    "--artifacts-path",
+    "/tmp/ext-secrets-1-local-39c3337d-artifacts",
+    "-m:1",
+    "-p:NuGetAudit=false",
+    "-p:MinVerVersionOverride=1.0.0",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/eventstore",
+    "-p:UseNuGetDeps=false",
+    "-p:HexalithCommonsFromSource=true",
+    "-p:HexalithCommonsRoot=/tmp/hexalith-platform-ext-secrets-1-target39/references/Hexalith.Commons",
+    "-p:NuGetLockFilePath=/tmp/ext-secrets-1-local-39c3337d-artifacts/locks/$(MSBuildProjectName).lock.json"
+  ]
+}
