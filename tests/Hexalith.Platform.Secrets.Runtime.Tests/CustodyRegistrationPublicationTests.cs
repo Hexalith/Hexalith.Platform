@@ -27,7 +27,7 @@ public sealed class CustodyRegistrationPublicationTests
         (await new DaprCustodyRegistrationPublisher(fixture.Client()).PublishAsync(original, TestContext.Current.CancellationToken)).ShouldBe(original);
         fixture.State.Registrations.Count.ShouldBe(1);
         fixture.State.Registrations.Values.Single().ShouldBe(original);
-        fixture.Saves.ShouldBe(2);
+        fixture.MutationSaves.ShouldBe(1);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public sealed class CustodyRegistrationPublicationTests
         {
             Grant(missing);
             (await new DaprCustodyRegistrationPublisher(missing.Client()).PublishAsync(Original, TestContext.Current.CancellationToken)).ShouldBeNull();
-            missing.State.Registrations.ShouldBeEmpty(); missing.Saves.ShouldBe(0);
+            missing.State.Registrations.ShouldBeEmpty(); missing.MutationSaves.ShouldBe(0);
         }
         var verifier = Substitute.For<ICustodyRegistrationOriginalVerifier>();
         verifier.VerifyAsync(Original, Arg.Any<CancellationToken>()).Returns(true);
@@ -47,10 +47,10 @@ public sealed class CustodyRegistrationPublicationTests
         (await fixture.Client().InvokeAsync<CustodyKeyRegistration>("custody-publish-registration-original",new { original=Original, unexpected="no-index-admission" },TestContext.Current.CancellationToken)).ShouldBeNull();
         foreach (var changed in Changes(Original))
             (await publisher.PublishAsync(changed, TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.State.Registrations.Values.Single().ShouldBe(Original); fixture.Saves.ShouldBe(1);
+        fixture.State.Registrations.Values.Single().ShouldBe(Original); fixture.MutationSaves.ShouldBe(1);
         verifier.VerifyAsync(Original, Arg.Any<CancellationToken>()).Returns(false);
         (await publisher.PublishAsync(Original, TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.Saves.ShouldBe(1);
+        fixture.MutationSaves.ShouldBe(1);
         // Even a mistaken positive verifier cannot overwrite an already retained identity.
         verifier.VerifyAsync(Arg.Any<CustodyKeyRegistration>(), Arg.Any<CancellationToken>()).Returns(true);
         (await publisher.PublishAsync(Original with { WrapReceiptId="substituted" }, TestContext.Current.CancellationToken)).ShouldBeNull();
@@ -79,7 +79,7 @@ public sealed class CustodyRegistrationPublicationTests
         (await new DaprCustodyOriginalLocators(fixture.Client()).FindAsync(Original.Identity, TestContext.Current.CancellationToken)).ShouldBeNull();
         fixture.RevokeCaller();
         (await new DaprCustodyOriginalLocators(fixture.Client()).FindAsync(Original.Identity, TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.Saves.ShouldBe(1);
+        fixture.MutationSaves.ShouldBe(1);
     }
 
     [Fact]
@@ -91,15 +91,15 @@ public sealed class CustodyRegistrationPublicationTests
         var publisher=new DaprCustodyRegistrationPublisher(fixture.Client());
         for(int i=0;i<1000;i++) fixture.State.Registrations.Add("retained-"+i,Original with { Identity=Original.Identity with { ObjectId="old-"+i }, OperationId="old-wrap-"+i,OpaqueWrappedKeyReference="old-reference-"+i });
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.State.Registrations.Count.ShouldBe(1000);fixture.Saves.ShouldBe(0);
+        fixture.State.Registrations.Count.ShouldBe(1000);fixture.MutationSaves.ShouldBe(0);
         fixture.State=fixture.State with { Registrations=[] };
         fixture.State=fixture.State with { QualificationBindings=new() { ["retained-owner-fact"]=new string('x',32*1024*1024) } };
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.State.Registrations.ShouldBeEmpty();fixture.State.QualificationBindings["retained-owner-fact"].Length.ShouldBe(32*1024*1024);fixture.Saves.ShouldBe(0);
+        fixture.State.Registrations.ShouldBeEmpty();fixture.State.QualificationBindings["retained-owner-fact"].Length.ShouldBe(32*1024*1024);fixture.MutationSaves.ShouldBe(0);
         fixture.State=fixture.State with { QualificationBindings=null };
         fixture.RejectHeadPublication=_=>true;
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.State.Registrations.ShouldBeEmpty();fixture.Saves.ShouldBe(0);
+        fixture.State.Registrations.ShouldBeEmpty();fixture.MutationSaves.ShouldBe(0);
         fixture.RejectHeadPublication=null;
         verifier.VerifyAsync(Arg.Any<CustodyKeyRegistration>(),Arg.Any<CancellationToken>()).Returns(_=>Task.FromException<bool>(new IOException("isolated source unavailable")));
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBeNull();
@@ -107,7 +107,7 @@ public sealed class CustodyRegistrationPublicationTests
         using var cancelled=new CancellationTokenSource();
         verifier.VerifyAsync(Arg.Any<CustodyKeyRegistration>(),Arg.Any<CancellationToken>()).Returns(_=> { cancelled.Cancel();return Task.FromCanceled<bool>(cancelled.Token); });
         await Should.ThrowAsync<OperationCanceledException>(()=>publisher.PublishAsync(Original,cancelled.Token));
-        fixture.State.Registrations.ShouldBeEmpty();fixture.Saves.ShouldBe(0);
+        fixture.State.Registrations.ShouldBeEmpty();fixture.MutationSaves.ShouldBe(0);
         verifier.VerifyAsync(Arg.Any<CustodyKeyRegistration>(),Arg.Any<CancellationToken>()).Returns(true);
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBe(Original);
         fixture.State.Registrations.Values.Single().ShouldBe(Original);
@@ -123,7 +123,7 @@ public sealed class CustodyRegistrationPublicationTests
             using var fixture=new IndependentAuthorityReceiverTests.Fixture(registrationVerifier:verifier);Grant(fixture);
             PadPublicationHead(fixture,size,insert:true);
             (await new DaprCustodyRegistrationPublisher(fixture.Client()).PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBe(allowed?Original:null);
-            fixture.State.Registrations.Count.ShouldBe(allowed?1:0);fixture.Saves.ShouldBe(allowed?1:0);
+            fixture.State.Registrations.Count.ShouldBe(allowed?1:0);fixture.MutationSaves.ShouldBe(allowed?1:0);
             if(allowed) JsonSerializer.SerializeToUtf8Bytes(fixture.State,CustodyBindingContract.Json).Length.ShouldBe(size);
             fixture.State.QualificationBindings.ShouldNotBeNull(); // No admission evicts the retained padding fact.
         }
@@ -133,7 +133,7 @@ public sealed class CustodyRegistrationPublicationTests
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBe(Original);
         PadPublicationHead(duplicate,admission+512*1024,insert:false);duplicate.Restart();
         (await publisher.PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBe(Original);
-        duplicate.State.Registrations.Values.Single().ShouldBe(Original);duplicate.Saves.ShouldBe(2);
+        duplicate.State.Registrations.Values.Single().ShouldBe(Original);duplicate.MutationSaves.ShouldBe(1);
         JsonSerializer.SerializeToUtf8Bytes(duplicate.State,CustodyBindingContract.Json).Length.ShouldBe(admission+512*1024);
     }
 
@@ -168,7 +168,7 @@ public sealed class CustodyRegistrationPublicationTests
         using var fixture=new IndependentAuthorityReceiverTests.Fixture(registrationVerifier:verifier);Grant(fixture);
         verifier.VerifyAsync(Arg.Any<CustodyKeyRegistration>(),Arg.Any<CancellationToken>()).Returns(_=> { fixture.RevokeCaller();return Task.FromResult(true); });
         (await new DaprCustodyRegistrationPublisher(fixture.Client()).PublishAsync(Original,TestContext.Current.CancellationToken)).ShouldBeNull();
-        fixture.State.Registrations.ShouldBeEmpty();fixture.Saves.ShouldBe(0);
+        fixture.State.Registrations.ShouldBeEmpty();fixture.MutationSaves.ShouldBe(0);
     }
 
     private static void Grant(IndependentAuthorityReceiverTests.Fixture fixture)

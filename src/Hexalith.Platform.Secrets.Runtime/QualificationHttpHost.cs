@@ -19,7 +19,7 @@ public static class QualificationHttpHost
         ArgumentNullException.ThrowIfNull(context);
         cancellationToken.ThrowIfCancellationRequested();
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        budget.CancelAfter(configuration.CallTimeout is { } timeout && timeout > TimeSpan.Zero && timeout <= TimeSpan.FromSeconds(30) ? timeout : TimeSpan.FromSeconds(30));
+        if (IndependentReceivingOwnership.Current.Value is null) budget.CancelAfter(configuration.CallTimeout is { } timeout && timeout > TimeSpan.Zero && timeout <= TimeSpan.FromSeconds(30) ? timeout : TimeSpan.FromSeconds(30));
         if (!ValidChannel(context.Request, appChannelToken)) { return QualificationHost.Deny([$"qualification.{role}.appChannelAuthentication"], role == "executor"); }
         if (authenticator is null) { return QualificationHost.Deny([$"qualification.{role}.authenticatedCallerScope"], role == "executor"); }
         bool executorDispatched = role == "executor";

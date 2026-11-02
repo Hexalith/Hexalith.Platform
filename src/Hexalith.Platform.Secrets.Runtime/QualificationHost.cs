@@ -31,7 +31,7 @@ public static class QualificationHost
         request = original;
         string id = SecretsProof.Text(request, "requestId")!;
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        budget.CancelAfter(configuration.CallTimeout ?? TimeSpan.FromSeconds(30));
+        if (IndependentReceivingOwnership.Current.Value is null) budget.CancelAfter(configuration.CallTimeout ?? TimeSpan.FromSeconds(30));
         try
         {
             // Carry the complete canonical public identity; drivers independently verify every outcome.
