@@ -1776,3 +1776,15 @@
   summary: The per-server input scoping deferral (2026-10-22, module-scoped `configurationInputs`) now also covers the internal-only `memories/domain` workload (medium; BH-8).
   evidence: `PlatformHostedPublishing.Describe` (`src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:23-27`) gives `memories/domain` all Memories inputs, including `Conversation:ProviderApiKey`, `Authentication:JwtBearer:SigningKey` and `Clock:SourceAuthenticationTokens`, although it consumes only `statestore`. This is the same pre-existing declaration shape; the fix remains a declaration-contract change.
   status: open
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md`
+  summary: Bind the future staging foundation apply plan to the exact guarded-render manifest bytes and authenticated target.
+  evidence: The preserved renderer accepts any manifest directory, so a blocked plan can name absent or unrelated files; full exact-byte and target binding belongs to the later authorized live procedure.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md`
+  summary: Add a positive denied-peer health and resolution control before treating a live CNI probe result as enforcement evidence.
+  evidence: The existing probe treats any denied connection failure, including missing DNS or endpoints, as a blocked connection; the current offline evaluator cannot establish runtime policy enforcement.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md`
+  summary: Bind live CNI result evaluation to the observed client Pod UID and authenticated log collection for a unique attempt.
+  evidence: The existing evaluator accepts caller-supplied text, and an attempt ID can be reused after deletion; old logs could be replayed without a live source binding.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md`
+  summary: Qualify the actual pod DNS path and validate the selected DNS namespace and label syntax for the future live probe.
+  evidence: Existing probe input checks allow nonempty but invalid Kubernetes selectors, while the current CoreDNS observation does not establish the pod resolver path.
