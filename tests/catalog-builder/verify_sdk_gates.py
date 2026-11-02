@@ -21,6 +21,7 @@ ALIASES = [alias for version in LEGACY for alias in
 VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", *ALIASES,
             "3.128.4", "3.131.0", "3.132.0", "4.0.0",
             "3.132.1-preview.1", "3.132.1+metadata", "3.132.1.0", "3.132.1.1",
+            "3.133.0-preview.1", "3.133.0+metadata", "3.133.0.0",
             "03.132.1", "3.132.01", "v3.132.1", "invalid-version"]
 PROJECTS = {
     "host": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
@@ -37,7 +38,7 @@ def expected_flags(project, version, source):
                 "composition": {SOURCE, CATALOG, V2},
                 "tests": {SOURCE, CATALOG, V2}, "tool": set()}[project]
     if project == "tool":
-        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1"] else set()
+        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0"] else set()
     flags = set()
     if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0"]:
         flags.add(CATALOG)

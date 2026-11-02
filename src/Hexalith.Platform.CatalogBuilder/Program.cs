@@ -15,7 +15,7 @@ if (!input.TryGetProperty("gatewayAppId", out var gateway) || gateway.ValueKind 
 string gatewayAppId = gateway.GetString()!;
 #if !HEXALITH_SCOPED_CONSUMER_BINDING
 if (gatewayAppId != "eventstore")
-    throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK 3.130.0, 3.130.1, 3.130.2 or exact 3.132.1.");
+    throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK 3.130.0, 3.130.1, 3.130.2, exact 3.132.1 or exact 3.133.0.");
 #endif
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];

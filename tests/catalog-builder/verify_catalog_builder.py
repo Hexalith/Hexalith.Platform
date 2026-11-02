@@ -22,7 +22,8 @@ BASELINE = "68b785b6a929050771e70d78f83ff10fea3daabc"
 SAMPLE_SOURCES = {"3.130.0": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
                   "3.130.1": "1de42b706f52af0da6513f0b7663002606d17156",
                   "3.130.2": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
-                  "3.132.1": "0ace1545c433bf234f54cef3a57ac77d62b4175f"}
+                  "3.132.1": "0ace1545c433bf234f54cef3a57ac77d62b4175f",
+                  "3.133.0": "6b2ef99ac55a6e548f504a81d30289bb3deff89d"}
 
 
 def digest(path):
@@ -305,7 +306,7 @@ def main():
     parser.add_argument("--builds-root", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--owners", type=Path, help="Optional copied genuine owner DLL closure manifest.")
-    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1"], default=SDK)
+    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0"], default=SDK)
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
     state = {"attempt": uuid.uuid4().hex, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
