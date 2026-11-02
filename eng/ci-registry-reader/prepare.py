@@ -17,6 +17,8 @@ CLUSTER_UID = "b5860674-1d1e-4a3b-b413-e1bb3b9a4557"
 CM_UID = "d00eeb4b-f507-440f-8328-fb838a7d5da3"
 CM_RV = "27899151"
 CONFIG_SHA = "90805228cf4ac16752d3bb1ca15b47b92f8c24f1a572b5275f1e54c9eecb0317"
+PLAN_SHA = "bc0a29ea92a51b8c6cb7c44e041959040faf7ed13e0375be616029f7ef459a08"
+RELOAD_PATCH_SHA = "7b84ff4ff0f114de9fc375b848d1b75f7a86d6c0234ac806e819267692b9008f"
 DEPLOY_UID = "20bb657c-b622-4e1b-81a2-f97bc353a811"
 DEPLOY_RV = "27899261"
 TEMPLATE_SHA = "f2c8c48ee11042922234497d46ac8cec0fae2f9d4e91a4be8cd39f03acfd792d"
@@ -147,10 +149,61 @@ def prepare():
     return {"configuration.current.json": original, "configuration.ci-reader.json": updated, "configmap.patch.json": cm_patch, "reload.patch.json": reload_patch, "plan.json": plan}
 
 
+def offline_check():
+    """Verify retained public artifacts without reading Kubernetes or credentials."""
+    require(hashlib.sha256((OUTPUT / "plan.json").read_bytes()).hexdigest() == PLAN_SHA,
+            "Retained plan drift.")
+    require(hashlib.sha256((OUTPUT / "reload.patch.json").read_bytes()).hexdigest() == RELOAD_PATCH_SHA,
+            "Retained reload patch drift.")
+    current = (OUTPUT / "configuration.current.json").read_text()
+    updated = (OUTPUT / "configuration.ci-reader.json").read_text()
+    plan = json.loads((OUTPUT / "plan.json").read_text())
+    configmap_patch = json.loads((OUTPUT / "configmap.patch.json").read_text())
+    reload_patch = json.loads((OUTPUT / "reload.patch.json").read_text())
+    original, expected_updated, expected_patch = configuration_patch({
+        "metadata": {"uid": CM_UID, "resourceVersion": CM_RV},
+        "data": {"config.json": current},
+    })
+    require(current == original and updated == expected_updated, "Public configuration artifact drift.")
+    require(configmap_patch == expected_patch, "ConfigMap patch drift.")
+    require(plan["preparationOnly"] is True and plan["credentialMaterialReadOrGenerated"] is False
+            and plan["clusterOrRegistryMutationPerformed"] is False, "Preparation-only claim drift.")
+    require(plan["clusterUid"] == CLUSTER_UID and plan["context"] == "jpiquot@local"
+            and plan["namespace"] == NAMESPACE, "Cluster binding drift.")
+    require(plan["configMap"] == {
+        "name": "distribution-registry-config", "uid": CM_UID, "resourceVersion": CM_RV,
+        "oldSha256": CONFIG_SHA, "newSha256": digest(updated),
+    }, "ConfigMap plan drift.")
+    require(plan["secretMetadataOnly"] == {
+        "name": "distribution-registry-htpasswd", "uid": SECRET_UID,
+        "resourceVersion": SECRET_RV, "keys": ["htpasswd"],
+    }, "Secret metadata plan drift.")
+    require(plan["principal"] == "ci-reader" and plan["policy"] == POLICY
+            and plan["externalKustomizeSourceLocated"] is False
+            and plan["externalSourceUpdated"] is False, "Policy/source plan drift.")
+    require(len(reload_patch) == 8 and reload_patch[0:5] == [
+        {"op": "test", "path": "/metadata/uid", "value": DEPLOY_UID},
+        {"op": "test", "path": "/metadata/resourceVersion", "value": DEPLOY_RV},
+        {"op": "test", "path": "/spec/replicas", "value": 1},
+        {"op": "test", "path": "/spec/strategy/type", "value": "Recreate"},
+        {"op": "test", "path": "/spec/template/spec/containers/0/image", "value": ZOT_IMAGE},
+    ], "Reload identity or strategy guard drift.")
+    require(reload_patch[-1]["op"] == "add"
+            and reload_patch[-1]["path"] == "/spec/template/metadata/annotations"
+            and reload_patch[-1]["value"]["hexalith.com/ci-reader-config-sha256"] == digest(updated),
+            "Reload target drift.")
+    print("Retained public artifacts verified offline; no Kubernetes or credential access.")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Revalidate the reviewed artifacts without rewriting them.")
+    parser.add_argument("--offline-check", action="store_true", help="Verify retained public artifacts without Kubernetes access.")
     args = parser.parse_args()
+    require(not (args.check and args.offline_check), "Choose one check mode.")
+    if args.offline_check:
+        offline_check()
+        return
     artifacts = prepare()
     if args.check:
         for name, value in artifacts.items():
