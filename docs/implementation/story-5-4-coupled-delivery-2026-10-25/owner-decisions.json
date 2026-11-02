@@ -1045,11 +1045,11 @@
     },
     "latestV2OwnerHandoff": {
       "schema": "platform.story-5.4.ext-parties-1-v2-evidence-handoff.v1",
-      "recordedAtUtc": "2026-11-02T15:13:58Z",
+      "recordedAtUtc": "2026-11-02T15:32:05Z",
       "status": "BlockedPendingAuthenticatedOwnerReturns",
       "handoffReference": {
         "path": "/home/administrator/projects/hexalith/agents/references/Hexalith.Parties/docs/implementation/ext-parties-1-v2-continuation-2026-11-02/README.md",
-        "sha256": "c7a8071ae61734be26a2651161d1b0aa6c9ce58286c53523089b9158e5d8b719"
+        "sha256": "469b69e4cf1f04d1a700f230dc548d06b358d63853b34053c6f5d4b608c232a1"
       },
       "readOnlyObservationReference": {
         "path": "/home/administrator/projects/hexalith/agents/references/Hexalith.Parties/docs/implementation/ext-parties-1-v2-continuation-2026-11-02/observations.json",
@@ -1079,7 +1079,16 @@
       "replacementTargetOrDateAccepted": false,
       "fullLiveInstallationPlanPrepared": false,
       "humanAuthorityOrLevel4Inferred": false,
-      "dependencyAvailable": false
+      "dependencyAvailable": false,
+      "initialRecordedAtUtc": "2026-11-02T15:13:58Z",
+      "initialHandoffSha256": "c7a8071ae61734be26a2651161d1b0aa6c9ce58286c53523089b9158e5d8b719",
+      "initialHandoffPartiesCommit": "2905bf130722295d039f524bca3a19b7c6bc3d9d",
+      "recheckReadOnlyObservationReference": {
+        "path": "/home/administrator/projects/hexalith/agents/references/Hexalith.Parties/docs/implementation/ext-parties-1-v2-continuation-2026-11-02/observations-recheck.json",
+        "sha256": "0418379a6ec1996abfc91f6b96f9979f31e16629ea0817f3c9ff350e0ffae58e"
+      },
+      "recheckFinding": "Authenticated configuration and openbao-prefix version-list GETs retain the 31-day lifecycle, 30-day lock, unbounded local latest snapshot and historical version beneath a delete marker. This is technical observation only; no owner-return field, restore-cut currentness, C01-C16 closure, E-relative disposal, appointment or V2 ratification is established.",
+      "ownerReturnFieldsChangedByRecheck": false
     }
   },
   "metadataTransportCorrection": {
