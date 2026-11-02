@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import signal
 import subprocess
+import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -55,6 +56,11 @@ def verify(evidence, builds_root=None):
     evidence.parent.mkdir(parents=True, exist_ok=True)
     if evidence.exists():
         raise ValueError("Choose a fresh evidence file.")
+    catalog_root = builds_root or ROOT / "references/Hexalith.Builds"
+    catalog_default = ET.parse(catalog_root / "Props/Directory.Packages.props").findtext(
+        ".//HexalithEventStoreVersion")
+    if not catalog_default:
+        raise ValueError("The selected Builds catalog has no default EventStore version.")
 
     def checkpoint():
         temporary = evidence.with_name(evidence.name + ".tmp")
@@ -79,7 +85,7 @@ def verify(evidence, builds_root=None):
                     command.extend([f"-p:HexalithEventStoreVersion={version}", "-p:ImportDirectoryPackagesProps=false"])
                 if builds_root is not None:
                     command.append(f"-p:HexalithBuildsRoot={builds_root}")
-                expected_version = version or "3.133.0"
+                expected_version = version or catalog_default
                 expected = expected_flags(project, expected_version, source)
                 case = {"project": relative, "version": version, "source": source,
                         "catalogDefault": version is None, "status": "pending", "command": command,
