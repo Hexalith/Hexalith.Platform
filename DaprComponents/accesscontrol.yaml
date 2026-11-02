@@ -49,15 +49,25 @@ spec:
           - name: /api/v1/trusted-effects
             httpVerb: ['POST']
             action: allow
-      # Admin.Server's grant is the selected producer's production template, unchanged in substance
-      # (Hexalith.EventStore v3.125.1 deploy/dapr/accesscontrol.yaml:34-46), with this topology's trust domain
-      # and namespace. The wildcard admits the admin passthrough endpoints; EventStore authorization still
-      # protects the command surface.
+      # The SDK v2 technical catalog binds Admin.Server to its selected Admin API,
+      # command, query, stream-read, and health surfaces. EventStore authorization still protects them.
       - appId: eventstore-admin
         defaultAction: deny
         trustDomain: "public"
         namespace: "default"
         operations:
-          - name: /**
+          - name: /api/v1/admin/**
             httpVerb: ['GET', 'POST', 'PUT']
+            action: allow
+          - name: /api/v1/commands
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/queries
+            httpVerb: ['POST']
+            action: allow
+          - name: /api/v1/streams/read
+            httpVerb: ['POST']
+            action: allow
+          - name: /health
+            httpVerb: ['GET']
             action: allow

@@ -174,6 +174,7 @@ public static class WorksPreviewModel
             adminServerDaprConfigPath: adminAcl,
             resiliencyConfigPath: resiliencyPath,
             stateStoreComponentPath: stateStorePath,
+            eventStoreDaprHttpPort: controlPorts.EventStoreDaprHttp,
             daprPlacementHostAddress: placementAddress,
             daprSchedulerHostAddress: schedulerAddress,
             pubSubComponentPath: pubSubPath);
@@ -318,7 +319,7 @@ public static class WorksPreviewModel
             var catalog = builder.AddEventStoreDevelopmentRouteCatalog(eventStore, [preparedOwner.Owner],
                 [eventStore.CaptureEventStoreDevelopmentReceiver([.. worksHosts, admin]) with { TechnicalHttp = true },
                     .. worksHosts.Select(host => host.CaptureEventStoreDevelopmentReceiver(eventStore, operations, admin)),
-                    admin.CaptureEventStoreDevelopmentReceiver() with { TechnicalHttp = true },
+                    admin.CaptureEventStoreDevelopmentReceiver() with { TechnicalHttp = true, ActorStateOwners = [eventStore] },
                     operations.CaptureEventStoreDevelopmentReceiver(admin)], eventStoreResources.StateStore, developmentProfile.Catalog);
             builder.Services.AddSingleton<IHostedService>(_ => new WorksRoutingCatalogLifetime(preparedOwner, catalog));
         }

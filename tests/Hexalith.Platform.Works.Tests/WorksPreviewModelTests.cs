@@ -65,9 +65,7 @@ public sealed class WorksPreviewModelTests : IDisposable
         WorksPreviewModel.Compose(builder);
         ProjectResource works = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "works");
         Dictionary<string, object> environment = new(StringComparer.Ordinal);
-        foreach (EnvironmentCallbackAnnotation callback in works.Annotations.OfType<EnvironmentCallbackAnnotation>())
-            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, works, environment,
-                TestContext.Current.CancellationToken));
+        await CaptureModelEnvironmentAsync(builder, works, environment);
         environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true");
         IDaprSidecarResource sidecar = works.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
         DaprSidecarOptions options = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
@@ -129,9 +127,7 @@ public sealed class WorksPreviewModelTests : IDisposable
         WorksPreviewModel.Compose(builder);
         ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
         Dictionary<string, object> environment = new(StringComparer.Ordinal);
-        foreach (EnvironmentCallbackAnnotation callback in gateway.Annotations.OfType<EnvironmentCallbackAnnotation>())
-            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, gateway, environment,
-                TestContext.Current.CancellationToken));
+        await CaptureModelEnvironmentAsync(builder, gateway, environment);
         Dictionary<string, object> limits = environment.Where(pair => pair.Key.StartsWith("EventStore__RateLimiting__", StringComparison.Ordinal))
             .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
         limits.ShouldBe(new Dictionary<string, object>(StringComparer.Ordinal)
@@ -143,9 +139,7 @@ public sealed class WorksPreviewModelTests : IDisposable
         }, ignoreOrder: true);
         ProjectResource works = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "works");
         Dictionary<string, object> worksEnvironment = new(StringComparer.Ordinal);
-        foreach (EnvironmentCallbackAnnotation callback in works.Annotations.OfType<EnvironmentCallbackAnnotation>())
-            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, works, worksEnvironment,
-                TestContext.Current.CancellationToken));
+        await CaptureModelEnvironmentAsync(builder, works, worksEnvironment);
         worksEnvironment.Keys.ShouldNotContain(key => key.StartsWith("EventStore__RateLimiting__", StringComparison.Ordinal));
     }
 
@@ -159,9 +153,7 @@ public sealed class WorksPreviewModelTests : IDisposable
         {
             ProjectResource receiver = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == name);
             Dictionary<string, object> environment = new(StringComparer.Ordinal);
-            foreach (EnvironmentCallbackAnnotation callback in receiver.Annotations.OfType<EnvironmentCallbackAnnotation>())
-                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, receiver, environment,
-                    TestContext.Current.CancellationToken));
+            await CaptureModelEnvironmentAsync(builder, receiver, environment);
             const string prefix = "EventStore__RouteCatalog__DevelopmentBootstrap__";
             environment[prefix + "ReceiverProfile"].ShouldBe(RouteCatalogTechnicalHttpPolicy.FenceVersion, name);
             environment[prefix + "BindingVersion"].ShouldBe("2", name);
@@ -180,9 +172,7 @@ public sealed class WorksPreviewModelTests : IDisposable
         foreach (ProjectResource project in projects)
         {
             Dictionary<string, object> environment = new(StringComparer.Ordinal);
-            foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
-                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
-                    TestContext.Current.CancellationToken));
+            await CaptureModelEnvironmentAsync(builder, project, environment);
             environment.TryGetValue("APP_API_TOKEN", out object? value).ShouldBeTrue();
             ParameterResource token = value.ShouldBeOfType<ParameterResource>();
             token.Secret.ShouldBeTrue();
@@ -209,9 +199,7 @@ public sealed class WorksPreviewModelTests : IDisposable
             project.Annotations.OfType<EnvironmentCallbackAnnotation>().Count().ShouldBe(appCallbacks);
             sidecar.Annotations.OfType<EnvironmentCallbackAnnotation>().Count().ShouldBe(sidecarCallbacks);
             Dictionary<string, object> environment = new(StringComparer.Ordinal);
-            foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
-                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
-                    TestContext.Current.CancellationToken));
+            await CaptureModelEnvironmentAsync(builder, project, environment);
             environment["APP_API_TOKEN"].ShouldBeSameAs(token);
         }
     }
@@ -261,6 +249,23 @@ public sealed class WorksPreviewModelTests : IDisposable
         builder.Configuration["Platform:Works:EventStoreSourceRoot"] = root;
         Should.Throw<FileNotFoundException>(() => WorksPreviewModel.Compose(builder)).FileName.ShouldStartWith(root);
         builder.Resources.ShouldBeEmpty();
+    }
+
+    private static async Task CaptureModelEnvironmentAsync(IDistributedApplicationBuilder builder, ProjectResource project,
+        Dictionary<string, object> environment)
+    {
+        foreach (EnvironmentCallbackAnnotation callback in project.Annotations.OfType<EnvironmentCallbackAnnotation>())
+        {
+            try
+            {
+                await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
+                    TestContext.Current.CancellationToken));
+            }
+            catch (InvalidOperationException failure) when (failure.Message == "The actual owner CLI has not been rendered.")
+            {
+                // These model assertions run before DCP renders sidecars. Live parity verifies the owner handoff.
+            }
+        }
     }
 
     private IDistributedApplicationBuilder Builder(string environment)

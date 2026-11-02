@@ -35,7 +35,7 @@ public sealed class WorksDaprPolicyTests
     /// under the selected producer's production-template grant (v3.125.1 <c>deploy/dapr/accesscontrol.yaml:34-46</c>).
     /// </summary>
     [Fact]
-    public void EventStoreReceiverAdmitsOnlyExactWorksRoutesAndTheSdkTemplateAdminGrant()
+    public void EventStoreReceiverAdmitsOnlyExactWorksRoutesAndBoundedAdminSurface()
     {
         YamlMappingNode access = (YamlMappingNode)Spec("accesscontrol.yaml")["accessControl"];
         Dictionary<string, YamlMappingNode> callers = ((YamlSequenceNode)access["policies"]).Cast<YamlMappingNode>()
@@ -51,7 +51,13 @@ public sealed class WorksDaprPolicyTests
             "POST /api/v1/streams/read/workload allow",
             "POST /api/v1/trusted-effects allow",
         ]);
-        Operations(callers[AdminCaller]).ShouldBe(["GET,POST,PUT /** allow"]);
+        Operations(callers[AdminCaller]).ShouldBe([
+            "GET,POST,PUT /api/v1/admin/** allow",
+            "POST /api/v1/commands allow",
+            "POST /api/v1/queries allow",
+            "POST /api/v1/streams/read allow",
+            "GET /health allow",
+        ]);
     }
 
     /// <summary>Only the SDK gateway may invoke named projection ingress and protected metadata discovery.</summary>
