@@ -45,13 +45,13 @@ public sealed class WorksDaprPolicyTests
             "POST /api/v1/commands/workload allow",
             "POST /api/v1/queries allow",
             "GET /api/v1/commands/status/* allow",
-            "GET /api/v1/commands/status/workload allow",
+            "GET /api/v1/commands/status/workload/*/* allow",
             "POST /api/v1/streams/read allow",
             "POST /api/v1/streams/read/workload allow",
             "POST /api/v1/trusted-effects allow",
         ]);
         Operations(callers[AdminCaller]).ShouldBe([
-            "GET,POST,PUT /api/v1/admin allow",
+            "GET,POST,PUT /api/v1/admin/** allow",
             "POST /api/v1/commands allow",
             "POST /api/v1/queries allow",
             "POST /api/v1/streams/read allow",
