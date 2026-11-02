@@ -20,7 +20,7 @@ internal static class PlatformRoutingCatalogMetadata
             throw new InvalidOperationException("The existing native credential could not observe public catalog metadata.");
         }
 
-        await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         byte[] bytes = await ReadBoundedAsync(stream, cancellationToken).ConfigureAwait(false);
 
         using JsonDocument metadata = JsonDocument.Parse(bytes);
