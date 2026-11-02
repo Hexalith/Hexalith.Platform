@@ -1,0 +1,56 @@
+{
+  "kind": "staging-foundation-offline-candidate-v1",
+  "decisionProvenance": {
+    "date": "2026-11-02",
+    "instruction": "apply recommended",
+    "scope": "Additive offline definitions only; no operational authorization",
+    "source": "_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation-2.md",
+    "candidateDefaults": "Temporary storage, XFS project-quota configuration and object names are proposed design values; capacity and compatibility are unqualified."
+  },
+  "storage": {
+    "provisioner": "openebs.io/local",
+    "parameters": {},
+    "stagingStorageClassName": "hexalith-staging",
+    "productionStorageClassName": null,
+    "reclaimPolicy": "Retain",
+    "volumeBindingMode": "WaitForFirstConsumer",
+    "basePath": null,
+    "productionBasePath": null,
+    "backingDevice": null,
+    "productionBackingDevice": null,
+    "filesystem": "xfs",
+    "mountOptions": ["prjquota"],
+    "projectQuota": {"name": "XFSQuota", "enabled": "true", "data": {"softLimitGrace": "0", "hardLimitGrace": "0"}},
+    "compatibilityEvidence": null,
+    "encryptionEvidence": null,
+    "custodyEvidence": null,
+    "administrator": null,
+    "deputy": null,
+    "provisionerPrincipal": null,
+    "binderPrincipal": null
+  },
+  "priority": {"stagingValue": -1000, "productionValue": 1000, "productionClassName": null, "productionEvidence": null},
+  "identities": {"administrator": null, "sharedInfrastructure": null, "environmentLayer": null, "applicationDeploy": null, "observer": null, "qualificationEvidence": null},
+  "rbac": {"providerResources": null, "applicationPackageResources": null, "inventoryEvidence": null, "environmentConfigMaps": ["data-service-tls-contract"]},
+  "target": {"context": null, "server": null, "clusterUid": null, "caSha256": null, "credentialPublicIdentitySha256": null, "identityEvidence": null, "attemptId": null, "observedAt": null, "expiresAt": null, "kubectl": {"path": null, "sha256": null, "version": null}},
+  "network": {
+    "cni": "Calico",
+    "qualificationEvidence": null,
+    "dns": {"resolverAddresses": null, "peers": null, "qualificationEvidence": null},
+    "dataServices": null,
+    "additionalFlows": null,
+    "flowReviewEvidence": null,
+    "flowReview": {"replication": null, "ha": null, "monitoring": null, "backup": null, "custody": null}
+  },
+  "limitRange": {"defaultRequestCpu": "100m", "defaultRequestMemory": "128Mi", "defaultLimitCpu": "500m", "defaultLimitMemory": "512Mi", "defaultRequestEphemeralStorage": "64Mi", "defaultLimitEphemeralStorage": "256Mi", "pvcMinStorage": "1Gi", "pvcMaxStorage": "50Gi"},
+  "quotas": {
+    "application": {"requestsCpu": "4", "requestsMemory": "8Gi", "limitsCpu": "8", "limitsMemory": "16Gi", "pods": "30", "persistentVolumeClaims": "0", "requestsStorage": "0", "requestsEphemeralStorage": "2Gi", "limitsEphemeralStorage": "8Gi"},
+    "data": {"requestsCpu": "4", "requestsMemory": "8Gi", "limitsCpu": "8", "limitsMemory": "16Gi", "pods": "20", "persistentVolumeClaims": "12", "requestsStorage": "100Gi", "requestsEphemeralStorage": "2Gi", "limitsEphemeralStorage": "8Gi"}
+  },
+  "capacity": {"allocatableCpu": null, "allocatableMemory": null, "allocatableEphemeralStorage": null, "stagingUsableStorage": null, "compositionEvidence": null},
+  "probe": {"image": null, "imageQualificationEvidence": null},
+  "dependencies": {"4.1": {"accepted": false, "evidence": null}, "4.2": {"accepted": false, "evidence": null}, "4.3": {"accepted": false, "evidence": null}, "4.27": {"accepted": false, "evidence": null}, "4.28": {"accepted": false, "evidence": null}},
+  "liveAuthorization": null,
+  "approvalGranted": false,
+  "liveAcceptance": false
+}
