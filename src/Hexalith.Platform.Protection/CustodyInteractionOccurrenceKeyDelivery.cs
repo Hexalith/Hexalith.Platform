@@ -15,6 +15,7 @@ public sealed class CustodyInteractionOccurrenceKeyDelivery(CustodyLifecycleClie
     /// <inheritdoc />
     public async Task<InteractionOccurrenceKeyDeliveryResult?> DeliverAsync(InteractionOccurrenceIdentity identity,string purpose,string version,string? keyReference,bool writing,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if(purpose is not ("interaction-root" or "tenant-digest") || purpose=="interaction-root" && version!=identity.RootKeyVersion) return null;
         var binding=await bindings.FindRetainedAsync(identity.Owner,new(identity.Sequence,identity.Kind,identity.PayloadTypeId),token).ConfigureAwait(false);
         if(binding?.Identity!=identity || keyReference is not null && binding.KeyReference!=keyReference) return null;

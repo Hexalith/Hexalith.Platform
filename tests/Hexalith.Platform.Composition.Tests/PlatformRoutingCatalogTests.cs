@@ -134,7 +134,7 @@ public class PlatformRoutingCatalogTests
     internal static async Task<PlatformCompositionOptions> OptionsAsync(bool includeParties = false)
     {
         string root = Root;
-        var mapping = await WorkspaceRootResolver.ResolveAsync(Path.Combine(root, "hexalith-platform.json"), WorkspaceMode.Source, TestContext.Current.CancellationToken);
+        var mapping = await WorkspaceRootResolver.ResolveAsync(Path.Combine(root, "hexalith-platform.json"), WorkspaceMode.Source, TestContext.Current.CancellationToken).ConfigureAwait(false);
         return new()
         {
             PlatformRoot = root, Mapping = mapping, ActiveModule = includeParties ? "parties" : null,

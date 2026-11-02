@@ -18,6 +18,9 @@ public static class ProtectionQualificationObserverPermissions
     public static bool Matches(ProtectionQualificationObserverPermission proof, ProtectionQualificationServiceScope scope, ErasureRootHostInstallation host,
         string workload, string nativeCredential, string daprCredential, string roleCredential, IReadOnlySet<string> components, DateTimeOffset now)
     {
+        ArgumentNullException.ThrowIfNull(host);
+        ArgumentNullException.ThrowIfNull(proof);
+        ArgumentNullException.ThrowIfNull(scope);
         string Fingerprint(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)));
         string tenantPath = host.Native.HeadMount + "/data/tenants/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(scope.TenantId)));
         string archivePath = host.Native.HeadMount + "/data/archives/" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(scope.TenantId))) + "/*";

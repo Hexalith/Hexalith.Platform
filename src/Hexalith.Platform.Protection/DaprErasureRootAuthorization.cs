@@ -30,10 +30,16 @@ public sealed class DaprErasureRootAuthorization(ErasureRootTenantAuthority auth
 
     /// <inheritdoc />
     public Task<bool> VerifyLifecycleAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken)
-        => PermitAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return PermitAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
+    }
     /// <inheritdoc />
     public Task<ErasureRootPermissionEvidence?> ReadLifecycleEvidenceAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken)
-        => ReadPermissionAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return ReadPermissionAsync(request.Identity.TenantId, request.OperationId, "VerifyLifecycle", ErasureRootCustody.Hash(request), request, cancellationToken);
+    }
 
     /// <inheritdoc />
     public async Task<bool> VerifyManifestAsync(DeletionBatchConsumptionRequest request, string reservationReceiptId, CancellationToken cancellationToken)
@@ -72,6 +78,7 @@ public sealed class DaprErasureRootAuthorization(ErasureRootTenantAuthority auth
     /// <inheritdoc />
     public Task<bool> VerifyTransitionPermissionAsync(AnchoredStateTransition transition, string operation, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(transition);
         var tenants = installation.NativeKeys.Keys.Where(tenant => transition.ScopeId.StartsWith(tenant + ":", StringComparison.Ordinal)).ToArray();
         return tenants.Length == 1 ? PermitAsync(tenants[0], transition.ScopeId, operation, ErasureRootCustody.Hash(transition), transition, cancellationToken) : Task.FromResult(false);
     }

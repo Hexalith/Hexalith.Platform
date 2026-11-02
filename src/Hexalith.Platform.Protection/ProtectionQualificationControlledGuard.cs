@@ -17,6 +17,7 @@ public sealed class ProtectionQualificationControlledGuard(IGovernanceScopeGuard
     /// <inheritdoc />
     public async Task<GovernanceProtocolReceipt?> ExecuteAsync(GovernanceGuardTransition transition, IReadOnlyList<GuardedStateMutation> targets, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(transition);
         await controls.CheckAsync("guard:" + transition.TenantId + ":execute", "before", cancellationToken).ConfigureAwait(false);
         var result = await native.ExecuteAsync(transition, targets, cancellationToken).ConfigureAwait(false);
         await controls.CheckAsync("guard:" + transition.TenantId + ":execute", "after", cancellationToken).ConfigureAwait(false); return result;

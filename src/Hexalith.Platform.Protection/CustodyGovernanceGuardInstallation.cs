@@ -14,10 +14,17 @@ public sealed class CustodyGovernanceGuardInstallation(DaprClient dapr,string in
 {
     /// <inheritdoc />
     public Task<GovernanceGuardEvidence?> ReadLookupAsync(GovernanceGuardTransition transition,string intentDigest,string targetMutationDigest,CancellationToken token)
-        =>ReadEvidence(transition,intentDigest,targetMutationDigest,"LookupGovernanceOriginal",token);
+    {
+        ArgumentNullException.ThrowIfNull(transition);
+        return ReadEvidence(transition,intentDigest,targetMutationDigest,"LookupGovernanceOriginal",token);
+    }
     /// <inheritdoc />
     public Task<GovernanceGuardEvidence?> ReadAsync(GovernanceGuardTransition transition,string intentDigest,string targetMutationDigest,TenantGovernanceGuardState state,CancellationToken token)
-        =>state.TenantId==transition.TenantId?ReadEvidence(transition,intentDigest,targetMutationDigest,"ReadGovernanceSourcePolicy",token):Task.FromResult<GovernanceGuardEvidence?>(null);
+    {
+        ArgumentNullException.ThrowIfNull(state);
+        ArgumentNullException.ThrowIfNull(transition);
+        return state.TenantId==transition.TenantId?ReadEvidence(transition,intentDigest,targetMutationDigest,"ReadGovernanceSourcePolicy",token):Task.FromResult<GovernanceGuardEvidence?>(null);
+    }
     private async Task<GovernanceGuardEvidence?> ReadEvidence(GovernanceGuardTransition transition,string intentDigest,string mutationDigest,string operation,CancellationToken token)
     {
         var result=await Read<GovernanceGuardEvidence>(transition.OperationId,operation,token).ConfigureAwait(false);
@@ -27,6 +34,8 @@ public sealed class CustodyGovernanceGuardInstallation(DaprClient dapr,string in
     /// <inheritdoc />
     public async Task<GovernanceSigningRecovery?> ReadSigningRecoveryAsync(GovernanceProtocolReceipt noIssue,TenantGovernanceGuardState state,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(noIssue);
+        ArgumentNullException.ThrowIfNull(state);
         var result=await Read<GovernanceSigningRecovery>(noIssue.OperationId+":signing-recovery","ReadGovernanceSigningRecovery",token).ConfigureAwait(false);
         return result is not null && result.NoIssueReceiptId==noIssue.ReceiptId && result.SigningRequestId==noIssue.SigningRequestId && result.DetachedJwsDigest==noIssue.DetachedJwsDigest
             && result.CurrentGuardRevision==state.Revision && result.ObservedAt<=clock.GetUtcNow() && result.ValidUntil>clock.GetUtcNow()?result:null;

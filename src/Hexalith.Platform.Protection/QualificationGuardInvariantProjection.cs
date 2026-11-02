@@ -10,6 +10,10 @@ public static class QualificationGuardInvariantProjection
     public static QualificationInvariantProjection Project(string tenant,string requestId,string batchId,TenantGovernanceGuardState guard,
         DeletionConsumptionOutcome protection,IReadOnlyList<DeletionCapabilitySigningOutcome> signing,IReadOnlyCollection<string> requestedMetrics)
     {
+        ArgumentNullException.ThrowIfNull(guard);
+        ArgumentNullException.ThrowIfNull(protection);
+        ArgumentNullException.ThrowIfNull(requestedMetrics);
+        ArgumentNullException.ThrowIfNull(signing);
         var metrics=new Dictionary<string,long>(StringComparer.Ordinal); var missing=new List<string>();
         var deletion=guard.Deletions.SingleOrDefault(value=>value.RequestId==requestId);
         var batch=deletion?.Batches.SingleOrDefault(value=>value.BatchId==batchId);

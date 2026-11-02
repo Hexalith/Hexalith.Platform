@@ -11,6 +11,8 @@ public sealed class JointPhaseSourceOperationHandler(JointPhaseNativeSourcePubli
     /// <inheritdoc />
     public async Task<object?> RecoverAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState current,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(current);
         if(method!="joint-phase-publish-native-source" || caller.Role!="joint-phase-source-reader" || current.ValidUntil<=clock.GetUtcNow()) return null;
         var input=payload.Deserialize<Request>(CustodyBindingContract.Json);
         if(input is null || JointPhaseRequestRecipe.Phase(input.phaseRequest) is not { } phase || caller.ScopeReference!="joint-phase:"+phase) return null;
@@ -21,6 +23,8 @@ public sealed class JointPhaseSourceOperationHandler(JointPhaseNativeSourcePubli
     /// <inheritdoc />
     public async Task<object?> HandleAsync(string method,JsonElement payload,IndependentCallerGrant caller,IndependentAuthorityState state,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(caller);
+        ArgumentNullException.ThrowIfNull(state);
         if(!Methods.Contains(method) || caller.Role!="joint-phase-source-reader" || state.ValidUntil<=clock.GetUtcNow()) throw new InvalidOperationException("CurrentIndependentJointPhaseSourceReadScope");
         var input=payload.Deserialize<Request>(CustodyBindingContract.Json)??throw new InvalidOperationException("ClosedJointPhaseSourceRequest");
         if(JointPhaseRequestRecipe.Phase(input.phaseRequest) is not { } phase || caller.ScopeReference!="joint-phase:"+phase) return null;

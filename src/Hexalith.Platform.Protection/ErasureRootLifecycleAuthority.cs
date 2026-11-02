@@ -10,6 +10,7 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<bool> AuthorizeOperationAsync(CustodyKeyObjectIdentity identity, string operationId, string method, string requestDigest, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(identity);
         if (identity.TenantId != transitions.TenantId) { return false; }
         try { return await authorization.AuthorizeAsync(identity.TenantId, operationId, method, requestDigest, cancellationToken).ConfigureAwait(false); }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -18,6 +19,7 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<bool> VerifyRegistrationAsync(CustodyKeyRegistration registration, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(registration);
         if (registration.Identity.TenantId != transitions.TenantId) { return false; }
         try
         {
@@ -32,6 +34,7 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<bool> AuthorizeEffectAsync(CustodyKeyLifecycleRequest request, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (request.Identity.TenantId != transitions.TenantId) { return false; }
         try { return await authorization.VerifyLifecycleAsync(request, cancellationToken).ConfigureAwait(false); }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -40,6 +43,8 @@ public sealed class ErasureRootLifecycleAuthority(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<bool> VerifyOutcomeAsync(CustodyKeyLifecycleRequest request, CustodyKeyLifecycleOutcome outcome, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(outcome);
+        ArgumentNullException.ThrowIfNull(request);
         if (request.Identity.TenantId != transitions.TenantId || outcome.Identity != request.Identity || outcome.OperationId != request.OperationId
             || outcome.RequestDigest != ErasureRootCustody.Hash(request) || outcome.Status is CustodyKeyLifecycleStatus.Unknown or CustodyKeyLifecycleStatus.Unavailable) { return false; }
         try

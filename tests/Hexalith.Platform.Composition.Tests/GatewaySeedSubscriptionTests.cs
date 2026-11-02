@@ -66,7 +66,7 @@ public sealed class GatewaySeedSubscriptionTests
         });
         await using var factoryLifetime = factory.ConfigureAwait(true);
         using HttpClient client = factory.CreateClient();
-        using var anonymous = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken);
+        using var anonymous = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(false);
         anonymous.StatusCode.ShouldBe(declarative ? HttpStatusCode.NotFound : HttpStatusCode.Unauthorized);
         client.DefaultRequestHeaders.Add("dapr-api-token", "seed-channel-token");
         using HttpResponseMessage response = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(true);
@@ -85,8 +85,8 @@ public sealed class GatewaySeedSubscriptionTests
             receiver.Metadata.GetMetadata<ITopicMetadata>()!.PubsubName.ShouldBe("configured-seed-events");
         }
         client.DefaultRequestHeaders.Remove("dapr-api-token");
-        using var anonymousSwagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
-        using var anonymousOpenApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken);
+        using var anonymousSwagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken).ConfigureAwait(false);
+        using var anonymousOpenApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken).ConfigureAwait(false);
         bool platform = typeof(TEntryPoint).Assembly.GetName().Name == "Hexalith.Platform.EventStoreHost";
         anonymousSwagger.StatusCode.ShouldBe(platform ? HttpStatusCode.Unauthorized : HttpStatusCode.NotFound);
         anonymousOpenApi.StatusCode.ShouldBe(platform ? HttpStatusCode.Unauthorized : HttpStatusCode.NotFound);
@@ -97,17 +97,17 @@ public sealed class GatewaySeedSubscriptionTests
             Subject = new ClaimsIdentity([new("sub", "seed-human"), new(RouteCatalogSurfacePolicy.ClaimType, "ui")]),
         });
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        using var bearerSubscription = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken);
+        using var bearerSubscription = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(false);
         bearerSubscription.StatusCode.ShouldBe(declarative ? HttpStatusCode.NotFound : HttpStatusCode.Unauthorized);
         if (platform)
         {
-            using var swagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
+            using var swagger = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken).ConfigureAwait(false);
             swagger.StatusCode.ShouldBe(HttpStatusCode.OK);
-            (await swagger.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldContain("swagger-ui");
-            using var openApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken);
+            (await swagger.Content.ReadAsStringAsync(TestContext.Current.CancellationToken).ConfigureAwait(false)).ShouldContain("swagger-ui");
+            using var openApi = await client.GetAsync("/openapi/v1.json", TestContext.Current.CancellationToken).ConfigureAwait(false);
             openApi.StatusCode.ShouldBe(HttpStatusCode.OK);
             client.DefaultRequestHeaders.Add(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName, "unverified-workload-proof");
-            using var mixed = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken);
+            using var mixed = await client.GetAsync("/swagger/index.html", TestContext.Current.CancellationToken).ConfigureAwait(false);
             mixed.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
         }
     }

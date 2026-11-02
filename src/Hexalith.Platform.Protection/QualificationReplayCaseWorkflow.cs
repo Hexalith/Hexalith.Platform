@@ -12,10 +12,13 @@ public sealed class QualificationReplayCaseWorkflow(ITrustedEnvelopeReplayRegist
     /// <summary>Registers the concrete closed workflows and their distinct read-only recovery behavior.</summary>
     public IReadOnlyList<QualificationSourceWorkflow> Registrations()=>inputs.Keys.Where(Supported).Select(id=>new QualificationSourceWorkflow(id,ExecuteAsync,LookupAsync,PreflightAsync)).ToArray();
     /// <summary>Requires exact enrollment and current first evaluation for a new append. No production time substitution exists.</summary>
-    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token) { token.ThrowIfCancellationRequested();return Task.FromResult<IReadOnlyList<string>>(Input(request) is null?["ExactEnrolledReplayOriginal"]:[]); }
+    public Task<IReadOnlyList<string>> PreflightAsync(JsonObject request,CancellationToken token) {
+        ArgumentNullException.ThrowIfNull(request);
+         token.ThrowIfCancellationRequested();return Task.FromResult<IReadOnlyList<string>>(Input(request) is null?["ExactEnrolledReplayOriginal"]:[]); }
     /// <summary>Retains the original before one restricted append; a loss uses only lookup and cannot renew nonce/time.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var input=Input(request);if(input is null) return null;string requestId=request["requestId"]!.GetValue<string>();
         bool first=await originals.BeginAsync("executor",requestId+":case-result",request,token).ConfigureAwait(false);
         if(!first) return await LookupAsync(request,token).ConfigureAwait(false);
@@ -27,12 +30,14 @@ public sealed class QualificationReplayCaseWorkflow(ITrustedEnvelopeReplayRegist
     /// <summary>Queries the original issuer/nonce only. Unknown original source remains unknown without a new registration.</summary>
     public async Task<JsonObject?> LookupAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var result=await ReadOriginalAsync(request,token).ConfigureAwait(false);
         if(result is not null) await originals.RetainAsync("executor",request["requestId"]!.GetValue<string>()+":case-result",result,token).ConfigureAwait(false);return result;
     }
     /// <summary>Independent read only; this cannot publish any executor result or first-seen original.</summary>
     public async Task<JsonObject?> ReadOriginalAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var input=Input(request);if(input is null) return null;string requestId=request["requestId"]!.GetValue<string>();
         var actual=await registrar.LookupAsync(input.Intent,token).ConfigureAwait(false);
         if(actual?.Intent!=input.Intent || actual.FirstSeenAt!=input.FirstSeenAt || actual.RetainUntil!=input.FirstSeenAt.AddSeconds(604800) || actual.SourceRevision!=1) return null;
@@ -46,5 +51,8 @@ public sealed class QualificationReplayCaseWorkflow(ITrustedEnvelopeReplayRegist
             && QualificationProtocolSchema.Digest(scope)==input.EnrolledScopeSha256 && scope["tenantId"]?.GetValue<string>()==input.Intent.TargetTenantId?input:null;
     }
     /// <summary>Gets the implemented replay source group; selected fault/scheduler controls remain distinct inputs.</summary>
-    public static bool Supported(string id)=>id is "S2.replay-exact-stream-acl" or "S2.replay-retention-recovery" || id.StartsWith("Recovery.replay.",StringComparison.Ordinal);
+    public static bool Supported(string id){
+        ArgumentNullException.ThrowIfNull(id);
+        return id is "S2.replay-exact-stream-acl" or "S2.replay-retention-recovery" || id.StartsWith("Recovery.replay.",StringComparison.Ordinal);
+    }
 }

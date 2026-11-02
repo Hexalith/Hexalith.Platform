@@ -129,6 +129,7 @@ public static class ErasureRootHostComposition
     /// <summary>Resolves the exact public tenant bindings before any DI/native effects.</summary>
     public static IReadOnlyDictionary<string, ErasureRootTenantAuthorityBindings> TenantBindings(ErasureRootHostInstallation installation)
     {
+        ArgumentNullException.ThrowIfNull(installation);
         if (installation.TenantAuthorities is { } bindings)
         {
             if (!bindings.Keys.Order(StringComparer.Ordinal).SequenceEqual(installation.Native.NativeKeys.Keys.Order(StringComparer.Ordinal)))

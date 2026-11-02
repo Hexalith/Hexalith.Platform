@@ -15,6 +15,9 @@ public static class JointPhaseRequestRecipe
     /// <summary>Derives the complete exact request after the authority returned its retained attempt. Legacy precomputed attempts are refused.</summary>
     public static JsonObject? Bind(JsonObject recipe,JsonObject phase,JointPhaseCommandScope accepted)
     {
+        ArgumentNullException.ThrowIfNull(accepted);
+        ArgumentNullException.ThrowIfNull(phase);
+        ArgumentNullException.ThrowIfNull(recipe);
         if(recipe.ContainsKey("runId") || recipe.ContainsKey("requestId") || phase["attemptId"]?.GetValue<string>() is not { Length:>0 } attempt
             || phase["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest || JointPhaseRequestRecipe.Phase(phase)!=accepted.Phase
             || recipe["targetCommit"]?.GetValue<string>()!=accepted.PlatformCommit) return null;

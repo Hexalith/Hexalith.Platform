@@ -10,6 +10,7 @@ public sealed class DaprFr34MeasuredOriginalReader(IndependentDaprAuthority orig
     /// <summary>Reads the immutable engine/native comparison and checks its complete original reference.</summary>
     public async Task<Fr34MeasuredCanaryOriginal?> ReadAsync(Fr34CanaryReference reference,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(reference);
         string id=EventStorePrivateRecordingPort.StableUlid("fr34",reference.Target.TenantId,reference.CanaryId)+":native-comparison";
         var original=await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original",new { role="fr34-observer",requestId=id },token).ConfigureAwait(false);
         if(original?.Result is not { } result || original.Request.GetProperty("reference").Deserialize<Fr34CanaryReference>(CustodyBindingContract.Json)!=reference) return null;

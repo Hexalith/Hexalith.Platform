@@ -13,6 +13,7 @@ public sealed class Fr34CanaryCommandProofSource(string caller, string principal
     /// <inheritdoc />
     public async ValueTask<string?> IssueAsync(BoundWorkloadCommandRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);budget.CancelAfter(TimeSpan.FromSeconds(30));cancellationToken=budget.Token;
         var command = request.Command;
         if (request.PrincipalId != principal || command.Domain != "fr34-canary" || command.CommandType != typeof(PersistFr34Canary).FullName

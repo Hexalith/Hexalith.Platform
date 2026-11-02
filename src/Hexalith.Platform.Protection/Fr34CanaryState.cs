@@ -14,7 +14,10 @@ public sealed class Fr34CanaryState
     /// <summary>Gets the original complete command digest.</summary>
     public string? OriginalSha256 { get; private set; }
     /// <summary>Applies the exact canary event.</summary>
-    public void Apply(Fr34CanaryPersisted value) => OriginalSha256 = Digest(value.ProtectedContent);
+    public void Apply(Fr34CanaryPersisted value) {
+        ArgumentNullException.ThrowIfNull(value);
+        OriginalSha256 = Digest(value.ProtectedContent);
+    }
     internal Fr34CanaryState Copy() => new() { OriginalSha256 = OriginalSha256 };
     internal static string Digest(Fr34CanaryContent value) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));
 }

@@ -10,6 +10,7 @@ public sealed class JointPhaseMetadataFinalizer(JointPhaseCommandScope accepted,
     /// <summary>Publishes only the missing signed index. Independent persisted observation is still required to establish any result.</summary>
     public async Task<JsonObject?> FinalizeAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if(phaseAdmission is null || !await phaseAdmission(request,token).ConfigureAwait(false)) return null;
         string? id=request["requestId"]?.GetValue<string>();
         if(id is not { Length:64 } || !id.All(char.IsAsciiHexDigitLower) || request["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest

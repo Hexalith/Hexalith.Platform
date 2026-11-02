@@ -14,6 +14,7 @@ public sealed class ErasureRootRecordingRevocationAuthenticator(IDeletionCapabil
     /// <inheritdoc />
     public async Task<DeletionCapabilityRevocationAuthorization?> VerifyAsync(DeletionCapabilityRevocationEnvelope envelope, string signedEvidence, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(envelope);
         var verified = await actual.VerifyAsync(envelope, signedEvidence, cancellationToken).ConfigureAwait(false);
         if (verified?.Envelope != envelope) { return null; }
         bool retained = await registrar.InvokeAsync<bool>("erc-register-revocation-original", new { tenantId = envelope.TenantId,

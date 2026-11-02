@@ -11,6 +11,7 @@ public sealed class JointSecretsCaseExecutor(JointPhaseCommandScope accepted,IQu
     /// <inheritdoc />
     public async Task<IReadOnlyList<string>> PreflightAsync(string caseId,JsonObject phaseRequest,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(phaseRequest);
         if(!enrolledOriginals.TryGetValue(caseId,out var recipe) || JointPhaseRequestRecipe.Bind(recipe,phaseRequest,accepted) is not { } request || !QualificationProtocolSchema.ValidRequest("executor","execute",request)
             || request["runId"]?.GetValue<string>()!=phaseRequest["attemptId"]?.GetValue<string>() || request["targetCommit"]?.GetValue<string>()!=accepted.PlatformCommit) return ["ExactSecretsPhaseOriginal"];
         var admission=new JsonObject();foreach(string name in new[]{"protocol","runId","targetCommit","isolatedTargetId","planSha256"}) admission[name]=request[name]!.DeepClone();
@@ -23,6 +24,8 @@ public sealed class JointSecretsCaseExecutor(JointPhaseCommandScope accepted,IQu
     /// <inheritdoc />
     public async Task<JsonObject?> ExecuteAsync(string caseId,JsonObject phaseRequest,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(caseId);
+        ArgumentNullException.ThrowIfNull(phaseRequest);
         if(!caseId.StartsWith("secrets:",StringComparison.Ordinal) || !enrolledOriginals.TryGetValue(caseId,out var recipe) || JointPhaseRequestRecipe.Bind(recipe,phaseRequest,accepted) is not { } full || full["caseId"]?.GetValue<string>()!=caseId[8..]
             || full["runId"]?.GetValue<string>()!=phaseRequest["attemptId"]?.GetValue<string>() || full["targetCommit"]?.GetValue<string>()!=accepted.PlatformCommit
             || phaseRequest["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest || !QualificationProtocolSchema.ValidRequest("executor","execute",full)) return null;

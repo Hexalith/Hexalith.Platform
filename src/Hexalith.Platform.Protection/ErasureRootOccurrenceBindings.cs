@@ -10,10 +10,14 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
 {
     /// <inheritdoc />
     public async Task<bool> IsCustodyPermanentlyLostAsync(AggregateIdentity owner, CancellationToken cancellationToken = default)
-        => await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false) is not null;
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+        return await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false) is not null;
+    }
     /// <inheritdoc />
     public async Task<byte[]?> ReadErasedSnapshotSkeletonAsync(InteractionProtectionBinding binding, byte[] sealedPayload, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         var loss = await custody.ReadPermanentLossAsync(binding.Identity.Target.TenantId, cancellationToken).ConfigureAwait(false);
         return loss is null ? null : await source.ReadErasedSnapshotSkeletonAsync(binding, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(sealedPayload)), loss, cancellationToken).ConfigureAwait(false);
     }
@@ -21,6 +25,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     public async Task<InteractionProtectionBinding?> ResolveErasedStoredAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
         byte[] sealedPayload, string keyReference, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(owner);
         var loss = await custody.ReadPermanentLossAsync(owner.TenantId, cancellationToken).ConfigureAwait(false);
         if (loss is null) { return null; }
         var original = await source.ResolveErasedStoredAsync(owner, occurrence, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(sealedPayload)),
@@ -32,6 +37,9 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     public async Task<IReadOnlyList<InteractionProtectionBinding>?> ResolveSnapshotEntriesAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext parent,
         string containerDigest, IReadOnlyList<SnapshotProtectionEntry> entries, bool writing, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(entries);
+        ArgumentNullException.ThrowIfNull(owner);
+        ArgumentNullException.ThrowIfNull(parent);
         if (parent.PayloadKind != PayloadProtectionPayloadKind.Snapshot || containerDigest is not { Length: 64 } || entries.Count is < 2 or > 1000
             || entries.Select(entry => entry.Path).Distinct(StringComparer.Ordinal).Count() != entries.Count) { return null; }
         var enrolled = new List<ErasureRootOccurrenceEnrollment>();
@@ -60,6 +68,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<bool> AcquireSnapshotCompletionLeasesAsync(IReadOnlyList<InteractionProtectionBinding> bindings, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(bindings);
         if (bindings.Count is < 2 or > 1000 || bindings.Select(binding => binding.Identity.Owner).Distinct().Count() != 1
             || bindings.Select(binding => binding.OperationId).Distinct(StringComparer.Ordinal).Count() != bindings.Count) { return false; }
         string tenant = bindings[0].Identity.Owner.TenantId, digest = ErasureRootCustody.Hash(bindings);
@@ -89,7 +98,10 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> ResolveAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
         ProtectionTarget? requestedTarget, bool writing, CancellationToken cancellationToken = default)
-        => await ResolveCoreAsync(owner, occurrence, requestedTarget, writing, null, cancellationToken).ConfigureAwait(false);
+    {
+        ArgumentNullException.ThrowIfNull(owner);
+        return await ResolveCoreAsync(owner, occurrence, requestedTarget, writing, null, cancellationToken).ConfigureAwait(false);
+    }
 
     private async Task<InteractionProtectionBinding?> ResolveCoreAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence,
         ProtectionTarget? requestedTarget, bool writing, ErasureRootOccurrenceEnrollment? validated, CancellationToken cancellationToken)
@@ -204,13 +216,23 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
 
     /// <inheritdoc />
     public async Task<InteractionProtectionBinding?> FindRetainedAsync(AggregateIdentity owner, PayloadProtectionOccurrenceContext occurrence, CancellationToken cancellationToken)
-        => (await FindAsync(owner, occurrence, cancellationToken).ConfigureAwait(false))?.Enrollment.Binding;
+    {
+        ArgumentNullException.ThrowIfNull(occurrence);
+        ArgumentNullException.ThrowIfNull(owner);
+        return (await FindAsync(owner, occurrence, cancellationToken).ConfigureAwait(false))?.Enrollment.Binding;
+    }
     /// <inheritdoc />
     public Task<bool> AcquireCompletionLeaseAsync(InteractionProtectionBinding binding, CancellationToken cancellationToken = default)
-        => LeaseAsync(binding, null, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(binding);
+        return LeaseAsync(binding, null, cancellationToken);
+    }
     /// <inheritdoc />
     public Task<bool> TryAcquireCompletionLeaseAsync(InteractionProtectionBinding binding, CancellationToken cancellationToken)
-        => LeaseAsync(binding, null, cancellationToken);
+    {
+        ArgumentNullException.ThrowIfNull(binding);
+        return LeaseAsync(binding, null, cancellationToken);
+    }
     internal Task<bool> AcquireEncryptionLeaseAsync(InteractionProtectionBinding binding, InteractionOccurrenceRecord record, CancellationToken token)
         => LeaseAsync(binding, record, token);
 
@@ -241,6 +263,7 @@ public sealed class ErasureRootOccurrenceBindings(ErasureRootCustody custody, IE
     /// <inheritdoc />
     public async Task<InteractionProtectionErasureWitness?> ReadErasureAsync(InteractionProtectionBinding binding, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         var loss = await custody.ReadPermanentLossAsync(binding.Identity.Target.TenantId, cancellationToken).ConfigureAwait(false);
         if (loss is not null)
         {

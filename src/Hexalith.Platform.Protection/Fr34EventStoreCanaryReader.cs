@@ -31,7 +31,10 @@ public sealed class Fr34EventStoreCanaryReader(IEventStoreGatewayClient privateR
     }
     /// <summary>Reads and checks the complete independently persisted original reference.</summary>
     public async Task<Fr34StoredCanary?> ReadOriginalAsync(Fr34CanaryReference reference, CancellationToken token)
-        => await ReadCanaryAsync(reference.Target, reference.CanaryId, token).ConfigureAwait(false) is { } original && original.Reference == reference ? original : null;
+    {
+        ArgumentNullException.ThrowIfNull(reference);
+        return await ReadCanaryAsync(reference.Target, reference.CanaryId, token).ConfigureAwait(false) is { } original && original.Reference == reference ? original : null;
+    }
     /// <inheritdoc />
     public async Task<Fr34PersistedCanary?> ReadAsync(Fr34CanaryReference reference, CancellationToken cancellationToken = default)
         => await ReadOriginalAsync(reference, cancellationToken).ConfigureAwait(false) is { } original ? new(reference, original.Protected.PayloadBytes, original.Protected.Metadata) : null;

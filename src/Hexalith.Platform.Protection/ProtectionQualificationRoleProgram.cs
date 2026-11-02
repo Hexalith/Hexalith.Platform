@@ -45,6 +45,8 @@ public static class ProtectionQualificationRoleProgram
     /// <summary>Invokes exactly once, verifies the native independent role signature and full request correlation, and returns its unchanged proof bytes.</summary>
     public static async Task<byte[]> InvokeAsync(HttpClient http, ProtectionQualificationRoleInstallation installation, byte[] input, CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(http);
+        ArgumentNullException.ThrowIfNull(installation);
         Validate(installation.Role, installation);
         CustodyBindingContract.RejectDuplicateProperties(input);
         var request = JsonNode.Parse(input) as JsonObject ?? throw new InvalidOperationException();

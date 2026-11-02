@@ -9,7 +9,10 @@ public sealed class DaprErasureRootInventory(IActorProxyFactory proxies) : IPlat
     private IPlatformKeyInventoryActor For(PlatformKeyVersion key)
         => proxies.CreateActorProxy<IPlatformKeyInventoryActor>(new(PlatformKeyInventoryActor.GetActorId(key)), PlatformKeyInventoryActor.ActorTypeName);
     /// <inheritdoc />
-    public Task<PlatformKeyInventorySignal?> ApplyAsync(PlatformKeyInventoryChange change) => For(change.Key).ApplyAsync(change);
+    public Task<PlatformKeyInventorySignal?> ApplyAsync(PlatformKeyInventoryChange change) {
+        ArgumentNullException.ThrowIfNull(change);
+        return For(change.Key).ApplyAsync(change);
+    }
     /// <inheritdoc />
     public Task<PlatformKeyInventorySnapshot> ReadAsync(PlatformKeyVersion scope) => For(scope).ReadAsync(scope);
 }

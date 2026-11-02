@@ -13,6 +13,7 @@ public sealed class JointPhaseCommand(JointPhaseCommandScope accepted,IQualifica
     /// <summary>Runs only an explicitly mapped complete phase partition. Caller-supplied executable/artifact paths and predicate flags are never executable inputs.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if(request["requestId"]?.GetValue<string>() is not { Length:64 } requestId || !requestId.All(char.IsAsciiHexDigit) || request["cases"] is not JsonArray cases || cases.Count==0
             || !Path.IsPathFullyQualified(evidenceDirectory) || request["bindingDigest"]?.GetValue<string>()!=accepted.BindingDigest
             || JointPhaseRequestRecipe.Phase(request)!=accepted.Phase || !cases.Select(value=>value!.GetValue<string>()).SequenceEqual(accepted.Cases,StringComparer.Ordinal)) return null;

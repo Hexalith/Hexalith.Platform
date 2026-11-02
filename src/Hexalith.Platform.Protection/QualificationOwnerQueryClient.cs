@@ -16,6 +16,7 @@ public sealed class QualificationOwnerQueryClient(HttpClient http,QualificationM
     /// <summary>Reads only explicitly enrolled closed queries through the published native receiving proof route.</summary>
     public async Task<EventStoreQueryResult?> ReadAsync(SubmitQueryRequest query,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(query);
         using var budget=CancellationTokenSource.CreateLinkedTokenSource(token);budget.CancelAfter(TimeSpan.FromSeconds(30));
         if(http.BaseAddress is not { IsAbsoluteUri:true,Scheme:"https" } endpoint || endpoint.AbsolutePath!="/" || endpoint.UserInfo.Length!=0
             || string.IsNullOrWhiteSpace(credentials.OwnerQueryPrincipal) || !Closed(query)
@@ -37,7 +38,7 @@ public sealed class QualificationOwnerQueryClient(HttpClient http,QualificationM
         budget.Token.ThrowIfCancellationRequested();
         using var response=await http.SendAsync(message,HttpCompletionOption.ResponseHeadersRead,budget.Token).ConfigureAwait(false);
         if(response.StatusCode!=System.Net.HttpStatusCode.OK || response.RequestMessage?.RequestUri is { } actual && actual!=new Uri(endpoint,"api/v1/queries/owner-authority/workload")) return null;
-        await using var input=await response.Content.ReadAsStreamAsync(budget.Token).ConfigureAwait(false);
+        var input=await response.Content.ReadAsStreamAsync(budget.Token).ConfigureAwait(false);await using var inputDisposal=input.ConfigureAwait(false);
         string? json=await DaprSecretsInvoker.ReadBoundedAsync(input,budget.Token,1024*1024).ConfigureAwait(false);if(json is null) return null;
         CustodyBindingContract.RejectDuplicateProperties(Encoding.UTF8.GetBytes(json));var result=JsonSerializer.Deserialize<SubmitQueryResponse>(json,new JsonSerializerOptions(JsonSerializerDefaults.Web));
         if(result is not { Success:true } || !await authority.AuthorizeOperationAsync(scope,"ReadQualificationOwnerQuery",budget.Token).ConfigureAwait(false)) return null;

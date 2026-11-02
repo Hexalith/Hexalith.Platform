@@ -14,6 +14,7 @@ public sealed class QualificationEventStoreAuditReader(IndependentDaprAuthority 
     /// <summary>Checks the selected exact native read schema and scope before its future case original exists. It dispatches no case or lookup effect.</summary>
     public IReadOnlyList<string> PreflightScope(JsonObject request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if(SecretsProof.Text(request,"caseId") is not { } id || !enrolledScopes.TryGetValue(id,out var scope) || request["enrolledScope"] is not JsonObject enrolled
             || QualificationProtocolSchema.Digest(enrolled)!=scope.EnrolledScopeSha256 || SecretsProof.Text(enrolled,"tenantId")!=scope.TenantId
             || scope.OriginalSuffixes.Count is 0 or >32 || scope.OriginalSuffixes.Distinct(StringComparer.Ordinal).Count()!=scope.OriginalSuffixes.Count
@@ -38,6 +39,7 @@ public sealed class QualificationEventStoreAuditReader(IndependentDaprAuthority 
     /// <summary>Reads actual bytes/state only. It never turns a source buffer or missing log/trace/restore protocol into persistence, receipt positions, or a zero-effects assertion.</summary>
     public async Task<QualificationEventStoreAuditSnapshot?> ReadAsync(JsonObject request,CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if(PreflightScope(request).Count!=0) return null;
         string? id=SecretsProof.Text(request,"caseId"),requestId=SecretsProof.Text(request,"requestId");
         if(id is null || requestId is null || !enrolledScopes.TryGetValue(id,out var scope) || request["enrolledScope"] is not JsonObject enrolled

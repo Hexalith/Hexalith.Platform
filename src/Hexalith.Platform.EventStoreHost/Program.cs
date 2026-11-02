@@ -55,7 +55,7 @@ if (app.Configuration.GetValue("EventStore:OpenApi:Enabled", true)) {
     _ = app.UseWhen(context => context.Request.Path.StartsWithSegments("/swagger"), branch => branch.Use(async (context, next) =>
     {
         if (context.User.Identity?.IsAuthenticated != true) { context.Response.StatusCode = 401; return; }
-        await next(context);
+        await next(context).ConfigureAwait(false);
     }));
 #endif
     _ = app.UseSwaggerUI(options => {

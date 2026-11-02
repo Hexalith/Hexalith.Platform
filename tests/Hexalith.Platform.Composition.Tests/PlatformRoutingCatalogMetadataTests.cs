@@ -172,16 +172,16 @@ public sealed class PlatformRoutingCatalogMetadataTests
     {
         if (scenario == "valid")
         {
-            await PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken);
-            using JsonDocument observed = JsonDocument.Parse(await File.ReadAllBytesAsync(proof, TestContext.Current.CancellationToken));
+            await PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken).ConfigureAwait(false);
+            using JsonDocument observed = JsonDocument.Parse(await File.ReadAllBytesAsync(proof, TestContext.Current.CancellationToken).ConfigureAwait(false));
             JsonElement body = observed.RootElement.GetProperty("body");
             body.GetProperty("rootDigest").GetString().ShouldBe(root);
             JsonElement.DeepEquals(body.GetProperty("operations")[0].GetProperty("requestSchema"), request).ShouldBeTrue();
-            (await File.ReadAllTextAsync(proof, TestContext.Current.CancellationToken)).ShouldNotContain(credential);
+            (await File.ReadAllTextAsync(proof, TestContext.Current.CancellationToken).ConfigureAwait(false)).ShouldNotContain(credential);
         }
         else
         {
-            await Should.ThrowAsync<InvalidOperationException>(() => PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken));
+            await Should.ThrowAsync<InvalidOperationException>(() => PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, root, directory, TestContext.Current.CancellationToken)).ConfigureAwait(false);
             File.Exists(proof).ShouldBeFalse();
         }
     }
@@ -205,7 +205,7 @@ public sealed class PlatformRoutingCatalogMetadataTests
             Task observing = PlatformRoutingCatalogMetadata.ObserveAsync(client, catalog, new string('a', 64), directory, cancellation.Token);
             await started.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
             cancellation.Cancel();
-            await Should.ThrowAsync<OperationCanceledException>(async () => await observing.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken));
+            await Should.ThrowAsync<OperationCanceledException>(async () => await observing.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken).ConfigureAwait(false));
             File.Exists(proof).ShouldBeFalse();
         }
         finally

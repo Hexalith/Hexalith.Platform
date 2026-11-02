@@ -15,6 +15,7 @@ public sealed class JointPhaseNativeSourcePublisher(QualificationNativeSourceRea
     /// <inheritdoc />
     public async Task<IReadOnlyList<string>> PreflightAsync(string caseId,JsonObject request,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var incomplete=JointPhaseSemanticReadiness.MissingInputs(caseId);if(incomplete.Count!=0) return incomplete;
         if(!enrolledScopes.TryGetValue(caseId,out var scope) || request["bindingDigest"]?.GetValue<string>()!=scope.BindingDigest || JointPhaseRequestRecipe.Phase(request)!=scope.Phase)
             return ["ExactIndependentNativeSourceCaseScope"];
@@ -26,7 +27,10 @@ public sealed class JointPhaseNativeSourcePublisher(QualificationNativeSourceRea
             ?["External.CurrentNativeGuardProtectionAndStreamReadProtocols"]:[];
     }
     /// <summary>Reads all current native source facts twice, checks exact current read scope before/after, and publishes immutable signed bytes. Missing facts stay missing; this method does not certify all H1-H4/G1-G7 predicates.</summary>
-    public Task<JsonObject?> PublishAsync(string caseId,JsonObject phaseRequest,CancellationToken token)=>PublishBoundedAsync(caseId,phaseRequest,MaximumEnvelopeBytes,token);
+    public Task<JsonObject?> PublishAsync(string caseId,JsonObject phaseRequest,CancellationToken token){
+        ArgumentNullException.ThrowIfNull(phaseRequest);
+        return PublishBoundedAsync(caseId,phaseRequest,MaximumEnvelopeBytes,token);
+    }
     internal async Task<JsonObject?> PublishBoundedAsync(string caseId,JsonObject phaseRequest,int maximumEnvelopeBytes,CancellationToken token)
     {
         if(maximumEnvelopeBytes is <1 or >MaximumEnvelopeBytes) throw new ArgumentOutOfRangeException(nameof(maximumEnvelopeBytes));
@@ -85,6 +89,7 @@ public sealed class JointPhaseNativeSourcePublisher(QualificationNativeSourceRea
     /// <summary>Recovers exact first signed measurement bytes only. Missing inner retention requires a native historical snapshot protocol.</summary>
     public async Task<JsonObject?> LookupAsync(string caseId,JsonObject phaseRequest,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(phaseRequest);
         if(!enrolledScopes.TryGetValue(caseId,out var scope) || phaseRequest["requestId"]?.GetValue<string>() is not { Length:64 } requestId || !requestId.All(char.IsAsciiHexDigit)
             || phaseRequest["bindingDigest"]?.GetValue<string>()!=scope.BindingDigest || JointPhaseRequestRecipe.Phase(phaseRequest)!=scope.Phase || !Path.IsPathFullyQualified(archiveDirectory)) return null;
         string authorization=QualificationProtocolSchema.Digest(new JsonObject { ["request"]=phaseRequest.DeepClone(),["caseId"]=caseId });

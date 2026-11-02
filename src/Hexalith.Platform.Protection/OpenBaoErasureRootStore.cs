@@ -105,7 +105,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
         pinnedCa ??= PendingPinnedCertificate.Value;
         PendingPinnedCertificate.Value = null;
         try
-        {
+    {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentNullException.ThrowIfNull(installation);
         if (!Regex.IsMatch(installation.StoreId ?? "", "\\A[A-Za-z0-9][A-Za-z0-9._-]{0,255}\\z", RegexOptions.CultureInvariant)
@@ -172,6 +172,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public async Task<bool> CompareExchangeHeadAsync(string tenantId, long version, byte[] head, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(head);
         Key(tenantId);
         if (version <= 0 || head.Length is <= 0 or > MaximumHeadBytes) { throw new ArgumentException("Existing bounded head required."); }
         using var document = JsonDocument.Parse(head);
@@ -203,6 +204,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public async Task<bool> CreateArchiveAsync(string tenantId, string archiveId, byte[] bytes, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(bytes);
         if (bytes.Length is <= 0 or > 12 * 1024 * 1024) { throw new ArgumentException("Bounded immutable archive required."); }
         byte[]? original = await ReadArchiveAsync(tenantId, archiveId, cancellationToken).ConfigureAwait(false);
         if (original is not null) { return original.AsSpan().SequenceEqual(bytes); }
@@ -236,6 +238,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public async Task<string> EncryptAsync(string tenantId, int epoch, byte[] root, string context, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(root);
         if (root.Length != 32 || epoch <= 0) { throw new ArgumentException("Exact AES-256 root and epoch required."); }
         using var buffer = new MemoryStream();
         using (var writer = new Utf8JsonWriter(buffer))
@@ -270,6 +273,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public async Task<byte[]> DecryptAsync(string tenantId, ErasureRootCiphertext value, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(value);
         byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { ciphertext = value.Ciphertext, context = value.Context });
         try
         {
@@ -301,6 +305,7 @@ public sealed class OpenBaoErasureRootStore : IErasureRootStore, IDisposable
     /// <inheritdoc />
     public async Task<IReadOnlyList<string>> RewrapAsync(string tenantId, int epoch, IReadOnlyList<ErasureRootCiphertext> values, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(values);
         if (epoch <= 0 || values.Count > 1000) { throw new ArgumentException("Bounded native rewrap required."); }
         if (values.Count == 0) { return Array.Empty<string>(); }
         byte[]? body = null;

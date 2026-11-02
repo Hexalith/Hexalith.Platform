@@ -17,6 +17,7 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
     /// <summary>Checks all exact typed steps before effects, including lookup-only recovery identities.</summary>
     public Task<IReadOnlyList<string>> PreflightAsync(JsonObject original,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(original);
         token.ThrowIfCancellationRequested();string? id=SecretsProof.Text(original,"caseId");
         if(id is null || !definitions.TryGetValue(id,out var definition) || original["enrolledScope"] is not JsonObject scope || QualificationProtocolDigest(scope)!=definition.EnrolledScopeSha256
             || definition.Before.Concat([definition.Effect]).Concat(definition.Trigger is { } trigger?[trigger]:[]).Concat(definition.After).Any(step=>!Scoped(step,definition)))
@@ -25,10 +26,14 @@ public sealed class QualificationGuardCaseWorkflow(IGovernanceScopeGuard guard, 
         return Task.FromResult<IReadOnlyList<string>>(id.StartsWith("Recovery.",StringComparison.Ordinal)?["External.ExactNativeLostResultInjectionAndLookupOutageControllerProtocol."+id.Split('.')[1]]:[]);
     }
     /// <summary>Recovers only the exact retained complete result; step recovery remains typed owner lookup.</summary>
-    public Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken token)=>originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",token);
+    public Task<JsonObject?> LookupAsync(JsonObject original,CancellationToken token){
+        ArgumentNullException.ThrowIfNull(original);
+        return originals.LookupResultAsync("executor",original["requestId"]!.GetValue<string>()+":case-result",token);
+    }
     /// <summary>Runs the exact enrolled operation recipe. An uncertain retained step uses only exact owner lookup after restart.</summary>
     public async Task<JsonObject?> ExecuteAsync(JsonObject original,CancellationToken token)
     {
+        ArgumentNullException.ThrowIfNull(original);
         if((await PreflightAsync(original,token).ConfigureAwait(false)).Count!=0) return null;
         string? id=original["caseId"]?.GetValue<string>();
         if (id is null || !id.StartsWith("S4.",StringComparison.Ordinal) && !id.StartsWith("v23.",StringComparison.Ordinal) && !id.StartsWith("Recovery.",StringComparison.Ordinal)
