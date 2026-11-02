@@ -2,13 +2,14 @@
 
 Status: `BLOCKED_NOT_FOR_EXECUTION`. `approvalGranted=false`, no executable dispatcher exists, and nothing here touches the cluster. Story 4.14 stays in-progress. Required gates 4.1, 4.2, 4.3, 4.27 (in-progress) and 4.28 (backlog) lack full dependency acceptance. Story 4.2 has accepted scoped exposure/registry results; its full workflow review remains pending. See the evidence-backed [approval package](APPROVAL-PACKAGE.md) and [gate assessment](gates.assessed.json).
 
-The additive [current unblocking handoff](UNBLOCKING-REPORT.md) and
+The [historical unblocking handoff](UNBLOCKING-REPORT.md) and
 [source-bound assessment](unblocking.assessed.json) retain the exact 37-field
 inventory (two observed DNS fields, 35 nulls), four pending owner decision
 groups, definition gaps and phase-separated requirements for later approval.
-The historical package and all six foundation files pinned by Story 4.15 remain
-unchanged. [Offline verification and receipts](../../_bmad-output/implementation-artifacts/evidence/epic-4/4-14/offline-unblocking-2026-10-29/verification.json)
-establish consistency only; approval and live acceptance remain false.
+The [current offline hardening handoff](OFFLINE-HARDENING-HANDOFF.md) records the
+guarded candidate path and remaining blockers. The six foundation files pinned
+by Story 4.15 and the historical receipts remain unchanged. Approval and live
+acceptance remain false.
 
 ## Contents
 
@@ -19,7 +20,8 @@ establish consistency only; approval and live acceptance remain false.
 | `MISSING-INPUTS.md` / `INPUT-EVIDENCE.md` | Exact question for every null field, additional live prerequisites and reasons historical observations cannot become defaults. |
 | `APPROVAL-PACKAGE.md` / `gates.assessed.json` | Current approval boundary, per-stage refusal, target, effects, read-only checks, forward recovery and dependency acceptance audit. |
 | `render.py` | `render` writes `shared-infrastructure.yaml` and `environment-layer.yaml`; `plan` prints the concrete apply plan. Refuses (exit 2, no output) on missing/placeholder input or a target other than `jpiquot@local` / `b5860674-1d1e-4a3b-b413-e1bb3b9a4557`. |
-| `cni_probe.py` | Calico enforcement probe: manifests, kubectl argv sequence, and `evaluate`. Passes only if the allowed connection works and the denied peer is blocked; always emits cleanup argv. |
+| `preflight.py` | Guarded candidate entry point. Checks Kubernetes quantity syntax, nonnegative values, request/limit and PVC bounds, and whether each positive quota can admit one declared default pod or minimum claim before calling the pinned renderer in process. |
+| `cni_probe.py` | Per-attempt Calico enforcement probe: digest-pinned manifests, collision and UID observation checks, strict result evaluation, and a blocked cleanup proposal that records the checked UID condition. |
 | `apply-plan.json` | Static blocked package: target, unmet dependencies, effects per stage, job-identity denial checks, forward recovery. |
 | `test_staging_foundation.py` | Unit tests (no cluster call; sources cannot spawn processes). |
 
@@ -33,11 +35,17 @@ establish consistency only; approval and live acceptance remain false.
 
 ```
 python3 -B -m unittest discover -s eng/staging-foundation -v
-python3 -B eng/staging-foundation/render.py render --inputs <real-inputs.json> --output <dir>
-python3 -B eng/staging-foundation/render.py plan --inputs <real-inputs.json> --observed-context <ctx> --observed-cluster-uid <uid> --manifest-dir <dir>
+python3 -B eng/staging-foundation/preflight.py render --inputs <real-inputs.json> --output <dir>
+python3 -B eng/staging-foundation/preflight.py plan --inputs <real-inputs.json> --observed-context <ctx> --observed-cluster-uid <uid> --manifest-dir <dir>
 ```
 
-The `plan` output lists, per identity, dry-run argv (`--dry-run=server`) and apply argv (marked `executable: false`), read-only verification `get` argv, and `auth can-i ... --as <job>` checks that must all answer `no` (exit 1). Run nothing until every dependency has accepted evidence and the owner approves the exact bytes.
+Use `preflight.py` for candidate work. The current `inputs.resolved.json` still
+has 35 missing values; both guarded commands exit 2 without manifest output.
+The `plan` output lists, per identity, dry-run argv (`--dry-run=server`) and
+apply argv (marked `executable: false`), read-only verification `get` argv, and
+`auth can-i ... --as <job>` checks that must all answer `no` (exit 1). Run
+nothing until every dependency has accepted evidence and the owner approves the
+exact bytes.
 
 ## Recovery
 
@@ -47,4 +55,21 @@ Notes: the PriorityClass `value` is immutable, so a changed value needs a new cl
 
 ## CNI probe
 
-`cni_probe.py manifests` writes `probe.yaml` and `client.yaml` for namespace `hexalith-cni-probe` (restricted, default-deny) and prints the argv sequence ending in cleanup. The probe image must be digest pinned and busybox-compatible (`httpd`, `nc`); none is defaulted. `cni_probe.py evaluate --log-file <client log>` exits 1 and reports `CNI does not enforce NetworkPolicy` if the denied peer connected.
+`cni_probe.py manifests` requires `--attempt-id`, `--cleanup-deadline` (a future
+ISO 8601 timestamp with timezone), a digest-pinned busybox-compatible (`httpd`,
+`nc`) `--image`, DNS inputs and `--output`. It writes a restricted,
+default-deny namespace named `hexalith-cni-probe-<attempt-id>`, plus probe and
+client manifests. The printed sequence includes a collision check, a
+post-creation UID check and a cleanup identity check; creation and cleanup
+remain unqualified. `creation-proposal` takes a checked-absence JSON claim and
+refuses a reported collision or missing claim. The supplied claim remains
+unverified offline and contains no create action. `cni_probe.py
+evaluate --attempt-id <id> --log-file
+<client-log>` requires one matching attempt marker and one result for each peer;
+a missing control, malformed or duplicate output cannot pass. A reachable
+denied peer fails. `cleanup-proposal` requires the creation-time UID and fresh
+observed namespace JSON with matching name, UID, attempt label and deadline.
+It records the matching UID as a required precondition, with no delete action;
+the observation and cleanup remain unqualified offline. A later live procedure
+requires independent ownership and namespace-content evidence, exact target
+binding and operational approval before any cleanup.

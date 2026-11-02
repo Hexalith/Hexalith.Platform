@@ -3,6 +3,8 @@
 import ast
 import contextlib
 import copy
+from datetime import datetime, timedelta, timezone
+import hashlib
 import io
 import json
 import os
@@ -14,11 +16,17 @@ import unittest
 from unittest import mock
 
 import cni_probe
+import preflight
 import render
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[1]
 DIGEST_IMAGE = "registry.invalid/probe@sha256:" + "a" * 64
+ATTEMPT_ID = "attempt-42"
+
+
+def future_deadline():
+    return (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
 
 
 def complete_inputs():
@@ -244,6 +252,19 @@ class ApplyPlanTests(unittest.TestCase):
         self.assertEqual({d["story"] for d in plan["unmetDependencies"]}, {"4-1", "4-2", "4-3", "4-27", "4-28"})
         self.assertIn("helm rollback", plan["recovery"]["never"])
 
+    def test_historical_pins_and_status_boundary(self):
+        assessment = json.loads((HERE / "unblocking.assessed.json").read_text())
+        self.assertFalse(assessment["approvalGranted"])
+        self.assertFalse(assessment["liveAcceptance"])
+        self.assertEqual(assessment["storyStatus"], "in-progress")
+        self.assertIn("4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: in-progress",
+                      (PROJECT / "_bmad-output/implementation-artifacts/sprint-status.yaml").read_text())
+        source_index = json.loads((PROJECT / "eng/staging-secrets/source-evidence.json").read_text())
+        pins = [source for source in source_index["sources"] if source.get("id", "").startswith("foundation-")]
+        self.assertEqual(len(pins), 6)
+        for pin in pins:
+            self.assertEqual(hashlib.sha256((PROJECT / pin["path"]).read_bytes()).hexdigest(), pin["sha256"])
+
     def test_concrete_plan(self):
         plan = render.build_apply_plan(complete_inputs(), render.EXPECTED_CONTEXT, render.EXPECTED_UID)
         self.assertIs(plan["approvalGranted"], False)
@@ -302,14 +323,112 @@ class ApplyPlanTests(unittest.TestCase):
         self.assertNotEqual(code, 0)
 
 
+class PreflightTests(unittest.TestCase):
+    def test_complete_candidate_renders_and_plan_stays_blocked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src, out = Path(tmp) / "candidate.json", Path(tmp) / "out"
+            src.write_text(json.dumps(complete_inputs()))
+            self.assertEqual(preflight.main(["render", "--inputs", str(src), "--output", str(out)]), 0)
+            self.assertEqual((out / "shared-infrastructure.yaml").read_text(), render.render(complete_inputs())["shared-infrastructure.yaml"])
+            with contextlib.redirect_stdout(io.StringIO()) as stdout:
+                self.assertEqual(preflight.main(["plan", "--inputs", str(src),
+                                                  "--observed-context", render.EXPECTED_CONTEXT,
+                                                  "--observed-cluster-uid", render.EXPECTED_UID]), 0)
+            plan = json.loads(stdout.getvalue())
+            self.assertFalse(plan["approvalGranted"])
+            self.assertTrue(all(stage["executable"] is False for stage in plan["stages"]))
+
+    def test_missing_inputs_refuse_before_renderer_and_write_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "out"
+            with mock.patch.object(render, "render", side_effect=AssertionError("renderer called")), \
+                    mock.patch.object(render, "build_apply_plan", side_effect=AssertionError("renderer called")), \
+                    contextlib.redirect_stderr(io.StringIO()) as stderr, contextlib.redirect_stdout(io.StringIO()) as stdout:
+                self.assertEqual(preflight.main(["render", "--inputs", str(HERE / "inputs.resolved.json"),
+                                                 "--output", str(out)]), 2)
+                self.assertEqual(preflight.main(["plan", "--inputs", str(HERE / "inputs.resolved.json"),
+                                                 "--observed-context", render.EXPECTED_CONTEXT,
+                                                 "--observed-cluster-uid", render.EXPECTED_UID]), 2)
+            self.assertFalse(out.exists())
+            self.assertEqual(stdout.getvalue(), "")
+            self.assertIn("storage.provisioner", stderr.getvalue())
+            self.assertIn("quotas.data.requestsStorage", stderr.getvalue())
+
+    def test_invalid_quantities_and_relationships_report_fields(self):
+        cases = [
+            ("limitRange.defaultRequestCpu", "bogus"),
+            ("limitRange.defaultRequestCpu", "0.1m"),
+            ("limitRange.defaultRequestCpu", "1.5m"),
+            ("limitRange.defaultRequestMemory", "1GiB"),
+            ("limitRange.defaultRequestMemory", "1Gi"),
+            ("limitRange.defaultLimitCpu", "-1"),
+            ("limitRange.pvcMinStorage", "2Gi"),
+            ("quotas.application.pods", "1.5"),
+            ("quotas.application.requestsCpu", "1e1000000"),
+            ("quotas.application.requestsMemory", "9223372036854775808"),
+        ]
+        for path, value in cases:
+            data = complete_inputs()
+            node = data
+            parts = path.split(".")
+            for part in parts[:-1]:
+                node = node[part]
+            node[parts[-1]] = value
+            if path == "limitRange.pvcMinStorage":
+                data["limitRange"]["pvcMaxStorage"] = "1Gi"
+            with self.assertRaises(render.InputError, msg=path) as error:
+                preflight.validate(data)
+            self.assertTrue(any(p.startswith(path + ":") for p in error.exception.problems))
+
+    def test_binary_ei_and_decimal_exponent_are_distinct(self):
+        self.assertEqual(preflight.quantity("1Ei", "memory"), 2**60)
+        self.assertEqual(preflight.quantity("1E", "memory"), 10**18)
+        self.assertEqual(preflight.quantity("1e3", "memory"), 1000)
+
+    def test_quota_must_fit_one_default_or_claim_in_each_namespace(self):
+        for scope in ("application", "data"):
+            for quota, value in (("requestsCpu", "1m"), ("requestsMemory", "1Mi"),
+                                 ("limitsCpu", "1m"), ("limitsMemory", "1Mi"),
+                                 ("requestsStorage", "1Mi")):
+                data = complete_inputs()
+                data["quotas"][scope][quota] = value
+                path = f"quotas.{scope}.{quota}"
+                with self.assertRaises(render.InputError, msg=path) as error:
+                    preflight.validate(data)
+                self.assertTrue(any(p.startswith(path + ":") for p in error.exception.problems))
+
+    def test_invalid_candidate_emits_no_manifest_or_plan(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = complete_inputs()
+            data["limitRange"]["defaultRequestCpu"] = "1"
+            data["limitRange"]["defaultLimitCpu"] = "500m"
+            data["quotas"]["data"]["requestsStorage"] = "1Mi"
+            src, out = Path(tmp) / "candidate.json", Path(tmp) / "out"
+            src.write_text(json.dumps(data))
+            with contextlib.redirect_stderr(io.StringIO()) as stderr, contextlib.redirect_stdout(io.StringIO()) as stdout:
+                self.assertEqual(preflight.main(["render", "--inputs", str(src), "--output", str(out)]), 2)
+                self.assertEqual(preflight.main(["plan", "--inputs", str(src),
+                                                 "--observed-context", render.EXPECTED_CONTEXT,
+                                                 "--observed-cluster-uid", render.EXPECTED_UID]), 2)
+            self.assertFalse(out.exists())
+            self.assertEqual(stdout.getvalue(), "")
+            self.assertIn("limitRange.defaultRequestCpu", stderr.getvalue())
+            self.assertIn("quotas.data.requestsStorage", stderr.getvalue())
+
+
 class CniProbeTests(unittest.TestCase):
     def setUp(self):
-        self.docs, self.client = cni_probe.manifests(DIGEST_IMAGE, "kube-system", {"k8s-app": "kube-dns"})
+        self.deadline = future_deadline()
+        self.docs, self.client = cni_probe.manifests(DIGEST_IMAGE, "kube-system", {"k8s-app": "kube-dns"},
+                                                     ATTEMPT_ID, self.deadline)
+
+    def evaluate(self, body):
+        return cni_probe.evaluate("PROBE_ATTEMPT=" + ATTEMPT_ID + "\n" + body, ATTEMPT_ID)
 
     def test_requires_pinned_image(self):
         for image in ("probe:latest", "", None):
             with self.assertRaises(cni_probe.ProbeInputError):
-                cni_probe.manifests(image, "kube-system", {"a": "b"})
+                cni_probe.manifests(image, "kube-system", {"a": "b"}, ATTEMPT_ID, self.deadline)
 
     def test_manifests_deny_by_default_and_allow_one_path(self):
         policies = {d["metadata"]["name"]: d for d in self.docs if d["kind"] == "NetworkPolicy"}
@@ -327,14 +446,15 @@ class CniProbeTests(unittest.TestCase):
             self.assertEqual(sc["capabilities"]["drop"], ["ALL"])
 
     def test_evaluate(self):
-        ok = cni_probe.evaluate("PROBE_allowed-server=0\nPROBE_denied-server=1\n")
+        ok = self.evaluate("PROBE_allowed-server=0\nPROBE_denied-server=1\n")
         self.assertTrue(ok["passed"])
-        bad = cni_probe.evaluate("PROBE_allowed-server=0\nPROBE_denied-server=0\n")
+        self.assertFalse(ok["cleanupQualified"])
+        bad = self.evaluate("PROBE_allowed-server=0\nPROBE_denied-server=0\n")
         self.assertFalse(bad["passed"])
         self.assertIn("does not enforce", bad["reason"])
-        self.assertEqual(bad["cleanupArgv"][:5], ["kubectl", "--context", "jpiquot@local", "delete", "namespace"])
-        self.assertFalse(cni_probe.evaluate("PROBE_allowed-server=1\nPROBE_denied-server=1\n")["passed"])
-        self.assertFalse(cni_probe.evaluate("garbage")["passed"])
+        self.assertNotIn("deleteRequest", bad)
+        self.assertFalse(self.evaluate("PROBE_allowed-server=1\nPROBE_denied-server=1\n")["passed"])
+        self.assertFalse(self.evaluate("garbage")["passed"])
 
     def test_servers_have_readiness_and_writable_tmp(self):
         for pod in [d for d in self.docs if d["kind"] == "Pod"]:
@@ -349,55 +469,115 @@ class CniProbeTests(unittest.TestCase):
                     "PROBE_allowed-server=0\nPROBE_denied-server=1\nPROBE_denied-server=1\n",
                     "PROBE_allowed-server=0 trailing\nPROBE_denied-server=1\n",
                     "PROBE_allowed-server=0\n"):
-            result = cni_probe.evaluate(log)
+            result = self.evaluate(log)
             self.assertFalse(result["passed"], log)
             self.assertIn("inconclusive", result["reason"])
-        control = cni_probe.evaluate("PROBE_allowed-server=1\nPROBE_denied-server=1\n")
+        control = self.evaluate("PROBE_allowed-server=1\nPROBE_denied-server=1\n")
         self.assertIn("inconclusive", control["reason"])
+        self.assertFalse(self.evaluate("PROBE_allowed-server=0\nPROBE_denied-server=1\nPROBE_foo=0\n")["passed"])
+        self.assertFalse(cni_probe.evaluate("PROBE_ATTEMPT=other\nPROBE_allowed-server=0\nPROBE_denied-server=1\n", ATTEMPT_ID)["passed"])
 
     def test_real_client_script_markers_feed_evaluate(self):
-        script = cni_probe._client_script()
+        script = cni_probe._client_script(ATTEMPT_ID)
         self.assertIn("nc -z -w 3 $t 8080", script)
+        self.assertIn("PROBE_ATTEMPT=" + ATTEMPT_ID, script)
         for t, code in (("allowed-server", 0), ("denied-server", 1)):
             self.assertIn(f"echo PROBE_$t=$r", script)
         simulated = "".join(f"PROBE_{t}={0 if t == 'allowed-server' else 1}\n" for t in ("allowed-server", "denied-server"))
-        self.assertTrue(cni_probe.evaluate(simulated)["passed"])
+        self.assertTrue(self.evaluate(simulated)["passed"])
 
-    def test_cleanup_requires_probe_label(self):
-        guard = cni_probe.cleanup_guard_argv()
-        self.assertEqual(guard[3:], ["get", "namespace", "hexalith-cni-probe", "-l", cni_probe.PROBE_SELECTOR, "-o", "name"])
-        cleanup = cni_probe.cleanup_argv()
-        self.assertIn(cni_probe.PROBE_SELECTOR, cleanup)
-        self.assertIn("--field-selector=metadata.name=hexalith-cni-probe", cleanup)
-        seq = list(cni_probe.argv_sequence("p.yaml", "c.yaml"))
-        self.assertEqual(seq[-2:], ["cleanupGuard", "cleanup"])
+    def test_collision_and_uid_guard(self):
+        name = cni_probe.namespace_for(ATTEMPT_ID)
+        self.assertNotEqual(name, cni_probe.namespace_for("another-attempt"))
+        self.assertEqual(self.docs[0]["metadata"]["name"], name)
+        self.assertEqual(self.docs[0]["metadata"]["labels"]["hexalith.com/probe-attempt"], ATTEMPT_ID)
+        with self.assertRaises(cni_probe.ProbeInputError):
+            cni_probe.creation_proposal(ATTEMPT_ID, self.deadline, {"checkedNamespace": name, "exists": True})
+        with self.assertRaises(cni_probe.ProbeInputError):
+            cni_probe.creation_proposal(ATTEMPT_ID, self.deadline, {})
+        create = cni_probe.creation_proposal(ATTEMPT_ID, self.deadline,
+                                             {"checkedNamespace": name, "exists": False})
+        self.assertFalse(create["executable"])
+        self.assertFalse(create["observationVerified"])
+        self.assertFalse(create["creationActionQualified"])
+        self.assertNotIn("createArgv", create)
+        uid = "4f596937-037e-43ef-a734-889e05d91349"
+        observed = copy.deepcopy(self.docs[0]); observed["metadata"]["uid"] = uid
+        for bad in ({}, {"metadata": {"name": name, "uid": uid}},
+                    {**observed, "metadata": {**observed["metadata"], "uid": "c6553959-36ec-4eb9-8d10-43e039636576"}},
+                    {**observed, "metadata": {**observed["metadata"], "name": "other"}},
+                    {**observed, "metadata": {**observed["metadata"], "annotations": {"hexalith.com/cleanup-deadline": future_deadline()}}}):
+            with self.assertRaises(cni_probe.ProbeInputError):
+                cni_probe.cleanup_proposal(ATTEMPT_ID, self.deadline, uid, bad)
+        proposal = cni_probe.cleanup_proposal(ATTEMPT_ID, self.deadline, uid, observed)
+        self.assertFalse(proposal["executable"])
+        self.assertFalse(proposal["observationVerified"])
+        self.assertFalse(proposal["cleanupQualified"])
+        self.assertEqual(proposal["uidPrecondition"], uid)
+        self.assertNotIn("deleteRequest", proposal)
+        self.assertNotIn("cleanupArgv", proposal)
+
+    def test_proposal_cli_refuses_unverified_observations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            collision = Path(tmp) / "collision.json"
+            collision.write_text("{}")
+            observed = Path(tmp) / "namespace.json"
+            observed.write_text("{}")
+            with contextlib.redirect_stdout(io.StringIO()) as stdout, contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(cni_probe.main(["creation-proposal", "--attempt-id", ATTEMPT_ID,
+                    "--cleanup-deadline", self.deadline, "--collision-observation", str(collision)]), 2)
+                self.assertEqual(cni_probe.main(["cleanup-proposal", "--attempt-id", ATTEMPT_ID,
+                    "--cleanup-deadline", self.deadline, "--created-uid", "4f596937-037e-43ef-a734-889e05d91349",
+                    "--observed-namespace", str(observed)]), 2)
+            self.assertEqual(stdout.getvalue(), "")
+
+    def test_attempt_and_deadline_required(self):
+        for attempt, deadline in (("", self.deadline), ("Bad/ID", self.deadline), (ATTEMPT_ID, ""),
+                                  (ATTEMPT_ID, "2020-01-01T00:00:00Z"), (ATTEMPT_ID, "2030-01-01")):
+            with self.assertRaises(cni_probe.ProbeInputError):
+                cni_probe.manifests(DIGEST_IMAGE, "kube-system", {"a": "b"}, attempt, deadline)
 
     def test_main_exit_codes(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp = Path(tmp)
-            (tmp / "ok.log").write_text("PROBE_allowed-server=0\nPROBE_denied-server=1\n")
-            (tmp / "leak.log").write_text("PROBE_allowed-server=0\nPROBE_denied-server=0\n")
+            (tmp / "ok.log").write_text(f"PROBE_ATTEMPT={ATTEMPT_ID}\nPROBE_allowed-server=0\nPROBE_denied-server=1\n")
+            (tmp / "leak.log").write_text(f"PROBE_ATTEMPT={ATTEMPT_ID}\nPROBE_allowed-server=0\nPROBE_denied-server=0\n")
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "ok.log")]), 0)
-                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "leak.log")]), 1)
-                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "missing.log")]), 2)
-                args = ["manifests", "--dns-namespace", "kube-system", "--dns-pod-label", "k8s-app=kube-dns", "--output", str(tmp / "o")]
+                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "ok.log"), "--attempt-id", ATTEMPT_ID]), 0)
+                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "leak.log"), "--attempt-id", ATTEMPT_ID]), 1)
+                self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "missing.log"), "--attempt-id", ATTEMPT_ID]), 2)
+                args = ["manifests", "--dns-namespace", "kube-system", "--dns-pod-label", "k8s-app=kube-dns",
+                        "--attempt-id", ATTEMPT_ID, "--cleanup-deadline", self.deadline, "--output", str(tmp / "o")]
                 self.assertEqual(cni_probe.main(args + ["--image", "probe:latest"]), 2)
                 self.assertFalse((tmp / "o").exists())
                 self.assertEqual(cni_probe.main(args + ["--image", DIGEST_IMAGE]), 0)
             self.assertTrue((tmp / "o" / "probe.yaml").exists())
 
-    def test_argv_sequence_ends_with_cleanup(self):
-        seq = cni_probe.argv_sequence("p.yaml", "c.yaml")
-        self.assertEqual(list(seq)[-1], "cleanup")
-        for argv in seq.values():
+    def test_deadline_expiry_on_second_check_writes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "probe"
+            args = ["manifests", "--image", DIGEST_IMAGE, "--dns-namespace", "kube-system",
+                    "--dns-pod-label", "k8s-app=kube-dns", "--attempt-id", ATTEMPT_ID,
+                    "--cleanup-deadline", self.deadline, "--output", str(out)]
+            with mock.patch.object(cni_probe, "deadline_for", side_effect=[None, cni_probe.ProbeInputError("deadline expired")]), \
+                    contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(cni_probe.main(args), 2)
+            self.assertFalse(out.exists())
+
+    def test_argv_sequence_has_checks_but_no_cleanup_action(self):
+        seq = cni_probe.argv_sequence(ATTEMPT_ID, self.deadline, "p.yaml", "c.yaml")
+        self.assertEqual(seq["collisionCheck"], seq["postCreateUidCheck"])
+        self.assertEqual(seq["postCreateUidCheck"], seq["cleanupIdentityCheck"])
+        self.assertFalse(seq["cleanupQualified"])
+        for argv in [v for v in seq.values() if isinstance(v, list)]:
             self.assertEqual(argv[:3], ["kubectl", "--context", "jpiquot@local"])
+            self.assertNotIn("delete", argv)
 
 
 class NoClusterCallTests(unittest.TestCase):
     def test_sources_import_no_process_or_network_modules(self):
         banned = {"subprocess", "socket", "urllib", "http", "requests", "ssl", "asyncio", "multiprocessing", "ctypes"}
-        for name in ("render.py", "cni_probe.py"):
+        for name in ("render.py", "preflight.py", "cni_probe.py"):
             for node in ast.walk(ast.parse((HERE / name).read_text())):
                 modules = [a.name for a in node.names] if isinstance(node, ast.Import) else \
                     [node.module or ""] if isinstance(node, ast.ImportFrom) else []
@@ -418,10 +598,14 @@ class NoClusterCallTests(unittest.TestCase):
             self.assertEqual(render.main(["plan", "--inputs", str(src), "--observed-context", render.EXPECTED_CONTEXT,
                                           "--observed-cluster-uid", render.EXPECTED_UID]), 0)
             self.assertEqual(render.main(["plan", "--inputs", str(src), "--observed-context", "x", "--observed-cluster-uid", "y"]), 2)
+            self.assertEqual(preflight.main(["render", "--inputs", str(src), "--output", str(tmp / "guarded")]), 0)
+            self.assertEqual(preflight.main(["plan", "--inputs", str(src), "--observed-context", render.EXPECTED_CONTEXT,
+                                             "--observed-cluster-uid", render.EXPECTED_UID]), 0)
             self.assertEqual(cni_probe.main(["manifests", "--image", DIGEST_IMAGE, "--dns-namespace", "kube-system",
-                                             "--dns-pod-label", "k8s-app=kube-dns", "--output", str(tmp / "c")]), 0)
-            (tmp / "l").write_text("PROBE_allowed-server=0\nPROBE_denied-server=1\n")
-            self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "l")]), 0)
+                                             "--dns-pod-label", "k8s-app=kube-dns", "--attempt-id", ATTEMPT_ID,
+                                             "--cleanup-deadline", future_deadline(), "--output", str(tmp / "c")]), 0)
+            (tmp / "l").write_text(f"PROBE_ATTEMPT={ATTEMPT_ID}\nPROBE_allowed-server=0\nPROBE_denied-server=1\n")
+            self.assertEqual(cni_probe.main(["evaluate", "--log-file", str(tmp / "l"), "--attempt-id", ATTEMPT_ID]), 0)
 
 
 
@@ -429,7 +613,7 @@ class ModuleAgnosticTests(unittest.TestCase):
     """The foundation is consumed by modules and must never name one (docs/DEPENDENCY-DIRECTION.md)."""
 
     def test_foundation_names_no_consumer_module(self):
-        for name in ("render.py", "cni_probe.py", "apply-plan.json", "inputs.example.json"):
+        for name in ("render.py", "preflight.py", "cni_probe.py", "apply-plan.json", "inputs.example.json"):
             text = (HERE / name).read_text().lower()
             self.assertNotIn("timesheets", text, name)
 
