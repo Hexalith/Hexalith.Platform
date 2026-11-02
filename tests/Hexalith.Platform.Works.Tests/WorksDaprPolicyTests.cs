@@ -23,8 +23,7 @@ public sealed class WorksDaprPolicyTests
             Scalar(policy, "defaultAction").ShouldBe("deny");
             Scalar(policy, "trustDomain").ShouldBe(Scalar(access, "trustDomain"));
             Scalar(policy, "namespace").ShouldBe("default");
-            // The selected SDK's production-template Admin.Server grant is the only wildcard; it is pinned exactly below.
-            if (file == "accesscontrol.yaml" && Scalar(policy, "appId") == AdminCaller) continue;
+            // All receiver grants use finite catalog compatible shapes.
             foreach (YamlMappingNode operation in (YamlSequenceNode)policy["operations"])
                 Scalar(operation, "name").ShouldNotBe("/**");
         }
@@ -32,7 +31,7 @@ public sealed class WorksDaprPolicyTests
 
     /// <summary>
     /// The EventStore receiver admits exactly two callers: the Works module on its exact gateway routes, and Admin.Server
-    /// under the selected producer's production-template grant (v3.125.1 <c>deploy/dapr/accesscontrol.yaml:34-46</c>).
+    /// under the finite admin receiver grant.
     /// </summary>
     [Fact]
     public void EventStoreReceiverAdmitsOnlyExactWorksRoutesAndBoundedAdminSurface()
@@ -46,13 +45,13 @@ public sealed class WorksDaprPolicyTests
             "POST /api/v1/commands/workload allow",
             "POST /api/v1/queries allow",
             "GET /api/v1/commands/status/* allow",
-            "GET /api/v1/commands/status/workload/*/* allow",
+            "GET /api/v1/commands/status/workload allow",
             "POST /api/v1/streams/read allow",
             "POST /api/v1/streams/read/workload allow",
             "POST /api/v1/trusted-effects allow",
         ]);
         Operations(callers[AdminCaller]).ShouldBe([
-            "GET,POST,PUT /api/v1/admin/** allow",
+            "GET,POST,PUT /api/v1/admin allow",
             "POST /api/v1/commands allow",
             "POST /api/v1/queries allow",
             "POST /api/v1/streams/read allow",
