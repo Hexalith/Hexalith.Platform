@@ -1,0 +1,25 @@
+{
+  "status": "read-only-preflight-passed; no deletion requested",
+  "observed_at_utc": "2026-11-01T19:49:19.428941+00:00",
+  "namespace": "mcpcli-417-20261101-00c6a713",
+  "namespace_uid": "2f5b7d0a-4988-4380-a026-7b1e1c39855e",
+  "owner_label": "mcpcli-417-20261101-00c6a713",
+  "target": {
+    "context": "jpiquot@local",
+    "api": "https://192.168.1.30:6443",
+    "namespace": "mcpcli-417-20261101-00c6a713",
+    "release": "mcpcli-417-20261101-00c6a713"
+  },
+  "review_sha256": "f2e88eb4dc9536709a0b1daf9193423cbb9011ddf5a8b59c7775fce1a97d598e",
+  "review_expiry_unchanged": "2026-11-02T12:46:22.115384+00:00",
+  "pvc": {
+    "name": "task-data",
+    "uid": "bda2e9b2-4c98-40a6-9c12-a8a96501ed9b"
+  },
+  "pv": {
+    "name": "pvc-bda2e9b2-4c98-40a6-9c12-a8a96501ed9b",
+    "uid": "e0849d3b-4dc9-41fa-8e98-175853885b69",
+    "reclaim_policy": "Delete"
+  },
+  "backup_and_journal_preserved": true
+}

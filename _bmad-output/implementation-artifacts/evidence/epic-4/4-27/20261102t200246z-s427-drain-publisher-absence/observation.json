@@ -1,0 +1,123 @@
+{
+  "kind": "s427-drain-publisher-absence-observation",
+  "observationStartedAt": "2026-11-02T20:02:46.551488+00:00",
+  "observationEndedAt": "2026-11-02T20:02:48.812979+00:00",
+  "readOnly": true,
+  "mutationRequests": 0,
+  "kubectl": {
+    "path": "/tmp/mcpcli-418-tools-c8b9570/kubectl",
+    "sha256": "73bb6f5063caadae1e73a39de018d8ad21755984bea35358484db817859e7634",
+    "clientVersion": "v1.34.9"
+  },
+  "target": {
+    "context": "jpiquot@local",
+    "server": "https://192.168.1.30:6443",
+    "serverVersion": "v1.34.9",
+    "kubeSystemNamespaceUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557"
+  },
+  "publisherSelector": "dapr.io/app-id=eventstore",
+  "publisherSelectorSource": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t131121z/tools-complete-v3/mem.py:109",
+  "globalPublisherPodsFirstRead": [],
+  "globalPublisherPodsLastRead": [],
+  "recordedPublisherNamespaces": {
+    "mcpcli-417-20261101-00c6a713": {
+      "recordedUid": "2f5b7d0a-4988-4380-a026-7b1e1c39855e",
+      "absent": true,
+      "observedUid": null
+    },
+    "mcpcli-417-20261102-6383083d": {
+      "recordedUid": "2ebf8335-fe6c-4ba9-913c-4207675c7f6d",
+      "absent": true,
+      "observedUid": null
+    }
+  },
+  "mcpcliNamespacesPresent": [],
+  "ownedPvAbsent": {
+    "pvc-bda2e9b2-4c98-40a6-9c12-a8a96501ed9b": true
+  },
+  "pvsClaimedFromMcpcliNamespaces": [],
+  "readArgv": [
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "config",
+      "view",
+      "--minify",
+      "-o",
+      "jsonpath={.clusters[0].cluster.server}"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "version",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "namespace",
+      "kube-system",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "pods",
+      "-A",
+      "-l",
+      "dapr.io/app-id=eventstore",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "namespace",
+      "mcpcli-417-20261101-00c6a713",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "namespace",
+      "mcpcli-417-20261102-6383083d",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "namespaces",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "pv",
+      "-o",
+      "json"
+    ],
+    [
+      "--context=jpiquot@local",
+      "--request-timeout=30s",
+      "get",
+      "pods",
+      "-A",
+      "-l",
+      "dapr.io/app-id=eventstore",
+      "-o",
+      "json"
+    ]
+  ],
+  "qualification": "Two reads of the unchanged mem.py selector seconds apart; this is not the drain predicate, which needs two samples 65 s apart inside a signed successor attempt, plus every other zero-backlog check."
+}

@@ -1447,3 +1447,63 @@ operational requests. Original records and clocks remain fixed, with the exclusi
 attempt end **2026-11-01T23:00:00Z**. No new owner/incident approval or recovery
 continuation is supplied. **4.27 stays in-progress, 4.1 closed and Timesheets
 3.6 open/FAIL**; original production tasks and frozen intent remain unchanged.
+
+
+## Drain publisher released by its owning workflow — 2026-11-02
+
+The [disposition receipt](evidence/epic-4/4-27/20261102t200246z-s427-drain-publisher-absence/disposition.json) supersedes the earlier "unowned"
+label. Pod `mcpcli-417-20261101-00c6a713/eventstore-nkkwj` (UID
+`d888a907-5fb9-4684-9b52-a6f827582884`, Job UID `4b8f43cb-…`) belonged to McpCli
+Story 4.18's temporary operator environment. Its `mcpcli-417-` prefix comes from the
+shared operator-setup helper.
+
+**Root cause.** The user approved that environment at **2026-11-01T14:04:49Z**, and it
+was deployed at 14:05:19Z. That was 53 minutes into this recovery attempt, and neither
+approval checked the other workflow.
+
+**Release.** The environment's approved scope included its own cleanup. McpCli 4.18
+deleted the namespace with a server-enforced UID precondition at
+**2026-11-01T19:50:54Z** and completed at 19:51:13Z, about 2.5 hours after the failed
+drain. Its test Redis PV went with it under the reviewed `Delete` reclaim policy.
+[Byte-identical copies](evidence/epic-4/4-27/20261102t200246z-s427-drain-publisher-absence/mcpcli-4-18-cleanup-20261101/receipt.json) of McpCli's
+git-ignored cleanup receipt are retained.
+
+**Attribution.** When asked on 2026-11-02, the user did not recognize the removal ("Not
+me / not sure"). The actor was identified afterwards from local Codex session logs, and
+the user has not confirmed that attribution.
+
+**Open custody gap.** The receipt says the 4.18 private backups and journals were kept,
+but that private `/tmp` folder held only `clients/` on 2026-11-02. This is deferred to
+McpCli 4.18 evidence retention.
+
+**Second publisher.** A second McpCli environment, `mcpcli-417-20261102-6383083d`,
+ran EventStore publisher `eventstore-q7qqz`. The user approved it at 11:26:33Z on
+2026-11-02. It ran from 12:07Z and its reviewed runner cleaned it up by 14:15Z.
+[Its records](evidence/epic-4/4-27/20261102t200246z-s427-drain-publisher-absence/mcpcli-4-18-environment-20261102/cleanup.json) are retained.
+
+The unchanged global predicate counts every Pod labelled `dapr.io/app-id=eventstore`
+in any namespace. A successor outage must therefore freeze every EventStore-publishing
+workflow, not only McpCli's. Approvals for such workflows must also check for an
+open recovery window.
+
+**Fresh observation.** A [read-only observation](evidence/epic-4/4-27/20261102t200246z-s427-drain-publisher-absence/observation.json) at
+**2026-11-02T20:02:46Z** used checksum-verified kubectl v1.34.9 against the same
+cluster (kube-system UID `b5860674-…`). It made nine reads and found:
+- zero Pods matching the `mem.py` selector, in two reads;
+- both namespaces absent;
+- no `mcpcli-*` namespaces;
+- no PV claimed from them.
+
+These reads are not the drain predicate, so `drainPass` stays false. No mutation,
+signing, replay or stopped-attempt record change occurred.
+
+**Successor attempt.** The stopped attempt still ends at **2026-11-01T23:00:00Z**. Earlier
+analysis found that its tools and policy refuse every entrypoint after that time; this
+run did not re-execute them. A successor needs:
+- a new RID bundle and signed policy;
+- fresh Keycloak/OpenBao/Memories captures and a TLS/node horizon;
+- a reviewed cleanup of held targets `recovery-4-0-kc`/`recovery-4-0-bao`;
+- the EventStore-publisher freeze above;
+- Administrator decisions on the window, the freeze and the held targets.
+
+**4.27 stays in-progress, 4.1 closed and Timesheets 3.6 open/FAIL.**

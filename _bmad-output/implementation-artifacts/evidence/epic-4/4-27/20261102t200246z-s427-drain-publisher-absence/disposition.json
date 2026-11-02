@@ -1,0 +1,101 @@
+{
+  "kind": "s427-drain-publisher-disposition",
+  "checkpointUnsigned": true,
+  "recordedAt": "2026-11-02T20:10:00Z",
+  "gitHeadAtObservation": "c869f1c7b6b86bd693911ad10e328235ea697da8",
+  "recoveryId": "20261101t131121z",
+  "recoveryAttemptStartedAt": "2026-11-01T13:11:21Z",
+  "handoff": {
+    "path": "eng/cluster-management/MEMORIES-DRAIN-OWNER-HANDOFF.md",
+    "sha256BeforeThisCheckpoint": "a9e817f1cb1ce643b1b8305574c6d35378f26d9be620104013a079486a5c90d1"
+  },
+  "blockingPublisher": {
+    "namespace": "mcpcli-417-20261101-00c6a713",
+    "namespaceUid": "2f5b7d0a-4988-4380-a026-7b1e1c39855e",
+    "job": "eventstore",
+    "jobUid": "4b8f43cb-7875-43a6-a4a8-0c5f007879a6",
+    "pod": "eventstore-nkkwj",
+    "podUid": "d888a907-5fb9-4684-9b52-a6f827582884",
+    "earlierUnownedLabelSuperseded": true,
+    "namingNote": "The mcpcli-417- prefix comes from the shared Platform operator-setup helper (eng/mcpcli-operator-setup/v1/prepare.py:141), first built for McpCli Story 4.17 and reused by Story 4.18",
+    "workloadOwner": "McpCli Story 4.18 temporary operator environment",
+    "approval": {
+      "record": "mcpcli/_bmad-output/implementation-artifacts/evidence/story-4-18/environment-20261101T124621Z/approval.json (committed in McpCli)",
+      "approvedAt": "2026-11-01T14:04:49.528472+00:00",
+      "reviewSha256": "f2e88eb4dc9536709a0b1daf9193423cbb9011ddf5a8b59c7775fce1a97d598e",
+      "scope": "Deploy exact packet, complete ordered bootstrap/seed/handoff and scoped forward; eventual owned cleanup after client sessions.",
+      "expiresAt": "2026-11-02T12:46:22.115384+00:00"
+    },
+    "deployedAt": "2026-11-01T14:05:19.339720+00:00",
+    "rootCause": "The environment was approved and deployed 53 minutes into recovery attempt 20261101t131121z. Neither approval checked the other workflow, so the publisher was live when the drain sampled at 17:21Z."
+  },
+  "releaseOutcome": {
+    "outcome": "released-by-owning-workflow",
+    "actor": "Codex session rollout-2026-11-01T13-22-28-01a1970f-a815-7bf0-9d07-6459df2a9faf working McpCli Story 4.18 (delete call logged at 2026-11-01T19:50:53.306Z), inside the approved scope and review window",
+    "attributionSource": "Local Codex session log, found by this agent after the user answered 'Not me / not sure' on 2026-11-02",
+    "attributionConfirmedByUser": false,
+    "method": "Single raw namespace DELETE with server-enforced UID precondition after an owner-label read-only preflight",
+    "deletionTimestamp": "2026-11-01T19:50:54Z",
+    "completedAt": "2026-11-01T19:51:13.477141+00:00",
+    "ownedPv": {"name": "pvc-bda2e9b2-4c98-40a6-9c12-a8a96501ed9b", "uid": "e0849d3b-4dc9-41fa-8e98-175853885b69", "reclaimPolicy": "Delete"},
+    "workloadDataDisposition": "The test Redis PV was deleted by its reviewed reclaimPolicy=Delete lifecycle, as the approved packet's cleanup scope allows",
+    "receiptCopies": "mcpcli-4-18-cleanup-20261101/ (byte-identical copies of the git-ignored McpCli .artifacts/story-4-18/replacement-source-3bc89642ad43305531c4018b75b5e1b9e0681e10/cleanup-20261101/)",
+    "receiptSha256": {
+      "preflight.json": "a3907a2706a132f62667befe28d206a72a756e177f4fee21fba9e8e9b4a09b47",
+      "namespace-delete-options.json": "cdd652c559a1f3f5b41620d63bc4e198bde2a959f2b885f71e6766aeab3d5f43",
+      "forward-stopped.json": "b5836a57c85062e086ee0fb2e6374f5669ced90e42f3969ea0878414b7d790dc",
+      "receipt.json": "d4fce0b0e7da6fa331acb6afbcda13fe183e34ff86619add7ae45fbc901b31b6"
+    },
+    "releaseWasAfterFailedDrain": true,
+    "custodyDiscrepancy": "receipt.json claims private backups and journals were preserved, but /tmp/mcpcli-4-18-41307182275/environment-private-20261101T124621Z held only clients/ on 2026-11-02 (directory mtime 2026-11-02T08:59:58Z). No Codex tool call explains the removal. Deferred to McpCli 4.18 evidence retention; recovery stores were never touched."
+  },
+  "laterPublisher": {
+    "namespace": "mcpcli-417-20261102-6383083d",
+    "namespaceUid": "2ebf8335-fe6c-4ba9-913c-4207675c7f6d",
+    "jobUid": "f7b01a8a-463f-419a-855d-090599575b3b",
+    "pod": "eventstore-q7qqz",
+    "podUid": "ae9b4265-1e5f-483b-882f-687d8e933a0b",
+    "pvcUid": "42401829-28d3-41e2-91cd-5baf6214ead0",
+    "approvedAt": "2026-11-02T11:26:33Z",
+    "approval": "User answered 'Approve this exact packet' in Codex session rollout-2026-11-02T12-18-36-01a19bfb-8bfd-7361-9790-7c33c60b8020 for review 26a2b4f23e2472bd0177f3d0578756fd43281831dcceff4ead30cd9935c79899",
+    "createdAt": "2026-11-02T12:07:33Z",
+    "cleanupMethod": "Reviewed runner: phases.py --review-sha256 26a2b4f2... --execute-reviewed --phase cleanup, logged at 2026-11-02T14:14:44.642Z",
+    "cleanupCompletedAt": "2026-11-02T14:15:03.891070+00:00",
+    "pvAbsence": "Covered by the observation's check that no PV claim references any mcpcli-* namespace",
+    "recordCopies": "mcpcli-4-18-environment-20261102/ (byte-identical copies from /tmp/mcpcli-418-v1-private-20261102-c8b9570/execution/)",
+    "recordsSha256": {
+      "infrastructure.json": "d81e8d9ab44dbd320c66af568789a14a212b00f3965af9f0fa8fad5ff21edce4",
+      "eventstore-identity.json": "a2986b377737df0dc6917a1b9182d042c4815af74c7afaf63d8363d986ee0f02",
+      "cleanup.json": "cefa2a6f3d9cac795daa8cba49a37935802288219bcd9b2d525046f0c0aab667"
+    }
+  },
+  "lesson": "The unchanged global predicate counts every Pod labelled dapr.io/app-id=eventstore in any namespace, including McpCli operator environments, run-scoped test environments and any future staging EventStore. A successor outage must freeze every EventStore-publishing workflow for its window, and every approval for such a workflow must check for an open 4.27 recovery window.",
+  "observation": {
+    "path": "observation.json",
+    "sha256": "55428c82627f2dcf4c51059fa914a1f2515341a0097b257f7373a26e2381860d",
+    "script": "observe.py",
+    "scriptSha256": "363f30e988a06084568f8269954d6bc24123ae0ee4e64f037e7eec9eeb2798e6",
+    "observedAt": "2026-11-02T20:02:46Z",
+    "readOnlyRemoteRequests": 9,
+    "kubectlProvenance": "Binary SHA-256 73bb6f50... equals McpCli's committed evidence/story-4-18/environment-20261101T124621Z/kubectl-provenance.json",
+    "selectorSource": {"path": "/home/administrator/hexalith-recovery-evidence/4-0/20261101t131121z/tools-complete-v3/mem.py", "line": 109, "sha256": "24fee65138f9ae889a67ea78743e7be887faed762820013d7738881ade9cff07"},
+    "clusterKubeSystemUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+    "globalEventstorePublisherPods": 0,
+    "mcpcliNamespacesPresent": 0
+  },
+  "drainPass": false,
+  "drainPassReason": "Two quick reads of the selector are not the mem.py drain predicate; a signed successor attempt must take both 65-second-spaced samples and every zero-backlog check",
+  "publisherOwnerEstablished": "from local session and McpCli approval evidence; not confirmed by the user",
+  "operationalContinuationAuthorized": false,
+  "backupAccepted": false,
+  "failedDrainReplayed": false,
+  "stoppedAttemptRecordsChanged": false,
+  "mutationRequests": 0,
+  "signingRequests": 0,
+  "exclusiveWindowEnd": "2026-11-01T23:00:00Z",
+  "stoppedToolRefusal": "Carried over from earlier analysis (telemetry_records.py:66-67 requires now < 2026-11-01T23:00Z); not re-executed in this run",
+  "successorRequirements": "New RID bundle and signed policy; fresh Keycloak/OpenBao/Memories captures and TLS/node horizon; reviewed cleanup of held targets recovery-4-0-kc and recovery-4-0-bao; a freeze covering every EventStore-publishing workflow; Administrator decisions on window, freeze and held targets",
+  "story427": "in-progress",
+  "story41": "closed",
+  "timesheets36": "open/FAIL"
+}

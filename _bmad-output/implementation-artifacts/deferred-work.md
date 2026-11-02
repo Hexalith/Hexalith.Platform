@@ -1788,3 +1788,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md`
   summary: Qualify the actual pod DNS path and validate the selected DNS namespace and label syntax for the future live probe.
   evidence: Existing probe input checks allow nonempty but invalid Kubernetes selectors, while the current CoreDNS observation does not establish the pod resolver path.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-record-drain-publisher-absence.md`
+  summary: Find out who emptied the McpCli 4.18 private root `/tmp/mcpcli-4-18-41307182275/environment-private-20261101T124621Z` and restore or re-record its backups and journals.
+  evidence: The 2026-11-01 cleanup receipt says the private backups and journals were preserved, but on 2026-11-02 the folder held only `clients/` (mtime 08:59:58Z). No Codex tool call explains the removal. Unverified medium; checking the other agents' session logs and the 4.18 evidence index would settle it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-27-record-drain-publisher-absence.md`
+  summary: Make McpCli operator-environment approvals, and any other EventStore-publishing workflow, check for an open 4.27 recovery window before deploying.
+  evidence: The 4.18 environment was approved and deployed 53 minutes into recovery attempt `20261101t131121z`. Its EventStore Pod then failed the global `dapr.io/app-id=eventstore` drain predicate.
