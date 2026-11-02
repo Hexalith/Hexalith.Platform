@@ -1,0 +1,179 @@
+{
+  "acceptedPlatformTarget": "abbec4093715c1db854433119b32d4e16df20d08",
+  "completeReplacementPacket": false,
+  "focusedCompilerBuildsWithAnalyzersDisabled": {
+    "custody": "passed",
+    "protection": "passed"
+  },
+  "fullAnalyzerBuilds": {
+    "custody": {
+      "errors": 38,
+      "exitCode": 1
+    },
+    "protection": {
+      "errors": 257,
+      "exitCode": 1
+    }
+  },
+  "inspectedCleanSourceCommit": "3448088f669455fd35c2e50ba41d78f13f44a883",
+  "jointCohortAttempted": false,
+  "platformRecordsAvailable": false,
+  "preparation": {
+    "host": {
+      "completeReplacementPacket": false,
+      "dependencyAvailable": false,
+      "effects": 0,
+      "installedHashes": {},
+      "missingReferences": [
+        "ExplicitCoordinatedInstallationContext",
+        "ExplicitPlatformIntegrationDate",
+        "ExplicitProtectionIntegrationDate",
+        "approverEvidence",
+        "conversationsBinding",
+        "currentTenant",
+        "failureModel",
+        "globalAdministrator",
+        "humanIdentity",
+        "integrationDate",
+        "partiesBinding",
+        "protectionEngine",
+        "protectionObserver",
+        "recorder",
+        "replay",
+        "replicaCount",
+        "spoolBackend",
+        "worker"
+      ],
+      "packetPrepared": false,
+      "targetCommit": null
+    },
+    "secrets": {
+      "candidateCommit": "3448088f669455fd35c2e50ba41d78f13f44a883",
+      "code": "DependencyNotAvailable",
+      "completeReplacementPacket": false,
+      "dependency": "EXT-SECRETS-1",
+      "dependencyAvailable": false,
+      "installedHashes": {},
+      "missingInputs": [
+        "CurrentProfileValidity",
+        "ExplicitCoordinatedInstallationContext",
+        "ExplicitPlatformIntegrationDate",
+        "ExplicitProtectionIntegrationDate",
+        "IndependentInstalledQualificationAuthorities",
+        "MountedQualificationCallerCredential",
+        "MountedQualificationDaprCredential",
+        "OQ-5.4-1.AcceptedPinnedHostProfile",
+        "OQ-5.4-1.CommittedProtectionOwner",
+        "OQ-5.4-1.IndependentCurrentCohortBindingAndOwners",
+        "OQ-5.4-1.SharedPlatformTarget",
+        "qualification.daprApiCredentialReference",
+        "qualification.enrollment.appChannelCredentialReference",
+        "qualification.enrollment.appId",
+        "qualification.enrollment.callerAuthenticatorReference",
+        "qualification.enrollment.callerScopeAuthorityReference",
+        "qualification.enrollment.identity",
+        "qualification.enrollment.installedP256PublicAnchor",
+        "qualification.enrollment.publicAnchorFile",
+        "qualification.enrollment.version",
+        "qualification.enrollmentCredentialReference",
+        "qualification.executor.appChannelCredentialReference",
+        "qualification.executor.appId",
+        "qualification.executor.callerAuthenticatorReference",
+        "qualification.executor.callerScopeAuthorityReference",
+        "qualification.executor.identity",
+        "qualification.executor.installedP256PublicAnchor",
+        "qualification.executor.publicAnchorFile",
+        "qualification.executor.version",
+        "qualification.isolatedTargetId",
+        "qualification.observer.appChannelCredentialReference",
+        "qualification.observer.appId",
+        "qualification.observer.callerAuthenticatorReference",
+        "qualification.observer.callerScopeAuthorityReference",
+        "qualification.observer.identity",
+        "qualification.observer.installedP256PublicAnchor",
+        "qualification.observer.publicAnchorFile",
+        "qualification.observer.version",
+        "runtime.acceptedReplacementCommit",
+        "runtime.actorRoleAuthorityReference",
+        "runtime.allCopyInventoryReference",
+        "runtime.allCopyLifecycleAuthorityReference",
+        "runtime.authenticatedRequesterTransport",
+        "runtime.capabilitySignerCredentialReference",
+        "runtime.capabilitySignerReference",
+        "runtime.compromiseGuardMirrorReference",
+        "runtime.compromisePublisherReference",
+        "runtime.compromiseSubscriberCredentialReference",
+        "runtime.compromiseSubscriptionReference",
+        "runtime.independentSignerAccount",
+        "runtime.independentSignerCredentialReference",
+        "runtime.migrationAuthorityReference",
+        "runtime.nonrollbackJournalReference",
+        "runtime.protectionOwnerReference",
+        "runtime.publicAnchorRetentionReference",
+        "runtime.replayExactScope",
+        "runtime.replayRegistrarCredentialReference",
+        "runtime.replayRegistrarReference",
+        "runtime.restoreTarget"
+      ],
+      "packetPrepared": false,
+      "qualificationEffects": 0,
+      "targetCommit": null
+    }
+  },
+  "proposedReplacementCommit": null,
+  "qualificationEffects": 0,
+  "schema": "EXT-HOST-1.continuation-evidence.v1",
+  "sha256": {
+    "docs/implementation/ext-host-1-continuation-2026-11-02/acl-tests.xml": "6e198ed8d64f287ef8ebffec339203de6f05048a82aec7d741ab1360efd769f6",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/fr34-gate-tests.xml": "7689517c279ab906b044af5ac0bd38e783bd8edcbeef603589061f50113c828b",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/host-blocked-inputs.json": "50ecdabb9e82619f7dccc59d61b2336800e7593739350c3b16b18de2c1e8ffb3",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/replay-admission-tests.xml": "4162e5549944905caee413271d7476f5f3609f330dfcde46fba7bd2b2fd4c1d3",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/secrets-blocked-inputs.json": "8088c1de5af12ee61de4723809b0902d8beb23407ef85c16fcea27cca963d5e0",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/spool-recovery-tests.xml": "2e70a5ae5de51a8df1563329752aa2783a86c2bd5bd2c6f509edbaffca953932",
+    "docs/implementation/ext-host-1-continuation-2026-11-02/worker-recovery-tests.xml": "02a3668d5ca83759a5afacd4ffe58fa0dfd879a0557f00a12b5e2c8c76d9c46b",
+    "src/Hexalith.Platform.Protection/RestrictedPrivateCommandProofSource.cs": "f307104f5df9ff1548be3933e27912de5fc578ddf87fc01e48948326c96a15ac",
+    "tests/Hexalith.Platform.Protection.Tests/RestrictedPrivateCommandReceivingTests.cs": "d5d79a13cb5a4b94034f25d631ff0d26b857d3174030bb7fd0bdbc5b66d68af1"
+  },
+  "sourceOnlyTestResults": {
+    "acl-tests.xml": {
+      "errors": 0,
+      "failed": 0,
+      "not-run": 0,
+      "passed": 12,
+      "skipped": 0,
+      "total": 12
+    },
+    "fr34-gate-tests.xml": {
+      "errors": 0,
+      "failed": 0,
+      "not-run": 0,
+      "passed": 34,
+      "skipped": 0,
+      "total": 34
+    },
+    "replay-admission-tests.xml": {
+      "errors": 0,
+      "failed": 0,
+      "not-run": 0,
+      "passed": 19,
+      "skipped": 0,
+      "total": 19
+    },
+    "spool-recovery-tests.xml": {
+      "errors": 0,
+      "failed": 0,
+      "not-run": 0,
+      "passed": 63,
+      "skipped": 0,
+      "total": 63
+    },
+    "worker-recovery-tests.xml": {
+      "errors": 0,
+      "failed": 0,
+      "not-run": 0,
+      "passed": 3,
+      "skipped": 0,
+      "total": 3
+    }
+  }
+}

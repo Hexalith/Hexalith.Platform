@@ -2,6 +2,7 @@ using Hexalith.EventStore.Client.Gateway;
 using Hexalith.EventStore.Contracts.Commands;
 using Hexalith.Platform.Custody;
 using Hexalith.Platform.Secrets.Runtime;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json;
 
@@ -36,8 +37,20 @@ public sealed class RestrictedPrivateCommandProofSource(string caller, string pr
         else if (command.Domain is "security-event-log" or "agents" && command.CommandType == "Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent")
         {
             fields = ["securityObservationId", "routingTenantId", "utcDay", "observedAt", "reasonCode", "untrustedFieldsHmac", "digestKeyVersion"];
-            if (!ExactFields(command.Payload, fields) || command.Payload.GetProperty("routingTenantId").GetString() != command.Tenant) return null;
-            aggregate = command.Domain=="agents"?"SecurityEventLog-"+command.Payload.GetProperty("utcDay").GetString()!:Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, command.Payload.GetProperty("utcDay").GetString()!])));
+            if (!ExactFields(command.Payload, fields) || command.Payload.GetProperty("routingTenantId").ValueKind != JsonValueKind.String
+                || command.Payload.GetProperty("routingTenantId").GetString() != command.Tenant
+                || command.Payload.GetProperty("utcDay").ValueKind != JsonValueKind.String
+                || command.Payload.GetProperty("observedAt").ValueKind != JsonValueKind.String)
+                return null;
+            string? day = command.Payload.GetProperty("utcDay").GetString();
+            string? timestamp = command.Payload.GetProperty("observedAt").GetString();
+            if (!DateOnly.TryParseExact(day, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _)
+                || timestamp is null || !(timestamp.EndsWith('Z') || timestamp.EndsWith("+00:00", StringComparison.Ordinal))
+                || !command.Payload.GetProperty("observedAt").TryGetDateTimeOffset(out DateTimeOffset observedAt)
+                || observedAt.Offset != TimeSpan.Zero
+                || observedAt.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) != day)
+                return null;
+            aggregate = command.Domain=="agents"?"SecurityEventLog-"+day:Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log", command.Tenant, day])));
         }
         else return null;
         if(command.AggregateId!=aggregate || grant is not null && (command.Domain is not ("security-event-log" or "agents") || command.MessageId!=PrivateRecordingIdentity.SecurityRecoveryMessageId(grant))) return null;

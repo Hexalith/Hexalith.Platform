@@ -107,6 +107,42 @@ public sealed class RestrictedPrivateCommandReceivingTests
         finally { File.Delete(file); }
     }
     [Theory]
+    [InlineData("invalid-day")]
+    [InlineData("different-day")]
+    [InlineData("non-utc")]
+    [InlineData("missing-offset")]
+    [InlineData("malformed-instant")]
+    public async Task SecurityRecorderProofRequiresExactUtcDayPartition(string defect)
+    {
+        using var authority=new ReceivingAuthorityFixture("private-security-observation");
+        using var key=RSA.Create(2048);
+        string file=Path.GetTempFileName();
+        await File.WriteAllTextAsync(file,Convert.ToBase64String(key.ExportPkcs8PrivateKey()),TestContext.Current.CancellationToken);
+        authority.State=authority.State with { Callers=authority.State.Callers.Select(value=>value with { CommandProofPublicKeySpkiBase64=Convert.ToBase64String(key.ExportSubjectPublicKeyInfo()) }).ToArray() };
+        try
+        {
+            DateTimeOffset now=DateTimeOffset.UtcNow;
+            string day=defect=="invalid-day"?"not-a-day":now.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture);
+            string observed=defect switch
+            {
+                "different-day"=>now.AddDays(-1).ToString("O",System.Globalization.CultureInfo.InvariantCulture),
+                "non-utc"=>now.ToOffset(TimeSpan.FromHours(1)).ToString("O",System.Globalization.CultureInfo.InvariantCulture),
+                "missing-offset"=>now.ToString("yyyy-MM-ddTHH:mm:ss",System.Globalization.CultureInfo.InvariantCulture),
+                "malformed-instant"=>"not-an-instant",
+                _=>now.ToString("O",System.Globalization.CultureInfo.InvariantCulture),
+            };
+            var payload=JsonSerializer.SerializeToElement(new { securityObservationId="bad-observation",routingTenantId="tenant-a",utcDay=day,
+                observedAt=observed,reasonCode="denied",untrustedFieldsHmac=new string('a',64),digestKeyVersion="v1" });
+            string id=PrivateRecordingIdentity.SecurityOriginalMessageId("bad-observation");
+            await authority.Authority.InvokeAsync<Admission>("qualification-begin-original",new { role="private-security-observation",requestId=id,original=payload },TestContext.Current.CancellationToken);
+            string aggregate=Convert.ToHexStringLower(SHA256.HashData(PlatformCanonicalBytes.Identity(["security-event-log","tenant-a",day])));
+            var command=new SubmitCommandRequest(id,"tenant-a","security-event-log",aggregate,"Hexalith.Agents.Contracts.SecurityEventLog.RecordSecurityEvent",payload,IdempotencyKey:id);
+            var signer=new RestrictedPrivateCommandProofSource("recording-owner","private-worker",file,authority.Authority,TimeProvider.System);
+            (await signer.IssueAsync(new(command,"private-worker"),TestContext.Current.CancellationToken)).ShouldBeNull();
+        }
+        finally { File.Delete(file); }
+    }
+    [Theory]
     [InlineData(false)][InlineData(true)]
     public async Task WorkloadProofAndDispatchShareRevocationOrderingAndCannotSubstitutePrivateStoreCaller(bool revokeDuringDispatch)
     {
