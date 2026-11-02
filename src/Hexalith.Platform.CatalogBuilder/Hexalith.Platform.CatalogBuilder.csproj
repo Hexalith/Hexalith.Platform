@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><IsPackable>false</IsPackable><JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault></PropertyGroup>
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and ('$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.133.0' or $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^3\.130\.[012](?:\.0)?(?:\+[0-9A-Za-z.-]+)?$')))">
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and ('$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^3\.130\.[012](?:\.0)?(?:\+[0-9A-Za-z.-]+)?$')))">
     <DefineConstants>$(DefineConstants);HEXALITH_SCOPED_CONSUMER_BINDING</DefineConstants>
   </PropertyGroup>
   <Import Project="$(PlatformCatalogBindings)" Condition="'$(PlatformCatalogBindings)' != ''" />
