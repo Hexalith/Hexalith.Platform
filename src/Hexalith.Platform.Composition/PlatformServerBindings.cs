@@ -11,6 +11,7 @@ public static class PlatformServerBindings
     public static IReadOnlyDictionary<string, string> ReferenceProjects { get; } = new Dictionary<string, string>
     {
         ["parties/domain"] = "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        ["conversations/domain"] = "src/Hexalith.Conversations.Server/Hexalith.Conversations.Server.csproj",
         ["eventstore/gateway"] = "src/Hexalith.EventStore/Hexalith.EventStore.csproj",
         ["tenants/domain"] = "src/Hexalith.Tenants/Hexalith.Tenants.csproj",
         ["tenants/api"] = "src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
