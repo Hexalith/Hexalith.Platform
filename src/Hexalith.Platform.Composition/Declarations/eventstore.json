@@ -578,7 +578,27 @@
           "reason": "Declare the existing gateway minimum; admin hosts remain optional."
         },
         "recoveryInventory": []
-      }
+      },
+      "tests": [
+        {
+          "name": "platform-source",
+          "executor": "mtp",
+          "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+          "reportFormat": "trx",
+          "executionTimeoutSeconds": 120,
+          "stopTimeoutSeconds": 90,
+          "mode": "source"
+        },
+        {
+          "name": "platform-package",
+          "executor": "mtp",
+          "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+          "reportFormat": "trx",
+          "executionTimeoutSeconds": 120,
+          "stopTimeoutSeconds": 90,
+          "mode": "package"
+        }
+      ]
     }
   ]
 }

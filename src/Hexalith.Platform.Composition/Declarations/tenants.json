@@ -30,13 +30,29 @@
             "role": "state",
             "capability": "state",
             "recoveryClass": "authoritative-restore",
-            "configurationKey": "Dapr:StateStoreComponent"
+            "configurationKey": "EventStore:CommandStatus:StateStoreName",
+            "servers": [
+              "domain",
+              "api"
+            ]
+          },
+          {
+            "role": "state",
+            "capability": "state",
+            "recoveryClass": "authoritative-restore",
+            "configurationKey": "EventStore:DataProtection:StateStoreName",
+            "servers": [
+              "domain"
+            ]
           },
           {
             "role": "events",
             "capability": "pubsub",
             "recoveryClass": "rebuild-only",
-            "configurationKey": "Dapr:PubSubComponent"
+            "configurationKey": "EventStore:ProjectionChanges:PubSubName",
+            "servers": [
+              "domain"
+            ]
           }
         ],
         "extensions": [
@@ -286,7 +302,7 @@
             "exposure": "public",
             "surfaceClass": "service",
             "authorization": {
-              "policy": "authenticated",
+              "policy": "authenticated-current-global-administrator",
               "permissions": []
             },
             "callers": [],
@@ -294,17 +310,17 @@
               {
                 "name": "list-global-administrators",
                 "kind": "query",
-                "authorizationPolicy": "authenticated"
+                "authorizationPolicy": "authenticated-current-global-administrator"
               },
               {
                 "name": "set-global-administrator",
                 "kind": "command",
-                "authorizationPolicy": "authenticated"
+                "authorizationPolicy": "authenticated-current-global-administrator"
               },
               {
                 "name": "remove-global-administrator",
                 "kind": "command",
-                "authorizationPolicy": "authenticated"
+                "authorizationPolicy": "authenticated-current-global-administrator"
               }
             ]
           },
@@ -340,7 +356,8 @@
               "permissions": []
             },
             "callers": [
-              "eventstore"
+              "eventstore",
+              "parties"
             ],
             "operations": [
               {
@@ -367,6 +384,50 @@
                 "name": "admin-operational-index-metadata",
                 "kind": "administration",
                 "authorizationPolicy": "authenticated"
+              }
+            ],
+            "invocationRules": [
+              {
+                "caller": "eventstore",
+                "path": "/process",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "eventstore",
+                "path": "/query",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "eventstore",
+                "path": "/project",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "eventstore",
+                "path": "/replay-state",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "eventstore",
+                "path": "/admin/operational-index-metadata",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "parties",
+                "path": "/ready",
+                "verbs": [
+                  "GET"
+                ]
               }
             ]
           }
@@ -493,7 +554,8 @@
             "surface": "global-administrators-api",
             "operations": [
               "list-global-administrators",
-              "set-global-administrator"
+              "set-global-administrator",
+              "remove-global-administrator"
             ]
           }
         ],
@@ -502,7 +564,32 @@
           "changeClass": "additive",
           "reason": "Declare existing Tenants domain and public API services; readiness does not prove bootstrap completion."
         },
-        "recoveryInventory": []
+        "recoveryInventory": [
+          {
+            "name": "global-administrator-authority",
+            "recoveryClass": "rebuild-only",
+            "owner": "tenants",
+            "dependencies": [
+              "eventstore"
+            ]
+          },
+          {
+            "name": "global-administrator-audit",
+            "recoveryClass": "rebuild-only",
+            "owner": "tenants",
+            "dependencies": [
+              "eventstore"
+            ]
+          },
+          {
+            "name": "system-tenant-audit",
+            "recoveryClass": "rebuild-only",
+            "owner": "tenants",
+            "dependencies": [
+              "eventstore"
+            ]
+          }
+        ]
       }
     }
   ]

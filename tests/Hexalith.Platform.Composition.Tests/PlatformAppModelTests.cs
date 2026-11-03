@@ -48,7 +48,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
     {
         IDistributedApplicationBuilder builder = Builder();
-        // Copy the real producer bytes into an isolated layout; no synthetic release provenance is substituted.
+        // Copy real producer bytes; the isolated provenance mutation below must refuse before resources are added.
         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
@@ -57,6 +57,10 @@ public sealed partial class PlatformAppModelTests : IDisposable
         foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
             File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
         File.Copy(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+        string provenancePath = Path.Combine(snapshots, "provenance.json");
+        JsonNode provenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
+        provenance["eventstore"]!["version"] = "0.0.0-unqualified-fixture";
+        File.WriteAllText(provenancePath, provenance.ToJsonString());
         try
         {
             SourceMapping mapping = Options().Mapping;
@@ -68,8 +72,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
             production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
             InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
             refusal.Message.ShouldContain("Hexalith.EventStore");
-            refusal.Message.ShouldContain("3.129.0");
-            refusal.Message.ShouldContain("c02afa0f");
+            refusal.Message.ShouldContain("0.0.0-unqualified-fixture");
+            refusal.Message.ShouldContain(provenance["eventstore"]!["commit"]!.GetValue<string>());
             builder.Resources.ShouldBeEmpty();
             if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
                 File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
