@@ -28,14 +28,12 @@ public sealed partial class PlatformAppModelTests
 
 
     [Fact]
-    public void PackageCatalogRefusesTheUnreleasedSdkBeforePreparingReaderFiles()
+    public void PackageCatalogChecksImageAvailabilityBeforePreparingReaderFiles()
     {
-        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("The SDK boundary must refuse before image probes.") };
+        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("package-image-probe-reached") };
         var builder = Builder();
         builder.Environment.EnvironmentName = Environments.Development;
-        var failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
-        failure.Message.ShouldContain("owner SDK");
-        failure.Message.ShouldContain("Builds catalog pins");
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldBe("package-image-probe-reached");
         builder.Resources.ShouldBeEmpty();
     }
 

@@ -132,14 +132,14 @@ public sealed partial class PlatformAppModelTests : IDisposable
 
 
     [Fact]
-    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+    public void PackageCatalogCompositionProbesImagesBeforeContainersOrSidecarsAreAdded()
     {
         var options = PackageGraphOptions() with
         {
-            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
+            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("package-image-probe-reached"),
         };
         var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldBe("package-image-probe-reached");
         builder.Resources.ShouldBeEmpty();
     }
 

@@ -418,7 +418,7 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Fact]
-    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
+    public async Task SignedPackageCatalogRequiresReaderAndChecksMappingDriftAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
@@ -455,7 +455,7 @@ public sealed partial class PlatformAppModelTests
             File.Delete(readerProject);
             IDistributedApplicationBuilder builder = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
-                .Message.ShouldContain("owner SDK");
+                .Message.ShouldContain("reader project is unavailable");
             builder.Resources.ShouldBeEmpty();
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
             IDistributedApplicationBuilder refused = Builder();
@@ -469,14 +469,14 @@ public sealed partial class PlatformAppModelTests
     [Theory]
     [InlineData(1, false)]
     [InlineData(0, true)]
-    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
+    public void UnavailableCatalogImageRefusesBeforeAddingResources(int exit, bool timedOut)
     {
         bool inspected = false;
         var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
         { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
         var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
-        inspected.ShouldBeFalse();
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("unavailable from its released registry");
+        inspected.ShouldBeTrue();
         builder.Resources.ShouldBeEmpty();
     }
 
