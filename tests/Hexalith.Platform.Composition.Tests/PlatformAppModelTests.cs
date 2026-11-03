@@ -50,7 +50,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public void PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources(string field)
     {
         IDistributedApplicationBuilder builder = Builder();
-        // Verify real release bytes with the default authority before corrupting one provenance field.
+        // Copy and verify real release bytes with the default authority; the isolated provenance mutation below must refuse before resources are added.
         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
@@ -79,6 +79,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
             refusal.Message.ShouldContain("Hexalith.EventStore");
             refusal.Message.ShouldContain(changedValue);
+            refusal.Message.ShouldContain(provenance["eventstore"]!["commit"]!.GetValue<string>());
             refusal.Message.ShouldContain("does not match Builds catalog version");
             builder.Resources.ShouldBeEmpty();
             if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
