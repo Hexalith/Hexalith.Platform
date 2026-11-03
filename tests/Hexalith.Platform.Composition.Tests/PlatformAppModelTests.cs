@@ -44,11 +44,13 @@ public sealed partial class PlatformAppModelTests : IDisposable
         };
     }
 
-    [Fact]
-    public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
+    [Theory]
+    [InlineData("version")]
+    [InlineData("commit")]
+    public void PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources(string field)
     {
         IDistributedApplicationBuilder builder = Builder();
-        // Copy the real producer bytes into an isolated layout; no synthetic release provenance is substituted.
+        // Verify real release bytes with the default authority before corrupting one provenance field.
         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
@@ -66,10 +68,18 @@ public sealed partial class PlatformAppModelTests : IDisposable
                 Mapping = mapping with { Mode = WorkspaceMode.Package, Entries = mapping.Entries.Select(entry => entry with { Origin = "package", Path = null }).ToArray() },
             };
             production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
+            PlatformDeclarationSet.Load(production).Select(module => PlatformDeclarationSet.Id(module.Declaration))
+                .Order(StringComparer.Ordinal).ShouldBe(["eventstore", "memories", "tenants"]);
+            builder.Resources.ShouldBeEmpty();
+            string provenancePath = Path.Combine(snapshots, "provenance.json");
+            JsonNode provenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
+            string changedValue = field == "version" ? "0.0.0-unreleased" : new string('f', 40);
+            provenance["eventstore"]![field] = changedValue;
+            File.WriteAllText(provenancePath, provenance.ToJsonString());
             InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
             refusal.Message.ShouldContain("Hexalith.EventStore");
-            refusal.Message.ShouldContain("3.129.0");
-            refusal.Message.ShouldContain("c02afa0f");
+            refusal.Message.ShouldContain(changedValue);
+            refusal.Message.ShouldContain("does not match Builds catalog version");
             builder.Resources.ShouldBeEmpty();
             if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
                 File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
