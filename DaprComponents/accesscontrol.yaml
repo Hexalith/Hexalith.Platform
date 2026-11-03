@@ -37,9 +37,8 @@ spec:
           - name: /api/v1/commands/status/*
             httpVerb: ['GET']
             action: allow
-          - name: /api/v1/commands/status/workload/*/*
-            httpVerb: ['GET']
-            action: allow
+          # Dapr's scalar wildcard trie denies the two-parameter workload status route.
+          # Keep that denial; a nested scalar declaration also fails finite catalog admission.
           - name: /api/v1/streams/read
             httpVerb: ['POST']
             action: allow

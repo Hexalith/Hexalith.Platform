@@ -153,10 +153,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertEqual(command[command.index('-c') + 1], 'Release')
                 self.assertIn('-p:UseHexalithProjectReferences=false', command)
                 self.assertIn('-p:UseNuGetDeps=true', command)
+                self.assertIn('-p:HexalithEventStoreFromSource=false', command)
+                self.assertIn('-p:HexalithPolymorphicSerializationsFromSource=false', command)
                 self.assertNotIn('-p:UseHexalithProjectReferences=true', command)
         debug = verify_works_host.consumer_build_command('consumer.csproj', 'Debug', VERSION)
         self.assertIn('-p:UseHexalithProjectReferences=true', debug)
         self.assertIn('-p:UseNuGetDeps=false', debug)
+        self.assertIn('-p:HexalithEventStoreFromSource=true', debug)
+        self.assertIn('-p:HexalithPolymorphicSerializationsFromSource=true', debug)
 
     def test_r10_points_at_the_current_workload_policy_and_attaches_all_live_commands(self):
         self.assertEqual(ROWS['R10'][3], 'src/Hexalith.Works/Runtime/WorksDomainAdapters.cs')
@@ -289,7 +293,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
 
-    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None, observed_runtime_envs=None, profile='ci'):
+    def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None,
+                            observed_runtime_envs=None, profile='ci', observed_model_envs=None, runtime_sdk_root=None):
         """Drive the real gate sequence through toolchain qualification and optionally final acceptance."""
         works = self.directory()
         for _, _, _, consumer in ROWS.values():
@@ -303,13 +308,15 @@ class WorksEvidenceGateTests(unittest.TestCase):
         qualified = hashlib.sha256(b'qualified runtime').hexdigest()
         pins = {'daprCli': '1.18.2', 'daprRuntime': '1.18.7', 'linuxAmd64DaprdSha256': qualified,
                 'catalog': str(platform / verify_works_host.CATALOG), 'catalogSha256': DIGEST}
-        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts,
+        args = type('Args', (), {'works_root': works, 'runtime_sdk_root': runtime_sdk_root, 'artifacts_path': artifacts,
                                 'prepare_only': False, 'profile': profile})()
         snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
         producers = {package: {'version': VERSION} for _, package, _, _ in ROWS.values()} | {'Hexalith.EventStore.Client': {'version': VERSION}}
 
         def command(arguments, **kwargs):
             name = Path(kwargs['stdout'].name).stem
+            if observed_model_envs is not None and name in ('platform-tests-debug', 'platform-tests-release'):
+                observed_model_envs.append((name, kwargs['env']))
             if observed_runtime_envs is not None and verify_works_host.target_commands([{'name': name}]):
                 observed_runtime_envs.append(kwargs['env'])
             if verify_works_host.target_commands([{'name': name}]) and not finish:
@@ -354,6 +361,9 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
                 patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
                 patch('verify_works_host.run_owned', side_effect=command):
+            final_checks.enter_context(patch('verify_works_host.runtime_source_snapshot',
+                                             side_effect=lambda root: snapshot | {'root': str(root)}))
+            final_checks.enter_context(patch('verify_works_host.qualify_runtime_source', return_value={}))
             for target, value in (('require_identical_runtime', {}), ('retained_works_host.prepare', {}),
                                   ('verify_host_records', []), ('isolated_daprd.verify', {})):
                 final_checks.enter_context(patch('verify_works_host.' + target, return_value=value))
@@ -368,6 +378,40 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 else:
                     outcomes.assert_not_called()
         return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
+
+    def test_model_owner_preparation_reuses_the_parent_sdk_build_context_in_both_profiles(self):
+        for profile, explicit_sdk in (('full', False), ('full', True), ('ci', False), ('ci', True)):
+            observed = []
+            sdk = self.directory() / 'selected-sdk' if explicit_sdk else None
+            default_sdk = Path(verify_works_host.__file__).resolve().parents[1] / 'references/Hexalith.EventStore'
+            expected_sdk = sdk or default_sdk
+            with self.subTest(profile=profile, explicit_sdk=explicit_sdk), patch.dict(os.environ, {
+                    'ArtifactsPath': '/unrelated/output', 'UseArtifactsOutput': 'false',
+                    'Configuration': 'Custom', 'Version': '0.0.1', 'MinVerVersionOverride': '0.0.1',
+                    'HexalithEventStoreVersion': '0.0.1', 'UseHexalithProjectReferences': 'invalid',
+                    'HexalithEventStoreRoot': '/unrelated/sdk', 'HexalithEventStoreFromSource': 'invalid',
+                    'HexalithPolymorphicSerializationsFromSource': 'invalid',
+                    'UseNuGetDeps': 'invalid'}):
+                ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', profile=profile,
+                                                       observed_model_envs=observed, runtime_sdk_root=sdk)
+            self.assertEqual(len(observed), 2 if profile == 'full' else 1)
+            for name, environment in observed:
+                configuration = 'Debug' if name.endswith('debug') else 'Release'
+                output = Path(ledger['platformTestsArtifacts']) / configuration.lower()
+                self.assertEqual(environment['ArtifactsPath'], str(output))
+                self.assertEqual(environment['UseArtifactsOutput'], 'true')
+                self.assertEqual(environment['Configuration'], configuration)
+                for key in ('Version', 'MinVerVersionOverride', 'HexalithEventStoreVersion'):
+                    self.assertEqual(environment[key], VERSION)
+                source = 'true' if configuration == 'Debug' else 'false'
+                self.assertEqual(environment['UseHexalithProjectReferences'], source)
+                self.assertEqual(environment['HexalithEventStoreFromSource'], source)
+                self.assertEqual(environment['HexalithPolymorphicSerializationsFromSource'], source)
+                self.assertEqual(environment['HexalithEventStoreRoot'], str(expected_sdk))
+                self.assertEqual(environment['UseNuGetDeps'], 'false' if configuration == 'Debug' else 'true')
+                self.assertEqual(environment['Platform__Works__SourceRoot'], ledger['worksConsumerSource']['root'])
+                build = next(row for row in ledger['commands'] if row['name'] == name.replace('tests-', 'tests-build-'))
+                self.assertIn('-p:HexalithEventStoreRoot=' + str(expected_sdk), build['command'])
 
     def test_consumer_source_roots_override_ambient_roots_and_match_the_linked_fixture_binding(self):
         alternate = self.directory()

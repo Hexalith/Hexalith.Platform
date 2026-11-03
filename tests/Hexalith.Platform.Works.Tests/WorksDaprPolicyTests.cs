@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Works.Tests;
 
+using Hexalith.EventStore.Contracts.Routing;
 using Shouldly;
 using YamlDotNet.RepresentationModel;
 
@@ -45,7 +46,6 @@ public sealed class WorksDaprPolicyTests
             "POST /api/v1/commands/workload allow",
             "POST /api/v1/queries allow",
             "GET /api/v1/commands/status/* allow",
-            "GET /api/v1/commands/status/workload/*/* allow",
             "POST /api/v1/streams/read allow",
             "POST /api/v1/streams/read/workload allow",
             "POST /api/v1/trusted-effects allow",
@@ -57,6 +57,45 @@ public sealed class WorksDaprPolicyTests
             "POST /api/v1/streams/read allow",
             "GET /health allow",
         ]);
+    }
+
+    /// <summary>Withdrawing the unusable nested scalar declaration preserves the protected request decisions.</summary>
+    [Theory]
+    [InlineData("works", "GET", "/api/v1/commands/status/01ARZ3NDEKTSV4RRFFQ69G5FAV", true)]
+    [InlineData("works", "GET", "/api/v1/commands/status/workload/tenant-a/01ARZ3NDEKTSV4RRFFQ69G5FAV", false)]
+    [InlineData("works", "DELETE", "/api/v1/commands/status/01ARZ3NDEKTSV4RRFFQ69G5FAV", false)]
+    [InlineData("unknown", "GET", "/api/v1/commands/status/01ARZ3NDEKTSV4RRFFQ69G5FAV", false)]
+    [InlineData("works", "GET", "/api/v1/commands/status-other/01ARZ3NDEKTSV4RRFFQ69G5FAV", false)]
+    [InlineData("works", "POST", "/api/v1/trusted-effects", true)]
+    public void WithdrawingNestedStatusGrantPreservesProtectedRequests(string caller, string verb, string path, bool expected)
+    {
+        Allows(caller, verb, path, includeWithdrawnGrant: true).ShouldBe(expected);
+        Allows(caller, verb, path, includeWithdrawnGrant: false).ShouldBe(expected);
+    }
+
+    /// <summary>The withdrawn grant reached an unmatched one-segment prefix; removing it narrows that admission.</summary>
+    [Fact]
+    public void WithdrawingNestedStatusGrantDeniesItsUnmatchedPrefix()
+    {
+        const string withdrawn = "/api/v1/commands/status/workload/*/*";
+        RouteCatalogDaprGrant.Intersects(withdrawn, "/api/v1/commands/status/workload/{tenant}/{messageId}").ShouldBeFalse();
+        const string prefix = "/api/v1/commands/status/workload/tenant-a";
+        Allows("works", "GET", prefix, includeWithdrawnGrant: true).ShouldBeTrue();
+        Allows("works", "GET", prefix, includeWithdrawnGrant: false).ShouldBeFalse();
+    }
+
+    private static bool Allows(string caller, string verb, string path, bool includeWithdrawnGrant)
+    {
+        YamlMappingNode access = (YamlMappingNode)Spec("accesscontrol.yaml")["accessControl"];
+        YamlMappingNode? policy = ((YamlSequenceNode)access["policies"]).Cast<YamlMappingNode>()
+            .SingleOrDefault(item => Scalar(item, "appId") == caller);
+        if (policy is null) return false;
+        bool retained = ((YamlSequenceNode)policy["operations"]).Cast<YamlMappingNode>().Any(operation =>
+            Scalar(operation, "action") == "allow"
+            && ((YamlSequenceNode)operation["httpVerb"]).Cast<YamlScalarNode>().Any(item => item.Value == verb)
+            && RouteCatalogDaprGrant.Allows(Scalar(operation, "name"), path));
+        return retained || includeWithdrawnGrant && caller == "works" && verb == "GET"
+            && RouteCatalogDaprGrant.Allows("/api/v1/commands/status/workload/*/*", path);
     }
 
     /// <summary>Only the SDK gateway may invoke named projection ingress and protected metadata discovery.</summary>
