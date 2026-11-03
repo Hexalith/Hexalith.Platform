@@ -1,0 +1,52 @@
+{
+  "classification": "local-source-controls-only",
+  "base": "88c64404c9bea77989564f09f412bb00c9c06045",
+  "controls": [
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-declaration-first.txt"
+    },
+    {
+      "name": "lifecycle",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ci-lifecycle",
+        "-v"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-lifecycle-first.txt"
+    }
+  ],
+  "currentPreparation": {
+    "command": [
+      "python3",
+      "-B",
+      "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "exitCode": 1,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-current-preparation-first.txt",
+    "workspace": "/home/administrator/.cache/hexalith/story-2-8/parties-observation-current-preparation-1ybdpi_z"
+  },
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,77 @@
+{
+  "at": "2026-11-03T17:14:24.429480+00:00",
+  "run": {
+    "id": 41666723123,
+    "head_sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1
+  },
+  "jobs": [
+    {
+      "id": 126023914772,
+      "name": "Verify current main source",
+      "status": "completed",
+      "conclusion": "success",
+      "publicationSteps": []
+    },
+    {
+      "id": 126025131517,
+      "name": "Release",
+      "status": "completed",
+      "conclusion": "success",
+      "publicationSteps": [
+        {
+          "name": "Qualify G-4 tool source and Release packages",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-03T16:19:55Z",
+          "completed_at": "2026-11-03T16:40:36Z"
+        },
+        {
+          "name": "Recheck approved release source and push CI",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-03T16:40:55Z",
+          "completed_at": "2026-11-03T16:40:55Z"
+        },
+        {
+          "name": "Authenticate to NuGet.org with Trusted Publishing",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-03T16:40:55Z",
+          "completed_at": "2026-11-03T16:40:58Z"
+        },
+        {
+          "name": "Create Release",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-03T16:40:58Z",
+          "completed_at": "2026-11-03T17:10:09Z"
+        },
+        {
+          "name": "Retain actual-version qualification evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-03T17:10:09Z",
+          "completed_at": "2026-11-03T17:10:10Z"
+        }
+      ]
+    }
+  ],
+  "tagsPointingAtSource": [
+    {
+      "name": "v4.43.6",
+      "zipball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/zipball/refs/tags/v4.43.6",
+      "tarball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tarball/refs/tags/v4.43.6",
+      "commit": {
+        "sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/725754075e1d6369430a3adf94d46fb71e6eaf9e"
+      },
+      "node_id": "REF_kwDOOMzNRbFyZWZzL3RhZ3MvdjQuNDMuNg"
+    }
+  ],
+  "actualVersion": "4.43.6",
+  "actualVersionAdopted": false,
+  "candidateAcceptance": false
+}

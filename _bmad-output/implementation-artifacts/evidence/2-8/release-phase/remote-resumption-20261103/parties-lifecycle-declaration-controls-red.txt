@@ -1,0 +1,36 @@
+test_build_files_leave_all_source_selection_to_the_tool (test_platform_declaration.PlatformDeclarationTests.test_build_files_leave_all_source_selection_to_the_tool) ... ok
+test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting (test_platform_declaration.PlatformDeclarationTests.test_check_rejects_missing_stale_and_unsafe_inputs_without_rewriting) ... /tmp/tmpz9rez9xb/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpz9rez9xb/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpz9rez9xb/accesscontrol.yaml: Platform declaration: declaration is missing or stale; run python3 scripts/render-platform-declaration.py
+/tmp/tmpz9rez9xb/accesscontrol.yaml: Platform declaration: Unsafe operation grant
+ok
+test_declared_suites_consume_platform_without_apphost_or_doubles (test_platform_declaration.PlatformDeclarationTests.test_declared_suites_consume_platform_without_apphost_or_doubles) ... FAIL
+test_malformed_literal_reports_failure_without_traceback_or_rewriting (test_platform_declaration.PlatformDeclarationTests.test_malformed_literal_reports_failure_without_traceback_or_rewriting) ... ok
+test_optimized_process_rejects_unsafe_acl_without_rewriting (test_platform_declaration.PlatformDeclarationTests.test_optimized_process_rejects_unsafe_acl_without_rewriting) ... ok
+test_owner_acl_is_the_exact_declaration_authority (test_platform_declaration.PlatformDeclarationTests.test_owner_acl_is_the_exact_declaration_authority) ... ok
+test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed (test_platform_declaration.PlatformDeclarationTests.test_unsafe_malformed_and_duplicate_acl_inputs_fail_closed) ... ok
+
+======================================================================
+FAIL: test_declared_suites_consume_platform_without_apphost_or_doubles (test_platform_declaration.PlatformDeclarationTests.test_declared_suites_consume_platform_without_apphost_or_doubles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103/scripts/test_platform_declaration.py", line 36, in test_declared_suites_consume_platform_without_apphost_or_doubles
+    self.assertEqual([(s["name"], s["mode"]) for s in suites],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     [("platform-source", "source"), ("platform-package", "package")])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('pl[30 chars]latform-package', 'package'), ('lifecycle-package', 'package')] != [('pl[30 chars]latform-package', 'package')]
+
+First list contains 1 additional elements.
+First extra element 2:
+('lifecycle-package', 'package')
+
++ [('platform-source', 'source'), ('platform-package', 'package')]
+- [('platform-source', 'source'),
+-  ('platform-package', 'package'),
+-  ('lifecycle-package', 'package')]
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.818s
+
+FAILED (failures=1)

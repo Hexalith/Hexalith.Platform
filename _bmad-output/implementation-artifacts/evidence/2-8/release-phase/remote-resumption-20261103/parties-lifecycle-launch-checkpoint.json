@@ -1,0 +1,342 @@
+{
+  "classification": "dependent-source-follow-up-no-hosted-credit",
+  "observedAtUtc": "2026-11-03T15:45:42.456273+00:00",
+  "source": {
+    "repository": "Hexalith/Hexalith.Parties",
+    "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/60",
+    "branch": "ci/lifecycle-qualification-proposal",
+    "parent": "9270f5d969c84b548158227cfe77e376cad95d49",
+    "head": "d2a174b524c18081f71fad61f8525a888624f3c2",
+    "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103",
+    "changedPaths": [
+      "scripts/qualify-disposable-ci.py",
+      "docs/ci-lifecycle-qualification.md",
+      "tests/ci-lifecycle/test_qualification_controller.py",
+      "tests/ci-lifecycle/test_launch_recovery.py"
+    ],
+    "publication": "Parent-owned active Release41666723123/source725; not modified by this source follow-up",
+    "acceptedPinsChanged": false,
+    "nativeServicesAllocated": false,
+    "hostedQualification": false,
+    "candidateAcceptance": false
+  },
+  "scope": {
+    "changedFiles": 4,
+    "additions": 423,
+    "deletions": 45,
+    "unchanged": "Accepted pins, root gitlinks, public CLI arguments, core schemas/policies/local retention and production stop budget"
+  },
+  "verification": {
+    "classification": "local-source-and-actual-process-controls-only",
+    "base": "9270f5d969c84b548158227cfe77e376cad95d49",
+    "focusedTests": {
+      "passed": 25,
+      "failed": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls-final.txt"
+    },
+    "retainedFirstTestSetupFailure": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls-complete.txt",
+    "controls": [
+      {
+        "name": "declaration",
+        "command": [
+          "python3",
+          "-B",
+          "scripts/render-platform-declaration.py",
+          "--check"
+        ],
+        "exitCode": 0,
+        "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-declaration.txt"
+      },
+      {
+        "name": "workflow",
+        "command": [
+          "/home/administrator/.local/bin/actionlint",
+          ".github/workflows/ci-lifecycle-qualification.yml"
+        ],
+        "exitCode": 0,
+        "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-workflow.txt"
+      },
+      {
+        "name": "whitespace",
+        "command": [
+          "git",
+          "-c",
+          "core.whitespace=cr-at-eol",
+          "diff",
+          "--check"
+        ],
+        "exitCode": 0,
+        "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-whitespace.txt"
+      },
+      {
+        "name": "commit-commitlint",
+        "command": [
+          "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+          "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/node_modules/@commitlint/cli/cli.js",
+          "--config",
+          "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103/commitlint.config.mjs",
+          "--verbose"
+        ],
+        "messageFile": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-commit-message.txt",
+        "pinnedVersion": "21.2.4",
+        "exitCode": 0,
+        "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-commit-commitlint.txt"
+      },
+      {
+        "name": "title-commitlint",
+        "command": [
+          "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+          "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/node_modules/@commitlint/cli/cli.js",
+          "--config",
+          "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103/commitlint.config.mjs",
+          "--verbose"
+        ],
+        "messageFile": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-title-message.txt",
+        "pinnedVersion": "21.2.4",
+        "exitCode": 0,
+        "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-title-commitlint.txt"
+      }
+    ],
+    "nativeOwnerIssued": false,
+    "nativeServicesAllocated": false,
+    "hostedQualification": false,
+    "candidateAcceptance": false
+  },
+  "actualProcessObservations": [
+    {
+      "classification": "local-process-control",
+      "boundary": "actual-parent-SIGTERM-during-constructor",
+      "actualChildPid": 3571922,
+      "actualParentPid": 3571899,
+      "payloadExecuted": false,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.344841+00:00",
+        "failures": [],
+        "issuedOwners": 0,
+        "allocationStatus": "not-allocated",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "classification": "local-process-control",
+      "boundary": "post-constructor-exception",
+      "actualChildPid": 3571934,
+      "payloadExecuted": false,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.502730+00:00",
+        "failures": [],
+        "issuedOwners": 0,
+        "allocationStatus": "not-allocated",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "classification": "local-process-control",
+      "boundary": "released-without-receipt",
+      "actualChildPid": 3572104,
+      "payloadExecuted": true,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.652739+00:00",
+        "failures": [
+          {
+            "label": "passing",
+            "failureType": "ValueError"
+          }
+        ],
+        "issuedOwners": 0,
+        "allocationStatus": "unverified",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "currentCapturedChecks": {
+    "headRefOid": "d2a174b524c18081f71fad61f8525a888624f3c2",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "number": 60,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538702",
+        "name": "ci / build-and-test",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902808/job/126024536082",
+        "name": "codeql / analyze",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CodeQL"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666903009/job/126024540916",
+        "name": "commitlint / commitlint",
+        "startedAt": "2026-11-03T15:44:18Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "Commitlint"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-03T15:43:53Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902065/job/126024538679",
+        "name": "Root gitlink RC gate",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "COMPLETED",
+        "workflowName": "Release Candidate Gate"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-03T15:44:07Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902780/job/126024544316",
+        "name": "dependency-review / dependency-review",
+        "startedAt": "2026-11-03T15:43:58Z",
+        "status": "COMPLETED",
+        "workflowName": "Dependency Review"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024537640",
+        "name": "EventStore 4.0.4 package cohort (offline)",
+        "startedAt": "2026-11-03T15:44:11Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538493",
+        "name": "Memories 3.0.18 package protocol",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538218",
+        "name": "Owner publisher qualification",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538251",
+        "name": "UI accessibility",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538427",
+        "name": "BMAD configuration tests",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41666902717/job/126024538234",
+        "name": "Parties Platform declaration",
+        "startedAt": "2026-11-03T15:43:53Z",
+        "status": "QUEUED",
+        "workflowName": "CI"
+      }
+    ],
+    "url": "https://github.com/Hexalith/Hexalith.Parties/pull/60"
+  },
+  "worktreeStatus": [],
+  "retainedOriginalProposal": {
+    "head": "9270f5d969c84b548158227cfe77e376cad95d49",
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal.patch",
+    "checkpoint": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-checkpoint.json"
+  },
+  "limitations": [
+    "This fixes the controller launch recovery index only; no genuine runner-owned native receipt/service allocation or hosted lifecycle acceptance is claimed.",
+    "Corrected producer publication/content qualification and coherent genuinely released Platform/reference tuple adoption remain parent-coordinated prerequisites.",
+    "Parent-owned Release41666723123/source725 was active at the recorded handoff and has not been dispatched, approved, cancelled or pinned by this source follow-up. No new version/package identity is assumed.",
+    "Existing current-main HXW011/HXW009/HXW007 preparation first refusal and old HXP020 native first failure remain preserved.",
+    "Manual workflow remains dependent/unregistered; actual startup/execution cancellation, public CLI ownership cleanup, OS-lock interoperability and peer preservation need normal hosted qualification.",
+    "An actual released child with no receipt and any unknown launch state deliberately returns non-success/unverified."
+  ],
+  "candidateAcceptance": false,
+  "evidence": {
+    "parties-lifecycle-launch.patch": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch.patch",
+      "sha256": "169dbb359a103ae2036f2997d562af325b8e5def5143d5058cf6ee724d6296ec"
+    },
+    "parties-lifecycle-launch-source.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-source.json",
+      "sha256": "5059e194b241f4798965b087df5627bdb2d91e1c009e331a78a0379b02866b8a"
+    },
+    "parties-lifecycle-launch-controls.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls.json",
+      "sha256": "5bc51591039f81e7e6c8047dbe97865b147af0949163c04c094231e193f6ff77"
+    },
+    "parties-lifecycle-launch-controls-first.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls-first.txt",
+      "sha256": "ba24170a06bb6ded173b33edab68b966f1747209640299851dd4489effa2160c"
+    },
+    "parties-lifecycle-launch-controls-complete.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls-complete.txt",
+      "sha256": "2a217024aa2203a93919ee394a61e496b1b77f061fe355060451418009189ef6"
+    },
+    "parties-lifecycle-launch-controls-final.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-controls-final.txt",
+      "sha256": "ec6c3666d72326a1c154eed417707630d34429a69624aa5bd2afd19f438c2d01"
+    },
+    "parties-lifecycle-launch-actual-process-summary.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-actual-process-summary.json",
+      "sha256": "d2bc0a12fc78c5d883978c2e5e952c204470851d1b0b929986101544e724b1c4"
+    },
+    "parties-lifecycle-launch-pr-before.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-pr-before.json",
+      "sha256": "6697fc89d86b0e9cb06aa11181a47ffd7877f50eb1524341fba018c29088a1eb"
+    },
+    "parties-lifecycle-launch-pr-pushed.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-pr-pushed.json",
+      "sha256": "36ea35a8946929d14523a9c9333da29aad889695524a29178ed02727b1c27773"
+    },
+    "parties-lifecycle-launch-pr-updated.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-pr-updated.json",
+      "sha256": "a66824068fff5ae2da37e226996293293645abfddae4a19f986eff89bca5560f"
+    },
+    "parties-lifecycle-launch-push.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-launch-push.txt",
+      "sha256": "a3d4ec703a09cdbab17f2cdb6b0b82b706b980a4b19d6a80b18dba16495329c3"
+    }
+  }
+}

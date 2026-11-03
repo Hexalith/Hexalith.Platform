@@ -1,0 +1,273 @@
+diff --git a/docs/ci-lifecycle-qualification.md b/docs/ci-lifecycle-qualification.md
+index 5261f256..72d2f8ae 100644
+--- a/docs/ci-lifecycle-qualification.md
++++ b/docs/ci-lifecycle-qualification.md
+@@ -26,7 +26,11 @@ credentials are not used.
+ 
+ The dedicated fixture reuses `PartyEnvironmentTests`' existing real persistence
+ assertions. Missing descriptors or explicit controls fail, never skip. A passing
+-release of the active peer reruns persistence assertions. The declared execution
++release of the active peer reruns the full real dependency, command, query and
++exact-stream assertions. Only the initial call emits the canonical functional
++observation with CreateNew; rechecks require that first file and never overwrite
++or emit it again. Local filesystem controls reproduce duplicate-write refusal
++and byte preservation without supplying native/hosted credit. The declared execution
+ limit is 300 seconds, fixture bound 240 seconds and production stop limit remains
+ 90 seconds. Slow startup or a missed window fails explicitly; no retry-to-green
+ or timeout extension supplies credit.
+diff --git a/scripts/test_platform_declaration.py b/scripts/test_platform_declaration.py
+index 9f3962c0..e4feef26 100644
+--- a/scripts/test_platform_declaration.py
++++ b/scripts/test_platform_declaration.py
+@@ -66,6 +66,11 @@ class PlatformDeclarationTests(unittest.TestCase):
+         self.assertIn("using Hexalith.Parties.Platform.IntegrationTests;", lifecycle)
+         self.assertIn("IClassFixture<PlatformEnvironmentFixture>", lifecycle)
+         self.assertIn("new PartyEnvironmentTests(fixture, output).RealDependencies_CreateQueryAndPersistMatchingPartyEvents()", lifecycle)
++        self.assertIn("new PartyPersistenceAssertions(fixture, output).RecheckAsync()", lifecycle)
++        recheck = (integration / "PartyPersistenceAssertions.cs").read_text()
++        self.assertIn("new PartyEnvironmentTests(fixture, output).RecheckRealDependenciesAsync()", recheck)
++        self.assertIn("ExerciseRealDependenciesAsync(recordCanonicalObservation: true)", tests)
++        self.assertIn("ExerciseRealDependenciesAsync(recordCanonicalObservation: false)", tests)
+         self.assertNotIn("Assert.Skip", lifecycle)
+         self.assertNotIn("Process.Start", lifecycle)
+         runner = (renderer.ROOT / "scripts/test.ps1").read_text()
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs
+new file mode 100644
+index 00000000..cd051d78
+--- /dev/null
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs
+@@ -0,0 +1,44 @@
++namespace Hexalith.Parties.Platform.IntegrationTests;
++
++/// <summary>Writes one canonical native observation; post-hold rechecks preserve that first file.</summary>
++internal static class FunctionalObservationWriter
++{
++    /// <summary>Records the initial observation or verifies that a recheck has an existing canonical observation.</summary>
++    /// <param name="bytes">The bounded, unchanged observation serialization.</param>
++    /// <param name="descriptor">The owning runner descriptor path.</param>
++    /// <param name="report">The owning native TRX report path.</param>
++    /// <param name="recordCanonicalObservation">Whether this is the initial canonical write.</param>
++    /// <param name="token">The bounded test token.</param>
++    /// <returns>The single initial write or read-only recheck of the canonical file's presence.</returns>
++    internal static async Task WriteAsync(byte[] bytes, string? descriptor, string? report, bool recordCanonicalObservation, CancellationToken token)
++    {
++        if (string.IsNullOrWhiteSpace(descriptor) || string.IsNullOrWhiteSpace(report)
++            || !Path.IsPathFullyQualified(descriptor) || !Path.IsPathFullyQualified(report))
++            throw new InvalidOperationException("The explicit owning native observation binding is unavailable.");
++        string workspace = Path.GetDirectoryName(Path.GetFullPath(descriptor))!;
++        string directory = Path.Combine(workspace, "native-tests");
++        if (Path.GetDirectoryName(Path.GetFullPath(report)) != directory || Path.GetFileName(report) != "native.trx"
++            || !Directory.Exists(directory))
++            throw new InvalidOperationException("The native report differs from the descriptor-owned output directory.");
++        if (bytes.Length > 65536) throw new InvalidOperationException("The native observation exceeds its bounded output contract.");
++        string path = Path.Combine(directory, "functional-observations.json");
++        if (!recordCanonicalObservation)
++        {
++            FileInfo original = new(path);
++            if (!original.Exists || original.LinkTarget is not null || original.Length > 65536)
++                throw new InvalidOperationException("The original canonical observation is unavailable for the recheck.");
++            return;
++        }
++        var options = new FileStreamOptions
++        {
++            Mode = FileMode.CreateNew, Access = FileAccess.Write, Share = FileShare.None, Options = FileOptions.Asynchronous,
++        };
++        if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
++        FileStream stream = new(path, options);
++        await using (stream.ConfigureAwait(false))
++        {
++            await stream.WriteAsync(bytes, token).ConfigureAwait(false);
++            await stream.FlushAsync(token).ConfigureAwait(false);
++        }
++    }
++}
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs
+new file mode 100644
+index 00000000..8fa4b6d0
+--- /dev/null
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs
+@@ -0,0 +1,68 @@
++using System.Security.Cryptography;
++using System.Text;
++
++namespace Hexalith.Parties.Platform.IntegrationTests;
++
++/// <summary>Exercises actual bounded local file I/O only; no native environment or hosted credit is supplied.</summary>
++/// <param name="output">The local diagnostic output.</param>
++public sealed class FunctionalObservationWriterTests(ITestOutputHelper output)
++{
++    /// <summary>Reproduces duplicate CreateNew refusal and proves the recheck preserves the first canonical bytes.</summary>
++    /// <returns>The bounded real-file control.</returns>
++    [Fact]
++    public async Task DuplicateCanonicalWriteRefusesWhileRecheckPreservesOriginalBytesAsync()
++    {
++        string root = Path.Combine(Path.GetTempPath(), "parties-observation-io-" + Guid.NewGuid().ToString("N"));
++        string directory = Path.Combine(root, "native-tests");
++        Directory.CreateDirectory(directory);
++        string descriptor = Path.Combine(root, "local-io-control-not-a-runner-descriptor.json");
++        string report = Path.Combine(directory, "native.trx");
++        byte[] first = Encoding.UTF8.GetBytes("{\"classification\":\"local-io-control-only\",\"value\":\"first\"}");
++        byte[] recheck = Encoding.UTF8.GetBytes("{\"classification\":\"local-io-control-only\",\"value\":\"recheck\"}");
++        using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        bound.CancelAfter(TimeSpan.FromSeconds(10));
++        try
++        {
++            await FunctionalObservationWriter.WriteAsync(first, descriptor, report, true, bound.Token).ConfigureAwait(true);
++            string path = Path.Combine(directory, "functional-observations.json");
++            IOException duplicate = await Assert.ThrowsAsync<IOException>(() =>
++                FunctionalObservationWriter.WriteAsync(recheck, descriptor, report, true, bound.Token)).ConfigureAwait(true);
++            Assert.Equal(first, await File.ReadAllBytesAsync(path, bound.Token).ConfigureAwait(true));
++            await FunctionalObservationWriter.WriteAsync(recheck, descriptor, report, false, bound.Token).ConfigureAwait(true);
++            await FunctionalObservationWriter.WriteAsync(recheck, descriptor, report, false, bound.Token).ConfigureAwait(true);
++            Assert.Equal(first, await File.ReadAllBytesAsync(path, bound.Token).ConfigureAwait(true));
++            if (!OperatingSystem.IsWindows())
++                Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite, File.GetUnixFileMode(path));
++            output.WriteLine($"Local I/O control only; duplicate={duplicate.GetType().Name}; rechecks=2; canonicalBytesPreserved=true; firstSha256={Convert.ToHexStringLower(SHA256.HashData(first))}; nativeQualification=false.");
++        }
++        finally
++        {
++            Directory.Delete(root, recursive: true);
++        }
++    }
++
++    /// <summary>Refuses a recheck without its first observation, wrong ownership paths and oversized output.</summary>
++    /// <returns>The bounded negative I/O controls.</returns>
++    [Fact]
++    public async Task RecheckRequiresOriginalAndPreservesOutputOwnershipBoundsAsync()
++    {
++        string root = Path.Combine(Path.GetTempPath(), "parties-observation-io-" + Guid.NewGuid().ToString("N"));
++        string directory = Path.Combine(root, "native-tests");
++        Directory.CreateDirectory(directory);
++        string descriptor = Path.Combine(root, "local-io-control-not-a-runner-descriptor.json");
++        string report = Path.Combine(directory, "native.trx");
++        using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        bound.CancelAfter(TimeSpan.FromSeconds(10));
++        try
++        {
++            await Assert.ThrowsAsync<InvalidOperationException>(() => FunctionalObservationWriter.WriteAsync([1], descriptor, report, false, bound.Token)).ConfigureAwait(true);
++            await Assert.ThrowsAsync<InvalidOperationException>(() => FunctionalObservationWriter.WriteAsync([1], descriptor, Path.Combine(root, "native.trx"), true, bound.Token)).ConfigureAwait(true);
++            await Assert.ThrowsAsync<InvalidOperationException>(() => FunctionalObservationWriter.WriteAsync(new byte[65537], descriptor, report, true, bound.Token)).ConfigureAwait(true);
++            Assert.False(File.Exists(Path.Combine(directory, "functional-observations.json")));
++        }
++        finally
++        {
++            Directory.Delete(root, recursive: true);
++        }
++    }
++}
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+index 4a3d91f8..b8871f96 100644
+--- a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+@@ -24,8 +24,18 @@ public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, IT
+         Converters = { new JsonStringEnumConverter() },
+     };
+ 
++    /// <summary>Exercises the full real persistence path and writes its canonical observation once.</summary>
++    /// <returns>The bounded real-service assertions and single canonical observation.</returns>
+     [Fact]
+-    public async Task RealDependencies_CreateQueryAndPersistMatchingPartyEvents()
++    public Task RealDependencies_CreateQueryAndPersistMatchingPartyEvents() =>
++        ExerciseRealDependenciesAsync(recordCanonicalObservation: true);
++
++    /// <summary>Rechecks the full real persistence path after a qualification hold without rewriting the first observation.</summary>
++    /// <returns>The bounded real-service command, query and exact-stream assertions.</returns>
++    internal Task RecheckRealDependenciesAsync() =>
++        ExerciseRealDependenciesAsync(recordCanonicalObservation: false);
++
++    private async Task ExerciseRealDependenciesAsync(bool recordCanonicalObservation)
+     {
+         using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+         bound.CancelAfter(TimeSpan.FromSeconds(120));
+@@ -104,7 +114,7 @@ public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, IT
+             tenantsNativeQueryObserved = tenantDocument.RootElement.GetProperty("tenantId").GetString() == tenant,
+             memoriesRegistryObserved = memoriesDocument.RootElement.GetProperty("id").GetString() == tenant
+                 && memoriesDocument.RootElement.GetProperty("status").GetString() == "active",
+-        }, token).ConfigureAwait(true);
++        }, recordCanonicalObservation, token).ConfigureAwait(true);
+     }
+ 
+     /// <summary>Requires the currently observed registry tenant to be the active run tenant.</summary>
+@@ -116,32 +126,10 @@ public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, IT
+         tenant.GetProperty("status").GetString().ShouldBe("active");
+     }
+ 
+-    private static async Task WritePersistenceObservationsAsync<T>(T observation, CancellationToken token)
+-    {
+-        string? descriptor = System.Environment.GetEnvironmentVariable("HEXALITH_TEST_ENVIRONMENT_PATH");
+-        string? report = System.Environment.GetEnvironmentVariable("HEXALITH_G4_TEST_REPORT_PATH");
+-        if (string.IsNullOrWhiteSpace(descriptor) || string.IsNullOrWhiteSpace(report)
+-            || !Path.IsPathFullyQualified(descriptor) || !Path.IsPathFullyQualified(report))
+-            throw new InvalidOperationException("The explicit owning native observation binding is unavailable.");
+-        string workspace = Path.GetDirectoryName(Path.GetFullPath(descriptor))!;
+-        string directory = Path.Combine(workspace, "native-tests");
+-        if (Path.GetDirectoryName(Path.GetFullPath(report)) != directory || Path.GetFileName(report) != "native.trx"
+-            || !Directory.Exists(directory))
+-            throw new InvalidOperationException("The native report differs from the descriptor-owned output directory.");
+-        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(observation, SerializerOptions);
+-        if (bytes.Length > 65536) throw new InvalidOperationException("The native observation exceeds its bounded output contract.");
+-        var options = new FileStreamOptions
+-        {
+-            Mode = FileMode.CreateNew, Access = FileAccess.Write, Share = FileShare.None, Options = FileOptions.Asynchronous,
+-        };
+-        if (!OperatingSystem.IsWindows()) options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+-        FileStream stream = new(Path.Combine(directory, "functional-observations.json"), options);
+-        await using (stream.ConfigureAwait(false))
+-        {
+-            await stream.WriteAsync(bytes, token).ConfigureAwait(false);
+-            await stream.FlushAsync(token).ConfigureAwait(false);
+-        }
+-    }
++    private static Task WritePersistenceObservationsAsync<T>(T observation, bool recordCanonicalObservation, CancellationToken token) =>
++        FunctionalObservationWriter.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(observation, SerializerOptions),
++            System.Environment.GetEnvironmentVariable("HEXALITH_TEST_ENVIRONMENT_PATH"),
++            System.Environment.GetEnvironmentVariable("HEXALITH_G4_TEST_REPORT_PATH"), recordCanonicalObservation, token);
+ 
+     private async Task<JsonDocument> PollStatusAsync(string commandId, CancellationToken token)
+     {
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs
+new file mode 100644
+index 00000000..6c0ea092
+--- /dev/null
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs
+@@ -0,0 +1,11 @@
++namespace Hexalith.Parties.Platform.IntegrationTests;
++
++/// <summary>Reuses the real persistence assertions after a lifecycle hold without a second canonical observation.</summary>
++/// <param name="fixture">The actual runner-owned dependency fixture.</param>
++/// <param name="output">The native test output.</param>
++public sealed class PartyPersistenceAssertions(PlatformEnvironmentFixture fixture, ITestOutputHelper output)
++{
++    /// <summary>Runs the complete original dependency, command, query and exact-stream assertions again.</summary>
++    /// <returns>The bounded real-service recheck.</returns>
++    public Task RecheckAsync() => new PartyEnvironmentTests(fixture, output).RecheckRealDependenciesAsync();
++}
+diff --git a/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs b/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs
+index 8cbf840b..00d46bc6 100644
+--- a/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs
++++ b/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs
+@@ -41,7 +41,7 @@ public sealed class LifecycleQualificationTests(PlatformEnvironmentFixture fixtu
+             if (action == "pass")
+             {
+                 bound.Token.ThrowIfCancellationRequested();
+-                await new PartyEnvironmentTests(fixture, output).RealDependencies_CreateQueryAndPersistMatchingPartyEvents().ConfigureAwait(true);
++                await new PartyPersistenceAssertions(fixture, output).RecheckAsync().ConfigureAwait(true);
+                 return;
+             }
+ 
+diff --git a/tests/ci-lifecycle/test_workflow_boundaries.py b/tests/ci-lifecycle/test_workflow_boundaries.py
+index d092705d..07672999 100644
+--- a/tests/ci-lifecycle/test_workflow_boundaries.py
++++ b/tests/ci-lifecycle/test_workflow_boundaries.py
+@@ -59,7 +59,10 @@ class WorkflowBoundaryTests(unittest.TestCase):
+         source = (ROOT / 'tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs').read_text()
+         assertion = 'RealDependencies_CreateQueryAndPersistMatchingPartyEvents()'
+         self.assertLess(source.index(assertion), source.index('realPersistenceAssertionsPassed = true'))
+-        self.assertEqual(source.count(assertion), 2)
++        self.assertEqual(source.count(assertion), 1)
++        recheck = 'new PartyPersistenceAssertions(fixture, output).RecheckAsync()'
++        self.assertEqual(source.count(recheck), 1)
++        self.assertGreater(source.index(recheck), source.index('if (action == "pass")'))
+         self.assertNotIn('Skip', source)
+ 
+ 

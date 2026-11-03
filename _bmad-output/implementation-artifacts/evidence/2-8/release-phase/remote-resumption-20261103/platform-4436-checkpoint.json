@@ -1,0 +1,177 @@
+{
+  "observedAt": "2026-11-03T17:25:10.987903+00:00",
+  "repository": "Hexalith/Hexalith.Platform",
+  "base": "247fbdd06f882a55c3ed86d1004b7c567bc446e3",
+  "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+  "branch": "fix/adopt-builds-4436",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/Hexalith.Platform",
+  "sourceClean": true,
+  "changedPaths": [
+    ".config/dotnet-tools.json",
+    "README.md",
+    "eng/builds-tuple.json",
+    "hexalith-platform.json",
+    "references/Hexalith.Builds"
+  ],
+  "pr": {
+    "number": 16,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/16",
+    "state": "open",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094
+    },
+    "base": "247fbdd06f882a55c3ed86d1004b7c567bc446e3",
+    "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+    "mergeResult": "7deb829ae3a82b9e6f87c138a3f4c73115db3cd6",
+    "mergeable": true,
+    "mergeableState": "blocked",
+    "changedFiles": 5
+  },
+  "producer": {
+    "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+    "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "catalog": {
+      "path": "Props/Directory.Packages.props",
+      "blob": "ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b",
+      "sha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce"
+    }
+  },
+  "publication": {
+    "version": "4.43.6",
+    "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "releaseTag": "v4.43.6",
+    "catalogSha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce",
+    "archiveSha256": "56bb8ec20f02e964dd9f44b7125bf05ada3cafee3c2ac7048f41d36bc8f1c6fe",
+    "toolingSha256": "1f98729def5105818eaf464e46d1c12b1bcd0607c3752c6e3842b2f201630cb1",
+    "inventorySha256": "9d2db16901373717b70ba53880a356c1b587b4d495b33ed87724edf02cf1fe8e",
+    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.43.6/g4-tool-package-inventory.json"
+  },
+  "localControls": {
+    "tuple": {
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "passed": 19,
+      "failed": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436-tuple-controls.txt"
+    },
+    "hostResolution": {
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_host_builds_resolution.py"
+      ],
+      "passed": 15,
+      "failed": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436-resolution-controls.txt"
+    },
+    "lockedCommitlintVersion": "21.2.4",
+    "commitAndTitle": "fix(build): adopt verified Builds 4.43.6",
+    "whitespace": "passed"
+  },
+  "supportedPreparation": {
+    "commandReceipt": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436-prepare-command.json",
+    "identity": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/prepared-artifacts/artifact-identity.json",
+      "sha256": "53b2b71e96e83ef6b337813ffae257acc4ac2010693eba7626a39ff564c6b624"
+    },
+    "signatureStdout": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/prepared-artifacts/signature.stdout",
+      "sha256": "4f82b779d1f88e27268b621d7e2ad772c7f36432ddd5605be6fedfa8b205f39a"
+    },
+    "signatureStderr": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/prepared-artifacts/signature.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "signatureRevocationMode": "offline",
+    "freshOnlineRevocation": false,
+    "tooling": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/prepared-artifacts/published/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+      "sha256": "1f98729def5105818eaf464e46d1c12b1bcd0607c3752c6e3842b2f201630cb1"
+    },
+    "qualification": "artifact identity only"
+  },
+  "supportedGraph": {
+    "commandReceipt": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436-graph-command.json",
+    "result": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-4436-adoption-20261103/graph-audit/tuple-ci-result.json",
+      "sha256": "21713435262eb6da93f7b7def11007e74d0172498dc3ea63b7471979ca559b1e"
+    },
+    "status": "graph-verified",
+    "projects": 30,
+    "nativeExecution": false
+  },
+  "selectedTenants": {
+    "officialCacheDll": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103/hexalith.tenants.contracts/7.0.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+      "sha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40"
+    },
+    "cacheSelectedForLocalCommands": true,
+    "localGraphRestoresOrLoadsDll": false,
+    "actualConsumedHostedOutputProof": "pending hosted execution/artifact measurement",
+    "knownWrongSourceSharedCache": "preserved untouched"
+  },
+  "hosted": {
+    "runs": [
+      {
+        "id": 41683787846,
+        "name": "Platform tuple CI preflight",
+        "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41683787846",
+        "event": "workflow_dispatch",
+        "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+        "status": "queued",
+        "conclusion": null,
+        "attempt": 1
+      },
+      {
+        "id": 41683738928,
+        "name": "Catalog builder consumer binding",
+        "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41683738928",
+        "event": "pull_request",
+        "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+        "status": "queued",
+        "conclusion": null,
+        "attempt": 1
+      }
+    ],
+    "jobsReceipt": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436-hosted-jobs-initial.json",
+    "allFiveJobsQueued": true,
+    "noHostedPassClaim": true
+  },
+  "normalGate": {
+    "ruleset": 24657106,
+    "enforcement": "active",
+    "requiredApprovals": 1,
+    "requireCodeOwner": true,
+    "author": {
+      "login": "jpiquot",
+      "id": "6775094"
+    },
+    "reviews": [],
+    "selfApprovalAttempted": false,
+    "bypassUsed": false,
+    "mergedOrPublished": false
+  },
+  "diff": {
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-4436.patch",
+    "sha256": "933f2f815fb374c79cc540bde22094ea92e81baf114c869c03e6fd2493abef6c"
+  },
+  "preserved": [
+    "all released declaration snapshots/provenance",
+    "unrelated incoming source and gitlinks",
+    "canonical root pending evidence/source",
+    "Parties PR60 and both preserved lifecycle worktrees",
+    "existing immutable package/tag/release history"
+  ],
+  "remaining": [
+    "actual tuple160 outcome and all four SDK bindings",
+    "actual selected dependency consumed-output byte proof where applicable",
+    "normal approving code-owner review",
+    "parent-coordinated genuine Platform release then fresh E/P adoption",
+    "real reference native and hosted lifecycle acceptance; both original reference tasks remain unchecked"
+  ],
+  "candidateAcceptance": false
+}

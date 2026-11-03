@@ -1,0 +1,610 @@
+﻿2026-11-03T16:02:41.9712216Z Current runner version: '2.338.2'
+2026-11-03T16:02:41.9731872Z ##[group]Runner Image Provisioner
+2026-11-03T16:02:41.9732906Z Hosted Compute Agent
+2026-11-03T16:02:41.9733398Z Version: 20261021.618
+2026-11-03T16:02:41.9733942Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-03T16:02:41.9734550Z Build Date: 2026-10-21T00:45:21Z
+2026-11-03T16:02:41.9735141Z Worker ID: {01d794be-ffef-4f67-9a2e-94e32d4cbff5}
+2026-11-03T16:02:41.9735780Z Region: westus3
+2026-11-03T16:02:41.9736244Z Cloud: Azure
+2026-11-03T16:02:41.9736702Z ##[endgroup]
+2026-11-03T16:02:41.9737809Z ##[group]Operating System
+2026-11-03T16:02:41.9738346Z Ubuntu
+2026-11-03T16:02:41.9738843Z 26.04.1
+2026-11-03T16:02:41.9739272Z LTS
+2026-11-03T16:02:41.9739704Z ##[endgroup]
+2026-11-03T16:02:41.9740212Z ##[group]Runner Image
+2026-11-03T16:02:41.9740709Z Image: ubuntu-26.04
+2026-11-03T16:02:41.9741230Z Version: 20261025.179.1
+2026-11-03T16:02:41.9742252Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-03T16:02:41.9743900Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+2026-11-03T16:02:41.9744683Z ##[endgroup]
+2026-11-03T16:02:41.9745641Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T16:02:41.9747747Z Contents: read
+2026-11-03T16:02:41.9748263Z Metadata: read
+2026-11-03T16:02:41.9748749Z ##[endgroup]
+2026-11-03T16:02:41.9750498Z Secret source: Actions
+2026-11-03T16:02:41.9751222Z Cache mode: write
+2026-11-03T16:02:41.9752081Z Prepare workflow directory
+2026-11-03T16:02:42.0012743Z Prepare all required actions
+2026-11-03T16:02:42.0053383Z Getting action download info
+2026-11-03T16:02:42.3438879Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-03T16:02:42.5300926Z Download action repository 'Hexalith/Hexalith.Builds@e171c5a788eab183b32683431b084198c9b8d373' (SHA:e171c5a788eab183b32683431b084198c9b8d373)
+2026-11-03T16:02:43.7706790Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-03T16:02:44.3665455Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-11-03T16:02:44.5050774Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-11-03T16:02:44.7229719Z Uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:02:44.7234736Z ##[group] Inputs
+2026-11-03T16:02:44.7235736Z   solution: Hexalith.Parties.Standalone.slnx
+2026-11-03T16:02:44.7236989Z   module-manifest: module/hexalith.module-manifest.v2.json
+2026-11-03T16:02:44.7238182Z   dotnet-global-json: global.json
+2026-11-03T16:02:44.7239865Z   packages-lock-file: Directory.Packages.props, global.json, references/Hexalith.Builds/Props/Directory.Packages.props
+2026-11-03T16:02:44.7241631Z   test-platform: microsoft-testing-platform
+2026-11-03T16:02:44.7247707Z   unit-test-projects: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T16:02:44.7253776Z   integration-test-projects: 
+2026-11-03T16:02:44.7254795Z   integration-test-profiles: platform-package
+2026-11-03T16:02:44.7255878Z   aspire-test-project: 
+2026-11-03T16:02:44.7257098Z   run-consumer-validation: true
+2026-11-03T16:02:44.7258054Z   package-prepare-script: 
+2026-11-03T16:02:44.7259247Z   run-coverage-gate: false
+2026-11-03T16:02:44.7260720Z   coverage-minimum-line: 80
+2026-11-03T16:02:44.7261669Z   coverage-required-branch: 100
+2026-11-03T16:02:44.7262760Z   coverage-isolation-targets: 
+2026-11-03T16:02:44.7263714Z   coverage-line-scope: 
+2026-11-03T16:02:44.7264596Z   build-timeout-minutes: 60
+2026-11-03T16:02:44.7265483Z   governed-ci: false
+2026-11-03T16:02:44.7266333Z   builds-execution-sha: 
+2026-11-03T16:02:44.7267191Z   candidate-commit: 
+2026-11-03T16:02:44.7268066Z   dependency-policy-repository: 
+2026-11-03T16:02:44.7269081Z   dependency-policy-path: 
+2026-11-03T16:02:44.7269992Z   dependency-policy-commit: 
+2026-11-03T16:02:44.7270918Z   dependency-policy-sha256: 
+2026-11-03T16:02:44.7271858Z   expected-ci-evaluator-digest: 
+2026-11-03T16:02:44.7272895Z ##[endgroup]
+2026-11-03T16:02:44.7273716Z Complete job name: ci / build-and-test
+2026-11-03T16:02:44.8297714Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T16:02:44.8299337Z with:
+2026-11-03T16:02:44.8300270Z   fetch-depth: 0
+2026-11-03T16:02:44.8301231Z   submodules: false
+2026-11-03T16:02:44.8302688Z   repository: Hexalith/Hexalith.Parties
+2026-11-03T16:02:44.8310299Z   token: ***
+2026-11-03T16:02:44.8311082Z   ssh-strict: true
+2026-11-03T16:02:44.8311913Z   ssh-user: git
+2026-11-03T16:02:44.8313025Z   persist-credentials: true
+2026-11-03T16:02:44.8313907Z   clean: true
+2026-11-03T16:02:44.8314725Z   sparse-checkout-cone-mode: true
+2026-11-03T16:02:44.8315688Z   fetch-tags: false
+2026-11-03T16:02:44.8316613Z   show-progress: true
+2026-11-03T16:02:44.8317479Z   lfs: false
+2026-11-03T16:02:44.8318350Z   set-safe-directory: true
+2026-11-03T16:02:44.8319347Z   allow-unsafe-pr-checkout: false
+2026-11-03T16:02:44.8320667Z ##[endgroup]
+2026-11-03T16:02:45.1164102Z Syncing repository: Hexalith/Hexalith.Parties
+2026-11-03T16:02:45.1167717Z ##[group]Getting Git version info
+2026-11-03T16:02:45.1169013Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T16:02:45.1171047Z [command]/usr/bin/git version
+2026-11-03T16:02:45.1181596Z git version 2.56.0
+2026-11-03T16:02:45.1197819Z ##[endgroup]
+2026-11-03T16:02:45.1205931Z Temporarily overriding HOME='/home/runner/work/_temp/9de8c644-7a19-44f7-a246-4c2565401cf7' before making global git config changes
+2026-11-03T16:02:45.1208474Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T16:02:45.1210896Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T16:02:45.1269119Z Deleting the contents of '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T16:02:45.1272314Z ##[group]Determining repository object format
+2026-11-03T16:02:45.1275338Z ##[endgroup]
+2026-11-03T16:02:45.1277615Z ##[group]Initializing the repository
+2026-11-03T16:02:45.1279763Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T16:02:45.1403361Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T16:02:45.1405282Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T16:02:45.1406764Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T16:02:45.1407862Z hint: call:
+2026-11-03T16:02:45.1408614Z hint:
+2026-11-03T16:02:45.1409503Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T16:02:45.1410434Z hint:
+2026-11-03T16:02:45.1411398Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T16:02:45.1412893Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T16:02:45.1414084Z hint:
+2026-11-03T16:02:45.1414818Z hint: 	git branch -m <name>
+2026-11-03T16:02:45.1415619Z hint:
+2026-11-03T16:02:45.1416631Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T16:02:45.1421305Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/
+2026-11-03T16:02:45.1430119Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T16:02:45.1480909Z ##[endgroup]
+2026-11-03T16:02:45.1483149Z ##[group]Disabling automatic garbage collection
+2026-11-03T16:02:45.1484566Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T16:02:45.1510275Z ##[endgroup]
+2026-11-03T16:02:45.1512518Z ##[group]Setting up auth
+2026-11-03T16:02:45.1513994Z Removing SSH command configuration
+2026-11-03T16:02:45.1515681Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T16:02:45.1539921Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T16:02:45.1923960Z Removing HTTP extra header
+2026-11-03T16:02:45.1928945Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T16:02:45.1961860Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T16:02:45.2159314Z Removing includeIf entries pointing to credentials config files
+2026-11-03T16:02:45.2164111Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:02:45.2188351Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T16:02:45.2381034Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T16:02:45.2408660Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path /home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:02:45.2431393Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:02:45.2460808Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:02:45.2486670Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:02:45.2510066Z ##[endgroup]
+2026-11-03T16:02:45.2511961Z ##[group]Fetching the repository
+2026-11-03T16:02:45.2517106Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +b4ad2510e78b463127525457d43ce891132e0f6c:refs/remotes/pull/60/merge
+2026-11-03T16:02:52.8640950Z From https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T16:02:52.8642562Z  * [new branch]        ci/lifecycle-qualification-proposal      -> origin/ci/lifecycle-qualification-proposal
+2026-11-03T16:02:52.8643337Z  * [new branch]        main                                     -> origin/main
+2026-11-03T16:02:52.8644139Z  * [new tag]           evidence/story-8-3-final                 -> evidence/story-8-3-final
+2026-11-03T16:02:52.8644756Z  * [new tag]           v1.0.0                                   -> v1.0.0
+2026-11-03T16:02:52.8645514Z  * [new tag]           v1.1.0                                   -> v1.1.0
+2026-11-03T16:02:52.8647082Z  * [new tag]           v1.1.1                                   -> v1.1.1
+2026-11-03T16:02:52.8647720Z  * [new tag]           v1.2.0                                   -> v1.2.0
+2026-11-03T16:02:52.8648337Z  * [new tag]           v1.2.1                                   -> v1.2.1
+2026-11-03T16:02:52.8648938Z  * [new tag]           v1.3.0                                   -> v1.3.0
+2026-11-03T16:02:52.8649560Z  * [new tag]           v1.4.0                                   -> v1.4.0
+2026-11-03T16:02:52.8650495Z  * [new tag]           v1.5.0                                   -> v1.5.0
+2026-11-03T16:02:52.8651071Z  * [new tag]           v1.5.1                                   -> v1.5.1
+2026-11-03T16:02:52.8651706Z  * [new tag]           v1.5.2                                   -> v1.5.2
+2026-11-03T16:02:52.8652315Z  * [new tag]           v1.6.0                                   -> v1.6.0
+2026-11-03T16:02:52.8653382Z  * [new tag]           v2.0.0                                   -> v2.0.0
+2026-11-03T16:02:52.8653997Z  * [new tag]           v3.0.0                                   -> v3.0.0
+2026-11-03T16:02:52.8654643Z  * [new ref]           b4ad2510e78b463127525457d43ce891132e0f6c -> pull/60/merge
+2026-11-03T16:02:52.8657671Z ##[endgroup]
+2026-11-03T16:02:52.8658724Z ##[group]Determining the checkout info
+2026-11-03T16:02:52.8659511Z ##[endgroup]
+2026-11-03T16:02:52.8660050Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T16:02:52.8768030Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T16:02:52.8797480Z ##[group]Checking out the ref
+2026-11-03T16:02:52.8801261Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/60/merge
+2026-11-03T16:02:53.4358010Z Note: switching to 'refs/remotes/pull/60/merge'.
+2026-11-03T16:02:53.4358540Z 
+2026-11-03T16:02:53.4359093Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T16:02:53.4359633Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T16:02:53.4360187Z state without impacting any branches by switching back to a branch.
+2026-11-03T16:02:53.4361519Z 
+2026-11-03T16:02:53.4361714Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T16:02:53.4362258Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T16:02:53.4362776Z 
+2026-11-03T16:02:53.4362956Z   git switch -c <new-branch-name>
+2026-11-03T16:02:53.4363171Z 
+2026-11-03T16:02:53.4363331Z Or undo this operation with:
+2026-11-03T16:02:53.4363530Z 
+2026-11-03T16:02:53.4363653Z   git switch -
+2026-11-03T16:02:53.4363805Z 
+2026-11-03T16:02:53.4364039Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T16:02:53.4364331Z 
+2026-11-03T16:02:53.4364618Z HEAD is now at b4ad2510 Merge 5522749f3793db092318612c7edb83b345657ff0 into d251e2c67900daa375768fad0365076c080a9bb8
+2026-11-03T16:02:53.4392848Z ##[endgroup]
+2026-11-03T16:02:53.4434740Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T16:02:53.4458428Z b4ad2510e78b463127525457d43ce891132e0f6c
+2026-11-03T16:02:53.4710994Z ##[group]Run Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373
+2026-11-03T16:02:53.4711547Z ##[endgroup]
+2026-11-03T16:02:53.4759852Z ##[start-action display=Initialize root-declared submodules;id=__Hexalith_Hexalith_Builds.__run]
+2026-11-03T16:02:53.4807064Z ##[group]Run git -c submodule.recurse=false submodule update --init
+2026-11-03T16:02:53.4807607Z [36;1mgit -c submodule.recurse=false submodule update --init[0m
+2026-11-03T16:02:53.4829295Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T16:02:53.4829688Z ##[endgroup]
+2026-11-03T16:02:53.5101943Z Submodule 'Hexalith.AI.Tools' (https://github.com/Hexalith/Hexalith.AI.Tools.git) registered for path 'references/Hexalith.AI.Tools'
+2026-11-03T16:02:53.5107600Z Submodule 'Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+2026-11-03T16:02:53.5112927Z Submodule 'Hexalith.Commons' (https://github.com/Hexalith/Hexalith.Commons.git) registered for path 'references/Hexalith.Commons'
+2026-11-03T16:02:53.5117732Z Submodule 'Hexalith.EventStore' (https://github.com/Hexalith/Hexalith.EventStore.git) registered for path 'references/Hexalith.EventStore'
+2026-11-03T16:02:53.5122865Z Submodule 'Hexalith.FrontComposer' (https://github.com/Hexalith/Hexalith.FrontComposer.git) registered for path 'references/Hexalith.FrontComposer'
+2026-11-03T16:02:53.5128530Z Submodule 'Hexalith.McpCli' (https://github.com/Hexalith/Hexalith.McpCli.git) registered for path 'references/Hexalith.McpCli'
+2026-11-03T16:02:53.5134084Z Submodule 'Hexalith.Memories' (https://github.com/Hexalith/Hexalith.Memories.git) registered for path 'references/Hexalith.Memories'
+2026-11-03T16:02:53.5139293Z Submodule 'Hexalith.Platform' (https://github.com/Hexalith/Hexalith.Platform.git) registered for path 'references/Hexalith.Platform'
+2026-11-03T16:02:53.5145234Z Submodule 'Hexalith.PolymorphicSerializations' (https://github.com/Hexalith/Hexalith.PolymorphicSerializations.git) registered for path 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T16:02:53.5150162Z Submodule 'Hexalith.Tenants' (https://github.com/Hexalith/Hexalith.Tenants.git) registered for path 'references/Hexalith.Tenants'
+2026-11-03T16:02:53.5175729Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.AI.Tools'...
+2026-11-03T16:02:54.3506689Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds'...
+2026-11-03T16:03:04.4887536Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Commons'...
+2026-11-03T16:03:07.1955492Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.EventStore'...
+2026-11-03T16:04:09.1225021Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.FrontComposer'...
+2026-11-03T16:08:17.1441112Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.McpCli'...
+2026-11-03T16:08:19.3706182Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Memories'...
+2026-11-03T16:08:22.8813099Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform'...
+2026-11-03T16:08:27.9974007Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.PolymorphicSerializations'...
+2026-11-03T16:08:28.7555943Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Tenants'...
+2026-11-03T16:08:34.7207765Z Submodule path 'references/Hexalith.AI.Tools': checked out '1745b6663ad32bb1288167135ed0f979366c53a0'
+2026-11-03T16:08:34.9693683Z Submodule path 'references/Hexalith.Builds': checked out '725754075e1d6369430a3adf94d46fb71e6eaf9e'
+2026-11-03T16:08:34.9850517Z Submodule path 'references/Hexalith.Commons': checked out '11555ace9efcae2928a00122dcba91243e5a8a1a'
+2026-11-03T16:08:35.6797200Z Submodule path 'references/Hexalith.EventStore': checked out 'a9205f511b4f96b5daf94d65369d6dee63e0c623'
+2026-11-03T16:08:36.3785930Z Submodule path 'references/Hexalith.FrontComposer': checked out 'fbe01c913cb863abb0fd4a317d370d36fff593b3'
+2026-11-03T16:08:37.0711243Z Submodule path 'references/Hexalith.McpCli': checked out '2e80701c31aafdf00abee05ac469a45ed76dfdf5'
+2026-11-03T16:08:37.7322485Z Submodule path 'references/Hexalith.Memories': checked out 'd959bdae5af9c22f53573eda71c091cb5c0aae4c'
+2026-11-03T16:08:39.1482854Z Submodule path 'references/Hexalith.Platform': checked out '1080e92c0eedfd5cbb048871da475eb0a6c71c86'
+2026-11-03T16:08:39.1586355Z Submodule path 'references/Hexalith.PolymorphicSerializations': checked out 'bce4eb9f45c6b131b960ab4fa39e50ff01e51960'
+2026-11-03T16:08:39.8378537Z Submodule path 'references/Hexalith.Tenants': checked out '33835a03e92579a26400e7cb7cf68d666c715b3e'
+2026-11-03T16:08:39.8402123Z ##[end-action id=__Hexalith_Hexalith_Builds.__run;outcome=success;conclusion=success;duration_ms=346364]
+2026-11-03T16:08:39.8499491Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+2026-11-03T16:08:39.8499921Z with:
+2026-11-03T16:08:39.8500243Z   global-json-file: global.json
+2026-11-03T16:08:39.8500554Z   cache: false
+2026-11-03T16:08:39.8500810Z ##[endgroup]
+2026-11-03T16:08:39.9833970Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-03T16:08:40.2216041Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-03T16:08:40.2238556Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-03T16:08:40.3951302Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-03T16:08:40.4128885Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T16:08:40.4129353Z with:
+2026-11-03T16:08:40.4129714Z   repository: Hexalith/Hexalith.Builds
+2026-11-03T16:08:40.4130098Z   ref: 26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:08:40.4130470Z   path: .hexalith/builds-execution
+2026-11-03T16:08:40.4130800Z   persist-credentials: false
+2026-11-03T16:08:40.4133680Z   token: ***
+2026-11-03T16:08:40.4133998Z   ssh-strict: true
+2026-11-03T16:08:40.4134304Z   ssh-user: git
+2026-11-03T16:08:40.4134616Z   clean: true
+2026-11-03T16:08:40.4134939Z   sparse-checkout-cone-mode: true
+2026-11-03T16:08:40.4135303Z   fetch-depth: 1
+2026-11-03T16:08:40.4135585Z   fetch-tags: false
+2026-11-03T16:08:40.4135968Z   show-progress: true
+2026-11-03T16:08:40.4136255Z   lfs: false
+2026-11-03T16:08:40.4136526Z   submodules: false
+2026-11-03T16:08:40.4136853Z   set-safe-directory: true
+2026-11-03T16:08:40.4137180Z   allow-unsafe-pr-checkout: false
+2026-11-03T16:08:40.4137607Z env:
+2026-11-03T16:08:40.4137901Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:40.4138270Z ##[endgroup]
+2026-11-03T16:08:40.4907283Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-03T16:08:40.4913524Z ##[group]Getting Git version info
+2026-11-03T16:08:40.4914452Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution'
+2026-11-03T16:08:40.4941767Z [command]/usr/bin/git version
+2026-11-03T16:08:40.4977882Z git version 2.56.0
+2026-11-03T16:08:40.5026393Z ##[endgroup]
+2026-11-03T16:08:40.5035739Z Temporarily overriding HOME='/home/runner/work/_temp/7b6ce241-3a23-48e4-83d5-54fe62aabbb7' before making global git config changes
+2026-11-03T16:08:40.5037313Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T16:08:40.5043508Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T16:08:40.5068738Z ##[group]Determining repository object format
+2026-11-03T16:08:40.5069914Z ##[endgroup]
+2026-11-03T16:08:40.5070599Z ##[group]Initializing the repository
+2026-11-03T16:08:40.5073652Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T16:08:40.5110359Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T16:08:40.5111142Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T16:08:40.5111974Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T16:08:40.5112894Z hint: call:
+2026-11-03T16:08:40.5113424Z hint:
+2026-11-03T16:08:40.5114105Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T16:08:40.5114623Z hint:
+2026-11-03T16:08:40.5115220Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T16:08:40.5116081Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T16:08:40.5116706Z hint:
+2026-11-03T16:08:40.5117087Z hint: 	git branch -m <name>
+2026-11-03T16:08:40.5117631Z hint:
+2026-11-03T16:08:40.5118200Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T16:08:40.5119528Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/
+2026-11-03T16:08:40.5121264Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T16:08:40.5157471Z ##[endgroup]
+2026-11-03T16:08:40.5157993Z ##[group]Disabling automatic garbage collection
+2026-11-03T16:08:40.5162161Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T16:08:40.5190635Z ##[endgroup]
+2026-11-03T16:08:40.5191284Z ##[group]Setting up auth
+2026-11-03T16:08:40.5191828Z Removing SSH command configuration
+2026-11-03T16:08:40.5197634Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T16:08:40.5227513Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T16:08:40.5451876Z Removing HTTP extra header
+2026-11-03T16:08:40.5457488Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T16:08:40.5509895Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T16:08:40.5723576Z Removing includeIf entries pointing to credentials config files
+2026-11-03T16:08:40.5724599Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:40.5753014Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T16:08:40.5969328Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T16:08:40.6004594Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path /home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:40.6032183Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:40.6060250Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.hexalith/builds-execution/.git.path /github/runner_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:40.6087627Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path /github/runner_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:40.6114360Z ##[endgroup]
+2026-11-03T16:08:40.6114882Z ##[group]Fetching the repository
+2026-11-03T16:08:40.6122950Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:08:42.2877928Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T16:08:42.2879322Z  * branch            26991e8c542704be44cd8d9f58084d56fa627adb -> FETCH_HEAD
+2026-11-03T16:08:42.2888083Z [command]/usr/bin/git rev-parse --verify --quiet 26991e8c542704be44cd8d9f58084d56fa627adb^{object}
+2026-11-03T16:08:42.2914578Z 26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:08:42.2917547Z ##[endgroup]
+2026-11-03T16:08:42.2918221Z ##[group]Determining the checkout info
+2026-11-03T16:08:42.2918766Z ##[endgroup]
+2026-11-03T16:08:42.2923956Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T16:08:42.2960374Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T16:08:42.2986089Z ##[group]Checking out the ref
+2026-11-03T16:08:42.2990472Z [command]/usr/bin/git checkout --progress --force 26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:08:42.5137053Z Note: switching to '26991e8c542704be44cd8d9f58084d56fa627adb'.
+2026-11-03T16:08:42.5137763Z 
+2026-11-03T16:08:42.5138150Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T16:08:42.5139028Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T16:08:42.5139914Z state without impacting any branches by switching back to a branch.
+2026-11-03T16:08:42.5140696Z 
+2026-11-03T16:08:42.5141038Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T16:08:42.5141783Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T16:08:42.5142229Z 
+2026-11-03T16:08:42.5142626Z   git switch -c <new-branch-name>
+2026-11-03T16:08:42.5142871Z 
+2026-11-03T16:08:42.5143257Z Or undo this operation with:
+2026-11-03T16:08:42.5143486Z 
+2026-11-03T16:08:42.5143619Z   git switch -
+2026-11-03T16:08:42.5143796Z 
+2026-11-03T16:08:42.5144092Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T16:08:42.5144382Z 
+2026-11-03T16:08:42.5144650Z HEAD is now at 26991e8 fix(runtime): use explicit validation overloads
+2026-11-03T16:08:42.5146886Z ##[endgroup]
+2026-11-03T16:08:42.5183197Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T16:08:42.5205371Z 26991e8c542704be44cd8d9f58084d56fa627adb
+2026-11-03T16:08:42.5216316Z ##[group]Removing auth
+2026-11-03T16:08:42.5216738Z Removing SSH command configuration
+2026-11-03T16:08:42.5218414Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T16:08:42.5246708Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T16:08:42.5455518Z Removing HTTP extra header
+2026-11-03T16:08:42.5458627Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T16:08:42.5486901Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T16:08:42.5694289Z Removing includeIf entries pointing to credentials config files
+2026-11-03T16:08:42.5697554Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:42.5718747Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path
+2026-11-03T16:08:42.5720086Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T16:08:42.5721134Z includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path
+2026-11-03T16:08:42.5722114Z includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T16:08:42.5737389Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path
+2026-11-03T16:08:42.5754976Z /home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:42.5770544Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-440ef326\-3c8a\-4f5b\-a40c\-6c13691d8678\.config
+2026-11-03T16:08:42.5803809Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T16:08:42.5820419Z /home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:42.5829603Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-440ef326\-3c8a\-4f5b\-a40c\-6c13691d8678\.config
+2026-11-03T16:08:42.5856648Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path
+2026-11-03T16:08:42.5877761Z /github/runner_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:42.5887257Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path \/github\/runner_temp\/git\-credentials\-440ef326\-3c8a\-4f5b\-a40c\-6c13691d8678\.config
+2026-11-03T16:08:42.5915843Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T16:08:42.5933848Z /github/runner_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config
+2026-11-03T16:08:42.5940763Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-440ef326\-3c8a\-4f5b\-a40c\-6c13691d8678\.config
+2026-11-03T16:08:42.5967926Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T16:08:42.6175986Z Removing credentials config '/home/runner/work/_temp/git-credentials-440ef326-3c8a-4f5b-a40c-6c13691d8678.config'
+2026-11-03T16:08:42.6185073Z ##[endgroup]
+2026-11-03T16:08:42.6313884Z Prepare all required actions
+2026-11-03T16:08:42.6350830Z ##[group]Run ./.hexalith/builds-execution/Github/prepare-module-build
+2026-11-03T16:08:42.6351309Z with:
+2026-11-03T16:08:42.6351675Z   manifest: module/hexalith.module-manifest.v2.json
+2026-11-03T16:08:42.6352059Z env:
+2026-11-03T16:08:42.6352610Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:42.6353092Z ##[endgroup]
+2026-11-03T16:08:42.6375619Z ##[start-action display=Prepare package build imports;id=__self_2.__run]
+2026-11-03T16:08:42.6519042Z ##[group]Run python3 "$MODULE_BUILD_HELPER" --manifest "$MODULE_BUILD_MANIFEST"
+2026-11-03T16:08:42.6519728Z [36;1mpython3 "$MODULE_BUILD_HELPER" --manifest "$MODULE_BUILD_MANIFEST"[0m
+2026-11-03T16:08:42.6538776Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T16:08:42.6539080Z env:
+2026-11-03T16:08:42.6539273Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:42.6539574Z   MODULE_BUILD_MANIFEST: module/hexalith.module-manifest.v2.json
+2026-11-03T16:08:42.6540263Z   MODULE_BUILD_HELPER: /home/runner/work/Hexalith.Parties/Hexalith.Parties/./.hexalith/builds-execution/Github/prepare-module-build/prepare_module_build.py
+2026-11-03T16:08:42.6540860Z ##[endgroup]
+2026-11-03T16:08:50.0985409Z prepare-module-build: dotnet exited 2: {"status":"failed","outcome":{"exitCode":"PrerequisiteUnavailable","phase":"Prerequisite","category":"PrerequisiteUnavailable","ruleId":"HXW011"},"diagnostics":[{"ruleId":"HXW011","phase":"Prerequisite","category":"PrerequisiteUnavailable","message":"Platform identity 1080e92c0eedfd5cbb048871da475eb0a6c71c86 has no local v\u003CSemVer\u003E release tag.","field":"/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform","hint":"Fetch Platform tags, then retry.","source":null,"location":null,"row":null},{"ruleId":"HXW009","phase":"Prerequisite","category":"PrerequisiteUnavailable","message":"Builds catalog \u0027/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds\u0027 is staged 725754075e1d6369430a3adf94d46fb71e6eaf9e, checked out 725754075e1d6369430a3adf94d46fb71e6eaf9e; Platform 1080e92c0eedfd5cbb048871da475eb0a6c71c86 pins 26991e8c542704be44cd8d9f58084d56fa627adb.","field":"/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds","hint":null,"source":null,"location":null,"row":null}]}
+2026-11-03T16:08:50.0991108Z  
+2026-11-03T16:08:50.1074572Z ##[error]Process completed with exit code 1.
+2026-11-03T16:08:50.1081184Z ##[end-action id=__self_2.__run;outcome=failure;conclusion=failure;duration_ms=7470]
+2026-11-03T16:08:50.1187968Z ##[group]Run python3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"
+2026-11-03T16:08:50.1189450Z [36;1mpython3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"[0m
+2026-11-03T16:08:50.1211023Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T16:08:50.1211344Z env:
+2026-11-03T16:08:50.1211567Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:50.1211816Z   CI_JOB_STATUS: failure
+2026-11-03T16:08:50.1212037Z ##[endgroup]
+2026-11-03T16:08:50.1806592Z ##[group]Run set -euo pipefail
+2026-11-03T16:08:50.1806894Z [36;1mset -euo pipefail[0m
+2026-11-03T16:08:50.1807168Z [36;1mconfig="${HEXALITH_CI_REGISTRY_CONFIG:-}"[0m
+2026-11-03T16:08:50.1807466Z [36;1mif [[ -z "$config" ]]; then exit 0; fi[0m
+2026-11-03T16:08:50.1807774Z [36;1mrunner_temp="$(realpath -e -- "$RUNNER_TEMP")"[0m
+2026-11-03T16:08:50.1808274Z [36;1mif [[ "$(dirname -- "$config")" != "$runner_temp" || "$(basename -- "$config")" != hexalith-ci-registry.* || -L "$config" ]]; then[0m
+2026-11-03T16:08:50.1808846Z [36;1m  echo '::error::Refusing to remove a foreign registry credential directory.'[0m
+2026-11-03T16:08:50.1809200Z [36;1m  exit 1[0m
+2026-11-03T16:08:50.1809390Z [36;1mfi[0m
+2026-11-03T16:08:50.1809598Z [36;1mrm -rf -- "$config"[0m
+2026-11-03T16:08:50.1809853Z [36;1m[[ ! -e "$config" && ! -L "$config" ]][0m
+2026-11-03T16:08:50.1827866Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T16:08:50.1828172Z env:
+2026-11-03T16:08:50.1828419Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:50.1828651Z ##[endgroup]
+2026-11-03T16:08:50.1910625Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-11-03T16:08:50.1911028Z with:
+2026-11-03T16:08:50.1911265Z   name: module-integration-diagnostics
+2026-11-03T16:08:50.1911563Z   path: TestResults/module-integration
+2026-11-03T16:08:50.1911842Z   retention-days: 7
+2026-11-03T16:08:50.1912070Z   if-no-files-found: warn
+2026-11-03T16:08:50.1912313Z   compression-level: 6
+2026-11-03T16:08:50.1912742Z   overwrite: false
+2026-11-03T16:08:50.1912975Z   include-hidden-files: false
+2026-11-03T16:08:50.1913237Z   archive: true
+2026-11-03T16:08:50.1913444Z env:
+2026-11-03T16:08:50.1913657Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:50.1913926Z ##[endgroup]
+2026-11-03T16:08:50.3334754Z With the provided path, there will be 1 file uploaded
+2026-11-03T16:08:50.3339604Z Artifact name is valid!
+2026-11-03T16:08:50.3341022Z Root directory input is valid!
+2026-11-03T16:08:50.7078409Z Uploading artifact: module-integration-diagnostics.zip
+2026-11-03T16:08:50.7115237Z Beginning upload of artifact content to blob storage
+2026-11-03T16:08:50.9913369Z Uploaded bytes 342
+2026-11-03T16:08:51.0580950Z Finished uploading artifact content to blob storage!
+2026-11-03T16:08:51.0581769Z SHA256 digest of uploaded artifact is 8274ed0d4cd81aa40393d98affdca95ed6455404e240604a8f0213e97a09f5b0
+2026-11-03T16:08:51.0582541Z Finalizing artifact upload
+2026-11-03T16:08:51.6924194Z Artifact module-integration-diagnostics successfully finalized. Artifact ID 13247203455
+2026-11-03T16:08:51.6925099Z Artifact module-integration-diagnostics has been successfully uploaded! Final size is 342 bytes. Artifact ID is 13247203455
+2026-11-03T16:08:51.6927938Z Artifact download URL: https://github.com/Hexalith/Hexalith.Parties/actions/runs/41669840360/artifacts/13247203455
+2026-11-03T16:08:51.7035081Z ##[group]Run set -euo pipefail
+2026-11-03T16:08:51.7035430Z [36;1mset -euo pipefail[0m
+2026-11-03T16:08:51.7035721Z [36;1mif [ "$TEST_PLATFORM" = "vstest" ]; then[0m
+2026-11-03T16:08:51.7036134Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_VSTEST_FAILURE_COUNT" ]; then[0m
+2026-11-03T16:08:51.7036680Z [36;1m    echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'[0m
+2026-11-03T16:08:51.7037103Z [36;1m    exit 1[0m
+2026-11-03T16:08:51.7037312Z [36;1m  fi[0m
+2026-11-03T16:08:51.7037609Z [36;1melif [ "$TEST_PLATFORM" = "microsoft-testing-platform" ]; then[0m
+2026-11-03T16:08:51.7038044Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_MTP_FAILURE_COUNT" ]; then[0m
+2026-11-03T16:08:51.7038619Z [36;1m    echo '::error title=Missing test shard output::Tier 1 Microsoft.Testing.Platform did not report a failure count.'[0m
+2026-11-03T16:08:51.7039230Z [36;1m    exit 1[0m
+2026-11-03T16:08:51.7039480Z [36;1m  fi[0m
+2026-11-03T16:08:51.7039686Z [36;1mfi[0m
+2026-11-03T16:08:51.7039881Z [36;1m[0m
+2026-11-03T16:08:51.7040089Z [36;1mtotal_failures=0[0m
+2026-11-03T16:08:51.7040324Z [36;1mfor failure_count in \[0m
+2026-11-03T16:08:51.7040575Z [36;1m  "$UNIT_VSTEST_FAILURE_COUNT" \[0m
+2026-11-03T16:08:51.7040860Z [36;1m  "$UNIT_MTP_FAILURE_COUNT"; do[0m
+2026-11-03T16:08:51.7041135Z [36;1m  [ -z "$failure_count" ] && continue[0m
+2026-11-03T16:08:51.7041438Z [36;1m  if [[ ! "$failure_count" =~ ^[0-9]+$ ]]; then[0m
+2026-11-03T16:08:51.7041932Z [36;1m    printf '::error title=Invalid test shard output::Expected a numeric failure count, received %s.\n' "$failure_count"[0m
+2026-11-03T16:08:51.7042633Z [36;1m    exit 1[0m
+2026-11-03T16:08:51.7042849Z [36;1m  fi[0m
+2026-11-03T16:08:51.7043110Z [36;1m  total_failures=$((total_failures + 10#$failure_count))[0m
+2026-11-03T16:08:51.7043417Z [36;1mdone[0m
+2026-11-03T16:08:51.7043611Z [36;1m[0m
+2026-11-03T16:08:51.7043819Z [36;1mif [ "$total_failures" -ne 0 ]; then[0m
+2026-11-03T16:08:51.7044312Z [36;1m  printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\n' "$total_failures"[0m
+2026-11-03T16:08:51.7044763Z [36;1m  exit 1[0m
+2026-11-03T16:08:51.7044955Z [36;1mfi[0m
+2026-11-03T16:08:51.7063936Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T16:08:51.7064262Z env:
+2026-11-03T16:08:51.7064484Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:51.7064761Z   TEST_PLATFORM: microsoft-testing-platform
+2026-11-03T16:08:51.7066722Z   UNIT_TEST_PROJECTS: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T16:08:51.7068640Z   UNIT_VSTEST_FAILURE_COUNT: 
+2026-11-03T16:08:51.7068894Z   UNIT_MTP_FAILURE_COUNT: 
+2026-11-03T16:08:51.7069117Z ##[endgroup]
+2026-11-03T16:08:51.7118262Z ##[error]Tier 1 Microsoft.Testing.Platform did not report a failure count.
+2026-11-03T16:08:51.7119820Z ##[error]Process completed with exit code 1.
+2026-11-03T16:08:51.7161121Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-11-03T16:08:51.7161504Z with:
+2026-11-03T16:08:51.7161728Z   name: blocking-test-results
+2026-11-03T16:08:51.7162060Z   path: TestResults/**/*.trx
+TestResults/**/coverage.cobertura.xml
+
+2026-11-03T16:08:51.7162584Z   retention-days: 7
+2026-11-03T16:08:51.7162856Z   if-no-files-found: warn
+2026-11-03T16:08:51.7163095Z   compression-level: 6
+2026-11-03T16:08:51.7163331Z   overwrite: false
+2026-11-03T16:08:51.7163561Z   include-hidden-files: false
+2026-11-03T16:08:51.7163800Z   archive: true
+2026-11-03T16:08:51.7163999Z env:
+2026-11-03T16:08:51.7164209Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T16:08:51.7164451Z ##[endgroup]
+2026-11-03T16:08:51.8469424Z ##[warning]No files were found with the provided path: TestResults/**/*.trx
+TestResults/**/coverage.cobertura.xml. No artifacts will be uploaded.
+2026-11-03T16:08:51.8594961Z Post job cleanup.
+2026-11-03T16:08:51.9405412Z [command]/usr/bin/git version
+2026-11-03T16:08:51.9448579Z git version 2.56.0
+2026-11-03T16:08:51.9485341Z Temporarily overriding HOME='/home/runner/work/_temp/4461fc24-3475-4292-99ed-f07a8fe1958c' before making global git config changes
+2026-11-03T16:08:51.9486321Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T16:08:51.9490838Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T16:08:51.9520055Z Removing SSH command configuration
+2026-11-03T16:08:51.9526466Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T16:08:51.9556949Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T16:08:51.9805328Z Removing HTTP extra header
+2026-11-03T16:08:51.9810421Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T16:08:51.9840221Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T16:08:52.0097248Z Removing includeIf entries pointing to credentials config files
+2026-11-03T16:08:52.0104208Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.0139973Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T16:08:52.0565400Z Post job cleanup.
+2026-11-03T16:08:52.1403334Z [command]/usr/bin/git version
+2026-11-03T16:08:52.1445264Z git version 2.56.0
+2026-11-03T16:08:52.1479428Z Temporarily overriding HOME='/home/runner/work/_temp/0fd67e44-0897-40a8-897a-fb14a543c651' before making global git config changes
+2026-11-03T16:08:52.1480177Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T16:08:52.1485223Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T16:08:52.1515967Z Removing SSH command configuration
+2026-11-03T16:08:52.1522610Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T16:08:52.1555053Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T16:08:52.1795374Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T16:08:52.1830675Z Entering 'references/Hexalith.Builds'
+2026-11-03T16:08:52.1885389Z Entering 'references/Hexalith.Commons'
+2026-11-03T16:08:52.1930189Z Entering 'references/Hexalith.EventStore'
+2026-11-03T16:08:52.1983159Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T16:08:52.2024108Z Entering 'references/Hexalith.McpCli'
+2026-11-03T16:08:52.2093892Z Entering 'references/Hexalith.Memories'
+2026-11-03T16:08:52.2142079Z Entering 'references/Hexalith.Platform'
+2026-11-03T16:08:52.2214843Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T16:08:52.2252049Z Entering 'references/Hexalith.Tenants'
+2026-11-03T16:08:52.2303674Z Removing HTTP extra header
+2026-11-03T16:08:52.2308975Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T16:08:52.2337824Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T16:08:52.2542466Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T16:08:52.2577110Z Entering 'references/Hexalith.Builds'
+2026-11-03T16:08:52.2615444Z Entering 'references/Hexalith.Commons'
+2026-11-03T16:08:52.2649882Z Entering 'references/Hexalith.EventStore'
+2026-11-03T16:08:52.2697566Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T16:08:52.2742961Z Entering 'references/Hexalith.McpCli'
+2026-11-03T16:08:52.2799231Z Entering 'references/Hexalith.Memories'
+2026-11-03T16:08:52.2843368Z Entering 'references/Hexalith.Platform'
+2026-11-03T16:08:52.2905828Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T16:08:52.2941565Z Entering 'references/Hexalith.Tenants'
+2026-11-03T16:08:52.2990110Z Removing includeIf entries pointing to credentials config files
+2026-11-03T16:08:52.2997272Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3017611Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T16:08:52.3018190Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T16:08:52.3018627Z includeif.gitdir:/github/workspace/.git.path
+2026-11-03T16:08:52.3018974Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T16:08:52.3025079Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T16:08:52.3044410Z /home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:08:52.3054234Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-392b6370\-c567\-4fe0\-9a83\-a625ba529b8d\.config
+2026-11-03T16:08:52.3091360Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T16:08:52.3110585Z /home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:08:52.3120331Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-392b6370\-c567\-4fe0\-9a83\-a625ba529b8d\.config
+2026-11-03T16:08:52.3148535Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-03T16:08:52.3166442Z /github/runner_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:08:52.3173552Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-392b6370\-c567\-4fe0\-9a83\-a625ba529b8d\.config
+2026-11-03T16:08:52.3201119Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T16:08:52.3219761Z /github/runner_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config
+2026-11-03T16:08:52.3226457Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-392b6370\-c567\-4fe0\-9a83\-a625ba529b8d\.config
+2026-11-03T16:08:52.3254690Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T16:08:52.3470405Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T16:08:52.3487384Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.AI.Tools/config	remote.origin.url
+2026-11-03T16:08:52.3501098Z Entering 'references/Hexalith.Builds'
+2026-11-03T16:08:52.3517529Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config	remote.origin.url
+2026-11-03T16:08:52.3535766Z Entering 'references/Hexalith.Commons'
+2026-11-03T16:08:52.3551617Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config	remote.origin.url
+2026-11-03T16:08:52.3565802Z Entering 'references/Hexalith.EventStore'
+2026-11-03T16:08:52.3580941Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.EventStore/config	remote.origin.url
+2026-11-03T16:08:52.3607833Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T16:08:52.3622894Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.FrontComposer/config	remote.origin.url
+2026-11-03T16:08:52.3643809Z Entering 'references/Hexalith.McpCli'
+2026-11-03T16:08:52.3658691Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.McpCli/config	remote.origin.url
+2026-11-03T16:08:52.3693350Z Entering 'references/Hexalith.Memories'
+2026-11-03T16:08:52.3708857Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Memories/config	remote.origin.url
+2026-11-03T16:08:52.3731270Z Entering 'references/Hexalith.Platform'
+2026-11-03T16:08:52.3748386Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Platform/config	remote.origin.url
+2026-11-03T16:08:52.3788631Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T16:08:52.3805833Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.PolymorphicSerializations/config	remote.origin.url
+2026-11-03T16:08:52.3819901Z Entering 'references/Hexalith.Tenants'
+2026-11-03T16:08:52.3835106Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Tenants/config	remote.origin.url
+2026-11-03T16:08:52.3867838Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.AI.Tools/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3895844Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3919736Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3941857Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.EventStore/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3967022Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.FrontComposer/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.3990895Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.McpCli/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.4013985Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Memories/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.4037446Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Platform/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.4062175Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.PolymorphicSerializations/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.4090428Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Tenants/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T16:08:52.4110769Z Removing credentials config '/home/runner/work/_temp/git-credentials-392b6370-c567-4fe0-9a83-a625ba529b8d.config'
+2026-11-03T16:08:52.4241199Z Evaluate and set job outputs
+2026-11-03T16:08:52.4248119Z Cleaning up orphan processes
+

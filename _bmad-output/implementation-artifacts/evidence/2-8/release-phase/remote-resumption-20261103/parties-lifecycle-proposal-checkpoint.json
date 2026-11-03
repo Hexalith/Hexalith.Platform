@@ -1,0 +1,128 @@
+{
+  "classification": "dependent-source-proposal-no-hosted-credit",
+  "repository": "Hexalith/Hexalith.Parties",
+  "draftPr": "https://github.com/Hexalith/Hexalith.Parties/pull/60",
+  "source": {
+    "repository": "Hexalith/Hexalith.Parties",
+    "base": "f7ef3e23561b58c3dca38c787258e5b2d5fa0d86",
+    "head": "9270f5d969c84b548158227cfe77e376cad95d49",
+    "branch": "ci/lifecycle-qualification-proposal",
+    "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103",
+    "ownedPaths": [
+      "Hexalith.Parties.slnx",
+      "Hexalith.Parties.Standalone.slnx",
+      "module/hexalith.module-manifest.v2.json",
+      "scripts/render-platform-declaration.py",
+      ".github/workflows/ci-lifecycle-qualification.yml",
+      "scripts/qualify-disposable-ci.py",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs",
+      "tests/ci-lifecycle/test_qualification_controller.py",
+      "tests/ci-lifecycle/test_workflow_boundaries.py",
+      "docs/ci-lifecycle-qualification.md"
+    ],
+    "patch": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal.patch",
+    "localFixtureBuildBase": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+    "currentBasePackagePreparation": "refused HXW011/HXW009/HXW007 before provisioning",
+    "hostedQualification": false,
+    "candidateAcceptance": false
+  },
+  "changedFiles": 11,
+  "additions": 1306,
+  "deletions": 0,
+  "checks": {
+    "baseRefName": "main",
+    "headRefOid": "9270f5d969c84b548158227cfe77e376cad95d49",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "number": 60,
+    "state": "OPEN",
+    "statusCheckRollup": [],
+    "url": "https://github.com/Hexalith/Hexalith.Parties/pull/60"
+  },
+  "verification": {
+    "focusedControllerAndWorkflowTests": {
+      "passed": 17,
+      "failed": 0
+    },
+    "generatorCheck": 0,
+    "actionlint": 0,
+    "whitespace": 0,
+    "fixtureReleasePackageBuild": {
+      "base": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    "missingDescriptorGuard": {
+      "exitCode": 2,
+      "failure": "HXT106",
+      "total": 1,
+      "failed": 1,
+      "skipped": 0,
+      "servicesAllocated": false
+    },
+    "actualMainPreparation": {
+      "helperExitCode": 1,
+      "cliExitCode": 2,
+      "rules": [
+        "HXW011",
+        "HXW009",
+        "HXW007"
+      ],
+      "servicesAllocated": false
+    },
+    "commitlint": {
+      "version": "21.2.4",
+      "exitCode": 0
+    }
+  },
+  "limitations": [
+    "Published 4.43.4/4.43.5 still contain HXP020; corrected normally published official content and coherent genuinely released Platform/reference tuple remain prerequisite.",
+    "Current-main incoming Platform1080/Builds090 is unqualified; no pins or incoming gitlinks changed.",
+    "PR base advanced to d251e2c67900daa375768fad0365076c080a9bb8 during creation. Initial connector mergeable=false was superseded by the subsequent normal gh view MERGEABLE observation; no incoming revision was changed or re-reconciled. No hosted checks are yet listed.",
+    "Workflow not registered or dispatched; no real native allocation, cancellation or cleanup qualification yet.",
+    "Actual cancellation API request/response receipt must be joined independently with observed runner/terminal/withdrawal times.",
+    "Real OS lock interoperability, missed startup windows, peer timing and cleanup inventory remain fail-closed hosted observations.",
+    "Memory image source/revision binding remains unresolved as recorded by original story; this source proposal changes none."
+  ],
+  "candidateAcceptance": false,
+  "evidence": {
+    "parties-lifecycle-proposal.patch": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal.patch",
+      "sha256": "f2a5a63ee854075334e23366bfc9fc2cf0b7332948cfbbe4c97d86f016dfb9e6"
+    },
+    "parties-lifecycle-proposal-source.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-source.json",
+      "sha256": "a831fd4460669008211d498d880188d2f8ae72effa26ec63886ea1d6a1f9c659"
+    },
+    "parties-lifecycle-proposal-controls.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-controls.json",
+      "sha256": "234bd5f4a725e83dc761a1ad5b7a119ac43a676060b018ee08480e8c2d55ba9a"
+    },
+    "parties-lifecycle-proposal-pr.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-pr.json",
+      "sha256": "3f6a6f87e8c1e0689de1ae4b2df2151c56401c1b2c038b6980971b0c487dbfb0"
+    },
+    "parties-lifecycle-proposal-check-state.json": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-check-state.json",
+      "sha256": "24b23c72b3e4f22db68bdb0f5d1a5d60b6d369e994645f8ab50c0fe9a5c0b6f0"
+    },
+    "parties-lifecycle-fixture-build-cancellation.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-fixture-build-cancellation.txt",
+      "sha256": "1edc11485c78225d2150f5ec205b9bda350ec270691dc5e7e04ba77ddcf90007"
+    },
+    "parties-lifecycle-fixture-missing-descriptor.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-fixture-missing-descriptor.txt",
+      "sha256": "84e5c4b9e3509c34d8462e17a4fa47dec935c42871444f7d900001e7a96ac4ee"
+    },
+    "parties-lifecycle-proposal-commitlint.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-commitlint.txt",
+      "sha256": "0d63b4a292af3c0fdafda93393cf7bb2cc1c4d30505a3a90854d1876c3be3dbc"
+    },
+    "parties-lifecycle-proposal-preparation-first.txt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-preparation-first.txt",
+      "sha256": "8e5be671ccdd4e3836c6ecdd2ece04d5bfc5afbdc6e8e697fa5afb19ed9cbc81"
+    }
+  }
+}

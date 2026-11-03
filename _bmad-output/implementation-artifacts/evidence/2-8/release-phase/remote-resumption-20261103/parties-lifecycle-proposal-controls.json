@@ -1,0 +1,80 @@
+{
+  "base": "f7ef3e23561b58c3dca38c787258e5b2d5fa0d86",
+  "classification": "local-source-controls-only",
+  "controls": [
+    {
+      "name": "controller",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ci-lifecycle",
+        "-v"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-controller.txt"
+    },
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-declaration.txt"
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-workflow.txt"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-whitespace.txt"
+    }
+  ],
+  "actualMainPreparation": {
+    "command": [
+      "python3",
+      "-B",
+      "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "exitCode": 1,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-proposal-preparation-first.txt",
+    "workspace": "/home/administrator/.cache/hexalith/story-2-8/parties-lifecycle-proposal-preparation-7_b4_2py"
+  },
+  "submoduleStatus": [
+    " 1745b6663ad32bb1288167135ed0f979366c53a0 references/Hexalith.AI.Tools (heads/main)",
+    " 090797e333748b1a62db0a857d8d0f0e40b524fe references/Hexalith.Builds (090797e)",
+    " 11555ace9efcae2928a00122dcba91243e5a8a1a references/Hexalith.Commons (v2.30.10)",
+    " a9205f511b4f96b5daf94d65369d6dee63e0c623 references/Hexalith.EventStore (a9205f5)",
+    " fbe01c913cb863abb0fd4a317d370d36fff593b3 references/Hexalith.FrontComposer (fbe01c9)",
+    " 2e80701c31aafdf00abee05ac469a45ed76dfdf5 references/Hexalith.McpCli (2e80701)",
+    " d959bdae5af9c22f53573eda71c091cb5c0aae4c references/Hexalith.Memories (heads/main)",
+    " 1080e92c0eedfd5cbb048871da475eb0a6c71c86 references/Hexalith.Platform (v1.1.6~2)",
+    " bce4eb9f45c6b131b960ab4fa39e50ff01e51960 references/Hexalith.PolymorphicSerializations (heads/main)",
+    " 33835a03e92579a26400e7cb7cf68d666c715b3e references/Hexalith.Tenants (heads/main)"
+  ],
+  "nativeServicesAllocated": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "gh",
+    "workflow",
+    "run",
+    "tuple-ci.yml",
+    "--repo",
+    "Hexalith/Hexalith.Platform",
+    "--ref",
+    "fix/adopt-builds-4436",
+    "-f",
+    "candidate-sha=942472bc875f08d600cbef5b74e45b3cae175587"
+  ],
+  "exitCode": 0,
+  "observedAt": "2026-11-03T17:23:32.389901+00:00",
+  "output": "",
+  "capabilityFallback": "GitHub connector has no workflow-dispatch operation"
+}

@@ -1,0 +1,18 @@
+{
+  "classification": "coherent9c-exact-source-byte-compile-diagnostic-only",
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+    "--configuration",
+    "Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true"
+  ],
+  "root": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-observation-compile-20261103",
+  "exitCode": 0,
+  "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-crlf-release-build.txt",
+  "nativeServicesAllocated": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

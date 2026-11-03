@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-03T16:03:06.764045+00:00",
+  "source": "5522749f3793db092318612c7edb83b345657ff0",
+  "pr": 60,
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103",
+  "cleanSourceBeforeAndAfter": true,
+  "allPhasePatchRead": true,
+  "phasePatchSha256": "5796586d45dd9c43b02baf9e2c8d64ca243564a4a491689eaf291c1517220b10",
+  "allPriorParentFindingsAddressed": true,
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/ci-lifecycle",
+    "-v"
+  ],
+  "exitCode": 0,
+  "passed": 32,
+  "failed": 0,
+  "skipped": 0,
+  "outputFile": "parent-parties-lifecycle-552-controls.txt",
+  "outputSha256": "bca6986f0e8b8d88ce00a739e9496ac59200110c9957abc9e6c589a860c11ecf",
+  "controllerSha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+  "frozenIntentSha256": "19044c59bdc8f93eee27bb766b6985fbc2f908f8e9764bebaeb72ecb908d9b0a",
+  "actualProcessControlsAreLocalOnly": true,
+  "nativeServicesAllocated": false,
+  "hostedAcceptance": false,
+  "candidateAcceptance": false
+}

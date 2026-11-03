@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-11-03T17:21:30.111874+00:00",
+  "source": "e42448ab0a94f88d2f92436c8c023edf56f5d223",
+  "runId": 41677316331,
+  "attempt": 1,
+  "job": 126061565527,
+  "artifact": 13253640373,
+  "artifactSha256": "995c604fc4390d98a6faf072f9fa6dd0787be9304c87bbe291ae2bac1ce196c6",
+  "archive": "/home/administrator/.cache/hexalith/story-2-8/parties-e424-hosted-ci-20261103/module-integration-diagnostics.zip",
+  "cleanup": {
+    "executionContext": {
+      "disposable": true,
+      "jobId": "build-and-test",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "41677316331"
+    },
+    "status": "not-allocated"
+  },
+  "primaryRefusal": [
+    "HXW009 Builds725 versus genuine Platform8ea/v1.1.6 pin89",
+    "HXW010 tool4.43.4 outside genuine Platform range[4.43.5,5.0.0-0)"
+  ],
+  "otherOwnerJobs": "all six passed, including declaration correction",
+  "appChecks": "CodeQL, commitlint and dependency review passed; release candidate skipped",
+  "localIOTestsAreNotNativeCredit": true,
+  "isolatedTestsExecutedInBlockedJob": false,
+  "nativeAllocation": false,
+  "nativeCleanupAcceptance": false,
+  "candidateAcceptance": false
+}

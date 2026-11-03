@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-03T16:14:03.422195+00:00",
+  "head": "5522749f3793db092318612c7edb83b345657ff0",
+  "run": 41669840360,
+  "attempt": 1,
+  "firstFailures": [
+    {
+      "job": 126035625097,
+      "kind": "source contract test still enumerates only two old profiles",
+      "file": "scripts/test_platform_declaration.py",
+      "test": "test_declared_suites_consume_platform_without_apphost_or_doubles"
+    },
+    {
+      "job": 126035626225,
+      "kind": "genuine HXW011/HXW009 before allocation; selected Builds725 vs Platform1080 bound269"
+    }
+  ],
+  "artifact": {
+    "id": 13247203455,
+    "sha256": "8274ed0d4cd81aa40393d98affdca95ed6455404e240604a8f0213e97a09f5b0",
+    "files": {
+      "cleanup.json": {
+        "executionContext": {
+          "disposable": true,
+          "jobId": "build-and-test",
+          "kind": "ci",
+          "operatingSystem": "Linux",
+          "repository": "Hexalith/Hexalith.Parties",
+          "runnerKind": "github-hosted",
+          "workflowAttempt": 1,
+          "workflowRunId": "41669840360"
+        },
+        "status": "not-allocated"
+      }
+    }
+  },
+  "jobLogHashes": {
+    "126035625097": "369121360b163662ea7cfdb338fad3365e2e7b5e8e53a355397ddd38d1a3291f",
+    "126035626225": "dd5ff5295080de09b8a08783102dc324bcfd593c2eeb42685a60fd6bcb07ad24"
+  },
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

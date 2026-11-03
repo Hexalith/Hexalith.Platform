@@ -1,0 +1,82 @@
+{
+  "at": "2026-11-03T15:37:53.855096+00:00",
+  "source": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "main": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "sourceCi": {
+    "id": 41661561500,
+    "head_sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "status": "queued",
+    "conclusion": null,
+    "event": "push",
+    "run_attempt": 1
+  },
+  "checks": [
+    {
+      "id": 126019926879,
+      "name": "Build and test",
+      "status": "queued",
+      "conclusion": null,
+      "app": 15368
+    },
+    {
+      "id": 126006821500,
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 12526
+    },
+    {
+      "id": 126005789301,
+      "name": "Dependency review",
+      "status": "completed",
+      "conclusion": "skipped",
+      "app": 15368
+    },
+    {
+      "id": 126005787433,
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005787168,
+      "name": "Python contract tests",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005787067,
+      "name": ".NET tests",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005786972,
+      "name": "Build and package contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005786415,
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005785947,
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "app": 15368
+    }
+  ],
+  "activePublicationRuns": [],
+  "allMainGatesGreen": false,
+  "parentDispatched": false,
+  "candidateAcceptance": false
+}

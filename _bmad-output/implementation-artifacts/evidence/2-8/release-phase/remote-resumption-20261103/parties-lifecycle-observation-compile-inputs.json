@@ -1,0 +1,42 @@
+{
+  "classification": "coherent9c-source-package-compile-diagnostic-only",
+  "base": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "root": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-observation-compile-20261103",
+  "source": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103",
+  "copies": {
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": {
+      "sha256": "bc3eca11c77e2286185fc8bab472b7e0ed576dde4aab2d43d2eaef0d09d5c08e",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs": {
+      "sha256": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs": {
+      "sha256": "68c354f7c14dd041626b62116bed8bfc223cb00f684c1f822114cae5cf5f5fc3",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": {
+      "sha256": "e1457e7855ede6b8c88a9750c93d169bb6e115cbeea2663cc29a48c80db336bc",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": {
+      "sha256": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "matchesProposedSource": true
+    }
+  },
+  "preparation": {
+    "command": [
+      "python3",
+      "-B",
+      "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "exitCode": 1,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-coherent-preparation-first.txt",
+    "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/parties-observation-coherent-preparation-0_d81_wz/github-env"
+  },
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

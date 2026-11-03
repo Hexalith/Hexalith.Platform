@@ -1,0 +1,107 @@
+diff --git a/scripts/qualify-disposable-ci.py b/scripts/qualify-disposable-ci.py
+index d74b3312..0875f523 100755
+--- a/scripts/qualify-disposable-ci.py
++++ b/scripts/qualify-disposable-ci.py
+@@ -622,6 +622,22 @@ class Qualification:
+                      parentApiReceiptRequired=True, candidateAcceptance=False)
+         require(classification == 'cancelled', 'Preserved prior product failure supplies no cancellation qualification')
+ 
++    def cleanup_owned(self, item, owner, job_status):
++        resume_failure = None
++        try:
++            self.resume_host(item)
++        except (OSError, ValueError, KeyError, TypeError) as error:
++            resume_failure = {'failureType': type(error).__name__, 'failureObservedAtUtc': now()}
++        try:
++            self.down(item, 'independent-finalizer', job_status=job_status)
++        finally:
++            try:
++                HELPER.retain_artifacts(owner, private_directory(self.evidence / item['label']))
++            finally:
++                if resume_failure is not None:
++                    self.observe('owned-host-resume-unverified', ownerRunId=owner['runId'], **resume_failure)
++        return resume_failure
++
+     def finalize_owner(self, item, job_status, issued):
+         launch_error = None
+         if not Path(item['receipt']).exists():
+@@ -647,12 +663,11 @@ class Qualification:
+                 self.observe('terminal-before-independent-finalization', ownerRunId=owner['runId'], firstOutcome=prior)
+             except (OSError, ValueError, KeyError, TypeError):
+                 prior_error = True
+-        self.resume_host(item)
+-        self.down(item, 'independent-finalizer', job_status=job_status)
+-        HELPER.retain_artifacts(owner, private_directory(self.evidence / item['label']))
++        resume_failure = self.cleanup_owned(item, owner, job_status)
+         require(launch_error is None, 'Exact receipt cleanup ran, but launch process recovery remains unverified')
+         self.settled_child(item)
+         require(not prior_error, 'The pre-cleanup first outcome could not be verified')
++        require(resume_failure is None, 'Exact cleanup ran, but owned host resume bookkeeping remains unverified')
+         if item.get('cancellationPhase'):
+             self.finalize_cancellation(item, item.get('terminalBeforeSignalForward', prior), job_status)
+         return True
+diff --git a/tests/ci-lifecycle/test_qualification_controller.py b/tests/ci-lifecycle/test_qualification_controller.py
+index 55dcebba..6765c2ba 100644
+--- a/tests/ci-lifecycle/test_qualification_controller.py
++++ b/tests/ci-lifecycle/test_qualification_controller.py
+@@ -191,6 +191,60 @@ class ControllerSafetyTests(unittest.TestCase):
+                 self.assertEqual(controller.finalize('cancelled'), 1)
+                 self.assertEqual(down.call_count, 2)
+ 
++    def test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty(self):
++        # Explicit result-field/unit receipt doubles; no actual CI identity or native owner is created.
++        for failure in (ProcessLookupError('unit exit-before-SIGCONT race'), KeyError('unit malformed pause'),
++                        ValueError('unit unsafe pause bookkeeping')):
++            with self.subTest(failure=type(failure).__name__), tempfile.TemporaryDirectory() as temporary:
++                controller = object.__new__(Q.Qualification)
++                directory = Path(temporary)
++                receipt = directory / 'unit-receipt'
++                receipt.write_text('unit double, not a CI receipt')
++                controller.journal = {'owners': [{'label': 'passing', 'receipt': str(receipt)},
++                                                 {'label': 'peer', 'receipt': str(receipt)}]}
++                controller.evidence = directory
++                controller.issued = lambda _: {'runId': 'a' * 32}
++                controller.diagnostics = lambda _: directory
++                controller.recover_launch = lambda _: None
++                controller.settled_child = lambda _: None
++                observations = []
++                controller.observe = lambda kind, **value: observations.append({'kind': kind, **value})
++                with patch.object(controller, 'resume_host', side_effect=failure), \
++                     patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain:
++                    self.assertEqual(controller.finalize('cancelled'), 1)
++                self.assertEqual(down.call_count, 2)
++                self.assertEqual(retain.call_count, 2)
++                resumes = [value for value in observations if value['kind'] == 'owned-host-resume-unverified']
++                self.assertEqual(len(resumes), 2)
++                self.assertTrue(all(value['failureType'] == type(failure).__name__ for value in resumes))
++                self.assertEqual(observations[-1]['issuedOwners'], 2)
++                self.assertEqual(len(observations[-1]['failures']), 2)
++                self.assertFalse(observations[-1]['issuedOwnersCleanupVerified'])
++                self.assertFalse(observations[-1]['candidateAcceptance'])
++
++    def test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            controller = object.__new__(Q.Qualification)
++            directory = Path(temporary)
++            receipt = directory / 'unit-receipt'
++            receipt.write_text('unit double, not a CI receipt')
++            controller.journal = {'owners': [{'label': 'passing', 'receipt': str(receipt)},
++                                             {'label': 'peer', 'receipt': str(receipt)}]}
++            controller.evidence = directory
++            controller.issued = lambda _: {'runId': 'a' * 32}
++            controller.diagnostics = lambda _: directory
++            controller.recover_launch = lambda _: None
++            observations = []
++            controller.observe = lambda kind, **value: observations.append({'kind': kind, **value})
++            with patch.object(controller, 'resume_host', side_effect=ProcessLookupError('unit vanished process')), \
++                 patch.object(controller, 'down', side_effect=ValueError('unit exact down refusal')) as down, \
++                 patch.object(Q.HELPER, 'retain_artifacts') as retain:
++                self.assertEqual(controller.finalize('cancelled'), 1)
++            self.assertEqual(down.call_count, 2)
++            self.assertEqual(retain.call_count, 2)
++            self.assertEqual(len([value for value in observations if value['kind'] == 'owned-host-resume-unverified']), 2)
++            self.assertFalse(observations[-1]['issuedOwnersCleanupVerified'])
++
+     def test_finite_admission_and_retry_cannot_replace_the_original_expiry(self):
+         accepted = datetime.now(timezone.utc)
+         attachment = {'ownerRunId': 'a' * 32, 'attachedRunId': 'b' * 32,

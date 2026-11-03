@@ -1,0 +1,88 @@
+{
+  "at": "2026-11-03T15:21:54.774951+00:00",
+  "rootHead": "247fbdd06f882a55c3ed86d1004b7c567bc446e3",
+  "parentCommittedOrUpdatedCanonicalDependencies": false,
+  "directDependencies": [
+    {
+      "path": "references/Hexalith.Builds",
+      "recorded": "89f62052c932d054bda2b435bdfef60d96e77612",
+      "checkout": "89f62052c932d054bda2b435bdfef60d96e77612",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Parties",
+      "recorded": "f1bf359383b225df14ac2b98bcc6f8a8479c9437",
+      "checkout": "f1bf359383b225df14ac2b98bcc6f8a8479c9437",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.EventStore",
+      "recorded": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "checkout": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "status": ""
+    }
+  ],
+  "partiesIncoming": {
+    "source": "f7ef3e23561b58c3dca38c787258e5b2d5fa0d86",
+    "commits": [
+      {
+        "sha": "35be99dbe6d65327dd91b0b41c57841b68e1bff2",
+        "message": "docs: record story 8.7 prerequisite evidence\n\nRecord the closed G5 prerequisite and retained local protection.\nKeep extraction blocked until owner delivery and parity proof."
+      },
+      {
+        "sha": "f7ef3e23561b58c3dca38c787258e5b2d5fa0d86",
+        "message": "build: sync local changes via /pushall\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+      }
+    ],
+    "allChangedPaths": [
+      "_bmad-output/implementation-artifacts/8-7-data-protection-extraction.md",
+      "_bmad-output/implementation-artifacts/epic-8-context.md",
+      "_bmad-output/implementation-artifacts/spec-8-7-data-protection-extraction-6.md",
+      "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/README.md",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/audit.json",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/audit.py",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/commit-validation.json",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/source-build.log.txt",
+      "_bmad-output/implementation-artifacts/tests/story-8-7-g5-2026-11-03/source-mapping.json",
+      "_bmad-output/implementation-artifacts/tests/test-summary.md",
+      "references/Hexalith.Builds",
+      "references/Hexalith.EventStore",
+      "references/Hexalith.FrontComposer",
+      "references/Hexalith.McpCli",
+      "references/Hexalith.Memories",
+      "references/Hexalith.Platform",
+      "references/Hexalith.Tenants"
+    ],
+    "dependencyChanges": [
+      {
+        "path": "references/Hexalith.Builds",
+        "patch": "@@ -1 +1 @@\n-Subproject commit 26991e8c542704be44cd8d9f58084d56fa627adb\n+Subproject commit 090797e333748b1a62db0a857d8d0f0e40b524fe"
+      },
+      {
+        "path": "references/Hexalith.EventStore",
+        "patch": "@@ -1 +1 @@\n-Subproject commit 7c93a1234d14c66f5ee85ed48caaee1d30a671f3\n+Subproject commit a9205f511b4f96b5daf94d65369d6dee63e0c623"
+      },
+      {
+        "path": "references/Hexalith.FrontComposer",
+        "patch": "@@ -1 +1 @@\n-Subproject commit 07089dcbdad784a1d53037e9cea78d1d7becd8d6\n+Subproject commit fbe01c913cb863abb0fd4a317d370d36fff593b3"
+      },
+      {
+        "path": "references/Hexalith.McpCli",
+        "patch": "@@ -1 +1 @@\n-Subproject commit 3bc89642ad43305531c4018b75b5e1b9e0681e10\n+Subproject commit 2e80701c31aafdf00abee05ac469a45ed76dfdf5"
+      },
+      {
+        "path": "references/Hexalith.Memories",
+        "patch": "@@ -1 +1 @@\n-Subproject commit e8956eb5c1bd49297f86702f9606eb9b013bc2f1\n+Subproject commit d959bdae5af9c22f53573eda71c091cb5c0aae4c"
+      },
+      {
+        "path": "references/Hexalith.Platform",
+        "patch": "@@ -1 +1 @@\n-Subproject commit bf101b9d5f19ba741852b0230e526d1f01422022\n+Subproject commit 1080e92c0eedfd5cbb048871da475eb0a6c71c86"
+      },
+      {
+        "path": "references/Hexalith.Tenants",
+        "patch": "@@ -1 +1 @@\n-Subproject commit 4d0d599879767196928e1c265622483a62b457ae\n+Subproject commit 33835a03e92579a26400e7cb7cf68d666c715b3e"
+      }
+    ]
+  }
+}

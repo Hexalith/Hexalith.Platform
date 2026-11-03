@@ -1,0 +1,112 @@
+{
+  "at": "2026-11-03T15:42:49.882510+00:00",
+  "source": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "main": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+  "sourceCi": {
+    "id": 41661561500,
+    "head_sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "event": "push",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "checks": [
+    {
+      "id": 126019926879,
+      "name": "Build and test",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126006821500,
+      "name": "SonarCloud Code Analysis",
+      "conclusion": "success",
+      "app": 12526
+    },
+    {
+      "id": 126005789301,
+      "name": "Dependency review",
+      "conclusion": "skipped",
+      "app": 15368
+    },
+    {
+      "id": 126005787433,
+      "name": "CodeQL / analyze",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005787168,
+      "name": "Python contract tests",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005787067,
+      "name": ".NET tests",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005786972,
+      "name": "Build and package contracts",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005786415,
+      "name": "Package catalog contracts",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 126005785947,
+      "name": "commitlint / commitlint",
+      "conclusion": "success",
+      "app": 15368
+    }
+  ],
+  "jobs": [
+    {
+      "id": 126005786415,
+      "name": "Package catalog contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 126005786972,
+      "name": "Build and package contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 126005787067,
+      "name": ".NET tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 126005787168,
+      "name": "Python contract tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 126005787433,
+      "name": "CodeQL / analyze",
+      "conclusion": "success"
+    },
+    {
+      "id": 126005789301,
+      "name": "Dependency review",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 126019926879,
+      "name": "Build and test",
+      "conclusion": "success"
+    }
+  ],
+  "activePublicationRuns": [],
+  "selection": "codex-agent current-source selection under persisted prerequisite release authorization; no human ratification fabricated",
+  "normalProtectedPublicationRequired": true,
+  "version": "not assumed; existing semantic-release selects actual version",
+  "candidateAcceptance": false
+}

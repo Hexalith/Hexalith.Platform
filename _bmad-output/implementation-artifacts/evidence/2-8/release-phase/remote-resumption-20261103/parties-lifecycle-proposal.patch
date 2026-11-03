@@ -1,0 +1,1392 @@
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+new file mode 100644
+index 00000000..cb4b4c2f
+--- /dev/null
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -0,0 +1,172 @@
++name: Disposable CI lifecycle qualification
++
++on:
++  workflow_dispatch:
++    inputs:
++      scenario:
++        description: Explicit real-service scenario; cancellation is performed by the operator
++        required: true
++        type: choice
++        options: [matrix, cancel-startup, cancel-execution]
++
++permissions:
++  contents: read
++
++# Every dispatch is a separate observation. Never cancel another qualification owner implicitly.
++concurrency:
++  group: lifecycle-${{ github.run_id }}
++  cancel-in-progress: false
++
++jobs:
++  baseline:
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb
++    with:
++      solution: Hexalith.Parties.Standalone.slnx
++      module-manifest: module/hexalith.module-manifest.v2.json
++      integration-test-profiles: platform-package
++      test-platform: microsoft-testing-platform
++      run-consumer-validation: true
++      run-coverage-gate: false
++      unit-test-projects: |
++        tests/Hexalith.Parties.Aspire.Tests
++        tests/Hexalith.Parties.Contracts.Tests
++        tests/Hexalith.Parties.Authentication.Tests
++        tests/Hexalith.Parties.Client.Tests
++        tests/Hexalith.Parties.Server.Tests
++        tests/Hexalith.Parties.Projections.Tests
++        tests/Hexalith.Parties.Security.Tests
++        tests/Hexalith.Parties.AdminPortal.Tests
++        tests/Hexalith.Parties.ConsumerPortal.Tests
++        tests/Hexalith.Parties.UI.Tests
++        tests/Hexalith.Parties.Picker.Tests
++        tests/Hexalith.Parties.Mcp.Tests
++        tests/Hexalith.Parties.Tests
++        tests/Hexalith.Parties.Sample.Tests
++        tests/Hexalith.Parties.Ci.Tests
++      build-timeout-minutes: 60
++    secrets:
++      registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}
++      registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}
++
++  qualification:
++    needs: baseline
++    runs-on: ubuntu-24.04
++    timeout-minutes: 45
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
++        with:
++          submodules: false
++      - name: Initialize only direct owner dependencies
++        run: git -c submodule.recurse=false submodule update --init --depth 1
++      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
++        with:
++          global-json-file: global.json
++      - name: Prepare the actual pinned package tool and catalog
++        run: python3 -B references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py --manifest module/hexalith.module-manifest.v2.json
++      - name: Build the explicit declared lifecycle suite
++        run: dotnet build tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
++      - name: Read verified catalog toolchain versions
++        run: |
++          python3 - <<'PY'
++          import os
++          from pathlib import Path
++          from xml.etree import ElementTree as ET
++          root = ET.parse('references/Hexalith.Builds/Props/Directory.Packages.props').getroot()
++          with Path(os.environ['GITHUB_ENV']).open('a') as output:
++              for name, property_name in [('CI_ASPIRE_VERSION', 'HexalithAspireAppHostSdkVersion'), ('CI_DAPR_CLI_VERSION', 'HexalithDaprCliVersion'), ('CI_DAPR_RUNTIME_VERSION', 'HexalithDaprRuntimeVersion')]:
++                  value = root.find('.//' + property_name).text
++                  if not value or any(character not in '0123456789.-abcdefghijklmnopqrstuvwxyz' for character in value):
++                      raise ValueError('Invalid verified catalog toolchain version')
++                  output.write(name + '=' + value + '\n')
++          PY
++      - name: Install toolchain without provisioning services
++        run: |
++          set -euo pipefail
++          tools="$RUNNER_TEMP/hexalith-lifecycle-tools"
++          dapr_home="$RUNNER_TEMP/hexalith-lifecycle-dapr"
++          mkdir -p "$tools" "$dapr_home/tools" "$dapr_home/.dapr/bin"
++          dotnet tool install --tool-path "$tools" Aspire.Cli --version "$CI_ASPIRE_VERSION"
++          curl --fail --location --proto '=https' --proto-redir '=https' "https://github.com/dapr/cli/releases/download/v$CI_DAPR_CLI_VERSION/dapr_linux_amd64.tar.gz" -o "$RUNNER_TEMP/lifecycle-dapr-cli.tar.gz"
++          tar -xzf "$RUNNER_TEMP/lifecycle-dapr-cli.tar.gz" -C "$dapr_home/tools" dapr
++          for binary in daprd placement scheduler; do
++            curl --fail --location --proto '=https' --proto-redir '=https' "https://github.com/dapr/dapr/releases/download/v$CI_DAPR_RUNTIME_VERSION/${binary}_linux_amd64.tar.gz" -o "$RUNNER_TEMP/lifecycle-$binary.tar.gz"
++            tar -xzf "$RUNNER_TEMP/lifecycle-$binary.tar.gz" -C "$dapr_home/.dapr/bin" "$binary"
++          done
++          echo "$tools" >> "$GITHUB_PATH"
++          echo "HEXALITH_DAPR_HOME=$dapr_home" >> "$GITHUB_ENV"
++      - name: Configure only the dedicated pull reader
++        env:
++          REGISTRY_READER_USERNAME: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}
++          REGISTRY_READER_PASSWORD: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}
++        run: |
++          python3 - <<'PY'
++          import base64
++          import json
++          import os
++          import tempfile
++          from pathlib import Path
++          username, password = (os.environ[key] for key in ['REGISTRY_READER_USERNAME', 'REGISTRY_READER_PASSWORD'])
++          if not username or not password:
++              raise ValueError('Dedicated pull-only reader is required')
++          directory = Path(tempfile.mkdtemp(prefix='hexalith-lifecycle-registry.', dir=Path(os.environ['RUNNER_TEMP']).resolve(strict=True)))
++          with Path(os.environ['GITHUB_ENV']).open('a') as output:
++              output.write(f'DOCKER_CONFIG={directory}\nHEXALITH_LIFECYCLE_REGISTRY_CONFIG={directory}\n')
++          token = base64.b64encode((username + ':' + password).encode()).decode()
++          descriptor = os.open(directory / 'config.json', os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
++          with os.fdopen(descriptor, 'w') as output:
++              json.dump({'auths': {'registry.hexalith.com': {'auth': token}}}, output)
++          PY
++      - name: Exercise real passing failing partial-startup and exact retry scenarios
++        if: ${{ inputs.scenario == 'matrix' }}
++        run: python3 -B scripts/qualify-disposable-ci.py matrix
++      - name: Observe actual startup cancellation readiness
++        if: ${{ inputs.scenario == 'cancel-startup' }}
++        run: python3 -B scripts/qualify-disposable-ci.py start-cancellation --phase startup
++      - name: Observe actual execution cancellation readiness and active hold
++        if: ${{ inputs.scenario == 'cancel-execution' }}
++        run: python3 -B scripts/qualify-disposable-ci.py start-cancellation --phase execution
++      - name: Publish the actual ready owner before operator cancellation
++        if: ${{ inputs.scenario != 'matrix' }}
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++        with:
++          name: lifecycle-cancellation-ready
++          path: TestResults/ci-lifecycle
++          if-no-files-found: error
++          retention-days: 14
++      - name: Await parent cancellation of this exact ready run
++        if: ${{ inputs.scenario != 'matrix' }}
++        run: python3 -B scripts/qualify-disposable-ci.py wait-cancellation
++      - name: Independently finalize every exact same-job owner
++        if: always()
++        env:
++          ACTUAL_JOB_STATUS: ${{ job.status }}
++        run: |
++          if [ -f "$RUNNER_TEMP/hexalith-ci-qualification/journal.json" ]; then
++            python3 -B scripts/qualify-disposable-ci.py finalize --job-status "$ACTUAL_JOB_STATUS"
++          fi
++      - name: Remove the private reader file
++        if: always()
++        run: |
++          python3 - <<'PY'
++          import os
++          from pathlib import Path
++          value = os.environ.get('HEXALITH_LIFECYCLE_REGISTRY_CONFIG')
++          if value:
++              path = Path(value)
++              root = Path(os.environ['RUNNER_TEMP']).resolve(strict=True)
++              if path.parent != root or not path.name.startswith('hexalith-lifecycle-registry.') or path.is_symlink():
++                  raise ValueError('Refusing a foreign credential directory')
++              config = path / 'config.json'
++              if config.is_symlink():
++                  raise ValueError('Refusing a linked credential file')
++              config.unlink(missing_ok=True)
++              path.rmdir()
++          PY
++      - name: Retain classified lifecycle observations
++        if: always()
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++        with:
++          name: ci-lifecycle-observations
++          path: TestResults/ci-lifecycle
++          if-no-files-found: warn
++          retention-days: 14
+diff --git a/Hexalith.Parties.Standalone.slnx b/Hexalith.Parties.Standalone.slnx
+index d7ec00f6..4dd096ba 100644
+--- a/Hexalith.Parties.Standalone.slnx
++++ b/Hexalith.Parties.Standalone.slnx
+@@ -37,6 +37,9 @@
+     <Project Path="tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj">
+       <Build Project="false" />
+     </Project>
++    <Project Path="tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj">
++      <Build Project="false" />
++    </Project>
+     <Project Path="tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj" />
+     <Project Path="tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj" />
+     <Project Path="tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj" />
+diff --git a/Hexalith.Parties.slnx b/Hexalith.Parties.slnx
+index efce64cc..a5055ef5 100644
+--- a/Hexalith.Parties.slnx
++++ b/Hexalith.Parties.slnx
+@@ -84,6 +84,9 @@
+     <Project Path="tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj">
+       <Build Project="false" />
+     </Project>
++    <Project Path="tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj">
++      <Build Project="false" />
++    </Project>
+     <Project Path="tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj" />
+     <Project Path="tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj" />
+     <Project Path="tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj" />
+diff --git a/docs/ci-lifecycle-qualification.md b/docs/ci-lifecycle-qualification.md
+new file mode 100644
+index 00000000..41ca1649
+--- /dev/null
++++ b/docs/ci-lifecycle-qualification.md
+@@ -0,0 +1,81 @@
++# Disposable CI lifecycle qualification
++
++This manual workflow is a dependent, **baseline-only** diagnostic proposal for
++Story 2.8. It grants no candidate acceptance or loaded-backend identity credit.
++The current 4.43.4/269 workflow/tool pins are deliberately unchanged. Published
++4.43.4 and 4.43.5 cannot allocate in the required direct-only checkout because of
++HXP020. A normally published corrected producer, qualified official archives,
++coherent genuinely released Platform tuple and normal owner adoption are required
++before dispatch. Preserve incoming root gitlinks; source preparation is not tuple
++qualification. Never initialize nested dependencies or substitute source runtime.
++
++The workflow must first be registered through normal main/source gates. After
++registration, the operator checks all normal exact-source CI gates, dispatches
++`.github/workflows/ci-lifecycle-qualification.yml` on that exact reviewed source,
++and records repository, revision, run, attempt and qualification job identities.
++The baseline job retains all 15 isolated projects, package consumers and required
++`platform-package` real-service suite. Its failure prevents the qualification job.
++Only the two dedicated pull-reader secrets are mapped; provider and publisher
++credentials are not used.
++
++| Input | Real observation |
++| --- | --- |
++| `matrix` | Passing and intentionally failing persistence suites; compatible same-job finite admission, explicitly disjoint negative context, completed-owner refusal; real owner-scoped metadata lock refusals and exact retry while an active peer remains functional; killed partial startup and exact recovery. |
++| `cancel-startup` | Durable issued receipt, actual Starting AppHost and owned containers; only the issued AppHost is paused to expose the real startup window. |
++| `cancel-execution` | Real gateway/Tenants/Memories and persisted EventStore assertions, native execution checkpoint and actual accepted 240-second hold. |
++
++The dedicated fixture reuses `PartyEnvironmentTests`' existing real persistence
++assertions. Missing descriptors or explicit controls fail, never skip. A passing
++release of the active peer reruns persistence assertions. The declared execution
++limit is 300 seconds, fixture bound 240 seconds and production stop limit remains
++90 seconds. Slow startup or a missed window fails explicitly; no retry-to-green
++or timeout extension supplies credit.
++
++For each cancellation dispatch, fetch **that run's**
++`lifecycle-cancellation-ready` artifact before cancelling. Verify actual source,
++repository/run/attempt/job, issued owner identity, phase and timestamps against
++the live job and its wait step. Execution readiness must include the fixture's
++real persistence marker and the unexpired original admission. Only the parent
++operator may call GitHub's normal cancel API for that exact ready run. Save the
++API request/response and actual UTC request time separately; the controller does
++not cancel workflows. A missing readiness artifact, expired hold or already
++terminal owner means no cancellation credit.
++
++The wait step permits 120 seconds for actual SIGINT/SIGTERM. It saves observed
++signals and any first terminal record before forwarding SIGINT to only the
++receipt-bound process group it created. Signal observation is **not** the API
++request time. The independent `always()` finalizer uses actual `job.status`,
++resumes only the recorded owned AppHost, invokes exact public `down --run-id`,
++and requires verified empty container/process/workspace/claim/discovery lists.
++It also checks the controller-owned invocation has exited. Every sibling is
++handled separately even when another fails.
++
++Cancellation requires actual `cancelled`/`Cancelled` terminal status/outcome and
++UTC time after the observed signal, original execution admission, durable
++`ci-job-cancelled` withdrawal before its original expiry, then identical first
++outcome/time and withdrawal/expiry through exact-owner retry. A pre-existing
++product failure is preserved and reported as preceding the observed signal;
++it supplies no cancellation credit. Join its actual terminal time with the
++parent's API receipt to establish whether it truly preceded cancellation.
++Missing timing, changed first fields, unknown discovery or leftovers fails.
++
++`TestResults/ci-lifecycle` retains classified public command results, tool-manifest
++and mapping identities, real image reference/content IDs, receipt-issued owner
++metadata, admission/withdrawal observations and safe producer reports outside
++removed workspaces. Private descriptors, credentials and raw child stderr are
++excluded. Artifact absence after cancellation remains an explicit evidence gap;
++never infer cleanup from a cancelled job or a missing container list.
++
++Local controls (no service allocation and no hosted credit):
++
++```bash
++python3 -B -m unittest discover -s tests/ci-lifecycle -v
++python3 -B scripts/render-platform-declaration.py --check
++actionlint .github/workflows/ci-lifecycle-qualification.yml
++```
++
++Build the explicit LifecycleTests project only after supported pinned package
++preparation, using Release/package imports. Both ordinary solution builds keep
++this opt-in qualification project excluded. Record every genuine first outcome,
++including dependency or public API refusals. No schema, production fault hook,
++local retention policy, accepted pin or attached-suite execution is introduced.
+diff --git a/module/hexalith.module-manifest.v2.json b/module/hexalith.module-manifest.v2.json
+index df996102..3d6d716f 100644
+--- a/module/hexalith.module-manifest.v2.json
++++ b/module/hexalith.module-manifest.v2.json
+@@ -404,6 +404,15 @@
+           "executionTimeoutSeconds": 300,
+           "stopTimeoutSeconds": 90,
+           "mode": "package"
++        },
++        {
++          "name": "lifecycle-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 300,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
+         }
+       ],
+       "lifecycle": {
+diff --git a/scripts/qualify-disposable-ci.py b/scripts/qualify-disposable-ci.py
+new file mode 100755
+index 00000000..7f397cb7
+--- /dev/null
++++ b/scripts/qualify-disposable-ci.py
+@@ -0,0 +1,642 @@
++#!/usr/bin/env python3
++"""Explicit hosted lifecycle observations; local controller tests provide no hosted credit."""
++from __future__ import annotations
++
++import argparse
++import fcntl
++import hashlib
++import importlib.util
++import json
++import os
++from pathlib import Path
++import re
++import signal
++import stat
++import subprocess
++import sys
++import tempfile
++import time
++from datetime import datetime, timedelta, timezone
++
++ROOT = Path(__file__).resolve().parents[1]
++_spec = importlib.util.spec_from_file_location(
++    'integration_owner', ROOT / 'references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py')
++HELPER = importlib.util.module_from_spec(_spec)
++_spec.loader.exec_module(HELPER)
++TOOL = ['dotnet', 'tool', 'run', 'hexalith-module', '--']
++RUN_ID = re.compile(r'[0-9a-f]{32}')
++LABEL = 'hexalith.g4.run'
++MANIFEST = 'module/hexalith.module-manifest.v2.json'
++PROFILE = 'lifecycle-package'
++CANCELLED = []
++
++
++def now():
++    return datetime.now(timezone.utc).isoformat()
++
++
++def require(condition, message):
++    if not condition:
++        raise ValueError(message)
++
++
++def read(path):
++    path = Path(path)
++    require(not path.is_symlink(), 'Refusing linked qualification metadata')
++    info = path.stat()
++    require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size <= 8_388_608,
++            'Refusing nonregular or oversized qualification metadata')
++    return json.loads(path.read_text())
++
++
++def private_directory(path):
++    path = Path(path)
++    require(not any(part.is_symlink() for part in (path, *path.parents)), 'Refusing linked qualification path')
++    path.mkdir(parents=True, exist_ok=True, mode=0o700)
++    return path
++
++
++def write(path, value):
++    path = Path(path)
++    private_directory(path.parent)
++    require(not path.exists() or (not path.is_symlink() and path.stat().st_nlink == 1), 'Unsafe evidence destination')
++    descriptor, temporary = tempfile.mkstemp(prefix=path.name + '.', suffix='.new', dir=path.parent)
++    try:
++        with os.fdopen(descriptor, 'w') as output:
++            json.dump(value, output, indent=2, sort_keys=True)
++            output.write('\n')
++        os.replace(temporary, path)
++    finally:
++        Path(temporary).unlink(missing_ok=True)
++
++
++def birth(pid):
++    try:
++        return Path(f'/proc/{pid}/stat').read_text().rpartition(')')[2].split()[19]
++    except (FileNotFoundError, ProcessLookupError):
++        return None
++
++
++def first_outcome(record):
++    require(isinstance(record, dict) and isinstance(record.get('terminalOutcome'), dict),
++            'First outcome must have the actual structured result fields')
++    required = ('runId', 'ownerId', 'terminalStatus', 'terminalOutcome', 'terminalAtUtc', 'sourceMappingHash')
++    require(all(record.get(key) is not None for key in required), 'First-outcome identity, status, time or mapping is absent')
++    require(RUN_ID.fullmatch(record['runId']), 'First outcome has an invalid issued run identity')
++    utc(record['terminalAtUtc'])
++    return {key: record.get(key) for key in (*required, 'terminalCause')}
++
++
++def declared_terminal(record, action):
++    require(action in ('pass', 'fail'), 'Unknown declared qualification outcome')
++    first = first_outcome(record)
++    expected_status, expected_exit = ('completed', 'Success') if action == 'pass' else ('failed', 'ProductOrTest')
++    require(record.get('terminalStatus') == expected_status, 'Declared suite terminal status differs from the released contract')
++    require(record.get('terminalOutcome', {}).get('exitCode') == expected_exit,
++            'Declared suite terminal outcome contradicts its required passing/failing result')
++    return first
++
++
++def utc(value):
++    require(isinstance(value, str), 'An actual absolute UTC timestamp is required')
++    parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
++    require(parsed.utcoffset() == timedelta(0), 'Timestamp must use UTC')
++    return parsed
++
++
++def cancellation_terminal(record, item, prior=None):
++    first = first_outcome(record)
++    require(item.get('cancellationPhase') in ('startup', 'execution'), 'Missing actual cancellation phase')
++    ready = utc(item.get('cancellationReadyAtUtc'))
++    signals = item.get('cancellationSignals', [])
++    require(signals and all(value.get('signal') in (signal.SIGINT, signal.SIGTERM) for value in signals),
++            'Actual external cancellation signal evidence is absent')
++    received = min(utc(value.get('observedAtUtc')) for value in signals)
++    terminal = utc(first['terminalAtUtc'])
++    require(ready <= received, 'Cancellation signal preceded the actual ready checkpoint')
++    require(first['runId'] == item['runId'] and first['ownerId'] == item['runId'], 'Cancellation terminal owner differs')
++    if prior is not None:
++        require(first == prior, 'Finalization changed the first terminal outcome/time')
++    if first['terminalStatus'] == 'failed':
++        require(first['terminalOutcome'].get('exitCode') == 'ProductOrTest' and prior is not None and terminal <= received,
++                'Cancellation is obscured by an unqualified product/prerequisite failure')
++        # The API request happened before this runner signal. Only the parent's API receipt can order it.
++        return 'product-failure-before-observed-signal'
++    require(first['terminalStatus'] == 'cancelled' and first['terminalOutcome'].get('exitCode') == 'Cancelled',
++            'Actual cancellation status/outcome differs from the released contract')
++    require(received <= terminal <= datetime.now(timezone.utc), 'Cancellation terminal time is outside actual signal/finalization')
++    return 'cancelled'
++
++
++def active_attachment(attachment, run_id):
++    identities = ('ownerRunId', 'attachedRunId', 'originalAttachmentRequestId', 'environmentId')
++    require(all(isinstance(attachment.get(key), str) and RUN_ID.fullmatch(attachment[key]) for key in identities),
++            'Admission lacks real issued identities')
++    require(attachment['ownerRunId'] == run_id and attachment.get('requestedHoldSeconds') == 240
++            and attachment.get('effectiveHoldSeconds') == 240, 'Admission changed the requested finite hold')
++    require(isinstance(attachment.get('acceptedAtUtc'), str) and isinstance(attachment.get('expiresAtUtc'), str),
++            'Admission lacks actual acceptance/expiry timestamps')
++    accepted = datetime.fromisoformat(attachment['acceptedAtUtc'].replace('Z', '+00:00'))
++    expires = datetime.fromisoformat(attachment['expiresAtUtc'].replace('Z', '+00:00'))
++    require(accepted.tzinfo is not None and expires - accepted == timedelta(seconds=240)
++            and expires > datetime.now(timezone.utc), 'The original finite hold is not active')
++    require(attachment.get('endedAtUtc') is None and attachment.get('outcome') is None, 'Admission hold already ended')
++
++
++def same_expiry(first, observed):
++    keys = ('originalAttachmentRequestId', 'attachedRunId', 'acceptedAtUtc', 'expiresAtUtc', 'effectiveHoldSeconds')
++    require(all(first.get(key) == observed.get(key) for key in keys), 'Attachment lineage or original expiry changed')
++
++
++class Qualification:
++    """Own only receipt-issued siblings from the current real GitHub job."""
++
++    def __init__(self, finalizing=False):
++        self.context = HELPER.ci_context()
++        require(ROOT == HELPER.job_root('GITHUB_WORKSPACE'), 'Qualification must use the actual checkout root')
++        self.temporary = private_directory(HELPER.job_root('RUNNER_TEMP') / 'hexalith-ci-qualification')
++        self.evidence = private_directory(ROOT / 'TestResults/ci-lifecycle')
++        self.journal_path = self.temporary / 'journal.json'
++        self.children = {}
++        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
++        require(head == os.environ.get('GITHUB_SHA'), 'Checkout is not the workflow source revision')
++        HELPER.verify_tool(ROOT)
++        mapping = None
++        if not finalizing:
++            HELPER.verify_preparation()
++            mapping = read(Path(os.environ['CustomAfterMicrosoftCommonProps']).parent / 'mapping.json')
++            require(mapping.get('Root') == str(ROOT) and mapping.get('ContentHash') == os.environ['HEXALITH_SOURCE_MAPPING_HASH'],
++                    'Qualification mapping differs from the strict prepared source')
++        self.journal = read(self.journal_path) if self.journal_path.exists() else {
++            'schema': 'hexalith.ci-lifecycle-qualification.v1', 'classification': 'baseline-only',
++            'source': head, 'mappingHash': mapping['ContentHash'] if mapping else None,
++            'executionContext': self.context, 'owners': [], 'observations': []}
++        require(self.journal['executionContext'] == self.context and self.journal['source'] == head,
++                'Refusing another job or revision journal')
++        require(isinstance(self.journal.get('mappingHash'), str) and re.fullmatch(r'[0-9a-f]{64}', self.journal['mappingHash']),
++                'The durable journal lacks the actual prepared mapping identity')
++        if mapping is not None:
++            require(self.journal['mappingHash'] == mapping['ContentHash'], 'Prepared mapping changed within this job')
++        self.save()
++        if mapping is not None and not (self.evidence / 'inputs.json').exists():
++            write(self.evidence / 'inputs.json', {'source': head, 'executionContext': self.context,
++                  'toolManifestSha256': hashlib.sha256((ROOT / '.config/dotnet-tools.json').read_bytes()).hexdigest(),
++                  'mappingHash': mapping['ContentHash'], 'platformIdentity': mapping.get('PlatformIdentity'),
++                  'candidateAcceptance': False})
++
++    def save(self):
++        write(self.journal_path, self.journal)
++        write(self.evidence / 'observations.json', self.journal)
++
++    def observe(self, kind, **values):
++        item = {'kind': kind, 'observedAtUtc': now(), **values}
++        self.journal['observations'].append(item)
++        self.save()
++        print(json.dumps(item), flush=True)
++
++    def owner(self, label):
++        return next(item for item in self.journal['owners'] if item['label'] == label)
++
++    def issued(self, item):
++        require(item.get('label') in ('passing', 'failing', 'peer', 'retry', 'partial', 'cancel'), 'Unknown controller owner role')
++        expected = self.temporary / item['label'] / 'receipt.json'
++        require(Path(item['receipt']) == expected and not expected.is_symlink(), 'Receipt escaped its issued controller role')
++        return HELPER.receipt_owner(expected, self.context)
++
++    def state(self, item):
++        owner = self.issued(item)
++        directory = Path(owner['stateDirectory'])
++        paths = [directory / (owner['runId'] + '.json'), directory / 'diagnostics' / owner['runId'] / 'owner.json']
++        path = next((path for path in paths if path.exists()), None)
++        if path is None:
++            raise FileNotFoundError('Owner metadata has not yet been published')
++        value = read(path)
++        require(value.get('runId') == owner['runId'] and value.get('executionContext') == self.context,
++                'Owner metadata lost its actual job binding')
++        return value
++
++    def diagnostics(self, item):
++        owner = self.issued(item)
++        return Path(owner['stateDirectory']) / 'diagnostics' / owner['runId']
++
++    def control(self, item, action):
++        require(action in ('wait', 'pass', 'fail'), 'Unsupported fixture action')
++        owner = self.issued(item)
++        directory = private_directory(Path(owner['stateDirectory']).parent / 'ci-qualification' / owner['runId'])
++        value = {'runId': owner['runId'], 'action': action}
++        write(directory / 'control.json', value)
++        self.observe('fixture-control', ownerRunId=owner['runId'], action=action,
++                     configurationSha256=hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest())
++        return directory
++
++    def tool(self, item, arguments, tag, environment=None):
++        owner = self.issued(item)
++        result = subprocess.run(TOOL + arguments, cwd=ROOT, env=environment, stdin=subprocess.DEVNULL,
++                                capture_output=True, text=True, timeout=150, check=False)
++        value = HELPER.read_json(result.stdout)
++        write(self.evidence / (item['label'] + '-' + tag + '.json'), value)
++        self.observe(tag, ownerRunId=owner['runId'], exitCode=result.returncode, result=value)
++        return result, value
++
++    def containers(self, item):
++        owner = self.issued(item)
++        output = subprocess.check_output(['docker', 'ps', '-aq', '--filter', f'label={LABEL}={owner["runId"]}'], text=True, timeout=20)
++        identities = output.split()
++        require(all(re.fullmatch(r'[0-9a-f]{12,64}', value) for value in identities), 'Docker discovery returned invalid identities')
++        return identities
++
++    def peer_scope(self, item):
++        owner = self.issued(item)
++        state = self.state(item)
++        require(state['status'] == 'Ready' and state.get('testRun') is None, 'Peer is not an active ready owner')
++        workspace = Path(state['workspace'])
++        require(workspace.is_dir() and not workspace.is_symlink(), 'Peer workspace is unavailable')
++        pid = state.get('appHostProcessId')
++        require(pid is not None and birth(pid) is not None, 'Peer AppHost is unavailable')
++        claims_root = Path(owner['stateDirectory']) / 'claims'
++        claim_ids = read(claims_root / 'owners' / (owner['runId'] + '.json'))
++        require(isinstance(claim_ids, list), 'Peer claim receipt is unavailable')
++        claims = {}
++        for claim in claim_ids:
++            require(isinstance(claim, str) and re.fullmatch(r'[0-9a-f]{64}', claim), 'Peer claim identity is invalid')
++            path = claims_root / (claim + '.json')
++            record = read(path)
++            require(record.get('OwnerRunId') == owner['runId'], 'Peer claim ownership changed')
++            claims[claim] = hashlib.sha256(path.read_bytes()).hexdigest()
++        return {'containers': sorted(self.containers(item)), 'workspace': str(workspace),
++                'appHostProcessId': pid, 'appHostBirth': birth(pid), 'claimHashes': claims}
++
++    def record_images(self, item):
++        records = []
++        for identity in self.containers(item):
++            label = subprocess.check_output(['docker', 'inspect', '--format', '{{index .Config.Labels "' + LABEL + '"}}', identity], text=True, timeout=20).strip()
++            require(label == self.issued(item)['runId'], 'Refusing foreign container observation')
++            template = '{{json .Id}}\t{{json .Config.Image}}\t{{json .Image}}'
++            fields = subprocess.check_output(['docker', 'inspect', '--format', template, identity], text=True, timeout=20).strip().split('\t')
++            records.append(dict(zip(('containerId', 'imageReference', 'imageContentId'), map(json.loads, fields))))
++        require(records, 'Real owned container identities are required')
++        self.observe('actual-images', ownerRunId=self.issued(item)['runId'], images=records)
++
++    def poll(self, item, predicate, seconds):
++        deadline = time.monotonic() + seconds
++        while time.monotonic() < deadline:
++            path = Path(item['receipt'])
++            if path.exists():
++                self.issued(item)
++                try:
++                    if predicate():
++                        return
++                except FileNotFoundError:
++                    pass
++            child = self.children.get(item['label'])
++            if child is not None and child.poll() is not None:
++                self.capture_result(item)
++                raise ValueError('Owner terminated before the required real checkpoint')
++            require(not CANCELLED, 'Actual external cancellation interrupted the observation')
++            time.sleep(0.1)
++        raise TimeoutError('Required real lifecycle checkpoint was not observed within its finite bound')
++
++    def start(self, label, startup=False, cancellation_phase=None):
++        require(label not in [item['label'] for item in self.journal['owners']], 'Do not replace an existing owner attempt')
++        directory = private_directory(self.temporary / label)
++        receipt = directory / 'receipt.json'
++        output = directory / 'public-result.json'
++        descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
++        with os.fdopen(descriptor, 'w') as stream:
++            child = subprocess.Popen(TOOL + ['test', '--manifest=' + MANIFEST, '--mode=package', '--profile=' + PROFILE,
++                                     '--ci-owner-receipt=' + str(receipt), '--output=json'], cwd=ROOT,
++                                     stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.DEVNULL, start_new_session=True)
++        item = {'label': label, 'receipt': str(receipt), 'pid': child.pid, 'birth': birth(child.pid),
++                'processGroup': os.getpgid(child.pid), 'publicResult': str(output)}
++        require(item['birth'] is not None and item['processGroup'] == item['pid'], 'Cannot establish owned controller child')
++        if cancellation_phase is not None:
++            item['cancellationPhase'] = cancellation_phase
++        self.children[label] = child
++        self.journal['owners'].append(item)
++        self.save()
++        self.poll(item, lambda: self.state(item).get('workspace') is not None, 600)
++        controls = self.control(item, 'wait')
++        if startup:
++            def starting():
++                state = self.state(item)
++                require(state['status'] == 'Starting', 'The real startup window was missed; no startup cancellation credit')
++                return state.get('appHostProcessId') is not None and bool(self.containers(item))
++            self.poll(item, starting, 600)
++            self.pause_host(item)
++        else:
++            def executing():
++                marker = controls / 'execution-ready.json'
++                if not marker.exists():
++                    return False
++                try:
++                    value = read(marker)
++                except json.JSONDecodeError:
++                    return False
++                require(value.get('runId') == self.issued(item)['runId'] and value.get('realPersistenceAssertionsPassed') is True,
++                        'Fixture checkpoint is missing its actual owner or real persistence assertion')
++                write(self.evidence / (label + '-execution-ready.json'), value)
++                return True
++            self.poll(item, executing, 900)
++            self.record_images(item)
++        return item
++
++    def capture_result(self, item):
++        child = self.children.get(item['label'])
++        if child is not None and child.poll() is not None:
++            path = Path(item['publicResult'])
++            if path.stat().st_size:
++                value = read(path)
++                self.observe('public-execution-result', ownerRunId=self.issued(item)['runId'] if Path(item['receipt']).exists() else None,
++                             exitCode=child.returncode, result=value)
++            return child.returncode
++        return None
++
++    def attach(self, item, tag, negative=False, previous=None):
++        state = self.state(item)
++        command = ['attach', '--owner-run-id=' + state['runId'], '--mode=package',
++                   '--composition-identity=' + state['manifestHash'], '--hold-seconds=240', '--output=json']
++        if previous:
++            command.append('--attachment-request-id=' + previous['originalAttachmentRequestId'])
++        environment = os.environ.copy()
++        if negative:
++            environment['GITHUB_JOB'] = self.context['jobId'] + '-disjoint-negative-probe'
++        attachments = self.diagnostics(item) / 'attachments.json'
++        before = read(attachments) if attachments.exists() else None
++        completed, result = self.tool(item, command, tag, environment)
++        if negative:
++            require((read(attachments) if attachments.exists() else None) == before, 'Negative probe recorded an attachment')
++            require(completed.returncode != 0 and result.get('attachment') is None, 'Disjoint job probe was accepted')
++            require(any(value.get('ruleId') == 'HXR033' for value in result.get('diagnostics', [])), 'Missing job-context refusal')
++            self.observe('negative-context-only', callerJob=environment['GITHUB_JOB'], actualJob=self.context['jobId'])
++            return None
++        require(completed.returncode == 0 and result.get('attachment'), 'Real same-job finite admission was refused')
++        attachment = result['attachment']
++        active_attachment(attachment, state['runId'])
++        if previous:
++            same_expiry(previous, attachment)
++        return attachment
++
++    def archived(self, item):
++        owner = self.issued(item)
++        destination = private_directory(self.evidence / item['label'])
++        HELPER.retain_artifacts(owner, destination)
++        result = read(self.diagnostics(item) / 'selected-test.json')
++        require(result.get('runId') == owner['runId'] and result.get('sourceMappingHash') == self.journal['mappingHash'],
++                'Terminal outcome belongs to another owner or prepared mapping')
++        return result
++
++    def withdrawn(self, item, admitted, reason=None):
++        document = read(self.diagnostics(item) / 'attachments.json')
++        require(isinstance(document, dict) and isinstance(document.get('attachments'), list), 'Withdrawal document is absent or malformed')
++        observed = next((value for value in document['attachments']
++                         if isinstance(value, dict) and value.get('attachedRunId') == admitted['attachedRunId']), None)
++        require(observed is not None, 'The admitted attachment is missing from the durable withdrawal document')
++        same_expiry(admitted, observed)
++        require(observed.get('outcome') == 'withdrawn' and observed.get('endedAtUtc') is not None,
++                'CI cleanup did not durably withdraw the active hold')
++        require(observed.get('endReason') in ('ci-job-completed', 'ci-job-cancelled')
++                and (reason is None or observed['endReason'] == reason), 'Hold ended by expiry or an unexpected reason')
++        require(datetime.fromisoformat(observed['endedAtUtc'].replace('Z', '+00:00'))
++                < datetime.fromisoformat(observed['expiresAtUtc'].replace('Z', '+00:00')), 'Withdrawal did not precede original expiry')
++        self.observe('actual-withdrawal', ownerRunId=self.issued(item)['runId'], attachment=observed)
++        return observed
++
++    def down(self, item, tag, expected=True, job_status=''):
++        owner = self.issued(item)
++        environment = os.environ.copy()
++        if job_status:
++            environment['HEXALITH_CI_JOB_STATUS'] = job_status
++        completed, result = self.tool(item, ['down', '--run-id=' + owner['runId'], '--output=json'], tag, environment)
++        verified = HELPER.cleanup_verified(completed, result, owner)
++        require(verified == expected, 'Exact-owner cleanup result did not match the explicit qualification condition')
++        if verified:
++            require(not self.containers(item), 'Independent exact-label discovery still finds owned containers')
++        return result
++
++    def settled_child(self, item):
++        deadline = time.monotonic() + 90
++        while time.monotonic() < deadline:
++            child = self.children.get(item['label'])
++            if child is not None and child.poll() is not None:
++                return
++            if birth(item['pid']) != item['birth']:
++                return
++            time.sleep(0.1)
++        raise TimeoutError('The exact controller-owned invocation remains after resource cleanup')
++
++    def process_signal(self, item, number):
++        require(birth(item['pid']) == item['birth'], 'Refusing a missing or reused controller process')
++        require(os.getpgid(item['pid']) == item['processGroup'] == item['pid'], 'Refusing a foreign process group')
++        owner = self.issued(item) if Path(item['receipt']).exists() else None
++        os.killpg(item['processGroup'], number)
++        self.observe('owned-process-signal', ownerRunId=owner['runId'] if owner else None, pid=item['pid'], signal=number)
++
++    def pause_host(self, item):
++        state = self.state(item)
++        pid = state['appHostProcessId']
++        require(state['status'] == 'Starting' and birth(pid) is not None, 'No actual starting AppHost to pause')
++        require(('HEXALITH_G4_RUN_ID=' + state['runId']).encode() in Path(f'/proc/{pid}/environ').read_bytes().split(b'\0'),
++                'Refusing an AppHost without the exact owned environment tag')
++        item['pausedHost'] = {'pid': pid, 'birth': birth(pid)}
++        self.save()
++        os.kill(pid, signal.SIGSTOP)
++        self.observe('startup-cancellation-ready', ownerRunId=state['runId'], appHostProcessId=pid,
++                     actualOwnedContainers=self.containers(item), startupDeadlineUtc=state['startupDeadlineUtc'])
++
++    def resume_host(self, item):
++        paused = item.get('pausedHost')
++        if paused and birth(paused['pid']) == paused['birth']:
++            self.issued(item)
++            os.kill(paused['pid'], signal.SIGCONT)
++            self.observe('owned-host-resumed', ownerRunId=self.issued(item)['runId'], pid=paused['pid'])
++
++    def ordinary(self, label, action):
++        item = self.start(label)
++        self.attach(item, label + '-cross-job', negative=True)
++        admitted = self.attach(item, label + '-same-job')
++        self.attach(item, label + '-retry-hold', previous=admitted)
++        self.control(item, action)
++        child = self.children[label]
++        child.wait(timeout=150)
++        outcome = self.capture_result(item)
++        require((outcome == 0) == (action == 'pass'), 'Passing/failing suite first outcome is wrong')
++        record = self.archived(item)
++        first = declared_terminal(record, action)
++        self.withdrawn(item, admitted, reason='ci-job-completed')
++        self.down(item, label + '-idempotent-down')
++        require(first_outcome(self.archived(item)) == first, 'Retry changed the first terminal outcome')
++        state = self.state(item)
++        before = read(self.diagnostics(item) / 'attachments.json')
++        completed, refused = self.tool(item, ['attach', '--owner-run-id=' + state['runId'], '--mode=package',
++                                             '--composition-identity=' + state['manifestHash'], '--output=json'], label + '-completed-refusal')
++        require(completed.returncode != 0 and refused.get('attachment') is None, 'Completed owner accepted an attachment')
++        require(read(self.diagnostics(item) / 'attachments.json') == before, 'Refusal recorded an accepted attachment')
++
++    def retry_with_peer(self):
++        peer = self.start('peer')
++        peer_before = self.peer_scope(peer)
++        self.observe('actual-active-peer', ownerRunId=self.issued(peer)['runId'], scope=peer_before)
++        item = self.start('retry')
++        admitted = self.attach(item, 'retry-admission')
++        directory = self.diagnostics(item)
++        # Real OS locks affect only this issued owner's metadata; no production fault flag.
++        with (directory / 'attachments.lock').open('a+') as attachments, (directory / 'provisioning.lock').open('a+') as provisioning:
++            fcntl.flock(attachments, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            fcntl.flock(provisioning, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            self.down(item, 'withdrawal-lock-refusal', expected=False)
++            first = first_outcome(self.archived(item))
++            require(first is not None, 'Cleanup refusal did not preserve an actual first outcome')
++            require(self.containers(item), 'Withdrawal refusal stopped resources before withdrawal')
++            fcntl.flock(attachments, fcntl.LOCK_UN)
++            self.down(item, 'provisioning-lock-refusal', expected=False)
++            self.withdrawn(item, admitted)
++            require(self.containers(item), 'No live resources observed after durable withdrawal/before stopping')
++            self.observe('withdrawn-before-stop', ownerRunId=self.issued(item)['runId'], liveContainers=self.containers(item))
++            require(self.peer_scope(peer) == peer_before, 'Cleanup fault changed active peer resources, process, workspace or claims')
++            require(self.state(peer).get('testRun') is None, 'Peer execution ended during another owner fault')
++        self.down(item, 'exact-owner-cleanup-retry')
++        require(first_outcome(self.archived(item)) == first, 'Cleanup retry replaced the first outcome/time')
++        require(self.peer_scope(peer) == peer_before, 'Cleanup retry changed the active peer')
++        self.observe('active-peer-preserved', ownerRunId=self.issued(peer)['runId'], scope=self.peer_scope(peer))
++        self.control(peer, 'pass')
++        self.children['peer'].wait(timeout=150)
++        require(self.capture_result(peer) == 0, 'Preserved peer did not complete its real required test')
++        self.down(peer, 'peer-idempotent-cleanup')
++
++    def partial_startup(self):
++        item = self.start('partial', startup=True)
++        self.process_signal(item, signal.SIGKILL)
++        self.children['partial'].wait(timeout=10)
++        require(self.children['partial'].returncode == -signal.SIGKILL, 'Partial-startup interruption was not observed')
++        self.observe('actual-partial-startup-interruption', ownerRunId=self.issued(item)['runId'], exitCode=-signal.SIGKILL)
++        self.down(item, 'partial-startup-recovery')
++        first = first_outcome(self.archived(item))
++        require(first['terminalStatus'] == 'cancelled' and first['terminalOutcome'].get('exitCode') == 'Cancelled',
++                'Interrupted partial startup did not retain the actual cancelled outcome')
++        self.down(item, 'partial-startup-idempotent-retry')
++        require(first_outcome(self.archived(item)) == first, 'Partial-startup retry changed the first outcome/time')
++
++    def finalize_cancellation(self, item, prior, job_status):
++        require(job_status == 'cancelled', 'Cancellation qualification requires actual cancelled workflow job status')
++        record = self.archived(item)
++        classification = cancellation_terminal(record, item, prior)
++        first = first_outcome(record)
++        admitted = item.get('admission')
++        withdrawn = None
++        if item['cancellationPhase'] == 'execution':
++            require(admitted is not None, 'The actual pre-cancellation admission is absent from the durable journal')
++            withdrawn = self.withdrawn(item, admitted, reason='ci-job-cancelled')
++        else:
++            require(admitted is None, 'A starting owner must not have accepted an execution hold')
++        self.down(item, 'post-cancellation-exact-retry', job_status=job_status)
++        require(first_outcome(self.archived(item)) == first, 'Exact retry changed cancellation first outcome/time')
++        if admitted is not None:
++            require(self.withdrawn(item, admitted, reason='ci-job-cancelled') == withdrawn,
++                    'Exact retry changed the original finite hold or withdrawal')
++        self.observe('actual-cancellation-terminal', ownerRunId=item['runId'], phase=item['cancellationPhase'],
++                     firstOutcome=first, originalAdmission=admitted, withdrawal=withdrawn, classification=classification,
++                     parentApiReceiptRequired=True, candidateAcceptance=False)
++        require(classification == 'cancelled', 'Preserved prior product failure supplies no cancellation qualification')
++
++    def finalize(self, job_status):
++        failures = []
++        issued_owners = 0
++        for item in reversed(self.journal['owners']):
++            try:
++                if not Path(item['receipt']).exists() and birth(item['pid']) == item['birth']:
++                    self.process_signal(item, signal.SIGINT)
++                    deadline = time.monotonic() + 90
++                    while birth(item['pid']) == item['birth'] and time.monotonic() < deadline:
++                        time.sleep(0.1)
++                    require(birth(item['pid']) != item['birth'], 'Unissued owned child has not stopped')
++                if not Path(item['receipt']).exists():
++                    self.observe('not-allocated', label=item['label'])
++                    continue
++                owner = self.issued(item)
++                item['runId'] = owner['runId']
++                issued_owners += 1
++                prior = None
++                prior_error = False
++                terminal = self.diagnostics(item) / 'selected-test.json'
++                if item.get('cancellationPhase') and terminal.exists():
++                    try:
++                        prior = first_outcome(read(terminal))
++                        self.observe('terminal-before-independent-finalization', ownerRunId=owner['runId'], firstOutcome=prior)
++                    except (OSError, ValueError, KeyError, TypeError):
++                        prior_error = True
++                self.resume_host(item)
++                self.down(item, 'independent-finalizer', job_status=job_status)
++                HELPER.retain_artifacts(owner, private_directory(self.evidence / item['label']))
++                self.settled_child(item)
++                require(not prior_error, 'The pre-cleanup first outcome could not be verified')
++                if item.get('cancellationPhase'):
++                    self.finalize_cancellation(item, item.get('terminalBeforeSignalForward', prior), job_status)
++            except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
++                failures.append({'label': item['label'], 'failureType': type(error).__name__})
++        self.observe('finalizer-result', failures=failures, issuedOwners=issued_owners,
++                     allocationStatus='allocated' if issued_owners else 'not-allocated',
++                     issuedOwnersCleanupVerified=issued_owners > 0 and not failures, candidateAcceptance=False)
++        return 1 if failures else 0
++
++
++def receive_signal(number, _frame):
++    CANCELLED.append({'signal': number, 'observedAtUtc': now()})
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('command', choices=('matrix', 'start-cancellation', 'wait-cancellation', 'finalize'))
++    parser.add_argument('--phase', choices=('startup', 'execution'))
++    parser.add_argument('--job-status', choices=('', 'success', 'failure', 'cancelled'), default='')
++    args = parser.parse_args()
++    qualification = Qualification(finalizing=args.command == 'finalize')
++    if args.command == 'finalize':
++        return qualification.finalize(args.job_status)
++    if args.command == 'start-cancellation':
++        require(args.phase is not None, 'A real cancellation phase is required')
++        item = qualification.start('cancel', startup=args.phase == 'startup', cancellation_phase=args.phase)
++        item['runId'] = qualification.issued(item)['runId']
++        if args.phase == 'execution':
++            item['admission'] = qualification.attach(item, 'cancellation-active-hold')
++        item['cancellationReadyAtUtc'] = now()
++        qualification.save()
++        qualification.observe('actual-cancellation-ready', phase=args.phase, ownerRunId=item['runId'],
++                              admission=item.get('admission'), readyAtUtc=item['cancellationReadyAtUtc'])
++        return 0
++    if args.command == 'wait-cancellation':
++        item = qualification.owner('cancel')
++        for number in (signal.SIGINT, signal.SIGTERM):
++            signal.signal(number, receive_signal)
++        deadline = time.monotonic() + 120
++        while time.monotonic() < deadline and not CANCELLED:
++            require(birth(item['pid']) == item['birth'], 'Owner terminated before actual GitHub cancellation')
++            time.sleep(0.2)
++        require(CANCELLED, 'No real external cancellation arrived; this is not cancellation evidence')
++        item['cancellationSignals'] = list(CANCELLED)
++        terminal = qualification.diagnostics(item) / 'selected-test.json'
++        if terminal.exists():
++            item['terminalBeforeSignalForward'] = first_outcome(read(terminal))
++        qualification.save()
++        qualification.observe('external-cancellation-signal', signals=item['cancellationSignals'],
++                              terminalBeforeSignalForward=item.get('terminalBeforeSignalForward'))
++        qualification.resume_host(item)
++        qualification.process_signal(item, signal.SIGINT)
++        return 1
++    try:
++        qualification.ordinary('passing', 'pass')
++        qualification.ordinary('failing', 'fail')
++        qualification.retry_with_peer()
++        qualification.partial_startup()
++        return 0
++    finally:
++        cleanup = qualification.finalize('')
++        require(cleanup == 0, 'Bounded exact-owner finalization is incomplete')
++
++
++if __name__ == '__main__':
++    try:
++        raise SystemExit(main())
++    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
++        # No private descriptor, credential, arbitrary exception payload or raw child stderr is published.
++        print('Lifecycle qualification refused: ' + type(error).__name__, file=sys.stderr)
++        raise SystemExit(1)
+diff --git a/scripts/render-platform-declaration.py b/scripts/render-platform-declaration.py
+index d846352f..26801b9f 100644
+--- a/scripts/render-platform-declaration.py
++++ b/scripts/render-platform-declaration.py
+@@ -434,6 +434,15 @@ TEMPLATE = json.loads(r'''
+           "executionTimeoutSeconds": 300,
+           "stopTimeoutSeconds": 90,
+           "mode": "package"
++        },
++        {
++          "name": "lifecycle-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 300,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
+         }
+       ],
+       "lifecycle": {
+diff --git a/tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj b/tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj
+new file mode 100644
+index 00000000..4f99e1bd
+--- /dev/null
++++ b/tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj
+@@ -0,0 +1,17 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <IsPackable>false</IsPackable>
++    <IsPublishable>false</IsPublishable>
++    <IsTestProject>true</IsTestProject>
++    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
++  </PropertyGroup>
++  <ItemGroup>
++    <ProjectReference Include="../Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj" />
++    <PackageReference Include="Microsoft.NET.Test.Sdk" />
++    <PackageReference Include="xunit.v3" />
++    <PackageReference Include="xunit.runner.visualstudio" />
++  </ItemGroup>
++  <ItemGroup>
++    <Using Include="Xunit" />
++  </ItemGroup>
++</Project>
+diff --git a/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs b/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs
+new file mode 100644
+index 00000000..8cbf840b
+--- /dev/null
++++ b/tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs
+@@ -0,0 +1,63 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++
++using Hexalith.Parties.Platform.IntegrationTests;
++
++namespace Hexalith.Parties.Platform.LifecycleTests;
++
++/// <summary>Explicit real-service qualification fixture; no absent control or environment can skip it.</summary>
++public sealed class LifecycleQualificationTests(PlatformEnvironmentFixture fixture, ITestOutputHelper output) : IClassFixture<PlatformEnvironmentFixture>
++{
++    /// <summary>Proves the real persistence path before exposing a bounded controller-owned execution phase.</summary>
++    /// <returns>The real-service assertion and finite controlled terminal outcome.</returns>
++    [Fact]
++    public async Task PersistRealPartyThenObserveExplicitQualificationControl()
++    {
++        using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        bound.CancelAfter(TimeSpan.FromSeconds(240));
++        string runId = Environment.GetEnvironmentVariable("HEXALITH_G4_RUN_ID") ?? string.Empty;
++        Assert.True(runId.Length == 32 && runId.All(character => character is >= '0' and <= '9' or >= 'a' and <= 'f'));
++        string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hexalith-builds", "ci-qualification", runId);
++        string control = Path.Combine(directory, "control.json");
++        _ = await ReadActionAsync(control, runId, bound.Token).ConfigureAwait(true);
++
++        await new PartyEnvironmentTests(fixture, output).RealDependencies_CreateQueryAndPersistMatchingPartyEvents().ConfigureAwait(true);
++
++        string descriptor = Environment.GetEnvironmentVariable("HEXALITH_TEST_ENVIRONMENT_PATH") ?? throw new InvalidOperationException("The real runner descriptor is required.");
++        byte[] descriptorBytes = await File.ReadAllBytesAsync(descriptor, bound.Token).ConfigureAwait(true);
++        string ready = JsonSerializer.Serialize(new
++        {
++            runId,
++            phase = "execution",
++            observedAtUtc = DateTimeOffset.UtcNow,
++            processId = Environment.ProcessId,
++            descriptorSha256 = Convert.ToHexStringLower(SHA256.HashData(descriptorBytes)),
++            realPersistenceAssertionsPassed = true,
++        });
++        await File.WriteAllTextAsync(Path.Combine(directory, "execution-ready.json"), ready, bound.Token).ConfigureAwait(true);
++        while (true)
++        {
++            string action = await ReadActionAsync(control, runId, bound.Token).ConfigureAwait(true);
++            if (action == "pass")
++            {
++                bound.Token.ThrowIfCancellationRequested();
++                await new PartyEnvironmentTests(fixture, output).RealDependencies_CreateQueryAndPersistMatchingPartyEvents().ConfigureAwait(true);
++                return;
++            }
++
++            Assert.True(action != "fail", "Intentional qualification failing-suite outcome.");
++            await Task.Delay(TimeSpan.FromMilliseconds(100), bound.Token).ConfigureAwait(true);
++        }
++    }
++
++    private static async Task<string> ReadActionAsync(string path, string runId, CancellationToken token)
++    {
++        FileInfo file = new(path);
++        Assert.True(file.Exists && file.LinkTarget is null && file.Length is > 0 and <= 4096, "Missing or unsafe explicit qualification control.");
++        using JsonDocument document = JsonDocument.Parse(await File.ReadAllTextAsync(path, token).ConfigureAwait(true));
++        Assert.Equal(runId, document.RootElement.GetProperty("runId").GetString());
++        string action = document.RootElement.GetProperty("action").GetString() ?? string.Empty;
++        Assert.Contains(action, new[] { "wait", "pass", "fail" });
++        return action;
++    }
++}
+diff --git a/tests/ci-lifecycle/test_qualification_controller.py b/tests/ci-lifecycle/test_qualification_controller.py
+new file mode 100644
+index 00000000..d185dcbd
+--- /dev/null
++++ b/tests/ci-lifecycle/test_qualification_controller.py
+@@ -0,0 +1,240 @@
++"""Local controller safety simulations only; none are hosted/runtime qualification evidence."""
++import copy
++from datetime import datetime, timedelta, timezone
++import importlib.util
++import json
++import os
++from pathlib import Path
++import subprocess
++import tempfile
++import unittest
++from unittest.mock import patch
++
++SCRIPT = Path(__file__).resolve().parents[2] / 'scripts' / 'qualify-disposable-ci.py'
++SPEC = importlib.util.spec_from_file_location('qualification', SCRIPT)
++Q = importlib.util.module_from_spec(SPEC)
++SPEC.loader.exec_module(Q)
++
++
++class ControllerSafetyTests(unittest.TestCase):
++    def test_local_process_cannot_become_a_hosted_positive_owner(self):
++        with patch.dict(os.environ, {}, clear=True), patch.object(Q.subprocess, 'Popen') as child:
++            with self.assertRaises(ValueError):
++                Q.Qualification()
++            child.assert_not_called()
++
++    def test_atomic_recovery_tolerates_an_interrupted_prior_temporary_write(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            (root / 'journal.json.new').write_text('interrupted')
++            Q.write(root / 'journal.json', {'classification': 'unit-simulation'})
++            self.assertEqual(Q.read(root / 'journal.json'), {'classification': 'unit-simulation'})
++            self.assertEqual((root / 'journal.json.new').read_text(), 'interrupted')
++            self.assertEqual((root / 'journal.json').stat().st_mode & 0o777, 0o600)
++
++    def test_linked_and_hardlinked_metadata_are_refused(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            original = root / 'original.json'
++            original.write_text('{}')
++            symbolic = root / 'symbolic.json'
++            symbolic.symlink_to(original)
++            hard = root / 'hard.json'
++            os.link(original, hard)
++            for path in (symbolic, hard):
++                with self.subTest(path=path.name), self.assertRaises(ValueError):
++                    Q.read(path)
++                with self.subTest(write=path.name), self.assertRaises(ValueError):
++                    Q.write(path, {'replacement': True})
++            self.assertEqual(original.read_text(), '{}')
++
++    def test_missing_or_unknown_cleanup_never_verifies_zero_resources(self):
++        owner = {'runId': 'a' * 32}
++        completed = subprocess.CompletedProcess([], 0)
++        inventory = {'containerIds': [], 'processIds': [], 'workspaceIds': [], 'claimIds': [],
++                     'discoveryFailures': [], 'unverified': False}
++        result = {'runId': owner['runId'], 'outcome': {'exitCode': 'Success'}, 'remainingResources': inventory}
++        self.assertTrue(Q.HELPER.cleanup_verified(completed, result, owner))
++        for key in inventory:
++            changed = copy.deepcopy(result)
++            del changed['remainingResources'][key]
++            with self.subTest(missing=key):
++                self.assertFalse(Q.HELPER.cleanup_verified(completed, changed, owner))
++        changed = copy.deepcopy(result)
++        changed['remainingResources']['unverified'] = True
++        self.assertFalse(Q.HELPER.cleanup_verified(completed, changed, owner))
++        changed = copy.deepcopy(result)
++        changed['remainingResources']['processIds'] = [123]
++        self.assertFalse(Q.HELPER.cleanup_verified(completed, changed, owner))
++        changed = copy.deepcopy(result)
++        changed['runId'] = 'b' * 32
++        self.assertFalse(Q.HELPER.cleanup_verified(completed, changed, owner))
++
++    def test_first_outcome_requires_real_nonempty_time_status_and_mapping_fields(self):
++        record = {'runId': 'a' * 32, 'ownerId': 'a' * 32, 'terminalStatus': 'failed',
++                  'terminalOutcome': {'exitCode': 'ProductOrTest'}, 'terminalAtUtc': '2026-11-03T00:00:00Z',
++                  'sourceMappingHash': 'b' * 64, 'cleanupDisposition': 'pending'}
++        first = Q.first_outcome(record)
++        record['cleanupDisposition'] = 'complete'
++        self.assertEqual(Q.first_outcome(record), first)
++        for key in first:
++            if key == 'terminalCause':
++                continue
++            changed = dict(record)
++            changed.pop(key)
++            with self.subTest(missing=key), self.assertRaises(ValueError):
++                Q.first_outcome(changed)
++        record['terminalAtUtc'] = '2026-11-03T00:00:00'
++        with self.assertRaises(ValueError):
++            Q.first_outcome(record)
++
++    def test_released_terminal_status_and_outcome_are_checked_independently(self):
++        # Actual selected-test result contract: passing is completed/Success, never passed.
++        record = {'runId': 'a' * 32, 'ownerId': 'a' * 32, 'terminalStatus': 'completed',
++                  'terminalOutcome': {'exitCode': 'Success'}, 'terminalAtUtc': '2026-11-03T00:00:00Z',
++                  'sourceMappingHash': 'b' * 64}
++        self.assertEqual(Q.declared_terminal(record, 'pass')['terminalStatus'], 'completed')
++        for status, outcome in [('passed', 'Success'), ('completed', 'ProductOrTest'), ('failed', 'Success')]:
++            changed = {**record, 'terminalStatus': status, 'terminalOutcome': {'exitCode': outcome}}
++            with self.subTest(status=status, outcome=outcome), self.assertRaises(ValueError):
++                Q.declared_terminal(changed, 'pass')
++        record.update(terminalStatus='failed', terminalOutcome={'exitCode': 'ProductOrTest'})
++        self.assertEqual(Q.declared_terminal(record, 'fail')['terminalStatus'], 'failed')
++        for status, outcome in [('failed', 'Success'), ('cancelled', 'Cancelled'), ('completed', 'ProductOrTest')]:
++            changed = {**record, 'terminalStatus': status, 'terminalOutcome': {'exitCode': outcome}}
++            with self.subTest(status=status, outcome=outcome), self.assertRaises(ValueError):
++                Q.declared_terminal(changed, 'fail')
++
++    def test_cancellation_result_requires_real_phase_signal_and_actual_status_outcome_time(self):
++        item = {'runId': 'a' * 32, 'cancellationPhase': 'execution',
++                'cancellationReadyAtUtc': '2026-11-03T00:00:00Z',
++                'cancellationSignals': [{'signal': 2, 'observedAtUtc': '2026-11-03T00:00:02Z'}]}
++        record = {'runId': 'a' * 32, 'ownerId': 'a' * 32, 'terminalStatus': 'cancelled',
++                  'terminalOutcome': {'exitCode': 'Cancelled'}, 'terminalAtUtc': '2026-11-03T00:00:03Z',
++                  'sourceMappingHash': 'b' * 64}
++        self.assertEqual(Q.cancellation_terminal(record, item), 'cancelled')
++        for changes in ({'terminalStatus': 'completed'}, {'terminalOutcome': {'exitCode': 'Success'}},
++                        {'terminalAtUtc': '2026-11-03T00:00:01Z'}, {'runId': 'c' * 32}):
++            with self.subTest(changes=changes), self.assertRaises(ValueError):
++                Q.cancellation_terminal({**record, **changes}, item)
++        for key in ('cancellationPhase', 'cancellationReadyAtUtc', 'cancellationSignals'):
++            changed = dict(item)
++            changed.pop(key)
++            with self.subTest(missing=key), self.assertRaises(ValueError):
++                Q.cancellation_terminal(record, changed)
++
++    def test_cancellation_preserves_prior_product_failure_without_claiming_api_order(self):
++        item = {'runId': 'a' * 32, 'cancellationPhase': 'startup',
++                'cancellationReadyAtUtc': '2026-11-03T00:00:00Z',
++                'cancellationSignals': [{'signal': 15, 'observedAtUtc': '2026-11-03T00:00:02Z'}]}
++        record = {'runId': 'a' * 32, 'ownerId': 'a' * 32, 'terminalStatus': 'failed',
++                  'terminalOutcome': {'exitCode': 'ProductOrTest'}, 'terminalAtUtc': '2026-11-03T00:00:01Z',
++                  'sourceMappingHash': 'b' * 64}
++        first = Q.first_outcome(record)
++        self.assertEqual(Q.cancellation_terminal(record, item, first), 'product-failure-before-observed-signal')
++        self.assertEqual(record['terminalStatus'], 'failed')
++        with self.assertRaises(ValueError):
++            Q.cancellation_terminal(record, item)
++        for field, value in [('terminalAtUtc', '2026-11-03T00:00:01.5Z'), ('terminalOutcome', {'exitCode': 'Cancelled'}),
++                             ('terminalStatus', 'cancelled')]:
++            with self.subTest(changed=field), self.assertRaises(ValueError):
++                Q.cancellation_terminal({**record, field: value}, item, first)
++
++    def test_independent_cancellation_finalizer_requires_hold_and_preserves_retry_records(self):
++        controller = object.__new__(Q.Qualification)
++        item = {'runId': 'a' * 32, 'cancellationPhase': 'execution',
++                'cancellationReadyAtUtc': '2026-11-03T00:00:00Z',
++                'cancellationSignals': [{'signal': 2, 'observedAtUtc': '2026-11-03T00:00:02Z'}],
++                'admission': {'attachedRunId': 'b' * 32, 'expiresAtUtc': '2026-11-03T00:04:00Z'}}
++        record = {'runId': 'a' * 32, 'ownerId': 'a' * 32, 'terminalStatus': 'cancelled',
++                  'terminalOutcome': {'exitCode': 'Cancelled'}, 'terminalAtUtc': '2026-11-03T00:00:03Z',
++                  'sourceMappingHash': 'b' * 64}
++        controller.archived = lambda _: dict(record)
++        controller.down = lambda *args, **kwargs: None
++        controller.observe = lambda *args, **kwargs: None
++        with patch.object(controller, 'withdrawn', return_value={'actual': 'unit-simulation'}) as withdrawn:
++            controller.finalize_cancellation(item, None, 'cancelled')
++            self.assertEqual(withdrawn.call_count, 2)
++            self.assertTrue(all(call.kwargs['reason'] == 'ci-job-cancelled' for call in withdrawn.call_args_list))
++        missing = {key: value for key, value in item.items() if key != 'admission'}
++        with self.assertRaises(ValueError):
++            controller.finalize_cancellation(missing, None, 'cancelled')
++        with self.assertRaises(ValueError):
++            controller.finalize_cancellation(item, None, 'success')
++        with patch.object(controller, 'withdrawn', side_effect=[{'expiry': 'original'}, {'expiry': 'changed'}]):
++            with self.assertRaises(ValueError):
++                controller.finalize_cancellation(item, None, 'cancelled')
++        changed = {**record, 'terminalAtUtc': '2026-11-03T00:00:04Z'}
++        records = iter([record, changed])
++        controller.archived = lambda _: next(records)
++        with patch.object(controller, 'withdrawn', return_value={'actual': 'unit-simulation'}):
++            with self.assertRaises(ValueError):
++                controller.finalize_cancellation(item, None, 'cancelled')
++
++    def test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner(self):
++        controller = object.__new__(Q.Qualification)
++        with tempfile.TemporaryDirectory() as temporary:
++            directory = Path(temporary)
++            receipt = directory / 'receipt.json'
++            receipt.write_text('{}')
++            (directory / 'selected-test.json').write_text('{}')
++            controller.journal = {'owners': [{'label': 'cancel', 'receipt': str(receipt), 'cancellationPhase': 'startup'},
++                                             {'label': 'peer', 'receipt': str(receipt)}]}
++            controller.evidence = directory
++            controller.issued = lambda _: {'runId': 'a' * 32}
++            controller.diagnostics = lambda _: directory
++            controller.resume_host = lambda _: None
++            controller.settled_child = lambda _: None
++            controller.observe = lambda *args, **kwargs: None
++            with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts'):
++                self.assertEqual(controller.finalize('cancelled'), 1)
++                self.assertEqual(down.call_count, 2)
++
++    def test_finite_admission_and_retry_cannot_replace_the_original_expiry(self):
++        accepted = datetime.now(timezone.utc)
++        attachment = {'ownerRunId': 'a' * 32, 'attachedRunId': 'b' * 32,
++                      'originalAttachmentRequestId': 'c' * 32, 'environmentId': 'd' * 32,
++                      'requestedHoldSeconds': 240, 'effectiveHoldSeconds': 240,
++                      'acceptedAtUtc': accepted.isoformat(), 'expiresAtUtc': (accepted + timedelta(seconds=240)).isoformat(),
++                      'endedAtUtc': None, 'outcome': None}
++        Q.active_attachment(attachment, 'a' * 32)
++        Q.same_expiry(attachment, dict(attachment))
++        for key in ('acceptedAtUtc', 'expiresAtUtc', 'attachedRunId', 'originalAttachmentRequestId'):
++            changed = dict(attachment)
++            changed[key] = 'changed'
++            with self.subTest(field=key), self.assertRaises(ValueError):
++                Q.same_expiry(attachment, changed)
++        attachment['expiresAtUtc'] = (accepted - timedelta(seconds=1)).isoformat()
++        with self.assertRaises(ValueError):
++            Q.active_attachment(attachment, 'a' * 32)
++
++    def test_reused_controller_process_is_never_signalled(self):
++        controller = object.__new__(Q.Qualification)
++        with patch.object(Q, 'birth', return_value='replacement'), patch.object(Q.os, 'killpg') as kill:
++            with self.assertRaises(ValueError):
++                controller.process_signal({'pid': 123, 'birth': 'original', 'processGroup': 123}, 2)
++            kill.assert_not_called()
++
++    def test_receipt_cannot_escape_its_recorded_owner_role(self):
++        controller = object.__new__(Q.Qualification)
++        controller.temporary = Path('/unit-simulation/controller')
++        with patch.object(Q.HELPER, 'receipt_owner') as read:
++            for item in ({'label': 'foreign', 'receipt': '/tmp/foreign.json'},
++                         {'label': 'peer', 'receipt': '/tmp/foreign.json'}):
++                with self.subTest(item=item), self.assertRaises(ValueError):
++                    controller.issued(item)
++            read.assert_not_called()
++
++    def test_empty_finalization_is_not_claimed_as_runtime_cleanup_verification(self):
++        controller = object.__new__(Q.Qualification)
++        controller.journal = {'owners': []}
++        observations = []
++        controller.observe = lambda kind, **values: observations.append((kind, values))
++        self.assertEqual(controller.finalize('failure'), 0)
++        self.assertEqual(observations[0][1]['allocationStatus'], 'not-allocated')
++        self.assertFalse(observations[0][1]['issuedOwnersCleanupVerified'])
++        self.assertFalse(observations[0][1]['candidateAcceptance'])
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/ci-lifecycle/test_workflow_boundaries.py b/tests/ci-lifecycle/test_workflow_boundaries.py
+new file mode 100644
+index 00000000..d092705d
+--- /dev/null
++++ b/tests/ci-lifecycle/test_workflow_boundaries.py
+@@ -0,0 +1,67 @@
++"""Source contract controls only; passing these does not qualify a hosted environment."""
++import json
++from pathlib import Path
++import re
++import unittest
++from xml.etree import ElementTree
++
++ROOT = Path(__file__).resolve().parents[2]
++
++
++class WorkflowBoundaryTests(unittest.TestCase):
++    def test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate(self):
++        ordinary = (ROOT / '.github/workflows/ci.yml').read_text()
++        workflow = (ROOT / '.github/workflows/ci-lifecycle-qualification.yml').read_text()
++        baseline = workflow.split('  qualification:', 1)[0]
++        def isolated(text):
++            return re.search(r'unit-test-projects: \|\n((?:        tests/[^\n]+\n)+)', text).group(1).split()
++        self.assertEqual(isolated(baseline), isolated(ordinary))
++        self.assertEqual(len(isolated(baseline)), 15)
++        for setting in ('integration-test-profiles: platform-package', 'run-consumer-validation: true'):
++            self.assertIn(setting, baseline)
++        reference = r'Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@[0-9a-f]{40}'
++        self.assertEqual(re.search(reference, baseline).group(), re.search(reference, ordinary).group())
++        self.assertIn('    needs: baseline\n', workflow)
++        self.assertNotIn('continue-on-error', workflow)
++        self.assertNotIn('--filter-trait', workflow)
++        self.assertNotIn('--filter-not-trait', workflow)
++
++    def test_reader_permissions_and_independent_finalizer_remain_explicit(self):
++        workflow = (ROOT / '.github/workflows/ci-lifecycle-qualification.yml').read_text()
++        self.assertIn('permissions:\n  contents: read\n', workflow)
++        self.assertEqual(set(re.findall(r'secrets\.([A-Z_]+)', workflow)),
++                         {'HEXALITH_CI_REGISTRY_USERNAME', 'HEXALITH_CI_REGISTRY_PASSWORD'})
++        self.assertNotIn('secrets: inherit', workflow)
++        self.assertNotIn('--recursive', workflow)
++        self.assertIn('cancel-in-progress: false', workflow)
++        finalizer = workflow.split('- name: Independently finalize every exact same-job owner', 1)[1]
++        self.assertTrue(finalizer.lstrip().startswith('if: always()'))
++        self.assertIn('ACTUAL_JOB_STATUS: ${{ job.status }}', finalizer)
++        self.assertIn('finalize --job-status "$ACTUAL_JOB_STATUS"', finalizer)
++        self.assertLess(workflow.index('name: lifecycle-cancellation-ready'),
++                        workflow.index('- name: Await parent cancellation'))
++        self.assertNotIn('gh run cancel', workflow)
++
++    def test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build(self):
++        manifest = json.loads((ROOT / 'module/hexalith.module-manifest.v2.json').read_text())
++        suites = {suite['name']: suite for suite in manifest['modules'][0]['tests']}
++        self.assertIn('platform-source', suites)
++        self.assertIn('platform-package', suites)
++        suite = suites['lifecycle-package']
++        self.assertEqual(suite['mode'], 'package')
++        self.assertEqual(suite['executor'], 'mtp')
++        self.assertEqual(suite['executionTimeoutSeconds'], 300)
++        self.assertEqual(suite['stopTimeoutSeconds'], 90)
++        for solution in ['Hexalith.Parties.slnx', 'Hexalith.Parties.Standalone.slnx']:
++            project = ElementTree.parse(ROOT / solution).find(f'.//Project[@Path="{suite["entry"]}"]')
++            self.assertIsNotNone(project)
++            self.assertEqual(project.find('Build').attrib['Project'], 'false')
++        source = (ROOT / 'tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs').read_text()
++        assertion = 'RealDependencies_CreateQueryAndPersistMatchingPartyEvents()'
++        self.assertLess(source.index(assertion), source.index('realPersistenceAssertionsPassed = true'))
++        self.assertEqual(source.count(assertion), 2)
++        self.assertNotIn('Skip', source)
++
++
++if __name__ == '__main__':
++    unittest.main()

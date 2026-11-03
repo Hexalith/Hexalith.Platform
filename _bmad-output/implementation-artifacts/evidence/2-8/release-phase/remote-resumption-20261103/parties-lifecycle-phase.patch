@@ -1,0 +1,284 @@
+diff --git a/docs/ci-lifecycle-qualification.md b/docs/ci-lifecycle-qualification.md
+index 67b20375..5261f256 100644
+--- a/docs/ci-lifecycle-qualification.md
++++ b/docs/ci-lifecycle-qualification.md
+@@ -49,7 +49,12 @@ the live job and its wait step. Execution readiness must include the fixture's
+ real persistence marker and the unexpired original admission. Only the parent
+ operator may call GitHub's normal cancel API for that exact ready run. Save the
+ API request/response and actual UTC request time separately; the controller does
+-not cancel workflows. A missing readiness artifact, expired hold or already
++not cancel workflows. After the actual signal, the controller snapshots only the
++current receipt/job-bound owner state before any resume or forwarded signal.
++Startup credit requires actual Starting; execution credit requires Ready with
++the same live native process and original active finite admission. Missing or
++mismatched snapshots refuse credit after unconditional exact cleanup. A missing
++readiness artifact, expired hold or already
+ terminal owner means no cancellation credit.
+ 
+ The wait step permits 120 seconds for actual SIGINT/SIGTERM. It saves observed
+@@ -65,7 +70,7 @@ Cancellation requires actual `cancelled`/`Cancelled` terminal status/outcome and
+ UTC time after the observed signal, original execution admission, durable
+ `ci-job-cancelled` withdrawal before its original expiry, then identical first
+ outcome/time and withdrawal/expiry through exact-owner retry. A pre-existing
+-product failure is preserved and reported as preceding the observed signal;
++product failure is preserved with its actual terminal time and observed signal;
+ it supplies no cancellation credit. Join its actual terminal time with the
+ parent's API receipt to establish whether it truly preceded cancellation.
+ Missing timing, changed first fields, unknown discovery or leftovers fails.
+diff --git a/scripts/qualify-disposable-ci.py b/scripts/qualify-disposable-ci.py
+index 0875f523..059867a3 100755
+--- a/scripts/qualify-disposable-ci.py
++++ b/scripts/qualify-disposable-ci.py
+@@ -184,6 +184,48 @@ def same_expiry(first, observed):
+     require(all(first.get(key) == observed.get(key) for key in keys), 'Attachment lineage or original expiry changed')
+ 
+ 
++def owned_native_process(pid, run_id):
++    require(isinstance(pid, int) and pid > 1, 'Native checkpoint has no actual process identity')
++    started = birth(pid)
++    require(started is not None and ('HEXALITH_G4_RUN_ID=' + run_id).encode()
++            in Path(f'/proc/{pid}/environ').read_bytes().split(b'\0'), 'Native execution is absent, reused or not owned')
++    return {'processId': pid, 'birth': started}
++
++
++def cancellation_phase(item, owner, context):
++    snapshot = item.get('cancellationSnapshot')
++    require(isinstance(snapshot, dict) and 'failureType' not in snapshot, 'Actual signal-time owner snapshot is unavailable')
++    require(all(snapshot.get(key) == owner[key] for key in ('runId', 'attemptId', 'environmentId'))
++            and snapshot.get('executionContext') == owner['executionContext'] == context, 'Signal-time owner/job binding differs')
++    received = min(utc(value['observedAtUtc']) for value in item['cancellationSignals'])
++    observed = utc(snapshot['observedAtUtc'])
++    require(utc(item['cancellationReadyAtUtc']) <= received <= utc(snapshot['readStartedAtUtc']) <= observed,
++            'Owner snapshot was not observed after the actual external signal')
++    require(utc(snapshot['stateUpdatedAtUtc']) <= observed, 'Owner state time is ahead of the actual snapshot')
++    require('firstOutcome' in snapshot and 'stateTestTerminal' in snapshot
++            and snapshot['firstOutcome'] is None and snapshot['stateTestTerminal'] is None,
++            'Owner had a terminal outcome at the cancellation phase observation')
++    if item['cancellationPhase'] == 'startup':
++        require(snapshot.get('status') == 'Starting' and snapshot.get('nativeExecution') is None,
++                'Requested startup cancellation was not observed in actual Starting state')
++        return
++    require(item['cancellationPhase'] == 'execution' and snapshot.get('status') == 'Ready',
++            'Requested execution cancellation was not observed in an active Ready owner')
++    checkpoint = item['executionCheckpoint']
++    require(checkpoint.get('runId') == owner['runId'] and checkpoint.get('realPersistenceAssertionsPassed') is True
++            and snapshot.get('nativeExecution') == {key: checkpoint[key] for key in ('processId', 'birth')},
++            'Original native execution is no longer running in the signal-time snapshot')
++    admitted, active = item['admission'], snapshot['admission']
++    same_expiry(admitted, active)
++    require(active.get('ownerRunId') == owner['runId'] and active.get('environmentId') == owner['environmentId']
++            and active.get('requestedHoldSeconds') == active.get('effectiveHoldSeconds') == 240
++            and active.get('endedAtUtc') is None and active.get('outcome') is None,
++            'Signal-time admission is not the actual active original finite hold')
++    require(utc(active['acceptedAtUtc']) <= received <= observed < utc(active['expiresAtUtc'])
++            and utc(active['expiresAtUtc']) - utc(active['acceptedAtUtc']) == timedelta(seconds=240),
++            'Original finite hold was not active at the actual signal and snapshot')
++
++
+ class Qualification:
+     """Own only receipt-issued siblings from the current real GitHub job."""
+ 
+@@ -418,12 +460,49 @@ class Qualification:
+                     return False
+                 require(value.get('runId') == self.issued(item)['runId'] and value.get('realPersistenceAssertionsPassed') is True,
+                         'Fixture checkpoint is missing its actual owner or real persistence assertion')
++                item['executionCheckpoint'] = {**value, **owned_native_process(value['processId'], self.issued(item)['runId'])}
++                self.save()
+                 write(self.evidence / (label + '-execution-ready.json'), value)
+                 return True
+             self.poll(item, executing, 900)
+             self.record_images(item)
+         return item
+ 
++    def cancellation_snapshot(self, item):
++        snapshot = {'readStartedAtUtc': now()}
++        try:
++            owner = self.issued(item)
++            # Only current tracked state can classify a signal; the archived initial owner is never a fallback.
++            state = read(Path(owner['stateDirectory']) / (owner['runId'] + '.json'))
++            require(isinstance(state, dict), 'Current cancellation owner state is malformed')
++            require(all(state.get(key) == owner[key] for key in ('runId', 'attemptId', 'environmentId', 'executionContext'))
++                    and state['executionContext'] == self.context, 'Current cancellation state lost its real owner/job binding')
++            snapshot.update({key: state[key] for key in ('runId', 'attemptId', 'environmentId', 'executionContext', 'status')})
++            snapshot['stateUpdatedAtUtc'] = state['updatedAt']
++            snapshot['stateTestTerminal'] = first_outcome(state['testRun']) if state.get('testRun') is not None else None
++            terminal = self.diagnostics(item) / 'selected-test.json'
++            snapshot['firstOutcome'] = first_outcome(read(terminal)) if terminal.exists() else None
++            snapshot['nativeExecution'] = None
++            if item.get('executionCheckpoint'):
++                snapshot['nativeExecution'] = owned_native_process(item['executionCheckpoint']['processId'], owner['runId'])
++            if item['cancellationPhase'] == 'execution':
++                admitted = item['admission']
++                document = read(self.diagnostics(item) / 'attachments.json')
++                require(isinstance(document, dict) and isinstance(document.get('attachments'), list),
++                        'Current cancellation admissions are malformed')
++                active = next((value for value in document['attachments']
++                               if isinstance(value, dict) and value.get('attachedRunId') == admitted['attachedRunId']), None)
++                require(active is not None, 'The actual admitted hold is missing at cancellation')
++                active_attachment(active, owner['runId'])
++                same_expiry(admitted, active)
++                snapshot['admission'] = active
++        except (OSError, ValueError, KeyError, TypeError) as error:
++            snapshot['failureType'] = type(error).__name__
++        snapshot['observedAtUtc'] = now()
++        item['cancellationSnapshot'] = snapshot
++        self.save()
++        self.observe('actual-cancellation-state-snapshot', snapshot=snapshot)
++
+     def capture_result(self, item):
+         child = self.children.get(item['label'])
+         if child is not None and child.poll() is not None:
+@@ -669,6 +748,7 @@ class Qualification:
+         require(not prior_error, 'The pre-cleanup first outcome could not be verified')
+         require(resume_failure is None, 'Exact cleanup ran, but owned host resume bookkeeping remains unverified')
+         if item.get('cancellationPhase'):
++            cancellation_phase(item, owner, self.context)
+             self.finalize_cancellation(item, item.get('terminalBeforeSignalForward', prior), job_status)
+         return True
+ 
+@@ -720,6 +800,7 @@ def main():
+             time.sleep(0.2)
+         require(CANCELLED, 'No real external cancellation arrived; this is not cancellation evidence')
+         item['cancellationSignals'] = list(CANCELLED)
++        qualification.cancellation_snapshot(item)
+         terminal = qualification.diagnostics(item) / 'selected-test.json'
+         if terminal.exists():
+             item['terminalBeforeSignalForward'] = first_outcome(read(terminal))
+diff --git a/tests/ci-lifecycle/test_cancellation_phase.py b/tests/ci-lifecycle/test_cancellation_phase.py
+new file mode 100644
+index 00000000..37e594e0
+--- /dev/null
++++ b/tests/ci-lifecycle/test_cancellation_phase.py
+@@ -0,0 +1,132 @@
++"""Explicit unit state/receipt doubles only; no fabricated positive CI context or native qualification."""
++import copy
++from datetime import datetime, timedelta, timezone
++import importlib.util
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++SCRIPT = Path(__file__).resolve().parents[2] / 'scripts/qualify-disposable-ci.py'
++SPEC = importlib.util.spec_from_file_location('cancellation_phase', SCRIPT)
++Q = importlib.util.module_from_spec(SPEC)
++SPEC.loader.exec_module(Q)
++CONTEXT = {'kind': 'unit-state-control-only'}
++
++
++def facts(phase='startup'):
++    clock = datetime.now(timezone.utc) - timedelta(seconds=3)
++    stamp = lambda seconds: (clock + timedelta(seconds=seconds)).isoformat()
++    owner = {'runId': 'a' * 32, 'attemptId': 'b' * 32, 'environmentId': 'c' * 32, 'executionContext': CONTEXT}
++    item = {'cancellationPhase': phase, 'cancellationReadyAtUtc': stamp(0),
++            'cancellationSignals': [{'signal': 2, 'observedAtUtc': stamp(1)}]}
++    snapshot = {**owner, 'status': 'Starting', 'stateUpdatedAtUtc': stamp(0),
++                'readStartedAtUtc': stamp(1.1), 'observedAtUtc': stamp(1.2),
++                'firstOutcome': None, 'stateTestTerminal': None, 'nativeExecution': None}
++    if phase == 'execution':
++        item['executionCheckpoint'] = {'runId': owner['runId'], 'realPersistenceAssertionsPassed': True,
++                                       'processId': 123, 'birth': '456'}
++        item['admission'] = {'ownerRunId': owner['runId'], 'environmentId': owner['environmentId'],
++                             'attachedRunId': 'd' * 32, 'originalAttachmentRequestId': 'e' * 32,
++                             'requestedHoldSeconds': 240, 'effectiveHoldSeconds': 240,
++                             'acceptedAtUtc': stamp(0), 'expiresAtUtc': stamp(240),
++                             'endedAtUtc': None, 'outcome': None}
++        snapshot.update(status='Ready', nativeExecution={'processId': 123, 'birth': '456'}, admission=copy.deepcopy(item['admission']))
++    item['cancellationSnapshot'] = snapshot
++    return owner, item
++
++
++class CancellationPhaseTests(unittest.TestCase):
++    def test_startup_requires_actual_starting_without_execution_or_first_terminal(self):
++        owner, item = facts()
++        Q.cancellation_phase(item, owner, CONTEXT)
++        for changes in ({'status': 'Ready'}, {'status': 'Ready', 'nativeExecution': {'processId': 123, 'birth': '456'}},
++                        {'status': 'Failed'}, {'stateTestTerminal': {'terminalStatus': 'failed'}},
++                        {'firstOutcome': {'terminalStatus': 'failed'}}):
++            changed = copy.deepcopy(item)
++            changed['cancellationSnapshot'].update(changes)
++            with self.subTest(actual=changes), self.assertRaises(ValueError):
++                Q.cancellation_phase(changed, owner, CONTEXT)
++
++    def test_missing_snapshot_bad_job_or_time_cannot_supply_phase_credit(self):
++        owner, item = facts()
++        for snapshot in (None, {}, {**item['cancellationSnapshot'], 'failureType': 'FileNotFoundError'},
++                         {**item['cancellationSnapshot'], 'executionContext': {'kind': 'other-unit-context'}},
++                         {**item['cancellationSnapshot'], 'runId': 'f' * 32},
++                         {**item['cancellationSnapshot'], 'readStartedAtUtc': item['cancellationReadyAtUtc']}):
++            changed = {**item, 'cancellationSnapshot': snapshot}
++            with self.subTest(snapshot=snapshot), self.assertRaises((ValueError, KeyError)):
++                Q.cancellation_phase(changed, owner, CONTEXT)
++
++    def test_execution_requires_same_running_process_and_original_active_finite_admission(self):
++        owner, item = facts('execution')
++        Q.cancellation_phase(item, owner, CONTEXT)
++        for changes in ({'status': 'Starting'}, {'nativeExecution': None},
++                        {'nativeExecution': {'processId': 123, 'birth': 'reused'}},
++                        {'admission': {**item['admission'], 'expiresAtUtc': '2026-01-01T00:00:00Z'}},
++                        {'admission': {**item['admission'], 'outcome': 'withdrawn'}},
++                        {'admission': {**item['admission'], 'environmentId': 'f' * 32}}):
++            changed = copy.deepcopy(item)
++            changed['cancellationSnapshot'].update(changes)
++            with self.subTest(actual=changes), self.assertRaises(ValueError):
++                Q.cancellation_phase(changed, owner, CONTEXT)
++
++    def test_signal_snapshot_reads_current_state_without_archived_starting_fallback(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            owner, item = facts()
++            owner['stateDirectory'] = str(root / 'native-unit-state')
++            active = Path(owner['stateDirectory']) / (owner['runId'] + '.json')
++            diagnostic = Path(owner['stateDirectory']) / 'diagnostics' / owner['runId']
++            Q.write(active, {**owner, 'status': 'Ready', 'updatedAt': Q.now()})
++            Q.write(diagnostic / 'owner.json', {**owner, 'status': 'Starting', 'updatedAt': Q.now()})
++            controller = object.__new__(Q.Qualification)
++            controller.context = CONTEXT
++            controller.issued = lambda _: owner
++            controller.diagnostics = lambda _: diagnostic
++            controller.save = lambda: Q.write(root / 'retained-journal.json', item)
++            controller.observe = lambda kind, **value: Q.write(root / 'retained-snapshot.json', value)
++            with patch.object(controller, 'state') as archived_fallback:
++                controller.cancellation_snapshot(item)
++                archived_fallback.assert_not_called()
++            self.assertEqual(item['cancellationSnapshot']['status'], 'Ready')
++            self.assertEqual(Q.read(root / 'retained-journal.json')['cancellationSnapshot']['status'], 'Ready')
++            with self.assertRaises(ValueError):
++                Q.cancellation_phase(item, owner, CONTEXT)
++            active.unlink()
++            controller.cancellation_snapshot(item)
++            self.assertEqual(item['cancellationSnapshot']['failureType'], 'FileNotFoundError')
++            with self.assertRaises(ValueError):
++                Q.cancellation_phase(item, owner, CONTEXT)
++
++    def test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup(self):
++        for actual in (None, {}, {'failureType': 'OSError'}, {'status': 'Ready'}):
++            with self.subTest(snapshot=actual), tempfile.TemporaryDirectory() as temporary:
++                directory = Path(temporary)
++                owner, item = facts()
++                receipt = directory / 'unit-receipt'
++                receipt.write_text('unit double, not a CI receipt')
++                item.update(label='cancel', receipt=str(receipt), cancellationSnapshot=actual)
++                controller = object.__new__(Q.Qualification)
++                controller.context = CONTEXT
++                controller.evidence = directory
++                controller.journal = {'owners': [item, {'label': 'peer', 'receipt': str(receipt)}]}
++                controller.issued = lambda _: owner
++                controller.recover_launch = lambda _: None
++                controller.diagnostics = lambda _: directory
++                controller.resume_host = lambda _: None
++                controller.settled_child = lambda _: None
++                observations = []
++                controller.observe = lambda kind, **value: observations.append(value)
++                with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain, \
++                     patch.object(controller, 'finalize_cancellation') as credit:
++                    self.assertEqual(controller.finalize('cancelled'), 1)
++                self.assertEqual(down.call_count, 2)
++                self.assertEqual(retain.call_count, 2)
++                credit.assert_not_called()
++                self.assertFalse(observations[-1]['issuedOwnersCleanupVerified'])
++                self.assertFalse(observations[-1]['candidateAcceptance'])
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,59 @@
+{
+  "at": "2026-11-03T15:34:03.835041+00:00",
+  "main": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "run": {
+    "id": 41661561500,
+    "head_sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "event": "push",
+    "run_attempt": 1,
+    "status": "in_progress",
+    "conclusion": null
+  },
+  "jobs": [
+    {
+      "id": 126005786415,
+      "name": "Package catalog contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "activeSteps": [
+        "Test Platform version catalog contracts"
+      ]
+    },
+    {
+      "id": 126005786972,
+      "name": "Build and package contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 126005787067,
+      "name": ".NET tests",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 126005787168,
+      "name": "Python contract tests",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 126005787433,
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 126005789301,
+      "name": "Dependency review",
+      "status": "completed",
+      "conclusion": "skipped",
+      "activeSteps": []
+    }
+  ],
+  "releaseDispatched": false
+}

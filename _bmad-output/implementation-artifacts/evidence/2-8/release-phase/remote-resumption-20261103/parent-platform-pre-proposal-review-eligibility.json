@@ -1,0 +1,53 @@
+{
+  "purpose": "Pre-proposal actual review eligibility facts; no request for user action before concrete verified PR",
+  "login": {
+    "login": "jpiquot",
+    "id": 6775094,
+    "type": "User"
+  },
+  "main": "247fbdd06f882a55c3ed86d1004b7c567bc446e3",
+  "applicableRules": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": true,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "merge",
+          "squash",
+          "rebase"
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    }
+  ],
+  "codeownersText": "# Administrator owns all changes, including workflows and this ownership policy.\n* @jpiquot\n/.github/workflows/** @jpiquot\n/.github/CODEOWNERS @jpiquot\n",
+  "normalCodeOwnerApprovalRequired": true,
+  "authorCannotApproveOwnPr": true,
+  "protectionChanged": false,
+  "bypassUsed": false,
+  "recordedAt": "2026-11-03T17:17:54.168753+00:00"
+}

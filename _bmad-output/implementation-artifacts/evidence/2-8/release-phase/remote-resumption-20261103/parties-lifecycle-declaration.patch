@@ -1,0 +1,50 @@
+diff --git a/scripts/test_platform_declaration.py b/scripts/test_platform_declaration.py
+index bf5116a5..9f3962c0 100644
+--- a/scripts/test_platform_declaration.py
++++ b/scripts/test_platform_declaration.py
+@@ -33,8 +33,12 @@ class PlatformDeclarationTests(unittest.TestCase):
+     def test_declared_suites_consume_platform_without_apphost_or_doubles(self):
+         module = renderer.declaration(self.acl)["modules"][0]
+         suites = module["tests"]
+-        self.assertEqual([(s["name"], s["mode"]) for s in suites],
+-                         [("platform-source", "source"), ("platform-package", "package")])
++        integration_entry = "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj"
++        lifecycle_entry = "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj"
++        self.assertEqual([(s["name"], s["mode"], s["entry"]) for s in suites],
++                         [("platform-source", "source", integration_entry),
++                          ("platform-package", "package", integration_entry),
++                          ("lifecycle-package", "package", lifecycle_entry)])
+         for suite in suites:
+             self.assertEqual(suite["executor"], "mtp")
+             self.assertEqual(suite["reportFormat"], "trx")
+@@ -43,14 +47,27 @@ class PlatformDeclarationTests(unittest.TestCase):
+             self.assertNotIn("AppHost", text)
+             self.assertNotIn("Aspire.Hosting", text)
+             self.assertNotIn("NSubstitute", text)
+-            self.assertIn("Hexalith.EventStore.Testing.Integration", text)
+-        fixture = (project.parent / "PlatformEnvironmentFixture.cs").read_text()
+-        tests = (project.parent / "PartyEnvironmentTests.cs").read_text()
++            if suite["name"] in ("platform-source", "platform-package"):
++                self.assertIn("Hexalith.EventStore.Testing.Integration", text)
++            else:
++                self.assertEqual(suite["name"], "lifecycle-package")
++                self.assertIn('<ProjectReference Include="../Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj" />', text)
++        integration = (renderer.ROOT / integration_entry).parent
++        fixture = (integration / "PlatformEnvironmentFixture.cs").read_text()
++        tests = (integration / "PartyEnvironmentTests.cs").read_text()
+         self.assertNotIn("Process.Start", fixture)
+         self.assertNotIn("Assert.Skip", tests)
+         self.assertIn("ReadStoredStreamAsync", tests)
+         self.assertIn("fixture.Tenants.GetAsync", tests)
+         self.assertIn("fixture.Memories.GetAsync", tests)
++        self.assertIn("fixture.Gateway.PostAsJsonAsync", tests)
++        self.assertIn("TestEnvironmentStreamReader.ReadStoredStreamAsync", fixture)
++        lifecycle = (renderer.ROOT / lifecycle_entry).with_name("LifecycleQualificationTests.cs").read_text()
++        self.assertIn("using Hexalith.Parties.Platform.IntegrationTests;", lifecycle)
++        self.assertIn("IClassFixture<PlatformEnvironmentFixture>", lifecycle)
++        self.assertIn("new PartyEnvironmentTests(fixture, output).RealDependencies_CreateQueryAndPersistMatchingPartyEvents()", lifecycle)
++        self.assertNotIn("Assert.Skip", lifecycle)
++        self.assertNotIn("Process.Start", lifecycle)
+         runner = (renderer.ROOT / "scripts/test.ps1").read_text()
+         self.assertIn("$allProjects + $platformProjects + $testSupportProjects", runner)
+ 

@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-03T16:20:53.524137+00:00",
+  "source": "88c64404c9bea77989564f09f412bb00c9c06045",
+  "declarationPatchRead": true,
+  "patchSha256": "9d7f8ae711dd3aa77fac049f5270d1f80736adefd98fc15ad67d92d5ad72c1aa",
+  "declarationFindingAddressed": true,
+  "newConfirmedFinding": "Lifecycle pass repeats the original fixture method, which unconditionally CreateNew-writes the same canonical observation path twice",
+  "requiredBehavior": "single canonical observation and substantive bounded post-hold persistence verification, no overwrite/deletion/ignored error",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

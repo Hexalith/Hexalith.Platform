@@ -1,0 +1,56 @@
+{
+  "classification": "local-source-controls-only",
+  "fixtureBuildBase": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "controls": [
+    {
+      "name": "controller",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ci-lifecycle",
+        "-v"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-controller-review-ready.txt"
+    },
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-declaration-review-ready.txt"
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-workflow-review-ready.txt"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-whitespace-review-ready.txt"
+    }
+  ],
+  "nativeServicesAllocated": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

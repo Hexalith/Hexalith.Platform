@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-11-03T17:24:13.441Z",
+  "pr": {
+    "number": 16,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/16",
+    "state": "open",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094
+    },
+    "base": "247fbdd06f882a55c3ed86d1004b7c567bc446e3",
+    "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+    "mergeResult": "7deb829ae3a82b9e6f87c138a3f4c73115db3cd6",
+    "mergeable": true,
+    "mergeableState": "blocked",
+    "changedFiles": 5
+  },
+  "runs": [
+    {
+      "id": 41683787846,
+      "name": "Platform tuple CI preflight",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41683787846",
+      "event": "workflow_dispatch",
+      "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+      "status": "queued",
+      "conclusion": null,
+      "attempt": 1
+    },
+    {
+      "id": 41683738928,
+      "name": "Catalog builder consumer binding",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41683738928",
+      "event": "pull_request",
+      "head": "942472bc875f08d600cbef5b74e45b3cae175587",
+      "status": "queued",
+      "conclusion": null,
+      "attempt": 1
+    }
+  ],
+  "rules": {
+    "id": 24657106,
+    "enforcement": "active",
+    "pullRequestRule": {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": true,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "merge",
+          "squash",
+          "rebase"
+        ]
+      }
+    },
+    "bypassUsed": false
+  },
+  "candidateAcceptance": false
+}

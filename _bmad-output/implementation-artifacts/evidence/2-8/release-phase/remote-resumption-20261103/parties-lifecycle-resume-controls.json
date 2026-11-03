@@ -1,0 +1,81 @@
+{
+  "classification": "local-source-and-controller-controls-only",
+  "base": "d2a174b524c18081f71fad61f8525a888624f3c2",
+  "focusedTests": {
+    "passed": 27,
+    "failed": 0,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-controls-green.txt"
+  },
+  "redControls": {
+    "testMethods": 16,
+    "failedAssertions": 4,
+    "reason": "No down attempt after ProcessLookupError/KeyError/ValueError resume faults",
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-controls-red.txt"
+  },
+  "controls": [
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-declaration.txt"
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-workflow.txt"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-whitespace.txt"
+    },
+    {
+      "name": "commit-commitlint",
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103/commitlint.config.mjs",
+        "--verbose"
+      ],
+      "messageFile": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-commit-message.txt",
+      "pinnedVersion": "21.2.4",
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-commit-commitlint.txt"
+    },
+    {
+      "name": "title-commitlint",
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103/commitlint.config.mjs",
+        "--verbose"
+      ],
+      "messageFile": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-title-message.txt",
+      "pinnedVersion": "21.2.4",
+      "exitCode": 0,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-resume-title-commitlint.txt"
+    }
+  ],
+  "nativeOwnerIssued": false,
+  "nativeServicesAllocated": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

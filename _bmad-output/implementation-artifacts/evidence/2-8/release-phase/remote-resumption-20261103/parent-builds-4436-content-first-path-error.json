@@ -1,0 +1,16 @@
+{
+  "kind": "verification procedure cache-path assumption",
+  "error": "AssertionError: ('Hexalith.FrontComposer.Contracts', [])",
+  "details": "The procedure expected official FrontComposer nupkg files directly under the established cache root. The actual files must be located and the verified bytes compared from their real paths. No package content mismatch was observed; the procedure stopped before extraction or CLI execution.",
+  "priorChecksCompleted": [
+    "both signed archives reconstruct exact qualified unsigned inventory",
+    "both repository signatures verified with offline revocation",
+    "all55 qualification payloads matched official inventory and Actions carrier",
+    "both nuspec source revisions matched725",
+    "all11 EventStore embedded occurrences matched retained official archives"
+  ],
+  "runtimeAcceptance": false,
+  "candidateAcceptance": false,
+  "recordedAt": "2026-11-03T17:17:33.324759+00:00",
+  "failureUtcCaptured": false
+}

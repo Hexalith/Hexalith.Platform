@@ -44,13 +44,26 @@ controls passed after removing the extra row, and external work merged both
 identical proposals as current main `725754075e1d6369430a3adf94d46fb71e6eaf9e`.
 The parent verified its complete tree equals reviewed e07. Fresh
 [main CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41661561500)
-is required before corrected publication; the cancelled run supplies no passing credit.
+completed successfully, including every required job and final aggregation.
+Parent rechecked source/current main and no active publisher, then dispatched
+[Release41666723123](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41666723123).
+Its exact-source preflight and normal protected production review passed under
+existing authorization; qualification is active. No new version or artifact is
+assumed. The cancelled earlier run supplies no passing credit.
 The normal prerequisite publication completed as v4.43.5 from
 `89f62052c932d054bda2b435bdfef60d96e77612`, preserving the Azure catalog additions.
 That version retains HXP020 and is not adopted as the corrected native producer.
+The externally published Platform v1.1.6 resolves to
+`8ea8fe092f8abb5c932a61830aae16051d442463`, with the same old 4.43.5/89 binding.
 A fresh qualified publication and coherent Platform/reference adoption remain.
 
-The dependent lifecycle fixture/controller is being prepared separately. Actual
+The dependent [Parties PR60](https://github.com/Hexalith/Hexalith.Parties/pull/60)
+is a draft. Parent reviewed its full source and launch/resume recovery fixes, then
+independently passed all 27 controls at clean `760062d8464e21cddaec9f3d8497fa82a61a3251`.
+Actual-process controls verify the preallocation gate and interrupted-launch recovery;
+resume errors retain exact cleanup attempts and diagnostics. A live cancellation
+phase snapshot is being added before hosted qualification. These are local source
+controls with no native service allocation. Actual
 service success/failure, startup/execution cancellation, partial startup, active
 attachment withdrawal, exact cleanup retry, peer preservation and verified zero
 owned leftovers remain incomplete. No candidate acceptance is claimed.
@@ -235,3 +248,5 @@ classified redacted documents, outside deleted workspaces.
 No hosted observation in this directory currently supplies those qualifications.
 Story completion therefore remains pending approved publication, reference activation
 and hosted cancellation/partial-startup evidence.
+
+Verified corrected Builds4.43.6 publication: [checkpoint](release-phase/remote-resumption-20261103/builds-4436-checkpoint.json), [signing transformation](release-phase/remote-resumption-20261103/builds-4436-signing-transformation.json), [producer/payloads](release-phase/remote-resumption-20261103/builds-4436-evidence-payload.json), [embedded content](release-phase/remote-resumption-20261103/builds-4436-packaged-content.json). Exact725 source; all55 payloads, two signed packages, offline revocation and actual executable verified. Platform adoption and real native/hosted acceptance remain pending.

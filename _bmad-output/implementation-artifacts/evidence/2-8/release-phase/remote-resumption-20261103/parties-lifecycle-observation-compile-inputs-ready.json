@@ -1,0 +1,66 @@
+{
+  "classification": "coherent9c-source-package-compile-diagnostic-only",
+  "base": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "root": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-observation-compile-20261103",
+  "source": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-ci-lifecycle-pr-20261103",
+  "copies": {
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": {
+      "sha256": "bc3eca11c77e2286185fc8bab472b7e0ed576dde4aab2d43d2eaef0d09d5c08e",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs": {
+      "sha256": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs": {
+      "sha256": "68c354f7c14dd041626b62116bed8bfc223cb00f684c1f822114cae5cf5f5fc3",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": {
+      "sha256": "e1457e7855ede6b8c88a9750c93d169bb6e115cbeea2663cc29a48c80db336bc",
+      "matchesProposedSource": true
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": {
+      "sha256": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "matchesProposedSource": true
+    }
+  },
+  "hostedQualification": false,
+  "candidateAcceptance": false,
+  "firstPreparationFailure": {
+    "command": [
+      "python3",
+      "-B",
+      "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "exitCode": 1,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-coherent-preparation-first.txt",
+    "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/parties-observation-coherent-preparation-0_d81_wz/github-env"
+  },
+  "directSubmodules": [
+    " 1745b6663ad32bb1288167135ed0f979366c53a0 references/Hexalith.AI.Tools (heads/main)",
+    " 26991e8c542704be44cd8d9f58084d56fa627adb references/Hexalith.Builds (26991e8)",
+    " 11555ace9efcae2928a00122dcba91243e5a8a1a references/Hexalith.Commons (v2.30.10)",
+    " 7c93a1234d14c66f5ee85ed48caaee1d30a671f3 references/Hexalith.EventStore (7c93a12)",
+    " 07089dcbdad784a1d53037e9cea78d1d7becd8d6 references/Hexalith.FrontComposer (07089dc)",
+    " 3bc89642ad43305531c4018b75b5e1b9e0681e10 references/Hexalith.McpCli (3bc8964)",
+    " e8956eb5c1bd49297f86702f9606eb9b013bc2f1 references/Hexalith.Memories (e8956eb)",
+    " bf101b9d5f19ba741852b0230e526d1f01422022 references/Hexalith.Platform (v1.1.5)",
+    " bce4eb9f45c6b131b960ab4fa39e50ff01e51960 references/Hexalith.PolymorphicSerializations (heads/main)",
+    " 4d0d599879767196928e1c265622483a62b457ae references/Hexalith.Tenants (4d0d599)"
+  ],
+  "preparation": {
+    "command": [
+      "python3",
+      "-B",
+      "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+      "--manifest",
+      "module/hexalith.module-manifest.v2.json"
+    ],
+    "exitCode": 0,
+    "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-lifecycle-observation-coherent-preparation-after-initialization.txt",
+    "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/parties-observation-coherent-ready-ki1v74m5/github-env"
+  }
+}

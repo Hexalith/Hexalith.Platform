@@ -1,0 +1,62 @@
+{
+  "classification": "local-actual-process-controller-controls-only",
+  "observations": [
+    {
+      "classification": "local-process-control",
+      "boundary": "actual-parent-SIGTERM-during-constructor",
+      "actualChildPid": 3571922,
+      "actualParentPid": 3571899,
+      "payloadExecuted": false,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.344841+00:00",
+        "failures": [],
+        "issuedOwners": 0,
+        "allocationStatus": "not-allocated",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "classification": "local-process-control",
+      "boundary": "post-constructor-exception",
+      "actualChildPid": 3571934,
+      "payloadExecuted": false,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.502730+00:00",
+        "failures": [],
+        "issuedOwners": 0,
+        "allocationStatus": "not-allocated",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "classification": "local-process-control",
+      "boundary": "released-without-receipt",
+      "actualChildPid": 3572104,
+      "payloadExecuted": true,
+      "nativeOwnerIssued": false,
+      "finalizer": {
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-03T15:41:49.652739+00:00",
+        "failures": [
+          {
+            "label": "passing",
+            "failureType": "ValueError"
+          }
+        ],
+        "issuedOwners": 0,
+        "allocationStatus": "unverified",
+        "issuedOwnersCleanupVerified": false,
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "nativeServicesAllocated": false,
+  "hostedQualification": false,
+  "candidateAcceptance": false
+}

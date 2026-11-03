@@ -1,0 +1,82 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index c6ce689a..75908500 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "4.43.5",
++      "version": "4.43.6",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/README.md b/README.md
+index 428cca08..b1990443 100644
+--- a/README.md
++++ b/README.md
+@@ -36,10 +36,10 @@ dotnet tool restore
+ dotnet tool run hexalith-module --version
+ ```
+ 
+-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.5`,
+-with range `[4.43.5, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
+-records the exact [v4.43.5 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.5)
+-source `89f62052c932d054bda2b435bdfef60d96e77612`. The catalog and signed
++The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.6`,
++with range `[4.43.6, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
++records the exact [v4.43.6 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.6)
++source `725754075e1d6369430a3adf94d46fb71e6eaf9e`. The catalog and signed
+ package identities are recorded in [`eng/builds-tuple.json`](eng/builds-tuple.json).
+ The [tuple preflight](#exact-tuple-ci-preflight) verifies those published bytes
+ against this Platform revision. Runtime and deployment qualification require
+diff --git a/eng/builds-tuple.json b/eng/builds-tuple.json
+index 61205dc2..5aa1d44d 100644
+--- a/eng/builds-tuple.json
++++ b/eng/builds-tuple.json
+@@ -3,7 +3,7 @@
+   "candidateAcceptance": false,
+   "producer": {
+     "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+-    "sourceRevision": "89f62052c932d054bda2b435bdfef60d96e77612",
++    "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+     "catalog": {
+       "path": "Props/Directory.Packages.props",
+       "blob": "ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b",
+@@ -11,13 +11,13 @@
+     }
+   },
+   "publication": {
+-    "version": "4.43.5",
+-    "sourceRevision": "89f62052c932d054bda2b435bdfef60d96e77612",
+-    "releaseTag": "v4.43.5",
++    "version": "4.43.6",
++    "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
++    "releaseTag": "v4.43.6",
+     "catalogSha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce",
+-    "archiveSha256": "7944d64005526121f5c814145db0310851172f1987fc46f59dae45eafdd72ed1",
+-    "toolingSha256": "fcf7da1668b8bea465f6328977b123d4f7c1d1c32b38700971c32f45f658e413",
+-    "inventorySha256": "3dad5d9723fdb76804f520fe72bd80cafeb8d74f9ca64f1395204916c752cd81",
+-    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.43.5/g4-tool-package-inventory.json"
++    "archiveSha256": "56bb8ec20f02e964dd9f44b7125bf05ada3cafee3c2ac7048f41d36bc8f1c6fe",
++    "toolingSha256": "1f98729def5105818eaf464e46d1c12b1bcd0607c3752c6e3842b2f201630cb1",
++    "inventorySha256": "9d2db16901373717b70ba53880a356c1b587b4d495b33ed87724edf02cf1fe8e",
++    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.43.6/g4-tool-package-inventory.json"
+   }
+ }
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index 40d85e1c..884b3ab8 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[4.43.5, 5.0.0-0)"
++  "toolVersionRange": "[4.43.6, 5.0.0-0)"
+ }
+Submodule references/Hexalith.Builds 89f62052..72575407:
+  > build: merge refs/remotes/origin/fix/remove-duplicate-keyvault-keys-pin into main via /pushall
+  > build: merge refs/remotes/origin/fix/keyvault-catalog-uniqueness into main via /pushall
+  > build: merge refs/remotes/origin/fix/released-dependency-test-profiles into main via /pushall
+  > build: merge refs/remotes/origin/fix/payload-azure-sdk-pins into main via /pushall
+  > fix(runtime): resolve the direct module catalog (#155)

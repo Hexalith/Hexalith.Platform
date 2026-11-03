@@ -1,0 +1,47 @@
+test_failed_intent_save_never_starts_a_process (test_launch_recovery.LaunchRecoveryTests.test_failed_intent_save_never_starts_a_process) ... ok
+test_immediate_process_group_bookkeeping_failure_keeps_gate_closed (test_launch_recovery.LaunchRecoveryTests.test_immediate_process_group_bookkeeping_failure_keeps_gate_closed) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-03T15:41:49.236005+00:00", "label": "passing", "actualProcessId": 3571847, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.237456+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup (test_launch_recovery.LaunchRecoveryTests.test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup) ... {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.239730+00:00", "failures": [{"label": "peer", "failureType": "ValueError"}, {"label": "passing", "failureType": "ValueError"}], "issuedOwners": 2, "allocationStatus": "allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_parent_termination_inside_constructor_cannot_release_actual_child (test_launch_recovery.LaunchRecoveryTests.test_parent_termination_inside_constructor_cannot_release_actual_child) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-03T15:41:49.344287+00:00", "label": "passing", "actualProcessId": 3571922, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.344841+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "actual-parent-SIGTERM-during-constructor", "actualChildPid": 3571922, "actualParentPid": 3571899, "payloadExecuted": false, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.344841+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+{"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-03T15:41:49.346656+00:00", "label": "passing", "actualProcessId": 3571922, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.347264+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_post_constructor_exception_recovers_actual_gated_child_from_durable_intent (test_launch_recovery.LaunchRecoveryTests.test_post_constructor_exception_recovers_actual_gated_child_from_durable_intent) ... {"kind": "owned-process-signal", "observedAtUtc": "2026-11-03T15:41:49.401117+00:00", "ownerRunId": null, "pid": 3571934, "signal": 2}
+{"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-03T15:41:49.502197+00:00", "label": "passing", "actualProcessId": 3571934, "gateStatus": "waiting"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.502730+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "post-constructor-exception", "actualChildPid": 3571934, "payloadExecuted": false, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.502730+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+ok
+test_process_bookkeeping_save_failure_cannot_release_child (test_launch_recovery.LaunchRecoveryTests.test_process_bookkeeping_save_failure_cannot_release_child) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-03T15:41:49.565131+00:00", "label": "passing", "actualProcessId": 3572102, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.565470+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_released_process_without_any_receipt_remains_explicitly_unverified (test_launch_recovery.LaunchRecoveryTests.test_released_process_without_any_receipt_remains_explicitly_unverified) ... {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.652739+00:00", "failures": [{"label": "passing", "failureType": "ValueError"}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "released-without-receipt", "actualChildPid": 3572104, "payloadExecuted": true, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.652739+00:00", "failures": [{"label": "passing", "failureType": "ValueError"}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+ok
+test_unknown_launch_never_becomes_not_allocated_or_prevents_peer_cleanup (test_launch_recovery.LaunchRecoveryTests.test_unknown_launch_never_becomes_not_allocated_or_prevents_peer_cleanup) ... {"kind": "finalizer-result", "observedAtUtc": "2026-11-03T15:41:49.654133+00:00", "failures": [{"label": "peer", "failureType": "ValueError"}, {"label": "passing", "failureType": "ValueError"}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_atomic_recovery_tolerates_an_interrupted_prior_temporary_write (test_qualification_controller.ControllerSafetyTests.test_atomic_recovery_tolerates_an_interrupted_prior_temporary_write) ... ok
+test_cancellation_preserves_prior_product_failure_without_claiming_api_order (test_qualification_controller.ControllerSafetyTests.test_cancellation_preserves_prior_product_failure_without_claiming_api_order) ... ok
+test_cancellation_result_requires_real_phase_signal_and_actual_status_outcome_time (test_qualification_controller.ControllerSafetyTests.test_cancellation_result_requires_real_phase_signal_and_actual_status_outcome_time) ... ok
+test_empty_finalization_is_not_claimed_as_runtime_cleanup_verification (test_qualification_controller.ControllerSafetyTests.test_empty_finalization_is_not_claimed_as_runtime_cleanup_verification) ... ok
+test_finite_admission_and_retry_cannot_replace_the_original_expiry (test_qualification_controller.ControllerSafetyTests.test_finite_admission_and_retry_cannot_replace_the_original_expiry) ... ok
+test_first_outcome_requires_real_nonempty_time_status_and_mapping_fields (test_qualification_controller.ControllerSafetyTests.test_first_outcome_requires_real_nonempty_time_status_and_mapping_fields) ... ok
+test_independent_cancellation_finalizer_requires_hold_and_preserves_retry_records (test_qualification_controller.ControllerSafetyTests.test_independent_cancellation_finalizer_requires_hold_and_preserves_retry_records) ... ok
+test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner (test_qualification_controller.ControllerSafetyTests.test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner) ... ok
+test_linked_and_hardlinked_metadata_are_refused (test_qualification_controller.ControllerSafetyTests.test_linked_and_hardlinked_metadata_are_refused) ... ok
+test_local_process_cannot_become_a_hosted_positive_owner (test_qualification_controller.ControllerSafetyTests.test_local_process_cannot_become_a_hosted_positive_owner) ... ok
+test_missing_or_unknown_cleanup_never_verifies_zero_resources (test_qualification_controller.ControllerSafetyTests.test_missing_or_unknown_cleanup_never_verifies_zero_resources) ... ok
+test_receipt_cannot_escape_its_recorded_owner_role (test_qualification_controller.ControllerSafetyTests.test_receipt_cannot_escape_its_recorded_owner_role) ... ok
+test_released_terminal_status_and_outcome_are_checked_independently (test_qualification_controller.ControllerSafetyTests.test_released_terminal_status_and_outcome_are_checked_independently) ... ok
+test_reused_controller_process_is_never_signalled (test_qualification_controller.ControllerSafetyTests.test_reused_controller_process_is_never_signalled) ... ok
+test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate (test_workflow_boundaries.WorkflowBoundaryTests.test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate) ... ok
+test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build (test_workflow_boundaries.WorkflowBoundaryTests.test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build) ... ok
+test_reader_permissions_and_independent_finalizer_remain_explicit (test_workflow_boundaries.WorkflowBoundaryTests.test_reader_permissions_and_independent_finalizer_remain_explicit) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.487s
+
+OK

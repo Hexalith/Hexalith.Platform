@@ -1,0 +1,347 @@
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+index b8871f96..ae6696bf 100644
+--- a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+@@ -1,171 +1,171 @@
+-using System.Net;
+-using System.Net.Http.Json;
+-using System.Text.Json;
+-using System.Text.Json.Serialization;
+-
+-using Hexalith.Commons.UniqueIds;
+-using Hexalith.EventStore.Contracts.Identity;
+-using Hexalith.EventStore.Server.Events;
+-using Hexalith.Parties.Contracts.Commands;
+-using Hexalith.Parties.Contracts.Events;
+-using Hexalith.Parties.Contracts.Models;
+-using Hexalith.Parties.Contracts.Queries;
+-using Hexalith.Parties.Contracts.ValueObjects;
+-
+-using Shouldly;
+-
+-namespace Hexalith.Parties.Platform.IntegrationTests;
+-
+-/// <summary>Exercises real Parties, Tenants and Memories; a missing handoff fails fixture initialization.</summary>
+-public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, ITestOutputHelper output) : IClassFixture<PlatformEnvironmentFixture>
+-{
+-    private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web)
+-    {
+-        Converters = { new JsonStringEnumConverter() },
+-    };
+-
+-    /// <summary>Exercises the full real persistence path and writes its canonical observation once.</summary>
+-    /// <returns>The bounded real-service assertions and single canonical observation.</returns>
+-    [Fact]
+-    public Task RealDependencies_CreateQueryAndPersistMatchingPartyEvents() =>
+-        ExerciseRealDependenciesAsync(recordCanonicalObservation: true);
+-
+-    /// <summary>Rechecks the full real persistence path after a qualification hold without rewriting the first observation.</summary>
+-    /// <returns>The bounded real-service command, query and exact-stream assertions.</returns>
+-    internal Task RecheckRealDependenciesAsync() =>
+-        ExerciseRealDependenciesAsync(recordCanonicalObservation: false);
+-
+-    private async Task ExerciseRealDependenciesAsync(bool recordCanonicalObservation)
+-    {
+-        using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+-        bound.CancelAfter(TimeSpan.FromSeconds(120));
+-        CancellationToken token = bound.Token;
+-        string tenant = fixture.Descriptor.SyntheticTenantId;
+-        // The declared Tenants API owns system-scope routing; fixtures never infer its internal query bindings.
+-        using HttpResponseMessage tenantResponse = await fixture.Tenants.GetAsync($"/api/tenants/{Uri.EscapeDataString(tenant)}", token).ConfigureAwait(true);
+-        tenantResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+-        using JsonDocument tenantDocument = JsonDocument.Parse(await tenantResponse.Content.ReadAsStringAsync(token).ConfigureAwait(true));
+-        tenantDocument.RootElement.GetProperty("tenantId").GetString().ShouldBe(tenant);
+-        using HttpResponseMessage memoriesResponse = await fixture.Memories.GetAsync($"tenants/{Uri.EscapeDataString(tenant)}", token).ConfigureAwait(true);
+-        memoriesResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+-        using JsonDocument memoriesDocument = JsonDocument.Parse(await memoriesResponse.Content.ReadAsStringAsync(token).ConfigureAwait(true));
+-        AssertActiveMemoriesTenant(memoriesDocument.RootElement, tenant);
+-
+-        string partyId = UniqueIdHelper.GenerateSortableUniqueStringId();
+-        string commandId = UniqueIdHelper.GenerateSortableUniqueStringId();
+-        var identity = new AggregateIdentity(tenant, "party", partyId);
+-        var command = new CreatePartyComposite
+-        {
+-            PartyId = partyId, Type = PartyType.Person,
+-            PersonDetails = new PersonDetails { FirstName = "Synthetic first", LastName = "Synthetic last" },
+-        };
+-        using HttpResponseMessage submit = await fixture.Gateway.PostAsJsonAsync("/api/v1/commands", new
+-        {
+-            messageId = commandId, correlationId = commandId, tenant, domain = identity.Domain,
+-            aggregateId = partyId, commandType = typeof(CreatePartyComposite).FullName, payload = command,
+-        }, SerializerOptions, token).ConfigureAwait(true);
+-        submit.StatusCode.ShouldBe(HttpStatusCode.Accepted);
+-        using JsonDocument status = await PollStatusAsync(commandId, token).ConfigureAwait(true);
+-        status.RootElement.GetProperty("status").GetString().ShouldBe("Completed");
+-        status.RootElement.GetProperty("aggregateId").GetString().ShouldBe(partyId);
+-        PartyDetail detail = await PollProjectionAsync(partyId, token).ConfigureAwait(true);
+-        detail.Id.ShouldBe(partyId);
+-        detail.Type.ShouldBe(PartyType.Person);
+-        detail.PersonDetails.ShouldBe(command.PersonDetails);
+-        detail.IsActive.ShouldBeTrue();
+-        detail.Freshness.ShouldNotBeNull().Status.ShouldBe(ProjectionFreshnessStatus.Current);
+-        (AggregateMetadata metadata, EventEnvelope[] events) = await fixture.ReadStoredStreamAsync(identity, token).ConfigureAwait(true);
+-        metadata.CurrentSequence.ShouldBe(events.LongLength);
+-        events.ShouldNotBeEmpty();
+-        for (int index = 0; index < events.Length; index++)
+-        {
+-            EventEnvelope envelope = events[index];
+-            envelope.Identity.ShouldBe(identity);
+-            envelope.SequenceNumber.ShouldBe(index + 1);
+-            envelope.CorrelationId.ShouldBe(commandId);
+-            envelope.CausationId.ShouldBe(commandId);
+-            envelope.UserId.ShouldBe("g4-native-tests");
+-            envelope.SerializationFormat.ShouldBe("json");
+-        }
+-        EventEnvelope createdEnvelope = events.Single(envelope => envelope.EventTypeName == typeof(PartyCreated).FullName);
+-        PartyCreated created = JsonSerializer.Deserialize<PartyCreated>(createdEnvelope.Payload, SerializerOptions)!;
+-        created.Type.ShouldBe(command.Type);
+-        created.PersonDetails.ShouldBe(command.PersonDetails);
+-        created.CreatedAt.ShouldBeGreaterThan(DateTimeOffset.UtcNow.AddMinutes(-5));
+-        created.CreatedAt.ShouldBeLessThanOrEqualTo(createdEnvelope.Timestamp);
+-        detail.CreatedAt.ShouldBe(createdEnvelope.Timestamp);
+-        output.WriteLine($"Persisted synthetic stream: {events.Length} exact event envelopes; tenant={tenant}; domain={identity.Domain}; aggregate={partyId}; command={commandId}; metadataSequence={metadata.CurrentSequence}; createdEnvelopeTimestamp={createdEnvelope.Timestamp:O}; Tenants and Memories returned the run tenant.");
+-        await WritePersistenceObservationsAsync(new
+-        {
+-            runId = fixture.Descriptor.RunId,
+-            status = "functional-observations-passed",
+-            qualificationCredit = false,
+-            observedAtUtc = DateTimeOffset.UtcNow,
+-            aggregate = new { identity.TenantId, identity.Domain, identity.AggregateId },
+-            commandId,
+-            metadataSequence = metadata.CurrentSequence,
+-            eventCount = events.Length,
+-            projection = new { detail.Id, detail.CreatedAt, freshness = detail.Freshness.Status },
+-            events = events.Select(envelope => new
+-            {
+-                envelope.Identity, envelope.SequenceNumber, envelope.EventTypeName, envelope.Timestamp,
+-                envelope.CorrelationId, envelope.CausationId, envelope.UserId, envelope.SerializationFormat,
+-            }).ToArray(),
+-            tenantsNativeQueryObserved = tenantDocument.RootElement.GetProperty("tenantId").GetString() == tenant,
+-            memoriesRegistryObserved = memoriesDocument.RootElement.GetProperty("id").GetString() == tenant
+-                && memoriesDocument.RootElement.GetProperty("status").GetString() == "active",
+-        }, recordCanonicalObservation, token).ConfigureAwait(true);
+-    }
+-
+-    /// <summary>Requires the currently observed registry tenant to be the active run tenant.</summary>
+-    /// <param name="tenant">The actual Memories response.</param>
+-    /// <param name="expectedId">The runner-supplied synthetic tenant.</param>
+-    internal static void AssertActiveMemoriesTenant(JsonElement tenant, string expectedId)
+-    {
+-        tenant.GetProperty("id").GetString().ShouldBe(expectedId);
+-        tenant.GetProperty("status").GetString().ShouldBe("active");
+-    }
+-
+-    private static Task WritePersistenceObservationsAsync<T>(T observation, bool recordCanonicalObservation, CancellationToken token) =>
+-        FunctionalObservationWriter.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(observation, SerializerOptions),
+-            System.Environment.GetEnvironmentVariable("HEXALITH_TEST_ENVIRONMENT_PATH"),
+-            System.Environment.GetEnvironmentVariable("HEXALITH_G4_TEST_REPORT_PATH"), recordCanonicalObservation, token);
+-
+-    private async Task<JsonDocument> PollStatusAsync(string commandId, CancellationToken token)
+-    {
+-        while (true)
+-        {
+-            using HttpResponseMessage response = await fixture.Gateway.GetAsync($"/api/v1/commands/status/{commandId}", token).ConfigureAwait(true);
+-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+-            JsonDocument status = JsonDocument.Parse(await response.Content.ReadAsStringAsync(token).ConfigureAwait(true));
+-            string? outcome = status.RootElement.GetProperty("status").GetString();
+-            if (outcome is "Completed" or "Rejected" or "PublishFailed" or "TimedOut") { return status; }
+-            status.Dispose();
+-            await Task.Delay(TimeSpan.FromMilliseconds(250), token).ConfigureAwait(true);
+-        }
+-    }
+-
+-    private async Task<PartyDetail> PollProjectionAsync(string partyId, CancellationToken token)
+-    {
+-        while (true)
+-        {
+-            using HttpResponseMessage response = await fixture.Gateway.PostAsJsonAsync("/api/v1/queries", new
+-            {
+-                tenant = fixture.Descriptor.SyntheticTenantId, domain = "party", aggregateId = partyId,
+-                queryType = "PartyDetail", projectionType = "party-detail", entityId = partyId,
+-                payload = new GetParty { PartyId = partyId },
+-            }, SerializerOptions, token).ConfigureAwait(true);
+-            if (response.StatusCode == HttpStatusCode.OK)
+-            {
+-                using JsonDocument document = JsonDocument.Parse(await response.Content.ReadAsStringAsync(token).ConfigureAwait(true));
+-                PartyDetail? detail = document.RootElement.GetProperty("payload").Deserialize<PartyDetail>(SerializerOptions);
+-                if (detail is { Freshness.Status: ProjectionFreshnessStatus.Current } && detail.Id == partyId) { return detail; }
+-            }
+-            else if (response.StatusCode != HttpStatusCode.NotFound && response.StatusCode != HttpStatusCode.ServiceUnavailable)
+-            {
+-                throw new InvalidOperationException($"The authenticated Party query failed with HTTP {(int)response.StatusCode}.");
+-            }
+-            await Task.Delay(TimeSpan.FromMilliseconds(250), token).ConfigureAwait(true);
+-        }
+-    }
+-}
++using System.Net;
++using System.Net.Http.Json;
++using System.Text.Json;
++using System.Text.Json.Serialization;
++
++using Hexalith.Commons.UniqueIds;
++using Hexalith.EventStore.Contracts.Identity;
++using Hexalith.EventStore.Server.Events;
++using Hexalith.Parties.Contracts.Commands;
++using Hexalith.Parties.Contracts.Events;
++using Hexalith.Parties.Contracts.Models;
++using Hexalith.Parties.Contracts.Queries;
++using Hexalith.Parties.Contracts.ValueObjects;
++
++using Shouldly;
++
++namespace Hexalith.Parties.Platform.IntegrationTests;
++
++/// <summary>Exercises real Parties, Tenants and Memories; a missing handoff fails fixture initialization.</summary>
++public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, ITestOutputHelper output) : IClassFixture<PlatformEnvironmentFixture>
++{
++    private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web)
++    {
++        Converters = { new JsonStringEnumConverter() },
++    };
++
++    /// <summary>Exercises the full real persistence path and writes its canonical observation once.</summary>
++    /// <returns>The bounded real-service assertions and single canonical observation.</returns>
++    [Fact]
++    public Task RealDependencies_CreateQueryAndPersistMatchingPartyEvents() =>
++        ExerciseRealDependenciesAsync(recordCanonicalObservation: true);
++
++    /// <summary>Rechecks the full real persistence path after a qualification hold without rewriting the first observation.</summary>
++    /// <returns>The bounded real-service command, query and exact-stream assertions.</returns>
++    internal Task RecheckRealDependenciesAsync() =>
++        ExerciseRealDependenciesAsync(recordCanonicalObservation: false);
++
++    private async Task ExerciseRealDependenciesAsync(bool recordCanonicalObservation)
++    {
++        using var bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        bound.CancelAfter(TimeSpan.FromSeconds(120));
++        CancellationToken token = bound.Token;
++        string tenant = fixture.Descriptor.SyntheticTenantId;
++        // The declared Tenants API owns system-scope routing; fixtures never infer its internal query bindings.
++        using HttpResponseMessage tenantResponse = await fixture.Tenants.GetAsync($"/api/tenants/{Uri.EscapeDataString(tenant)}", token).ConfigureAwait(true);
++        tenantResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
++        using JsonDocument tenantDocument = JsonDocument.Parse(await tenantResponse.Content.ReadAsStringAsync(token).ConfigureAwait(true));
++        tenantDocument.RootElement.GetProperty("tenantId").GetString().ShouldBe(tenant);
++        using HttpResponseMessage memoriesResponse = await fixture.Memories.GetAsync($"tenants/{Uri.EscapeDataString(tenant)}", token).ConfigureAwait(true);
++        memoriesResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
++        using JsonDocument memoriesDocument = JsonDocument.Parse(await memoriesResponse.Content.ReadAsStringAsync(token).ConfigureAwait(true));
++        AssertActiveMemoriesTenant(memoriesDocument.RootElement, tenant);
++
++        string partyId = UniqueIdHelper.GenerateSortableUniqueStringId();
++        string commandId = UniqueIdHelper.GenerateSortableUniqueStringId();
++        var identity = new AggregateIdentity(tenant, "party", partyId);
++        var command = new CreatePartyComposite
++        {
++            PartyId = partyId, Type = PartyType.Person,
++            PersonDetails = new PersonDetails { FirstName = "Synthetic first", LastName = "Synthetic last" },
++        };
++        using HttpResponseMessage submit = await fixture.Gateway.PostAsJsonAsync("/api/v1/commands", new
++        {
++            messageId = commandId, correlationId = commandId, tenant, domain = identity.Domain,
++            aggregateId = partyId, commandType = typeof(CreatePartyComposite).FullName, payload = command,
++        }, SerializerOptions, token).ConfigureAwait(true);
++        submit.StatusCode.ShouldBe(HttpStatusCode.Accepted);
++        using JsonDocument status = await PollStatusAsync(commandId, token).ConfigureAwait(true);
++        status.RootElement.GetProperty("status").GetString().ShouldBe("Completed");
++        status.RootElement.GetProperty("aggregateId").GetString().ShouldBe(partyId);
++        PartyDetail detail = await PollProjectionAsync(partyId, token).ConfigureAwait(true);
++        detail.Id.ShouldBe(partyId);
++        detail.Type.ShouldBe(PartyType.Person);
++        detail.PersonDetails.ShouldBe(command.PersonDetails);
++        detail.IsActive.ShouldBeTrue();
++        detail.Freshness.ShouldNotBeNull().Status.ShouldBe(ProjectionFreshnessStatus.Current);
++        (AggregateMetadata metadata, EventEnvelope[] events) = await fixture.ReadStoredStreamAsync(identity, token).ConfigureAwait(true);
++        metadata.CurrentSequence.ShouldBe(events.LongLength);
++        events.ShouldNotBeEmpty();
++        for (int index = 0; index < events.Length; index++)
++        {
++            EventEnvelope envelope = events[index];
++            envelope.Identity.ShouldBe(identity);
++            envelope.SequenceNumber.ShouldBe(index + 1);
++            envelope.CorrelationId.ShouldBe(commandId);
++            envelope.CausationId.ShouldBe(commandId);
++            envelope.UserId.ShouldBe("g4-native-tests");
++            envelope.SerializationFormat.ShouldBe("json");
++        }
++        EventEnvelope createdEnvelope = events.Single(envelope => envelope.EventTypeName == typeof(PartyCreated).FullName);
++        PartyCreated created = JsonSerializer.Deserialize<PartyCreated>(createdEnvelope.Payload, SerializerOptions)!;
++        created.Type.ShouldBe(command.Type);
++        created.PersonDetails.ShouldBe(command.PersonDetails);
++        created.CreatedAt.ShouldBeGreaterThan(DateTimeOffset.UtcNow.AddMinutes(-5));
++        created.CreatedAt.ShouldBeLessThanOrEqualTo(createdEnvelope.Timestamp);
++        detail.CreatedAt.ShouldBe(createdEnvelope.Timestamp);
++        output.WriteLine($"Persisted synthetic stream: {events.Length} exact event envelopes; tenant={tenant}; domain={identity.Domain}; aggregate={partyId}; command={commandId}; metadataSequence={metadata.CurrentSequence}; createdEnvelopeTimestamp={createdEnvelope.Timestamp:O}; Tenants and Memories returned the run tenant.");
++        await WritePersistenceObservationsAsync(new
++        {
++            runId = fixture.Descriptor.RunId,
++            status = "functional-observations-passed",
++            qualificationCredit = false,
++            observedAtUtc = DateTimeOffset.UtcNow,
++            aggregate = new { identity.TenantId, identity.Domain, identity.AggregateId },
++            commandId,
++            metadataSequence = metadata.CurrentSequence,
++            eventCount = events.Length,
++            projection = new { detail.Id, detail.CreatedAt, freshness = detail.Freshness.Status },
++            events = events.Select(envelope => new
++            {
++                envelope.Identity, envelope.SequenceNumber, envelope.EventTypeName, envelope.Timestamp,
++                envelope.CorrelationId, envelope.CausationId, envelope.UserId, envelope.SerializationFormat,
++            }).ToArray(),
++            tenantsNativeQueryObserved = tenantDocument.RootElement.GetProperty("tenantId").GetString() == tenant,
++            memoriesRegistryObserved = memoriesDocument.RootElement.GetProperty("id").GetString() == tenant
++                && memoriesDocument.RootElement.GetProperty("status").GetString() == "active",
++        }, recordCanonicalObservation, token).ConfigureAwait(true);
++    }
++
++    /// <summary>Requires the currently observed registry tenant to be the active run tenant.</summary>
++    /// <param name="tenant">The actual Memories response.</param>
++    /// <param name="expectedId">The runner-supplied synthetic tenant.</param>
++    internal static void AssertActiveMemoriesTenant(JsonElement tenant, string expectedId)
++    {
++        tenant.GetProperty("id").GetString().ShouldBe(expectedId);
++        tenant.GetProperty("status").GetString().ShouldBe("active");
++    }
++
++    private static Task WritePersistenceObservationsAsync<T>(T observation, bool recordCanonicalObservation, CancellationToken token) =>
++        FunctionalObservationWriter.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(observation, SerializerOptions),
++            System.Environment.GetEnvironmentVariable("HEXALITH_TEST_ENVIRONMENT_PATH"),
++            System.Environment.GetEnvironmentVariable("HEXALITH_G4_TEST_REPORT_PATH"), recordCanonicalObservation, token);
++
++    private async Task<JsonDocument> PollStatusAsync(string commandId, CancellationToken token)
++    {
++        while (true)
++        {
++            using HttpResponseMessage response = await fixture.Gateway.GetAsync($"/api/v1/commands/status/{commandId}", token).ConfigureAwait(true);
++            response.StatusCode.ShouldBe(HttpStatusCode.OK);
++            JsonDocument status = JsonDocument.Parse(await response.Content.ReadAsStringAsync(token).ConfigureAwait(true));
++            string? outcome = status.RootElement.GetProperty("status").GetString();
++            if (outcome is "Completed" or "Rejected" or "PublishFailed" or "TimedOut") { return status; }
++            status.Dispose();
++            await Task.Delay(TimeSpan.FromMilliseconds(250), token).ConfigureAwait(true);
++        }
++    }
++
++    private async Task<PartyDetail> PollProjectionAsync(string partyId, CancellationToken token)
++    {
++        while (true)
++        {
++            using HttpResponseMessage response = await fixture.Gateway.PostAsJsonAsync("/api/v1/queries", new
++            {
++                tenant = fixture.Descriptor.SyntheticTenantId, domain = "party", aggregateId = partyId,
++                queryType = "PartyDetail", projectionType = "party-detail", entityId = partyId,
++                payload = new GetParty { PartyId = partyId },
++            }, SerializerOptions, token).ConfigureAwait(true);
++            if (response.StatusCode == HttpStatusCode.OK)
++            {
++                using JsonDocument document = JsonDocument.Parse(await response.Content.ReadAsStringAsync(token).ConfigureAwait(true));
++                PartyDetail? detail = document.RootElement.GetProperty("payload").Deserialize<PartyDetail>(SerializerOptions);
++                if (detail is { Freshness.Status: ProjectionFreshnessStatus.Current } && detail.Id == partyId) { return detail; }
++            }
++            else if (response.StatusCode != HttpStatusCode.NotFound && response.StatusCode != HttpStatusCode.ServiceUnavailable)
++            {
++                throw new InvalidOperationException($"The authenticated Party query failed with HTTP {(int)response.StatusCode}.");
++            }
++            await Task.Delay(TimeSpan.FromMilliseconds(250), token).ConfigureAwait(true);
++        }
++    }
++}
