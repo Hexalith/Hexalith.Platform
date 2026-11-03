@@ -1,0 +1,154 @@
+{
+  "checkedAtUtc": "2026-11-03T10:15:42.436074+00:00",
+  "release": {
+    "id": 41606852507,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507",
+    "updated_at": "2026-11-03T08:57:26Z"
+  },
+  "releaseJobs": [
+    {
+      "id": 125818713865,
+      "name": "Verify current main source",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507/job/125818713865",
+      "activeSteps": []
+    },
+    {
+      "id": 125819151043,
+      "name": "Release",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507/job/125819151043",
+      "activeSteps": [
+        "Create Release"
+      ]
+    }
+  ],
+  "latestPublication": {
+    "tag_name": "v4.43.2",
+    "published_at": "2026-11-02T22:30:31Z",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.2"
+  },
+  "pr154": {
+    "number": 154,
+    "state": "open",
+    "mergeable": true,
+    "mergeable_state": "blocked",
+    "merged": false,
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/pull/154",
+    "headSha": "afb21bb57b0dd62309da49706474d566ae4458d4"
+  },
+  "pr154Checks": [
+    {
+      "name": "commitlint / commitlint",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41617759476/job/125855372912",
+      "app": "github-actions"
+    },
+    {
+      "name": "Cursor Bugbot",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/docs/bugbot",
+      "app": "cursor"
+    },
+    {
+      "name": "Codacy Static Code Analysis",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://app.codacy.com/gh/Hexalith/Hexalith.Builds/pull-requests/154",
+      "app": "codacy-production"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41617725622/job/125855261663",
+      "app": "github-actions"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/agents/bc-b28f26ab-dbfb-4c94-8738-2364f06e73a5",
+      "app": "cursor"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/agents/bc-0458d63f-df2e-4dd1-bd29-198eef072dd8",
+      "app": "cursor"
+    }
+  ],
+  "originalCodacyAnnotations": [
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs",
+      "blob_href": "https://github.com/Hexalith/Hexalith.Builds/blob/2bac835c15ed37510f069cd13b41fe21f6864af4/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs",
+      "start_line": 46,
+      "start_column": null,
+      "end_line": 46,
+      "end_column": null,
+      "annotation_level": "warning",
+      "title": "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs#L46",
+      "message": "Use the overloading mechanism instead of the optional parameters.",
+      "raw_details": null
+    }
+  ],
+  "platformPrChecks": [
+    {
+      "name": "Cursor Bugbot",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/docs/bugbot",
+      "app": "cursor"
+    },
+    {
+      "name": "consumer-binding (3.132.1)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41617035334/job/125852946929",
+      "app": "github-actions"
+    },
+    {
+      "name": "consumer-binding (3.130.0)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41617035334/job/125852946909",
+      "app": "github-actions"
+    },
+    {
+      "name": "consumer-binding (3.130.2)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41617035334/job/125852946786",
+      "app": "github-actions"
+    },
+    {
+      "name": "consumer-binding (3.130.1)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41617035334/job/125852946383",
+      "app": "github-actions"
+    },
+    {
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/agents/bc-67cba680-4075-41b1-91b7-98cec0009bd3",
+      "app": "cursor"
+    },
+    {
+      "name": "Cursor Security Agent: Security Reviewer",
+      "status": "completed",
+      "conclusion": "neutral",
+      "details_url": "https://cursor.com/agents/bc-8730505b-3d61-4332-ba69-54763caa1b57",
+      "app": "cursor"
+    }
+  ]
+}

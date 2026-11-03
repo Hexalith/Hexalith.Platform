@@ -1,0 +1,20 @@
+{
+  "npmCi": {
+    "command": [
+      "npm",
+      "ci",
+      "--ignore-scripts"
+    ],
+    "exitCode": 1,
+    "failure": "EBADENGINE: requires node24.22.1/npm11.19.1, actual node26.4.0/npm11.18.0; no engine bypass used."
+  },
+  "diffCheck": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 2,
+    "failure": "CRLF characters reported as whitespace on2changed target lines. File already uses authored CRLF per EditorConfig; preserving bytes and checking with cr-at-eol."
+  }
+}

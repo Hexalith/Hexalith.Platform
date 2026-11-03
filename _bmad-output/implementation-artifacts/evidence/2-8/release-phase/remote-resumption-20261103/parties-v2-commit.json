@@ -1,0 +1,102 @@
+{
+  "time": "2026-11-03T12:53:33.785896+00:00",
+  "head": "d92e0a08db9c799bf9baf7fd37419a351244e687",
+  "previousHead": "bdc0f370f4cb20246d662032979f1350533d48fc",
+  "paths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci.yml",
+    ".gitlink-signoff.tsv",
+    "README.md",
+    "docs/architecture.md",
+    "docs/ci.md",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs"
+  ],
+  "platformPointerAndSourceOnlyLedgerInSameCommit": true,
+  "buildsAndAllOtherRootPointersPreserved": true,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "HEAD",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "stdout": ".config/dotnet-tools.json\n.github/workflows/ci.yml\n.gitlink-signoff.tsv\nREADME.md\ndocs/architecture.md\ndocs/ci.md\nreferences/Hexalith.Platform\ntests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci.yml",
+        ".gitlink-signoff.tsv",
+        "README.md",
+        "docs/architecture.md",
+        "docs/ci.md",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "argv": [
+        "git",
+        "commit",
+        "--file",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/memories-3018-refresh-capability d92e0a08] ci: enroll disposable Parties package integration\n 8 files changed, 73 insertions(+), 34 deletions(-)\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "d92e0a08db9c799bf9baf7fd37419a351244e687\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:references/Hexalith.Platform"
+      ],
+      "exitCode": 0,
+      "stdout": "bf101b9d5f19ba741852b0230e526d1f01422022\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:references/Hexalith.Builds"
+      ],
+      "exitCode": 0,
+      "stdout": "26991e8c542704be44cd8d9f58084d56fa627adb\n",
+      "stderr": ""
+    }
+  ]
+}

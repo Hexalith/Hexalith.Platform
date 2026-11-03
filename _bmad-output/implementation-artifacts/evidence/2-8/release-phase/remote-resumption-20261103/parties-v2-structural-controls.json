@@ -1,0 +1,49 @@
+{
+  "time": "2026-11-03T12:48:54.094670+00:00",
+  "before": "bdc0f370f4cb20246d662032979f1350533d48fc",
+  "isolatedProjects": [
+    "tests/Hexalith.Parties.Aspire.Tests",
+    "tests/Hexalith.Parties.Contracts.Tests",
+    "tests/Hexalith.Parties.Authentication.Tests",
+    "tests/Hexalith.Parties.Client.Tests",
+    "tests/Hexalith.Parties.Server.Tests",
+    "tests/Hexalith.Parties.Projections.Tests",
+    "tests/Hexalith.Parties.Security.Tests",
+    "tests/Hexalith.Parties.AdminPortal.Tests",
+    "tests/Hexalith.Parties.ConsumerPortal.Tests",
+    "tests/Hexalith.Parties.UI.Tests",
+    "tests/Hexalith.Parties.Picker.Tests",
+    "tests/Hexalith.Parties.Mcp.Tests",
+    "tests/Hexalith.Parties.Tests",
+    "tests/Hexalith.Parties.Sample.Tests",
+    "tests/Hexalith.Parties.Ci.Tests"
+  ],
+  "allOriginal12Plus3WholeProjectsPreserved": true,
+  "allOtherJobsAndWorkflowFieldsUnchanged": true,
+  "actualPinnedV2InputAndSecretSchemaMatches": true,
+  "commands": [
+    {
+      "name": "actionlint",
+      "argv": [
+        "actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "whitespace",
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

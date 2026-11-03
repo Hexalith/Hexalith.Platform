@@ -1,0 +1,7 @@
+{
+  "command": "dotnet build src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj --configuration Debug -m:1 -p:NuGetAudit=false",
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103",
+  "exitCode": 0,
+  "outputTail": "  Platform version catalog validated: Hexalith.EventStore.Aspire/4.0.4, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.\n  Hexalith.Builds.Tooling -> /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll\n\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:41.03\n",
+  "scope": "Fresh owning Tooling Debug build; no runtime/image/cohort acceptance."
+}

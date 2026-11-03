@@ -1,0 +1,64 @@
+{
+  "status": "uncommitted-source-ready-for-parent-review",
+  "buildsWorktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "buildsBranch": "fix/released-dependency-test-profiles",
+  "buildsBase": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+  "changedBuildsFiles": [
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs",
+    "test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs"
+  ],
+  "sourceSha256": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": "3532054c7e5a39b97833075d2bd6468fe6ef65244b9ed87c6047a39dd5055ac4",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs": "7399de290826603a8b1b1cc2c17690b17df971e7d5b6ca35b685d8ea557d28fa",
+    "test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs": "0246c0fe9eef7a0e28521e8a3003f5a2f3dc4a98fe8f09dd3146705f9c0ca019"
+  },
+  "binarySha256": {
+    "freshTooling": "83b939e9740a39992346b9b23b3d36c9804e003a166aa1a1115ddec70f4bc47f",
+    "testLoadedTooling": "83b939e9740a39992346b9b23b3d36c9804e003a166aa1a1115ddec70f4bc47f",
+    "testAssembly": "7af72fdaa1cf0cd52d5f26060c23934297baa86cabaa58b83f75365fd62bf755",
+    "actualLayoutLoadedTooling": "83b939e9740a39992346b9b23b3d36c9804e003a166aa1a1115ddec70f4bc47f"
+  },
+  "build": {
+    "receipt": "release-profile-module-tests-build-final.json",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "focusedTests": {
+    "receipt": "release-profile-focused-tests.json",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "groups": {
+      "released-dependency-profiles": 9,
+      "declaration-closure": 17,
+      "invalid-active-selections": 11
+    }
+  },
+  "initialActualLayoutRefusal": "actual-platform-layout-initial-refusal.json",
+  "afterFixActualLayout": "actual-platform-layout-after-fix.json",
+  "actualLayoutResult": {
+    "result": "loaded",
+    "owners": [
+      "eventstore",
+      "tenants",
+      "memories"
+    ],
+    "verifiedPendingPr153BindingsSuppliedThroughOptions": true,
+    "dependencyTestFilesCopied": false,
+    "servicesAllocated": false,
+    "acceptedToolDecisionClaimed": false
+  },
+  "platformWorktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "platformBranch": "fix/ci-release-declaration-snapshots",
+  "platformBase": "f90e68a0c0305d18dc2cde8d4d4c856aa5a49725",
+  "platformAdoptionReceipt": "platform-declaration-adoption-preparation.json",
+  "pr153Modified": false,
+  "sourceCommitsOrPushesInThisCheckpoint": false,
+  "servicesAllocated": false,
+  "callerActivationPerformed": false,
+  "hostedQualificationClaimed": false,
+  "candidateAcceptanceClaimed": false,
+  "memoriesImageSourceBindingProved": false
+}

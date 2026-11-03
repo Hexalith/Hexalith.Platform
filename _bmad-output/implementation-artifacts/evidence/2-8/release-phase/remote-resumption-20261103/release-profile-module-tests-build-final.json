@@ -1,0 +1,15 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+    "--configuration",
+    "Debug",
+    "--no-restore",
+    "-m:1",
+    "-p:NuGetAudit=false"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "exitCode": 0,
+  "output": "release-profile-module-tests-build-final.txt"
+}

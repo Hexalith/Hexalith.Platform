@@ -1,0 +1,209 @@
+{
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1
+    },
+    {
+      "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2
+    },
+    {
+      "name": "Validate governed CI contract",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 3
+    },
+    {
+      "name": "Checkout approved Builds actions",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 4
+    },
+    {
+      "name": "Evaluate governed workflow provenance",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 5
+    },
+    {
+      "name": "Initialize root-declared submodules (governed)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 6
+    },
+    {
+      "name": "Initialize root-declared submodules",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 7
+    },
+    {
+      "name": "Initialize .NET",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 8
+    },
+    {
+      "name": "Checkout workflow-owned Builds preparation",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 9
+    },
+    {
+      "name": "Prepare module build",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 10
+    },
+    {
+      "name": "Cache NuGet packages",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 11
+    },
+    {
+      "name": "Validate test platform input",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 12
+    },
+    {
+      "name": "Prepare package dependencies",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 13
+    },
+    {
+      "name": "Restore",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 14
+    },
+    {
+      "name": "Build",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 15
+    },
+    {
+      "name": "Validate package consumer references",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 16
+    },
+    {
+      "name": "Unit tests (Tier 1, VSTest)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 17
+    },
+    {
+      "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 18
+    },
+    {
+      "name": "Require isolated success before integration",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 19
+    },
+    {
+      "name": "Install integration toolchain without starting services",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 20
+    },
+    {
+      "name": "Prepare integration binaries",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 21
+    },
+    {
+      "name": "Authenticate pull-only integration registry",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 22
+    },
+    {
+      "name": "Runner-owned package integration",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 23
+    },
+    {
+      "name": "Finalize exact CI owner",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 24
+    },
+    {
+      "name": "Remove integration registry credentials",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 25
+    },
+    {
+      "name": "Upload classified integration diagnostics",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 26
+    },
+    {
+      "name": "Validate coverage gates",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 27
+    },
+    {
+      "name": "Fail on blocking test failures",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 28
+    },
+    {
+      "name": "Upload test and coverage evidence",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 29
+    },
+    {
+      "name": "Post Cache NuGet packages",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 55
+    },
+    {
+      "name": "Post Checkout workflow-owned Builds preparation",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 56
+    },
+    {
+      "name": "Post Initialize .NET",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 57
+    },
+    {
+      "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 58
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 59
+    }
+  ]
+}
+

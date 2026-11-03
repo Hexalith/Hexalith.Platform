@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dnx",
+    "dotnet-inspect",
+    "-y",
+    "--",
+    "diff",
+    "--package",
+    "Hexalith.Memories.Client.Rest@3.0.13..3.0.18",
+    "--oneline",
+    "-n",
+    "100"
+  ],
+  "exitCode": 0,
+  "recordedAtUtc": "2026-11-03T10:44:13.390838+00:00",
+  "output": "memories-3018-client-api-diff.txt"
+}

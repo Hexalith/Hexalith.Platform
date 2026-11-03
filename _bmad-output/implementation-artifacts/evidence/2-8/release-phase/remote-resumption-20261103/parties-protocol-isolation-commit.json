@@ -1,0 +1,34 @@
+{
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103",
+  "previousHead": "74bcfddd58c975a296edfa01761ce6a184c75fd6",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "add",
+        "--",
+        ".github/workflows/ci.yml",
+        ".gitlink-signoff.tsv",
+        "references/Hexalith.Builds"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-F",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-protocol-isolation-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/memories-3018-refresh-capability 0001fe2a] fix(ci): isolate refresh checks on reviewed catalog\n 3 files changed, 28 insertions(+), 4 deletions(-)\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    }
+  ],
+  "head": "0001fe2aa27d36bde228711a05809af8cd37d46b",
+  "messageMatchesValidated": true,
+  "pointerAndLedgerInSameCommit": true,
+  "recordedAtUtc": "2026-11-03T12:11:38.668637+00:00"
+}

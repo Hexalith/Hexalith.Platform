@@ -1,0 +1,44 @@
+{
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103",
+  "base": "fcf7cbc86076ce43f0982e4959da9691feaf2d3a",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "add",
+        "--",
+        "Directory.Build.targets",
+        ".github/workflows/ci.yml"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-F",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-memories-3018-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/memories-3018-refresh-capability 08af27e0] fix(memories): qualify refresh support for 3.0.18\n 2 files changed, 34 insertions(+), 2 deletions(-)\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "fix/memories-3018-refresh-capability"
+      ],
+      "exitCode": 0,
+      "stdout": "branch 'fix/memories-3018-refresh-capability' set up to track 'origin/fix/memories-3018-refresh-capability'.\n",
+      "stderr": "warning: unable to find all commit-graph files\nremote: \nremote: Create a pull request for 'fix/memories-3018-refresh-capability' on GitHub by visiting:        \nremote:      https://github.com/Hexalith/Hexalith.Parties/pull/new/fix/memories-3018-refresh-capability        \nremote: \nremote: GitHub found 5 vulnerabilities on Hexalith/Hexalith.Parties's default branch (3 high, 2 moderate). To find out more, visit:        \nremote:      https://github.com/Hexalith/Hexalith.Parties/security/dependabot        \nremote: \nTo https://github.com/Hexalith/Hexalith.Parties.git\n * [new branch]        fix/memories-3018-refresh-capability -> fix/memories-3018-refresh-capability\nwarning: unable to find all commit-graph files\n"
+    }
+  ],
+  "head": "08af27e063c8a715199e611e6100b144a5a1e091",
+  "validatedMessagePreserved": true,
+  "recordedAtUtc": "2026-11-03T10:55:22.716166+00:00"
+}

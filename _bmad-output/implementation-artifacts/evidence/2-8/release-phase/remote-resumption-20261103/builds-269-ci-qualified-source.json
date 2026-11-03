@@ -1,0 +1,82 @@
+{
+  "checkedAtUtc": "2026-11-03T12:00:33.436139+00:00",
+  "source": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "fullCiPassed": true,
+  "checks": [
+    {
+      "name": "Release",
+      "appId": 15368,
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "name": "Verify current main source",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build and test",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "SonarCloud Code Analysis",
+      "appId": 12526,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Dependency review",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "CodeQL / analyze",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build and package contracts",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": ".NET tests",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Python contract tests",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Package catalog contracts",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "appId": 15368,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "publication": {
+    "id": 41625705717,
+    "status": "in_progress",
+    "conclusion": null,
+    "source": "26991e8c542704be44cd8d9f58084d56fa627adb"
+  },
+  "sourceSelectionOnly": true,
+  "publicationAcceptanceClaimed": false,
+  "candidateAcceptanceClaimed": false
+}

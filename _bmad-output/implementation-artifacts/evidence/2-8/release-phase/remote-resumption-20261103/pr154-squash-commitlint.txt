@@ -1,0 +1,8 @@
+⧗   --- input ---
+fix(runtime): validate released dependency test metadata (#154)
+
+Admit test metadata from exact hash-authenticated release snapshots
+without requiring dependency source projects in Platform.
+Keep supplied manifests, schema and startup executable checks strict.
+Use explicit validator overloads while preserving public call behavior.
+✔   found 0 problems, 0 warnings

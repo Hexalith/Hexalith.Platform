@@ -1,0 +1,48 @@
+{
+  "recordedAtUtc": "2026-11-03T12:13:27.544585+00:00",
+  "head": "0001fe2aa27d36bde228711a05809af8cd37d46b",
+  "releaseFloorTag": "v3.0.0",
+  "releaseFloorCommit": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+  "commands": [
+    {
+      "command": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--diff",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "output": "parties-protocol-isolation-gitlink-0.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--push-range",
+        "74bcfddd58c975a296edfa01761ce6a184c75fd6"
+      ],
+      "exitCode": 0,
+      "output": "parties-protocol-isolation-gitlink-1.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--push-range",
+        "fcf7cbc86076ce43f0982e4959da9691feaf2d3a"
+      ],
+      "exitCode": 0,
+      "output": "parties-protocol-isolation-gitlink-2.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--diff",
+        "v3.0.0"
+      ],
+      "exitCode": 0,
+      "output": "parties-protocol-isolation-gitlink-3.txt"
+    }
+  ]
+}

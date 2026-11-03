@@ -1,0 +1,22 @@
+{
+  "head": "d72bed117cf9c16634b21e85beaae34eda13b1bd",
+  "runId": 41642681838,
+  "runAttempt": 1,
+  "jobId": 125939890048,
+  "jobName": "UI accessibility",
+  "failedStep": "Run UI browser gate",
+  "buildUiWithPublishedDependencies": "success",
+  "firstOutcome": "failure",
+  "browserPassed": 61,
+  "browserFailed": 7,
+  "distinctFailure": "Existing FrontComposer capability-adoption guard expects exactly4.7.4; current restored/catalog-selected version is4.7.5.",
+  "boundary": "tests/e2e/helpers/frontcomposer-assets.ts:20",
+  "laterAssertionsBeyondGuard": "Not qualified for the seven blocked cases",
+  "sourceChangesForThisFailure": false,
+  "assertionWeakened": false,
+  "existingBrowserRetriesPreserved": true,
+  "artifactName": "ui-a11y-results",
+  "artifactUpload": "success",
+  "sanitizedExcerpt": "parties-v2-hosted-ui-first-failure.txt",
+  "remaining": "Proper current FrontComposer capability/adoption qualification and full current-head browser gates remain required."
+}

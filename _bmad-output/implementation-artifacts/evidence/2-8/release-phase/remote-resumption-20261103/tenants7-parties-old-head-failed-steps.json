@@ -1,0 +1,40 @@
+{
+  "checkedAtUtc": "2026-11-03T11:25:32.942322+00:00",
+  "head": "08af27e063c8a715199e611e6100b144a5a1e091",
+  "jobs": [
+    {
+      "id": 125874248703,
+      "name": "EventStore 4.0.4 package cohort (offline)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41623310482/job/125874248703",
+      "failedSteps": [
+        {
+          "name": "Qualify Memories 3.0.18 refresh and durable recovery",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-11-03T11:04:52Z",
+          "completed_at": "2026-11-03T11:04:54Z"
+        }
+      ]
+    },
+    {
+      "id": 125874248594,
+      "name": "ci / build-and-test",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41623310482/job/125874248594",
+      "failedSteps": [
+        {
+          "name": "Fail on blocking test failures",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 24,
+          "started_at": "2026-11-03T11:07:13Z",
+          "completed_at": "2026-11-03T11:07:13Z"
+        }
+      ]
+    }
+  ]
+}

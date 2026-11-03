@@ -1,0 +1,60 @@
+{
+  "time": "2026-11-03T12:34:26.333923+00:00",
+  "headBefore": "0001fe2aa27d36bde228711a05809af8cd37d46b",
+  "checks": {
+    "onlyCacheScopeChanged": true,
+    "cacheValuesPreserved": true,
+    "allOtherJobsEqualCanonicalMain": true,
+    "originalOfflineJobOrderingPasses": true,
+    "protocolRunScriptUnchanged": true,
+    "minimum52AndFailSkipsPreserved": true,
+    "sourceGuardAndAssertionsUnchanged": true,
+    "unchangedContractHistoryFailurePreserved": "parties-protocol-isolation-contract.json"
+  },
+  "commands": [
+    {
+      "name": "actionlint",
+      "argv": [
+        "actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "whitespace",
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "commit",
+      "argv": [
+        "node_modules/.bin/commitlint",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "candidate": "fix(ci): scope protocol caches to the execution step\n\nKeep runner.temp expressions in a supported step environment while preserving isolated package caches and the required protocol cases.\n",
+      "stdout": "\u29d7   --- input ---\nfix(ci): scope protocol caches to the execution step\n\nKeep runner.temp expressions in a supported step environment while preserving isolated package caches and the required protocol cases.\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    },
+    {
+      "name": "title",
+      "argv": [
+        "node_modules/.bin/commitlint",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "candidate": "fix(memories): qualify refresh support for 3.0.18",
+      "stdout": "\u29d7   --- input ---\nfix(memories): qualify refresh support for 3.0.18\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    }
+  ],
+  "node": "v24.22.1",
+  "npm": "11.19.1",
+  "commitlint": "21.2.4"
+}

@@ -1,0 +1,39 @@
+{
+  "recordedAtUtc": "2026-11-03T10:29:29.103541+00:00",
+  "head": "915eb31e5dca6f345efc2628029f71223e384000",
+  "base": "ce0441ae27cf6c1d19adc81b74090fe6acd1c0ac",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/154",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "worktreeStatus": "",
+  "diffStat": ".../Manifest/PlatformManifestValidator.cs          |  50 ++++++++-\n .../Runtime/CompositionDeclarationClosure.cs       |   4 +-\n .../ReleasedDependencyProfileTests.cs              | 122 +++++++++++++++++++++\n 3 files changed, 170 insertions(+), 6 deletions(-)",
+  "fullCurrentBaseDiff": "release-profile-current-base.patch",
+  "mergeReceipt": "release-profile-current-base-merge.json",
+  "messageValidation": "release-profile-current-base-message-validation.json",
+  "buildReceipt": "release-profile-current-base-build.json",
+  "testsReceipt": "release-profile-current-base-focused-tests.json",
+  "passed": 38,
+  "failed": 0,
+  "skipped": 0,
+  "hashReceipt": "release-profile-current-base-source-binary-hashes.json",
+  "postVerificationHashesMatch": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": true,
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs": true,
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs": true,
+    "test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs": true,
+    "src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": true,
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": true,
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": true
+  },
+  "actualLayoutReceipt": "actual-platform-layout-default-authorities.json",
+  "actualLayoutExitCode": 0,
+  "defaultAuthorityOptionsUsed": true,
+  "injectedAuthorityEntries": false,
+  "pushReceipt": "release-profile-current-base-push.json",
+  "remoteReceipt": "release-profile-current-base-remote-state.json",
+  "remaining": [
+    "Complete normal full exact current-base hosted checks and review before merge.",
+    "Fresh exact-main CI and normal prerequisite release, then verify actual official source/archive/inventory/embedded host.",
+    "Supported Platform tuple/tool adoption and actual runtime/cohort qualification; E/P v2 migration and hosted lifecycle/cleanup acceptance."
+  ],
+  "storyComplete": false
+}

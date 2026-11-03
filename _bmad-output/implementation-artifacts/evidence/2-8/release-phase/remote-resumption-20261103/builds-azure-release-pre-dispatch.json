@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-11-03T13:01:01.979103+00:00",
+  "source": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "main": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "sourceCi": {
+    "id": 41637066822,
+    "conclusion": "success",
+    "event": "push"
+  },
+  "checks": [
+    {
+      "id": 125932057404,
+      "name": "Build and test",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921682128,
+      "name": "Dependency review",
+      "conclusion": "skipped",
+      "app": 15368
+    },
+    {
+      "id": 125921681246,
+      "name": "CodeQL / analyze",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921681027,
+      "name": "Package catalog contracts",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921680874,
+      "name": "Python contract tests",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921680830,
+      "name": ".NET tests",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921680471,
+      "name": "Build and package contracts",
+      "conclusion": "success",
+      "app": 15368
+    },
+    {
+      "id": 125921514491,
+      "name": "SonarCloud Code Analysis",
+      "conclusion": "success",
+      "app": 12526
+    },
+    {
+      "id": 125920818035,
+      "name": "commitlint / commitlint",
+      "conclusion": "success",
+      "app": 15368
+    }
+  ],
+  "activePublicationRuns": [],
+  "selection": "codex-agent source selection under persisted prerequisite release authorization; no fabricated human ratification",
+  "normalProtectedPublicationRequired": true,
+  "version": "not assumed; existing semantic-release workflow selects actual version"
+}

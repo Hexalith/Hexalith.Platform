@@ -1,0 +1,296 @@
+{
+  "checkedAtUtc": "2026-11-03T09:14:08.191335+00:00",
+  "principal": "ci-reader",
+  "readOnly": true,
+  "images": [
+    {
+      "image": "registry.hexalith.com/eventstore:4.0.4",
+      "expectedReleaseSource": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:7d071f416145a0b7567ddcaa8e1f69e5696c40a747bb8fe75d131ee5d445dae9",
+          "bytes": 493
+        },
+        {
+          "category": "amd64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:049d29f8d940956d49ba2743b2a89098347b3eff93fb713bc8a6da4473de1be4",
+          "bytes": 1399
+        },
+        {
+          "category": "amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:e05bf4721592f439b7102fb2e5cd4d5df60dc90c82174339dc88ec7fcf618e94",
+          "bytes": 4145
+        },
+        {
+          "category": "arm64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:4cffa5c665433d8b6c5f7f20b02a29598d7bce42e7d7c8881a7cfee21c5508fa",
+          "bytes": 1399
+        },
+        {
+          "category": "arm64-config",
+          "status": 200,
+          "bodyDigest": "sha256:7701b909108d020e189c0e80e1b4f2f0737cab6a279c2021f5270f7950f387a5",
+          "bytes": 4146
+        }
+      ],
+      "result": "identity-verified-runtime-not-executed",
+      "indexDigest": "sha256:7d071f416145a0b7567ddcaa8e1f69e5696c40a747bb8fe75d131ee5d445dae9",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:049d29f8d940956d49ba2743b2a89098347b3eff93fb713bc8a6da4473de1be4",
+          "configDigest": "sha256:e05bf4721592f439b7102fb2e5cd4d5df60dc90c82174339dc88ec7fcf618e94",
+          "labels": {
+            "org.opencontainers.image.version": "4.0.4",
+            "org.opencontainers.image.revision": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:4cffa5c665433d8b6c5f7f20b02a29598d7bce42e7d7c8881a7cfee21c5508fa",
+          "configDigest": "sha256:7701b909108d020e189c0e80e1b4f2f0737cab6a279c2021f5270f7950f387a5",
+          "labels": {
+            "org.opencontainers.image.version": "4.0.4",
+            "org.opencontainers.image.revision": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7"
+          }
+        }
+      }
+    },
+    {
+      "image": "registry.hexalith.com/tenants:6.0.0",
+      "expectedReleaseSource": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:e59e7c1448f70d15cf831a0eb37f2111d12c2961900851a160f4d2cb93802820",
+          "bytes": 493
+        },
+        {
+          "category": "amd64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:8b95991bf7b6c8bfef5862280eb5d2c5349dcae0ee4a24b685c45c956e8c887d",
+          "bytes": 1399
+        },
+        {
+          "category": "amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:e25e69704ec1559ff50b3a928e53c07161aed97bbd9c7d46a753d3c39d26db70",
+          "bytes": 4187
+        },
+        {
+          "category": "arm64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:36df123977e4ad8f6c93b1da1e6d87d58f937d5c488034b3eec6640064a4fdc2",
+          "bytes": 1399
+        },
+        {
+          "category": "arm64-config",
+          "status": 200,
+          "bodyDigest": "sha256:6338406481a40ca45b7c00d36433e1684c4a26e8d111f69b859d0798a230d510",
+          "bytes": 4188
+        }
+      ],
+      "result": "identity-verified-runtime-not-executed",
+      "indexDigest": "sha256:e59e7c1448f70d15cf831a0eb37f2111d12c2961900851a160f4d2cb93802820",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:8b95991bf7b6c8bfef5862280eb5d2c5349dcae0ee4a24b685c45c956e8c887d",
+          "configDigest": "sha256:e25e69704ec1559ff50b3a928e53c07161aed97bbd9c7d46a753d3c39d26db70",
+          "labels": {
+            "org.opencontainers.image.version": "6.0.0",
+            "org.opencontainers.image.revision": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:36df123977e4ad8f6c93b1da1e6d87d58f937d5c488034b3eec6640064a4fdc2",
+          "configDigest": "sha256:6338406481a40ca45b7c00d36433e1684c4a26e8d111f69b859d0798a230d510",
+          "labels": {
+            "org.opencontainers.image.version": "6.0.0",
+            "org.opencontainers.image.revision": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+          }
+        }
+      }
+    },
+    {
+      "image": "registry.hexalith.com/tenants-api:6.0.0",
+      "expectedReleaseSource": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:8920f1097bfd739b312220676616137a868398c5a2956159e65546dc0f992ab7",
+          "bytes": 493
+        },
+        {
+          "category": "amd64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:d8daddf35360c19272634bd7abbe30e05f57de538274bfe3014009ec28aa793e",
+          "bytes": 1399
+        },
+        {
+          "category": "amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:ffc6fbe7917b60181c46478ada22e1733303ddf97edcd08e92baf15c3420fac4",
+          "bytes": 4191
+        },
+        {
+          "category": "arm64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:9c133031ea56204e4ddf9e70326b0bd07f4e7e683cdb1ba3406b85256ecd88d5",
+          "bytes": 1399
+        },
+        {
+          "category": "arm64-config",
+          "status": 200,
+          "bodyDigest": "sha256:bb7cbd2ed16f7c9089c97ccb427751ee49efcac12f0f847915c447087b13d6c0",
+          "bytes": 4192
+        }
+      ],
+      "result": "identity-verified-runtime-not-executed",
+      "indexDigest": "sha256:8920f1097bfd739b312220676616137a868398c5a2956159e65546dc0f992ab7",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:d8daddf35360c19272634bd7abbe30e05f57de538274bfe3014009ec28aa793e",
+          "configDigest": "sha256:ffc6fbe7917b60181c46478ada22e1733303ddf97edcd08e92baf15c3420fac4",
+          "labels": {
+            "org.opencontainers.image.version": "6.0.0",
+            "org.opencontainers.image.revision": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:9c133031ea56204e4ddf9e70326b0bd07f4e7e683cdb1ba3406b85256ecd88d5",
+          "configDigest": "sha256:bb7cbd2ed16f7c9089c97ccb427751ee49efcac12f0f847915c447087b13d6c0",
+          "labels": {
+            "org.opencontainers.image.version": "6.0.0",
+            "org.opencontainers.image.revision": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+          }
+        }
+      }
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:c23db1c6f9a566d4d8f09c3bc61a05ba77f7b28527137784ead91f2b3dca37a4",
+          "bytes": 1408
+        }
+      ],
+      "result": "failed",
+      "indexDigest": "sha256:c23db1c6f9a566d4d8f09c3bc61a05ba77f7b28527137784ead91f2b3dca37a4",
+      "failureType": "KeyError",
+      "failure": "'manifests'"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:87e1f60063d25cd7d73fc8a8774f3c8249c9e5a18fcb01f06a6378e95c3c8c5a",
+          "bytes": 1406
+        }
+      ],
+      "result": "failed",
+      "indexDigest": "sha256:87e1f60063d25cd7d73fc8a8774f3c8249c9e5a18fcb01f06a6378e95c3c8c5a",
+      "failureType": "KeyError",
+      "failure": "'manifests'"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:42d69ff2a6179250855894caa10001434c202af7b19ac29936f235e1c10dae9e",
+          "bytes": 1406
+        }
+      ],
+      "result": "failed",
+      "indexDigest": "sha256:42d69ff2a6179250855894caa10001434c202af7b19ac29936f235e1c10dae9e",
+      "failureType": "KeyError",
+      "failure": "'manifests'"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:a2f5a469f7870870623bd577161ccaa46667b2ef63aa782cc70695f074d4e237",
+          "bytes": 1406
+        }
+      ],
+      "result": "failed",
+      "indexDigest": "sha256:a2f5a469f7870870623bd577161ccaa46667b2ef63aa782cc70695f074d4e237",
+      "failureType": "KeyError",
+      "failure": "'manifests'"
+    },
+    {
+      "image": "registry.hexalith.com/parties:3.0.0",
+      "expectedReleaseSource": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+      "observations": [
+        {
+          "category": "published-index",
+          "status": 200,
+          "bodyDigest": "sha256:6d477a020effe31f90dd63382a4e35740c5a30590708295f191d96c7ffd3425a",
+          "bytes": 493
+        },
+        {
+          "category": "amd64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
+          "bytes": 1399
+        },
+        {
+          "category": "amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b",
+          "bytes": 4149
+        },
+        {
+          "category": "arm64-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497",
+          "bytes": 1399
+        },
+        {
+          "category": "arm64-config",
+          "status": 200,
+          "bodyDigest": "sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7",
+          "bytes": 4150
+        }
+      ],
+      "result": "identity-verified-runtime-not-executed",
+      "indexDigest": "sha256:6d477a020effe31f90dd63382a4e35740c5a30590708295f191d96c7ffd3425a",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
+          "configDigest": "sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b",
+          "labels": {
+            "org.opencontainers.image.version": "3.0.0",
+            "org.opencontainers.image.revision": "639d6e98b496429eb0490d1f8feeec97bd1a3280"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497",
+          "configDigest": "sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7",
+          "labels": {
+            "org.opencontainers.image.version": "3.0.0",
+            "org.opencontainers.image.revision": "639d6e98b496429eb0490d1f8feeec97bd1a3280"
+          }
+        }
+      }
+    }
+  ],
+  "combinedRuntimeCompatibilityQualified": false
+}

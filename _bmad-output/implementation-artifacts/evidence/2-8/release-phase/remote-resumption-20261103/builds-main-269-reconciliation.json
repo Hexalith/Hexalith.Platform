@@ -1,0 +1,93 @@
+{
+  "checkedAtUtc": "2026-11-03T11:02:15.868649+00:00",
+  "main": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "reviewedHead": "915eb31e5dca6f345efc2628029f71223e384000",
+  "reviewedSourceBlobsAlreadyPresent": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": true,
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs": true,
+    "test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs": true
+  },
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "app": "sonarqubecloud"
+    },
+    {
+      "name": "Dependency review",
+      "status": "completed",
+      "conclusion": "skipped",
+      "app": "github-actions"
+    },
+    {
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "app": "github-actions"
+    },
+    {
+      "name": "Build and package contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "app": "github-actions"
+    },
+    {
+      "name": ".NET tests",
+      "status": "in_progress",
+      "conclusion": null,
+      "app": "github-actions"
+    },
+    {
+      "name": "Python contract tests",
+      "status": "completed",
+      "conclusion": "success",
+      "app": "github-actions"
+    },
+    {
+      "name": "Package catalog contracts",
+      "status": "in_progress",
+      "conclusion": null,
+      "app": "github-actions"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "app": "github-actions"
+    }
+  ],
+  "recentPublications": [
+    {
+      "id": 41606852507,
+      "source": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41524952755,
+      "source": "6585f5860e87c146c26aa066d3a52b94eb56f271",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41524914732,
+      "source": "6585f5860e87c146c26aa066d3a52b94eb56f271",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41497505439,
+      "source": "8f3ce34436299d4682ff50dc3fe18360a09a88e1",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41492834983,
+      "source": "5df75d54ad1cab5e3c2e7357c59b6f438f0bc0e8",
+      "status": "completed",
+      "conclusion": "cancelled"
+    }
+  ],
+  "candidateAcceptanceClaimed": false
+}

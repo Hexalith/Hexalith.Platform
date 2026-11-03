@@ -1,0 +1,8 @@
+.github/workflows/ci.yml:113:27: context "runner" is not allowed here. available contexts are "github", "inputs", "matrix", "needs", "secrets", "strategy", "vars". see https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability for more details [expression]
+    |
+113 |       NUGET_PACKAGES: ${{ runner.temp }}/hexalith-memories-3018-nuget
+    |                           ^~~~~~~~~~~
+.github/workflows/ci.yml:114:34: context "runner" is not allowed here. available contexts are "github", "inputs", "matrix", "needs", "secrets", "strategy", "vars". see https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability for more details [expression]
+    |
+114 |       NUGET_HTTP_CACHE_PATH: ${{ runner.temp }}/hexalith-memories-3018-http
+    |                                  ^~~~~~~~~~~

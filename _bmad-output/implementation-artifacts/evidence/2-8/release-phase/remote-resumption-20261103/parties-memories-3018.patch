@@ -1,0 +1,59 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index d3cf812b..beafcc76 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -105,6 +105,38 @@ jobs:
+             --filter-method Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts \
+             --minimum-expected-tests 22 --fail-skips on
+ 
++      - name: Initialize recorded SDK configuration input
++        run: |
++          git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.EventStore
++          git submodule status -- references/Hexalith.EventStore
++      - name: Qualify Memories 3.0.18 refresh and durable recovery
++        shell: bash
++        run: |
++          set -euo pipefail
++          package_properties=(
++            -p:HexalithEventStoreVersion=4.0.4
++            -p:HexalithTenantsVersion=6.0.0
++            -p:HexalithMemoriesVersion=3.0.18
++            -p:UseHexalithProjectReferences=false
++            -p:UseNuGetDeps=true
++            -p:EventStoreFromSource=false
++            -p:HexalithEventStoreFromSource=false
++            -p:HexalithTenantsFromSource=false
++            -p:HexalithMemoriesFromSource=false
++            -p:HexalithCommonsFromSource=false
++            -p:HexalithCommonsHttpFromSource=false
++            -p:HexalithMcpCliFromSource=false
++            -p:RestoreSources=https://api.nuget.org/v3/index.json
++          )
++          # Use the published client with controlled HTTP replies; no private runtime is started.
++          dotnet build tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj \
++            --configuration Release --disable-build-servers -m:1 -warnaserror "${package_properties[@]}"
++          dotnet test --project tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj \
++            --no-build --no-restore --configuration Release "${package_properties[@]}" \
++            --filter-class Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests \
++            --filter-class Hexalith.Parties.Tests.Search.PartyMemoryRecoveryTests \
++            --minimum-expected-tests 52 --fail-skips on
++
+   owner-publish:
+     name: Owner publisher qualification
+     runs-on: ubuntu-24.04
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index ab9e823e..92c3be31 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -48,9 +48,9 @@
+     <PropertyGroup>
+       <MemoriesSourceRefreshSupported>false</MemoriesSourceRefreshSupported>
+     </PropertyGroup>
+-    <!-- The qualified 3.0.3 and 3.0.10 through 3.0.13 packages expose the same explicit revision/refresh protocol.
++    <!-- The qualified 3.0.3, 3.0.10 through 3.0.13 and 3.0.18 packages expose the same explicit revision/refresh protocol.
+          Qualify exact package selections; future or older packages remain fail closed. -->
+-    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12' or '$(HexalithMemoriesVersion)' == '3.0.13'">
++    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12' or '$(HexalithMemoriesVersion)' == '3.0.13' or '$(HexalithMemoriesVersion)' == '3.0.18'">
+       <DefineConstants>$(DefineConstants);HEXALITH_MEMORIES_SOURCE_REFRESH</DefineConstants>
+       <MemoriesSourceRefreshSupported>true</MemoriesSourceRefreshSupported>
+     </PropertyGroup>

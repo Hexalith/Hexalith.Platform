@@ -1,0 +1,232 @@
+{
+  "recordedAtUtc": "2026-11-03T08:45:27.950207+00:00",
+  "scope": "local-only reconciliation; no remote retrieval, reference activation, accepted-pin changes or hosted qualification",
+  "repositories": {
+    "platform": {
+      "head": "f90e68a0c0305d18dc2cde8d4d4c856aa5a49725",
+      "branch": "main"
+    },
+    "builds": {
+      "head": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+      "branch": "main"
+    },
+    "eventstore": {
+      "head": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+      "branch": "main"
+    },
+    "parties": {
+      "head": "4c57e79d6def9299ae279aa95cd852319fbc4832",
+      "branch": "main"
+    }
+  },
+  "fileSha256": {
+    "docs/contracts/candidate-and-attachment-policy-v1.md": "22ef0a64cfbb970dee680c11e3016f3bb99fd4e96a84d8a9f62556ae9c21cc71",
+    "references/Hexalith.AI.Tools/hexalith-llm-instructions.md": "49e0fc0c04960b6f986343e87250462313394642ce9f9451de7ddca34e849bb4",
+    "references/Hexalith.Builds/AGENTS.md": "4c59ec61f9012466b778bc1ed0438387f621986a8678aca34eefca719ab1825d",
+    "references/Hexalith.Builds/Props/Directory.Packages.props": "84c0f4adde8e6fd23446e4ac68437b3b013e761618b967996d7e01fc89c8df86",
+    "references/Hexalith.Builds/.github/workflows/domain-ci.yml": "5e674ba445c8e6a7ff13f83921a0450b38efe8afc2bcf1375ff310cf84b0fc2d",
+    "references/Hexalith.Builds/.github/workflows/domain-ci-v2.yml": "31455eb51330127a0f9b7659d0d26dc26f2d35f55a1acd4828eb2738a8dbd92c",
+    "references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py": "187b8cdedd049c7788165d3493304faef3204c1c9ff751e3fc210e196d52bc04",
+    "references/Hexalith.EventStore/.config/dotnet-tools.json": "404f9a7387643ba77184439819f7d87a6e37a74f2cced3af35471ec32e3b07a1",
+    "references/Hexalith.EventStore/.github/workflows/ci.yml": "3bdbcf2491f0ddfcf3e0f7253173a7be03725d5d78373181a9e16c2709934b66",
+    "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "references/Hexalith.EventStore/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs": "a88a6b424930045b471e6863e183df34eef72c324d9340314c9521a9b3d30530",
+    "references/Hexalith.Parties/.config/dotnet-tools.json": "11ecec393993dce43218f1defd9a756554b1c9a9e86876c34bde2a6ac33f1cc4",
+    "references/Hexalith.Parties/.github/workflows/ci.yml": "901f22236cfdcc7a7e4383155e4d63c93c4255ab7a6a266a04de5df7ee4b2d93",
+    "references/Hexalith.Parties/module/hexalith.module-manifest.v2.json": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504",
+    "references/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs": "2f6a4e167b81de05ee9252fceb5728201275fffbc5bd84ed6b29ac105ebb706c",
+    "eng/ci-registry-reader/prepare.py": "203bd6cfe5c2db4a482cdee81e76787c35217f02872ecef50247927638c3f1ee"
+  },
+  "declaredBuildsCatalogDefaults": {
+    "HexalithEventStoreVersion": "4.0.4",
+    "HexalithTenantsVersion": "6.0.0",
+    "HexalithMemoriesVersion": "3.0.18",
+    "HexalithPartiesVersion": "3.0.0"
+  },
+  "referenceCallers": {
+    "eventstore": {
+      "toolPin": "4.41.1",
+      "reusableWorkflow": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main",
+      "v2Activated": false
+    },
+    "parties": {
+      "toolPin": "4.41.1",
+      "reusableWorkflow": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0",
+      "v2Activated": false
+    }
+  },
+  "declaredReferenceProfiles": {
+    "eventstore": [
+      {
+        "name": "platform-source",
+        "mode": "source",
+        "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "entryPresent": true
+      },
+      {
+        "name": "platform-package",
+        "mode": "package",
+        "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "entryPresent": true
+      }
+    ],
+    "parties": [
+      {
+        "name": "platform-source",
+        "mode": "source",
+        "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+        "entryPresent": true
+      },
+      {
+        "name": "platform-package",
+        "mode": "package",
+        "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+        "entryPresent": true
+      }
+    ]
+  },
+  "cachedArchives": [
+    {
+      "id": "hexalith.builds.module.cli",
+      "version": "4.41.1",
+      "path": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.41.1/hexalith.builds.module.cli.4.41.1.nupkg",
+      "present": true,
+      "sha256": "5f17efb645f671e9c7e89ca9f025a5f58aa4e1423e1d80e8556253e154bc15bd",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0"
+      },
+      "repositorySignatureVerifiedOffline": true,
+      "localReleaseTagCommit": "df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0",
+      "releaseTagMatchesNuspecSource": true,
+      "eventStoreHostFamilyDependencies": [
+        "Hexalith.EventStore.Admin.Abstractions/3.130.2",
+        "Hexalith.EventStore.Client/3.130.2",
+        "Hexalith.EventStore.Contracts/3.130.2",
+        "Hexalith.EventStore.DomainService/3.130.2",
+        "Hexalith.EventStore.Gateway/3.130.2",
+        "Hexalith.EventStore.Server/3.130.2",
+        "Hexalith.EventStore.ServiceDefaults/3.130.2"
+      ],
+      "loadedAssemblyFiles": {
+        "Hexalith.Builds.Module.Cli.dll": {
+          "archiveSha256": "15eefbdd3a41a03d177710d0fdf1fa5809c844a544a45e8ff17802dc3391ad96",
+          "extractedSha256": "15eefbdd3a41a03d177710d0fdf1fa5809c844a544a45e8ff17802dc3391ad96",
+          "extractedMatchesArchive": true
+        },
+        "Hexalith.Builds.Tooling.dll": {
+          "archiveSha256": "49f1616302d4356cae2f8945b1300fbbf611751d0e27d150b7259e2a670569cb",
+          "extractedSha256": "49f1616302d4356cae2f8945b1300fbbf611751d0e27d150b7259e2a670569cb",
+          "extractedMatchesArchive": true
+        }
+      }
+    },
+    {
+      "id": "hexalith.builds.module.cli",
+      "version": "4.43.2",
+      "path": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.2/hexalith.builds.module.cli.4.43.2.nupkg",
+      "present": true,
+      "sha256": "dc0d885adce40b10dcdd592e73206bfda5aafa84a383be593fd3a2e2374976f5",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "6585f5860e87c146c26aa066d3a52b94eb56f271"
+      },
+      "repositorySignatureVerifiedOffline": true,
+      "localReleaseTagCommit": "6585f5860e87c146c26aa066d3a52b94eb56f271",
+      "releaseTagMatchesNuspecSource": true,
+      "eventStoreHostFamilyDependencies": [
+        "Hexalith.EventStore.Admin.Abstractions/4.0.0",
+        "Hexalith.EventStore.Client/4.0.0",
+        "Hexalith.EventStore.Contracts/4.0.0",
+        "Hexalith.EventStore.DomainService/4.0.0",
+        "Hexalith.EventStore.Gateway/4.0.0",
+        "Hexalith.EventStore.Server/4.0.0",
+        "Hexalith.EventStore.ServiceDefaults/4.0.0"
+      ],
+      "loadedAssemblyFiles": {
+        "Hexalith.Builds.Module.Cli.dll": {
+          "archiveSha256": "dbe996869a6733b8c13ab092c0b9b342484ba35de9e62398b49a6af5a10c3614",
+          "extractedSha256": "dbe996869a6733b8c13ab092c0b9b342484ba35de9e62398b49a6af5a10c3614",
+          "extractedMatchesArchive": true
+        },
+        "Hexalith.Builds.Tooling.dll": {
+          "archiveSha256": "18f419ef1276343715e140173ecf452cd1469f743d8f4f6a1261d252a4532115",
+          "extractedSha256": "18f419ef1276343715e140173ecf452cd1469f743d8f4f6a1261d252a4532115",
+          "extractedMatchesArchive": true
+        }
+      }
+    },
+    {
+      "id": "hexalith.eventstore.testing",
+      "version": "4.0.4",
+      "path": "/home/administrator/.nuget/packages/hexalith.eventstore.testing/4.0.4/hexalith.eventstore.testing.4.0.4.nupkg",
+      "present": true,
+      "sha256": "fae2691ad4d316972fa2f4499b9d6efeee286578299630750571b1e9f4dbdfee",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7"
+      },
+      "repositorySignatureVerifiedOffline": true
+    },
+    {
+      "id": "hexalith.parties.eventstoreextensions",
+      "version": "3.0.0",
+      "path": "/home/administrator/.nuget/packages/hexalith.parties.eventstoreextensions/3.0.0/hexalith.parties.eventstoreextensions.3.0.0.nupkg",
+      "present": false
+    }
+  ],
+  "verification": [
+    {
+      "cwd": ".",
+      "command": "python3 -m unittest discover -s eng/ci-registry-reader/tests -v",
+      "exitCode": 0,
+      "passed": 3
+    },
+    {
+      "cwd": ".",
+      "command": "python3 eng/ci-registry-reader/prepare.py --offline-check",
+      "exitCode": 0,
+      "result": "Retained public artifacts verified offline; no Kubernetes or credential access."
+    },
+    {
+      "cwd": "references/Hexalith.Builds",
+      "command": "python3 -m unittest discover -s Github/run-module-integration/tests -v",
+      "exitCode": 0,
+      "passed": 24
+    },
+    {
+      "cwd": "references/Hexalith.Builds",
+      "command": "pwsh -NoLogo -NoProfile -File Tools/test-domain-workflow-test-platforms.ps1",
+      "exitCode": 0,
+      "assertions": 411
+    },
+    {
+      "cwd": "references/Hexalith.Builds",
+      "command": "pwsh -NoLogo -NoProfile -File Tools/test-domain-workflow-test-platforms.ps1 -Contract v2",
+      "exitCode": 0,
+      "assertions": 254
+    },
+    {
+      "cwd": ".",
+      "command": "dotnet /home/administrator/.nuget/packages/hexalith.builds.module.cli/4.41.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll test --help",
+      "exitCode": 0,
+      "observedCiOwnerReceiptOption": true
+    }
+  ],
+  "signatureVerificationReceipt": "cached-package-signatures.json",
+  "remainingGates": [
+    "Complete compatible released package/tool/declaration/image cohort has not been qualified.",
+    "Parties EventStoreExtensions 3.0.0 archive is absent from the local cache; absence is not proof of unpublished status.",
+    "Pinned registry live revalidation, account/policy/reload/credential delivery and authenticated pull/write-refusal measurements remain unperformed.",
+    "EventStore/Parties v2 caller adoption and owning contract updates remain gated.",
+    "Revision-bound hosted success/failure/cancellation/partial-startup, same/cross-job admission, withdrawal-before-stop and verified zero-leftover evidence remain required."
+  ],
+  "storyComplete": false,
+  "candidateAcceptanceClaimed": false,
+  "remoteOperationPerformed": false
+}

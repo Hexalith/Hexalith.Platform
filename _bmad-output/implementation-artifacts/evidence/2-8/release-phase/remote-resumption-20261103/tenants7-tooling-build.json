@@ -1,0 +1,18 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+    "--configuration",
+    "Debug",
+    "--disable-build-servers",
+    "-m:1",
+    "-p:NuGetAudit=false"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-tenants7-20261103",
+  "source": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "exitCode": 0,
+  "output": "tenants7-tooling-build.txt",
+  "recordedAtUtc": "2026-11-03T11:25:33.382641+00:00",
+  "scope": "Local unpublished Debug Tooling dependency for metadata/layout diagnostics; not accepted Release tuple."
+}

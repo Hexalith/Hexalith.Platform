@@ -1,0 +1,201 @@
+{
+  "time": "2026-11-03T13:01:02.344086+00:00",
+  "allDatedDw182OwnerRowsVerbatim": true,
+  "datedOwnerRowCount": 3,
+  "previousObservationBodyPreservedVerbatimAsHistory": true,
+  "newActor": "codex-agent (explicit user delegation)",
+  "newRowMeaning": "Source-selection only; parity/runtime/candidate acceptance false",
+  "firstProbeLimitation": "Expected tool in task NUGET_PACKAGES; local dotnet tool resolves its normal global tool package cache. No archive mismatch occurred.",
+  "actualRestoredCliArchive": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/hexalith.builds.module.cli.4.43.4.nupkg",
+  "officialSignedArchive": "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/hexalith.builds.module.cli.4.43.4.nupkg",
+  "restoredArchiveSha256": "1402f8dca940cd73bc1956284bc3622e90933084eacf97bd5da53d4495781e5a",
+  "matchesVerifiedOfficialArchive": true,
+  "actualCliAndToolingBytes": [
+    {
+      "path": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+      "sha256": "1f72c129f087ef8cf2d16218e0da926fa18c312a8925534bb87efa5da4398dd8",
+      "matchesOfficial": true
+    },
+    {
+      "path": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+      "sha256": "5df372e6810d2b7270307f155e588105c7f271847584a45f68129b1a21dafed1",
+      "matchesOfficial": true
+    }
+  ],
+  "resolver": [
+    {
+      "path": "/home/administrator/.dotnet/toolResolverCache/1/hexalith.builds.module.cli",
+      "data": [
+        {
+          "Version": "0.0.0-stage5.5",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/tmp/claude-1000/-home-administrator-projects-hexalith-projects/9c23ef2a-f669-4e29-929c-9e8689b14adc/scratchpad/nuget55/hexalith.builds.module.cli/0.0.0-stage5.5/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "0.0.0-stage5.6",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/tmp/claude-1000/-home-administrator-projects-hexalith-projects/9c23ef2a-f669-4e29-929c-9e8689b14adc/scratchpad/nuget/hexalith.builds.module.cli/0.0.0-stage5.6/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "0.0.0-stage5.7",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.local/state/hexalith-qualification/nuget-stage5.7/hexalith.builds.module.cli/0.0.0-stage5.7/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "0.0.0-stage5.8",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.local/state/hexalith-qualification/nuget-stage5.8/hexalith.builds.module.cli/0.0.0-stage5.8/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.33.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.33.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.33.1",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.33.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.34.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.34.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.34.1-enrollment.20261020",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.34.1-enrollment.20261020/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.35.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.35.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.35.1",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.35.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.35.2",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.35.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.38.1",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.38.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.38.2",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.38.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.38.3",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.38.3/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.39.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.39.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.41.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.41.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.41.1",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.41.1/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.43.0",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.43.2",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.2/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.43.3",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.3/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        },
+        {
+          "Version": "4.43.4",
+          "TargetFramework": "net10.0",
+          "RuntimeIdentifier": "any",
+          "Name": "hexalith-module",
+          "Runner": "dotnet",
+          "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+        }
+      ]
+    }
+  ],
+  "packageEvaluation": "parties-v2-corrected-package-selection.json"
+}

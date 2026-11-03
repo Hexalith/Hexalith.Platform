@@ -1,0 +1,119 @@
+{
+  "recordedAtUtc": "2026-11-03T12:31:35.857462+00:00",
+  "sourceRevision": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "version": "4.43.4",
+  "platformRevision": "bf101b9d5f19ba741852b0230e526d1f01422022",
+  "platformWorktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "platformWorktreeStatus": "",
+  "featureBranchPreserved": {
+    "branch": "fix/ci-release-declaration-snapshots",
+    "head": "a9b69cc8f16687248a8e2dfc0b83ceeb8a5786a6"
+  },
+  "declarationSupersession": [
+    {
+      "path": "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+      "proposalBlob": "37659bc419ffb00f59ef6877f4a589233efb03ac",
+      "currentMainBlob": "37659bc419ffb00f59ef6877f4a589233efb03ac",
+      "exactBytesMatch": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/Declarations/tenants.json",
+      "proposalBlob": "0433268dfa4d5e7fa422ad1b68fa12b56cfba469",
+      "currentMainBlob": "0433268dfa4d5e7fa422ad1b68fa12b56cfba469",
+      "exactBytesMatch": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/Declarations/memories.json",
+      "proposalBlob": "82032cbe42172ace24e836319e1616df291a284d",
+      "currentMainBlob": "82032cbe42172ace24e836319e1616df291a284d",
+      "exactBytesMatch": true
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+      "proposalBlob": "bf2490925c8da6368a27b2b2382cda9d3ae93f27",
+      "currentMainBlob": "bf2490925c8da6368a27b2b2382cda9d3ae93f27",
+      "exactBytesMatch": true
+    }
+  ],
+  "incomingStrongerRefusalTest": "PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources now proves real default-authority load before mutating either version or commit; no assertion changes by this handoff.",
+  "duplicateSourceProposalNecessary": false,
+  "sourceFilesChanged": [],
+  "remoteMutations": false,
+  "mainMutations": false,
+  "nestedDependenciesInitialized": false,
+  "sharedCacheModified": false,
+  "publicationRetrievals": "builds-4434-retrievals.json",
+  "correctEvidenceRetrieval": "builds-4434-evidence-retrieval.json",
+  "firstFailedRetrievalPreserved": "Initial guessed unlisted ID Hexalith.Builds.Evidence returned404; authoritative inventory ID Hexalith.Builds.Evidence.Cli then succeeded. No actual listed package propagation failure.",
+  "signatureReceipt": "builds-4434-signatures.json",
+  "signatureCount": 2,
+  "signatureRevocationMode": "offline",
+  "freshOnlineRevocationClaim": false,
+  "exactSigningTransformationProof": "builds-4434-signing-transformation.json",
+  "qualificationPayloadProof": "builds-4434-evidence-payload.json",
+  "qualificationEvidenceCount": 55,
+  "packagedContentProof": "builds-4434-packaged-content.json",
+  "officialEmbeddedEventStoreDllComparisons": 11,
+  "allComparedEmbeddedSdkBytesMatch": true,
+  "tenantsEmbedded": false,
+  "tenantsLimit": "No Tenants archive paths or dependency-manifest references are embedded; separately restored Tenants7 must continue using verified official task cache. No runtime-loaded Tenants claim.",
+  "actualCliVersion": "4.43.4+26991e8c542704be44cd8d9f58084d56fa627adb",
+  "supportedArtifactPreparation": {
+    "argv": [
+      "python3",
+      "-B",
+      "eng/prepare_builds_artifacts.py",
+      "--archive",
+      "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/hexalith.builds.module.cli.4.43.4.nupkg",
+      "--output",
+      "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/platform-supported-artifacts",
+      "--require-recorded"
+    ],
+    "exitCode": 0,
+    "identityReceipt": "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/platform-supported-artifacts/artifact-identity.json",
+    "identityReceiptSha256": "6259fcd524d96b9eeb283a57f4deca150c81749e09a8723446ed9e825e7be5c8",
+    "cleanRecordedSource": true,
+    "tupleAllFieldsMatchOfficialObservation": true
+  },
+  "focusedControls": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "result": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_host_builds_resolution.py"
+      ],
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "result": "OK"
+    }
+  ],
+  "supportedTupleAudit": {
+    "receipt": "builds-4434-platform-tuple-audit.json",
+    "fullResult": "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/platform-tuple-audit/tuple-ci-result.json",
+    "fullResultSha256": "f1a8c99b4ef938c51cff0132e802050b2ed54044ab6fb491053a729dd774d7af",
+    "status": "graph-verified",
+    "projectCount": 30,
+    "allCommandsExitZero": true
+  },
+  "candidateAcceptance": false,
+  "runtimeAcceptance": false,
+  "hostedAcceptance": false,
+  "storyComplete": false,
+  "remaining": [
+    "Parent coordinates PR14 supersession because incoming main already contains its snapshots and stronger test, plus actual4.43.4 binding.",
+    "PR59 job-level runner.temp environment-context failure remains a separate exact first outcome, identified by parent; no correction in this handoff.",
+    "Fresh full hosted tuple/package/test gates, actual selected restored dependency bytes, eventual v2 callers and required projects/runtime/lifecycle cleanup qualification remain mandatory."
+  ]
+}

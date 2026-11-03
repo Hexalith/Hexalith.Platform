@@ -1,0 +1,38 @@
+{
+  "checkedAtUtc": "2026-11-03T10:11:02.037400+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "head": "989a41d0b2b33ed7d25d6793a3430184a93ecdfd",
+  "base": "f90e68a0c0305d18dc2cde8d4d4c856aa5a49725",
+  "changedFiles": [
+    "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+    "src/Hexalith.Platform.Composition/Declarations/tenants.json",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs"
+  ],
+  "sourceHashesMatchPrecommit": {
+    "src/Hexalith.Platform.Composition/Declarations/eventstore.json": true,
+    "src/Hexalith.Platform.Composition/Declarations/tenants.json": true,
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json": true,
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": true
+  },
+  "worktreeStatus": "",
+  "buildReceipt": "platform-declaration-adoption-build.json",
+  "testsReceipt": "platform-adoption-focused-tests.json",
+  "passed": 18,
+  "failed": 0,
+  "skipped": 0,
+  "scope": "Local unpublished Tooling Release/package metadata/native-preparation diagnostics only; not accepted published tuple, runtime cohort or hosted lifecycle proof.",
+  "pr": "https://github.com/Hexalith/Hexalith.Platform/pull/14",
+  "dependencies": [
+    "https://github.com/Hexalith/Hexalith.Builds/pull/153",
+    "https://github.com/Hexalith/Hexalith.Builds/pull/154"
+  ],
+  "acceptedTupleChanged": false,
+  "existingTuplePreflight": "platform-existing-tuple-preflight.json",
+  "remaining": [
+    "Both prerequisite Builds corrections must pass full normal current-base gates and normal merge/publication coordination.",
+    "Verify actual published CLI/source/archive/inventory/embedded host and make explicit supported released-tool/tuple decision.",
+    "Then qualify actual package/runtime and migrate E/P v2 callers with required hosted lifecycle/cleanup observations."
+  ],
+  "storyComplete": false
+}

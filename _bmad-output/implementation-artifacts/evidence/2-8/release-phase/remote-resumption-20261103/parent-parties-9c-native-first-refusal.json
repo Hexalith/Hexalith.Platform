@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-03T14:02:48.136389+00:00",
+  "source": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "run": 41646016719,
+  "attempt": 1,
+  "job": 125951426473,
+  "artifact": 13233889809,
+  "archiveSha256": "e2c786d31fdf04cf0950b09f64fe1ce12ebfba771512a28599e2eb9cd4cfd209",
+  "documents": {
+    "cleanup.json": "{\n  \"executionContext\": {\n    \"disposable\": true,\n    \"jobId\": \"build-and-test\",\n    \"kind\": \"ci\",\n    \"operatingSystem\": \"Linux\",\n    \"repository\": \"Hexalith/Hexalith.Parties\",\n    \"runnerKind\": \"github-hosted\",\n    \"workflowAttempt\": 1,\n    \"workflowRunId\": \"41646016719\"\n  },\n  \"status\": \"not-allocated\"\n}\n",
+    "execution.json": "{\n  \"diagnostics\": [\n    {\n      \"category\": \"TopologyOrLifecycle\",\n      \"field\": \"/home/runner/work/Hexalith.Parties/Hexalith.Parties/module/hexalith.module-manifest.v2.json\",\n      \"hint\": \"Correct the authoritative owner declaration.\",\n      \"location\": null,\n      \"message\": \"/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json: eventstore: /home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/references/Hexalith.Builds/Props/Directory.Packages.props: Builds catalog is unavailable.\",\n      \"phase\": \"Topology\",\n      \"row\": null,\n      \"ruleId\": \"HXP020\",\n      \"source\": null\n    }\n  ],\n  \"outcome\": {\n    \"category\": \"TopologyOrLifecycle\",\n    \"exitCode\": \"TopologyOrLifecycle\",\n    \"phase\": \"Topology\",\n    \"ruleId\": \"HXP020\"\n  },\n  \"status\": \"failed\"\n}\n",
+    "invocation.json": "{\n  \"classification\": \"baseline-only\",\n  \"executionContext\": {\n    \"disposable\": true,\n    \"jobId\": \"build-and-test\",\n    \"kind\": \"ci\",\n    \"operatingSystem\": \"Linux\",\n    \"repository\": \"Hexalith/Hexalith.Parties\",\n    \"runnerKind\": \"github-hosted\",\n    \"workflowAttempt\": 1,\n    \"workflowRunId\": \"41646016719\"\n  },\n  \"profiles\": [\n    \"platform-package\"\n  ]\n}\n"
+  },
+  "nativeAcceptance": false
+}

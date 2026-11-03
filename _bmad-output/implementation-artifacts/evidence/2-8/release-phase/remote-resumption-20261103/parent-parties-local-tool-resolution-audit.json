@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-03T12:57:27.053884+00:00",
+  "officialArchiveSha256": "1402f8dca940cd73bc1956284bc3622e90933084eacf97bd5da53d4495781e5a",
+  "resolvedActualCliAndToolingMatchOfficial": true,
+  "proof": [
+    {
+      "resolver": {
+        "Version": "4.43.4",
+        "TargetFramework": "net10.0",
+        "RuntimeIdentifier": "any",
+        "Name": "hexalith-module",
+        "Runner": "dotnet",
+        "PathToExecutable": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll"
+      },
+      "fileComparisons": [
+        {
+          "file": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+          "sha256": "1f72c129f087ef8cf2d16218e0da926fa18c312a8925534bb87efa5da4398dd8",
+          "matchesOfficial": true
+        },
+        {
+          "file": "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.4/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+          "sha256": "5df372e6810d2b7270307f155e588105c7f271847584a45f68129b1a21dafed1",
+          "matchesOfficial": true
+        }
+      ]
+    }
+  ],
+  "sharedCacheChanged": false
+}

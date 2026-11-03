@@ -1,0 +1,43 @@
+{
+  "time": "2026-11-03T12:39:50.256129+00:00",
+  "base": "e97582bf43ffe8c2f7d958dd470a242c21bd4908",
+  "independentJobsAndOtherWorkflowFieldsUnchanged": true,
+  "all19UnitProjectsPreserved": true,
+  "priorAppHostProjectMovedToIsolated": true,
+  "isolatedProjectCount": 20,
+  "actualPinnedV2InputAndSecretSchemaMatches": true,
+  "commands": [
+    {
+      "name": "actionlint",
+      "argv": [
+        "actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "whitespace",
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "pinned-manifest-validation",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/platform-supported-artifacts/published/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+2026-11-03T13:18:02.8479997Z     Error: This adoption authorizes exactly the selected 4.7.4 package capabilities.
+2026-11-03T13:18:02.8480439Z 
+2026-11-03T13:18:02.8480721Z     expect(received).toBe(expected) // Object.is equality
+2026-11-03T13:18:02.8481013Z 
+2026-11-03T13:18:02.8481214Z     Expected: "4.7.4"
+2026-11-03T13:18:02.8481517Z     Received: "4.7.5"
+2026-11-03T13:18:02.8481683Z 
+2026-11-03T13:18:02.8481913Z        at ../helpers/frontcomposer-assets.ts:20
+2026-11-03T13:18:02.8482179Z 
+2026-11-03T13:18:02.8482352Z       18 |     expect(path.isAbsolute(root)).toBe(true);
+2026-11-03T13:18:02.8482623Z       19 |   } else {
+2026-11-03T13:18:02.8483108Z     > 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.4 package capabilities.').toBe('4.7.4');
+2026-11-03T13:18:02.8484132Z          |                                                                                                  ^
+2026-11-03T13:18:02.8484696Z       21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);
+2026-11-03T13:18:02.8485096Z       22 |   }
+2026-11-03T13:18:02.8485311Z       23 |   const assets = [];
+2026-11-03T13:18:02.8485930Z         at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)
+2026-11-03T13:18:02.8486746Z         at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/admin-parties-list.spec.ts:302:5
+2026-11-03T13:18:02.8487068Z 
+2026-11-03T13:18:02.8487530Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-11-03T13:18:02.8488176Z     test-results/admin-parties-list-Admin-p-74616-and-query-calls-or-overflow-chromium/test-failed-1.png
+2026-11-03T13:18:02.8489098Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T13:18:02.8489458Z 
+2026-11-03T13:18:02.8490027Z     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+2026-11-03T13:18:02.8490938Z     test-results/admin-parties-list-Admin-p-74616-and-query-calls-or-overflow-chromium/video.webm
+2026-11-03T13:18:02.8491938Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T13:18:02.8492605Z 
+2026-11-03T13:18:02.8493378Z     Error Context: test-results/admin-parties-list-Admin-p-74616-and-query-calls-or-overflow-chromium/error-context.md
+2026-11-03T13:18:02.8494073Z 

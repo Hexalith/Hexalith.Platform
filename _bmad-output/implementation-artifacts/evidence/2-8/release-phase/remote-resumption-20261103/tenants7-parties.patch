@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index beafcc76..737b53e3 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -115,7 +115,7 @@ jobs:
+           set -euo pipefail
+           package_properties=(
+             -p:HexalithEventStoreVersion=4.0.4
+-            -p:HexalithTenantsVersion=6.0.0
++            -p:HexalithTenantsVersion=7.0.0
+             -p:HexalithMemoriesVersion=3.0.18
+             -p:UseHexalithProjectReferences=false
+             -p:UseNuGetDeps=true

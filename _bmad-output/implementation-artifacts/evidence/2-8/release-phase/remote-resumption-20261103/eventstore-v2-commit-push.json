@@ -1,0 +1,117 @@
+{
+  "time": "2026-11-03T12:42:38.713780+00:00",
+  "head": "f4134a067f342c308eaf051fba01c7be19f3777f",
+  "base": "e97582bf43ffe8c2f7d958dd470a242c21bd4908",
+  "changedPaths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "stdout": ".config/dotnet-tools.json\n.github/workflows/ci.yml\ndocs/ci.md\ntests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci.yml",
+        "docs/ci.md",
+        "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "stdout": ".config/dotnet-tools.json\n.github/workflows/ci.yml\ndocs/ci.md\ntests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "commit",
+        "--file",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-v2-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[feat/disposable-package-integration-ci f4134a067] ci: enroll runner-owned package integration\n 4 files changed, 62 insertions(+), 17 deletions(-)\n",
+      "stderr": "check-committed-files: staged files pass (4 checked).\n"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "f4134a067f342c308eaf051fba01c7be19f3777f\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "submodule.recurse=false",
+        "fetch",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/Hexalith/Hexalith.EventStore\n * branch                main       -> FETCH_HEAD\n"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "stdout": "e97582bf43ffe8c2f7d958dd470a242c21bd4908\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "HEAD:feat/disposable-package-integration-ci"
+      ],
+      "exitCode": 0,
+      "stdout": "branch 'feat/disposable-package-integration-ci' set up to track 'origin/feat/disposable-package-integration-ci'.\n",
+      "stderr": "remote: \nremote: Create a pull request for 'feat/disposable-package-integration-ci' on GitHub by visiting:        \nremote:      https://github.com/Hexalith/Hexalith.EventStore/pull/new/feat/disposable-package-integration-ci        \nremote: \nTo https://github.com/Hexalith/Hexalith.EventStore.git\n * [new branch]          HEAD -> feat/disposable-package-integration-ci\n"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "dnx",
+    "dotnet-inspect",
+    "-y",
+    "--",
+    "diff",
+    "--package",
+    "Hexalith.Memories.Contracts@3.0.13..3.0.18",
+    "--oneline",
+    "-n",
+    "100"
+  ],
+  "exitCode": 0
+}

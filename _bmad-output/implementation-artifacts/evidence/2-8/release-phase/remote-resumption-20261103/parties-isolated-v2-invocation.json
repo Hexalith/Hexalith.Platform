@@ -1,0 +1,20 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.Parties.Sample.Tests",
+    "--no-build",
+    "--configuration",
+    "Release",
+    "--results-directory",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-isolated-v2-invocation",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "parties-sample-v2.trx"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-isolated-preflight-20261103",
+  "exitCode": 0,
+  "output": "parties-isolated-v2-invocation.txt",
+  "recordedAtUtc": "2026-11-03T10:36:49.074403+00:00",
+  "trxExists": true
+}

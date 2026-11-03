@@ -1,4 +1,63 @@
-# Story 2.8 implementation and qualification handoff
+# Story 2.8 implementation and qualification evidence
+
+Current continuation (2026-11-03): the user authorized remote package verification,
+the dedicated registry reader procedure, reference caller PRs and hosted cleanup
+qualification. The reader is applied and measured, with only its two pull-only
+secrets delivered to EventStore and Parties. Builds v4.43.4 is published from
+`26991e8c542704be44cd8d9f58084d56fa627adb`; signed package content, release inventory,
+qualification payloads and embedded EventStore SDK bytes are verified. Platform main
+`bf101b9d5f19ba741852b0230e526d1f01422022` already records the matching tuple and
+released snapshots; redundant PR14 is closed unmerged. The reference v2 proposals were merged externally on 2026-11-03 at 14:51–14:52 UTC,
+with their known native blockers still unresolved. Fresh coherent adoption and real
+hosted runtime/lifecycle acceptance remain incomplete; no candidate acceptance is
+claimed.
+
+Current receipts are under [remote-resumption-20261103](release-phase/remote-resumption-20261103/):
+[registry](release-phase/remote-resumption-20261103/registry-live-checkpoint.json),
+[published content](release-phase/remote-resumption-20261103/builds-4434-checkpoint.json),
+[independent content audit](release-phase/remote-resumption-20261103/parent-builds-4434-content-audit.json),
+and [Platform supersession](release-phase/remote-resumption-20261103/parent-platform-pr14-superseded.json).
+The active [implementation spec](../../spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md)
+records the next sequential work. The earlier local-only handoff below is retained
+as historical provenance; its old versions and authorization limits describe that
+attempt, not the current execution state.
+
+## Current native qualification blocker
+
+Parties [PR59](https://github.com/Hexalith/Hexalith.Parties/pull/59) at
+`9c439ec5bbf2f7a79048ab797686cae6affa465f` completed all fifteen isolated projects:
+6,291 executed tests passed, zero failed, and five optional tests were not executed.
+The full UI and package-consumer gates passed. The first native invocation failed
+before allocation with HXP020 because the published producer looked for the catalog
+inside an uninitialized nested Platform checkout. Its verified classified artifact
+records `not-allocated`; it supplies no real service teardown credit.
+
+[Builds PR155](https://github.com/Hexalith/Hexalith.Builds/pull/155) merged normally as
+`e07ac76e9b2a6c0ef34c02507bea054d25e48be5` after full exact-head CI and required
+analysis checks passed. Its tree exactly matches reviewed head `8b99302b592acaa49937bf3f714317378c5c1d09`. The focused 83
+cases pass; the parent independently reran the eight new real-Git cases. Its fresh
+[main CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41657058349)
+was cancelled after an external main advance to `090797e333748b1a62db0a857d8d0f0e40b524fe`.
+That incoming merge retains the runtime fix but duplicates the already approved
+KeyVault package row. The unchanged central validator rejects the exact committed
+catalog. A separate minimal correction takes priority before publication; the
+cancelled run supplies no passing credit.
+The normal prerequisite publication completed as v4.43.5 from
+`89f62052c932d054bda2b435bdfef60d96e77612`, preserving the Azure catalog additions.
+That version retains HXP020 and is not adopted as the corrected native producer.
+A fresh qualified publication and coherent Platform/reference adoption remain.
+
+The dependent lifecycle fixture/controller is being prepared separately. Actual
+service success/failure, startup/execution cancellation, partial startup, active
+attachment withdrawal, exact cleanup retry, peer preservation and verified zero
+owned leftovers remain incomplete. No candidate acceptance is claimed.
+
+Current detailed receipts include [isolated execution](release-phase/remote-resumption-20261103/parent-parties-9c-isolated-project-audit.json),
+[exact native refusal](release-phase/remote-resumption-20261103/parent-parties-9c-native-first-refusal.json),
+[producer correction](release-phase/remote-resumption-20261103/builds-direct-catalog-codacy-checkpoint.json),
+and [immutable publication](release-phase/remote-resumption-20261103/builds-4435-observed-publication.json).
+
+## Historical local implementation handoff
 
 Status: local implementation and controls; hosted qualification is incomplete.
 No package/image publication, remote CI dispatch, accepted-pin change or candidate

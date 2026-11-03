@@ -1,0 +1,263 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, release/parties-sdk-3.130.2]
+  pull_request:
+    branches: [main, release/parties-sdk-3.130.2]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  folded-snapshot-compatibility:
+    name: ci / folded-snapshot-compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init
+
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Verify published and current folded snapshot compatibility
+        run: bash tools/folded-snapshot-compatibility/run.sh
+
+  process-packages:
+    name: ci / checkpointed process packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init
+
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Prove checkpointed process Release packages
+        run: python3 scripts/verify-process-packages.py
+
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@main
+    with:
+      solution: Hexalith.EventStore.slnx
+      # Package integration profiles and registry credentials belong to domain-ci-v2.
+      # Keep the existing blocking AppHost integration until that migration is qualified.
+      build-timeout-minutes: 180
+      test-platform: microsoft-testing-platform
+      run-consumer-validation: true
+      dapr-version: '1.18.2'
+      dapr-runtime-version: '1.18.7'
+      integration-test-projects: |
+        tests/Hexalith.EventStore.AppHost.Tests
+      unit-test-projects: |
+        tests/Hexalith.EventStore.Client.Tests
+        tests/Hexalith.EventStore.ServiceDefaults.Tests
+        tests/Hexalith.EventStore.Testing.Tests
+        tests/Hexalith.EventStore.SignalR.Tests
+        tests/Hexalith.EventStore.Admin.Abstractions.Tests
+        tests/Hexalith.EventStore.Admin.Cli.Tests
+        tests/Hexalith.EventStore.Admin.Mcp.Tests
+        tests/Hexalith.EventStore.Admin.Server.Tests
+        tests/Hexalith.EventStore.Operations.Tests
+        tests/Hexalith.EventStore.Admin.Server.Host.Tests
+        tests/Hexalith.EventStore.Admin.UI.Tests
+        tests/Hexalith.EventStore.DomainService.Tests
+        tests/Hexalith.EventStore.QueryRouting.Tests
+        tests/Hexalith.EventStore.RestApi.Generators.Tests
+        tests/Hexalith.EventStore.LoadTests.Tests
+        tests/Hexalith.EventStore.Sample.Tests
+        tests/Hexalith.EventStore.Testing.Integration.Tests
+        tests/Hexalith.EventStore.Server.Tests
+        tests/Hexalith.EventStore.ProviderVerification.Tests
+
+  contracts:
+    name: ci / contracts
+    runs-on: ubuntu-latest
+    # A recent successful run took 23m40s; allow margin for slower runners.
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+
+      - name: Initialize root-declared submodules
+        run: git -c submodule.recurse=false submodule update --init
+
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Run generated API smoke preflight regression
+        run: bash scripts/tests/generated-api-smoke-preflight.test.sh
+
+      - name: Verify package publication dependency guards
+        run: python3 -m unittest discover -s tools/tests -p test_release_package_contract.py
+
+      - name: Verify qualification runner exit preservation
+        run: python3 -m unittest discover -s tools/tests -p test_published_runner_exit.py
+
+      - name: Restore Contracts tests
+        run: >-
+          dotnet restore tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj
+          -p:Configuration=Release
+          -p:UseHexalithProjectReferences=false
+
+      - name: Build Contracts tests
+        run: >-
+          dotnet build tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj
+          --no-restore
+          --configuration Release
+          -warnaserror
+          -m:1
+          -p:UseHexalithProjectReferences=false
+
+      - name: Run Contracts tests
+        run: >-
+          dotnet test tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj
+          --no-build
+          --configuration Release
+          --filter-not-trait "Category=HeavyweightContainerPublish"
+          --results-directory "TestResults/Hexalith.EventStore.Contracts.Tests"
+          --report-xunit-trx
+          --report-xunit-trx-filename Hexalith.EventStore.Contracts.Tests.trx
+          --coverage
+          --coverage-output-format cobertura
+          --coverage-output coverage.cobertura.xml
+          -p:UseHexalithProjectReferences=false
+
+      - name: Upload Contracts test results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: contracts-test-results
+          path: |
+            TestResults/**/*.trx
+            TestResults/**/coverage.cobertura.xml
+          if-no-files-found: error
+          retention-days: 7
+
+  semantic-release-governance:
+    name: ci / semantic-release-governance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up supported Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install locked npm dependencies
+        run: npm ci
+
+      - name: Verify semantic-release GitHub success lifecycle
+        run: node tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs
+
+      - name: Checkout exact approved publication engine for regression controls
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hexalith/Hexalith.Builds
+          ref: 30ea43a56330a9828ed0bb2e837289231d8630d1
+          fetch-depth: 0
+          path: .hexalith/builds-publication-tests
+          submodules: false
+          persist-credentials: false
+
+      - name: Verify one-use publication authority and same-run source controls
+        env:
+          HEXALITH_BUILDS_SOURCE: ${{ github.workspace }}/.hexalith/builds-publication-tests
+        run: python3 -m unittest discover -s tools/tests -p 'test_release_publication_authority.py'
+
+      - name: Verify finite current-source proofs before production and OIDC
+        run: python3 -m unittest discover -s tools/tests -p 'test_release_source_branch.py'
+
+      - name: Verify native maintenance candidate qualification
+        run: python3 -m unittest discover -s tools/tests -p 'test_release_candidate.py'
+
+  tenants-source-mode:
+    name: ci / tenants-source-mode
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      UseHexalithProjectReferences: 'true'
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+
+      - name: Initialize root-declared submodules
+        uses: Hexalith/Hexalith.Builds/Github/initialize-build@main
+
+      - name: Initialize .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore source-mode AppHost tests
+        run: >-
+          dotnet restore tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj
+          -p:Configuration=Debug
+          -p:UseHexalithProjectReferences=true
+
+      - name: Build source-mode AppHost tests
+        run: >-
+          dotnet build tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj
+          --no-restore
+          --configuration Debug
+          -warnaserror
+          -m:1
+          -p:UseHexalithProjectReferences=true
+
+      - name: Verify Tenants source-mode topology guardrails
+        run: >-
+          dotnet test tests/Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.csproj
+          --no-build
+          --configuration Debug
+          --filter-class Hexalith.EventStore.AppHost.Tests.Configuration.TenantsApiLaunchSettingsTests
+          --results-directory TestResults/Hexalith.EventStore.AppHost.Tests
+          --report-xunit-trx
+          --report-xunit-trx-filename Hexalith.EventStore.AppHost.Tests.trx
+          -p:UseHexalithProjectReferences=true
+
+      - name: Upload Tenants source-mode test results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tenants-source-mode-test-results
+          path: TestResults/Hexalith.EventStore.AppHost.Tests/**/*.trx
+          if-no-files-found: error
+          retention-days: 7
+

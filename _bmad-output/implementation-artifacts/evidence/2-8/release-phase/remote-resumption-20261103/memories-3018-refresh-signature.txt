@@ -1,0 +1,9 @@
+# Hexalith.Memories.Client.Rest.MemoriesClient
+
+Package: Hexalith.Memories.Client.Rest | Version: 3.0.18 | TFM: net10.0 | Library: lib/net10.0/Hexalith.Memories.Client.Rest.dll | Source: NuGet
+
+## Methods
+
+| Name | Digest | Signature |
+| ---- | ------ | --------- |
+| RefreshAsync | `8c48a79296` | `public virtual System.Threading.Tasks.Task<string> RefreshAsync(string tenantId, string caseId, string sourceUri, byte[] content, string contentType, string ingestedBy, System.Collections.Generic.IReadOnlyDictionary<string, Hexalith.Memories.Contracts.V1.MetadataField>? metadata, string idempotencyToken, string? expectedMemoryUnitId, long sourceRevisionNumber, System.Threading.CancellationToken ct, string? reopenSourceVersion = null)` |

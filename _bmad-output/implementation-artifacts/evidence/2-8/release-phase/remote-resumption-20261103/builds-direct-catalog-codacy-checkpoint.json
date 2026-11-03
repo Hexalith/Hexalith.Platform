@@ -1,0 +1,42 @@
+{
+  "head_sha": "8b99302b592acaa49937bf3f714317378c5c1d09",
+  "previous_head_sha": "918eb6bce5fade37ba2626aad93ca1a232cc9030",
+  "base_sha": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/155",
+  "diff": "builds-direct-catalog-codacy.patch",
+  "diff_sha256": "d4026fdce4481869d70d98d6ed10a7082bf83bbd040e8bdf6466903120e4e16e",
+  "change": "Extract actual released snapshot/provenance writing into cohesive helper; no input/assertion/production change",
+  "method_raw_lines": {
+    "CreateReleasedWorkspaceAsync": 35,
+    "WriteReleasedDeclarationsAsync": 24
+  },
+  "production_blob_unchanged": true,
+  "build": {
+    "exit_code": 0,
+    "warnings": 0,
+    "errors": 0,
+    "log": "builds-direct-catalog-codacy-build.txt"
+  },
+  "tests": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0
+  },
+  "test_xml": "builds-direct-catalog-codacy-tests.xml",
+  "commit_validation": {
+    "candidate": "test(runtime): separate released declaration setup",
+    "cli": "21.2.4",
+    "node": "24.22.1",
+    "npm": "11.19.1",
+    "exit_code": 0,
+    "log": "builds-direct-catalog-codacy-message-validation.txt"
+  },
+  "first_failure": "builds-direct-catalog-codacy-first.json",
+  "live_state": "builds-direct-catalog-codacy-live-state.json",
+  "limits": [
+    "Normal new-head Codacy/full CI still required",
+    "No merge/publication/consumer pin change",
+    "No runtime/lifecycle acceptance"
+  ]
+}

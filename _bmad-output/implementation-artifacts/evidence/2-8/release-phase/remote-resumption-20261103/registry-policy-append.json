@@ -1,0 +1,21 @@
+{
+  "phase": "policy-append",
+  "startedAtUtc": "2026-11-03T09:02:40.448468+00:00",
+  "configMapName": "distribution-registry-config",
+  "configMapUid": "d00eeb4b-f507-440f-8328-fb838a7d5da3",
+  "beforeResourceVersion": "27899151",
+  "principal": "ci-reader",
+  "policy": {
+    "users": [
+      "ci-reader"
+    ],
+    "actions": [
+      "read"
+    ]
+  },
+  "patchExitCode": 0,
+  "afterResourceVersion": "40164036",
+  "configurationSha256": "4bc308da5e6495ba9b375797450e0abff89e47a728e2cbb946e0eb827779afca",
+  "existingPoliciesAndSettingsPreserved": true,
+  "result": "applied-and-exactly-verified"
+}

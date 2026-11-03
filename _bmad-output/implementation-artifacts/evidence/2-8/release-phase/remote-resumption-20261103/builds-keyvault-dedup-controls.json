@@ -1,0 +1,62 @@
+[
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/validate-central-package-versions.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-validate-central-package-versions.txt"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-authoritative-package-catalog.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-test-authoritative-package-catalog.txt"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-central-package-version-validator.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-test-central-package-version-validator.txt"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/validate-package-version-audit.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-validate-package-version-audit.txt"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-package-version-audit-generator.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-test-package-version-audit-generator.txt"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-package-version-audit-validator.ps1"
+    ],
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-test-package-version-audit-validator.txt"
+  }
+]

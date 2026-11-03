@@ -1,0 +1,20 @@
+{
+  "time": "2026-11-03T12:40:13.955591+00:00",
+  "argv": [
+    "python3",
+    "-B",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+    "--manifest",
+    "module/hexalith.module-manifest.v2.json"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/worktrees/eventstore-ci-v2-20261103",
+  "exitCode": 1,
+  "helperSource": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "helperSha256": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550",
+  "stdout": "",
+  "stderr": "prepare-module-build: [Errno 2] No such file or directory: '/home/administrator/.cache/hexalith/story-2-8/worktrees/eventstore-ci-v2-20261103/references/Hexalith.Platform/.git'\n",
+  "environmentBytes": 0,
+  "limitation": "Direct Platform checkout is absent in isolated owner layout; no nested dependency initialized or synthetic metadata fixture created. This blocks before tool restore/preparation.",
+  "separateSourceRules": "Released source requires recorded module Builds pin equal Platform identity catalog and genuine Platform release tag; incoming Azure pins are preserved.",
+  "runtimeOrCandidateAcceptance": false
+}

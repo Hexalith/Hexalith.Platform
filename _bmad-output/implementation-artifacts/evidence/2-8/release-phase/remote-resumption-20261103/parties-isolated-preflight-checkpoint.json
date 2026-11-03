@@ -1,0 +1,92 @@
+{
+  "recordedAtUtc": "2026-11-03T10:40:42.360094+00:00",
+  "partiesSource": "fcf7cbc86076ce43f0982e4959da9691feaf2d3a",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-isolated-preflight-20261103",
+  "worktreeStatus": "",
+  "sharedPartiesHead": "4c57e79d6def9299ae279aa95cd852319fbc4832",
+  "sharedPartiesStatus": "",
+  "catalogSource": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+  "supportedCatalogImport": "Unmodified Directory.Packages.props sibling Hexalith2BuildPackageProps",
+  "inputsReceipt": "parties-isolated-preflight-inputs.json",
+  "classificationReceipt": "parties-isolated-test-classification.json",
+  "evaluatedPackageCommands": "parties-isolated-evaluation-commands.json",
+  "restoredIdentities": "parties-isolated-restored-identities.json",
+  "buildCommands": "parties-isolated-build-commands.json",
+  "firstBuildRefusalPreserved": true,
+  "gatewayConfigRootBuild": "parties-isolated-Hexalith.Parties.Tests-build-rooted.json",
+  "gatewayConfigReleaseSource": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+  "gatewayConfigFiles": {
+    "src/Hexalith.EventStore/appsettings.json": {
+      "sha256": "103e849f6c08a236f5516c37dc424a5e702dfa219f4a20c83c68caa78ee0abb8",
+      "equalsSelectedReleaseBytes": true
+    },
+    "src/Hexalith.EventStore/appsettings.Development.json": {
+      "sha256": "59f955a2076aa6acb1944c1e604c27a5ad06d221a23a8570716b5e1e9bdab119",
+      "equalsSelectedReleaseBytes": true
+    }
+  },
+  "allThreeBuildsPassWithZeroWarningsErrors": true,
+  "actualV2IsolatedInvocationWorks": true,
+  "isolatedTraitFilters": null,
+  "results": [
+    {
+      "project": "Hexalith.Parties.Sample.Tests",
+      "passed": 66,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "parties-isolated-v2-invocation/parties-sample-v2.trx",
+      "commandReceipt": "parties-isolated-v2-invocation.json"
+    },
+    {
+      "project": "Hexalith.Parties.Tests",
+      "passed": 2815,
+      "failed": 14,
+      "skipped": 6,
+      "trx": "parties-isolated-Hexalith.Parties.Tests-results/Hexalith.Parties.Tests.trx",
+      "exitCode": 2,
+      "failureClasses": {
+        "Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests": 1,
+        "Hexalith.Parties.Tests.FitnessTests.G8OwnerDeliveryReceiptTests": 1,
+        "Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests": 10,
+        "Hexalith.Parties.Tests.FitnessTests.EpicEightClosureFitnessTests": 2
+      }
+    },
+    {
+      "project": "Hexalith.Parties.Ci.Tests",
+      "passed": 443,
+      "failed": 92,
+      "skipped": 0,
+      "trx": "parties-isolated-Hexalith.Parties.Ci.Tests-results/Hexalith.Parties.Ci.Tests.trx",
+      "exitCode": 2,
+      "failureClasses": {
+        "Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests": 10,
+        "Hexalith.Parties.Ci.Tests.CommonsHttpRestoreRoutingTests": 3,
+        "Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests": 6,
+        "Hexalith.Parties.Ci.Tests.ReleaseArtifactVerificationTests": 69,
+        "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests": 2,
+        "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests": 2
+      }
+    }
+  ],
+  "runCommands": "parties-isolated-run-commands.json",
+  "selectedCohortFailure": {
+    "test": "Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests.SelectedPackageSendsRefreshRevisionAndAdvertisesItsCompiledCapability",
+    "observed": "SupportsExplicitSourceRefresh=false, required true",
+    "owningSource": "Directory.Build.targets:53",
+    "reason": "Owning exact-version capability condition admits3.0.3 and3.0.10\u201313; selected3.0.18 is not admitted.",
+    "followUp": "Qualify actual3.0.18 API/protocol and prepare the smallest owning capability correction through normal review/tests; do not blindly extend the allowlist."
+  },
+  "isolatedLayoutLimit": "Uninitialized dependency source/evidence paths and missing historical Git objects block fitness/CI controls; six Ci security cases require full-solution consumer restore and UI build artifacts. No full-solution or dependency initialization remediation attempted.",
+  "liveRuntimeLimit": "Four explicitly opt-in Memories/Dapr cases are skipped because no private owned runtime configuration is supplied; two closure evidence checks also skip missing dependencies. None supplies runtime acceptance.",
+  "sourceAndTestHashesUnchanged": true,
+  "sourceEdited": false,
+  "callerEdited": false,
+  "acceptedPinsEdited": false,
+  "nestedDependenciesInitialized": false,
+  "sourceFallback": false,
+  "domainServicesProvisioned": false,
+  "published": false,
+  "hostedAcceptanceClaimed": false,
+  "candidateAcceptanceClaimed": false,
+  "storyComplete": false
+}

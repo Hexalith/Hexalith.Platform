@@ -1,0 +1,58 @@
+{
+  "source": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+  "version": "3.0.18",
+  "manifest": {
+    "$schema": "./release-packages.schema.json",
+    "packages": [
+      {
+        "id": "Hexalith.Memories.Aspire",
+        "project": "src/Hexalith.Memories.Aspire/Hexalith.Memories.Aspire.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Contracts",
+        "project": "src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Client.Rest",
+        "project": "src/Hexalith.Memories.Client.Rest/Hexalith.Memories.Client.Rest.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Redis",
+        "project": "src/Hexalith.Memories.Redis/Hexalith.Memories.Redis.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Cli",
+        "project": "src/Hexalith.Memories.Cli/Hexalith.Memories.Cli.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Mcp",
+        "project": "src/Hexalith.Memories.Mcp/Hexalith.Memories.Mcp.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.ServiceDefaults",
+        "project": "src/Hexalith.Memories.ServiceDefaults/Hexalith.Memories.ServiceDefaults.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.EventStore",
+        "project": "src/Hexalith.Memories.EventStore/Hexalith.Memories.EventStore.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.Telemetry",
+        "project": "src/Hexalith.Memories.Telemetry/Hexalith.Memories.Telemetry.csproj"
+      },
+      {
+        "id": "Hexalith.Memories.EventStoreExtensions",
+        "project": "src/Hexalith.Memories.EventStoreExtensions/Hexalith.Memories.EventStoreExtensions.csproj"
+      }
+    ],
+    "nonPackableProjects": [
+      "src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
+      "src/Hexalith.Memories.AppHost/Hexalith.Memories.AppHost.csproj",
+      "src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+      "src/Hexalith.Memories.Web/Hexalith.Memories.Web.csproj",
+      "src/Hexalith.Memories.AccessTelemetry/Hexalith.Memories.AccessTelemetry.csproj",
+      "src/Hexalith.Memories.AccessTelemetry.Clock/Hexalith.Memories.AccessTelemetry.Clock.csproj",
+      "src/Hexalith.Memories.AccessTelemetry.Contracts/Hexalith.Memories.AccessTelemetry.Contracts.csproj"
+    ]
+  }
+}

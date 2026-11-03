@@ -1,0 +1,270 @@
+{
+  "recordedAtUtc": "2026-11-03T10:51:48.565912+00:00",
+  "scope": "MSBuild target evaluation only; unqualified version strings are deliberate refusal fixtures, not package selections/restores.",
+  "controls": [
+    {
+      "version": "3.0.3",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.3",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "3.0.10",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.10",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "3.0.11",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.11",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "3.0.12",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.12",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "3.0.13",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.13",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "3.0.18",
+      "expectedSupported": true,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=3.0.18",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "true",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HEXALITH_MEMORIES_SOURCE_REFRESH"
+      },
+      "passed": true
+    },
+    {
+      "version": "0.0.0-unqualified-fixture",
+      "expectedSupported": false,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=0.0.0-unqualified-fixture",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "false",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE"
+      },
+      "passed": true
+    },
+    {
+      "version": "99.0.0-unqualified-fixture",
+      "expectedSupported": false,
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.Parties/Hexalith.Parties.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:HexalithEventStoreVersion=4.0.4",
+        "-p:HexalithTenantsVersion=6.0.0",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-p:EventStoreFromSource=false",
+        "-p:HexalithEventStoreFromSource=false",
+        "-p:HexalithTenantsFromSource=false",
+        "-p:HexalithMemoriesFromSource=false",
+        "-p:HexalithCommonsFromSource=false",
+        "-p:HexalithCommonsHttpFromSource=false",
+        "-p:HexalithMcpCliFromSource=false",
+        "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+        "-p:HexalithMemoriesVersion=99.0.0-unqualified-fixture",
+        "-target:ConfigureMemoriesSourceCompilation",
+        "-getProperty:MemoriesSourceRefreshSupported,DefineConstants"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "properties": {
+        "MemoriesSourceRefreshSupported": "false",
+        "DefineConstants": "TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE"
+      },
+      "passed": true
+    }
+  ]
+}

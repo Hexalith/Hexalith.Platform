@@ -1,0 +1,26 @@
+{
+  "command": "dotnet run --project artifacts/story-2-8-actual-layout-controls/ActualLayoutControls.csproj --configuration Debug -p:NuGetAudit=false -- <existing-root-declared-workspace> <actual-Platform-adoption-worktree> <owned-preparation-workspace>",
+  "exitCode": 1,
+  "result": "refused",
+  "platformWorktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "toolingCommit": "62d2cec88c384b9d80cdefc23f3fb330c848cad1",
+  "dependencyTestFilesCopied": false,
+  "servicesAllocated": false,
+  "acceptedToolDecisionClaimed": false,
+  "refusals": [
+    {
+      "owner": "eventstore",
+      "field": "modules[0].tests[0].entry"
+    },
+    {
+      "owner": "eventstore",
+      "field": "modules[0].tests[1].entry"
+    },
+    {
+      "owner": "memories",
+      "field": "modules[0].tests[0].entry"
+    }
+  ],
+  "message": "Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.",
+  "catalogMaterialization": "Public SourceMappingMaterializer, package mode, existing root-declared Builds checkout at pinned fc743715; no nested initialization."
+}

@@ -1,0 +1,40 @@
+{
+  "verifiedAtUtc": "2026-11-03T09:08:52.846541+00:00",
+  "clusterUid": "b5860674-1d1e-4a3b-b413-e1bb3b9a4557",
+  "context": "jpiquot@local",
+  "namespace": "registry-distribution",
+  "secret": {
+    "name": "distribution-registry-htpasswd",
+    "uid": "dfe9dfb9-0872-4421-a9ea-b9d1a24e0b59",
+    "resourceVersion": "40163865",
+    "keys": [
+      "htpasswd"
+    ],
+    "exactPrivatePostValueVerified": true
+  },
+  "configMap": {
+    "name": "distribution-registry-config",
+    "uid": "d00eeb4b-f507-440f-8328-fb838a7d5da3",
+    "resourceVersion": "40164036",
+    "configurationSha256": "4bc308da5e6495ba9b375797450e0abff89e47a728e2cbb946e0eb827779afca"
+  },
+  "deployment": {
+    "name": "distribution-registry",
+    "uid": "20bb657c-b622-4e1b-81a2-f97bc353a811",
+    "resourceVersion": "40164447",
+    "generation": 16,
+    "observedGeneration": 16,
+    "readyReplicas": 1,
+    "replicas": 1,
+    "strategy": "Recreate",
+    "onlyReviewedAnnotationAdded": true
+  },
+  "existingReaderWriterAnonymousAdminRetentionSettingsPreserved": true,
+  "protectedRollbackMaterialRetainedOutsideGit": true,
+  "externalKustomizeSourceLocated": false,
+  "externalSourceUpdated": false,
+  "readerMeasurements": "registry-reader-measurements.json",
+  "credentialDelivery": "registry-github-secret-delivery.json",
+  "sourceCommitsPushesPrsPerformed": false,
+  "candidateAcceptanceClaimed": false
+}

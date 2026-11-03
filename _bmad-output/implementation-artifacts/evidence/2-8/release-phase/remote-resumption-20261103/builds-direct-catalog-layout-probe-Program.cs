@@ -1,0 +1,10 @@
+using System.Text.Json;
+using System.Security.Cryptography;
+using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
+string manifest = Path.GetFullPath(args[0]);
+SourceMapping mapping = SourceMapping.LoadVerified(args[1], args[2]);
+var options = new CompositionDeclarationOptions(mapping, [manifest]) { ActiveModule = "parties" };
+if (options.Workspace is not null || mapping.IdentityFindings.Count != 0) throw new InvalidDataException("Cold-start mapping must be verified before materialization.");
+var closure = CompositionDeclarationClosure.Load(options);
+Console.WriteLine(JsonSerializer.Serialize(new { classification = "local source-built metadata diagnostic only", mapping.Root, mapping.PlatformIdentity, mapping.ContentHash, beforeMaterialization = options.Workspace is null, nestedCatalogExists = File.Exists(Path.Combine(options.PlatformRoot, "references/Hexalith.Builds/Props/Directory.Packages.props")), owners = closure.Select(x => new { id = CompositionDeclarationClosure.Id(x.Declaration), source = x.Source, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(x.Source))) }), loadedTooling = typeof(CompositionDeclarationOptions).Assembly.Location, loadedSha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(typeof(CompositionDeclarationOptions).Assembly.Location))) }));

@@ -1,0 +1,8 @@
+Unhandled exception. System.IO.InvalidDataException: ../../../../../../../tmp/story-2-8-released-bindings-d1CVK5/src/Hexalith.Platform.Composition/Declarations/eventstore.json: modules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+../../../../../../../tmp/story-2-8-released-bindings-d1CVK5/src/Hexalith.Platform.Composition/Declarations/eventstore.json: modules[0].tests[1].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+../../../../../../../tmp/story-2-8-released-bindings-d1CVK5/src/Hexalith.Platform.Composition/Declarations/memories.json: modules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+   at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options) in /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:line 187
+   at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options) in /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:line 27
+   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/artifacts/story-2-8-declaration-binding-controls/Program.cs:line 52
+   at Program.<Main>(String[] args)
+

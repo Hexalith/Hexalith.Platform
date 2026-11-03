@@ -1,0 +1,1553 @@
+Running tests from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.UiGeneratedAndPublishedRuntimeConfigurations_RequireFixedSharedFrameworks (20ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.DirectoryNotFoundException : Could not find a part of the path '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.UI/obj/project.assets.json'.
+    at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+    at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+    at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+    at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+    at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+    at System.IO.File.ReadAllText(String path, Encoding encoding)
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.UiGeneratedAndPublishedRuntimeConfigurations_RequireFixedSharedFrameworks() in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:42
+    --- End of stack trace from previous location ---
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.Client.Tests") (34ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : File.Exists(assetsPath)
+      should be
+  True
+      but was
+  False
+  
+  Additional Info:
+      CI must restore the configured solution before executing its verification lane.
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:20
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.AdminPortal.Tests") (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : File.Exists(assetsPath)
+      should be
+  True
+      but was
+  False
+  
+  Additional Info:
+      CI must restore the configured solution before executing its verification lane.
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:20
+    at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.ConsumerPortal.Tests") (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : File.Exists(assetsPath)
+      should be
+  True
+      but was
+  False
+  
+  Additional Info:
+      CI must restore the configured solution before executing its verification lane.
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:20
+    at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.UI.Tests") (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : File.Exists(assetsPath)
+      should be
+  True
+      but was
+  False
+  
+  Additional Info:
+      CI must restore the configured solution before executing its verification lane.
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:20
+    at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(project: "Hexalith.Parties.Contracts.Tests") (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : File.Exists(assetsPath)
+      should be
+  True
+      but was
+  False
+  
+  Additional Info:
+      CI must restore the configured solution before executing its verification lane.
+    at Hexalith.Parties.Ci.Tests.SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(String project) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/SignalRSecurityFloorTests.cs:20
+    at InvokeStub_SignalRSecurityFloorTests.RestoredConsumerGraph_RequiresFixedSignalRAndActiveNuGetAudit(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleLoadsCopiedConfigurationWithNormalProviderPrecedence (385ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : built.ExitCode
+      should be
+  0
+      but was
+  1
+  
+  Additional Info:
+      /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/SourceMapping.values.targets(35,1): error : HXW006: Source mapping property 'HexalithEventStoreRoot' expected '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore' but was '/tmp/parties-sample-config-e947f7b91ffe4834be232a8cce19de2c/selected-owner'. [/tmp/parties-sample-config-e947f7b91ffe4834be232a8cce19de2c/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj]
+  
+  Build FAILED.
+  
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/SourceMapping.values.targets(35,1): error : HXW006: Source mapping property 'HexalithEventStoreRoot' expected '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore' but was '/tmp/parties-sample-config-e947f7b91ffe4834be232a8cce19de2c/selected-owner'. [/tmp/parties-sample-config-e947f7b91ffe4834be232a8cce19de2c/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj]
+      0 Warning(s)
+      1 Error(s)
+  
+  Time Elapsed 00:00:00.21
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleLoadsCopiedConfigurationWithNormalProviderPrecedence() in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:428
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "standalone", sampleHost: True) (524ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should be
+  0
+      but was
+  1
+  
+  Additional Info:
+      {
+    "Properties": {
+      "_SampleEventStoreRoot": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore",
+      "HexalithEventStoreFromSource": "false",
+      "UseHexalithProjectReferences": "false",
+      "RunWorkingDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost",
+      "TargetDir": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/bin/Release/"
+    },
+    "Items": {
+      "Content": [
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "RootDir": "/",
+          "Filename": "appsettings",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.Development.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "RootDir": "/",
+          "Filename": "appsettings.Development",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ],
+      "Compile": [
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "Link": "Sample/Counter/CounterAggregate.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "RootDir": "/",
+          "Filename": "CounterAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8766714",
+          "CreatedTime": "2026-11-03 13:52:37.8766714",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterEventSerialization.cs",
+          "Link": "Sample/Counter/CounterEventSerialization.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterEventSerialization.cs",
+          "RootDir": "/",
+          "Filename": "CounterEventSerialization",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8766714",
+          "CreatedTime": "2026-11-03 13:52:37.8766714",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "Link": "Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "RootDir": "/",
+          "Filename": "CounterCannotGoNegative",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+          "Link": "Sample/Counter/Events/CounterClosed.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+          "RootDir": "/",
+          "Filename": "CounterClosed",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+          "Link": "Sample/Counter/Events/CounterDecremented.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+          "RootDir": "/",
+          "Filename": "CounterDecremented",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+          "Link": "Sample/Counter/Events/CounterIncremented.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+          "RootDir": "/",
+          "Filename": "CounterIncremented",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+          "Link": "Sample/Counter/Events/CounterReset.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+          "RootDir": "/",
+          "Filename": "CounterReset",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+          "Link": "Sample/Counter/Projections/CounterProjection.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+          "RootDir": "/",
+          "Filename": "CounterProjection",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "RecursiveDir": "Counter/Projections/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "Link": "Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "RootDir": "/",
+          "Filename": "CounterProjectionHandler",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "RecursiveDir": "Counter/Projections/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "Link": "Sample/Counter/SampleCatalog.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "RootDir": "/",
+          "Filename": "SampleCatalog",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs",
+          "Link": "Sample/Counter/SampleCatalogAdapters.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs",
+          "RootDir": "/",
+          "Filename": "SampleCatalogAdapters",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+          "Link": "Sample/Counter/State/CounterState.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+          "RootDir": "/",
+          "Filename": "CounterState",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/",
+          "RecursiveDir": "Counter/State/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+          "Link": "Sample/Greeting/Commands/SendGreeting.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+          "RootDir": "/",
+          "Filename": "SendGreeting",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/",
+          "RecursiveDir": "Greeting/Commands/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/GreetingSent.cs",
+          "Link": "Sample/Greeting/Events/GreetingSent.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/GreetingSent.cs",
+          "RootDir": "/",
+          "Filename": "GreetingSent",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/",
+          "RecursiveDir": "Greeting/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "Link": "Sample/Greeting/GreetingAggregate.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "RootDir": "/",
+          "Filename": "GreetingAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "Link": "Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "RootDir": "/",
+          "Filename": "GreetingCatalogDeclarations",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingEventSerialization.cs",
+          "Link": "Sample/Greeting/GreetingEventSerialization.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingEventSerialization.cs",
+          "RootDir": "/",
+          "Filename": "GreetingEventSerialization",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/GreetingState.cs",
+          "Link": "Sample/Greeting/State/GreetingState.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/GreetingState.cs",
+          "RootDir": "/",
+          "Filename": "GreetingState",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/",
+          "RecursiveDir": "Greeting/State/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "Link": "Sample/Program.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "RootDir": "/",
+          "Filename": "Program",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  }
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/mapping.json : error HXW006: Unmapped ProjectReference '/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact.csproj' does not exist. [/tmp/parties-gateway-settings-fb08ca9fc973414989b974894cb5058c/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj]
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:260
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "umbrella", sampleHost: True) (455ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should be
+  0
+      but was
+  1
+  
+  Additional Info:
+      {
+    "Properties": {
+      "_SampleEventStoreRoot": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore",
+      "HexalithEventStoreFromSource": "false",
+      "UseHexalithProjectReferences": "false",
+      "RunWorkingDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost",
+      "TargetDir": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/bin/Release/"
+    },
+    "Items": {
+      "Content": [
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "RootDir": "/",
+          "Filename": "appsettings",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.Development.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "RootDir": "/",
+          "Filename": "appsettings.Development",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ],
+      "Compile": [
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "Link": "Sample/Counter/CounterAggregate.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "RootDir": "/",
+          "Filename": "CounterAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8766714",
+          "CreatedTime": "2026-11-03 13:52:37.8766714",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterEventSerialization.cs",
+          "Link": "Sample/Counter/CounterEventSerialization.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/CounterEventSerialization.cs",
+          "RootDir": "/",
+          "Filename": "CounterEventSerialization",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8766714",
+          "CreatedTime": "2026-11-03 13:52:37.8766714",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "Link": "Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterCannotGoNegative.cs",
+          "RootDir": "/",
+          "Filename": "CounterCannotGoNegative",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+          "Link": "Sample/Counter/Events/CounterClosed.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+          "RootDir": "/",
+          "Filename": "CounterClosed",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+          "Link": "Sample/Counter/Events/CounterDecremented.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+          "RootDir": "/",
+          "Filename": "CounterDecremented",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+          "Link": "Sample/Counter/Events/CounterIncremented.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+          "RootDir": "/",
+          "Filename": "CounterIncremented",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+          "Link": "Sample/Counter/Events/CounterReset.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+          "RootDir": "/",
+          "Filename": "CounterReset",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Events/",
+          "RecursiveDir": "Counter/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+          "Link": "Sample/Counter/Projections/CounterProjection.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+          "RootDir": "/",
+          "Filename": "CounterProjection",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "RecursiveDir": "Counter/Projections/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "Link": "Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "RootDir": "/",
+          "Filename": "CounterProjectionHandler",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/Projections/",
+          "RecursiveDir": "Counter/Projections/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "Link": "Sample/Counter/SampleCatalog.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "RootDir": "/",
+          "Filename": "SampleCatalog",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs",
+          "Link": "Sample/Counter/SampleCatalogAdapters.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs",
+          "RootDir": "/",
+          "Filename": "SampleCatalogAdapters",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+          "Link": "Sample/Counter/State/CounterState.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+          "RootDir": "/",
+          "Filename": "CounterState",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Counter/State/",
+          "RecursiveDir": "Counter/State/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+          "Link": "Sample/Greeting/Commands/SendGreeting.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+          "RootDir": "/",
+          "Filename": "SendGreeting",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Commands/",
+          "RecursiveDir": "Greeting/Commands/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/GreetingSent.cs",
+          "Link": "Sample/Greeting/Events/GreetingSent.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/GreetingSent.cs",
+          "RootDir": "/",
+          "Filename": "GreetingSent",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/Events/",
+          "RecursiveDir": "Greeting/Events/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "Link": "Sample/Greeting/GreetingAggregate.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "RootDir": "/",
+          "Filename": "GreetingAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "Link": "Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "RootDir": "/",
+          "Filename": "GreetingCatalogDeclarations",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingEventSerialization.cs",
+          "Link": "Sample/Greeting/GreetingEventSerialization.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/GreetingEventSerialization.cs",
+          "RootDir": "/",
+          "Filename": "GreetingEventSerialization",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/GreetingState.cs",
+          "Link": "Sample/Greeting/State/GreetingState.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/GreetingState.cs",
+          "RootDir": "/",
+          "Filename": "GreetingState",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Greeting/State/",
+          "RecursiveDir": "Greeting/State/",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "Link": "Sample/Program.cs",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "RootDir": "/",
+          "Filename": "Program",
+          "Extension": ".cs",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:37.8806716",
+          "CreatedTime": "2026-11-03 13:52:37.8806716",
+          "AccessedTime": "2026-11-03 14:02:27.7968801",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  }
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/mapping.json : error HXW006: Unmapped ProjectReference '/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact.csproj' does not exist. [/tmp/parties-gateway-settings-89819e3b78ac41df8eba892efbfad208/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj]
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:260
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "explicit", sampleHost: True) (428ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should be
+  0
+      but was
+  1
+  
+  Additional Info:
+      {
+    "Properties": {
+      "_SampleEventStoreRoot": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore",
+      "HexalithEventStoreFromSource": "false",
+      "UseHexalithProjectReferences": "false",
+      "RunWorkingDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost",
+      "TargetDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/bin/Release/"
+    },
+    "Items": {
+      "Content": [
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/appsettings.json",
+          "RootDir": "/",
+          "Filename": "appsettings",
+          "Extension": ".json",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.Development.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/appsettings.Development.json",
+          "RootDir": "/",
+          "Filename": "appsettings.Development",
+          "Extension": ".json",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ],
+      "Compile": [
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "Link": "Sample/Counter/CounterAggregate.cs",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/CounterAggregate.cs",
+          "RootDir": "/",
+          "Filename": "CounterAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "Link": "Sample/Counter/SampleCatalog.cs",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "RootDir": "/",
+          "Filename": "SampleCatalog",
+          "Extension": ".cs",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Counter/",
+          "RecursiveDir": "Counter/",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "Link": "Sample/Greeting/GreetingAggregate.cs",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/GreetingAggregate.cs",
+          "RootDir": "/",
+          "Filename": "GreetingAggregate",
+          "Extension": ".cs",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "Link": "Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "RootDir": "/",
+          "Filename": "GreetingCatalogDeclarations",
+          "Extension": ".cs",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Greeting/",
+          "RecursiveDir": "Greeting/",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "Link": "Sample/Program.cs",
+          "FullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/Program.cs",
+          "RootDir": "/",
+          "Filename": "Program",
+          "Extension": ".cs",
+          "RelativeDir": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "Directory": "tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore/samples/Hexalith.EventStore.Sample/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 14:02:31.5330403",
+          "CreatedTime": "2026-11-03 14:02:31.5330403",
+          "AccessedTime": "2026-11-03 14:02:31.5330403",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreSample.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ]
+    }
+  }
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/SourceMapping.values.targets(35,1): error : HXW006: Source mapping property 'HexalithEventStoreRoot' expected '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore' but was '/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/tool-selected-eventstore'. [/tmp/parties-gateway-settings-a9761a5f97d34981a7076fc9caa0d5bb/parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj]
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:260
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "standalone", sampleHost: False) (483ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : Path.GetFullPath(properties.GetProperty($"_{kind}EventStoreRoot").GetString()!)
+      should be
+  "/tmp/parties-gateway-settings-0afe85806e3a4effb7c2a6a8e667c3e7/parties/references/Hexalith.EventStore"
+      but was
+  "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore"
+      difference
+  Difference     |       |    |    |    |    |         |    |         |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/       \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   ...  
+  Expected Value | ...  t    m    p    /    p    a    r    t    i    e    s    -    g    a    t    e    w    a    y    -    s    ...  
+  Actual Value   | ...  h    o    m    e    /    a    d    m    i    n    i    s    t    r    a    t    o    r    /    .    c    ...  
+  Expected Code  | ...  116  109  112  47   112  97   114  116  105  101  115  45   103  97   116  101  119  97   121  45   115  ...  
+  Actual Code    | ...  104  111  109  101  47   97   100  109  105  110  105  115  116  114  97   116  111  114  47   46   99   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   ...  
+  Expected Value | ...  e    t    t    i    n    g    s    -    0    a    f    e    8    5    8    0    6    e    3    a    4    ...  
+  Actual Value   | ...  a    c    h    e    /    h    e    x    a    l    i    t    h    /    s    t    o    r    y    -    2    ...  
+  Expected Code  | ...  101  116  116  105  110  103  115  45   48   97   102  101  56   53   56   48   54   101  51   97   52   ...  
+  Actual Code    | ...  97   99   104  101  47   104  101  120  97   108  105  116  104  47   115  116  111  114  121  45   50   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   ...  
+  Expected Value | ...  e    f    f    b    7    c    2    a    6    a    8    e    6    6    7    c    3    e    7    /    p    ...  
+  Actual Value   | ...  -    8    /    w    o    r    k    t    r    e    e    s    /    p    a    r    t    i    e    s    -    ...  
+  Expected Code  | ...  101  102  102  98   55   99   50   97   54   97   56   101  54   54   55   99   51   101  55   47   112  ...  
+  Actual Code    | ...  45   56   47   119  111  114  107  116  114  101  101  115  47   112  97   114  116  105  101  115  45   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   ...  
+  Expected Value | ...  a    r    t    i    e    s    /    r    e    f    e    r    e    n    c    e    s    /    H    e    x    ...  
+  Actual Value   | ...  m    e    m    o    r    i    e    s    -    3    0    1    8    -    2    0    2    6    1    1    0    ...  
+  Expected Code  | ...  97   114  116  105  101  115  47   114  101  102  101  114  101  110  99   101  115  47   72   101  120  ...  
+  Actual Code    | ...  109  101  109  111  114  105  101  115  45   51   48   49   56   45   50   48   50   54   49   49   48   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100  101  102  103  104  105  ...  
+  Expected Value | ...  a    l    i    t    h    .    E    v    e    n    t    S    t    o    r    e                             ...  
+  Actual Value   | ...  3    /    r    e    f    e    r    e    n    c    e    s    /    H    e    x    a    l    i    t    h    ...  
+  Expected Code  | ...  97   108  105  116  104  46   69   118  101  110  116  83   116  111  114  101                           ...  
+  Actual Code    | ...  51   47   114  101  102  101  114  101  110  99   101  115  47   72   101  120  97   108  105  116  104  ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+  Index          | ...  96   97   98   99   100  101  102  103  104  105  106  107  108  109  110  111  112  113  114  115  116  
+  Expected Value | ...  S    t    o    r    e                                                                                    
+  Actual Value   | ...  s    /    H    e    x    a    l    i    t    h    .    E    v    e    n    t    S    t    o    r    e    
+  Expected Code  | ...  83   116  111  114  101                                                                                  
+  Actual Code    | ...  115  47   72   101  120  97   108  105  116  104  46   69   118  101  110  116  83   116  111  114  101  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:263
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "undeclared", sampleHost: True) (464ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : stdout + stderr
+      should contain (case insensitive comparison)
+  "root-declared standalone/umbrella EventStore reference"
+      but was actually
+  "{
+    "Properties": {
+      "_SampleEventStoreRoot": "/home/administrator/.cache/hexalith/story-2-8/work..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:256
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "explicit", sampleHost: False) (424ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should be
+  0
+      but was
+  1
+  
+  Additional Info:
+      {
+    "Properties": {
+      "_GatewayEventStoreRoot": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore",
+      "HexalithEventStoreFromSource": "false",
+      "UseHexalithProjectReferences": "false",
+      "RunWorkingDirectory": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost",
+      "TargetDir": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/bin/Release/"
+    },
+    "Items": {
+      "Content": [
+        {
+          "Identity": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/appsettings.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.gateway.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/appsettings.json",
+          "RootDir": "/",
+          "Filename": "appsettings",
+          "Extension": ".json",
+          "RelativeDir": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/",
+          "Directory": "tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 14:02:32.9090993",
+          "CreatedTime": "2026-11-03 14:02:32.9090993",
+          "AccessedTime": "2026-11-03 14:02:32.9090993",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreGateway.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/appsettings.Development.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.gateway.Development.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/appsettings.Development.json",
+          "RootDir": "/",
+          "Filename": "appsettings.Development",
+          "Extension": ".json",
+          "RelativeDir": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/",
+          "Directory": "tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore/src/Hexalith.EventStore/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 14:02:32.9090993",
+          "CreatedTime": "2026-11-03 14:02:32.9090993",
+          "AccessedTime": "2026-11-03 14:02:32.9090993",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreGateway.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ],
+      "Compile": []
+    }
+  }
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-preparation-20261103/hexalith-module-build-02f6b757b5464516a4920e83141c35ef/source-mapping/SourceMapping.values.targets(35,1): error : HXW006: Source mapping property 'HexalithEventStoreRoot' expected '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore' but was '/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/tool-selected-eventstore'. [/tmp/parties-gateway-settings-0ce459d6855e4561b246385c89e9a747/parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj]
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:260
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "undeclared", sampleHost: False) (492ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should not be
+  0
+      but was
+  
+  Additional Info:
+      {
+    "Properties": {
+      "_GatewayEventStoreRoot": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore",
+      "HexalithEventStoreFromSource": "false",
+      "UseHexalithProjectReferences": "false",
+      "RunWorkingDirectory": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost",
+      "TargetDir": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/bin/Release/"
+    },
+    "Items": {
+      "Content": [
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/appsettings.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.gateway.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/appsettings.json",
+          "RootDir": "/",
+          "Filename": "appsettings",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:38.2006849",
+          "CreatedTime": "2026-11-03 13:52:38.2006849",
+          "AccessedTime": "2026-11-03 13:53:32.5944040",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreGateway.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        },
+        {
+          "Identity": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/appsettings.Development.json",
+          "CopyToOutputDirectory": "PreserveNewest",
+          "Link": "appsettings.gateway.Development.json",
+          "CopyToPublishDirectory": "Never",
+          "FullPath": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/appsettings.Development.json",
+          "RootDir": "/",
+          "Filename": "appsettings.Development",
+          "Extension": ".json",
+          "RelativeDir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/",
+          "Directory": "home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore/src/Hexalith.EventStore/",
+          "RecursiveDir": "",
+          "ModifiedTime": "2026-11-03 13:52:38.2006849",
+          "CreatedTime": "2026-11-03 13:52:38.2006849",
+          "AccessedTime": "2026-11-03 13:53:32.5944040",
+          "DefiningProjectFullPath": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj",
+          "DefiningProjectDirectory": "/tmp/parties-gateway-settings-9e78957571d04ed38b17e14983205d3e/references/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/",
+          "DefiningProjectName": "Hexalith.Parties.EventStoreGateway.TestHost",
+          "DefiningProjectExtension": ".csproj"
+        }
+      ],
+      "Compile": []
+    }
+  }
+  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:255
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(layout: "umbrella", sampleHost: False) (625ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : Path.GetFullPath(properties.GetProperty($"_{kind}EventStoreRoot").GetString()!)
+      should be
+  "/tmp/parties-gateway-settings-8db05f8d3a874d2d859e7c3cd3fe167a/references/Hexalith.EventStore"
+      but was
+  "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.EventStore"
+      difference
+  Difference     |       |    |    |    |    |         |    |         |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/       \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   ...  
+  Expected Value | ...  t    m    p    /    p    a    r    t    i    e    s    -    g    a    t    e    w    a    y    -    s    ...  
+  Actual Value   | ...  h    o    m    e    /    a    d    m    i    n    i    s    t    r    a    t    o    r    /    .    c    ...  
+  Expected Code  | ...  116  109  112  47   112  97   114  116  105  101  115  45   103  97   116  101  119  97   121  45   115  ...  
+  Actual Code    | ...  104  111  109  101  47   97   100  109  105  110  105  115  116  114  97   116  111  114  47   46   99   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   ...  
+  Expected Value | ...  e    t    t    i    n    g    s    -    8    d    b    0    5    f    8    d    3    a    8    7    4    ...  
+  Actual Value   | ...  a    c    h    e    /    h    e    x    a    l    i    t    h    /    s    t    o    r    y    -    2    ...  
+  Expected Code  | ...  101  116  116  105  110  103  115  45   56   100  98   48   53   102  56   100  51   97   56   55   52   ...  
+  Actual Code    | ...  97   99   104  101  47   104  101  120  97   108  105  116  104  47   115  116  111  114  121  45   50   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   ...  
+  Expected Value | ...  d    2    d    8    5    9    e    7    c    3    c    d    3    f    e    1    6    7    a    /    r    ...  
+  Actual Value   | ...  -    8    /    w    o    r    k    t    r    e    e    s    /    p    a    r    t    i    e    s    -    ...  
+  Expected Code  | ...  100  50   100  56   53   57   101  55   99   51   99   100  51   102  101  49   54   55   97   47   114  ...  
+  Actual Code    | ...  45   56   47   119  111  114  107  116  114  101  101  115  47   112  97   114  116  105  101  115  45   ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   ...  
+  Expected Value | ...  e    f    e    r    e    n    c    e    s    /    H    e    x    a    l    i    t    h    .    E    v    ...  
+  Actual Value   | ...  m    e    m    o    r    i    e    s    -    3    0    1    8    -    2    0    2    6    1    1    0    ...  
+  Expected Code  | ...  101  102  101  114  101  110  99   101  115  47   72   101  120  97   108  105  116  104  46   69   118  ...  
+  Actual Code    | ...  109  101  109  111  114  105  101  115  45   51   48   49   56   45   50   48   50   54   49   49   48   ...  
+  
+  Difference     |       |    |    |    |    |    |              |    |    |    |    |    |    |    |    |    |    |    |    |        
+                 |      \|/  \|/  \|/  \|/  \|/  \|/            \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       
+  Index          | ...  85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100  101  102  103  104  105  ...  
+  Expected Value | ...  e    n    t    S    t    o    r    e                                                                     ...  
+  Actual Value   | ...  3    /    r    e    f    e    r    e    n    c    e    s    /    H    e    x    a    l    i    t    h    ...  
+  Expected Code  | ...  101  110  116  83   116  111  114  101                                                                   ...  
+  Actual Code    | ...  51   47   114  101  102  101  114  101  110  99   101  115  47   72   101  120  97   108  105  116  104  ...  
+  
+  Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                 |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+  Index          | ...  96   97   98   99   100  101  102  103  104  105  106  107  108  109  110  111  112  113  114  115  116  
+  Expected Value | ...                                                                                                           
+  Actual Value   | ...  s    /    H    e    x    a    l    i    t    h    .    E    v    e    n    t    S    t    o    r    e    
+  Expected Code  | ...                                                                                                           
+  Actual Code    | ...  115  47   72   101  120  97   108  105  116  104  46   69   118  101  110  116  83   116  111  114  101  
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageRuntimeSettingsResolveOnlyTheSelectedOrRootDeclaredOwner(String layout, Boolean sampleHost) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:263
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/Properties/laun"···) (491ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/Counter") (521ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/Program.cs") (469ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/appsettings.jso"···) (628ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample.Contracts") (409ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "root") (435ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": []
+    }
+  }
+  /home/administrator/.cache/hexalith/story-2-8/parties-v2-prep..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/Greeting") (752ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+failed Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(missing: "samples/Hexalith.EventStore.Sample/appsettings.Dev"···) (825ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : result.Output + result.Error
+      should contain (case insensitive comparison)
+  "missing required native source/config"
+      but was actually
+  "{
+    "Items": {
+      "Compile": [
+        {
+          "Identity": "selected-owner/samples/Hexalith.EventSt..."
+    at Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleRefusesIncompleteSelectedSourcesBeforeCompile(String missing) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:371
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64) failed with 23 error(s) (1m 43s 671ms)
+Exit code: 2
+
+  In process file artifacts produced:
+    - /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-Hexalith.Parties.Ci.Tests-results/Hexalith.Parties.Ci.Tests.trx
+
+Test run summary: Failed!
+  total: 535
+  failed: 23
+  succeeded: 512
+  skipped: 0
+  duration: 1m 43s 837ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

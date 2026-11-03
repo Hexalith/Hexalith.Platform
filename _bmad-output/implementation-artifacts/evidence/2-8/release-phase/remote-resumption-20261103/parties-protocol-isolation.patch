@@ -1,0 +1,51 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 737b53e3..10fbad88 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -105,10 +105,25 @@ jobs:
+             --filter-method Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts \
+             --minimum-expected-tests 22 --fail-skips on
+ 
+-      - name: Initialize recorded SDK configuration input
++  memories-3018-package-protocol:
++    name: Memories 3.0.18 package protocol
++    runs-on: ubuntu-24.04
++    timeout-minutes: 15
++    env:
++      NUGET_PACKAGES: ${{ runner.temp }}/hexalith-memories-3018-nuget
++      NUGET_HTTP_CACHE_PATH: ${{ runner.temp }}/hexalith-memories-3018-http
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
++        with:
++          submodules: false
++          fetch-depth: 1
++      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
++        with:
++          global-json-file: global.json
++      - name: Initialize recorded package inputs
+         run: |
+-          git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.EventStore
+-          git submodule status -- references/Hexalith.EventStore
++          git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.Builds references/Hexalith.EventStore
++          git submodule status -- references/Hexalith.Builds references/Hexalith.EventStore
+       - name: Qualify Memories 3.0.18 refresh and durable recovery
+         shell: bash
+         run: |
+diff --git a/.gitlink-signoff.tsv b/.gitlink-signoff.tsv
+index de9f13e7..f4ea62ec 100644
+--- a/.gitlink-signoff.tsv
++++ b/.gitlink-signoff.tsv
+@@ -478,3 +478,12 @@ references/Hexalith.Platform|c635a2dc22f404d97c9fe7e27f7e7f4c9017943b|validated-
+ references/Hexalith.Builds|6585f5860e87c146c26aa066d3a52b94eb56f271|validated-advance|v4.43.2|codex-agent|2026-11-02
+ references/Hexalith.EventStore|653124dced81830e932edb7738a78ee61104d55a|validated-advance|v4.0.0|codex-agent|2026-11-02
+ references/Hexalith.Platform|9274fb225541987221617006183bcc8bb9eb98c1|validated-advance|v1.1.3|codex-agent|2026-11-02
++
++# --- 2026-11-03 user-delegated Story 2.8 source-selection proposal.
++#     codex-agent records the exact CI-qualified Builds main source selected by
++#     the active release 41625705717. Publication is still pending; no human
++#     ratification, Parties parity, package/runtime acceptance or release approval
++#     is claimed. Final merge/adoption remains held for publication, compatibility
++#     and full normal gates. Follows the existing user-authorized codex-agent
++#     source-only entries above; preserves all other root selections.
++references/Hexalith.Builds|26991e8c542704be44cd8d9f58084d56fa627adb|validated-advance|main@26991e8c542704be44cd8d9f58084d56fa627adb|codex-agent|2026-11-03
+Submodule references/Hexalith.Builds d2a430c9...26991e8c (commits not present)

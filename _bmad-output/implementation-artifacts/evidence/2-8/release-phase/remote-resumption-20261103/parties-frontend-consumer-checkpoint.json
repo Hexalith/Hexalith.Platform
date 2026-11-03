@@ -1,0 +1,69 @@
+{
+  "head_sha": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "previous_head": "d72bed117cf9c16634b21e85beaae34eda13b1bd",
+  "base_sha": "fcf7cbc86076ce43f0982e4959da9691feaf2d3a",
+  "title": "ci: enroll disposable Parties package integration",
+  "commit_message": "fix(ci): qualify selected frontend and consumers",
+  "message_validation": {
+    "cli_version": "21.2.4",
+    "node": "24.22.1",
+    "npm": "11.19.1",
+    "exit_code": 0,
+    "log": "parties-frontend-consumer-message-validation.txt"
+  },
+  "changed_files": [
+    {
+      "path": "Directory.Build.targets",
+      "sha256": "586257692886b73d2295dfe786f6eb457e4ef309bcfc998854af6bfedc698814"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/tests/story-2-8-frontcomposer-475-adoption-2026-11-03.md",
+      "sha256": "5dc25236ec8e8c1d1700834048c14ba6775a68f64a2f6bb461a8fe8ece1f230d"
+    },
+    {
+      "path": "scripts/validate-consumer-package-references.py",
+      "sha256": "78c05ae0c5bdcb366e36a18cbe308c5c40d0c1bd9debc0c8af90f47adfba74ba"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py",
+      "sha256": "bfa2805dcee5428052c6f8cff6d034d36d678c1b710194dca6725e2cedbbb1cd"
+    },
+    {
+      "path": "tests/e2e/helpers/frontcomposer-assets.ts",
+      "sha256": "d2c52f5551950ffb4cd03d0cf8ba63a50cb24863975fee074c8a0a87a3065493"
+    }
+  ],
+  "diff": "parties-frontend-consumer.patch",
+  "diff_sha256": "54af2cdf8d63afa37e42e7932c1b5d7d12ccef18b432e3cb77a4331cd8a58cd2",
+  "browser": "frontcomposer-475-browser-corrected.json",
+  "official_packages": "frontcomposer-475-official-package-proof.json",
+  "served_assets": "frontcomposer-475-served-assets.json",
+  "consumer_smoke": "parties-consumer-corrected-smoke.json",
+  "helper_controls": {
+    "passed": 5,
+    "log": "parties-consumer-helper-controls.txt"
+  },
+  "capability_controls": {
+    "passed": 8,
+    "receipt": "frontcomposer-475-capability-controls.json"
+  },
+  "pr": "parties-frontend-consumer-pr.json",
+  "live_state": "parties-frontend-consumer-live-state.json",
+  "first_outcomes": [
+    "parties-v2-hosted-ui-first-failure.json",
+    "parties-v2-hosted-consumer-first-failure.txt",
+    "frontcomposer-475-signature-verification.txt",
+    "frontcomposer-475-browser-first.json"
+  ],
+  "remaining": [
+    "Current-head hosted isolated and actual native integration",
+    "EventStore Azure-preserving publication/catalog adoption owned by parent",
+    "Actual cancellation during startup/execution, partial startup, job-bound admission/withdrawal, cleanup retry/peers/zero-owned-leftover qualification"
+  ],
+  "limits": [
+    "No producer source/reconciler parity",
+    "No human ratification",
+    "No native cleanup/candidate acceptance",
+    "Story2.8 incomplete"
+  ]
+}

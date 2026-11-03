@@ -1,0 +1,23 @@
+{
+  "command": "CI=true npm run test:ui",
+  "node": "24.22.1",
+  "npm": "11.19.1",
+  "configuration": "Release",
+  "references": "published packages; private authentic NuGet cache",
+  "exit_code": 0,
+  "stats": {
+    "total": 68,
+    "expected": 68,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "duration_ms": 53810.587,
+  "all_tests_retry": 0,
+  "asset_attachments": 6,
+  "all_four_hashes_match_official": true,
+  "artifact": "frontcomposer-475-browser-corrected-artifacts.zip",
+  "sha256": "29098c0f33a5641dc4d04b1e18e8e9a40a5157896b9954bb8749cfc6438e16b5",
+  "native_lifecycle_acceptance": false
+}

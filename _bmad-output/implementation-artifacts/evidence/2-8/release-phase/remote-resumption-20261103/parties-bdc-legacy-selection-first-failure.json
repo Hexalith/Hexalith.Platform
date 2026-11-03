@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-03T12:53:57.573638+00:00",
+  "source": "bdc0f370f4cb20246d662032979f1350533d48fc",
+  "run": 41636886258,
+  "job": 125920219091,
+  "conclusion": "failure",
+  "soleFailedCase": "PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals",
+  "reason": "Current-selection record expects old Builds d2a; actual proposed committed269",
+  "counts": {
+    "Parties.Tests": {
+      "total": 2845,
+      "failed": 1,
+      "skipped": 4
+    },
+    "Sample.Tests": {
+      "total": 66,
+      "failed": 0,
+      "skipped": 0
+    },
+    "Ci.Tests": {
+      "total": 535,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "excerpt": "parties-bdc-legacy-selection-first-failure.txt",
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

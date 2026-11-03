@@ -1,0 +1,53 @@
+{
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "previousHead": "2bac835c15ed37510f069cd13b41fe21f6864af4",
+  "branch": "fix/released-dependency-test-profiles",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "--",
+        "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-F",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/release-profile-overloads-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/released-dependency-test-profiles afb21bb] fix(runtime): use explicit validation overloads\n 1 file changed, 19 insertions(+), 2 deletions(-)\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "origin",
+        "fix/released-dependency-test-profiles"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nTo https://github.com/Hexalith/Hexalith.Builds.git\n   2bac835c..afb21bb5  fix/released-dependency-test-profiles -> fix/released-dependency-test-profiles\n"
+    }
+  ],
+  "head": "afb21bb57b0dd62309da49706474d566ae4458d4",
+  "commitTextMatchesValidated": true,
+  "recordedAtUtc": "2026-11-03T10:15:17.093121+00:00"
+}

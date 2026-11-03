@@ -1,0 +1,215 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'
+  repository_dispatch:
+    types: [contract_requiring_verification_published]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0
+    with:
+      solution: Hexalith.Parties.Standalone.slnx
+      dapr-version: '1.18.0'
+      dapr-runtime-version: '1.18.2'
+      test-platform: microsoft-testing-platform
+      run-consumer-validation: true
+      run-coverage-gate: false
+      unit-test-projects: |
+        tests/Hexalith.Parties.Aspire.Tests
+        tests/Hexalith.Parties.Contracts.Tests
+        tests/Hexalith.Parties.Authentication.Tests
+        tests/Hexalith.Parties.Client.Tests
+        tests/Hexalith.Parties.Server.Tests
+        tests/Hexalith.Parties.Projections.Tests
+        tests/Hexalith.Parties.Security.Tests
+        tests/Hexalith.Parties.AdminPortal.Tests
+        tests/Hexalith.Parties.ConsumerPortal.Tests
+        tests/Hexalith.Parties.UI.Tests
+        tests/Hexalith.Parties.Picker.Tests
+        tests/Hexalith.Parties.Mcp.Tests
+      integration-test-projects: |
+        tests/Hexalith.Parties.Tests
+        tests/Hexalith.Parties.Sample.Tests
+        tests/Hexalith.Parties.Ci.Tests
+      aspire-test-project: tests/Hexalith.Parties.IntegrationTests
+      aspire-timeout-minutes: 30
+      aspire-prepare-script: scripts/prepare-aspire-tier.sh
+      aspire-prepare-timeout-minutes: 10
+      aspire-continue-on-error: false
+      # Package-profile enrollment remains staged until its workflow/tool handoff is qualified.
+      build-timeout-minutes: 60
+
+  eventstore-404-package-cohort:
+    name: EventStore 4.0.4 package cohort (offline)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+          fetch-depth: 1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - name: Initialize only the recorded package catalog input
+        run: |
+          git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.Builds
+          git submodule status -- references/Hexalith.Builds
+      - name: Build public packages and run focused catalog qualification
+        shell: bash
+        run: |
+          package_properties=(
+            -p:HexalithEventStoreVersion=4.0.4
+            -p:HexalithTenantsVersion=5.11.2
+            -p:HexalithMemoriesVersion=3.0.11
+            -p:UseHexalithProjectReferences=false
+            -p:UseNuGetDeps=true
+            -p:EventStoreFromSource=false
+            -p:HexalithEventStoreFromSource=false
+            -p:HexalithTenantsFromSource=false
+            -p:HexalithMemoriesFromSource=false
+            -p:HexalithCommonsFromSource=false
+            -p:HexalithCommonsHttpFromSource=false
+            -p:HexalithMcpCliFromSource=false
+            -p:RestoreSources=https://api.nuget.org/v3/index.json
+          )
+          # Compile the actual owners; this job never starts a private runtime or topology.
+          for project in \
+            src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj \
+            src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj \
+            src/Hexalith.Parties/Hexalith.Parties.csproj \
+            tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj \
+            tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj; do
+            dotnet build "$project" --configuration Release --disable-build-servers -m:1 -warnaserror "${package_properties[@]}"
+          done
+          dotnet test --project tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj \
+            --no-build --no-restore --configuration Release "${package_properties[@]}" \
+            --filter-class Hexalith.Parties.Contracts.Tests.PartiesCatalogTests \
+            --filter-class Hexalith.Parties.Contracts.Tests.PartiesCatalogAdapterTests \
+            --minimum-expected-tests 3 --fail-skips on
+          dotnet test --project tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj \
+            --no-build --no-restore --configuration Release "${package_properties[@]}" \
+            --filter-method Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts \
+            --minimum-expected-tests 22 --fail-skips on
+
+  owner-publish:
+    name: Owner publisher qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - name: Initialize owner publisher build dependencies
+        run: git -c submodule.recurse=false submodule update --init references/Hexalith.EventStore references/Hexalith.Builds
+      - name: Install Dapr CLI for manifest publisher
+        uses: dapr/setup-dapr@8d980918fd43a2765c143ce7f687665b2d46a6b9 # v2
+        with:
+          version: '1.18.0'
+      - name: Qualify actual owner manifests and rejection controls
+        run: python3 -B -m unittest scripts.test_verify_eventstore_publish -v
+
+  ui-a11y:
+    name: UI accessibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CI: 'true'
+      BASE_URL: http://127.0.0.1:5072
+      PLAYWRIGHT_SKIP_WEBSERVER: ''
+    defaults:
+      run:
+        working-directory: tests/e2e
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+      - name: Initialize UI build dependencies
+        working-directory: .
+        run: git -c submodule.recurse=false submodule update --init references/Hexalith.Builds references/Hexalith.Commons
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.1'
+          cache: npm
+          cache-dependency-path: tests/e2e/package-lock.json
+      - name: Install locked browser-test dependencies
+        run: npm ci
+      - name: Test browser server configuration
+        run: npm run test:config
+      - name: Typecheck browser tests
+        run: npm run typecheck
+      - name: Test restored UI asset resolution
+        run: python3 ../Hexalith.Parties.UI.Tests/verify-restored-assets.py
+      - name: Install Chromium and system dependencies
+        run: npm run install:browsers
+      - name: Build UI with published dependencies
+        run: dotnet build ../../src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+      - name: Run UI browser gate
+        run: npm run test:ui
+      - name: Upload UI browser evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-a11y-results
+          path: |
+            tests/e2e/playwright-report
+            tests/e2e/test-results
+          retention-days: 14
+          if-no-files-found: warn
+
+  bmad-config:
+    name: BMAD configuration tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+      - name: Test configuration merging and resolvers
+        run: python3 -B -m unittest discover -s _bmad/scripts/tests -v
+
+  platform-declaration:
+    name: Parties Platform declaration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - name: Initialize direct declaration owners
+        run: git -c submodule.recurse=false submodule update --init references/Hexalith.EventStore references/Hexalith.Tenants references/Hexalith.Memories
+      - name: Restore the pinned module tool
+        run: dotnet tool restore
+      - name: Validate Parties with its reference declarations
+        run: >-
+          dotnet tool run hexalith-module -- validate
+          --manifest module/hexalith.module-manifest.v2.json
+          --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
+          --manifest references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json
+          --manifest references/Hexalith.Memories/module/hexalith.module-manifest.v2.json
+      - name: Check the owner ACL declaration
+        run: python3 scripts/render-platform-declaration.py --check
+      - name: Test strict declaration rendering
+        run: python3 -B -m unittest discover -s scripts -p test_platform_declaration.py -v
+

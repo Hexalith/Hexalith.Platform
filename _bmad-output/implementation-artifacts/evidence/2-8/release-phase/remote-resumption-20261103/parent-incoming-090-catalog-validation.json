@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-03T14:54:15.442480+00:00",
+  "source": "090797e333748b1a62db0a857d8d0f0e40b524fe",
+  "parentReviewedFixAncestor": "e07ac76e9b2a6c0ef34c02507bea054d25e48be5",
+  "netChange": "one additional Azure.Security.KeyVault.Keys4.10.2 row; identical row already exists",
+  "argv": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "./Tools/validate-central-package-versions.ps1",
+    "-CatalogPath",
+    "/tmp/story28-incoming-catalog-txf89zy2/Directory.Packages.props"
+  ],
+  "exitCode": 1,
+  "stdout": "",
+  "stderr": "Central package version validation failed: source contains duplicate package identity 'Azure.Security.KeyVault.Keys' (case-insensitive).\n",
+  "sourceEdited": false,
+  "publicationDispatched": false
+}

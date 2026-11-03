@@ -1,0 +1,33 @@
+{
+  "version": "21.2.4",
+  "commitMessage": "fix(runtime): validate released dependency test metadata\n\nTreat hash-verified release snapshot test profiles as dependency metadata\nwithout requiring their source projects in Platform. Recheck exact bytes\nat the validation boundary.\n\nKeep supplied owner manifests, schema/path/executor checks and startup\nexecutable validation strict. Add focused boundary regressions.\n",
+  "prTitle": "fix(runtime): validate released dependency test metadata",
+  "results": [
+    {
+      "command": [
+        "node_modules/.bin/commitlint",
+        "--config",
+        "commitlint.config.mjs",
+        "--edit",
+        "artifacts/story-2-8-pr-messages/commit-message.txt",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\nfix(runtime): validate released dependency test metadata\n\nTreat hash-verified release snapshot test profiles as dependency metadata\nwithout requiring their source projects in Platform. Recheck exact bytes\nat the validation boundary.\n\nKeep supplied owner manifests, schema/path/executor checks and startup\nexecutable validation strict. Add focused boundary regressions.\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node_modules/.bin/commitlint",
+        "--config",
+        "commitlint.config.mjs",
+        "--edit",
+        "artifacts/story-2-8-pr-messages/pr-title.txt",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\nfix(runtime): validate released dependency test metadata\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    }
+  ]
+}

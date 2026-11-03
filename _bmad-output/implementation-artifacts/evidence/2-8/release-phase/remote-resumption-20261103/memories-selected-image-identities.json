@@ -1,0 +1,133 @@
+{
+  "checkedAtUtc": "2026-11-03T09:15:55.710821+00:00",
+  "supersedesVerifierAssumptionOnly": "selected-image-identities.json retains the first failed index-only inspection unchanged",
+  "ownerPublicationContract": {
+    "source": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+    "path": "tools/publish-containers.ps1",
+    "sha256": "3dec80d450efcaf7cf63746f76a4d83e4f1ac86c9570aea93530f0d40c74bf73",
+    "shape": "single-platform manifest/config; not a multiarch index"
+  },
+  "images": [
+    {
+      "image": "registry.hexalith.com/memories:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "single-platform-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:c23db1c6f9a566d4d8f09c3bc61a05ba77f7b28527137784ead91f2b3dca37a4",
+          "bytes": 1408
+        },
+        {
+          "category": "linux-amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:aa0cb33667b208be19a9b41a8d328b3431ce487af5df63eee238a0a9c915f3d3",
+          "bytes": 3601
+        }
+      ],
+      "manifestDigest": "sha256:c23db1c6f9a566d4d8f09c3bc61a05ba77f7b28527137784ead91f2b3dca37a4",
+      "configDigest": "sha256:aa0cb33667b208be19a9b41a8d328b3431ce487af5df63eee238a0a9c915f3d3",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.version": "3.0.18",
+        "org.opencontainers.image.revision": null
+      },
+      "os": "linux",
+      "architecture": "amd64",
+      "result": "failed",
+      "failureType": "AssertionError",
+      "failure": "Required image version/source binding refused"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "single-platform-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:87e1f60063d25cd7d73fc8a8774f3c8249c9e5a18fcb01f06a6378e95c3c8c5a",
+          "bytes": 1406
+        },
+        {
+          "category": "linux-amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:8811ce1c74670351de495350cd682d628df3194679962ee77df0cda3a717caf4",
+          "bytes": 3610
+        }
+      ],
+      "manifestDigest": "sha256:87e1f60063d25cd7d73fc8a8774f3c8249c9e5a18fcb01f06a6378e95c3c8c5a",
+      "configDigest": "sha256:8811ce1c74670351de495350cd682d628df3194679962ee77df0cda3a717caf4",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.version": "3.0.18",
+        "org.opencontainers.image.revision": null
+      },
+      "os": "linux",
+      "architecture": "amd64",
+      "result": "failed",
+      "failureType": "AssertionError",
+      "failure": "Required image version/source binding refused"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "single-platform-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:42d69ff2a6179250855894caa10001434c202af7b19ac29936f235e1c10dae9e",
+          "bytes": 1406
+        },
+        {
+          "category": "linux-amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:047f852c8db60645ff9ae7b871468676cbae71995d04bb2a1c8da9fa1d011477",
+          "bytes": 3626
+        }
+      ],
+      "manifestDigest": "sha256:42d69ff2a6179250855894caa10001434c202af7b19ac29936f235e1c10dae9e",
+      "configDigest": "sha256:047f852c8db60645ff9ae7b871468676cbae71995d04bb2a1c8da9fa1d011477",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.version": "3.0.18",
+        "org.opencontainers.image.revision": null
+      },
+      "os": "linux",
+      "architecture": "amd64",
+      "result": "failed",
+      "failureType": "AssertionError",
+      "failure": "Required image version/source binding refused"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.18",
+      "expectedReleaseSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "observations": [
+        {
+          "category": "single-platform-manifest",
+          "status": 200,
+          "bodyDigest": "sha256:a2f5a469f7870870623bd577161ccaa46667b2ef63aa782cc70695f074d4e237",
+          "bytes": 1406
+        },
+        {
+          "category": "linux-amd64-config",
+          "status": 200,
+          "bodyDigest": "sha256:43d862fc719be384cc3370549330291031713d81514bca69876695ec4472c07a",
+          "bytes": 3614
+        }
+      ],
+      "manifestDigest": "sha256:a2f5a469f7870870623bd577161ccaa46667b2ef63aa782cc70695f074d4e237",
+      "configDigest": "sha256:43d862fc719be384cc3370549330291031713d81514bca69876695ec4472c07a",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.version": "3.0.18",
+        "org.opencontainers.image.revision": null
+      },
+      "os": "linux",
+      "architecture": "amd64",
+      "result": "failed",
+      "failureType": "AssertionError",
+      "failure": "Required image version/source binding refused"
+    }
+  ],
+  "combinedRuntimeCompatibilityQualified": false
+}

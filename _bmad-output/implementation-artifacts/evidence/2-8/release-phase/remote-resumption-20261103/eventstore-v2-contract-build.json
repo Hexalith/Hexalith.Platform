@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:HexalithBuildPackageVersions1=/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-eventstore-azure-048-20261103/Props/Directory.Packages.props",
+    "-p:Hexalith1BuildPackageProps=/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-eventstore-azure-048-20261103/Props/Directory.Packages.props",
+    "-p:RestoreSources=https://api.nuget.org/v3/index.json"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/worktrees/eventstore-ci-v2-20261103",
+  "exitCode": 0,
+  "catalogSource": "048260858048494d1c47156f4bf5e05a5403a02d",
+  "catalogPathMatchesRecordedInput": true,
+  "NUGET_PACKAGES": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103",
+  "finishedAt": "2026-11-03T12:40:19.605782+00:00",
+  "scope": "Local owning Release/package contract compilation with exact recorded catalog path; not accepted module-preparation/runtime qualification"
+}

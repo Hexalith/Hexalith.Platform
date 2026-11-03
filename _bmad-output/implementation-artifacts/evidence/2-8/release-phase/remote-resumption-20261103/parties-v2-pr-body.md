@@ -1,0 +1,17 @@
+Parties' required CI now selects the receipt-capable v2 workflow at immutable Builds `26991e8c542704be44cd8d9f58084d56fa627adb`, published CLI 4.43.4 and genuine Platform v1.1.5 at `bf101b9d5f19ba741852b0230e526d1f01422022`. The declared `platform-package` suite requires runner-owned real services after isolated success and preserves unconditional exact-owner finalization. Only the two dedicated pull-only registry secrets are mapped.
+
+All twelve previous isolated projects plus the whole Parties.Tests, Sample.Tests and Ci.Tests projects remain in the isolated list without trait filters. Retired direct integration/Aspire inputs and Dapr overrides are removed. Independent jobs, the original offline cohort, the separate 52-case protocol/private caches and the independent validation/publication pins are preserved. Exactly Memories 3.0.18 is admitted by the reviewed capability guard; earlier versions and unknown-version refusal remain.
+
+The recorded Platform pointer and truthful `codex-agent` source-selection row share commit `d92e0a08db9c799bf9baf7fd37419a351244e687`; Builds269 and all other root pointers are preserved. The current selection matrix records the actual evaluated catalog graph in a separate delegated continuation. Every dated jpiquot decision and the complete former observation body remain verbatim history; no human ratification, parity or runtime acceptance is claimed.
+
+Actual prepared builds exposed stale fallbacks because Directory.Packages.props checked its catalog path before defining it. Defining the existing path first restores its intended catalog precedence; no package-version override is added. Independent MSBuild fixtures now reuse the existing seven-key mapping-isolation convention, preserving production HXW006 refusals, fixture assertions and time bounds. Current tool documentation and exact v2 caller contracts are aligned.
+
+Validation:
+- Actionlint and structural checks pass; all fifteen project selections and every independent job are preserved.
+- Fresh supported package preparation passes from clean committed source using the actual published tool and genuine Platform/catalog identity. Actual CLI/Tooling bytes match the verified official archive; consumed Tenants.Contracts7 bytes match the official signed package.
+- All three moved projects built in Release/package mode. Whole unfiltered first runs: Parties 2,845 total, 2,840 passed/1 failed/4 optional skipped; Sample 66 passed; Ci 535 total, 512 passed/23 failed. First outcomes are retained.
+- The Parties documentation failure is corrected and its focused case passes. Seventeen CI fixture-contamination failures are corrected; both owning caller/preparation classes pass 125/0/0. Six remaining local CI failures require full-solution/UI asset outputs; they are explicitly pending hosted verification, not suppressed.
+- All 21 affected source-selection/receipt cases, including existing negative controls, pass. The declared native package suite compiles with zero warnings/errors; it was not executed without real services.
+- Gitlink diff, both actual push ranges, actual v3.0.0 release floor and worktree controls pass. Exact commit/title validation uses locked commitlint21.2.4 under Node24.22.1/npm11.19.1.
+
+Full current-head hosted gates and real native service/lifecycle qualification remain required. The older protocol/legacy CI outcomes remain bound to their original heads. This PR claims no candidate acceptance, cancellation/partial-startup cleanup completion or verified zero-owned-leftover runtime result.

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dnx",
+    "dotnet-inspect",
+    "-y",
+    "--",
+    "member",
+    "MemoriesClient",
+    "--package",
+    "Hexalith.Memories.Client.Rest@3.0.18",
+    "-m",
+    "RefreshAsync",
+    "-n",
+    "85"
+  ],
+  "exitCode": 0
+}

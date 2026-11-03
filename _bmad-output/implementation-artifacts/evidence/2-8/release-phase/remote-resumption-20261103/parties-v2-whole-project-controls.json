@@ -1,0 +1,188 @@
+{
+  "context": "Actual published-tool prepared package environment with official task-only cache; whole projects without trait filters",
+  "sourceDirtyDiagnostic": true,
+  "rows": [
+    {
+      "project": "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "commands": [
+        {
+          "phase": "build",
+          "argv": [
+            "dotnet",
+            "build",
+            "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+            "--configuration",
+            "Release",
+            "--disable-build-servers",
+            "-m:1",
+            "-warnaserror"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T12:59:52.434193+00:00",
+          "finishedAt": "2026-11-03T13:00:27.090193+00:00",
+          "output": "parties-v2-Hexalith.Parties.Tests-build.txt"
+        },
+        {
+          "phase": "test",
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+            "--no-build",
+            "--configuration",
+            "Release",
+            "--results-directory",
+            "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-Hexalith.Parties.Tests-results",
+            "--report-xunit-trx",
+            "--report-xunit-trx-filename",
+            "Hexalith.Parties.Tests.trx"
+          ],
+          "exitCode": 2,
+          "startedAt": "2026-11-03T13:00:27.130622+00:00",
+          "finishedAt": "2026-11-03T13:02:09.835683+00:00",
+          "output": "parties-v2-Hexalith.Parties.Tests-test.txt"
+        }
+      ],
+      "counters": {
+        "total": "2845",
+        "executed": "2841",
+        "passed": "2840",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "4",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "project": "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+      "commands": [
+        {
+          "phase": "build",
+          "argv": [
+            "dotnet",
+            "build",
+            "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+            "--configuration",
+            "Release",
+            "--disable-build-servers",
+            "-m:1",
+            "-warnaserror"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:02:09.888396+00:00",
+          "finishedAt": "2026-11-03T13:02:15.475837+00:00",
+          "output": "parties-v2-Hexalith.Parties.Sample.Tests-build.txt"
+        },
+        {
+          "phase": "test",
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+            "--no-build",
+            "--configuration",
+            "Release",
+            "--results-directory",
+            "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-Hexalith.Parties.Sample.Tests-results",
+            "--report-xunit-trx",
+            "--report-xunit-trx-filename",
+            "Hexalith.Parties.Sample.Tests.trx"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:02:15.497572+00:00",
+          "finishedAt": "2026-11-03T13:02:17.066837+00:00",
+          "output": "parties-v2-Hexalith.Parties.Sample.Tests-test.txt"
+        }
+      ],
+      "counters": {
+        "total": "66",
+        "executed": "66",
+        "passed": "66",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "project": "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "commands": [
+        {
+          "phase": "build",
+          "argv": [
+            "dotnet",
+            "build",
+            "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+            "--configuration",
+            "Release",
+            "--disable-build-servers",
+            "-m:1",
+            "-warnaserror"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:02:17.089694+00:00",
+          "finishedAt": "2026-11-03T13:02:20.420363+00:00",
+          "output": "parties-v2-Hexalith.Parties.Ci.Tests-build.txt"
+        },
+        {
+          "phase": "test",
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+            "--no-build",
+            "--configuration",
+            "Release",
+            "--results-directory",
+            "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-Hexalith.Parties.Ci.Tests-results",
+            "--report-xunit-trx",
+            "--report-xunit-trx-filename",
+            "Hexalith.Parties.Ci.Tests.trx"
+          ],
+          "exitCode": 2,
+          "startedAt": "2026-11-03T13:02:20.440736+00:00",
+          "finishedAt": "2026-11-03T13:04:04.766951+00:00",
+          "output": "parties-v2-Hexalith.Parties.Ci.Tests-test.txt"
+        }
+      ],
+      "counters": {
+        "total": "535",
+        "executed": "535",
+        "passed": "512",
+        "failed": "23",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "candidateAcceptance": false,
+  "hostedAcceptance": false
+}

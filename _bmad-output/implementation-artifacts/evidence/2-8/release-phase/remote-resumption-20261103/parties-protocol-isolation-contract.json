@@ -1,0 +1,60 @@
+{
+  "buildCommand": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "--configuration",
+    "Release",
+    "-m:1",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:RestoreSources=https://api.nuget.org/v3/index.json"
+  ],
+  "buildExitCode": 0,
+  "buildOutput": "parties-protocol-isolation-contract-build.txt",
+  "NUGET_PACKAGES": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103",
+  "testCommand": [
+    "dotnet",
+    "test",
+    "--project",
+    "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-method",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes",
+    "--minimum-expected-tests",
+    "1",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-protocol-isolation-contract-results",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "contract.trx"
+  ],
+  "testExitCode": 2,
+  "testOutput": "parties-protocol-isolation-contract.txt",
+  "counters": {
+    "total": "1",
+    "executed": "1",
+    "passed": "0",
+    "failed": "1",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "messages": [
+    "Shouldly.ShouldAssertException : process.ExitCode\n    should be\n0\n    but was\n128\n\nAdditional Info:\n    The Builds checkout must contain df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0: fatal: path '.github/workflows/domain-ci.yml' does not exist in 'df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0'\n"
+  ]
+}

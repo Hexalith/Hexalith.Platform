@@ -1,0 +1,173 @@
+{
+  "at": "2026-11-03T14:46:39.646389+00:00",
+  "pr": 155,
+  "head": "8b99302b592acaa49937bf3f714317378c5c1d09",
+  "base": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+  "fullCi": 41654199964,
+  "allChecks": [
+    {
+      "id": 125988750091,
+      "name": "Build and test",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125982091482,
+      "name": "CodeQL",
+      "app": 57789,
+      "conclusion": "success"
+    },
+    {
+      "id": 125981237971,
+      "name": "Codacy Static Code Analysis",
+      "app": 56611,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980514554,
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980370062,
+      "name": "SonarCloud Code Analysis",
+      "app": 12526,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980355478,
+      "name": "Build and package contracts",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980355108,
+      "name": "Dependency review / dependency-review",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980355017,
+      "name": "CodeQL / analyze",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980354696,
+      "name": "Package catalog contracts",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980354567,
+      "name": "Python contract tests",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980354233,
+      "name": ".NET tests",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980189465,
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980083566,
+      "name": "Cursor Bugbot",
+      "app": 1210556,
+      "conclusion": "neutral"
+    },
+    {
+      "id": 125980060598,
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 125980029942,
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "app": 1210556,
+      "conclusion": "neutral"
+    },
+    {
+      "id": 125980025950,
+      "name": "Cursor Security Agent: Security Reviewer",
+      "app": 1210556,
+      "conclusion": "neutral"
+    }
+  ],
+  "effectiveRules": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": false,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "squash"
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "Codacy Static Code Analysis",
+            "integration_id": 56611
+          },
+          {
+            "context": "SonarCloud Code Analysis",
+            "integration_id": 12526
+          },
+          {
+            "context": "commitlint / commitlint",
+            "integration_id": 15368
+          }
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Builds",
+      "ruleset_id": 19196298
+    }
+  ],
+  "priorPublication": {
+    "id": 41640609178,
+    "conclusion": "success"
+  },
+  "localReviewedTreeMatchesRemote": true,
+  "messageValidation": "parent-pr155-squash-validation.json",
+  "noBypass": true
+}

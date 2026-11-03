@@ -1,0 +1,38 @@
+{
+  "classification": "local source-built diagnostic; not signed/released runtime or hosted credit",
+  "command": [
+    "/home/administrator/.dotnet/dotnet",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll",
+    "test",
+    "--manifest=module/hexalith.module-manifest.v2.json",
+    "--mode=package",
+    "--profile=platform-package",
+    "--output=json"
+  ],
+  "exit_code": 4,
+  "aspire_prerequisite": "absent from this subprocess PATH only",
+  "new_state_or_workspace_paths": [],
+  "cli_sha256": "d63b7d248ff1188ce90ae4a2ad43f6e9fe7e3a577460ac797b0e594f395da529",
+  "result": {
+    "status": "failed",
+    "outcome": {
+      "exitCode": "ProductOrTest",
+      "phase": "Test",
+      "category": "ProductOrTest",
+      "ruleId": "HXT007"
+    },
+    "diagnostics": [
+      {
+        "ruleId": "HXT007",
+        "phase": "Test",
+        "category": "ProductOrTest",
+        "message": "The owned execution failed; inspect retained diagnostics.",
+        "field": "profile",
+        "hint": null,
+        "source": null,
+        "location": null,
+        "row": null
+      }
+    ]
+  }
+}

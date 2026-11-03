@@ -1,0 +1,21 @@
+COMMAND: python3 scripts/validate-consumer-package-references.py /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/nupkgs --work-directory /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke
+  Determining projects to restore...
+  Restored /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke/client-consumer/ClientConsumer.csproj (in 753 ms).
+  ClientConsumer -> /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke/client-consumer/bin/Release/net10.0/ClientConsumer.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.51
+Published catalog: 41 routes, 41 operation schemas, 28 canonical intent adapters.
+  Determining projects to restore...
+  Restored /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke/portal-consumer/PortalConsumer.csproj (in 392 ms).
+  PortalConsumer -> /home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke/portal-consumer/bin/Release/net10.0/PortalConsumer.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.70
+Validated package-only consumers for Hexalith.Parties packages at version 0.0.0-ci-test.

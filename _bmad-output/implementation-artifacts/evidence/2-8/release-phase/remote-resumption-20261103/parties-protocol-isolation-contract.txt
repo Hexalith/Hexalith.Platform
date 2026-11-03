@@ -1,0 +1,29 @@
+Running tests from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+failed Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes (95ms)
+  from /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : process.ExitCode
+      should be
+  0
+      but was
+  128
+  
+  Additional Info:
+      The Builds checkout must contain df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0: fatal: path '.github/workflows/domain-ci.yml' does not exist in 'df13d9d31f7ee1a1b0fb7eeac7e8b27b9a9f9fb0'
+  
+    at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.ReadPinnedBuildsWorkflow(String workflow) in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs:844
+    at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes() in /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs:122
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64) failed with 1 error(s) (660ms)
+Exit code: 2
+
+  In process file artifacts produced:
+    - /home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-protocol-isolation-contract-results/contract.trx
+
+Test run summary: Failed!
+  total: 1
+  failed: 1
+  succeeded: 0
+  skipped: 0
+  duration: 833ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

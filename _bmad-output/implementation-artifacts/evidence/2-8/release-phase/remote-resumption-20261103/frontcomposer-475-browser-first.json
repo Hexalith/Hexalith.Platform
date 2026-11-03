@@ -1,0 +1,22 @@
+{
+  "stage": "guard updated, shared capability still omitted from compiled output",
+  "command": "CI=true npm run test:ui",
+  "exit_code": 1,
+  "tests": {
+    "id": "",
+    "name": "",
+    "tests": "68",
+    "failures": "2",
+    "skipped": "0",
+    "errors": "1",
+    "time": "176.95500700000002"
+  },
+  "first_outcome": {
+    "passed": 65,
+    "failed": 3,
+    "skipped": 0
+  },
+  "cause": "Directory.Build.targets did not admit exact4.7.5 into HFC_SHARED_UI; three remaining shared-control/download expectations failed without assertion changes.",
+  "archive": "frontcomposer-475-browser-first-artifacts.zip",
+  "sha256": "bdf246fd29363c3dcde5c42bcf5dfd8253bea3317a7e044d04f9d1f3401b4143"
+}

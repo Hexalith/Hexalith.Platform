@@ -1,0 +1,137 @@
+{
+  "scope": "Focused corrections only; first whole-project failures preserved",
+  "rows": [
+    {
+      "project": "Hexalith.Parties.Tests",
+      "commands": [
+        {
+          "phase": "build",
+          "argv": [
+            "dotnet",
+            "build",
+            "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+            "--configuration",
+            "Release",
+            "--disable-build-servers",
+            "-m:1",
+            "-warnaserror"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:08:00.186366+00:00",
+          "finishedAt": "2026-11-03T13:08:15.089764+00:00",
+          "output": "parties-v2-corrected-Hexalith.Parties.Tests-build.txt"
+        },
+        {
+          "phase": "test",
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+            "--no-build",
+            "--configuration",
+            "Release",
+            "--filter-method",
+            "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests.LocalRunDocumentationUsesPinnedPlatformToolAndDirectReferencesOnly",
+            "--minimum-expected-tests",
+            "1",
+            "--results-directory",
+            "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-corrected-Hexalith.Parties.Tests-results",
+            "--report-xunit-trx",
+            "--report-xunit-trx-filename",
+            "Hexalith.Parties.Tests.trx"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:08:15.090121+00:00",
+          "finishedAt": "2026-11-03T13:08:16.675422+00:00",
+          "output": "parties-v2-corrected-Hexalith.Parties.Tests-test.txt"
+        }
+      ],
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "project": "Hexalith.Parties.Ci.Tests",
+      "commands": [
+        {
+          "phase": "build",
+          "argv": [
+            "dotnet",
+            "build",
+            "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+            "--configuration",
+            "Release",
+            "--disable-build-servers",
+            "-m:1",
+            "-warnaserror"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:08:16.675900+00:00",
+          "finishedAt": "2026-11-03T13:08:20.591974+00:00",
+          "output": "parties-v2-corrected-Hexalith.Parties.Ci.Tests-build.txt"
+        },
+        {
+          "phase": "test",
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+            "--no-build",
+            "--configuration",
+            "Release",
+            "--filter-class",
+            "Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests",
+            "--filter-class",
+            "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests",
+            "--minimum-expected-tests",
+            "1",
+            "--results-directory",
+            "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-corrected-Hexalith.Parties.Ci.Tests-results",
+            "--report-xunit-trx",
+            "--report-xunit-trx-filename",
+            "Hexalith.Parties.Ci.Tests.trx"
+          ],
+          "exitCode": 0,
+          "startedAt": "2026-11-03T13:08:20.592349+00:00",
+          "finishedAt": "2026-11-03T13:08:49.642038+00:00",
+          "output": "parties-v2-corrected-Hexalith.Parties.Ci.Tests-test.txt"
+        }
+      ],
+      "counters": {
+        "total": "125",
+        "executed": "125",
+        "passed": "125",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "candidateAcceptance": false,
+  "hostedAcceptance": false
+}

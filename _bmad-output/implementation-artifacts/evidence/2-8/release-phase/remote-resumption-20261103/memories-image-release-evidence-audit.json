@@ -1,0 +1,86 @@
+{
+  "runId": 41495447050,
+  "headSha": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+  "artifactId": 13167627157,
+  "artifactSha256": "0b509024534f0ad2c619be92eed007e74bf3a57ee5b315832663b82ff2b2b9a2",
+  "expectedArtifactSha256": "0b509024534f0ad2c619be92eed007e74bf3a57ee5b315832663b82ff2b2b9a2",
+  "files": [
+    {
+      "name": "release/publish-summary.json",
+      "sha256": "515dca862260cd9d01900e7f6b64799959dabed82faf6aed8a1c8f242d6b04e8",
+      "topLevelKeys": [
+        "schemaVersion",
+        "artifactKind",
+        "status",
+        "version",
+        "packageDirectory",
+        "source",
+        "startedAt",
+        "completedAt",
+        "families",
+        "pushed",
+        "failed",
+        "notAttempted",
+        "recovery"
+      ],
+      "digestOrCommitBindings": [],
+      "status": "succeeded",
+      "version": "3.0.18"
+    },
+    {
+      "name": "containers/release/publish-summary.json",
+      "sha256": "1dd14c2262cd26dc3f4c4226e498b2bfa0d8733de62eeb7a6dd1d64d10ad65f5",
+      "topLevelKeys": [
+        "schemaVersion",
+        "artifactKind",
+        "status",
+        "version",
+        "push",
+        "packageDirectory",
+        "source",
+        "startedAt",
+        "completedAt",
+        "images",
+        "pushed",
+        "failed",
+        "notAttempted",
+        "recovery"
+      ],
+      "digestOrCommitBindings": [],
+      "status": "succeeded",
+      "version": "3.0.18"
+    },
+    {
+      "name": "containers/release/build-summary.json",
+      "sha256": "9fa13cd142c0097453da7ec60cecdda69d6ca84c61e410ecd5fc9d104af55774",
+      "topLevelKeys": [
+        "schemaVersion",
+        "artifactKind",
+        "status",
+        "version",
+        "push",
+        "packageDirectory",
+        "source",
+        "startedAt",
+        "completedAt",
+        "images",
+        "pushed",
+        "failed",
+        "notAttempted",
+        "recovery"
+      ],
+      "digestOrCommitBindings": [],
+      "status": "succeeded",
+      "version": "3.0.18"
+    }
+  ],
+  "releaseLogSha256": "6319f58c3ccf72374cad4735f0693fb85d36619026cfe3f7ecb10be9b14a6b72",
+  "matchingImageDigestLines": {
+    "registry.hexalith.com/memories:3.0.18": [],
+    "registry.hexalith.com/memories-domain-service:3.0.18": [],
+    "registry.hexalith.com/memories-access-telemetry-clock:3.0.18": [],
+    "registry.hexalith.com/memories-access-telemetry:3.0.18": []
+  },
+  "rawArtifactAndLogLocation": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103",
+  "sourceBindingFromDigestEvidenceEstablished": false
+}

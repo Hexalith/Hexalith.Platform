@@ -1,0 +1,41 @@
+{
+  "checkedAtUtc": "2026-11-03T09:08:54.611290+00:00",
+  "run": {
+    "conclusion": null,
+    "event": "workflow_dispatch",
+    "head_sha": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507",
+    "id": 41606852507,
+    "path": ".github/workflows/build-release.yml",
+    "status": "in_progress"
+  },
+  "jobs": [
+    {
+      "conclusion": "success",
+      "currentSteps": [],
+      "id": 125818713865,
+      "name": "Verify current main source",
+      "status": "completed"
+    },
+    {
+      "conclusion": null,
+      "currentSteps": [
+        {
+          "conclusion": null,
+          "name": "Test package version audit validator",
+          "status": "in_progress"
+        }
+      ],
+      "id": 125819151043,
+      "name": "Release",
+      "status": "in_progress"
+    }
+  ],
+  "pendingDeployments": [],
+  "latestPublishedRelease": {
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.2",
+    "published_at": "2026-11-02T22:30:31Z",
+    "tag_name": "v4.43.2"
+  },
+  "runDispatchedApprovedOrModifiedByThisAgent": false
+}

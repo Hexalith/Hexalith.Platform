@@ -1,0 +1,83 @@
+[
+  {
+    "project": "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "-p:Configuration=Release",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-p:HexalithTenantsVersion=6.0.0",
+      "-p:HexalithMemoriesVersion=3.0.18",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-p:EventStoreFromSource=false",
+      "-p:HexalithEventStoreFromSource=false",
+      "-p:HexalithTenantsFromSource=false",
+      "-p:HexalithMemoriesFromSource=false",
+      "-p:HexalithCommonsFromSource=false",
+      "-p:HexalithCommonsHttpFromSource=false",
+      "-p:HexalithMcpCliFromSource=false",
+      "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+      "-getProperty:Configuration,Hexalith1BuildPackageProps,Hexalith2BuildPackageProps,Hexalith3BuildPackageProps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode,HexalithEventStoreFromSource,HexalithTenantsFromSource,HexalithMemoriesFromSource,NuGetAudit",
+      "-getItem:ProjectReference,PackageReference,PackageVersion"
+    ],
+    "exitCode": 0,
+    "output": "parties-isolated-Hexalith.Parties.Tests-evaluation.json",
+    "stderr": ""
+  },
+  {
+    "project": "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj",
+      "-p:Configuration=Release",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-p:HexalithTenantsVersion=6.0.0",
+      "-p:HexalithMemoriesVersion=3.0.18",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-p:EventStoreFromSource=false",
+      "-p:HexalithEventStoreFromSource=false",
+      "-p:HexalithTenantsFromSource=false",
+      "-p:HexalithMemoriesFromSource=false",
+      "-p:HexalithCommonsFromSource=false",
+      "-p:HexalithCommonsHttpFromSource=false",
+      "-p:HexalithMcpCliFromSource=false",
+      "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+      "-getProperty:Configuration,Hexalith1BuildPackageProps,Hexalith2BuildPackageProps,Hexalith3BuildPackageProps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode,HexalithEventStoreFromSource,HexalithTenantsFromSource,HexalithMemoriesFromSource,NuGetAudit",
+      "-getItem:ProjectReference,PackageReference,PackageVersion"
+    ],
+    "exitCode": 0,
+    "output": "parties-isolated-Hexalith.Parties.Sample.Tests-evaluation.json",
+    "stderr": ""
+  },
+  {
+    "project": "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "command": [
+      "dotnet",
+      "msbuild",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "-p:Configuration=Release",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-p:HexalithTenantsVersion=6.0.0",
+      "-p:HexalithMemoriesVersion=3.0.18",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true",
+      "-p:EventStoreFromSource=false",
+      "-p:HexalithEventStoreFromSource=false",
+      "-p:HexalithTenantsFromSource=false",
+      "-p:HexalithMemoriesFromSource=false",
+      "-p:HexalithCommonsFromSource=false",
+      "-p:HexalithCommonsHttpFromSource=false",
+      "-p:HexalithMcpCliFromSource=false",
+      "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+      "-getProperty:Configuration,Hexalith1BuildPackageProps,Hexalith2BuildPackageProps,Hexalith3BuildPackageProps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode,HexalithEventStoreFromSource,HexalithTenantsFromSource,HexalithMemoriesFromSource,NuGetAudit",
+      "-getItem:ProjectReference,PackageReference,PackageVersion"
+    ],
+    "exitCode": 0,
+    "output": "parties-isolated-Hexalith.Parties.Ci.Tests-evaluation.json",
+    "stderr": ""
+  }
+]

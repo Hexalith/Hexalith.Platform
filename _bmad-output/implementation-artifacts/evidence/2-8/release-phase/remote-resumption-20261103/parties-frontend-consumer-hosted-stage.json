@@ -1,0 +1,189 @@
+{
+  "head_sha": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "run_id": 41646016719,
+  "run_attempt": 1,
+  "job_id": 125951426473,
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1
+    },
+    {
+      "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2
+    },
+    {
+      "name": "Validate governed CI contract",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 3
+    },
+    {
+      "name": "Checkout approved Builds actions",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 4
+    },
+    {
+      "name": "Evaluate governed workflow provenance",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 5
+    },
+    {
+      "name": "Initialize root-declared submodules (governed)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 6
+    },
+    {
+      "name": "Initialize root-declared submodules",
+      "status": "in_progress",
+      "conclusion": null,
+      "number": 7
+    },
+    {
+      "name": "Initialize .NET",
+      "status": "pending",
+      "conclusion": null,
+      "number": 8
+    },
+    {
+      "name": "Checkout workflow-owned Builds preparation",
+      "status": "pending",
+      "conclusion": null,
+      "number": 9
+    },
+    {
+      "name": "Prepare module build",
+      "status": "pending",
+      "conclusion": null,
+      "number": 10
+    },
+    {
+      "name": "Cache NuGet packages",
+      "status": "pending",
+      "conclusion": null,
+      "number": 11
+    },
+    {
+      "name": "Validate test platform input",
+      "status": "pending",
+      "conclusion": null,
+      "number": 12
+    },
+    {
+      "name": "Prepare package dependencies",
+      "status": "pending",
+      "conclusion": null,
+      "number": 13
+    },
+    {
+      "name": "Restore",
+      "status": "pending",
+      "conclusion": null,
+      "number": 14
+    },
+    {
+      "name": "Build",
+      "status": "pending",
+      "conclusion": null,
+      "number": 15
+    },
+    {
+      "name": "Validate package consumer references",
+      "status": "pending",
+      "conclusion": null,
+      "number": 16
+    },
+    {
+      "name": "Unit tests (Tier 1, VSTest)",
+      "status": "pending",
+      "conclusion": null,
+      "number": 17
+    },
+    {
+      "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+      "status": "pending",
+      "conclusion": null,
+      "number": 18
+    },
+    {
+      "name": "Require isolated success before integration",
+      "status": "pending",
+      "conclusion": null,
+      "number": 19
+    },
+    {
+      "name": "Install integration toolchain without starting services",
+      "status": "pending",
+      "conclusion": null,
+      "number": 20
+    },
+    {
+      "name": "Prepare integration binaries",
+      "status": "pending",
+      "conclusion": null,
+      "number": 21
+    },
+    {
+      "name": "Authenticate pull-only integration registry",
+      "status": "pending",
+      "conclusion": null,
+      "number": 22
+    },
+    {
+      "name": "Runner-owned package integration",
+      "status": "pending",
+      "conclusion": null,
+      "number": 23
+    },
+    {
+      "name": "Finalize exact CI owner",
+      "status": "pending",
+      "conclusion": null,
+      "number": 24
+    },
+    {
+      "name": "Remove integration registry credentials",
+      "status": "pending",
+      "conclusion": null,
+      "number": 25
+    },
+    {
+      "name": "Upload classified integration diagnostics",
+      "status": "pending",
+      "conclusion": null,
+      "number": 26
+    },
+    {
+      "name": "Validate coverage gates",
+      "status": "pending",
+      "conclusion": null,
+      "number": 27
+    },
+    {
+      "name": "Fail on blocking test failures",
+      "status": "pending",
+      "conclusion": null,
+      "number": 28
+    },
+    {
+      "name": "Upload test and coverage evidence",
+      "status": "pending",
+      "conclusion": null,
+      "number": 29
+    },
+    {
+      "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "pending",
+      "conclusion": null,
+      "number": 58
+    }
+  ]
+}
+

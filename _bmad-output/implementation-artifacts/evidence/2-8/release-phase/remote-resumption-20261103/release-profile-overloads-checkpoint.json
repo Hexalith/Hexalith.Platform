@@ -1,0 +1,45 @@
+{
+  "recordedAtUtc": "2026-11-03T10:16:03.388953+00:00",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/154",
+  "head": "afb21bb57b0dd62309da49706474d566ae4458d4",
+  "previousHead": "2bac835c15ed37510f069cd13b41fe21f6864af4",
+  "base": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "worktreeStatus": "",
+  "changedPaths": [
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs"
+  ],
+  "diffSummary": "19 insertions, 2 deletions; explicit overloads replace optional cancellation parameters. Public two-argument CLR signature and one-argument behavior retained. Validation implementation unchanged.",
+  "freshBuild": "release-profile-overloads-build.json",
+  "focusedTests": "release-profile-overloads-focused-tests.json",
+  "passed": 38,
+  "failed": 0,
+  "skipped": 0,
+  "hashReceipt": "release-profile-overloads-source-binary-hashes.json",
+  "postCommitHashesMatch": {
+    "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs": true,
+    "src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": true,
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": true,
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": true
+  },
+  "messageValidation": "release-profile-overloads-message-validation.json",
+  "commitPushReceipt": "release-profile-overloads-commit-push.json",
+  "correctionDiff": "release-profile-overloads.patch",
+  "completePrDiff": "release-profile-validation-afb.patch",
+  "remoteReceipt": "release-profile-overloads-remote-state.json",
+  "releaseAtReceipt": {
+    "id": 41606852507,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507",
+    "updated_at": "2026-11-03T08:57:26Z"
+  },
+  "remaining": [
+    "New exact-head Codacy and complete normal current-base hosted checks.",
+    "Active fc743715 exact-source publication must complete before advancing Builds main; no duplicate or mutated run.",
+    "Normal reviewed prerequisite merges/publication, actual official tool/archive/source/inventory/host verification and supported tuple selection.",
+    "Actual runtime/cohort qualification, E/P v2 caller migration and required hosted lifecycle/cleanup outcomes."
+  ],
+  "storyComplete": false
+}

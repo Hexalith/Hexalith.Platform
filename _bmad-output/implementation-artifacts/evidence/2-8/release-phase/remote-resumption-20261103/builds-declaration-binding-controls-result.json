@@ -1,0 +1,30 @@
+{
+  "command": "dotnet run --project artifacts/story-2-8-declaration-binding-controls/DeclarationBindingControls.csproj --configuration Debug -p:NuGetAudit=false -- <retained-official-declaration-evidence> <owning-catalog>",
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103",
+  "exitCode": 0,
+  "result": {
+    "passed": 4,
+    "failed": 0,
+    "controls": [
+      {
+        "name": "exact-released-closure-accepted-by-default-authorities",
+        "passed": true
+      },
+      {
+        "name": "changed-release-source-refused",
+        "passed": true
+      },
+      {
+        "name": "changed-bytes-with-coherent-caller-hash-refused",
+        "passed": true
+      },
+      {
+        "name": "unknown-catalog-release-refused",
+        "passed": true
+      }
+    ],
+    "servicesAllocated": false,
+    "packageRuntimeQualification": false
+  },
+  "scope": "Actual production declaration loader/default authorities with exact released fixture bytes; no services, image or package runtime qualification."
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "artifacts/story-2-8-actual-layout-controls/ActualLayoutControls.csproj",
+    "--configuration",
+    "Debug",
+    "-p:NuGetAudit=false",
+    "--",
+    "/home/administrator/projects/hexalith/platform",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/artifacts/story-2-8-actual-layout-preparation",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/released-declaration-identities.json"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "exitCode": 0,
+  "output": "actual-platform-layout-after-fix.txt",
+  "pendingPr153BindingsExplicitlySupplied": true,
+  "servicesAllocated": false,
+  "candidateAcceptanceClaimed": false
+}

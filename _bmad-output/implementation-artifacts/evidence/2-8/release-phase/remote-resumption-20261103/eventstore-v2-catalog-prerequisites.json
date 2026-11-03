@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-11-03T12:42:04.593139+00:00",
+  "eventstoreRevision": "e97582bf43ffe8c2f7d958dd470a242c21bd4908",
+  "recordedPointersPreserved": {
+    "Hexalith.Builds": "048260858048494d1c47156f4bf5e05a5403a02d",
+    "Hexalith.Platform": "ab56a8deb9bafef8a717640beba11aca43d8d65a"
+  },
+  "recordedPlatformBuilds": "6585f5860e87c146c26aa066d3a52b94eb56f271",
+  "currentPlatformRevision": "bf101b9d5f19ba741852b0230e526d1f01422022",
+  "currentPlatformBuilds": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "officialTagRefsPointingAtRecordedOrCurrentPlatform": [
+    "bf101b9d5f19ba741852b0230e526d1f01422022\trefs/tags/v1.1.5"
+  ],
+  "catalogSource": "048260858048494d1c47156f4bf5e05a5403a02d",
+  "catalogBlob": "9279d69f4c2899f7181dc05f3d261cb3d999dbd6",
+  "catalogSha256": "4b96efa05010821a89ed95eac260968bd0863e706f75bc6210a6a25368efb34e",
+  "catalogPropertyInput": "Owning existing HexalithBuildPackageVersions1/Hexalith1BuildPackageProps paths select exactly recorded048 for focused Release contract compilation; no per-package version overrides, foreign source or module-preparation success claimed.",
+  "rules": [
+    "Released269 PlatformIdentityResolver.cs requires a genuine Platform vSemVer release tag (HXW011).",
+    "Released269 PlatformIdentityResolver.cs requires module recorded/staged/checked-out Builds equal Platform identity catalog (HXW009).",
+    "Module048 Azure additions cannot be rolled back; current Platform269 alone is not a coherent adoption."
+  ],
+  "remainingGate": "Normal coherent catalog/Platform source and genuine publication/adoption decision; actual supported preparation must pass before runtime qualification.",
+  "candidateAcceptance": false
+}

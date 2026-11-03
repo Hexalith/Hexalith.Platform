@@ -1,0 +1,94 @@
+{
+  "recordedAtUtc": "2026-11-03T11:37:33.200118+00:00",
+  "owners": [
+    {
+      "owner": "platform",
+      "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+      "assetsSha256": "77c89119985104c4cdb628763fb730957e95e682fddabc46a7978af7b3d5e99f",
+      "packageFolders": [
+        "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103"
+      ],
+      "tenantsLibraries": [
+        "Hexalith.Tenants.Contracts/7.0.0"
+      ],
+      "nugetAudit": {
+        "enableAudit": "false",
+        "auditLevel": "low",
+        "auditMode": "all"
+      },
+      "releaseAssemblySha256": "8cae7859a343001b2dc9bdfc5c35f6038f93f09dbaf34173943ef0a8e618880d",
+      "officialAssemblies": [
+        {
+          "package": "Hexalith.Tenants.Contracts",
+          "version": "7.0.0",
+          "assemblySha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+          "officialArchiveMatch": true
+        }
+      ]
+    },
+    {
+      "owner": "parties",
+      "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103",
+      "assetsSha256": "9bf8cb4f825fff76dc53a37c884c1ffbf421c4cee05d2d969139d30c6bea59a6",
+      "packageFolders": [
+        "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103"
+      ],
+      "tenantsLibraries": [
+        "Hexalith.Tenants.Client/7.0.0",
+        "Hexalith.Tenants.Contracts/7.0.0",
+        "Hexalith.Tenants.Server/7.0.0",
+        "Hexalith.Tenants.Testing/7.0.0"
+      ],
+      "nugetAudit": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "all"
+      },
+      "releaseAssemblySha256": "9c3c20e8bd36d8880fcd8f3b5e503d0f234c1bd7ca46f4c71d63ff41f3c06bb8",
+      "officialAssemblies": [
+        {
+          "package": "Hexalith.Tenants.Contracts",
+          "version": "7.0.0",
+          "assemblySha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+          "officialArchiveMatch": true
+        },
+        {
+          "package": "Hexalith.Tenants.Client",
+          "version": "7.0.0",
+          "assemblySha256": "978a2796b041db04c6ca9170f18e5a6fb70bfcc99fc98d86a138dcc253634f09",
+          "officialArchiveMatch": true
+        },
+        {
+          "package": "Hexalith.Tenants.Server",
+          "version": "7.0.0",
+          "assemblySha256": "4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93",
+          "officialArchiveMatch": true
+        },
+        {
+          "package": "Hexalith.Tenants.Testing",
+          "version": "7.0.0",
+          "assemblySha256": "3cc5f92e108785143309d521a8661f56046d1ab0ed6c392e3d1c1fb05ac5b3f5",
+          "officialArchiveMatch": true
+        }
+      ]
+    }
+  ],
+  "sourceSha256": {
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103/src/Hexalith.Platform.Composition/Declarations/provenance.json": "c3b6226a39bfb4d5ff53dea9d0eab93a830398ce0ee7da59229d56f61b7b7286",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/.github/workflows/ci.yml": "9156f29f8aef1deb8c0fc00b8544891cb6666f925e3607e95a1ef9fe397bce99"
+  },
+  "newToolingSource": "26991e8c542704be44cd8d9f58084d56fa627adb",
+  "newToolingAndLoadedSha256": "a42535acf0328e694f28e54431b2561c91090b895535b2c47af17752e0109e42",
+  "tenantManifestSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522",
+  "manifestBytesUnchanged": true,
+  "partiesGuardUnchanged": true,
+  "acceptedTupleChanged": false,
+  "sourceFallback": false,
+  "sharedCacheModified": false,
+  "initialCacheDiscrepancy": "tenants7-contracts-cache-discrepancy.json",
+  "officialRestores": "tenants7-isolated-official-restores.json",
+  "localPartiesCatalog": "Published fc743715 sibling catalog with explicit verified T7 family; not recorded d2a430c9 hosted catalog qualification.",
+  "hostedBlockers": "tenants7-parties-old-head-failure-summary.json",
+  "runtimeAcceptanceClaimed": false,
+  "candidateAcceptanceClaimed": false
+}

@@ -1,0 +1,57 @@
+{
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "branch": "fix/ci-release-declaration-snapshots",
+  "base": "f90e68a0c0305d18dc2cde8d4d4c856aa5a49725",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "--",
+        "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+        "src/Hexalith.Platform.Composition/Declarations/tenants.json",
+        "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-F",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-adoption-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/ci-release-declaration-snapshots 989a41d0] fix(composition): adopt released declaration snapshots\n 4 files changed, 132 insertions(+), 21 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "fix/ci-release-declaration-snapshots"
+      ],
+      "exitCode": 0,
+      "stdout": "branch 'fix/ci-release-declaration-snapshots' set up to track 'origin/fix/ci-release-declaration-snapshots'.\n",
+      "stderr": "remote: \nremote: Create a pull request for 'fix/ci-release-declaration-snapshots' on GitHub by visiting:        \nremote:      https://github.com/Hexalith/Hexalith.Platform/pull/new/fix/ci-release-declaration-snapshots        \nremote: \nTo https://github.com/Hexalith/Hexalith.Platform.git\n * [new branch]        fix/ci-release-declaration-snapshots -> fix/ci-release-declaration-snapshots\n"
+    }
+  ],
+  "head": "989a41d0b2b33ed7d25d6793a3430184a93ecdfd",
+  "commitTextMatchesValidated": true,
+  "recordedAtUtc": "2026-11-03T10:10:20.810069+00:00"
+}

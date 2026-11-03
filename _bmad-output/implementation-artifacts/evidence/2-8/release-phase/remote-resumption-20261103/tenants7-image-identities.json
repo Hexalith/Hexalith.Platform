@@ -1,0 +1,139 @@
+{
+  "checkedAtUtc": "2026-11-03T11:22:26.213497+00:00",
+  "principal": "ci-reader",
+  "readOnly": true,
+  "expectedVersion": "7.0.0",
+  "expectedSource": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+  "images": [
+    {
+      "image": "registry.hexalith.com/tenants:7.0.0",
+      "tagObservation": {
+        "status": 200,
+        "bodyDigest": "sha256:1823fd114110e67d7e48741702f72d1cf354d30a1efa29069ec15c9232b1c8d1",
+        "bytes": 493,
+        "headerDigestMatches": true
+      },
+      "platforms": [
+        {
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "manifest": {
+            "status": 200,
+            "bodyDigest": "sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42",
+            "bytes": 1399,
+            "headerDigestMatches": true
+          },
+          "config": {
+            "status": 200,
+            "bodyDigest": "sha256:5e3cd9efc862b5561dd369914fd857f92c175959f7c8fc0bcf88d1e620a5d49f",
+            "bytes": 4187,
+            "headerDigestMatches": true
+          },
+          "os": "linux",
+          "architecture": "amd64",
+          "labels": {
+            "org.opencontainers.image.version": "7.0.0",
+            "org.opencontainers.image.revision": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants"
+          },
+          "versionMatches": true,
+          "sourceMatches": true
+        },
+        {
+          "platform": {
+            "architecture": "arm64",
+            "os": "linux"
+          },
+          "manifest": {
+            "status": 200,
+            "bodyDigest": "sha256:7ada7c8880398c3ed683bca5b11eb1cdb64734dbca5e43b5df64914d1c10d32c",
+            "bytes": 1399,
+            "headerDigestMatches": true
+          },
+          "config": {
+            "status": 200,
+            "bodyDigest": "sha256:c136da6a3eeab6a22d25b1b1da1a42ceac83a7d516a807359b7d1e7b28a8146c",
+            "bytes": 4188,
+            "headerDigestMatches": true
+          },
+          "os": "linux",
+          "architecture": "arm64",
+          "labels": {
+            "org.opencontainers.image.version": "7.0.0",
+            "org.opencontainers.image.revision": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants"
+          },
+          "versionMatches": true,
+          "sourceMatches": true
+        }
+      ]
+    },
+    {
+      "image": "registry.hexalith.com/tenants-api:7.0.0",
+      "tagObservation": {
+        "status": 200,
+        "bodyDigest": "sha256:ad30600d186f8f7c988393d3353742b71de1cb55d5f9c2351d382fdaad4c9a44",
+        "bytes": 493,
+        "headerDigestMatches": true
+      },
+      "platforms": [
+        {
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "manifest": {
+            "status": 200,
+            "bodyDigest": "sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6",
+            "bytes": 1399,
+            "headerDigestMatches": true
+          },
+          "config": {
+            "status": 200,
+            "bodyDigest": "sha256:aa58640b109d1ec7e229ad17b7f862fbcf390a7cdf74cc729f0a9f5c5ec4422c",
+            "bytes": 4191,
+            "headerDigestMatches": true
+          },
+          "os": "linux",
+          "architecture": "amd64",
+          "labels": {
+            "org.opencontainers.image.version": "7.0.0",
+            "org.opencontainers.image.revision": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants"
+          },
+          "versionMatches": true,
+          "sourceMatches": true
+        },
+        {
+          "platform": {
+            "architecture": "arm64",
+            "os": "linux"
+          },
+          "manifest": {
+            "status": 200,
+            "bodyDigest": "sha256:bc1a6b6808bd0e772859b1d4508e5ffe6febc97eca2ba6711de3194cc560c82a",
+            "bytes": 1399,
+            "headerDigestMatches": true
+          },
+          "config": {
+            "status": 200,
+            "bodyDigest": "sha256:cfa620ccf31515ce55d2e6272e753ce045567f36ca5e4ace91ead7c382ad66c0",
+            "bytes": 4192,
+            "headerDigestMatches": true
+          },
+          "os": "linux",
+          "architecture": "arm64",
+          "labels": {
+            "org.opencontainers.image.version": "7.0.0",
+            "org.opencontainers.image.revision": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants"
+          },
+          "versionMatches": true,
+          "sourceMatches": true
+        }
+      ]
+    }
+  ]
+}

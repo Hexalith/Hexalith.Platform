@@ -1,0 +1,125 @@
+{
+  "head_sha": "918eb6bce5fade37ba2626aad93ca1a232cc9030",
+  "base_sha": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103",
+  "branch": "fix/direct-module-catalog-authority",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/155",
+  "diff": "builds-direct-catalog.patch",
+  "diff_sha256": "fe8eefd5ec402b39d18536fff0e41cbfed6c705e2e00ac7d426ea718553d92c2",
+  "files": [
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+      "sha256": "7ff2db6cf6b9f58badf7b1b882ddbf1c3d494e1a80ff7b9ca8a9cc28480de963"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+      "sha256": "6cff2c3554084ea62c3ed99bf983115a37fdbe6455485f91df9395abbbb13dc4"
+    },
+    {
+      "path": "test/fixtures/module/platform/eventstore-4.0.4.json",
+      "sha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+    },
+    {
+      "path": "test/fixtures/module/platform/memories-3.0.18.json",
+      "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+    }
+  ],
+  "binaries": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+      "sha256": "a403d808a2691c2d46b45aa9cfc75c0c090f3fa3cfa4da8e63af398a86779936"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+      "sha256": "a403d808a2691c2d46b45aa9cfc75c0c090f3fa3cfa4da8e63af398a86779936"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+      "sha256": "a403d808a2691c2d46b45aa9cfc75c0c090f3fa3cfa4da8e63af398a86779936"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "sha256": "559807343684aed9c29a12cc01f5e7c61e68cd136f55e75b3a221bdc62d410e5"
+    }
+  ],
+  "fresh_release_build": {
+    "exit_code": 0,
+    "warnings": 0,
+    "errors": 0,
+    "log": "builds-direct-catalog-green-build.txt"
+  },
+  "tests": [
+    {
+      "name": "direct-layout",
+      "xml": "builds-direct-catalog-direct-layout.xml",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "declaration-closure",
+      "xml": "builds-direct-catalog-declaration-closure.xml",
+      "total": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "released-metadata",
+      "xml": "builds-direct-catalog-released-metadata.xml",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "identity-boundary",
+      "xml": "builds-direct-catalog-identity-boundary.xml",
+      "total": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "red_test_first": {
+    "passed": 6,
+    "failed": 2,
+    "total": 8,
+    "xml": "builds-direct-catalog-red.xml"
+  },
+  "exact_message_validation": {
+    "cli": "21.2.4",
+    "node": "24.22.1",
+    "npm": "11.19.1",
+    "commit_and_pr_title": "fix(runtime): resolve the direct module catalog",
+    "fixture_message": "test: bind catalog fixture",
+    "exit_code": 0,
+    "log": "builds-direct-catalog-message-validation.txt"
+  },
+  "actual_layout": "builds-direct-catalog-verified-layout.json",
+  "fresh_signed_tool_preparation": "builds-direct-catalog-pinned-preparation.txt",
+  "first_outcomes_retained": [
+    "builds-direct-catalog-first-build.txt",
+    "builds-direct-catalog-red.xml",
+    "builds-direct-catalog-published-cold-first.txt",
+    "builds-direct-catalog-source-public-caller.json",
+    "builds-direct-catalog-actual-layout-source-version-refusal.txt"
+  ],
+  "live_state": "builds-direct-catalog-live-state.json",
+  "public_execution_limit": "Source-built public caller with absent Aspire returned generic HXT007/exit4 and no new state/workspace. This remains unqualified; separate metadata-only default-authority actual-layout probe passes.",
+  "preserved": [
+    "Azure catalog additions at89",
+    "active parent publication41640609178",
+    "Parties PR59 at9c",
+    "no nested dependency initialization",
+    "all public signatures and normal identity/release/cleanup gates"
+  ],
+  "remaining": [
+    "Normal current-head full hosted CI/review and parent merge gates",
+    "Fresh producer release/publication and official archive/inventory/loaded host verification",
+    "Coherent Platform/EventStore/Parties adoption",
+    "Actual native and hosted lifecycle matrix qualification"
+  ],
+  "story_complete": false
+}

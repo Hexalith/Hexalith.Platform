@@ -1,0 +1,4 @@
+fix(ci): isolate refresh checks on reviewed catalog
+
+Move package protocol checks into their own job and propose the exact CI-qualified Builds source.
+Record only delegated source selection; keep publication, compatibility and full review gates pending.

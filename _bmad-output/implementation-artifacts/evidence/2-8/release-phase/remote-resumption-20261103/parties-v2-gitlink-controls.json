@@ -1,0 +1,51 @@
+{
+  "time": "2026-11-03T13:12:11.928425+00:00",
+  "commands": [
+    {
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--diff",
+        "origin/main"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--push-range",
+        "bdc0f370f4cb20246d662032979f1350533d48fc"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--push-range",
+        "fcf7cbc86076ce43f0982e4959da9691feaf2d3a"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--diff",
+        "v3.0.0"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/gitlink-rc-gate.sh",
+        "--worktree"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "sourceSelectionOnly": true,
+  "candidateAcceptance": false
+}

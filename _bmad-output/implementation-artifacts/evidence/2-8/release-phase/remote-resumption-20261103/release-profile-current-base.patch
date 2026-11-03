@@ -1,0 +1,269 @@
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs b/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs
+index a3f41d6f..7233a72d 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs
+@@ -35,6 +35,14 @@ public static partial class PlatformManifestValidator
+ 
+     private static readonly JsonElement _schemaRoot = JsonSerializer.Deserialize<JsonElement>(_schemaText);
+ 
++    /// <summary>
++    /// Validates all files as one declaration set using the shipped, embedded schema.
++    /// </summary>
++    /// <param name="manifestPaths">The manifest file paths.</param>
++    /// <returns>An atomic validation result.</returns>
++    public static PlatformManifestValidationResult Validate(IEnumerable<string> manifestPaths) =>
++        Validate(manifestPaths, CancellationToken.None);
++
+     /// <summary>
+     /// Validates all files as one declaration set using the shipped, embedded schema.
+     /// </summary>
+@@ -43,9 +51,30 @@ public static partial class PlatformManifestValidator
+     /// <returns>An atomic validation result.</returns>
+     public static PlatformManifestValidationResult Validate(
+         IEnumerable<string> manifestPaths,
+-        CancellationToken cancellationToken = default)
++        CancellationToken cancellationToken) =>
++        Validate(manifestPaths, new Dictionary<string, string>(StringComparer.Ordinal), cancellationToken);
++
++    /// <summary>Validates authenticated release snapshots without selecting their dependency test entries.</summary>
++    /// <param name="manifestPaths">The complete declaration set.</param>
++    /// <param name="authenticatedReleaseHashes">Exact snapshot paths and hashes already verified against owner release authority.</param>
++    /// <returns>The atomically validated declarations; supplied executable manifests retain full filesystem checks.</returns>
++    internal static PlatformManifestValidationResult Validate(
++        IEnumerable<string> manifestPaths,
++        IReadOnlyDictionary<string, string> authenticatedReleaseHashes) =>
++        Validate(manifestPaths, authenticatedReleaseHashes, CancellationToken.None);
++
++    /// <summary>Validates authenticated release snapshots without selecting their dependency test entries.</summary>
++    /// <param name="manifestPaths">The complete declaration set.</param>
++    /// <param name="authenticatedReleaseHashes">Exact snapshot paths and hashes already verified against owner release authority.</param>
++    /// <param name="cancellationToken">The cancellation token.</param>
++    /// <returns>The atomically validated declarations; supplied executable manifests retain full filesystem checks.</returns>
++    internal static PlatformManifestValidationResult Validate(
++        IEnumerable<string> manifestPaths,
++        IReadOnlyDictionary<string, string> authenticatedReleaseHashes,
++        CancellationToken cancellationToken)
+     {
+         ArgumentNullException.ThrowIfNull(manifestPaths);
++        ArgumentNullException.ThrowIfNull(authenticatedReleaseHashes);
+         List<ToolDiagnostic> diagnostics = [];
+         List<PlatformModuleDeclaration> declarations = [];
+         Dictionary<string, List<(string Source, string Field)>> identities = new(StringComparer.Ordinal);
+@@ -59,7 +88,7 @@ public static partial class PlatformManifestValidator
+                 break;
+             }
+ 
+-            ValidateFile(path, declarations, identities, diagnostics, cancellationToken);
++            ValidateFile(path, declarations, identities, diagnostics, authenticatedReleaseHashes, cancellationToken);
+         }
+ 
+         if (fileCount == 0)
+@@ -102,6 +131,7 @@ public static partial class PlatformManifestValidator
+         List<PlatformModuleDeclaration> declarations,
+         Dictionary<string, List<(string Source, string Field)>> identities,
+         List<ToolDiagnostic> diagnostics,
++        IReadOnlyDictionary<string, string> authenticatedReleaseHashes,
+         CancellationToken cancellationToken)
+     {
+         string fullPath;
+@@ -153,6 +183,13 @@ public static partial class PlatformManifestValidator
+                 return;
+             }
+ 
++            bool releasedSnapshot = authenticatedReleaseHashes.TryGetValue(fullPath, out string? expectedHash);
++            if (releasedSnapshot && !string.Equals(expectedHash, Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(buffer.AsSpan(0, count))), StringComparison.OrdinalIgnoreCase))
++            {
++                Add(diagnostics, "HXP020", source, "$", "The released declaration changed after its source/hash verification.");
++                return;
++            }
++
+             // Reject malformed UTF-8 before JSON parsing; a UTF-8 BOM is permitted.
+             int offset = count >= 3 && buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF ? 3 : 0;
+             string content = new UTF8Encoding(false, true).GetString(buffer, offset, count - offset);
+@@ -191,7 +228,7 @@ public static partial class PlatformManifestValidator
+             {
+                 cancellationToken.ThrowIfCancellationRequested();
+                 string prefix = $"modules[{moduleIndex++}]";
+-                ValidateModule(module, prefix, source, fullPath, identities, diagnostics);
++                ValidateModule(module, prefix, source, fullPath, identities, diagnostics, requireTestFiles: !releasedSnapshot);
+                 if (module.ValueKind == JsonValueKind.Object && initialDiagnosticCount == diagnostics.Count)
+                 {
+                     declarations.Add(new PlatformModuleDeclaration(source, ApplyDefaults(module))
+@@ -511,7 +548,8 @@ public static partial class PlatformManifestValidator
+         string source,
+         string fullPath,
+         Dictionary<string, List<(string Source, string Field)>> identities,
+-        List<ToolDiagnostic> diagnostics)
++        List<ToolDiagnostic> diagnostics,
++        bool requireTestFiles)
+     {
+         JsonElement identity = ObjectValue(module, "identity");
+         RegisterIdentity(StringValue(identity, "moduleId"), "module", source, $"{prefix}.identity.moduleId", identities);
+@@ -581,7 +619,9 @@ public static partial class PlatformManifestValidator
+ 
+             string? entry = StringValue(test, "entry");
+             string? executor = StringValue(test, "executor");
+-            if (entry is not null && (!ModuleTestSelection.IsOwnedEntry(ManifestPathValidator.FindRepositoryRoot(fullPath), entry)
++            if (entry is not null && (ManifestPathValidator.ContainsPlaceholder(entry)
++                || string.Equals(entry.Split('/')[0], "references", StringComparison.OrdinalIgnoreCase)
++                || (requireTestFiles && !ModuleTestSelection.IsOwnedEntry(ManifestPathValidator.FindRepositoryRoot(fullPath), entry))
+                 || !entry.EndsWith(executor == "python3" ? ".py" : ".csproj", StringComparison.Ordinal)))
+             {
+                 Add(diagnostics, "HXP020", source, field + ".entry", "Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.");
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs
+index 2d45c046..d7c78c06 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs
+@@ -75,6 +75,7 @@ public static class CompositionDeclarationClosure
+         }
+ 
+         List<string> paths = [];
++        Dictionary<string, string> authenticatedReleaseHashes = new(StringComparer.Ordinal);
+         Dictionary<string, (string Path, JsonElement Declaration)> snapshots = new(StringComparer.Ordinal);
+         foreach (string owner in new[] { "eventstore", "tenants", "memories" })
+         {
+@@ -130,6 +131,7 @@ public static class CompositionDeclarationClosure
+                 using JsonDocument released = JsonDocument.Parse(File.ReadAllText(snapshot));
+                 snapshots[owner] = (snapshot, released.RootElement.GetProperty("modules").EnumerateArray().Single().Clone());
+                 paths.Add(snapshot);
++                authenticatedReleaseHashes.Add(Path.GetFullPath(snapshot), hash);
+             }
+         }
+ 
+@@ -181,7 +183,7 @@ public static class CompositionDeclarationClosure
+             }
+         }
+ 
+-        PlatformManifestValidationResult result = PlatformManifestValidator.Validate(paths);
++        PlatformManifestValidationResult result = PlatformManifestValidator.Validate(paths, authenticatedReleaseHashes);
+         if (!result.IsValid)
+         {
+             throw new InvalidDataException(string.Join(Environment.NewLine, result.Diagnostics.Select(d => $"{d.Source}: {d.Field}: {d.Message}")));
+diff --git a/test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs b/test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs
+new file mode 100644
+index 00000000..ac0fd7fc
+--- /dev/null
++++ b/test/Hexalith.Builds.Module.Tests/ReleasedDependencyProfileTests.cs
+@@ -0,0 +1,122 @@
++// <copyright file="ReleasedDependencyProfileTests.cs" company="ITANEO">
++// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.
++// Licensed under the MIT license. See LICENSE file in the project root for full license information.
++// </copyright>
++
++namespace Hexalith.Builds.ModuleTool.Tests;
++
++using System.Security.Cryptography;
++using System.Text.Json.Nodes;
++
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++
++using Shouldly;
++
++using Xunit;
++
++/// <summary>Separates authenticated dependency profile metadata from executable owner validation.</summary>
++public sealed class ReleasedDependencyProfileTests
++{
++    /// <summary>Loads released test metadata without requiring dependency source projects in Platform.</summary>
++    [Fact]
++    public void ReleasedDependencyProfileDoesNotRequireItsSourceProject()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        CompositionDeclarationOptions options = ReleasedProfile(workspace.Root, "tests/Dependency.Tests.csproj");
++        string snapshot = Snapshot(workspace.Root);
++        File.Exists(Path.Combine(Path.GetDirectoryName(snapshot)!, "tests", "Dependency.Tests.csproj")).ShouldBeFalse();
++        PlatformManifestValidator.Validate([snapshot], TestContext.Current.CancellationToken).IsValid.ShouldBeFalse();
++        PlatformModuleDeclaration declaration = CompositionDeclarationClosure.Load(options).Single();
++        declaration.Declaration.GetProperty("tests")[0].GetProperty("entry").GetString().ShouldBe("tests/Dependency.Tests.csproj");
++    }
++
++    /// <summary>Keeps caller-supplied manifests strict in both source and package modes.</summary>
++    /// <param name="mode">The selected composition mode.</param>
++    [Theory]
++    [InlineData(WorkspaceMode.Source)]
++    [InlineData(WorkspaceMode.Package)]
++    public void SuppliedOwnerProfileStillRequiresItsOwnedEntry(WorkspaceMode mode)
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        CompositionDeclarationOptions options = ReleasedProfile(workspace.Root, "tests/Dependency.Tests.csproj");
++        options = options with { Mapping = options.Mapping with { Mode = mode }, DeclarationPaths = [Snapshot(workspace.Root)] };
++        Should.Throw<InvalidDataException>(() => CompositionDeclarationClosure.Load(options)).Message.ShouldContain("tests[0].entry");
++    }
++
++    /// <summary>Retains canonical ownership and executor checks for authenticated metadata.</summary>
++    /// <param name="entry">An ineligible declaration entry.</param>
++    [Theory]
++    [InlineData("references/dependency.csproj")]
++    [InlineData("../escape.csproj")]
++    [InlineData("tests/wrong.py")]
++    [InlineData("$RUNNER_TEMP/test.csproj")]
++    public void ReleasedMetadataStillRejectsIneligibleEntryPaths(string entry)
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        CompositionDeclarationOptions options = ReleasedProfile(workspace.Root, entry);
++        Should.Throw<InvalidDataException>(() => CompositionDeclarationClosure.Load(options)).Message.ShouldContain("tests[0].entry");
++    }
++
++    /// <summary>Never defers executable startup-task availability for a released dependency.</summary>
++    [Fact]
++    public void ReleasedStartupTaskStillRequiresItsExecutable()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        CompositionDeclarationOptions options = ReleasedProfile(workspace.Root, "tests/Dependency.Tests.csproj");
++        JsonNode snapshot = JsonNode.Parse(File.ReadAllText(Snapshot(workspace.Root)))!;
++        snapshot["modules"]![0]!["lifecycle"]!["tasks"] = workspace.Document["modules"]![0]!["lifecycle"]!["tasks"]!.DeepClone();
++        File.WriteAllText(Snapshot(workspace.Root), snapshot.ToJsonString());
++        options = AuthenticateFixtureSnapshot(options, workspace.Root);
++        Should.Throw<InvalidDataException>(() => CompositionDeclarationClosure.Load(options)).Message.ShouldContain("lifecycle.tasks[0].executable");
++    }
++
++    /// <summary>Rechecks authenticated bytes at the validator boundary before metadata-only treatment.</summary>
++    [Fact]
++    public void ChangedAuthenticatedBytesCannotUseMetadataValidation()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        CompositionDeclarationOptions options = ReleasedProfile(workspace.Root, "tests/Dependency.Tests.csproj");
++        string snapshot = Snapshot(workspace.Root);
++        Dictionary<string, string> authenticated = new(StringComparer.Ordinal)
++        {
++            [Path.GetFullPath(snapshot)] = options.ReleaseSnapshotHashes["memories/1.0.0"],
++        };
++        File.AppendAllText(snapshot, " ");
++        PlatformManifestValidationResult result = PlatformManifestValidator.Validate([snapshot], authenticated, TestContext.Current.CancellationToken);
++        result.IsValid.ShouldBeFalse();
++        result.Diagnostics.ShouldContain(diagnostic => diagnostic.Message.Contains("changed after its source/hash verification", StringComparison.Ordinal));
++    }
++
++    private static string Snapshot(string root) => Path.Combine(root, "src", "Hexalith.Platform.Composition", "Declarations", "memories.json");
++
++    private static CompositionDeclarationOptions ReleasedProfile(string root, string entry)
++    {
++        CompositionDeclarationOptions options = DeclarationClosureTests.PackageOptions(root);
++        string path = Snapshot(root);
++        JsonNode snapshot = JsonNode.Parse(File.ReadAllText(path))!;
++        snapshot["modules"]![0]!["tests"] = new JsonArray(new JsonObject
++        {
++            ["name"] = "dependency-metadata",
++            ["executor"] = "mtp",
++            ["entry"] = entry,
++            ["reportFormat"] = "trx",
++            ["executionTimeoutSeconds"] = 120,
++            ["stopTimeoutSeconds"] = 90,
++            ["mode"] = "package",
++        });
++        File.WriteAllText(path, snapshot.ToJsonString());
++        return AuthenticateFixtureSnapshot(options, root);
++    }
++
++    private static CompositionDeclarationOptions AuthenticateFixtureSnapshot(CompositionDeclarationOptions options, string root)
++    {
++        string hash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Snapshot(root))));
++        string path = Path.Combine(Path.GetDirectoryName(Snapshot(root))!, "provenance.json");
++        JsonNode provenance = JsonNode.Parse(File.ReadAllText(path))!;
++        provenance["memories"]!["sha256"] = hash;
++        File.WriteAllText(path, provenance.ToJsonString());
++        return options with { ReleaseSnapshotHashes = new Dictionary<string, string>(options.ReleaseSnapshotHashes, StringComparer.Ordinal) { ["memories/1.0.0"] = hash } };
++    }
++}

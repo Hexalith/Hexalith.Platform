@@ -1,0 +1,274 @@
+diff --git a/src/Hexalith.Platform.Composition/Declarations/eventstore.json b/src/Hexalith.Platform.Composition/Declarations/eventstore.json
+index acfaec1a..37659bc4 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/eventstore.json
++++ b/src/Hexalith.Platform.Composition/Declarations/eventstore.json
+@@ -578,7 +578,27 @@
+           "reason": "Declare the existing gateway minimum; admin hosts remain optional."
+         },
+         "recoveryInventory": []
+-      }
++      },
++      "tests": [
++        {
++          "name": "platform-source",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 120,
++          "stopTimeoutSeconds": 90,
++          "mode": "source"
++        },
++        {
++          "name": "platform-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 120,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
++        }
++      ]
+     }
+   ]
+ }
+diff --git a/src/Hexalith.Platform.Composition/Declarations/provenance.json b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+index 77dbcec4..9badfb2c 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/provenance.json
++++ b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+@@ -1,22 +1,22 @@
+ {
+   "eventstore": {
+     "repository": "Hexalith.EventStore",
+-    "version": "3.129.0",
+-    "commit": "c02afa0fce310ccdb696232f18829df96cba088e",
++    "version": "4.0.4",
++    "commit": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+     "source": "module/hexalith.module-manifest.v2.json",
+-    "sha256": "a56951dcc4a8c53f22e449a2399516e51c4d2569bec1357f8197593a8d9e44a2"
++    "sha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+   },
+   "tenants": {
+     "repository": "Hexalith.Tenants",
+-    "version": "5.8.0",
+-    "commit": "6f88e4e95ae464617766f6a1294ff08a4504f42b",
++    "version": "6.0.0",
++    "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+     "source": "module/hexalith.module-manifest.v2.json",
+-    "sha256": "e79a87df18b8ca40eaa89c94a2534b14e97fa00ecdd4c3a91b7bcc7405a245d4"
++    "sha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+   },
+   "memories": {
+     "repository": "Hexalith.Memories",
+-    "version": "3.0.12",
+-    "commit": "ef5c134bbee7ec708f354ce1bc3e508ee6105ab7",
++    "version": "3.0.18",
++    "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+   }
+diff --git a/src/Hexalith.Platform.Composition/Declarations/tenants.json b/src/Hexalith.Platform.Composition/Declarations/tenants.json
+index 5779e315..0433268d 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/tenants.json
++++ b/src/Hexalith.Platform.Composition/Declarations/tenants.json
+@@ -30,13 +30,29 @@
+             "role": "state",
+             "capability": "state",
+             "recoveryClass": "authoritative-restore",
+-            "configurationKey": "Dapr:StateStoreComponent"
++            "configurationKey": "EventStore:CommandStatus:StateStoreName",
++            "servers": [
++              "domain",
++              "api"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:DataProtection:StateStoreName",
++            "servers": [
++              "domain"
++            ]
+           },
+           {
+             "role": "events",
+             "capability": "pubsub",
+             "recoveryClass": "rebuild-only",
+-            "configurationKey": "Dapr:PubSubComponent"
++            "configurationKey": "EventStore:ProjectionChanges:PubSubName",
++            "servers": [
++              "domain"
++            ]
+           }
+         ],
+         "extensions": [
+@@ -286,7 +302,7 @@
+             "exposure": "public",
+             "surfaceClass": "service",
+             "authorization": {
+-              "policy": "authenticated",
++              "policy": "authenticated-current-global-administrator",
+               "permissions": []
+             },
+             "callers": [],
+@@ -294,17 +310,17 @@
+               {
+                 "name": "list-global-administrators",
+                 "kind": "query",
+-                "authorizationPolicy": "authenticated"
++                "authorizationPolicy": "authenticated-current-global-administrator"
+               },
+               {
+                 "name": "set-global-administrator",
+                 "kind": "command",
+-                "authorizationPolicy": "authenticated"
++                "authorizationPolicy": "authenticated-current-global-administrator"
+               },
+               {
+                 "name": "remove-global-administrator",
+                 "kind": "command",
+-                "authorizationPolicy": "authenticated"
++                "authorizationPolicy": "authenticated-current-global-administrator"
+               }
+             ]
+           },
+@@ -340,7 +356,8 @@
+               "permissions": []
+             },
+             "callers": [
+-              "eventstore"
++              "eventstore",
++              "parties"
+             ],
+             "operations": [
+               {
+@@ -368,6 +385,50 @@
+                 "kind": "administration",
+                 "authorizationPolicy": "authenticated"
+               }
++            ],
++            "invocationRules": [
++              {
++                "caller": "eventstore",
++                "path": "/process",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/query",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/replay-state",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/admin/operational-index-metadata",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "parties",
++                "path": "/ready",
++                "verbs": [
++                  "GET"
++                ]
++              }
+             ]
+           }
+         ]
+@@ -493,7 +554,8 @@
+             "surface": "global-administrators-api",
+             "operations": [
+               "list-global-administrators",
+-              "set-global-administrator"
++              "set-global-administrator",
++              "remove-global-administrator"
+             ]
+           }
+         ],
+@@ -502,7 +564,32 @@
+           "changeClass": "additive",
+           "reason": "Declare existing Tenants domain and public API services; readiness does not prove bootstrap completion."
+         },
+-        "recoveryInventory": []
++        "recoveryInventory": [
++          {
++            "name": "global-administrator-authority",
++            "recoveryClass": "rebuild-only",
++            "owner": "tenants",
++            "dependencies": [
++              "eventstore"
++            ]
++          },
++          {
++            "name": "global-administrator-audit",
++            "recoveryClass": "rebuild-only",
++            "owner": "tenants",
++            "dependencies": [
++              "eventstore"
++            ]
++          },
++          {
++            "name": "system-tenant-audit",
++            "recoveryClass": "rebuild-only",
++            "owner": "tenants",
++            "dependencies": [
++              "eventstore"
++            ]
++          }
++        ]
+       }
+     }
+   ]
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+index 40a71102..d26cfcb6 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs
+@@ -48,7 +48,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
+     public void PackageModeRefusesUnreleasedOwnerSnapshotBeforeAddingResources()
+     {
+         IDistributedApplicationBuilder builder = Builder();
+-        // Copy the real producer bytes into an isolated layout; no synthetic release provenance is substituted.
++        // Copy real producer bytes; the isolated provenance mutation below must refuse before resources are added.
+         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
+         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
+         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
+@@ -57,6 +57,10 @@ public sealed partial class PlatformAppModelTests : IDisposable
+         foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
+             File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
+         File.Copy(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
++        string provenancePath = Path.Combine(snapshots, "provenance.json");
++        JsonNode provenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
++        provenance["eventstore"]!["version"] = "0.0.0-unqualified-fixture";
++        File.WriteAllText(provenancePath, provenance.ToJsonString());
+         try
+         {
+             SourceMapping mapping = Options().Mapping;
+@@ -68,8 +72,8 @@ public sealed partial class PlatformAppModelTests : IDisposable
+             production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
+             InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, production));
+             refusal.Message.ShouldContain("Hexalith.EventStore");
+-            refusal.Message.ShouldContain("3.129.0");
+-            refusal.Message.ShouldContain("c02afa0f");
++            refusal.Message.ShouldContain("0.0.0-unqualified-fixture");
++            refusal.Message.ShouldContain(provenance["eventstore"]!["commit"]!.GetValue<string>());
+             builder.Resources.ShouldBeEmpty();
+             if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
+                 File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);

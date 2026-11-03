@@ -1,0 +1,42 @@
+{
+  "command": [
+    "dotnet",
+    "nuget",
+    "verify",
+    "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.41.1/hexalith.builds.module.cli.4.41.1.nupkg",
+    "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.2/hexalith.builds.module.cli.4.43.2.nupkg",
+    "/home/administrator/.nuget/packages/hexalith.eventstore.testing/4.0.4/hexalith.eventstore.testing.4.0.4.nupkg",
+    "--all",
+    "--verbosity",
+    "normal"
+  ],
+  "environment": {
+    "NUGET_CERT_REVOCATION_MODE": "offline"
+  },
+  "networkConnectionSyscallsDenied": true,
+  "networkControlExitCode": 0,
+  "exitCode": 0,
+  "elapsedSeconds": 0.542,
+  "packageSha256": {
+    "hexalith.builds.module.cli.4.41.1.nupkg": "5f17efb645f671e9c7e89ca9f025a5f58aa4e1423e1d80e8556253e154bc15bd",
+    "hexalith.builds.module.cli.4.43.2.nupkg": "dc0d885adce40b10dcdd592e73206bfda5aafa84a383be593fd3a2e2374976f5",
+    "hexalith.eventstore.testing.4.0.4.nupkg": "fae2691ad4d316972fa2f4499b9d6efeee286578299630750571b1e9f4dbdfee"
+  },
+  "networkRestriction": {
+    "implementation": "inherited libseccomp filter",
+    "defaultAction": "allow",
+    "deniedSyscalls": [
+      "connect",
+      "sendto",
+      "sendmsg",
+      "sendmmsg"
+    ],
+    "denialErrno": "ENETUNREACH",
+    "socketControlDestination": "192.0.2.1:443",
+    "networkNamespaceAttempt": {
+      "command": "unshare --net true",
+      "exitCode": 1,
+      "result": "unshare failed: Operation not permitted"
+    }
+  }
+}

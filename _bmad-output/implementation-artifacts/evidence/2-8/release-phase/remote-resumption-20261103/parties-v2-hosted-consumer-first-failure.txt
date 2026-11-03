@@ -1,0 +1,22 @@
+2026-11-03T13:19:12.9772406Z Validated 11 NuGet packages at version 0.0.0-ci-test:
+2026-11-03T13:19:12.9773194Z - Hexalith.Parties.AdminPortal
+2026-11-03T13:19:12.9774006Z - Hexalith.Parties.Aspire
+2026-11-03T13:19:12.9774585Z - Hexalith.Parties.Authentication
+2026-11-03T13:19:12.9775189Z - Hexalith.Parties.Client
+2026-11-03T13:19:12.9775994Z - Hexalith.Parties.ConsumerPortal
+2026-11-03T13:19:12.9777033Z - Hexalith.Parties.Contracts
+2026-11-03T13:19:12.9777764Z - Hexalith.Parties.EventStoreExtensions
+2026-11-03T13:19:12.9778398Z - Hexalith.Parties.Picker
+2026-11-03T13:19:12.9779041Z - Hexalith.Parties.Projections
+2026-11-03T13:19:12.9779662Z - Hexalith.Parties.Security
+2026-11-03T13:19:12.9780202Z - Hexalith.Parties.Testing
+2026-11-03T13:19:15.6010910Z /home/runner/work/_temp/hexalith-module-build-d335191e01c04123bcd0fb9acdb5b6a1/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Parties' at '/home/runner/work/Hexalith.Parties/Hexalith.Parties' duplicates direct package 'Hexalith.Parties.Contracts/0.0.0-ci-test'. [/tmp/hexalith-parties-consumer-package-smoke/client-consumer/ClientConsumer.csproj]
+2026-11-03T13:19:15.6268738Z Consumer package validation failed: Command '['dotnet', 'restore', '/tmp/hexalith-parties-consumer-package-smoke/client-consumer/ClientConsumer.csproj']' returned non-zero exit status 1.
+2026-11-03T13:19:15.6417011Z ##[error]Process completed with exit code 1.
+2026-11-03T13:19:15.6798374Z ##[group]Run python3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"
+2026-11-03T13:19:15.6799920Z python3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"
+2026-11-03T13:19:15.6820357Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T13:19:15.6820881Z env:
+2026-11-03T13:19:15.6821108Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T13:19:15.6821764Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-d335191e01c04123bcd0fb9acdb5b6a1/source-mapping/SourceMapping.final.targets
+2026-11-03T13:19:15.6822428Z   Configuration: Release

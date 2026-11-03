@@ -1,0 +1,134 @@
+
+COMMAND: dotnet build src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  Restored /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj (in 1.09 sec).
+  Hexalith.Parties.Aspire -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Aspire/bin/Release/net10.0/Hexalith.Parties.Aspire.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.42
+
+COMMAND: dotnet build src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.74
+
+COMMAND: dotnet build src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  Restored /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj (in 181 ms).
+  1 of 2 projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.EventStoreExtensions -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.EventStoreExtensions/bin/Release/net10.0/Hexalith.Parties.EventStoreExtensions.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.52
+
+COMMAND: dotnet build src/Hexalith.Parties.Client/Hexalith.Parties.Client.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Client -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.26
+
+COMMAND: dotnet build src/Hexalith.Parties.AdminPortal/Hexalith.Parties.AdminPortal.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Client -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+  Hexalith.Parties.AdminPortal -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.AdminPortal/bin/Release/net10.0/Hexalith.Parties.AdminPortal.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.66
+
+COMMAND: dotnet build src/Hexalith.Parties.ConsumerPortal/Hexalith.Parties.ConsumerPortal.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Client -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+  Hexalith.Parties.ConsumerPortal -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.ConsumerPortal/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.97
+
+COMMAND: dotnet build src/Hexalith.Parties.Picker/Hexalith.Parties.Picker.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Client -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+  Hexalith.Parties.Picker -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Picker/bin/Release/net10.0/Hexalith.Parties.Picker.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.60
+
+COMMAND: dotnet build src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Authentication -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Authentication/bin/Release/net10.0/Hexalith.Parties.Authentication.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.41
+
+COMMAND: dotnet build src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Projections -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Projections/bin/Release/net10.0/Hexalith.Parties.Projections.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.42
+
+COMMAND: dotnet build src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Security -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Security/bin/Release/net10.0/Hexalith.Parties.Security.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.42
+
+COMMAND: dotnet build src/Hexalith.Parties.Testing/Hexalith.Parties.Testing.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hexalith.Parties.Contracts -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+  Hexalith.Parties.Testing -> /home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/src/Hexalith.Parties.Testing/bin/Release/net10.0/Hexalith.Parties.Testing.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.22

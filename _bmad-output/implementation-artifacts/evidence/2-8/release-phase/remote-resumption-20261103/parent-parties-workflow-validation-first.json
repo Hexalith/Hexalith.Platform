@@ -1,0 +1,12 @@
+{
+  "time": "2026-11-03T12:29:32.011725+00:00",
+  "source": "0001fe2aa27d36bde228711a05809af8cd37d46b",
+  "hostedRun": 41634200005,
+  "hostedJobs": 0,
+  "argv": [
+    "actionlint",
+    ".github/workflows/ci.yml"
+  ],
+  "exitCode": 1,
+  "diagnosis": "runner context unavailable in jobs.<job_id>.env; move cache paths to qualifying step env without changing tests"
+}

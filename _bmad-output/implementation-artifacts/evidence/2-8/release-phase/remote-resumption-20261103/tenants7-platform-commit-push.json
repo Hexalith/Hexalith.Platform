@@ -1,0 +1,67 @@
+{
+  "owner": "platform",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "previousHead": "989a41d0b2b33ed7d25d6793a3430184a93ecdfd",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "fetch",
+        "origin",
+        "main",
+        "fix/ci-release-declaration-snapshots"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/Hexalith/Hexalith.Platform\n * branch              main       -> FETCH_HEAD\n * branch              fix/ci-release-declaration-snapshots -> FETCH_HEAD\n"
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "--",
+        "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-F",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/tenants7-platform-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/ci-release-declaration-snapshots a9b69cc8] fix(composition): record Tenants 7 release provenance\n 1 file changed, 2 insertions(+), 2 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "origin",
+        "fix/ci-release-declaration-snapshots"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "To https://github.com/Hexalith/Hexalith.Platform.git\n   989a41d0..a9b69cc8  fix/ci-release-declaration-snapshots -> fix/ci-release-declaration-snapshots\n"
+    }
+  ],
+  "head": "a9b69cc8f16687248a8e2dfc0b83ceeb8a5786a6",
+  "validatedMessagePreserved": true,
+  "recordedAtUtc": "2026-11-03T11:38:08.556002+00:00"
+}

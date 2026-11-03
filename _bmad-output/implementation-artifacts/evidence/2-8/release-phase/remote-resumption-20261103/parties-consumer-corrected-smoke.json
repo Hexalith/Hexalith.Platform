@@ -1,0 +1,36 @@
+{
+  "environment": "actual supported package preparation; seven parent keys present in parent, removed only for independent consumer children",
+  "source_packages": "own Release outputs, version0.0.0-ci-test; no source support packages",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/pack-release-packages.py",
+        "/home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/nupkgs",
+        "0.0.0-ci-test"
+      ],
+      "exit_code": 0,
+      "log": "parties-consumer-corrected-smoke-0.txt"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validate-nuget-packages.py",
+        "/home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/nupkgs"
+      ],
+      "exit_code": 0,
+      "log": "parties-consumer-corrected-smoke-1.txt"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validate-consumer-package-references.py",
+        "/home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/nupkgs",
+        "--work-directory",
+        "/home/administrator/.cache/hexalith/story-2-8/parties-consumer-qualification-20261103/corrected-smoke"
+      ],
+      "exit_code": 0,
+      "log": "parties-consumer-corrected-smoke-2.txt"
+    }
+  ]
+}

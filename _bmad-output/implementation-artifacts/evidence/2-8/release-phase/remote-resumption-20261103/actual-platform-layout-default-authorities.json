@@ -1,0 +1,31 @@
+{
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "artifacts/story-2-8-actual-layout-controls/ActualLayoutControls.csproj",
+    "--configuration",
+    "Debug",
+    "-p:NuGetAudit=false",
+    "--",
+    "/home/administrator/projects/hexalith/platform",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+    "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103/artifacts/story-2-8-actual-layout-preparation"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+  "head": "915eb31e5dca6f345efc2628029f71223e384000",
+  "platformHead": "989a41d0b2b33ed7d25d6793a3430184a93ecdfd",
+  "exitCode": 0,
+  "output": "actual-platform-layout-default-authorities.txt",
+  "usingDefaultReleaseAuthorities": true,
+  "injectedReleaseEntries": false,
+  "dependencyTestFilesCopied": false,
+  "servicesAllocated": false,
+  "candidateAcceptanceClaimed": false,
+  "scope": "Actual adopted declaration layout against combined Debug Tooling/default authorities and previously verified materialized catalog mapping; not published/runtime qualification.",
+  "recordedAtUtc": "2026-11-03T10:28:28.774846+00:00",
+  "sha256": {
+    "src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "c87e5a7b9bc0fce0a893c3460f5997e633b71aaaeb1f525d9fd54aff4ba77688",
+    "artifacts/story-2-8-actual-layout-controls/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": "c87e5a7b9bc0fce0a893c3460f5997e633b71aaaeb1f525d9fd54aff4ba77688"
+  }
+}

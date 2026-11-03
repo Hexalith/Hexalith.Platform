@@ -1,0 +1,21 @@
+{
+  "job": 125874248594,
+  "source": "08af27e063c8a715199e611e6100b144a5a1e091",
+  "failedCases": [
+    {
+      "line": "2026-11-03T11:04:59.6371991Z failed Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes (70ms)",
+      "followingLines": [
+        "2026-11-03T11:04:59.6374124Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)",
+        "2026-11-03T11:04:59.6400395Z   Shouldly.ShouldAssertException : packageCohort[packageCohort.IndexOf(\"dotnet test --project \", StringComparison.Ordinal)..];",
+        "2026-11-03T11:04:59.6430244Z           focusedRuns",
+        "2026-11-03T11:04:59.6523756Z       should not contain (case insensitive comparison)",
+        "2026-11-03T11:04:59.6630483Z   \"-m:1\"",
+        "2026-11-03T11:04:59.6670276Z       but was actually",
+        "2026-11-03T11:04:59.6700879Z   \"dotnet test --project tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj \\",
+        "2026-11-03T11:04:59.6730121Z    ...\"",
+        "2026-11-03T11:04:59.6762541Z     at Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes() in /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs:119",
+        "2026-11-03T11:04:59.6765812Z     at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)"
+      ]
+    }
+  ]
+}

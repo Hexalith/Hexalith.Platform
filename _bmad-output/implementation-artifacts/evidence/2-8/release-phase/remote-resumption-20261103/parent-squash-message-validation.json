@@ -1,0 +1,34 @@
+[
+  {
+    "pr": 153,
+    "messageFile": "/tmp/story-2-8-pr153-squash-soijmcot.txt",
+    "message": "fix(runtime): bind released reference declarations (#153)\n\nBind EventStore 4.0.4, Tenants 6.0.0 and Memories 3.0.18\nto their verified owner release commits and declaration hashes.\nPreserve historical authorities and refusal behavior.\n",
+    "command": [
+      "node",
+      "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103/node_modules/@commitlint/cli/cli.js",
+      "--config",
+      "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103/commitlint.config.mjs",
+      "--edit",
+      "/tmp/story-2-8-pr153-squash-soijmcot.txt",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "pinnedVersion": "21.2.4"
+  },
+  {
+    "pr": 154,
+    "messageFile": "/tmp/story-2-8-pr154-squash-0_d1ctb_.txt",
+    "message": "fix(runtime): validate released dependency test metadata (#154)\n\nAdmit test metadata from exact hash-authenticated release snapshots\nwithout requiring dependency source projects in Platform.\nKeep supplied manifests, schema and startup executable checks strict.\nUse explicit validator overloads while preserving public call behavior.\n",
+    "command": [
+      "node",
+      "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103/node_modules/@commitlint/cli/cli.js",
+      "--config",
+      "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103/commitlint.config.mjs",
+      "--edit",
+      "/tmp/story-2-8-pr154-squash-0_d1ctb_.txt",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "pinnedVersion": "21.2.4"
+  }
+]

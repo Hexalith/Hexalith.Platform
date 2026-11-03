@@ -1,0 +1,26 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "--configuration",
+    "Release",
+    "-m:1",
+    "-p:NuGetAudit=false",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsRoot=/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103",
+    "-p:BuildsToolingAssemblyPath=/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-profile-validation-20261103/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll",
+    "-p:BuildsEventStoreHostAssemblyPath=/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.43.2/tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "-p:HexalithTenantsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli",
+    "-p:HexalithPolymorphicSerializationsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/platform-declaration-adoption-20261103",
+  "exitCode": 0,
+  "output": "platform-declaration-adoption-build.txt",
+  "scope": "Local Release/package test compilation with unpublished Tooling source diagnostic; no accepted tuple/publication/hosted evidence."
+}

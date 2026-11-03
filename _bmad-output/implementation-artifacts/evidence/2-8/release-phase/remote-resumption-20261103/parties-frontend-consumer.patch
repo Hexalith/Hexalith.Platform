@@ -1,0 +1,112 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 92c3be31..3e6e39cb 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -33,7 +33,7 @@
+       <DefineConstants>$(DefineConstants);HES_CANCELLABLE_PROJECTIONS</DefineConstants>
+     </PropertyGroup>
+ 
+-    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.1' or '$(HexalithFrontComposerVersion)' == '4.7.3' or '$(HexalithFrontComposerVersion)' == '4.7.4'">
++    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.1' or '$(HexalithFrontComposerVersion)' == '4.7.3' or '$(HexalithFrontComposerVersion)' == '4.7.4' or '$(HexalithFrontComposerVersion)' == '4.7.5'">
+       <DefineConstants>$(DefineConstants);HFC_SHARED_UI</DefineConstants>
+     </PropertyGroup>
+     <!-- The selected producer source supplies the corrected readiness/acceptance contract.
+diff --git a/_bmad-output/implementation-artifacts/tests/story-2-8-frontcomposer-475-adoption-2026-11-03.md b/_bmad-output/implementation-artifacts/tests/story-2-8-frontcomposer-475-adoption-2026-11-03.md
+new file mode 100644
+index 00000000..732c89b1
+--- /dev/null
++++ b/_bmad-output/implementation-artifacts/tests/story-2-8-frontcomposer-475-adoption-2026-11-03.md
+@@ -0,0 +1,33 @@
++# Exact FrontComposer 4.7.5 package capability proposal
++
++Recorded 2026-11-03 by codex-agent under the user's delegated Story 2.8 reference-PR scope. This proposes the catalog-selected package capabilities; it records no new human ratification, producer source/reconciler parity, hosted lifecycle or candidate acceptance. Existing 4.7.4 receipts and dated owner approvals remain historical evidence.
++
++The official [v4.7.5 release](https://github.com/Hexalith/Hexalith.FrontComposer/releases/tag/v4.7.5), tag and sealed manifest bind source `07089dcbdad784a1d53037e9cea78d1d7becd8d6` (release 430861316, published 2026-11-01T21:14:03Z). All six consumed package IDs/versions/source metadata match the release inventory. GitHub release archives match published checksums but are unsigned (first NU3004 outcome retained); the corresponding NuGet.org archives pass repository-signature verification with offline revocation. Their payloads match the unsigned release archives, isolated restored archives and extracted files. All consumed runtime DLLs, including French Shell resources, match Release UI output.
++
++| Signed NuGet.org package | SHA-256 |
++| --- | --- |
++| Hexalith.FrontComposer.Contracts 4.7.5 | `e291682908bce270fa9465912b56aa9b83ef22944ec082aae4d3ae7fca68893a` |
++| Hexalith.FrontComposer.Contracts.UI 4.7.5 | `c52756c8a9e5a6b4c33a52f6b5de98c2a5967bb715735219a8ab8acc924e7fc3` |
++| Hexalith.FrontComposer.Mcp 4.7.5 | `74d1ba72b5cb50c40d0f297a2448ec54e78b771a95ee3a8f0be30ff742dde019` |
++| Hexalith.FrontComposer.Schema 4.7.5 | `b1d0c5a5b47632042979fd5c2bdde7e459d9ad23cbf926c5337f777dca5a3d67` |
++| Hexalith.FrontComposer.Shell 4.7.5 | `93f88a4383d8f3b8547195c9c5934db1ac84fd0051d09654fbd9f9d23bb14b31` |
++| Hexalith.FrontComposer.SourceTools 4.7.5 | `19b16a1c8be4f0757f96caceddb95a3f3ecf528472ac7ee9abad55717f26439a` |
++
++All four guarded static assets are byte-identical to official 4.7.4. The relevant Shell source change removes duplicate spoken home-card names/counts; it adds no reconciler adoption.
++
++| Served Shell asset | Bytes | SHA-256 |
++| --- | ---: | --- |
++| js/fc-focus.js | 55317 | `cf0d25667667fab41a6a146a280d7777644b132ffac021f013072b2e01650aca` |
++| js/fc-keyboard.js | 20025 | `ec2ca7ae51b6597ab102a1623530e9367fc3f342041ba81835a6ce90ce08b7e5` |
++| js/fc-download.js | 1196 | `ce8a8f32468f1d1fd5a84fdc0667d7ba8f792f49c4be36880db5b8a8ac3a0181` |
++| css/fc-shell.css | 2042 | `dceb51b05c81b0b5f1a90b5318ede9366dfdb9c2d10b6b1d9f89f4389a35d3a3` |
++
++The browser helper admits exactly 4.7.5 and still compares all four served response bodies with evaluated package-folder bytes. Source-mode mapping validation is unchanged. `HFC_SHARED_UI` adds only exact 4.7.5 to the existing qualified package list; unknown versions remain refused, and `HFC_SHARED_RECONCILE_READINESS` remains source-only. Eight real MSBuild selector controls cover previous versions, exact 4.7.5, rejected versions and source mode.
++
++Release UI build: 0 warnings/errors. Locked Node 24.22.1/npm 11.19.1 installation, configuration tests, typecheck and restored-asset resolver pass. Full owning `CI=true npm run test:ui`: **68 passed, 0 failed/skipped/flaky**, each at retry 0, 53.8 seconds. Six asset attachments bind all four official body hashes. No functional/accessibility assertion or browser retry setting changed.
++
++First hosted d72 browser outcome (61 passed/7 guard failures) remains retained. The first local full run after the version guard update produced 65 passed/3 failures because the old compile-time capability list selected fallback UI; its screenshots/traces/video remain retained. After the exact capability correction and Release rebuild, the full gate above passed.
++
++Independent consumer restore/build/run subprocesses now remove only the same seven parent mapping environment keys used by existing package fixtures. Both real consumers retain package-only references, the local CI package feed and official dependencies. All 11 owning Release packages pack/validate; both consumers restore/build; the client verifies 41 routes, 41 operation schemas and 28 adapters. Five helper controls include a real restore/build with invalid inherited parent imports and existing feed/fallback refusals. Production HXW005 remains strict.
++
++Detailed sanitized receipts are in Platform Story 2.8 evidence directory `release-phase/remote-resumption-20261103`: `frontcomposer-475-official-package-proof.json`, `frontcomposer-475-served-assets.json`, `frontcomposer-475-browser-{first,corrected}.json`, corresponding artifact archives and `parties-consumer-corrected-smoke.json`. Hosted isolated/native execution, real services, admission/withdrawal/cancellation/partial-startup cleanup and candidate acceptance remain unqualified.
+diff --git a/scripts/validate-consumer-package-references.py b/scripts/validate-consumer-package-references.py
+index d983d65e..6b8a67d2 100755
+--- a/scripts/validate-consumer-package-references.py
++++ b/scripts/validate-consumer-package-references.py
+@@ -206,6 +206,11 @@ def validate_event_store_support_packages(package_directory: Path, event_store_v
+ 
+ def run_dotnet(args: list[str], working_directory: Path) -> None:
+     env = os.environ.copy()
++    # These are independent package consumers, outside the parent's sealed mapping.
++    for key in ("CustomBeforeDirectoryBuildProps", "CustomAfterMicrosoftCommonProps",
++                "CustomBeforeDirectoryBuildTargets", "CustomAfterDirectoryBuildTargets",
++                "AfterMicrosoftNETSdkTargets", "HEXALITH_SOURCE_MAPPING_HASH", "Configuration"):
++        env.pop(key, None)
+     env.setdefault("DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER", "1")
+     env.setdefault("MSBUILDDISABLENODEREUSE", "1")
+     env["NUGET_PACKAGES"] = str(working_directory.parent / ".nuget" / "packages")
+diff --git a/tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py b/tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py
+index 83401cdc..50d9d88e 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py
++++ b/tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py
+@@ -164,6 +164,26 @@ class RestoredVersions(unittest.TestCase):
+ class RestoreIsolation(unittest.TestCase):
+     """Run NuGet against poisoned parent settings and fresh private caches."""
+ 
++    def test_independent_consumer_does_not_inherit_parent_mapping(self):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            project_dir = root / 'consumer'
++            project_dir.mkdir()
++            project = project_dir / 'Consumer.csproj'
++            project.write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>')
++            CONSUMER.write_nuget_config(root, [], [])
++            keys = ('CustomBeforeDirectoryBuildProps', 'CustomAfterMicrosoftCommonProps',
++                    'CustomBeforeDirectoryBuildTargets', 'CustomAfterDirectoryBuildTargets',
++                    'AfterMicrosoftNETSdkTargets', 'HEXALITH_SOURCE_MAPPING_HASH', 'Configuration')
++            inherited = {key: str(root / 'unavailable-parent-mapping') for key in keys}
++            with patch.dict(os.environ, inherited):
++                CONSUMER.run_dotnet(['restore', str(project), '-p:NuGetAudit=false'], project_dir)
++                CONSUMER.run_dotnet(['build', str(project), '--no-restore', '--configuration', 'Release'], project_dir)
++                self.assertTrue(all(os.environ[key] == value for key, value in inherited.items()))
++            assets = json.loads((project_dir / 'obj' / 'project.assets.json').read_text())
++            self.assertEqual({str(Path(folder)) for folder in assets['packageFolders']}, {str(root / '.nuget' / 'packages')})
++            self.assertTrue((project_dir / 'bin' / 'Release' / 'net10.0' / 'Consumer.dll').is_file())
++
+     def test_inherited_fallback_and_disabled_sources(self):
+         with tempfile.TemporaryDirectory() as temp:
+             root = Path(temp)
+diff --git a/tests/e2e/helpers/frontcomposer-assets.ts b/tests/e2e/helpers/frontcomposer-assets.ts
+index 5eae0cbe..dce13f0d 100644
+--- a/tests/e2e/helpers/frontcomposer-assets.ts
++++ b/tests/e2e/helpers/frontcomposer-assets.ts
+@@ -17,7 +17,7 @@ export async function qualifyFrontComposerAssets(page: Page, testInfo?: TestInfo
+     expect(mode, 'Source qualification requires the validated pinned-tool mapping.').toBe('source');
+     expect(path.isAbsolute(root)).toBe(true);
+   } else {
+-    expect(version, 'This adoption authorizes exactly the selected 4.7.4 package capabilities.').toBe('4.7.4');
++    expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');
+     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);
+   }
+   const assets = [];

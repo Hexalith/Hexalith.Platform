@@ -1,0 +1,70 @@
+{
+  "head_sha": "9c439ec5bbf2f7a79048ab797686cae6affa465f",
+  "workflow_run_id": 41646016719,
+  "attempt": 1,
+  "job_id": 125951426473,
+  "artifact_id": 13233889809,
+  "artifact_sha256": "e2c786d31fdf04cf0950b09f64fe1ce12ebfba771512a28599e2eb9cd4cfd209",
+  "contents": {
+    "cleanup.json": {
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "41646016719"
+      },
+      "status": "not-allocated"
+    },
+    "execution.json": {
+      "diagnostics": [
+        {
+          "category": "TopologyOrLifecycle",
+          "field": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/module/hexalith.module-manifest.v2.json",
+          "hint": "Correct the authoritative owner declaration.",
+          "location": null,
+          "message": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json: eventstore: /home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/references/Hexalith.Builds/Props/Directory.Packages.props: Builds catalog is unavailable.",
+          "phase": "Topology",
+          "row": null,
+          "ruleId": "HXP020",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "TopologyOrLifecycle",
+        "exitCode": "TopologyOrLifecycle",
+        "phase": "Topology",
+        "ruleId": "HXP020"
+      },
+      "status": "failed"
+    },
+    "invocation.json": {
+      "classification": "baseline-only",
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "41646016719"
+      },
+      "profiles": [
+        "platform-package"
+      ]
+    }
+  },
+  "isolated_projects": 15,
+  "isolated_counts": {
+    "total": 6296,
+    "executed": 6291,
+    "passed": 6291,
+    "failed": 0,
+    "notExecuted": 5
+  },
+  "limit": "HXP020 before allocation; no native service or teardown acceptance"
+}

@@ -1,0 +1,20 @@
+test_independent_consumer_does_not_inherit_parent_mapping (__main__.RestoreIsolation.test_independent_consumer_does_not_inherit_parent_mapping) ...   Determining projects to restore...
+  Restored /tmp/tmpre6iews1/consumer/Consumer.csproj (in 44 ms).
+  Consumer -> /tmp/tmpre6iews1/consumer/bin/Release/net10.0/Consumer.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.37
+ok
+test_inherited_fallback_and_disabled_sources (__main__.RestoreIsolation.test_inherited_fallback_and_disabled_sources) ... ok
+test_consumer_checks_each_selected_family_and_required_portal_packages (__main__.RestoredVersions.test_consumer_checks_each_selected_family_and_required_portal_packages) ... ok
+test_normalized_versions_across_every_support_identity (__main__.SupportVersions.test_normalized_versions_across_every_support_identity) ... ok
+test_sdk_produced_normalized_archives (__main__.SupportVersions.test_sdk_produced_normalized_archives) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 14.001s
+
+OK
+Normalized package fixture SDK: 10.0.403

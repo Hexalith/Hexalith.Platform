@@ -1,0 +1,5 @@
+Unhandled exception. Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException: Tool version 1.0.0 is outside Platform range [4.43.4, 5.0.0-0) at '/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103/references/Hexalith.Platform/hexalith-platform.json'.
+   at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:line 229
+   at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/worktrees/builds-direct-catalog-20261103/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs:line 27
+   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/builds-direct-catalog-20261103/layout-probe/Program.cs:line 6
+   at Program.<Main>(String[] args)

@@ -1,0 +1,32 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: False) [FAIL]
+      System.IO.InvalidDataException : /tmp/hexalith-workspace-tests/15ce6aee6ebd436a8104fb8b2cd5c781/checkout/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json: eventstore: /tmp/hexalith-workspace-tests/15ce6aee6ebd436a8104fb8b2cd5c781/checkout/references/Hexalith.Platform/references/Hexalith.Builds/Props/Directory.Packages.props: Builds catalog is unavailable.
+      Stack Trace:
+        src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs(102,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.ReadCatalogVersion(String module, String source)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs(77,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.CatalogVersion(String module, String source)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(119,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs(40,0): at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(Boolean platformRoot)
+        --- End of stack trace from previous location ---
+    Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: True) [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "does not match Builds catalog version '999.0.0'"
+          but was actually
+      "/tmp/hexalith-workspace-tests/4894f19beb02410999e9c08a56b4e67b/checkout/references/Hexalith.Platform..."
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs(99,0): at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(Boolean unknownVersion)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Builds.Module.Tests (ID = 'c17a0a85280e44ce7b7d495032604aa07f220a6cace3613b97740d0465c6769b')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 8, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 3.789s

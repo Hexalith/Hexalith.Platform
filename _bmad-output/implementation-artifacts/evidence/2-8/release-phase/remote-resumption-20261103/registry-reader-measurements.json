@@ -1,0 +1,97 @@
+{
+  "startedAtUtc": "2026-11-03T09:06:08.700519+00:00",
+  "principal": "ci-reader",
+  "registry": "registry.hexalith.com",
+  "knownImage": {
+    "repository": "eventstore",
+    "version": "3.130.1",
+    "source": "1de42b706f52af0da6513f0b7663002606d17156",
+    "indexDigest": "sha256:cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+    "amd64Digest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca"
+  },
+  "observations": [
+    {
+      "category": "authenticated-known-index",
+      "method": "GET",
+      "status": 200,
+      "expectedDigest": "sha256:cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+      "observedDigest": "sha256:cbaed729ae671eff9ecf69b40c8f646e0a27aeae62fe0481ce6be98cfa840c86",
+      "bytes": 493,
+      "digestMatches": true
+    },
+    {
+      "category": "authenticated-known-manifest",
+      "method": "GET",
+      "status": 200,
+      "expectedDigest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca",
+      "observedDigest": "sha256:ed507d6478ee211a9da77f1d9affe3364859906584391417b782a6fa28fe64ca",
+      "bytes": 1399,
+      "digestMatches": true
+    },
+    {
+      "category": "authenticated-known-config",
+      "method": "GET",
+      "status": 200,
+      "expectedDigest": "sha256:46b1dd6545fdeba8fce173abd19079be259a82aa84aefe6e4ac2ffc0cd5f7646",
+      "observedDigest": "sha256:46b1dd6545fdeba8fce173abd19079be259a82aa84aefe6e4ac2ffc0cd5f7646",
+      "bytes": 4149,
+      "digestMatches": true
+    },
+    {
+      "category": "authenticated-known-layer",
+      "method": "GET",
+      "status": 200,
+      "expectedDigest": "sha256:37f410eb48ed677cb8cf4ab52bfa6d310a0a8c256af19201901967b709d8b38d",
+      "observedDigest": "sha256:37f410eb48ed677cb8cf4ab52bfa6d310a0a8c256af19201901967b709d8b38d",
+      "bytes": 169,
+      "digestMatches": true
+    },
+    {
+      "category": "anonymous-existing-manifest",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "category": "anonymous-existing-blob",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "category": "wrong-credential-existing-manifest",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "category": "wrong-credential-existing-blob",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "category": "authenticated-create-denial",
+      "method": "POST",
+      "status": 403
+    },
+    {
+      "category": "authenticated-update-denial",
+      "method": "PATCH",
+      "status": 403
+    },
+    {
+      "category": "authenticated-delete-denial",
+      "method": "DELETE",
+      "status": 403
+    }
+  ],
+  "result": "passed",
+  "credentialsDelivered": false,
+  "retainedContentWriteProbe": false,
+  "verifiedImageLabels": {
+    "org.opencontainers.image.version": "3.130.1",
+    "org.opencontainers.image.revision": "1de42b706f52af0da6513f0b7663002606d17156"
+  },
+  "disposableProbeRepository": "story-2-8-denial-9f5afbd6e7894602c9e1718de47044fd",
+  "completedAtUtc": "2026-11-03T09:06:35.901338+00:00",
+  "authenticatedContentBodiesVerified": 4,
+  "existingContentAuthenticationRefusals": 4,
+  "writeAuthorizationRefusals": 3
+}

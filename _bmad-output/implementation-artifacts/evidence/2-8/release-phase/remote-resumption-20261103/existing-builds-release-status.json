@@ -1,0 +1,271 @@
+{
+  "run": {
+    "actor": "jpiquot",
+    "conclusion": null,
+    "event": "workflow_dispatch",
+    "head_sha": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/41606852507",
+    "id": 41606852507,
+    "path": ".github/workflows/build-release.yml",
+    "status": "in_progress",
+    "triggering_actor": "jpiquot"
+  },
+  "jobs": [
+    {
+      "completed_at": "2026-11-03T08:56:07Z",
+      "conclusion": "success",
+      "id": 125818713865,
+      "name": "Verify current main source",
+      "started_at": "2026-11-03T08:55:59Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7.0.1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Require exact current branch and successful push CI",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7.0.1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "completed_at": null,
+      "conclusion": null,
+      "id": 125819151043,
+      "name": "Release",
+      "started_at": "2026-11-03T08:57:25Z",
+      "status": "in_progress",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7.0.1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Initialize .NET",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate central package versions",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test authoritative package catalog",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test central package version validator",
+          "status": "completed"
+        },
+        {
+          "conclusion": null,
+          "name": "Validate package version audit",
+          "status": "in_progress"
+        },
+        {
+          "conclusion": null,
+          "name": "Test package version audit generator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test package version audit validator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Validate Builds consumer package authority",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test consumer package authority validator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Validate package version exception inventory",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test package version exception validator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Validate Platform version catalog and hosting compatibility",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test Platform version catalog contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Validate Dapr package versions",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test Dapr package validator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test domain workflow test-platform contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test strict v2 workflow contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Setup Node.js",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Install Node.js dependencies",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Verify npm dependency provenance and signatures",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test commitlint workflow contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test legacy package publisher contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test G-4 tool package publisher contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test G-4 release lifecycle contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test G-4 release source guard",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Initialize runner NuGet configuration",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test G-4 tool package qualification gate",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test G-4 tool package artifact validator",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Qualify G-4 tool source and Release packages",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test multi-platform container publisher contracts",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test CI integration lifecycle helper",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test module build preparation helper",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Test governed workflow provenance",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Recheck approved release source and push CI",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Authenticate to NuGet.org with Trusted Publishing",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Create Release",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Record release qualification attempt",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Retain actual-version qualification evidence",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Post Initialize .NET",
+          "status": "pending"
+        },
+        {
+          "conclusion": null,
+          "name": "Post Run actions/checkout@v7.0.1",
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "pending": []
+}

@@ -1,0 +1,478 @@
+[
+  {
+    "test": "debounced display-name search combines with type and active filters",
+    "file": "admin-parties-list.spec.ts",
+    "line": 27,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "normalized display-name search matches diacritics and keeps local fallback status polite",
+    "file": "admin-parties-list.spec.ts",
+    "line": 45,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "normalized display-name search keeps deterministic row ordering",
+    "file": "admin-parties-list.spec.ts",
+    "line": 68,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "next page preserves the current search criteria",
+    "file": "admin-parties-list.spec.ts",
+    "line": 87,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "degraded search preserves last-known rows and announces stale data",
+    "file": "admin-parties-list.spec.ts",
+    "line": 111,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "empty search has a clear-filters recovery path",
+    "file": "admin-parties-list.spec.ts",
+    "line": 121,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "keyboard navigation opens a row and type-ahead focuses search",
+    "file": "admin-parties-list.spec.ts",
+    "line": 133,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "GDPR operation focus rings clear nested accordion edges with forced colors none",
+    "file": "admin-parties-list.spec.ts",
+    "line": 152,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "GDPR operation focus rings clear nested accordion edges with forced colors active",
+    "file": "admin-parties-list.spec.ts",
+    "line": 152,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "desktop row click and direct route render the existing party detail surface",
+    "file": "admin-parties-list.spec.ts",
+    "line": 163,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "direct GDPR route opens operations destination without browser-visible command/query calls or overflow",
+    "file": "admin-parties-list.spec.ts",
+    "line": 185,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "direct GDPR route for a missing party renders bounded state with no mutation controls",
+    "file": "admin-parties-list.spec.ts",
+    "line": 368,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "direct GDPR route for an erased party keeps export and records available without PII",
+    "file": "admin-parties-list.spec.ts",
+    "line": 379,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "direct GDPR route rejects unsafe scoped ids before fetching party data",
+    "file": "admin-parties-list.spec.ts",
+    "line": 495,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "detail GDPR action navigates to the party-scoped operations route",
+    "file": "admin-parties-list.spec.ts",
+    "line": 505,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "create form submits and navigates with optimistic status",
+    "file": "admin-parties-list.spec.ts",
+    "line": 541,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "edit form uses detail edit action and submits route-authoritative update",
+    "file": "admin-parties-list.spec.ts",
+    "line": 565,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "validation alert is assertive and preserves entered values",
+    "file": "admin-parties-list.spec.ts",
+    "line": 585,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "gateway validation rejection is announced without losing entered values",
+    "file": "admin-parties-list.spec.ts",
+    "line": 596,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "phone and zoom form layout avoids horizontal overflow",
+    "file": "admin-parties-list.spec.ts",
+    "line": 612,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "phone detail behaves as a full-screen sheet and restores row focus on close",
+    "file": "admin-parties-list.spec.ts",
+    "line": 627,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "phone detail remains readable under zoom-equivalent narrow emulation",
+    "file": "admin-parties-list.spec.ts",
+    "line": 650,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "phone direct route opens detail without an originating row and closes to search focus",
+    "file": "admin-parties-list.spec.ts",
+    "line": 670,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "section accordions preserve primary content and keyboard focus at narrow width with forced colors none",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 36,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "section accordions preserve primary content and keyboard focus at narrow width with forced colors active",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 36,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer can open /me without browser-visible gateway calls",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 70,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer can open /me/edit without browser-visible gateway calls",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 70,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer can open /me/consent without browser-visible gateway calls",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 70,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer can open /me/privacy without browser-visible gateway calls",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 70,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "unauthenticated /me challenges sign-in with the return URL preserved",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 109,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "unauthenticated /me/edit challenges sign-in with the return URL preserved",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 109,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "unauthenticated /me/consent challenges sign-in with the return URL preserved",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 109,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "unauthenticated /me/privacy challenges sign-in with the return URL preserved",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 109,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "Admin-only user cannot open /me/consent or see Consumer consent data",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 125,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "Admin-only user cannot open /me/privacy or see Consumer export data",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 140,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer saves editable profile details through the self-scoped command path",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 157,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer validation preserves typed values and does not issue a command",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 178,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer consent surface exposes semantic switches and honest lawful-basis split",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 198,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer grants and withdraws consent through the self-scoped command path",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 224,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer exports own data through the self-scoped path",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 257,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer navigation cancels an active shared download without late feedback or browser resources",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 314,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer sees processing summary through the self-scoped path",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 320,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer sees bounded empty processing state with privacy actions still usable",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 344,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer sees bounded processing retry guidance after transient load failure",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 366,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer requests and cancels erasure through the self-scoped path",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 390,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer cannot cancel erasure once deletion has begun",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 422,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer sees permanent erasure copy without a cancel action after deletion completes",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 451,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "bound Consumer sees retry guidance when the JSON download helper fails",
+    "file": "consumer-portal-routes.spec.ts",
+    "line": 477,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "specimen is nonblank and passes the blocking axe gate",
+    "file": "parties-accessibility.spec.ts",
+    "line": 23,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "blocking axe gate rejects an inaccessible navigation outside main content",
+    "file": "parties-accessibility.spec.ts",
+    "line": 65,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "blocking axe gate rejects an inaccessible skip link outside main content",
+    "file": "parties-accessibility.spec.ts",
+    "line": 65,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "skip links are the first two focusable elements in the shell and focus their targets",
+    "file": "parties-accessibility.spec.ts",
+    "line": 92,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "compact and resized layouts expose only mounted skip targets and preserve keyboard content access",
+    "file": "parties-accessibility.spec.ts",
+    "line": 110,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "route-heading announcement leaves skip links forward reachable and focuses their targets",
+    "file": "parties-accessibility.spec.ts",
+    "line": 161,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "client-side route focus restores forward skip access",
+    "file": "parties-accessibility.spec.ts",
+    "line": 184,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "keyboard flow reaches representative controls without trapping focus",
+    "file": "parties-accessibility.spec.ts",
+    "line": 226,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "accordion focus check rejects suppressed actual focus paint",
+    "file": "parties-accessibility.spec.ts",
+    "line": 235,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "accordion focus check rejects an intermediate clipping wrapper",
+    "file": "parties-accessibility.spec.ts",
+    "line": 258,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "disabled irreversible confirmation retains the Fluent disabled appearance",
+    "file": "parties-accessibility.spec.ts",
+    "line": 270,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "content controls have visible keyboard focus with forced colors none",
+    "file": "parties-accessibility.spec.ts",
+    "line": 299,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "content controls have visible keyboard focus with forced colors active",
+    "file": "parties-accessibility.spec.ts",
+    "line": 299,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "content reduced-motion rules suppress nonzero animation and transition settings",
+    "file": "parties-accessibility.spec.ts",
+    "line": 418,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "filled primary button does not compute to raw teal",
+    "file": "parties-accessibility.spec.ts",
+    "line": 458,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "semantic visual baseline for deterministic shell specimen",
+    "file": "parties-accessibility.spec.ts",
+    "line": 468,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "visual baseline for deterministic shell specimen",
+    "file": "parties-accessibility.spec.ts",
+    "line": 474,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "keyboard selection keeps focus on the input and emits a bounded event",
+    "file": "party-picker.spec.ts",
+    "line": 20,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "escape closes degraded results without changing durable selection",
+    "file": "party-picker.spec.ts",
+    "line": 60,
+    "outcome": "expected",
+    "retry": 0
+  },
+  {
+    "test": "admin form bridge receives the bounded party-selected event",
+    "file": "party-picker.spec.ts",
+    "line": 83,
+    "outcome": "expected",
+    "retry": 0
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "time": "2026-11-03T13:11:13.596637+00:00",
+  "head": "d72bed117cf9c16634b21e85beaae34eda13b1bd",
+  "previous": "d92e0a08db9c799bf9baf7fd37419a351244e687",
+  "paths": [
+    "Directory.Packages.props",
+    "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+    "docs/getting-started.md",
+    "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+    "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+    "tests/PackageTests.Shared/PackageTestProcess.cs"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "stdout": "Directory.Packages.props\n_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md\ndocs/getting-started.md\ntests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs\ntests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs\ntests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs\ntests/PackageTests.Shared/PackageTestProcess.cs\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "Directory.Packages.props",
+        "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+        "docs/getting-started.md",
+        "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+        "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+        "tests/PackageTests.Shared/PackageTestProcess.cs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "argv": [
+        "git",
+        "commit",
+        "--file",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-v2-followup-message.txt"
+      ],
+      "exitCode": 0,
+      "stdout": "[fix/memories-3018-refresh-capability d72bed11] fix(ci): align catalog records and isolated probes\n 7 files changed, 85 insertions(+), 30 deletions(-)\n",
+      "stderr": "warning: unable to find all commit-graph files\n"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "d72bed117cf9c16634b21e85beaae34eda13b1bd\n",
+      "stderr": ""
+    }
+  ]
+}

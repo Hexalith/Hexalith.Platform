@@ -1,0 +1,90 @@
+{
+  "head_sha": "421437b57e0700d2011b4f07ed278005393e7966",
+  "base_sha": "090797e333748b1a62db0a857d8d0f0e40b524fe",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/157",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-keyvault-dedup-pr-20261103",
+  "control_worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-keyvault-dedup-20261103",
+  "corrected_tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+  "reviewed_e07_tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+  "tree_identical": true,
+  "diff": "builds-keyvault-dedup.patch",
+  "changes": {
+    "Props/Directory.Packages.props": {
+      "additions": 0,
+      "deletions": 1
+    }
+  },
+  "controls": [
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/validate-central-package-versions.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-validate-central-package-versions.txt"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-authoritative-package-catalog.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-test-authoritative-package-catalog.txt"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-central-package-version-validator.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-test-central-package-version-validator.txt"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/validate-package-version-audit.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-validate-package-version-audit.txt"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-package-version-audit-generator.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-test-package-version-audit-generator.txt"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-package-version-audit-validator.ps1"
+      ],
+      "exit_code": 0,
+      "log": "builds-keyvault-dedup-test-package-version-audit-validator.txt"
+    }
+  ],
+  "first_failure": "builds-keyvault-dedup-first.txt",
+  "message_validation": {
+    "candidate": "fix(build): remove the duplicate KeyVault pin",
+    "cli": "21.2.4",
+    "node": "24.22.1",
+    "npm": "11.19.1",
+    "exit_code": 0,
+    "log": "builds-keyvault-dedup-pr-message-validation.txt"
+  },
+  "live_state": "builds-keyvault-dedup-live-state.json",
+  "remaining": "Normal exact-head/base CI and parent merge/main/publication gates; no consumer pin or lifecycle change"
+}

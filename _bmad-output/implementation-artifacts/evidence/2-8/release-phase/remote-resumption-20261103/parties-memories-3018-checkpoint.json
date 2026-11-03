@@ -1,0 +1,49 @@
+{
+  "recordedAtUtc": "2026-11-03T10:56:21.669937+00:00",
+  "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/59",
+  "head": "08af27e063c8a715199e611e6100b144a5a1e091",
+  "base": "fcf7cbc86076ce43f0982e4959da9691feaf2d3a",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103",
+  "worktreeStatus": "",
+  "changedPaths": [
+    "Directory.Build.targets",
+    ".github/workflows/ci.yml"
+  ],
+  "diff": "parties-memories-3018.patch",
+  "diffSummary": "2files,34insertions/2deletions; exact3.0.18guard plus additive selected-packageCI control.",
+  "freshBuild": "parties-memories-3018-build.json",
+  "protocolTests": "parties-memories-3018-protocol.json",
+  "protocolPassed": 52,
+  "protocolFailed": 0,
+  "protocolSkipped": 0,
+  "capabilityMatrix": "parties-memories-3018-capability-matrix.json",
+  "capabilityControlsPassed": 8,
+  "exactExtractedCiStep": "parties-memories-3018-ci-step.json",
+  "sourcePackageProof": "parties-memories-3018-source-package-proof.json",
+  "postCommitHashesMatch": {
+    "Directory.Build.targets": true,
+    ".github/workflows/ci.yml": true,
+    "src/Hexalith.Parties/bin/Release/net10.0/Hexalith.Parties.dll": true,
+    "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.dll": true,
+    "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll": true
+  },
+  "ciConfigIdentity": "parties-memories-3018-ci-config-identities.json",
+  "initialSetupFailures": "parties-memories-3018-initial-setup-failures.json",
+  "npmInstall": "parties-memories-3018-npm-ci.json",
+  "messageValidation": "parties-memories-3018-message-validation.json",
+  "commitPush": "parties-memories-3018-commit-push.json",
+  "remoteState": "parties-memories-3018-remote-state.json",
+  "legacyCallerUnchanged": true,
+  "olderOfflineGatePreserved": true,
+  "acceptedPinsChanged": false,
+  "sourceFallback": false,
+  "domainServicesProvisioned": false,
+  "liveRuntimeQualification": false,
+  "candidateAcceptance": false,
+  "storyComplete": false,
+  "remaining": [
+    "Full normal current-base hostedPR gates and parent review.",
+    "Existing isolated-layout/history/full-solution artifact failures remain explicitly unqualified; not broadly rerun or repaired.",
+    "Four optional live-service tests and full selected-runtime cohort still unqualified; E/Pv2caller adoption and hosted lifecycle/cleanup acceptance remain outstanding."
+  ]
+}

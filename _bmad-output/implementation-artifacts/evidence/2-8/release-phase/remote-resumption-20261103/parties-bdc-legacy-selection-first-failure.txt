@@ -1,0 +1,96 @@
+2026-11-03T12:44:03.9840942Z failed Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals (2s 750ms)
+2026-11-03T12:44:03.9871206Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T12:44:03.9899450Z   Shouldly.ShouldAssertException : RunGit(root, "ls-tree", "HEAD", relativePath).Trim();
+2026-11-03T12:44:03.9912808Z           selected.Replace('\t', ' ')
+2026-11-03T12:44:03.9993835Z       should be
+2026-11-03T12:44:03.9994684Z   "160000 commit d2a430c988462a634674a69c562ea4afd1f06ef4 references/Hexalith.Builds"
+2026-11-03T12:44:03.9995525Z       but was
+2026-11-03T12:44:03.9996714Z   "160000 commit 26991e8c542704be44cd8d9f58084d56fa627adb references/Hexalith.Builds"
+2026-11-03T12:44:03.9997793Z       difference
+2026-11-03T12:44:03.9998613Z   Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         |    |    |    |        
+2026-11-03T12:44:03.9999688Z                  |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/       
+2026-11-03T12:44:04.0000779Z   Index          | ...  14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   ...  
+2026-11-03T12:44:04.0001991Z   Expected Value | ...  d    2    a    4    3    0    c    9    8    8    4    6    2    a    6    3    4    6    7    4    a    ...  
+2026-11-03T12:44:04.0003205Z   Actual Value   | ...  2    6    9    9    1    e    8    c    5    4    2    7    0    4    b    e    4    4    c    d    8    ...  
+2026-11-03T12:44:04.0004748Z   Expected Code  | ...  100  50   97   52   51   48   99   57   56   56   52   54   50   97   54   51   52   54   55   52   97   ...  
+2026-11-03T12:44:04.0005988Z   Actual Code    | ...  50   54   57   57   49   101  56   99   53   52   50   55   48   52   98   101  52   52   99   100  56   ...  
+2026-11-03T12:44:04.0006761Z   
+2026-11-03T12:44:04.0007482Z   Difference     |       |         |         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |                  
+2026-11-03T12:44:04.0008758Z                  |      \|/       \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/                 
+2026-11-03T12:44:04.0009832Z   Index          | ...  35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   ...  
+2026-11-03T12:44:04.0018606Z   Expected Value | ...  6    9    c    5    6    2    e    a    4    a    f    d    1    f    0    6    e    f    4    \s   r    ...  
+2026-11-03T12:44:04.0019955Z   Actual Value   | ...  d    9    f    5    8    0    8    4    d    5    6    f    a    6    2    7    a    d    b    \s   r    ...  
+2026-11-03T12:44:04.0048789Z   Expected Code  | ...  54   57   99   53   54   50   101  97   52   97   102  100  49   102  48   54   101  102  52   32   114  ...  
+2026-11-03T12:44:04.0059043Z   Actual Code    | ...  100  57   102  53   56   48   56   52   100  53   54   102  97   54   50   55   97   100  98   32   114  ...  
+2026-11-03T12:44:04.0063047Z     at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.AssertSelectedSourceObservation(String root, String relativePath, String expectedIdentity) in /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs:2742
+2026-11-03T12:44:04.0068790Z     at Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals() in /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs:804
+2026-11-03T12:44:04.0072400Z     at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+2026-11-03T12:44:04.0074911Z     at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+2026-11-03T12:44:04.0076886Z     at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+2026-11-03T12:44:04.0078968Z     at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+2026-11-03T12:44:39.1828147Z /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64) failed with 1 error(s) (2m 31s 546ms)
+2026-11-03T12:44:39.1830336Z Exit code: 2
+2026-11-03T12:44:39.1909139Z   Standard output: {"EventId":0,"LogLevel":"Warning","Category":"Hexalith.Parties","Message":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","State":{"ComplianceWarning":"Hexalith.Parties MVP is not for regulated EU personal data until v1.1 GDPR features are active.","{OriginalFormat}":"{ComplianceWarning}"}}
+2026-11-03T12:44:39.1914018Z   {"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 1 domains (party [Aggregate: PartyAggregate])","State":{"DomainCount":1,"DomainDetails":"party [Aggregate: PartyAggregate]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+2026-11-03T12:44:39.1919254Z   {"EventId":45,"LogLevel":"Information","Category":"Microsoft.AspNetCore.DataProtection.EphemeralDataProtectionProvider","Message":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown.","State":{"{OriginalFormat}":"Using ephemeral data protection provider. Payloads will be undecipherable upon application shutdown."}}
+2026-11-03T12:44:39.1923089Z   {"EventId":1,"LogLevel":"Debug","Category":"Microsoft.Extensions.Hosting.Internal.Host","Message":"Hosting starting","State":{"{OriginalFormat}":"Hosting starting"}}
+2026-11-03T12:40:16.2608361Z Test run summary: Passed!
+2026-11-03T12:40:16.2613324Z   total: 9
+2026-11-03T12:40:16.2613786Z   failed: 0
+2026-11-03T12:40:16.2614894Z   skipped: 0
+2026-11-03T12:40:34.1325691Z Test run summary: Passed!
+2026-11-03T12:40:34.1331251Z   total: 233
+2026-11-03T12:40:34.1331641Z   failed: 0
+2026-11-03T12:40:34.1332483Z   skipped: 0
+2026-11-03T12:40:35.7732156Z Test run summary: Passed!
+2026-11-03T12:40:35.7738366Z   total: 12
+2026-11-03T12:40:35.7738803Z   failed: 0
+2026-11-03T12:40:35.7739837Z   skipped: 0
+2026-11-03T12:41:12.1381043Z Test run summary: Passed!
+2026-11-03T12:41:12.1388542Z   total: 345
+2026-11-03T12:41:12.1389040Z   failed: 0
+2026-11-03T12:41:12.1390240Z   skipped: 0
+2026-11-03T12:41:14.1380319Z Test run summary: Passed!
+2026-11-03T12:41:14.1385309Z   total: 315
+2026-11-03T12:41:14.1385705Z   failed: 0
+2026-11-03T12:41:14.1386529Z   skipped: 0
+2026-11-03T12:41:17.4124107Z Test run summary: Passed!
+2026-11-03T12:41:17.4129762Z   total: 467
+2026-11-03T12:41:17.4130198Z   failed: 0
+2026-11-03T12:41:17.4131044Z   skipped: 1
+2026-11-03T12:41:19.7176016Z Test run summary: Passed!
+2026-11-03T12:41:19.7181998Z   total: 334
+2026-11-03T12:41:19.7182424Z   failed: 0
+2026-11-03T12:41:19.7183461Z   skipped: 0
+2026-11-03T12:41:37.0122698Z Test run summary: Passed!
+2026-11-03T12:41:37.0127319Z   total: 327
+2026-11-03T12:41:37.0128025Z   failed: 0
+2026-11-03T12:41:37.0129332Z   skipped: 0
+2026-11-03T12:41:40.3958186Z Test run summary: Passed!
+2026-11-03T12:41:40.3963760Z   total: 85
+2026-11-03T12:41:40.3964201Z   failed: 0
+2026-11-03T12:41:40.3965181Z   skipped: 0
+2026-11-03T12:41:48.4827990Z Test run summary: Passed!
+2026-11-03T12:41:48.4833643Z   total: 458
+2026-11-03T12:41:48.4834030Z   failed: 0
+2026-11-03T12:41:48.4834888Z   skipped: 0
+2026-11-03T12:41:51.0698064Z Test run summary: Passed!
+2026-11-03T12:41:51.0702987Z   total: 171
+2026-11-03T12:41:51.0703365Z   failed: 0
+2026-11-03T12:41:51.0704259Z   skipped: 0
+2026-11-03T12:41:52.9729289Z Test run summary: Passed!
+2026-11-03T12:41:52.9734843Z   total: 94
+2026-11-03T12:41:52.9735272Z   failed: 0
+2026-11-03T12:41:52.9736249Z   skipped: 0
+2026-11-03T12:44:40.0594557Z Test run summary: Failed!
+2026-11-03T12:44:40.0594769Z   total: 2845
+2026-11-03T12:44:40.0594967Z   failed: 1
+2026-11-03T12:44:40.0595361Z   skipped: 4
+2026-11-03T12:44:41.6022976Z Test run summary: Passed!
+2026-11-03T12:44:41.6028531Z   total: 66
+2026-11-03T12:44:41.6028983Z   failed: 0
+2026-11-03T12:44:41.6029964Z   skipped: 0
+2026-11-03T12:47:28.6957005Z Test run summary: Passed!
+2026-11-03T12:47:28.6958256Z   total: 535
+2026-11-03T12:47:28.6958907Z   failed: 0
+2026-11-03T12:47:28.6960139Z   skipped: 0

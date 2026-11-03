@@ -1,0 +1,411 @@
+﻿2026-11-03T14:55:34.2027881Z Current runner version: '2.338.2'
+2026-11-03T14:55:34.2043792Z ##[group]Runner Image Provisioner
+2026-11-03T14:55:34.2044314Z Hosted Compute Agent
+2026-11-03T14:55:34.2045023Z Version: 20261021.618
+2026-11-03T14:55:34.2045396Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-03T14:55:34.2045848Z Build Date: 2026-10-21T00:45:21Z
+2026-11-03T14:55:34.2046257Z Worker ID: {661715f6-9a62-4427-8ece-77ea2fc79851}
+2026-11-03T14:55:34.2046666Z Region: centralus
+2026-11-03T14:55:34.2047059Z Cloud: Azure
+2026-11-03T14:55:34.2047467Z ##[endgroup]
+2026-11-03T14:55:34.2048224Z ##[group]Operating System
+2026-11-03T14:55:34.2048632Z Ubuntu
+2026-11-03T14:55:34.2048945Z 26.04.1
+2026-11-03T14:55:34.2049341Z LTS
+2026-11-03T14:55:34.2049652Z ##[endgroup]
+2026-11-03T14:55:34.2049968Z ##[group]Runner Image
+2026-11-03T14:55:34.2050357Z Image: ubuntu-26.04
+2026-11-03T14:55:34.2050712Z Version: 20261025.179.1
+2026-11-03T14:55:34.2051515Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-03T14:55:34.2052367Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+2026-11-03T14:55:34.2052963Z ##[endgroup]
+2026-11-03T14:55:34.2053646Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T14:55:34.2054956Z Contents: read
+2026-11-03T14:55:34.2055302Z Metadata: read
+2026-11-03T14:55:34.2055673Z ##[endgroup]
+2026-11-03T14:55:34.2057204Z Secret source: Actions
+2026-11-03T14:55:34.2057832Z Cache mode: write
+2026-11-03T14:55:34.2058264Z Prepare workflow directory
+2026-11-03T14:55:34.2258163Z Prepare all required actions
+2026-11-03T14:55:34.2294481Z Getting action download info
+2026-11-03T14:55:34.4874229Z Download action repository 'actions/checkout@v7.0.1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-03T14:55:34.6479140Z Complete job name: .NET tests
+2026-11-03T14:55:34.7052026Z ##[group]Run actions/checkout@v7.0.1
+2026-11-03T14:55:34.7052450Z with:
+2026-11-03T14:55:34.7052686Z   fetch-depth: 0
+2026-11-03T14:55:34.7052933Z   submodules: false
+2026-11-03T14:55:34.7053214Z   persist-credentials: false
+2026-11-03T14:55:34.7053511Z   repository: Hexalith/Hexalith.Builds
+2026-11-03T14:55:34.7055842Z   token: ***
+2026-11-03T14:55:34.7056082Z   ssh-strict: true
+2026-11-03T14:55:34.7056332Z   ssh-user: git
+2026-11-03T14:55:34.7056573Z   clean: true
+2026-11-03T14:55:34.7056825Z   sparse-checkout-cone-mode: true
+2026-11-03T14:55:34.7057115Z   fetch-tags: false
+2026-11-03T14:55:34.7057367Z   show-progress: true
+2026-11-03T14:55:34.7057618Z   lfs: false
+2026-11-03T14:55:34.7057857Z   set-safe-directory: true
+2026-11-03T14:55:34.7058139Z   allow-unsafe-pr-checkout: false
+2026-11-03T14:55:34.7058511Z ##[endgroup]
+2026-11-03T14:55:34.9284637Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-03T14:55:34.9285995Z ##[group]Getting Git version info
+2026-11-03T14:55:34.9286728Z Working directory is '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-03T14:55:34.9287619Z [command]/usr/bin/git version
+2026-11-03T14:55:34.9325857Z git version 2.56.0
+2026-11-03T14:55:34.9336280Z ##[endgroup]
+2026-11-03T14:55:34.9343581Z Temporarily overriding HOME='/home/runner/work/_temp/d1404f6e-725a-4346-9746-72c967964306' before making global git config changes
+2026-11-03T14:55:34.9344644Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T14:55:34.9346504Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-03T14:55:34.9408761Z Deleting the contents of '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-03T14:55:34.9410429Z ##[group]Determining repository object format
+2026-11-03T14:55:34.9411337Z ##[endgroup]
+2026-11-03T14:55:34.9411944Z ##[group]Initializing the repository
+2026-11-03T14:55:34.9413626Z [command]/usr/bin/git init /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-03T14:55:34.9632552Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T14:55:34.9633202Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T14:55:34.9633928Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T14:55:34.9634330Z hint: call:
+2026-11-03T14:55:34.9634556Z hint:
+2026-11-03T14:55:34.9635055Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T14:55:34.9635557Z hint:
+2026-11-03T14:55:34.9636039Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T14:55:34.9636982Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T14:55:34.9637831Z hint:
+2026-11-03T14:55:34.9638282Z hint: 	git branch -m <name>
+2026-11-03T14:55:34.9638772Z hint:
+2026-11-03T14:55:34.9639447Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T14:55:34.9650102Z Initialized empty Git repository in /home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/
+2026-11-03T14:55:34.9661917Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T14:55:34.9766016Z ##[endgroup]
+2026-11-03T14:55:34.9766870Z ##[group]Disabling automatic garbage collection
+2026-11-03T14:55:34.9767613Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T14:55:34.9784168Z ##[endgroup]
+2026-11-03T14:55:34.9784720Z ##[group]Setting up auth
+2026-11-03T14:55:34.9785296Z Removing SSH command configuration
+2026-11-03T14:55:34.9790562Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T14:55:34.9822079Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T14:55:35.0167694Z Removing HTTP extra header
+2026-11-03T14:55:35.0171285Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T14:55:35.0195936Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T14:55:35.0415766Z Removing includeIf entries pointing to credentials config files
+2026-11-03T14:55:35.0416698Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T14:55:35.0436541Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T14:55:35.0641602Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T14:55:35.0672281Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path /home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:35.0699398Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:35.0727960Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:35.0753832Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:35.0778055Z ##[endgroup]
+2026-11-03T14:55:35.0778542Z ##[group]Fetching the repository
+2026-11-03T14:55:35.0782403Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-11-03T14:55:41.2695273Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T14:55:41.2696489Z  * [new branch]        main       -> origin/main
+2026-11-03T14:55:41.2696834Z  * [new tag]           v1.60.0    -> v1.60.0
+2026-11-03T14:55:41.2697258Z  * [new tag]           v1.61.0    -> v1.61.0
+2026-11-03T14:55:41.2697465Z  * [new tag]           v1.62.0    -> v1.62.0
+2026-11-03T14:55:41.2697674Z  * [new tag]           v1.63.0    -> v1.63.0
+2026-11-03T14:55:41.2697881Z  * [new tag]           v2.0.0     -> v2.0.0
+2026-11-03T14:55:41.2698084Z  * [new tag]           v2.0.1     -> v2.0.1
+2026-11-03T14:55:41.2698273Z  * [new tag]           v2.0.2     -> v2.0.2
+2026-11-03T14:55:41.2698488Z  * [new tag]           v2.0.3     -> v2.0.3
+2026-11-03T14:55:41.2698696Z  * [new tag]           v3.0.0     -> v3.0.0
+2026-11-03T14:55:41.2698905Z  * [new tag]           v3.0.1     -> v3.0.1
+2026-11-03T14:55:41.2699091Z  * [new tag]           v3.0.2     -> v3.0.2
+2026-11-03T14:55:41.2699271Z  * [new tag]           v3.0.3     -> v3.0.3
+2026-11-03T14:55:41.2699499Z  * [new tag]           v3.0.4     -> v3.0.4
+2026-11-03T14:55:41.2699717Z  * [new tag]           v3.0.5     -> v3.0.5
+2026-11-03T14:55:41.2699903Z  * [new tag]           v3.1.0     -> v3.1.0
+2026-11-03T14:55:41.2700093Z  * [new tag]           v3.10.0    -> v3.10.0
+2026-11-03T14:55:41.2700311Z  * [new tag]           v3.10.1    -> v3.10.1
+2026-11-03T14:55:41.2700555Z  * [new tag]           v3.10.2    -> v3.10.2
+2026-11-03T14:55:41.2700769Z  * [new tag]           v3.10.3    -> v3.10.3
+2026-11-03T14:55:41.2700956Z  * [new tag]           v3.11.0    -> v3.11.0
+2026-11-03T14:55:41.2701142Z  * [new tag]           v3.11.1    -> v3.11.1
+2026-11-03T14:55:41.2701326Z  * [new tag]           v3.12.0    -> v3.12.0
+2026-11-03T14:55:41.2701511Z  * [new tag]           v3.12.1    -> v3.12.1
+2026-11-03T14:55:41.2701694Z  * [new tag]           v3.12.2    -> v3.12.2
+2026-11-03T14:55:41.2701875Z  * [new tag]           v3.13.0    -> v3.13.0
+2026-11-03T14:55:41.2702059Z  * [new tag]           v3.14.0    -> v3.14.0
+2026-11-03T14:55:41.2702355Z  * [new tag]           v3.14.1    -> v3.14.1
+2026-11-03T14:55:41.2702566Z  * [new tag]           v3.14.2    -> v3.14.2
+2026-11-03T14:55:41.2702892Z  * [new tag]           v3.14.3    -> v3.14.3
+2026-11-03T14:55:41.2703080Z  * [new tag]           v3.14.4    -> v3.14.4
+2026-11-03T14:55:41.2703267Z  * [new tag]           v3.14.5    -> v3.14.5
+2026-11-03T14:55:41.2703456Z  * [new tag]           v3.14.6    -> v3.14.6
+2026-11-03T14:55:41.2703644Z  * [new tag]           v3.15.0    -> v3.15.0
+2026-11-03T14:55:41.2703829Z  * [new tag]           v3.16.0    -> v3.16.0
+2026-11-03T14:55:41.2704013Z  * [new tag]           v3.17.0    -> v3.17.0
+2026-11-03T14:55:41.2704197Z  * [new tag]           v3.17.1    -> v3.17.1
+2026-11-03T14:55:41.2704386Z  * [new tag]           v3.17.10   -> v3.17.10
+2026-11-03T14:55:41.2704583Z  * [new tag]           v3.17.11   -> v3.17.11
+2026-11-03T14:55:41.2704920Z  * [new tag]           v3.17.12   -> v3.17.12
+2026-11-03T14:55:41.2705208Z  * [new tag]           v3.17.13   -> v3.17.13
+2026-11-03T14:55:41.2705514Z  * [new tag]           v3.17.14   -> v3.17.14
+2026-11-03T14:55:41.2705805Z  * [new tag]           v3.17.15   -> v3.17.15
+2026-11-03T14:55:41.2705992Z  * [new tag]           v3.17.16   -> v3.17.16
+2026-11-03T14:55:41.2706202Z  * [new tag]           v3.17.17   -> v3.17.17
+2026-11-03T14:55:41.2706388Z  * [new tag]           v3.17.18   -> v3.17.18
+2026-11-03T14:55:41.2706573Z  * [new tag]           v3.17.19   -> v3.17.19
+2026-11-03T14:55:41.2706763Z  * [new tag]           v3.17.2    -> v3.17.2
+2026-11-03T14:55:41.2706950Z  * [new tag]           v3.17.20   -> v3.17.20
+2026-11-03T14:55:41.2707138Z  * [new tag]           v3.17.21   -> v3.17.21
+2026-11-03T14:55:41.2707324Z  * [new tag]           v3.17.22   -> v3.17.22
+2026-11-03T14:55:41.2707516Z  * [new tag]           v3.17.3    -> v3.17.3
+2026-11-03T14:55:41.2707826Z  * [new tag]           v3.17.4    -> v3.17.4
+2026-11-03T14:55:41.2708115Z  * [new tag]           v3.17.5    -> v3.17.5
+2026-11-03T14:55:41.2708405Z  * [new tag]           v3.17.6    -> v3.17.6
+2026-11-03T14:55:41.2708687Z  * [new tag]           v3.17.7    -> v3.17.7
+2026-11-03T14:55:41.2708972Z  * [new tag]           v3.17.8    -> v3.17.8
+2026-11-03T14:55:41.2709366Z  * [new tag]           v3.17.9    -> v3.17.9
+2026-11-03T14:55:41.2709645Z  * [new tag]           v3.18.0    -> v3.18.0
+2026-11-03T14:55:41.2709954Z  * [new tag]           v3.18.1    -> v3.18.1
+2026-11-03T14:55:41.2710240Z  * [new tag]           v3.18.2    -> v3.18.2
+2026-11-03T14:55:41.2710520Z  * [new tag]           v3.2.0     -> v3.2.0
+2026-11-03T14:55:41.2710713Z  * [new tag]           v3.3.0     -> v3.3.0
+2026-11-03T14:55:41.2710902Z  * [new tag]           v3.4.0     -> v3.4.0
+2026-11-03T14:55:41.2711096Z  * [new tag]           v3.4.1     -> v3.4.1
+2026-11-03T14:55:41.2711280Z  * [new tag]           v3.5.0     -> v3.5.0
+2026-11-03T14:55:41.2711464Z  * [new tag]           v3.5.1     -> v3.5.1
+2026-11-03T14:55:41.2711648Z  * [new tag]           v3.5.2     -> v3.5.2
+2026-11-03T14:55:41.2711831Z  * [new tag]           v3.5.3     -> v3.5.3
+2026-11-03T14:55:41.2712136Z  * [new tag]           v3.6.0     -> v3.6.0
+2026-11-03T14:55:41.2712348Z  * [new tag]           v3.6.1     -> v3.6.1
+2026-11-03T14:55:41.2712534Z  * [new tag]           v3.6.2     -> v3.6.2
+2026-11-03T14:55:41.2712778Z  * [new tag]           v3.7.0     -> v3.7.0
+2026-11-03T14:55:41.2713058Z  * [new tag]           v3.7.1     -> v3.7.1
+2026-11-03T14:55:41.2713334Z  * [new tag]           v3.7.2     -> v3.7.2
+2026-11-03T14:55:41.2713589Z  * [new tag]           v3.8.0     -> v3.8.0
+2026-11-03T14:55:41.2713771Z  * [new tag]           v3.8.1     -> v3.8.1
+2026-11-03T14:55:41.2713953Z  * [new tag]           v3.8.2     -> v3.8.2
+2026-11-03T14:55:41.2714135Z  * [new tag]           v3.8.3     -> v3.8.3
+2026-11-03T14:55:41.2714315Z  * [new tag]           v3.9.0     -> v3.9.0
+2026-11-03T14:55:41.2714498Z  * [new tag]           v3.9.1     -> v3.9.1
+2026-11-03T14:55:41.2714679Z  * [new tag]           v4.0.0     -> v4.0.0
+2026-11-03T14:55:41.2715085Z  * [new tag]           v4.1.0     -> v4.1.0
+2026-11-03T14:55:41.2715268Z  * [new tag]           v4.10.0    -> v4.10.0
+2026-11-03T14:55:41.2715453Z  * [new tag]           v4.11.0    -> v4.11.0
+2026-11-03T14:55:41.2715641Z  * [new tag]           v4.12.0    -> v4.12.0
+2026-11-03T14:55:41.2715828Z  * [new tag]           v4.13.0    -> v4.13.0
+2026-11-03T14:55:41.2716015Z  * [new tag]           v4.13.1    -> v4.13.1
+2026-11-03T14:55:41.2716203Z  * [new tag]           v4.13.2    -> v4.13.2
+2026-11-03T14:55:41.2716386Z  * [new tag]           v4.13.3    -> v4.13.3
+2026-11-03T14:55:41.2716568Z  * [new tag]           v4.13.4    -> v4.13.4
+2026-11-03T14:55:41.2716754Z  * [new tag]           v4.14.0    -> v4.14.0
+2026-11-03T14:55:41.2716938Z  * [new tag]           v4.15.0    -> v4.15.0
+2026-11-03T14:55:41.2717120Z  * [new tag]           v4.16.0    -> v4.16.0
+2026-11-03T14:55:41.2717305Z  * [new tag]           v4.16.1    -> v4.16.1
+2026-11-03T14:55:41.2717491Z  * [new tag]           v4.16.2    -> v4.16.2
+2026-11-03T14:55:41.2717698Z  * [new tag]           v4.16.3    -> v4.16.3
+2026-11-03T14:55:41.2717885Z  * [new tag]           v4.16.4    -> v4.16.4
+2026-11-03T14:55:41.2718071Z  * [new tag]           v4.16.5    -> v4.16.5
+2026-11-03T14:55:41.2718260Z  * [new tag]           v4.17.0    -> v4.17.0
+2026-11-03T14:55:41.2718446Z  * [new tag]           v4.17.1    -> v4.17.1
+2026-11-03T14:55:41.2718635Z  * [new tag]           v4.17.10   -> v4.17.10
+2026-11-03T14:55:41.2718826Z  * [new tag]           v4.17.2    -> v4.17.2
+2026-11-03T14:55:41.2719013Z  * [new tag]           v4.17.3    -> v4.17.3
+2026-11-03T14:55:41.2719231Z  * [new tag]           v4.17.4    -> v4.17.4
+2026-11-03T14:55:41.2719488Z  * [new tag]           v4.17.5    -> v4.17.5
+2026-11-03T14:55:41.2719726Z  * [new tag]           v4.17.6    -> v4.17.6
+2026-11-03T14:55:41.2719919Z  * [new tag]           v4.17.7    -> v4.17.7
+2026-11-03T14:55:41.2720109Z  * [new tag]           v4.17.8    -> v4.17.8
+2026-11-03T14:55:41.2720294Z  * [new tag]           v4.17.9    -> v4.17.9
+2026-11-03T14:55:41.2720486Z  * [new tag]           v4.18.0    -> v4.18.0
+2026-11-03T14:55:41.2720759Z  * [new tag]           v4.18.1    -> v4.18.1
+2026-11-03T14:55:41.2720948Z  * [new tag]           v4.18.10   -> v4.18.10
+2026-11-03T14:55:41.2721234Z  * [new tag]           v4.18.11   -> v4.18.11
+2026-11-03T14:55:41.2721426Z  * [new tag]           v4.18.2    -> v4.18.2
+2026-11-03T14:55:41.2721610Z  * [new tag]           v4.18.3    -> v4.18.3
+2026-11-03T14:55:41.2721802Z  * [new tag]           v4.18.4    -> v4.18.4
+2026-11-03T14:55:41.2721989Z  * [new tag]           v4.18.5    -> v4.18.5
+2026-11-03T14:55:41.2722175Z  * [new tag]           v4.18.6    -> v4.18.6
+2026-11-03T14:55:41.2722359Z  * [new tag]           v4.18.7    -> v4.18.7
+2026-11-03T14:55:41.2722548Z  * [new tag]           v4.18.8    -> v4.18.8
+2026-11-03T14:55:41.2722740Z  * [new tag]           v4.18.9    -> v4.18.9
+2026-11-03T14:55:41.2722929Z  * [new tag]           v4.19.0    -> v4.19.0
+2026-11-03T14:55:41.2723114Z  * [new tag]           v4.19.1    -> v4.19.1
+2026-11-03T14:55:41.2723302Z  * [new tag]           v4.19.2    -> v4.19.2
+2026-11-03T14:55:41.2723488Z  * [new tag]           v4.2.0     -> v4.2.0
+2026-11-03T14:55:41.2723682Z  * [new tag]           v4.20.0    -> v4.20.0
+2026-11-03T14:55:41.2723872Z  * [new tag]           v4.21.0    -> v4.21.0
+2026-11-03T14:55:41.2724056Z  * [new tag]           v4.21.1    -> v4.21.1
+2026-11-03T14:55:41.2724241Z  * [new tag]           v4.21.2    -> v4.21.2
+2026-11-03T14:55:41.2724428Z  * [new tag]           v4.21.3    -> v4.21.3
+2026-11-03T14:55:41.2724613Z  * [new tag]           v4.21.4    -> v4.21.4
+2026-11-03T14:55:41.2724926Z  * [new tag]           v4.21.5    -> v4.21.5
+2026-11-03T14:55:41.2725112Z  * [new tag]           v4.21.6    -> v4.21.6
+2026-11-03T14:55:41.2725303Z  * [new tag]           v4.21.7    -> v4.21.7
+2026-11-03T14:55:41.2725490Z  * [new tag]           v4.22.0    -> v4.22.0
+2026-11-03T14:55:41.2725681Z  * [new tag]           v4.23.0    -> v4.23.0
+2026-11-03T14:55:41.2725872Z  * [new tag]           v4.24.0    -> v4.24.0
+2026-11-03T14:55:41.2726155Z  * [new tag]           v4.25.0    -> v4.25.0
+2026-11-03T14:55:41.2726350Z  * [new tag]           v4.25.1    -> v4.25.1
+2026-11-03T14:55:41.2726541Z  * [new tag]           v4.26.0    -> v4.26.0
+2026-11-03T14:55:41.2726740Z  * [new tag]           v4.27.0    -> v4.27.0
+2026-11-03T14:55:41.2726934Z  * [new tag]           v4.27.1    -> v4.27.1
+2026-11-03T14:55:41.2727127Z  * [new tag]           v4.27.2    -> v4.27.2
+2026-11-03T14:55:41.2727320Z  * [new tag]           v4.27.3    -> v4.27.3
+2026-11-03T14:55:41.2727540Z  * [new tag]           v4.27.4    -> v4.27.4
+2026-11-03T14:55:41.2727733Z  * [new tag]           v4.27.5    -> v4.27.5
+2026-11-03T14:55:41.2727924Z  * [new tag]           v4.28.0    -> v4.28.0
+2026-11-03T14:55:41.2728117Z  * [new tag]           v4.29.0    -> v4.29.0
+2026-11-03T14:55:41.2728310Z  * [new tag]           v4.29.1    -> v4.29.1
+2026-11-03T14:55:41.2728505Z  * [new tag]           v4.3.0     -> v4.3.0
+2026-11-03T14:55:41.2728704Z  * [new tag]           v4.30.0    -> v4.30.0
+2026-11-03T14:55:41.2728900Z  * [new tag]           v4.30.1    -> v4.30.1
+2026-11-03T14:55:41.2729089Z  * [new tag]           v4.31.0    -> v4.31.0
+2026-11-03T14:55:41.2729280Z  * [new tag]           v4.31.1    -> v4.31.1
+2026-11-03T14:55:41.2729475Z  * [new tag]           v4.31.2    -> v4.31.2
+2026-11-03T14:55:41.2729666Z  * [new tag]           v4.32.0    -> v4.32.0
+2026-11-03T14:55:41.2729856Z  * [new tag]           v4.33.0    -> v4.33.0
+2026-11-03T14:55:41.2730047Z  * [new tag]           v4.33.1    -> v4.33.1
+2026-11-03T14:55:41.2730239Z  * [new tag]           v4.34.0    -> v4.34.0
+2026-11-03T14:55:41.2730433Z  * [new tag]           v4.35.0    -> v4.35.0
+2026-11-03T14:55:41.2730623Z  * [new tag]           v4.35.1    -> v4.35.1
+2026-11-03T14:55:41.2730814Z  * [new tag]           v4.35.2    -> v4.35.2
+2026-11-03T14:55:41.2731007Z  * [new tag]           v4.36.0    -> v4.36.0
+2026-11-03T14:55:41.2731203Z  * [new tag]           v4.37.0    -> v4.37.0
+2026-11-03T14:55:41.2731399Z  * [new tag]           v4.38.0    -> v4.38.0
+2026-11-03T14:55:41.2731588Z  * [new tag]           v4.38.1    -> v4.38.1
+2026-11-03T14:55:41.2731777Z  * [new tag]           v4.38.2    -> v4.38.2
+2026-11-03T14:55:41.2732061Z  * [new tag]           v4.38.3    -> v4.38.3
+2026-11-03T14:55:41.2732251Z  * [new tag]           v4.39.0    -> v4.39.0
+2026-11-03T14:55:41.2732442Z  * [new tag]           v4.4.0     -> v4.4.0
+2026-11-03T14:55:41.2732631Z  * [new tag]           v4.40.0    -> v4.40.0
+2026-11-03T14:55:41.2732822Z  * [new tag]           v4.40.1    -> v4.40.1
+2026-11-03T14:55:41.2733011Z  * [new tag]           v4.41.0    -> v4.41.0
+2026-11-03T14:55:41.2733211Z  * [new tag]           v4.41.1    -> v4.41.1
+2026-11-03T14:55:41.2733400Z  * [new tag]           v4.42.0    -> v4.42.0
+2026-11-03T14:55:41.2733589Z  * [new tag]           v4.42.1    -> v4.42.1
+2026-11-03T14:55:41.2733778Z  * [new tag]           v4.43.0    -> v4.43.0
+2026-11-03T14:55:41.2733967Z  * [new tag]           v4.43.1    -> v4.43.1
+2026-11-03T14:55:41.2734160Z  * [new tag]           v4.43.2    -> v4.43.2
+2026-11-03T14:55:41.2734350Z  * [new tag]           v4.43.3    -> v4.43.3
+2026-11-03T14:55:41.2734540Z  * [new tag]           v4.43.4    -> v4.43.4
+2026-11-03T14:55:41.2734837Z  * [new tag]           v4.43.5    -> v4.43.5
+2026-11-03T14:55:41.2735105Z  * [new tag]           v4.5.0     -> v4.5.0
+2026-11-03T14:55:41.2735298Z  * [new tag]           v4.5.1     -> v4.5.1
+2026-11-03T14:55:41.2735493Z  * [new tag]           v4.6.0     -> v4.6.0
+2026-11-03T14:55:41.2735682Z  * [new tag]           v4.6.1     -> v4.6.1
+2026-11-03T14:55:41.2735873Z  * [new tag]           v4.6.2     -> v4.6.2
+2026-11-03T14:55:41.2736060Z  * [new tag]           v4.6.3     -> v4.6.3
+2026-11-03T14:55:41.2736249Z  * [new tag]           v4.6.4     -> v4.6.4
+2026-11-03T14:55:41.2736511Z  * [new tag]           v4.7.0     -> v4.7.0
+2026-11-03T14:55:41.2736797Z  * [new tag]           v4.8.0     -> v4.8.0
+2026-11-03T14:55:41.2737093Z  * [new tag]           v4.9.0     -> v4.9.0
+2026-11-03T14:55:41.2737480Z  * [new tag]           v4.9.1     -> v4.9.1
+2026-11-03T14:55:41.2737672Z  * [new tag]           v4.9.2     -> v4.9.2
+2026-11-03T14:55:41.2737869Z  * [new tag]           v4.9.3     -> v4.9.3
+2026-11-03T14:55:41.2738841Z [command]/usr/bin/git branch --list --remote origin/main
+2026-11-03T14:55:41.2739053Z   origin/main
+2026-11-03T14:55:41.2743120Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-11-03T14:55:41.2762412Z 090797e333748b1a62db0a857d8d0f0e40b524fe
+2026-11-03T14:55:41.2765809Z ##[endgroup]
+2026-11-03T14:55:41.2766294Z ##[group]Determining the checkout info
+2026-11-03T14:55:41.2766808Z ##[endgroup]
+2026-11-03T14:55:41.2769410Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T14:55:41.3763681Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T14:55:41.3937171Z ##[group]Checking out the ref
+2026-11-03T14:55:41.3939939Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-03T14:55:41.6545788Z Switched to a new branch 'main'
+2026-11-03T14:55:41.6548801Z branch 'main' set up to track 'origin/main'.
+2026-11-03T14:55:41.6642333Z ##[endgroup]
+2026-11-03T14:55:41.6643395Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T14:55:41.6650402Z 090797e333748b1a62db0a857d8d0f0e40b524fe
+2026-11-03T14:55:41.6661171Z ##[group]Removing auth
+2026-11-03T14:55:41.6661428Z Removing SSH command configuration
+2026-11-03T14:55:41.6662685Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T14:55:41.6687739Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T14:55:41.6905425Z Removing HTTP extra header
+2026-11-03T14:55:41.6908036Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T14:55:41.6933586Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T14:55:41.7154527Z Removing includeIf entries pointing to credentials config files
+2026-11-03T14:55:41.7156936Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T14:55:41.7180675Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-03T14:55:41.7181243Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-03T14:55:41.7181535Z includeif.gitdir:/github/workspace/.git.path
+2026-11-03T14:55:41.7181773Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T14:55:41.7187613Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-03T14:55:41.7207506Z /home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:41.7214510Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-c28e5580\-0ffe\-4711\-9fb5\-e79ef37ade69\.config
+2026-11-03T14:55:41.7542943Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-03T14:55:41.7568783Z /home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:41.7575044Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-c28e5580\-0ffe\-4711\-9fb5\-e79ef37ade69\.config
+2026-11-03T14:55:41.8179594Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-03T14:55:41.8199030Z /github/runner_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:41.8204343Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c28e5580\-0ffe\-4711\-9fb5\-e79ef37ade69\.config
+2026-11-03T14:55:41.8655134Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T14:55:41.8690049Z /github/runner_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config
+2026-11-03T14:55:41.8691500Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c28e5580\-0ffe\-4711\-9fb5\-e79ef37ade69\.config
+2026-11-03T14:55:41.8715590Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T14:55:41.8944154Z Removing credentials config '/home/runner/work/_temp/git-credentials-c28e5580-0ffe-4711-9fb5-e79ef37ade69.config'
+2026-11-03T14:55:41.8953051Z ##[endgroup]
+2026-11-03T14:55:41.9161545Z Prepare all required actions
+2026-11-03T14:55:41.9161875Z Getting action download info
+2026-11-03T14:55:42.0469302Z Download action repository 'actions/setup-dotnet@v6.0.0' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-03T14:55:42.4256874Z ##[group]Run ./Github/initialize-dotnet
+2026-11-03T14:55:42.4257040Z with:
+2026-11-03T14:55:42.4257165Z   global-json-file: global.json
+2026-11-03T14:55:42.4257311Z   dotnet-version: 10.0.403
+2026-11-03T14:55:42.4257440Z ##[endgroup]
+2026-11-03T14:55:42.4292196Z ##[start-action display=Setup .NET from global.json;id=__self.__actions_setup-dotnet]
+2026-11-03T14:55:42.4334939Z ##[group]Run actions/setup-dotnet@v6.0.0
+2026-11-03T14:55:42.4335091Z with:
+2026-11-03T14:55:42.4335211Z   global-json-file: global.json
+2026-11-03T14:55:42.4335350Z   cache: false
+2026-11-03T14:55:42.4335463Z ##[endgroup]
+2026-11-03T14:55:42.5227041Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-03T14:55:42.8529820Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-03T14:55:42.8552888Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-03T14:55:43.1440429Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-03T14:55:43.1542327Z ##[end-action id=__self.__actions_setup-dotnet;outcome=success;conclusion=success;duration_ms=724]
+2026-11-03T14:55:43.1560225Z ##[start-action display=Setup .NET 10.0.403;id=__self.__actions_setup-dotnet_2]
+2026-11-03T14:55:43.1565628Z ##[end-action id=__self.__actions_setup-dotnet_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-03T14:55:43.1566865Z ##[start-action display=Add Aspire Workloads;id=__self.__run]
+2026-11-03T14:55:43.1568978Z ##[end-action id=__self.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-03T14:55:43.1603324Z ##[group]Run dotnet restore Hexalith.Builds.slnx
+2026-11-03T14:55:43.1603589Z [36;1mdotnet restore Hexalith.Builds.slnx[0m
+2026-11-03T14:55:43.1632247Z shell: /usr/bin/bash -e {0}
+2026-11-03T14:55:43.1632401Z env:
+2026-11-03T14:55:43.1632518Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T14:55:43.1632673Z ##[endgroup]
+2026-11-03T14:55:44.9398626Z   Determining projects to restore...
+2026-11-03T14:55:45.2132743Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2136318Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2143356Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2152366Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2223459Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2227075Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2258084Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2272560Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2297542Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2352914Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2396950Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2400141Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2436712Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2441359Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2480037Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2482817Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj : error NU1506: Warning As Error: Duplicate 'PackageVersion' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageVersion' items are: Azure.Security.KeyVault.Keys 4.10.2, Azure.Security.KeyVault.Keys 4.10.2.
+2026-11-03T14:55:45.2848148Z ##[error]Process completed with exit code 1.
+2026-11-03T14:55:45.2943826Z Post job cleanup.
+2026-11-03T14:55:45.2946636Z ##[start-action display=Setup .NET from global.json;id=__4e53e602-7e3b-49ef-b24e-c6339377f437.__actions_setup-dotnet]
+2026-11-03T14:55:45.2947992Z ##[end-action id=__4e53e602-7e3b-49ef-b24e-c6339377f437.__actions_setup-dotnet;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-03T14:55:45.2998860Z Post job cleanup.
+2026-11-03T14:55:45.3574007Z [command]/usr/bin/git version
+2026-11-03T14:55:45.3609440Z git version 2.56.0
+2026-11-03T14:55:45.3631671Z Temporarily overriding HOME='/home/runner/work/_temp/93164b02-efeb-4429-bcd1-445836bb2e14' before making global git config changes
+2026-11-03T14:55:45.3632461Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T14:55:45.3635044Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-03T14:55:45.3663818Z Removing SSH command configuration
+2026-11-03T14:55:45.3667933Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T14:55:45.3696677Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T14:55:45.3932627Z Removing HTTP extra header
+2026-11-03T14:55:45.3937447Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T14:55:45.3968565Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T14:55:45.4193188Z Removing includeIf entries pointing to credentials config files
+2026-11-03T14:55:45.4197859Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T14:55:45.4223925Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T14:55:45.4688387Z Cleaning up orphan processes
+2026-11-03T14:55:45.4988831Z Terminate orphan process: pid (2439) (dotnet)
+2026-11-03T14:55:45.5009528Z Terminate orphan process: pid (2440) (dotnet)
+2026-11-03T14:55:45.5027478Z Terminate orphan process: pid (2441) (dotnet)
+

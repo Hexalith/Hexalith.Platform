@@ -1,0 +1,46 @@
+{
+  "baseCommit": "fc743715f7d0993392dee34b2ef9c4eb85cdd399",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/builds-release-bindings-20261103",
+  "branch": "fix/ci-release-declaration-bindings",
+  "file": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+  "beforeSha256": "54f7c5a74c779b4e5da719d0fc5806333292d45f5a22985803deea47d6919c3f",
+  "afterSha256": "292fb3c0bf067797cbdaa63674480aca50929f0562c8b78b60d39241caa8a42b",
+  "addedBindings": [
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "version": "4.0.4",
+      "source": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+      "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+      "moduleIds": [
+        "eventstore"
+      ],
+      "snapshotFile": "Hexalith.EventStore.released-declaration.json"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "version": "6.0.0",
+      "source": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+      "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522",
+      "moduleIds": [
+        "tenants"
+      ],
+      "snapshotFile": "Hexalith.Tenants.released-declaration.json"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "version": "3.0.18",
+      "source": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "declarationSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
+      "moduleIds": [
+        "memories"
+      ],
+      "snapshotFile": "Hexalith.Memories.released-declaration.json"
+    }
+  ],
+  "historicalEntriesPreserved": true,
+  "catalogPinsChanged": false,
+  "cleanupAdmissionOrRetentionBehaviorChanged": false,
+  "memoriesImageExactSourceBindingQualified": false,
+  "callerActivationPerformed": false,
+  "storyComplete": false
+}

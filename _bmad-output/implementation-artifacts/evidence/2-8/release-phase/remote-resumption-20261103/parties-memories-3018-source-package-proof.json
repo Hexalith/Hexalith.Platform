@@ -1,0 +1,45 @@
+{
+  "recordedAtUtc": "2026-11-03T10:54:36.030960+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-memories-3018-20261103",
+  "base": "fcf7cbc86076ce43f0982e4959da9691feaf2d3a",
+  "sourceBinarySha256": {
+    "Directory.Build.targets": "f8a7ad940050c92390f2ad27dbe6fa386e55bf57e59a9bd930f458e83c655e49",
+    ".github/workflows/ci.yml": "2d31e05b9db2261d36e9f81975ee653d9bffa8416921a9442f2719984025e6bf",
+    "src/Hexalith.Parties/bin/Release/net10.0/Hexalith.Parties.dll": "bb8bafbe432b54f714a7143ece1838103f12bbc9512f7fe24f1a8ad59ecacba4",
+    "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.dll": "bb8bafbe432b54f714a7143ece1838103f12bbc9512f7fe24f1a8ad59ecacba4",
+    "tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll": "6ecc42f7f8af16cfcb3459c311228f1b6e485f539655b3ee68592e28c2fa53cd"
+  },
+  "packages": [
+    {
+      "package": "Hexalith.Memories.Contracts",
+      "version": "3.0.18",
+      "source": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "officialUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.contracts/3.0.18/hexalith.memories.contracts.3.0.18.nupkg",
+      "archiveSha256": "90a04b63e4137072d6478b57c629960c08e7b0affce4aaa8c7d6204187201f85",
+      "officialArchive": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.memories.contracts.3.0.18.nupkg",
+      "entry": "lib/net10.0/Hexalith.Memories.Contracts.dll",
+      "assemblySha256": "3787184c7bca6f5cc3079c55e16a91e6c52629d76b874023d63728c4dbe8a98b",
+      "outputEqualsOfficialArchive": true,
+      "cacheEqualsOfficialArchive": true,
+      "priorSignatureReceipt": "official-family-signatures.json"
+    },
+    {
+      "package": "Hexalith.Memories.Client.Rest",
+      "version": "3.0.18",
+      "source": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "officialUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.client.rest/3.0.18/hexalith.memories.client.rest.3.0.18.nupkg",
+      "archiveSha256": "fe0b4b651491127ea2854c77f117210f3c12e88361f68fb76bba68d33e1f29c4",
+      "officialArchive": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.memories.client.rest.3.0.18.nupkg",
+      "entry": "lib/net10.0/Hexalith.Memories.Client.Rest.dll",
+      "assemblySha256": "18827b6c9d852e77fbb6472b4ea2dbcd39a1f735377c0d5f185f083991246d9d",
+      "outputEqualsOfficialArchive": true,
+      "cacheEqualsOfficialArchive": true,
+      "priorSignatureReceipt": "official-family-signatures.json"
+    }
+  ],
+  "existingWorkflowJobsAndStepsPreserved": true,
+  "legacyCallerUnchanged": true,
+  "sourceFallback": false,
+  "fourOptionalLiveServiceCasesExecuted": false,
+  "scope": "Actual signed published package client/Contracts wire serialization and controlled-response recovery with asserted persisted test-store end states; no live producer/Dapr protocol or hosted acceptance."
+}

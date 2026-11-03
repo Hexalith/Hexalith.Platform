@@ -1,0 +1,42 @@
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/audit.json'.
+Central package freshness audit wrote 3 packages in complete mode (2 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/multi-package-prior.json'.
+Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 1 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/multi-package-refreshed.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/accepted-prior.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/preserved.json'.
+Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 2 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/incremental.json'.
+Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 2 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/incremental-deduplicated.json'.
+Central package freshness audit failed: incremental family selection contains unknown family 'package:unknown'.
+Central package freshness audit failed: incremental family selection contains a blank or duplicate family 'package:fixture.listed'.
+Central package freshness audit failed: incremental family selection contains unknown family 'PACKAGE:FIXTURE.LISTED'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/declaration-drift.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/catalog-byte-drift.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/legacy-refresh.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/consumer-drift.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/metadata-drift.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/diagnostic-prior.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/diagnostic-drift.json'.
+Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-4295e4ce24554b359910db177ccf7347/source-drift.json'.
+Central package freshness audit failed: prior audit contains a blank or duplicate package identity 'Fixture.Listed'.
+Central package freshness audit failed: prior audit package 'Fixture.Listed' has no family identity.
+Central package freshness audit failed: prior audit family 'package:fixture.listed' package identities do not exactly match its package rows.
+Central package freshness audit failed: prior audit package 'Fixture.Listed' disposition does not match family 'package:fixture.listed'.
+Central package freshness audit failed: prior audit package 'Fixture.Listed' rollback group does not match family 'package:fixture.listed'.
+Central package freshness audit failed: prior audit package family 'package:fixture.listed' has no family decision identity.
+Central package freshness audit failed: prior audit package 'Fixture.Listed' contains a blank, undeclared, or duplicate source-result identity 'https://fixture.test/v3/index.json'.
+Central package freshness audit failed: prior audit contains a blank, unknown-package, or duplicate consumer identity 'Fixture.Consumer|Fixture.Unknown'.
+Central package freshness audit failed: prior audit contains a blank or duplicate source identity 'https://fixture.test/v3/index.json'.
+Central package freshness audit failed: prior audit package 'Fixture.Listed' does not contain exactly one result for every source identity.
+Central package freshness audit failed: prior audit contains a blank or duplicate family identity 'package:fixture.listed'.
+Central package freshness audit failed: prior audit family 'orphan-family' has no package identities.
+Central package freshness audit failed: prior audit contains a blank, unknown-package, or duplicate consumer identity 'Fixture.Consumer|Fixture.Listed'.
+Central package freshness audit failed: prior audit consumer 'Fixture.Consumer|Fixture.Listed' has an inconsistent family identity 'wrong-family'.
+Central package freshness audit failed: prior audit consumer evidence SHA-256 does not match its relations and declaration bytes.
+Central package freshness audit failed: prior audit consumer provenance has an incomplete declaration-byte binding.
+Central package freshness audit failed: prior package history for 'Fixture.Listed' uses unsupported schema 'unknown.package-history.v1'.
+Central package freshness audit failed: prior family history for 'package:fixture.listed' uses unsupported schema 'unknown.family-history.v1'.
+warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Props/Directory.Packages.props', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Props/Directory.Packages.props', LF will be replaced by CRLF the next time Git touches it
+Package version audit generator tests passed: 115 scenarios.

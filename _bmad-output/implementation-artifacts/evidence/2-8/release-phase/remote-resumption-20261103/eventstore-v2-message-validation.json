@@ -1,0 +1,30 @@
+{
+  "time": "2026-11-03T12:40:52.735529+00:00",
+  "node": "v24.22.1",
+  "npm": "11.19.1",
+  "commitlint": "@commitlint/cli@21.2.4",
+  "rows": [
+    {
+      "kind": "commit",
+      "candidate": "ci: enroll runner-owned package integration\n\nPin the qualified v2 workflow and published 4.43.4 tool, retain every existing test project, and explicitly map only pull-only registry secrets.\nPreserve the approved Azure catalog and Platform selections; coherent released identity adoption and hosted cleanup qualification remain prerequisites.\n",
+      "argv": [
+        "node_modules/.bin/commitlint",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\nci: enroll runner-owned package integration\n\nPin the qualified v2 workflow and published 4.43.4 tool, retain every existing test project, and explicitly map only pull-only registry secrets.\nPreserve the approved Azure catalog and Platform selections; coherent released identity adoption and hosted cleanup qualification remain prerequisites.\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    },
+    {
+      "kind": "title",
+      "candidate": "ci: enroll runner-owned package integration",
+      "argv": [
+        "node_modules/.bin/commitlint",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\nci: enroll runner-owned package integration\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": ""
+    }
+  ]
+}

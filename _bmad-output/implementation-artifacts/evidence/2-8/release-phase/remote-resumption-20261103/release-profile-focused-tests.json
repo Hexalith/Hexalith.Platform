@@ -1,0 +1,62 @@
+[
+  {
+    "name": "released-dependency-profiles",
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "Hexalith.Builds.ModuleTool.Tests.ReleasedDependencyProfileTests",
+      "-parallelMode",
+      "none",
+      "-noLogo",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/release-profile-released-dependency-profiles.xml"
+    ],
+    "exitCode": 0,
+    "output": "release-profile-released-dependency-profiles.txt",
+    "xml": "release-profile-released-dependency-profiles.xml",
+    "total": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "name": "declaration-closure",
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "Hexalith.Builds.ModuleTool.Tests.DeclarationClosureTests",
+      "-parallelMode",
+      "none",
+      "-noLogo",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/release-profile-declaration-closure.xml"
+    ],
+    "exitCode": 0,
+    "output": "release-profile-declaration-closure.txt",
+    "xml": "release-profile-declaration-closure.xml",
+    "total": 17,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "name": "invalid-active-selections",
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "*InvalidSelectionNeverStartsAsync",
+      "-parallelMode",
+      "none",
+      "-noLogo",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/release-profile-invalid-active-selections.xml"
+    ],
+    "exitCode": 0,
+    "output": "release-profile-invalid-active-selections.txt",
+    "xml": "release-profile-invalid-active-selections.xml",
+    "total": 11,
+    "failed": 0,
+    "skipped": 0
+  }
+]

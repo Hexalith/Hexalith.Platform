@@ -1,0 +1,305 @@
+[
+  {
+    "package": "Hexalith.Builds.Module.Cli",
+    "version": "4.43.2",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.43.2/hexalith.builds.module.cli.4.43.2.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:41.990330+00:00",
+    "expectedSource": "6585f5860e87c146c26aa066d3a52b94eb56f271",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.builds.module.cli.4.43.2.nupkg",
+    "sha256": "dc0d885adce40b10dcdd592e73206bfda5aafa84a383be593fd3a2e2374976f5",
+    "nuspecId": "Hexalith.Builds.Module.Cli",
+    "nuspecVersion": "4.43.2",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Builds",
+      "branch": "refs/heads/main",
+      "commit": "6585f5860e87c146c26aa066d3a52b94eb56f271"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": []
+  },
+  {
+    "package": "Hexalith.Parties.EventStoreExtensions",
+    "version": "3.0.0",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.parties.eventstoreextensions/3.0.0/hexalith.parties.eventstoreextensions.3.0.0.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:42.304795+00:00",
+    "expectedSource": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.parties.eventstoreextensions.3.0.0.nupkg",
+    "sha256": "5ec9ab0b77ff123b09a4c2d740424644d7262b04321b728d7390b14f53092c51",
+    "nuspecId": "Hexalith.Parties.EventStoreExtensions",
+    "nuspecVersion": "3.0.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Parties",
+      "commit": "639d6e98b496429eb0490d1f8feeec97bd1a3280"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.Parties.Contracts",
+        "version": "3.0.0",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Contracts",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.DomainService",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.8",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Client",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.ServiceDefaults",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.McpCli.Abstractions",
+        "version": "1.1.0",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.Parties.Contracts",
+    "version": "3.0.0",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.parties.contracts/3.0.0/hexalith.parties.contracts.3.0.0.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:42.522399+00:00",
+    "expectedSource": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.parties.contracts.3.0.0.nupkg",
+    "sha256": "6d7f60375285705c50170c0354f0adbb45faf275eb305c3699be246bbff35214",
+    "nuspecId": "Hexalith.Parties.Contracts",
+    "nuspecVersion": "3.0.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Parties",
+      "commit": "639d6e98b496429eb0490d1f8feeec97bd1a3280"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.EventStore.Contracts",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.McpCli.Abstractions",
+        "version": "1.1.0",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.8",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.Parties.Testing",
+    "version": "3.0.0",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.parties.testing/3.0.0/hexalith.parties.testing.3.0.0.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:43.605008+00:00",
+    "expectedSource": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.parties.testing.3.0.0.nupkg",
+    "sha256": "b396666b2f1da6d3fd0f0695db138a649f3a7aa3d518f05bcd6587ef4ae43c2f",
+    "nuspecId": "Hexalith.Parties.Testing",
+    "nuspecVersion": "3.0.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Parties",
+      "commit": "639d6e98b496429eb0490d1f8feeec97bd1a3280"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.Parties.Contracts",
+        "version": "3.0.0",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.8",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Contracts",
+        "version": "3.130.2",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.McpCli.Abstractions",
+        "version": "1.1.0",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.EventStore.Testing",
+    "version": "4.0.4",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.testing/4.0.4/hexalith.eventstore.testing.4.0.4.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:43.741721+00:00",
+    "expectedSource": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.eventstore.testing.4.0.4.nupkg",
+    "sha256": "fae2691ad4d316972fa2f4499b9d6efeee286578299630750571b1e9f4dbdfee",
+    "nuspecId": "Hexalith.EventStore.Testing",
+    "nuspecVersion": "4.0.4",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore",
+      "commit": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.EventStore.Client",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Contracts",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Server",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.10",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.EventStore.Testing.Integration",
+    "version": "4.0.4",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.testing.integration/4.0.4/hexalith.eventstore.testing.integration.4.0.4.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:43.785443+00:00",
+    "expectedSource": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.eventstore.testing.integration.4.0.4.nupkg",
+    "sha256": "fcf16aecd12df63a926ea6ecce25490da3bb63afb16bb50fe917172e9526a306",
+    "nuspecId": "Hexalith.EventStore.Testing.Integration",
+    "nuspecVersion": "4.0.4",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.EventStore",
+      "commit": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.EventStore.Client",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Server",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.Testing",
+        "version": "4.0.4",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.10",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.Tenants.Contracts",
+    "version": "6.0.0",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.tenants.contracts/6.0.0/hexalith.tenants.contracts.6.0.0.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:43.951905+00:00",
+    "expectedSource": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.tenants.contracts.6.0.0.nupkg",
+    "sha256": "6a75fbab7455cae74c00d6d3b9dc5ce123651bbb9c8af90474540b1d7af3101c",
+    "nuspecId": "Hexalith.Tenants.Contracts",
+    "nuspecVersion": "6.0.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Tenants",
+      "commit": "9e5a991d0ba304bac7b1a5809cd71797b47d78ed"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.EventStore.Contracts",
+        "version": "3.129.0",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.McpCli.Abstractions",
+        "version": "1.1.0",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.Commons.UniqueIds",
+        "version": "2.30.7",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  },
+  {
+    "package": "Hexalith.Memories.EventStoreExtensions",
+    "version": "3.0.18",
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstoreextensions/3.0.18/hexalith.memories.eventstoreextensions.3.0.18.nupkg",
+    "checkedAtUtc": "2026-11-03T08:54:44.222793+00:00",
+    "expectedSource": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+    "httpStatus": 200,
+    "path": "/home/administrator/.cache/hexalith/story-2-8/remote-resumption-20261103/hexalith.memories.eventstoreextensions.3.0.18.nupkg",
+    "sha256": "52b6ec131e15a3c5e15fa3c6276b7747ca619f79d6fd010ee4be6ef109984772",
+    "nuspecId": "Hexalith.Memories.EventStoreExtensions",
+    "nuspecVersion": "3.0.18",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Hexalith/Hexalith.Memories",
+      "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea"
+    },
+    "sourceMatchesRelease": true,
+    "signaturePresent": true,
+    "dependencies": [
+      {
+        "id": "Hexalith.Memories.EventStore",
+        "version": "3.0.18",
+        "exclude": "Build,Analyzers"
+      },
+      {
+        "id": "Hexalith.EventStore.DomainService",
+        "version": "3.132.2",
+        "exclude": "Build,Analyzers"
+      }
+    ]
+  }
+]

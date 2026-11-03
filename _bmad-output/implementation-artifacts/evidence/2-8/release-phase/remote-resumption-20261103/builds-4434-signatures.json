@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-11-03T12:29:09.025086+00:00",
+  "signatures": [
+    {
+      "argv": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/hexalith.builds.module.cli.4.43.4.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "revocationMode": "offline",
+      "onlineRevocationClaim": false,
+      "transcript": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/hexalith.builds.module.cli-4434-signature.txt",
+      "summary": "\nVerifying Hexalith.Builds.Module.Cli.4.43.4\nContent hash: yiXlQcUHCWQIpJQitAmmdcd68po75A36U2mX31dZaJseMe0GK6WGoaPCWxC0yXEdbA1LBOFedxdfuL3Iv+6jGg==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n"
+    },
+    {
+      "argv": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/builds-4434-official-20261103/hexalith.builds.evidence.cli.4.43.4.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "revocationMode": "offline",
+      "onlineRevocationClaim": false,
+      "transcript": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/hexalith.builds.evidence.cli-4434-signature.txt",
+      "summary": "\nVerifying Hexalith.Builds.Evidence.Cli.4.43.4\nContent hash: QZJuzwDm+iQ+OzJK7xSKrlLSFUfkTB7dKTnt62/HR+npVtJW1jFnmrHNgIg0RMIPjW2knDKtCQ0pX+vRUcx/3Q==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n"
+    }
+  ]
+}

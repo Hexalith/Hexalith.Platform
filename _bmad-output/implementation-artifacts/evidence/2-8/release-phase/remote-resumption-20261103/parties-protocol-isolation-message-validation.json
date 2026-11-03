@@ -1,0 +1,21 @@
+{
+  "node": "v24.22.1",
+  "npm": "11.19.1",
+  "commitlintVersion": "21.2.4",
+  "results": [
+    {
+      "kind": "commit",
+      "text": "fix(ci): isolate refresh checks on reviewed catalog\n\nMove package protocol checks into their own job and propose the exact CI-qualified Builds source.\nRecord only delegated source selection; keep publication, compatibility and full review gates pending.\n",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "kind": "title",
+      "text": "fix(memories): qualify refresh support for 3.0.18\n",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "-p:HexalithEventStoreVersion=4.0.4",
+    "-p:HexalithTenantsVersion=6.0.0",
+    "-p:HexalithMemoriesVersion=3.0.18",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:EventStoreFromSource=false",
+    "-p:HexalithEventStoreFromSource=false",
+    "-p:HexalithTenantsFromSource=false",
+    "-p:HexalithMemoriesFromSource=false",
+    "-p:HexalithCommonsFromSource=false",
+    "-p:HexalithCommonsHttpFromSource=false",
+    "-p:HexalithMcpCliFromSource=false",
+    "-p:RestoreSources=https://api.nuget.org/v3/index.json",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore"
+  ],
+  "workdir": "/home/administrator/.cache/hexalith/story-2-8/worktrees/parties-isolated-preflight-20261103",
+  "exitCode": 0,
+  "output": "parties-isolated-Hexalith.Parties.Tests-build-rooted.txt",
+  "reason": "Existing supported root property supplies package testhost configuration content; HexalithEventStoreFromSource remains false.",
+  "recordedAtUtc": "2026-11-03T10:36:38.164925+00:00"
+}
