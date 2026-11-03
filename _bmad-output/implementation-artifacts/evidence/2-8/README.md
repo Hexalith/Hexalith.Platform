@@ -5,9 +5,9 @@ the dedicated registry reader procedure, reference caller PRs and hosted cleanup
 qualification. The reader is applied and measured, with only its two pull-only
 secrets delivered to EventStore and Parties. Builds v4.43.4 is published from
 `26991e8c542704be44cd8d9f58084d56fa627adb`; signed package content, release inventory,
-qualification payloads and embedded EventStore SDK bytes are verified. Platform main
-`bf101b9d5f19ba741852b0230e526d1f01422022` already records the matching tuple and
-released snapshots; redundant PR14 is closed unmerged. The reference v2 proposals were merged externally on 2026-11-03 at 14:51–14:52 UTC,
+qualification payloads and embedded EventStore SDK bytes are verified. Published
+Platform v1.1.5 at `bf101b9d5f19ba741852b0230e526d1f01422022` records the matching
+tuple and released snapshots; redundant PR14 is closed unmerged. The reference v2 proposals were merged externally on 2026-11-03 at 14:51–14:52 UTC,
 with their known native blockers still unresolved. Fresh coherent adoption and real
 hosted runtime/lifecycle acceptance remain incomplete; no candidate acceptance is
 claimed.
@@ -38,10 +38,13 @@ analysis checks passed. Its tree exactly matches reviewed head `8b99302b592acaa4
 cases pass; the parent independently reran the eight new real-Git cases. Its fresh
 [main CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41657058349)
 was cancelled after an external main advance to `090797e333748b1a62db0a857d8d0f0e40b524fe`.
-That incoming merge retains the runtime fix but duplicates the already approved
-KeyVault package row. The unchanged central validator rejects the exact committed
-catalog. A separate minimal correction takes priority before publication; the
-cancelled run supplies no passing credit.
+That incoming merge retained the runtime fix but duplicated the approved KeyVault
+package row. Both exact hosted failures are retained. All six local catalog/audit
+controls passed after removing the extra row, and external work merged both
+identical proposals as current main `725754075e1d6369430a3adf94d46fb71e6eaf9e`.
+The parent verified its complete tree equals reviewed e07. Fresh
+[main CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41661561500)
+is required before corrected publication; the cancelled run supplies no passing credit.
 The normal prerequisite publication completed as v4.43.5 from
 `89f62052c932d054bda2b435bdfef60d96e77612`, preserving the Azure catalog additions.
 That version retains HXP020 and is not adopted as the corrected native producer.

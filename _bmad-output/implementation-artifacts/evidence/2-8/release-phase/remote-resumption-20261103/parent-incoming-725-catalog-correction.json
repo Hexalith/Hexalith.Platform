@@ -1,0 +1,49 @@
+{
+  "at": "2026-11-03T15:14:47.784794+00:00",
+  "main": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "commits": [
+    {
+      "sha": "95ac61c9583465d8c9fef6349ee22f66d54c1520",
+      "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+      "parents": [
+        "090797e333748b1a62db0a857d8d0f0e40b524fe",
+        "421437b57e0700d2011b4f07ed278005393e7966"
+      ],
+      "message": "build: merge refs/remotes/origin/fix/keyvault-catalog-uniqueness into main via /pushall"
+    },
+    {
+      "sha": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+      "parents": [
+        "95ac61c9583465d8c9fef6349ee22f66d54c1520",
+        "bc3bfaa63b30b2cc00dd300bdec7d4b8dcb19ca8"
+      ],
+      "message": "build: merge refs/remotes/origin/fix/remove-duplicate-keyvault-keys-pin into main via /pushall"
+    }
+  ],
+  "prs": [
+    {
+      "number": 156,
+      "state": "closed",
+      "merged": true,
+      "head": "bc3bfaa63b30b2cc00dd300bdec7d4b8dcb19ca8",
+      "mergeCommit": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "mergedAt": "2026-11-03T15:13:02Z"
+    },
+    {
+      "number": 157,
+      "state": "closed",
+      "merged": true,
+      "head": "421437b57e0700d2011b4f07ed278005393e7966",
+      "mergeCommit": "95ac61c9583465d8c9fef6349ee22f66d54c1520",
+      "mergedAt": "2026-11-03T15:13:02Z"
+    }
+  ],
+  "parentMergedOrClosedEither": false,
+  "earlierPlannedSupersessionExecuted": false,
+  "currentTreeExactlyReviewedE07": true,
+  "freshMainCI": 41661561500,
+  "freshMainCommitlint": 41661561650,
+  "publicationDispatched": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,32 @@
+{
+  "observedAt": "2026-11-03T15:13:35.087882+00:00",
+  "proposals": [
+    {
+      "pr": 156,
+      "head": "bc3bfaa63b30b2cc00dd300bdec7d4b8dcb19ca8",
+      "base": "090797e333748b1a62db0a857d8d0f0e40b524fe",
+      "createdAt": "2026-11-03T15:02:06Z",
+      "state": "closed",
+      "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+      "parents": [
+        "090797e333748b1a62db0a857d8d0f0e40b524fe"
+      ]
+    },
+    {
+      "pr": 157,
+      "head": "421437b57e0700d2011b4f07ed278005393e7966",
+      "base": "090797e333748b1a62db0a857d8d0f0e40b524fe",
+      "createdAt": "2026-11-03T15:12:12Z",
+      "state": "closed",
+      "tree": "24590fcf5888ba622a93c4a44ef5a7292ce51736",
+      "parents": [
+        "090797e333748b1a62db0a857d8d0f0e40b524fe"
+      ]
+    }
+  ],
+  "sameExactReviewedTree": true,
+  "selection": "earlier PR156; close our duplicate157 unmerged, preserve branch and all evidence",
+  "allSixLocalControls": "builds-keyvault-dedup-controls.json",
+  "normalFullCiStillRequired": true,
+  "publicationDispatched": false
+}
