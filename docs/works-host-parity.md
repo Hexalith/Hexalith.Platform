@@ -32,6 +32,8 @@ These deterministic controls do not replace a fresh complete live qualification.
 
 The Works-owned CI bootstrap supplies root-declared dependencies and an exact public SDK export to this verifier; it owns no topology or proof implementation. For isolated execution, `works_host_snapshot.create(..., upstream_origin=...)` additionally binds the original owner working overlay to a run-owned Git origin and its execution export. Admission and final closure verify all three ordinary source inventories and selected revisions, while the existing dependency-link/catalog binding remains on the isolated origin/export. Any relevant original-owner, isolated-origin or execution-export drift refuses qualification. Default snapshot callers retain their existing binding contract.
 
+## Historical qualification records
+
 The qualification records below preserve their exact historical revisions and profiles. New source or profile changes require fresh complete runs; these older packets are not relabeled.
 
 Story 4.16 synthetic parity and rollback are **qualified on public EventStore 3.126.0**. The implementation is ready for review.
@@ -88,8 +90,8 @@ The fresh [3.126.0 packet](../../works/_bmad-output/implementation-artifacts/evi
 The review iteration 6 corrections (T213–T219) changed the verifier and its tests,
 so the [corrections packet](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review6-corrections-2026-10-20/README.md)
 requalified the same graph on 2026-10-20 with canonical exit 0, all eleven rows,
-complete rollback and zero skips on verifier `add0f90e`. It is the current run; the
-2026-10-19 packet binds the earlier verifier.
+complete rollback and zero skips on verifier `add0f90e`. That run applies to the historical graph; the
+2026-10-19 packet binds its earlier verifier.
 
 To repeat that run, build the isolated workspace its
 [isolation provenance](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review6-corrections-2026-10-20/isolated-platform.json)
@@ -226,8 +228,8 @@ still uses default mDNS discovery. The fixture tears down only its owned resourc
 it does not stop foreign hosts.
 
 Debug development consumers use source references. Release consumers restore the
-published EventStore graph selected by the Platform Builds catalog, currently
-3.126.0. The verifier reads that single stable selection. It refuses a Works
+published EventStore graph selected by the bound Platform Builds catalog.
+The verifier reads that single stable selection. It refuses a Works
 consumer whose default pin in either `Directory.Build.props` or
 `Directory.Packages.props` differs, and a file host whose `#:package`
 `Hexalith.EventStore.*` directives in `apphost.cs` differ. It binds the explicit producer source to the
@@ -240,12 +242,13 @@ The target qualification consumer selects the Dapr adapter from the current Buil
 catalog in isolated output. It preserves the retained Works consumer's pin.
 Platform.Identity remains an explicitly identified test-only source dependency.
 
-## Required producer and consumer evidence
+## Historical producer and consumer evidence (3.126.0)
 
-Every EventStore package below must qualify at public version **3.126.0**
-(tag `v3.126.0`, producer `fcf78d6cafb6c0c9f52dc350a9a09aff54ded288`). The
-executable ledger owns exact hashes, commands and outcome records; this table
-describes the required evidence rather than asserting that a run has passed.
+The table and proof descriptions in this section retain their public **3.126.0** scope
+(tag `v3.126.0`, producer `fcf78d6cafb6c0c9f52dc350a9a09aff54ded288`). They do not
+qualify the current catalog selection. Each newly selected producer requires fresh
+canonical full and CI evidence. The executable ledger owns exact hashes, commands
+and outcome records; this historical table does not assert a current pass.
 
 | Row | Published producer/API | Actual consumer | Required target evidence |
 | --- | --- | --- | --- |
