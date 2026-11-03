@@ -1,8 +1,8 @@
 # Current tuple preparation
 
 > Historical preparation record. The current owner binding is the published
-> [Builds v4.43.3 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.3)
-> at `fc743715f7d0993392dee34b2ef9c4eb85cdd399`; its signed package and
+> [Builds v4.43.4 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.4)
+> at `26991e8c542704be44cd8d9f58084d56fa627adb`; its signed package and
 > inventory hashes are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
 > The procedure below describes the earlier unqualified candidate and does not
 > describe the current binding.
