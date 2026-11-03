@@ -3,6 +3,10 @@
 Current Development startup also requires the [private owner catalog profile](works-development-catalog-profile.md).
 The canonical proof supplies it before composition; retained state never receives automatically regenerated digest material.
 
+The EventStore receiver withdraws the nested scalar workload-status grant: Dapr 1.18 trie semantics already deny the compiled two-parameter status endpoint under that spelling. Human status and the other finite grants remain; the unmatched one-segment workload prefix is now denied too. This narrows that unmatched path and does not claim identical decisions for every URI.
+
+The explicitly enumerated SDK 4.0.2, 4.0.3 and 4.0.4 capability branches preserve the published trusted-effects controller annotation. The bound published Builds tuple selects the SDK version. Capability branches alone do not select a catalog or grant tuple acceptance; genuine owner publication and fresh canonical full/CI proofs remain required for consumer acceptance.
+
 ## Canonical local and CI profiles
 
 `eng/verify-works-host.sh --profile full` is the default local gate: source Debug and public-package Release consumer checks, followed by every explicit live R1–R11 proof and complete-fleet rollback. `--profile ci` uses only Release/public-package consumer checks and Release/package Agents scaffold probes, as required by the Hexalith CI baseline. The explicitly accepted test-only source exceptions are unpublished Platform.Identity, Platform.Composition, conditional Platform.Works.Runtime and the eleven linked Parties authority/query sources compiled into Works IntegrationTests. Parties.Client and Parties.Contracts remain catalog-selected public NuGet packages, and `linkedFixtureSources` binds the exact linked authority/query bytes from `HexalithPartiesRoot`; the Composition exception is hash-bound from the Platform tree the consumer actually compiles (`PlatformWorksRuntimeRoot`), including its linked `DaprSelfHostedMtls.cs`, not from the Works dependency copy. Runtime SDK executables still build in Release from independently qualified exact public producer source; their external dependencies use packages.
@@ -10,6 +14,8 @@ The canonical proof supplies it before composition; retained state never receive
 The Builds catalog (`HexalithDaprRuntimeVersion` 1.18.7, `HexalithDaprCliVersion` 1.18.2) is the single Dapr version authority for the Works fleet: `WorksPreviewModel` composes Sentry, Placement and Scheduler from it through `CompositionToolchainPins`, and `eng/works_toolchain.py` derives the sidecar runtime and CLI from the same catalog, resolved exactly like `HexalithBuildsRoot`. The Platform-owned [Works proof toolchain](../config/works-proof-toolchain.json) no longer names versions of its own: it binds only the exact qualified Linux `daprd` SHA-256 to the catalog runtime it was qualified for, and refuses a catalog runtime change until that hash is requalified. CI reads the derived pins through `eng/works_toolchain.py` for both the parity lane and the ordinary lane (`dapr-version` and `dapr-runtime-version`). The canonical gate checks the installed version and runtime hash, requires that the toolchain came from the same catalog that selects the SDK, and refuses either isolated launcher (live fleet or retained preflight) unless it executes those exact bytes, all before any live lane; the Works CI coordinator independently requires the executed hash to equal the Platform pin. An owned local self-invocation comparison of the exact hosted 1.18.3 binary showed missing caller attribution and preservation of a spoofed `dapr-caller-app-id`; the qualified 1.18.7 binary stamps the actual `works` caller and overwrites the spoof. That probe did not enable mTLS and does not qualify a production deployment. The production profile requires `daprRuntimeVersion >= 1.18.7` as a numeric qualified floor (1.18.8, 1.18.10, 1.19.0 and 2.0.0 admissible; 1.9.0 and 1.18.6 refused), and its JSON schema is tested against the same cases; preview admission remains closed. Hosted run [39674116771](https://github.com/Hexalith/Hexalith.Works/actions/runs/39674116771) passed the Release/package CI profile on the earlier pins; the Builds-derived toolchain, the 3.127.0 producer selection and the changed verifier inputs require fresh complete qualification; the earlier 3.126.1 selection's qualification is recorded with the Works Story 4.9 evidence.
 
 Both profiles execute the same live recovery, callback, historical lifecycle/security, restart, HA, mTLS, shared rebuild and retained-fleet rollback path. Both retain public producer qualification and final source, fixture, archive, runtime and launcher closure. A CI profile does not weaken an R1–R11 proof or satisfy source Debug conformance: its ledger records `profile.name=ci`, only `Release` in consumer configurations/checks/dependency modes, `agentsConfiguration=Release`, and source conformance as not requested. It never records an absent Debug check as passed. `--prepare-only` remains nonqualifying in either profile. Both still require status `passed-disposable-synthetic-parity-and-rollback`, all 44 proof kinds and complete rollback.
+
+Platform model tests prepare the selected Works owner through its real build. Their child build inherits the parent test build's selected configuration, SDK source root/version, source/package switches and artifacts root. Parent and child explicitly select the same SDK and serializer source switches, including for a direct `--runtime-sdk-root` invocation with conflicting ambient settings. Reusing that output context preserves the SDK's embedded debug paths and exact loaded assembly bytes; matching version strings alone is insufficient. The SDK's loaded-module and exact-byte checks remain mandatory.
 
 Agents Full component probes receive the same selected configuration through `verify-agents-host.sh` and `ext-host-1/verify_full.py`. Their custody and EventStore guard `dotnet test` calls explicitly select that configuration and its matching source/package flags; CI never relies on the implicit Debug default. Component evidence records the actual configuration and dependency mode, and each suite retains its exact `command.json`. Release attempt identity includes that mode, so a retained Debug component attempt cannot qualify a Release request. The default Debug attempt identity remains compatible with historical local attempts. These nested helpers and their regression tests are explicitly hash-bound before execution and checked at final closure.
 
@@ -25,6 +31,8 @@ Processes that explicitly detach into another session require their caller's sep
 These deterministic controls do not replace a fresh complete live qualification.
 
 The Works-owned CI bootstrap supplies root-declared dependencies and an exact public SDK export to this verifier; it owns no topology or proof implementation. For isolated execution, `works_host_snapshot.create(..., upstream_origin=...)` additionally binds the original owner working overlay to a run-owned Git origin and its execution export. Admission and final closure verify all three ordinary source inventories and selected revisions, while the existing dependency-link/catalog binding remains on the isolated origin/export. Any relevant original-owner, isolated-origin or execution-export drift refuses qualification. Default snapshot callers retain their existing binding contract.
+
+## Historical qualification records
 
 The qualification records below preserve their exact historical revisions and profiles. New source or profile changes require fresh complete runs; these older packets are not relabeled.
 
@@ -82,8 +90,8 @@ The fresh [3.126.0 packet](../../works/_bmad-output/implementation-artifacts/evi
 The review iteration 6 corrections (T213–T219) changed the verifier and its tests,
 so the [corrections packet](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review6-corrections-2026-10-20/README.md)
 requalified the same graph on 2026-10-20 with canonical exit 0, all eleven rows,
-complete rollback and zero skips on verifier `add0f90e`. It is the current run; the
-2026-10-19 packet binds the earlier verifier.
+complete rollback and zero skips on verifier `add0f90e`. That run applies to the historical graph; the
+2026-10-19 packet binds its earlier verifier.
 
 To repeat that run, build the isolated workspace its
 [isolation provenance](../../works/_bmad-output/implementation-artifacts/evidence/story-4-16/review6-corrections-2026-10-20/isolated-platform.json)
@@ -220,8 +228,8 @@ still uses default mDNS discovery. The fixture tears down only its owned resourc
 it does not stop foreign hosts.
 
 Debug development consumers use source references. Release consumers restore the
-published EventStore graph selected by the Platform Builds catalog, currently
-3.126.0. The verifier reads that single stable selection. It refuses a Works
+published EventStore graph selected by the bound Platform Builds catalog.
+The verifier reads that single stable selection. It refuses a Works
 consumer whose default pin in either `Directory.Build.props` or
 `Directory.Packages.props` differs, and a file host whose `#:package`
 `Hexalith.EventStore.*` directives in `apphost.cs` differ. It binds the explicit producer source to the
@@ -234,12 +242,13 @@ The target qualification consumer selects the Dapr adapter from the current Buil
 catalog in isolated output. It preserves the retained Works consumer's pin.
 Platform.Identity remains an explicitly identified test-only source dependency.
 
-## Required producer and consumer evidence
+## Historical producer and consumer evidence (3.126.0)
 
-Every EventStore package below must qualify at public version **3.126.0**
-(tag `v3.126.0`, producer `fcf78d6cafb6c0c9f52dc350a9a09aff54ded288`). The
-executable ledger owns exact hashes, commands and outcome records; this table
-describes the required evidence rather than asserting that a run has passed.
+The table and proof descriptions in this section retain their public **3.126.0** scope
+(tag `v3.126.0`, producer `fcf78d6cafb6c0c9f52dc350a9a09aff54ded288`). They do not
+qualify the current catalog selection. Each newly selected producer requires fresh
+canonical full and CI evidence. The executable ledger owns exact hashes, commands
+and outcome records; this historical table does not assert a current pass.
 
 | Row | Published producer/API | Actual consumer | Required target evidence |
 | --- | --- | --- | --- |

@@ -72,11 +72,26 @@ def consumer_build_command(project, configuration, version, output=None, extra=(
                "-p:NuGetAudit=false", "-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
                "-p:MSBuildWarningsAsErrors=MSB3277",
                "-p:UseHexalithProjectReferences=" + ("true" if configuration == "Debug" else "false"),
-               "-p:UseNuGetDeps=" + ("false" if configuration == "Debug" else "true")]
+               "-p:UseNuGetDeps=" + ("false" if configuration == "Debug" else "true"),
+               "-p:HexalithEventStoreFromSource=" + ("true" if configuration == "Debug" else "false"),
+               "-p:HexalithPolymorphicSerializationsFromSource=" + ("true" if configuration == "Debug" else "false")]
     if output:
         command += ["--artifacts-path", str(output)]
     command += ["-p:AspireUseCliBundle=true"] if project.endswith(".cs") else ["-m:1"]
     return command + list(extra)
+
+
+def consumer_model_environment(works, sdk_root, configuration, version, output):
+    """Keep selected-child preparation on the loaded SDK's actual compilation and output context."""
+    return os.environ.copy() | {
+        "Platform__Works__SourceRoot": str(works), "ArtifactsPath": str(output), "UseArtifactsOutput": "true",
+        "Configuration": configuration, "Version": version, "MinVerVersionOverride": version,
+        "HexalithEventStoreVersion": version, "HexalithEventStoreRoot": str(sdk_root),
+        "UseHexalithProjectReferences": "true" if configuration == "Debug" else "false",
+        "UseNuGetDeps": "false" if configuration == "Debug" else "true",
+        "HexalithEventStoreFromSource": "true" if configuration == "Debug" else "false",
+        "HexalithPolymorphicSerializationsFromSource": "true" if configuration == "Debug" else "false",
+    }
 
 
 def sha256(path):
@@ -1087,6 +1102,7 @@ def run_verification(args):
     profile = verification_profile(getattr(args, "profile", "full"))
     works = args.works_root.resolve()
     runtime_sdk = args.runtime_sdk_root.resolve() if args.runtime_sdk_root else works / "references/Hexalith.EventStore"
+    model_sdk = runtime_sdk if args.runtime_sdk_root else platform / "references/Hexalith.EventStore"
     artifacts = args.artifacts_path.resolve() if args.artifacts_path else Path(tempfile.mkdtemp(prefix="works-platform-proof-"))
     if artifacts.exists() and any(artifacts.iterdir()):
         raise ValueError("Artifacts directory must be empty; existing evidence cannot be reused or overwritten")
@@ -1172,11 +1188,12 @@ def run_verification(args):
         for configuration in profile["consumerConfigurations"]:
             build("platform-tests-build-" + configuration.lower(), "tests/Hexalith.Platform.Works.Tests/Hexalith.Platform.Works.Tests.csproj", configuration, platform,
                   platform_test_output / configuration.lower(),
-                  extra=["-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version] if args.runtime_sdk_root is not None else [])
+                  extra=["-p:HexalithEventStoreRoot=" + str(model_sdk), "-p:HexalithEventStoreVersion=" + version])
             executable = platform_test_output / configuration.lower() / "bin/Hexalith.Platform.Works.Tests" / configuration.lower() / "Hexalith.Platform.Works.Tests"
             xml = artifacts / ("platform-" + configuration.lower() + ".xml")
             run("platform-tests-" + configuration.lower(), [executable, "-noLogo", "-result-xml", xml],
-                environment=os.environ.copy() | {"Platform__Works__SourceRoot": str(works)})
+                environment=consumer_model_environment(
+                    works, model_sdk, configuration, version, platform_test_output / configuration.lower()))
             summary["checks"][configuration] = require_passed_tests(xml)
             if configuration == "Debug":
                 summary["platformDebugSdkAssemblies"] = {path.name: sha256(path) for path in
