@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.EventStore.Contracts.Routing;
+using Hexalith.Platform.CatalogArtifacts;
 
 /// <summary>The exact validated bytes owned by one environment, generated before any resource starts.</summary>
 internal sealed record PlatformRoutingCatalog(string InstanceId, string Directory, string CatalogPath, string RootDigest,
@@ -39,6 +40,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         xml.Root.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
         xml.Save(project);
         File.Copy(Path.Combine(template, "Program.cs"), Path.Combine(build, "Program.cs"), true);
+        File.Copy(Path.Combine(template, "PublishedCatalogArtifactCohort.cs"), Path.Combine(build, "PublishedCatalogArtifactCohort.cs"), true);
         var references = new XElement("ItemGroup");
         foreach (var owner in owners)
         foreach (string reference in new[] { owner.ContractReference, owner.AdapterReference })
@@ -62,6 +64,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string request = Path.Combine(build, "request.json");
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
+            qualificationCohort = options.Mapping.Mode == WorkspaceMode.Package && options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name : null,
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),

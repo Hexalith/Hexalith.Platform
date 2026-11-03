@@ -279,6 +279,13 @@ migration is Story 2.9. Works remains an opt-in development preview with its exi
 qualification scope. See [concurrency verification](docs/platform-apphost-form.md)
 for the gated two-session proof and its current evidence limits.
 
+Fresh SDK package tests may explicitly add the genuine Tenants owner through
+Builds `test --with-owner tenants`. Platform's
+[finite package catalog profile](docs/package-catalog-qualification.md) requires
+published EventStore 4.0.4 and Tenants 7.0.0 artifacts and an authenticated fresh owner
+request. Default/domain closure is unchanged, Memories remains unqualified, and
+component preparation supplies no package runtime or Works acceptance.
+
 McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run` and
 `debug` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`
 in Debug into the run workspace, using the run's pinned Builds catalog. `test`

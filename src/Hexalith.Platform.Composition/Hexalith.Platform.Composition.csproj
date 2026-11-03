@@ -51,4 +51,5 @@
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /><ProjectReference Include="../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" /></ItemGroup>
   <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/public-joint-plan.json" LogicalName="ExtSecretsFullJointPlan" /></ItemGroup>
+  <ItemGroup><Compile Include="../Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs" Link="PublishedCatalogArtifactCohort.cs" /></ItemGroup>
 </Project>

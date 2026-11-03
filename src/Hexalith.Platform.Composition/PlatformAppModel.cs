@@ -78,6 +78,8 @@ public static class PlatformAppModel
 
     internal static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject, Func<PlatformCompositionOptions, PlatformCompositionOptions> configureOptions)
     {
+        PlatformQualificationOwnerProof? ownerProof = plan.QualificationOwners is not null || plan.QualificationOwnersBinding is not null
+            ? PlatformQualificationOwnerProof.Create(plan, signingKey) : null;
         SourceMapping mapping = plan.SourceMapping ?? throw new InvalidDataException("Platform v2 composition requires the command-resolved source mapping.");
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
@@ -99,6 +101,7 @@ public static class PlatformAppModel
         Compose(builder, configureOptions(new PlatformCompositionOptions
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
+            QualificationOwners = plan.QualificationOwners ?? [], QualificationOwnerProof = ownerProof,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
         }));
@@ -123,12 +126,16 @@ public static class PlatformAppModel
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         if (catalogParticipants.Count > 0 && options.Mapping.Mode != WorkspaceMode.Source)
-            throw new InvalidDataException("Run-scoped catalog package/CI composition is unavailable until the EventStore owner SDK and adapters ship and the Builds catalog pins are updated. Use the mapped Debug/source lane for local verification.");
+        {
+            servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
+            catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
+        }
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
-            IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
+            string imageReference = server.Image + (server.ImageDigest is null ? string.Empty : "@sha256:" + server.ImageDigest);
+            IEnumerable<string> arguments = ["manifest", "inspect", imageReference];
 #if HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION
-            arguments = PlatformLoopbackRegistryProbe.Arguments(server.Image!, options.Mapping.Mode, builder.Environment.IsDevelopment());
+            arguments = PlatformLoopbackRegistryProbe.Arguments(imageReference, options.Mapping.Mode, builder.Environment.IsDevelopment());
 #endif
             System.Diagnostics.ProcessStartInfo probe = CompositionProcess.CreateStartInfo("docker", arguments, options.PlatformRoot, null);
             CompositionProcessResult result = options.ImageProbeRunner(probe, TimeSpan.FromSeconds(20), CancellationToken.None).GetAwaiter().GetResult();
@@ -284,6 +291,7 @@ public static class PlatformAppModel
                         .WithHttpEndpoint(targetPort: 8080, name: "http")
                         .WithHttpHealthCheck(server.ReadinessEndpoint)
                         .WithAnnotation(new PlatformServerAnnotation(server));
+                    if (server.ImageDigest is not null) container.WithImageSHA256(server.ImageDigest);
                     ConfigureEnvironment(container, server, options, clockKey);
                     catalog?.Configure(container, server);
                     if (catalog?.Participates(server) == true)

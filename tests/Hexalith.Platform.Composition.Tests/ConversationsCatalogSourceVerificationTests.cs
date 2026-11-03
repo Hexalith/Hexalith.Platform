@@ -211,7 +211,7 @@ public sealed partial class ConversationsEnrollmentTests
         {
             if (Directory.Exists(workspace))
             {
-                string[] names = ["catalog.json", "receipt.json", "request.json", "build.log", "generation.log", "bindings.props", "Program.cs", "Hexalith.Platform.CatalogBuilder.csproj"];
+                string[] names = ["catalog.json", "receipt.json", "request.json", "build.log", "generation.log", "bindings.props", "Program.cs", "PublishedCatalogArtifactCohort.cs", "Hexalith.Platform.CatalogBuilder.csproj"];
                 foreach (string path in Directory.EnumerateFiles(workspace, "*", SearchOption.AllDirectories)
                     .Where(path => names.Contains(Path.GetFileName(path), StringComparer.Ordinal)
                         || Path.GetRelativePath(workspace, path).StartsWith("source-mapping" + Path.DirectorySeparatorChar, StringComparison.Ordinal)))

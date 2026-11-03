@@ -6,6 +6,7 @@ using Hexalith.EventStore.Client.Routing;
 using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.EventStore.ServiceDefaults.Routing;
 using Hexalith.EventStore.DomainService;
+using Hexalith.Platform.CatalogArtifacts;
 
 using var document = JsonDocument.Parse(File.ReadAllBytes(args.Single()));
 var input = document.RootElement;
@@ -18,6 +19,17 @@ string gatewayAppId = gateway.GetString()!;
 if (gatewayAppId != "eventstore")
     throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK 3.130.0, 3.130.1, 3.130.2, exact 3.132.1 or exact 3.133.0.");
 #endif
+List<string> qualifiedArtifacts = [];
+bool qualified = input.TryGetProperty("qualificationCohort", out var cohort) && cohort.ValueKind != JsonValueKind.Null;
+if (qualified)
+{
+    var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
+    if (cohort.ValueKind != JsonValueKind.String || cohort.GetString() != PublishedCatalogArtifactCohort.Name
+        || requestedOwners.Length != 1 || requestedOwners[0].GetProperty("assembly").GetString() != "Hexalith.Tenants.Contracts"
+        || requestedOwners[0].GetProperty("adapterAssembly").GetString() != "Hexalith.Tenants.Server")
+        throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
+    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.VerifySdk());
+}
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];
 List<RouteCompositionBinding> bindings = [];
@@ -30,6 +42,11 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     owners.Add(assembly.Location);
     var adapterAssembly = Assembly.Load(new AssemblyName(owner.GetProperty("adapterAssembly").GetString()!));
     adapters.Add(adapterAssembly.Location);
+    if (qualified)
+    {
+        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly));
+        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly));
+    }
     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
     declarations.AddRange(routes);
     operations.AddRange(CompiledRouteCatalogDeclarations.ReadOperations([assembly]));
@@ -114,7 +131,7 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
     // This records actual reader-output dependencies, not an installed execution image measurement.
     loadedArtifacts = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => !assembly.IsDynamic && assembly.Location.Length > 0
         && Path.GetDirectoryName(assembly.Location) == Path.GetDirectoryName(typeof(RouteCatalogCodec).Assembly.Location))
-        .Select(assembly => assembly.Location).Concat(owners).Concat(adapters).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(path => new
+        .Select(assembly => assembly.Location).Concat(owners).Concat(adapters).Concat(qualifiedArtifacts).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(path => new
     {
         path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
         assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,
