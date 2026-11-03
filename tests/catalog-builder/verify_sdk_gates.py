@@ -19,8 +19,9 @@ FLAGS = {CATALOG, V2, SOURCE, TECHNICAL, SCOPED}
 LEGACY = ["3.130.0", "3.130.1", "3.130.2"]
 ALIASES = [alias for version in LEGACY for alias in
            [version + ".0", version + "+metadata", version + ".0+build.1"]]
-VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", *ALIASES,
-            "3.128.4", "3.131.0", "3.132.0", "4.0.0",
+VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", *ALIASES,
+            "3.128.4", "3.131.0", "3.132.0", "4.0.0", "4.0.1", "4.0.3",
+            "4.0.2-preview.1", "4.0.2+metadata", "4.0.2.0", "4.0.2.1",
             "3.132.1-preview.1", "3.132.1+metadata", "3.132.1.0", "3.132.1.1",
             "3.133.0-preview.1", "3.133.0+metadata", "3.133.0.0",
             "03.132.1", "3.132.01", "v3.132.1", "invalid-version"]
@@ -39,13 +40,13 @@ def expected_flags(project, version, source):
                 "composition": {SOURCE, CATALOG, V2},
                 "tests": {SOURCE, CATALOG, V2}, "tool": set()}[project]
     if project == "tool":
-        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0", "4.0.0"] else set()
+        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0", "4.0.0", "4.0.2"] else set()
     flags = set()
-    if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0"]:
+    if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2"]:
         flags.add(CATALOG)
-    if project != "host" and version in [*LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0"]:
+    if project != "host" and version in [*LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2"]:
         flags.add(V2)
-    if project == "host" and version in ["3.132.1", "4.0.0"]:
+    if project == "host" and version in ["3.132.1", "4.0.0", "4.0.2"]:
         flags.add(TECHNICAL)
     return flags
 
