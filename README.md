@@ -36,10 +36,10 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.4`,
-with range `[4.43.4, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
-records the exact [v4.43.4 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.4)
-source `26991e8c542704be44cd8d9f58084d56fa627adb`. The catalog and signed
+The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.5`,
+with range `[4.43.5, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
+records the exact [v4.43.5 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.5)
+source `89f62052c932d054bda2b435bdfef60d96e77612`. The catalog and signed
 package identities are recorded in [`eng/builds-tuple.json`](eng/builds-tuple.json).
 The [tuple preflight](#exact-tuple-ci-preflight) verifies those published bytes
 against this Platform revision. Runtime and deployment qualification require
