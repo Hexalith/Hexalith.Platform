@@ -48,7 +48,10 @@ def retain_execution(project, output, name, evidence, expected_sdk):
                 if key.startswith("Hexalith.EventStore.")}
     assert versions and all(version == expected_sdk for version in versions.values()), versions
     record = {"files": files, "projectAssetsSha256": digest(assets), "resolvedSdkPackages": versions,
-              "packageSources": list(data["project"]["restore"]["sources"])}
+              "packageSources": list(data["project"]["restore"]["sources"]),
+              "projectFileSha256": digest(project),
+              "copiedCatalogSourceSha256": {name: digest(project.parent / name) for name in
+                  ["Program.cs", "PublishedCatalogArtifactCohort.cs"] if (project.parent / name).is_file()}}
     assert record["packageSources"] == ["https://api.nuget.org/v3/index.json"]
     (destination / "identity.json").write_text(json.dumps(record, indent=2) + "\n")
     return record
@@ -151,6 +154,8 @@ def make_project(path, *, probe=False, program=None):
     else:
         project = ET.parse(ROOT / "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj").getroot()
         (path.parent / "Program.cs").write_text(program)
+        shutil.copyfile(ROOT / "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+                        path.parent / "PublishedCatalogArtifactCohort.cs")
     for filename in ["Directory.Packages.props", "Directory.Build.props"]:
         project.insert(0, ET.Element("Import", {"Project": str(ROOT / filename)}))
     ET.ElementTree(project).write(path, encoding="unicode")
@@ -312,6 +317,8 @@ def qualify(args):
                     assert "qualified SDK" in result.stderr and not list(target.iterdir())
                     cases.append({"case": "legacy129-scoped", "refusedBeforeOutput": True})
         report = {"sdk": args.sdk_version, "toolSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                  "toolSourceClosureSha256": {name: digest(source.parent / name) for name in
+                      ["Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs"]},
                   "genuineOwnerAssemblies": [owner["assembly"] for owner in owners], "cases": cases,
                   "baseline": BASELINE, "allDeclarationsBindingsAndOperationsUnchanged": True,
                   "policyFieldsExceptConsumerAndDigestUnchanged": True,
