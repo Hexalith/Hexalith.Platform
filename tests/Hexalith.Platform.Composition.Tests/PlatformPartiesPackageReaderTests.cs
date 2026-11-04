@@ -92,15 +92,17 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         AssertFullReader(fixture, catalog);
         byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
         using JsonDocument versions = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json")));
-        diagnostics.WriteLine(versions.RootElement.GetProperty("ProjectVersions").GetRawText());
+        XDocument bindings = XDocument.Load(Path.Combine(fixture.Reader, "bindings.props"));
+        bindings.Descendants("PackageReference").Select(item => (string?)item.Attribute("Include"))
+            .ShouldContain("Hexalith.Memories.EventStore", "Mutate an actual direct owner reference validated by the generated task.");
         versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
-            .GetProperty("Hexalith.Memories.Contracts").GetString().ShouldBe("3.0.23");
+            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe("3.0.23");
         string path = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
         XDocument project = XDocument.Load(path);
         string target;
         if (fault == "version")
         {
-            project.Root!.Add(new XElement("ItemGroup", new XElement("PackageVersion", new XAttribute("Update", "Hexalith.Memories.Contracts"), new XAttribute("Version", "3.0.18"))));
+            project.Root!.Add(new XElement("ItemGroup", new XElement("PackageVersion", new XAttribute("Update", "Hexalith.Memories.EventStore"), new XAttribute("Version", "3.0.18"))));
             target = "ValidatePrivateReaderCatalogBeforeRestore";
         }
         else
@@ -108,9 +110,9 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
             string assetsPath = Path.Combine(fixture.Reader, "obj", "project.assets.json");
             JsonNode assets = JsonNode.Parse(File.ReadAllBytes(assetsPath))!;
             JsonObject packages = assets["targets"]!.AsObject().Single().Value!.AsObject();
-            JsonNode changed = packages["Hexalith.Memories.Contracts/3.0.23"]!.DeepClone();
-            packages.Remove("Hexalith.Memories.Contracts/3.0.23");
-            packages["Hexalith.Memories.Contracts/3.0.18"] = changed;
+            JsonNode changed = packages["Hexalith.Memories.EventStore/3.0.23"]!.DeepClone();
+            packages.Remove("Hexalith.Memories.EventStore/3.0.23");
+            packages["Hexalith.Memories.EventStore/3.0.18"] = changed;
             File.WriteAllText(assetsPath, assets.ToJsonString());
             project.Root!.Elements("Target").Single(element => (string?)element.Attribute("Name") == "ValidatePrivateReaderCatalogAfterRestore").Attribute("DependsOnTargets")!.Remove();
             target = "ValidatePrivateReaderCatalogAfterRestore";
@@ -132,15 +134,23 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
         fixture.AssertPositiveEntry();
+        // The producer correctly reconciles an initial active-owner package to source.
+        // A consumer that adds it back afterwards must still hit the real duplicate guard
+        // before a restore of unrelated active-owner dependencies can mask that boundary.
         string path = Path.Combine(fixture.Workspace, "ordinary.csproj");
         File.WriteAllText(path, "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup><Import Project=\""
             + Path.Combine(fixture.Options.PlatformRoot, "Directory.Build.props") + "\"/><Import Project=\"" + Path.Combine(fixture.Options.PlatformRoot, "Directory.Packages.props")
-            + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Project>");
+            + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup>"
+            + "<Target Name=\"ReintroduceOrdinaryPackage\" AfterTargets=\"HexalithReconcileSourceMapping\">"
+            + "<ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Target></Project>");
         var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["build", path, "-c", "Release", "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:CentralPackageVersionsFileImported=true", "--nologo"],
             fixture.Options.PlatformRoot, SourceMappingMaterializer.Environment(fixture.Options.Mapping, fixture.Workspace)), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
         diagnostics.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
+        result.TimedOut.ShouldBeFalse();
         (result.Output + result.ErrorOutput).ShouldContain("HXW005");
+        (result.Output + result.ErrorOutput).ShouldContain("Source 'Hexalith.Parties'");
+        (result.Output + result.ErrorOutput).ShouldContain("duplicates direct package 'Hexalith.Parties.Contracts/");
         Directory.GetFiles(fixture.Workspace, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
     }
 
