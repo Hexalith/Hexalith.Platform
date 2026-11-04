@@ -26,6 +26,8 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
         File.Exists(Seed).ShouldBeTrue("The actual published tool seed is required for this package component fixture.");
         using JsonDocument binding = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "eng", "builds-tuple.json")));
         string pin = binding.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString()!;
+        using JsonDocument identity = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "hexalith-platform.json")));
+        string range = identity.RootElement.GetProperty("toolVersionRange").GetString()!;
         var observed = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], platform, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
         observed.ExitCode.ShouldBe(0);
         string source = observed.Output.Trim();
@@ -33,7 +35,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
             [new("Hexalith.Builds", "source", builds), new("Hexalith.EventStore", "source", _owner.Root), new("Hexalith.Platform", "source", platform),
              new("Hexalith.Tenants", "package", null), new("Hexalith.Memories", "package", null)], true)
         {
-            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, "[4.44.0,5.0.0-0)", Path.Combine(platform, "hexalith-platform.json"), true),
+            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, range, Path.Combine(platform, "hexalith-platform.json"), true),
         };
         // These empty projects are solely source-identity negative fixtures. The package reader must never consume their assemblies.
         foreach (string id in new[] { "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults" })

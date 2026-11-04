@@ -1,13 +1,14 @@
 # Current tuple preparation
 
-> Historical preparation record. Current owner configuration selects published
-> [Builds v4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
-> at `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, from successful normal
-> [release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
-> Observed signed archive, Tooling and inventory identities are in
-> [`eng/builds-tuple.json`](../eng/builds-tuple.json). Fresh recorded Platform
-> tuple qualification (188 required cases), the catalog matrix and real package
-> runtime evidence remain separate requirements.
+> Historical preparation record. Current proposed owner configuration selects
+> [Builds v4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
+> at `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, from successful normal
+> [release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661),
+> with supported floor `4.44.2`. Actual signed archive, Tooling and inventory
+> identities are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
+> The required profile contains 271 cases. Local signed-tool component checks
+> and audit-only graph checks do not replace pending exact-HEAD hosted tuple,
+> catalog-matrix and real package-runtime qualification.
 > The procedure below preserves the earlier unqualified candidate and its
 > historical authorization context; it does not describe current acceptance.
 
