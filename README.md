@@ -113,13 +113,22 @@ verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
 suite counts. The required profile preserves the prior 160 cases and adds 23
-finite-cohort controls, five actual `ComposeRun` controls and eight private
-package-reader controls, for 196 cases.
+finite-cohort controls, five actual `ComposeRun` controls, eight private
+package-reader controls and five declared-channel controls, for 201 cases.
 Every group must execute its exact count with no errors, failures, skips or unrun
 cases. Before and after those tests, the result records the actual test assembly,
 five SDK/Tenants dependency hashes and operating-system/architecture
 context; changed outputs fail the preflight. Those observations still require
 comparison with the qualified public cohort.
+
+The Tenants domain and API each bind their declared `Tenants:AppChannelToken`
+to `APP_API_TOKEN` on the application and its own sidecar. The API's
+`Tenants:ApiDaprToken` remains the separate `DAPR_API_TOKEN` credential. The SDK's
+generated Development receiver requires the app-channel alias; the owner-specific
+configuration key alone cannot start that receiver. The added controls complete
+the authenticated SDK/Tenants model and its actual Dapr callbacks without starting
+resources, retaining distinct credentials and the SDK's missing, wrong and
+duplicate-token refusals.
 
 The private package catalog reader uses the run's exact materialized Builds
 catalog with effective-reference and restored-asset validation. Its child build

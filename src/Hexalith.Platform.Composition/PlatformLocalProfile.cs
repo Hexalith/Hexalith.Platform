@@ -80,7 +80,7 @@ public static class PlatformLocalProfile
             {
                 ("parties", "domain", "EventStore:AppChannelToken") => "APP_API_TOKEN",
                 ("eventstore", "gateway", "EventStore:AppChannelToken") => "APP_API_TOKEN",
-                ("tenants", "domain", "Tenants:AppChannelToken") => "APP_API_TOKEN",
+                ("tenants", "domain" or "api", "Tenants:AppChannelToken") => "APP_API_TOKEN",
                 ("tenants", "api", "Tenants:ApiDaprToken") => "DAPR_API_TOKEN",
                 ("memories", _, "Memories:AppChannelToken") => "APP_API_TOKEN",
                 ("memories", _, "Memories:DaprApiToken") => "DAPR_API_TOKEN", _ => null,

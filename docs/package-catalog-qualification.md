@@ -67,7 +67,7 @@ selects SDK `4.0.4` from producer
 SDK or owner cohort.
 
 Fresh recorded Platform qualification must use those published artifacts and
-execute all 196 existing required cases, including the 28 finite admission/entry-point
+execute all 201 existing required cases, including the 28 finite admission/entry-point
 controls, plus the catalog compatibility matrix. The before/after test-output
 receipt binds the actual test assembly and five SDK/Tenants DLLs to its OS and
 architecture. Local source assemblies and prior component receipts do not replace
@@ -85,7 +85,7 @@ The finite ordinary Parties source proposal adds a separate full-cohort boundary
 It remains pending coherent adoption and qualification of a genuine new Builds
 publication selecting Memories `3.0.23`. The accepted tuple, tool floor and M18
 provenance remain unchanged during source preparation. The new 37 required proof
-controls supplement the original 196 cases; their execution cannot replace the
+controls supplement the 201 existing cases (including the incoming five channel controls); their execution cannot replace the
 remaining positive full-entry and genuine-tuple qualification.
 
 The profile selects Development Linux/x64, a fresh ordinary Parties package test,
