@@ -53,11 +53,23 @@ the observed image digests to a source revision. Its package adapter compilation
 alone does not establish image or runtime eligibility. Future SDK or owner versions
 require new finite artifact and runtime qualification.
 
-The Builds seed must independently compile its technical receiver against the
-actual resolved public Gateway `4.0.4` package. A Builds release containing the
-owner-selection and seed changes must be genuinely published and bound in the
-Platform tuple before consumer adoption. Local source assemblies or a fabricated
-tag cannot substitute for that publication.
+Published [Builds 4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+contains the owner-selection and seed receiver changes. Its exact source is
+`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, released through successful normal
+[run 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+The released seed compiles its technical receiver against the resolved public Gateway
+`4.0.4` package. The [Platform tuple](../eng/builds-tuple.json) records the observed
+signed archive, embedded Tooling and inventory identities. Its catalog still
+selects SDK `4.0.4` from producer
+`326bfef884543cdbcaf96de7f4c4ad378dbad6d7`; this tooling adoption introduces no new
+SDK or owner cohort.
+
+Fresh recorded Platform qualification must use those published artifacts and
+execute all 188 required cases, including the 28 finite admission/entry-point
+controls, plus the catalog compatibility matrix. The before/after test-output
+receipt binds the actual test assembly and five SDK/Tenants DLLs to its OS and
+architecture. Local source assemblies and prior component receipts do not replace
+that fresh evidence or the subsequent real package run.
 
 Component tests, signature checks, compiled-owner comparisons and reader refusal
 controls are supporting evidence. Accepted package execution still requires the

@@ -1,11 +1,15 @@
 # Current tuple preparation
 
-> Historical preparation record. The current owner binding is the published
-> [Builds v4.43.5 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.5)
-> at `89f62052c932d054bda2b435bdfef60d96e77612`; its signed package and
-> inventory hashes are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
-> The procedure below describes the earlier unqualified candidate and does not
-> describe the current binding.
+> Historical preparation record. Current owner configuration selects published
+> [Builds v4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+> at `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, from successful normal
+> [release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+> Observed signed archive, Tooling and inventory identities are in
+> [`eng/builds-tuple.json`](../eng/builds-tuple.json). Fresh recorded Platform
+> tuple qualification (188 required cases), the catalog matrix and real package
+> runtime evidence remain separate requirements.
+> The procedure below preserves the earlier unqualified candidate and its
+> historical authorization context; it does not describe current acceptance.
 
 The source candidate is official Builds `6cc96b4ff23c40c77651e1e4f85ed3170c25c7a4`.
 Its catalog blob is `5d7eeadf561eed182fcb03c2b1fd97565dd52852`, SHA-256
