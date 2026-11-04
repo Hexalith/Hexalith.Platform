@@ -16,6 +16,10 @@
     <AssemblyMetadata Include="PlatformTestRoot:Hexalith.McpCli" Value="$(HexalithMcpCliRoot)" />
     <AssemblyMetadata Include="PlatformTestRoot:Hexalith.PolymorphicSerializations" Value="$(HexalithPolymorphicSerializationsRoot)" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="PlatformTestPublishedToolRoot" Value="$(HexalithBuildsPublishedToolRoot)" />
+    <AssemblyMetadata Include="PlatformTestReaderWorkspaceRoot" Value="$(PlatformPackageReaderWorkspaceRoot)" />
+  </ItemGroup>
   <ItemGroup><AssemblyMetadata Include="PlatformTestRepositoryRoot" Value="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)/../..'))" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
