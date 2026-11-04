@@ -1,0 +1,19 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "--nologo",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T11:40:18.320393+00:00",
+  "completedAt": "2026-11-04T11:40:30.103023+00:00",
+  "environment": "Package UI job, no parent mapping imports; authenticated private NuGet cache, offline repository revocation."
+}

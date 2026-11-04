@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dotnet",
+    "msbuild",
+    "src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj",
+    "-nologo",
+    "-p:Configuration=Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-target:ConfigureFrontComposerFeedbackCandidate",
+    "-getProperty:HexalithFrontComposerVersion,HexalithFrontComposerFromSource,DefineConstants"
+  ],
+  "exitCode": 0,
+  "stdout": "{\n  \"Properties\": {\n    \"HexalithFrontComposerVersion\": \"4.7.6\",\n    \"HexalithFrontComposerFromSource\": \"\",\n    \"DefineConstants\": \"TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HES_CANCELLABLE_PROJECTIONS\"\n  }\n}\n",
+  "stderr": "",
+  "scope": "Actual Release/package evaluated target; no source or GitHub context."
+}

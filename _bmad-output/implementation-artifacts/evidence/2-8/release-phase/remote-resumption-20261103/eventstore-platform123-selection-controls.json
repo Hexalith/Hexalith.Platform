@@ -1,0 +1,95 @@
+{
+  "at": "2026-11-04T08:03:17.649356+00:00",
+  "source": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+  "commands": [
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "--version"
+      ],
+      "startedAt": "2026-11-04T08:03:16.305409+00:00",
+      "exitCode": 0,
+      "output": "4.44.0+6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\n"
+    },
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--output=json"
+      ],
+      "startedAt": "2026-11-04T08:03:16.532796+00:00",
+      "exitCode": 0,
+      "output": "{\"status\":\"validated\",\"outcome\":{\"exitCode\":\"Success\",\"phase\":\"None\",\"category\":\"None\",\"ruleId\":null},\"diagnostics\":[]}\n"
+    },
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "test",
+        "--help"
+      ],
+      "startedAt": "2026-11-04T08:03:16.930642+00:00",
+      "exitCode": 0,
+      "output": "Description:\n  Runs a named module qualification profile.\n\nUsage:\n  Hexalith.Builds.Module.Cli test [options]\n\nOptions:\n  --manifest <manifest> (REQUIRED)\n  --profile <profile> (REQUIRED)\n  --filter <filter>\n  --evidence <evidence>\n  --with-owner <with-owner>                Add an authenticated reference owner and its declared dependencies to a fresh qualification run.\n  --candidate-request <candidate-request>  Signed GitHub gate issuance; requires independently enrolled host authority.\n  --ci-owner-receipt <ci-owner-receipt>    External durable ownership receipt for disposable Linux GitHub-hosted package integration.\n  --output <human|json>                    [default: human]\n  --mode <package|source>                  [default: source]\n  -?, -h, --help                           Show help and usage information\n\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "references/Hexalith.Builds/Github/run-module-integration/tests",
+        "-p",
+        "test_run_module_integration.py",
+        "-k",
+        "additive_owners",
+        "-k",
+        "invalid_owners",
+        "-k",
+        "default_invocation",
+        "-v"
+      ],
+      "startedAt": "2026-11-04T08:03:17.161867+00:00",
+      "exitCode": 0,
+      "output": "test_additive_owners_use_canonical_literal_arguments_and_are_recorded (test_run_module_integration.IntegrationTests.test_additive_owners_use_canonical_literal_arguments_and_are_recorded) ... ok\ntest_default_invocation_has_no_owner_request_or_arguments (test_run_module_integration.IntegrationTests.test_default_invocation_has_no_owner_request_or_arguments) ... ok\ntest_invalid_owners_refuse_before_context_paths_tool_or_evidence_effects (test_run_module_integration.IntegrationTests.test_invalid_owners_refuse_before_context_paths_tool_or_evidence_effects) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "startedAt": "2026-11-04T08:03:17.229105+00:00",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.commitGraph=false",
+        "diff",
+        "--check",
+        "005c9cfb0f938214ba889e645f81e389d82476b6..HEAD"
+      ],
+      "startedAt": "2026-11-04T08:03:17.645172+00:00",
+      "exitCode": 0,
+      "output": ""
+    }
+  ],
+  "limit": "Released argument/tool/declaration and static controls only; no native acceptance or fabricated CI identity."
+}

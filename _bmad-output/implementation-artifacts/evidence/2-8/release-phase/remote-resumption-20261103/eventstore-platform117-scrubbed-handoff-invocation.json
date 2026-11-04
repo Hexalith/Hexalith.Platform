@@ -1,0 +1,31 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-class",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests",
+    "--filter-class",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests",
+    "--minimum-expected-tests",
+    "7",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/scrubbed-handoff-invocation-results",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "scrubbed-handoff.trx",
+    "-p:UseHexalithProjectReferences=false"
+  ],
+  "buildExitCode": 0,
+  "exitCode": 0,
+  "observedAt": "2026-11-03T20:19:00.885385+00:00",
+  "environment": "published allowlist plus actual7mapping keys; no GitHub identity",
+  "localFixtureContext": "local only",
+  "candidateAcceptance": false
+}

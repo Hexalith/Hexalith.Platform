@@ -1,0 +1,59 @@
+{
+  "at": "2026-11-04T05:23:52.519152+00:00",
+  "scope": "actual image owner DLLs in isolated compiled reader only; no backend/service execution",
+  "unchangedPublicSdk": "4.0.4",
+  "replacedPrivateReaderOwnerBodies": [
+    {
+      "name": "Hexalith.Memories.Contracts.dll",
+      "publicSha256": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+      "imageSha256": "b7b241fa22ec443d856acdc6b22c74754ebb88a0ced9755e465d72e452406cc5",
+      "imageSource": "sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e"
+    },
+    {
+      "name": "Hexalith.Memories.EventStore.dll",
+      "publicSha256": "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
+      "imageSha256": "db75fd0eed1b99d9a6c9a11893a08e87b688eb9c41c0cc509e402920dad14f9f",
+      "imageSource": "sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e"
+    }
+  ],
+  "cases": [
+    {
+      "name": "memories-image-owner",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader-memory-image-owner/Hexalith.Platform.CatalogBuilder.dll",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/memories-image-owner-request.json"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/memories-image-owner-first.log",
+      "authorityRegistered": false,
+      "nativeAcceptance": false,
+      "candidateAcceptance": false,
+      "qualificationCohort": null,
+      "actualCatalogSha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4",
+      "publicCatalogSha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4",
+      "catalogBytesEqual": true,
+      "rootDigest": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4",
+      "receipt": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/memories-image-owner/receipt.json"
+    },
+    {
+      "name": "full-memory-image-owner",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader-memory-image-owner/Hexalith.Platform.CatalogBuilder.dll",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/full-memory-image-owner-request.json"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/full-memory-image-owner-first.log",
+      "authorityRegistered": false,
+      "nativeAcceptance": false,
+      "candidateAcceptance": false,
+      "qualificationCohort": null,
+      "actualCatalogSha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "publicCatalogSha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "catalogBytesEqual": true,
+      "rootDigest": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "receipt": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/full-memory-image-owner/receipt.json"
+    }
+  ]
+}

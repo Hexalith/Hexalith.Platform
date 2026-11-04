@@ -1,0 +1,3 @@
+git -C references/Hexalith.Builds rev-parse 'v4.44.2^{commit}'
+fatal: ambiguous argument 'v4.44.2^{commit}': unknown revision or path not in the working tree.
+The isolated checkout had fetched exact sourceae before observing the new public tag. Normal exact-tag metadata fetch follows; no tag is invented or rewritten.

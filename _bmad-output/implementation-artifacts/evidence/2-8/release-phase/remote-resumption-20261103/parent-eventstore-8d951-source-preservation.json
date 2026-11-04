@@ -1,0 +1,71 @@
+{
+  "observedAtUtc": "2026-11-03T20:22:56.966480+00:00",
+  "base": "d836aaf2f2ad299f398c8f8d1b7ff6ec47604cf8",
+  "head": "8d95170b5babd0aa3552f4b087528b6ab6987fa8",
+  "previousIndependentlyReadHead": "5df9d07df44dca400ff09468a91c34e9685c3dd1",
+  "same8PathSetAndExactAddedDeletedLines": true,
+  "allIncomingPathsPreservedOutside8PathChange": true,
+  "incomingDelta": "normal merge preserving five Azure-workflow/validator/test/spec paths; existing Contracts file receives its incoming unrelated Azure assertion",
+  "paths": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "aabb89ccae56f7aa2bb64e78ed75083add8e039bfe08b59d18df603d8598df6d"
+    },
+    {
+      "path": "docs/ci.md",
+      "sha256": "274cf1bd8c57a222d2a486b56239b5e6fcf9f999b132e6d6e32d670733562772"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "sha256": "ee72a0a715b389c1b4e3b18eaac5e3f8e0bf6a0b8bbb52bccb29fcad5753e573"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+      "sha256": "092139bed6e97a2226d3a8cf00a6d90aa1c05d6e37eebcc595b84a551f1d05b2"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "sha256": "1678c794acb5fd55e73bbed9a542ea7cdfbd56bca2dbe4b03b23e70b8fee44e5"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "sha256": "dd90659358775a4bdaaa0f6f525a51cc187add011ec8b8fdb984d57c3831a08a"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "sha256": "9a86b44603f71af4d0b6cf8e88e5a928299a85e563c21ca314cdf309137f74d1"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+      "sha256": "4e4b3d9462ea4346fec8f52288f04fd929584920986326c6e8c7868a2b7e1bcb"
+    }
+  ],
+  "actualHostedCi": 41711963375,
+  "hostedStatusAtObservation": "pending",
+  "realNativeAcceptance": false,
+  "candidateAcceptance": false,
+  "priorFullAudit": "parent-eventstore-5df-native-binding-source-audit.json",
+  "finalInvocationSourceLocalControls": {
+    "path": "eventstore-platform117-scrubbed-handoff-invocation-results.trx",
+    "sha256": "e67bb3634532bc1ef4c4f4a34fbb4234247ffcb01b9807ee83a80a4d181c74c5",
+    "independentlyReadCounters": {
+      "total": "7",
+      "executed": "7",
+      "passed": "7",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "realNativeAcceptance": false
+  }
+}

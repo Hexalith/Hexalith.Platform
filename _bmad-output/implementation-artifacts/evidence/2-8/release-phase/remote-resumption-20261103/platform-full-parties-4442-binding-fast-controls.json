@@ -1,0 +1,48 @@
+[
+  {
+    "name": "binding-controls",
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_builds_tuple.py"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T10:23:03.865396+00:00",
+    "completedAt": "2026-11-04T10:23:04.825366+00:00"
+  },
+  {
+    "name": "output-identity-controls",
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_tuple_output_identity.py"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T10:23:04.825427+00:00",
+    "completedAt": "2026-11-04T10:23:04.896975+00:00"
+  },
+  {
+    "name": "host-resolution-controls",
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_host_builds_resolution.py"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T10:23:04.897031+00:00",
+    "completedAt": "2026-11-04T10:23:12.017224+00:00"
+  },
+  {
+    "name": "pin-alignment",
+    "command": [
+      "python3",
+      "-B",
+      "eng/verify-platform-pins.py",
+      "--catalog",
+      "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/references/Hexalith.Builds/Props/Directory.Packages.props"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T10:23:12.017278+00:00",
+    "completedAt": "2026-11-04T10:23:12.047497+00:00"
+  }
+]

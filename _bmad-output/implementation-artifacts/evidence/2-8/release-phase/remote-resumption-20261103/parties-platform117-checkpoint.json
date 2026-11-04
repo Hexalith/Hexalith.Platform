@@ -1,0 +1,240 @@
+{
+  "observedAt": "2026-11-03T20:38:41.569528+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "branch": "fix/adopt-platform-117",
+  "base": "6795536e3fe5fd4cf44eb5f4c67e69f3374532b4",
+  "head": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "commits": [
+    "cb795d71e4ad4dda62236141c9b0693ed741f472",
+    "126acd2d7ab08ad614ede09b0cb931573b053a03"
+  ],
+  "sourceClean": true,
+  "changedFiles": [
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "mode": "100644",
+      "gitObjectId": "d831870ca255751a5b878bcd375d586f59fb445a",
+      "gitBlobSha256": "ab5c0da55319d78b5aeb0e27c0eef4372b2a7c14741c7e58029089c16f0c2e10"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "gitObjectId": "38592cefb6103e886ef92da0e0b73b863bf509be",
+      "gitBlobSha256": "e9377f13c66e9dc008646baab939d07125243af6ff1e5a539edc26889e446e08"
+    },
+    {
+      "path": ".gitlink-signoff.tsv",
+      "mode": "100644",
+      "gitObjectId": "c6dc4c513d06a122cf5622db2ab38a093df39423",
+      "gitBlobSha256": "f685fbf152ddd368c6896b35aea22bd66da931bd0a101cf99e1cc7640568f112"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+      "mode": "100644",
+      "gitObjectId": "a10613e025b9f3a42a7bc0218a2b0aaa042c326f",
+      "gitBlobSha256": "6c55361e1b3678ee349ad952ec79113084bbb9f4af9193c1861b29a57c003871"
+    },
+    {
+      "path": "docs/architecture.md",
+      "mode": "100644",
+      "gitObjectId": "f0400d100f081869a3df6180e2ae749a741c9774",
+      "gitBlobSha256": "33606b0bf6e4b3bfefa82762ed2b621ced22c525d3aeeaafccac4759ac93acec"
+    },
+    {
+      "path": "docs/ci-lifecycle-qualification.md",
+      "mode": "100644",
+      "gitObjectId": "63207307737551432f67b28fd0402d07ac2ea890",
+      "gitBlobSha256": "9b33fd50f8d5bbe61b26673dd14db82cafbcf2e8c6c88d548c789a4c23d9c0a2"
+    },
+    {
+      "path": "docs/ci.md",
+      "mode": "100644",
+      "gitObjectId": "0a6b4ab1f6dd06d284365cb68b626769823d7d06",
+      "gitBlobSha256": "da15c100cd46f046b7d02b5c807c3b73dbc64202ed0c4f8f3f3de58fa46d8722"
+    },
+    {
+      "path": "references/Hexalith.Builds",
+      "mode": "160000",
+      "gitObjectId": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "gitBlobSha256": null
+    },
+    {
+      "path": "references/Hexalith.Platform",
+      "mode": "160000",
+      "gitObjectId": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "gitBlobSha256": null
+    },
+    {
+      "path": "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+      "mode": "100644",
+      "gitObjectId": "02020aa25672070394028ad9b89073e7a75fba89",
+      "gitBlobSha256": "5c521f0fb3afe8b52bf66a2d301d931e1763e37a0d4984a4205defcf88eb7f28"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "mode": "100644",
+      "gitObjectId": "6e76ca7759f6d6a0cfd155e2fe5244246365397b",
+      "gitBlobSha256": "ae7334b135f8034eaa3451d430e74a312192ae081ca05a8b07c06ae423b91b08"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "mode": "100644",
+      "gitObjectId": "b7292193dbcf66359ab451dab59ab4bb205e8987",
+      "gitBlobSha256": "28bfbbecb5eaab901a443d793e321cba2703fd6d2f578339a2ec8e3cb2a922f5"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "mode": "100644",
+      "gitObjectId": "604358895b5338ebfd5f3c425473100f8df4372d",
+      "gitBlobSha256": "eef5d9ed94494ccf2ee112a647ccaf6e301051c10d24d97b0dfa8d84d406f470"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+      "mode": "100644",
+      "gitObjectId": "29d879cab7ad5f21cc1047f643f1452961fe13b9",
+      "gitBlobSha256": "34177df39ed33b18b8cb7d6d344b08c55db1bb1c725506b9ed67423c6738c299"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+      "mode": "100644",
+      "gitObjectId": "ff0ed3e61694f7ccb432bf93d08aff3458fb5d27",
+      "gitBlobSha256": "4e3dc80f179beab58389e1237bdfb4d8b80a37ee4a31a980248b361878dcd530"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+      "mode": "100644",
+      "gitObjectId": "04a52a8af6bf97d2809ecbce3e0ad2c2a3f11f69",
+      "gitBlobSha256": "33ef09b054f4fee3f2cd500b8589f9104e1ff9910c7f67ea83ec54dcbdb4a591"
+    }
+  ],
+  "preservedCriticalFiles": [
+    {
+      "path": "scripts/qualify-disposable-ci.py",
+      "gitBlobSha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+      "unchangedFromActualBase": true
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs",
+      "gitBlobSha256": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+      "unchangedFromActualBase": true
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs",
+      "gitBlobSha256": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff",
+      "unchangedFromActualBase": true
+    },
+    {
+      "path": "module/hexalith.module-manifest.v2.json",
+      "gitBlobSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+      "unchangedFromActualBase": true
+    },
+    {
+      "path": ".config/dotnet-tools.json",
+      "gitBlobSha256": "ccc25a645b9a1ba03a9ba1c71155f59b8ba062711c50556b22bd662279d44c9f",
+      "unchangedFromActualBase": true
+    }
+  ],
+  "patch": "parties-platform117-current-main.patch",
+  "patchSha256": "83443d731d66cc3b19aceb697e8d99d865fb154471b308139e2c39d24a71c301",
+  "controls": {
+    "scrubbed-handoff": {
+      "total": "13",
+      "executed": "13",
+      "passed": "13",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0",
+      "file": "parties-platform117-scrubbed-handoff-results.trx",
+      "sha256": "45f5268a1a45affc41555d77937718b97a4981611d7f37195bcd4a5e10104ee4"
+    },
+    "caller-controls": {
+      "total": "69",
+      "executed": "69",
+      "passed": "69",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0",
+      "file": "parties-platform117-caller-controls-results.trx",
+      "sha256": "b6ede388a3ed6740ee9078906735d12368a43beadbd022dfbb9e7c0e58540272"
+    },
+    "selection-controls": {
+      "total": "3",
+      "executed": "3",
+      "passed": "3",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0",
+      "file": "parties-platform117-selection-controls-results.trx",
+      "sha256": "a77f066843f19e676d5f0e90d380069c28fffff9d5658f518466a402f2a1a0dc"
+    }
+  },
+  "historyPreservation": "parties-platform117-history-preservation-final.json",
+  "tool": "4.43.6",
+  "buildsSource": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "platformVersion": "1.1.7",
+  "platformSource": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+  "isolatedProjectCountPreserved": 15,
+  "readerSecretCountPreserved": 2,
+  "releasePackageBuilds": [
+    "parties-platform117-native-build-guarded.json",
+    "parties-platform117-ci-build-guarded.json",
+    "parties-platform117-fitness-build-guarded.json"
+  ],
+  "fastControls": "parties-platform117-fast-controls-current.json",
+  "signedPreparation": "parties-platform117-preparation-first.json",
+  "firstFailures": [
+    "parties-platform117-lifecycle-controls-first.txt",
+    "parties-platform117-native-build-current.txt"
+  ],
+  "owningMessageValidation": {
+    "cliVersion": "21.2.4",
+    "nodeVersion": "24.22.1",
+    "exactCompleteMessagesAndTitlePassed": true,
+    "committedRangePassed": true,
+    "firstDraftMessageLineLengthFailureCorrectedBeforeCommit": true,
+    "invalidSameCommitRangeInvocationCorrectedBeforeCommit": true
+  },
+  "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/61",
+  "hostedAcceptance": "pending",
+  "actualNativeSdkMeasurements": "not yet observed; local controls are not native evidence",
+  "manualLifecycleDispatch": false,
+  "candidateAcceptance": false,
+  "incomplete": [
+    "All exact-head hosted owner gates",
+    "Named real Party persistence test and actual consumed/copied SDK output comparison to official archives",
+    "Exact receipt-bound zero-owned-leftover cleanup",
+    "Later matrix and real startup/execution cancellation qualification",
+    "Memories image source binding remains an explicit known limit",
+    "Original two reference tasks and final baseline audit/step04 remain incomplete"
+  ]
+}

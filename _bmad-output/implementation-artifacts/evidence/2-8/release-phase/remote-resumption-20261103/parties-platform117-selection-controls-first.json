@@ -1,0 +1,28 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-method",
+    "Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSelectionObservations_PreservePackageGraphAndImmutableConsumptionRefusals",
+    "--filter-method",
+    "Hexalith.Parties.Tests.FitnessTests.PlatformApiPrerequisitesTests.CommittedSourceSelections_RecordOverridesAndRefuseInvalidImmutableConsumption",
+    "--minimum-expected-tests",
+    "3",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/selection-controls",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "selection.trx"
+  ],
+  "exitCode": 0,
+  "completedAt": "2026-11-03T20:35:11.554932+00:00",
+  "mode": "Release/package",
+  "candidateAcceptance": false
+}

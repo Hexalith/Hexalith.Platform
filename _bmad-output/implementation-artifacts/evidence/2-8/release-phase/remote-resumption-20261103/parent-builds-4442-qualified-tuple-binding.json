@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-04T09:45:32.140600+00:00",
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
+        "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+      }
+    },
+    "publication": {
+      "version": "4.44.2",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "releaseTag": "v4.44.2",
+      "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
+      "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
+      "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+      "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+    }
+  },
+  "releaseId": 433744499,
+  "normalProducer": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "41798378661",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "release",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/build-release.yml@refs/heads/main",
+    "GITHUB_WORKFLOW_SHA": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "GITHUB_EVENT_NAME": "workflow_dispatch",
+    "schema": "hexalith.g4-qualification-carrier.v1",
+    "kind": "release",
+    "version": "4.44.2",
+    "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
+    "qualificationEvidenceFiles": 55
+  },
+  "qualificationPayloadsVerified": 55,
+  "immutableSourceFixturesVerified": 296,
+  "publicPackageSignatureVerifications": [
+    {
+      "id": "Hexalith.Builds.Evidence.Cli",
+      "exitCode": 0,
+      "actualVersion": "4.44.2+ae68c59bd2f4145a23ccf68c3711f98eaf62195f"
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "exitCode": 0,
+      "actualVersion": "4.44.2+ae68c59bd2f4145a23ccf68c3711f98eaf62195f"
+    }
+  ],
+  "qualifiedEligibleActualVersion": true,
+  "actualPublicModuleArchive": "/home/administrator/.cache/hexalith/story-2-8/builds-4442-official-20261104/hexalith.builds.module.cli.4.44.2.nupkg",
+  "actualPublicToolRoot": "/home/administrator/.cache/hexalith/story-2-8/builds-4442-official-20261104/hexalith.builds.module.cli-extracted/tools/net10.0/any",
+  "source": "Actual normal release/source/tag/API/offline signatures/unsigned reconstruction/full55payloads/296sourcefixtures/actualexecutables independently verified. Not reference native/Story/candidate acceptance.",
+  "nativeAcceptance": false,
+  "storyComplete": false
+}

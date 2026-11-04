@@ -1,0 +1,139 @@
+{
+  "observedAtUtc": "2026-11-03T20:56:47.898821+00:00",
+  "runId": 41714178534,
+  "sourceHead": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "job": {
+    "id": 126189732414,
+    "name": "Parties Platform declaration",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-11-03T20:45:36Z",
+    "completed_at": "2026-11-03T20:55:39Z",
+    "runner_name": "GitHub Actions 1000071381"
+  },
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1,
+      "started_at": "2026-11-03T20:45:37Z",
+      "completed_at": "2026-11-03T20:45:38Z"
+    },
+    {
+      "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2,
+      "started_at": "2026-11-03T20:45:38Z",
+      "completed_at": "2026-11-03T20:45:51Z"
+    },
+    {
+      "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 3,
+      "started_at": "2026-11-03T20:45:51Z",
+      "completed_at": "2026-11-03T20:45:51Z"
+    },
+    {
+      "name": "Initialize direct declaration owners",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 4,
+      "started_at": "2026-11-03T20:45:51Z",
+      "completed_at": "2026-11-03T20:55:32Z"
+    },
+    {
+      "name": "Restore the pinned module tool",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 5,
+      "started_at": "2026-11-03T20:55:32Z",
+      "completed_at": "2026-11-03T20:55:36Z"
+    },
+    {
+      "name": "Validate Parties with its reference declarations",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "number": 6,
+      "started_at": "2026-11-03T20:55:36Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    },
+    {
+      "name": "Check the owner ACL declaration",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 7,
+      "started_at": "2026-11-03T20:55:37Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    },
+    {
+      "name": "Test strict declaration rendering",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 8,
+      "started_at": "2026-11-03T20:55:37Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    },
+    {
+      "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 15,
+      "started_at": "2026-11-03T20:55:37Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    },
+    {
+      "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 16,
+      "started_at": "2026-11-03T20:55:37Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 17,
+      "started_at": "2026-11-03T20:55:37Z",
+      "completed_at": "2026-11-03T20:55:37Z"
+    }
+  ],
+  "checkOutput": {
+    "title": null,
+    "summary": null,
+    "text": null,
+    "annotations_count": 2,
+    "annotations_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/check-runs/126189732414/annotations"
+  },
+  "annotations": [
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Hexalith/Hexalith.Parties/blob/126acd2d7ab08ad614ede09b0cb931573b053a03/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "failure",
+      "title": "",
+      "message": "The job has exceeded the maximum execution time of 10m0s",
+      "raw_details": ""
+    },
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Hexalith/Hexalith.Parties/blob/126acd2d7ab08ad614ede09b0cb931573b053a03/.github",
+      "start_line": 8,
+      "start_column": null,
+      "end_line": 8,
+      "end_column": null,
+      "annotation_level": "failure",
+      "title": "",
+      "message": "The operation was canceled.",
+      "raw_details": ""
+    }
+  ],
+  "workflowJobTimeoutMinutes": 10,
+  "parentCancelledOrRetried": false
+}

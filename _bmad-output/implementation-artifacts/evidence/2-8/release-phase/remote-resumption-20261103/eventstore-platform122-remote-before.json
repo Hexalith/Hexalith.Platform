@@ -1,0 +1,25 @@
+{
+  "pr": {
+    "number": 392,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls/392",
+    "title": "ci: qualify fresh EventStore package integration with Tenants",
+    "body": "The shared `domain-ci-v2` caller now uses the normally released Platform 1.2.1 (`728baa7c0f006d86e71d6c9b29527dabc8e16e49`) and Builds 4.44.0 (`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`) tuple, with the same exact local CLI pin. It selects the supported `integration-test-reference-owners: tenants` input for the fresh `platform-package` suite. The released helper carries that additive request as `--with-owner=tenants`; Platform admits only its qualified Development Linux/x64 EventStore 4.0.4/Tenants 7.0.0 profile and measured immutable Tenants images.\n\nAll twenty isolated projects, the five independent EventStore jobs, dedicated reader secrets, deadlines and release gates remain. The production declaration, both real gateway/persistence Facts and bounded loaded-SDK diagnostic binding are unchanged. The diagnostic consumes only the published G4 handoff, verifies descriptor/plan/owner/source mapping and the caller invocation, and retains private bounded observations in the original caller artifact tree. The valid-baseline governance mutation fixture and incoming Admin/security/SignalR corrections remain preserved.\n\nFocused validation on the clean committed tuple: actual signed CLI preparation passes with the private official Tenants cache; Contracts Release/package build passes with zero warnings/errors; five caller/package-harness/blocking controls pass with zero skips. Three existing released-helper owner-argument controls pass. The actual CLI reports 4.44.0+6249a8c0a0480a4b8a8ba04fc214c6104c3c9045 and validates the unchanged declaration. The real helper refuses local execution without disposable GitHub-hosted identity before creating a receipt or evidence. Actionlint, whitespace and exact-message locked commitlint 21.2.4 pass.\n\nFresh exact-head hosted isolated, SDK/native gateway/Redis and receipt-bound cleanup results are still required. This proposal claims no native/candidate acceptance, expanded-owner reuse or attachments. The separate full Parties/Memories runtime prerequisite remains unresolved.\n",
+    "state": "open",
+    "head": "a0c65bec419138e79d763557c73573f894217f24",
+    "base": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+    "merge": "0e84ef0c0ef04112ab068e77e18e4a4c8e1209ed",
+    "mergeable": true,
+    "updated_at": "2026-11-04T05:30:33Z"
+  },
+  "main": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "platformTag": {
+    "ref": "refs/tags/v1.2.2",
+    "node_id": "REF_kwDOTzCqirByZWZzL3RhZ3MvdjEuMi4y",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/refs/tags/v1.2.2",
+    "object": {
+      "sha": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/bd0d370d5b2b59f6a9f2f01aa67a34b115055006"
+    }
+  }
+}

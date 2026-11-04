@@ -1,0 +1,72 @@
+[
+  {
+    "name": "lifecycle-python",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ci-lifecycle",
+      "-v"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:23.269535+00:00",
+    "completedAt": "2026-11-04T11:23:23.831436+00:00"
+  },
+  {
+    "name": "declaration-python",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_platform_declaration.py",
+      "-v"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:23.831475+00:00",
+    "completedAt": "2026-11-04T11:23:24.661332+00:00"
+  },
+  {
+    "name": "generated-declaration",
+    "command": [
+      "python3",
+      "scripts/render-platform-declaration.py",
+      "--check"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:24.661368+00:00",
+    "completedAt": "2026-11-04T11:23:24.688622+00:00"
+  },
+  {
+    "name": "actionlint",
+    "command": [
+      "actionlint",
+      ".github/workflows/ci.yml",
+      ".github/workflows/ci-lifecycle-qualification.yml"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:24.688659+00:00",
+    "completedAt": "2026-11-04T11:23:24.984362+00:00"
+  },
+  {
+    "name": "whitespace",
+    "command": [
+      "git",
+      "-c",
+      "core.whitespace=cr-at-eol",
+      "diff",
+      "26658feb2aea894ac4cc76b0a0259efa09a62735",
+      "--check"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:24.984404+00:00",
+    "completedAt": "2026-11-04T11:23:25.038715+00:00"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-11-04T06:35:09.916910+00:00",
+  "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "parent": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+  "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+  "branch": "fix/retain-complete-ci-diagnostics",
+  "patches": [
+    {
+      "base": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+      "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+      "path": "builds-memory-retention-codacy.patch",
+      "sha256": "2fed5d1d4303b8eee26fe0ce29ed01adee0c5fb55f7e0dab1f8a407d9f98b8d4"
+    },
+    {
+      "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+      "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+      "path": "builds-memory-retention-proposed.patch",
+      "sha256": "12684ffcac4f4383cf85dc9c00c964e039913838d68a69ab1e8b70c08a9ebabe"
+    }
+  ],
+  "followupPaths": [
+    "Github/run-module-integration/run_module_integration.py",
+    "Github/run-module-integration/tests/test_run_module_integration.py"
+  ],
+  "followupHashes": {
+    "Github/run-module-integration/run_module_integration.py": "7caae136b2f03aeb8d33e712d6d559516a2775012f9928a342c34c791743e234",
+    "Github/run-module-integration/tests/test_run_module_integration.py": "fe9fb0ef4af64f99cad28911b28eee338bccb2ccfe5d8abed9ecbe3807ed0ac0"
+  },
+  "compiledPackageAndCatalogSourceUnchangedFrom05e": true,
+  "fullLocalQualificationSource": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+  "fullLocalQualificationExit": 0,
+  "newHeadFullHostedGates": "pending",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

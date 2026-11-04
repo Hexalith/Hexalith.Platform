@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "--configuration",
+    "Release",
+    "-m:1",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsPublishedToolRoot=/home/administrator/.cache/hexalith/story-2-8/builds-4440-official-20261104/hexalith.builds.module.cli-extracted/tools/net10.0/any",
+    "-warnaserror"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "started": "2026-11-04T07:33:40.855297+00:00",
+  "finished": "2026-11-04T07:33:44.994831+00:00",
+  "exitCode": 0
+}

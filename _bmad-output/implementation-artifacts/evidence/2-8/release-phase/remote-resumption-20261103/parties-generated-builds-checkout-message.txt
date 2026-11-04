@@ -1,0 +1,8 @@
+fix(ci): exclude the generated Builds checkout
+
+Ignore only the root workflow-owned Builds preparation/helper checkout.
+Keep tracked source, selected tests, declarations, configuration and
+unrelated untracked inputs visible to the unchanged source-clean guard.
+
+A real Git regression covers the checkout and mutation boundaries.
+Full hosted trusted-handoff and native qualification remain pending.

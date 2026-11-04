@@ -1,0 +1,40 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "Github/prepare-module-build/tests",
+      "-v"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-rename-ready-control-0.txt"
+  },
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-domain-workflow-test-platforms.ps1",
+      "-Contract",
+      "legacy"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-rename-ready-control-1.txt"
+  },
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-domain-workflow-test-platforms.ps1",
+      "-Contract",
+      "v2"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-rename-ready-control-2.txt"
+  }
+]

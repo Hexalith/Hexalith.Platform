@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "name": "unsupported-admitted-cohort",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/output/Hexalith.Platform.CatalogBuilder.dll",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/unsupported-admitted-cohort-request.json"
+      ],
+      "actualExitCode": -6,
+      "expected": "nonzero refusal before catalog output",
+      "catalogCreated": false,
+      "stdout": "",
+      "stderr": "Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.\n   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/Program.cs:line 30\n",
+      "clarification": "First negative request used an unknown cohort name; retained as unknown-cohort refusal, not a proof of known-cohort owner-set rejection."
+    },
+    {
+      "name": "missing-owner-factory",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/output/Hexalith.Platform.CatalogBuilder.dll",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/missing-owner-factory-request.json"
+      ],
+      "actualExitCode": -6,
+      "expected": "nonzero refusal before catalog output",
+      "catalogCreated": false,
+      "stdout": "",
+      "stderr": "Unhandled exception. System.IO.InvalidDataException: The selected owner adapter inventory differs from its declared commands.\n   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/Program.cs:line 98\n"
+    },
+    {
+      "name": "known-cohort-refuses-memory-owner",
+      "argv": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/output/Hexalith.Platform.CatalogBuilder.dll",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/known-cohort-refuses-memory-owner-request.json"
+      ],
+      "actualExitCode": -6,
+      "requestedActualPublishedCohort": "eventstore-4.0.4-tenants-7.0.0",
+      "expected": "nonzero unsupported owner-set refusal before output",
+      "catalogCreated": false,
+      "stdout": "",
+      "stderr": "Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.\n   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/Program.cs:line 30\n"
+    }
+  ],
+  "productionGuardBytesChanged": false,
+  "authorityRegistered": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

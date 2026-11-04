@@ -1,0 +1,103 @@
+{
+  "observedAtUtc": "2026-11-03T20:34:57.923062+00:00",
+  "run": {
+    "id": 41711963375,
+    "head_sha": "8d95170b5babd0aa3552f4b087528b6ab6987fa8",
+    "event": "pull_request",
+    "status": "queued",
+    "conclusion": null,
+    "created_at": "2026-11-03T20:22:27Z",
+    "run_started_at": "2026-11-03T20:22:27Z",
+    "updated_at": "2026-11-03T20:23:56Z",
+    "run_attempt": 1,
+    "check_suite_id": 113034547127
+  },
+  "jobs": [
+    {
+      "id": 126182809588,
+      "name": "ci / contracts",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182809588"
+    },
+    {
+      "id": 126182809904,
+      "name": "ci / folded-snapshot-compatibility",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182809904"
+    },
+    {
+      "id": 126182810152,
+      "name": "ci / build-and-test",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182810152"
+    },
+    {
+      "id": 126182810156,
+      "name": "ci / tenants-source-mode",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182810156"
+    },
+    {
+      "id": 126182810229,
+      "name": "ci / semantic-release-governance",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182810229"
+    },
+    {
+      "id": 126182810272,
+      "name": "ci / checkpointed process packages",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0,
+      "runner_name": "",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "started_at": "2026-11-03T20:23:56Z",
+      "completed_at": null,
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-runs/126182810272"
+    }
+  ],
+  "queueCause": "not established",
+  "parentRunMutation": false
+}

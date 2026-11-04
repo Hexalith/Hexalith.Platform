@@ -1,0 +1,672 @@
+﻿2026-11-04T07:24:45.0107610Z Current runner version: '2.338.2'
+2026-11-04T07:24:45.0124337Z ##[group]Runner Image Provisioner
+2026-11-04T07:24:45.0124984Z Hosted Compute Agent
+2026-11-04T07:24:45.0125499Z Version: 20261021.618
+2026-11-04T07:24:45.0125902Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-04T07:24:45.0126343Z Build Date: 2026-10-21T00:45:21Z
+2026-11-04T07:24:45.0126775Z Worker ID: {6acaf6fd-7c8d-4606-b57d-0cb73b3f3c7b}
+2026-11-04T07:24:45.0127271Z Region: westus3
+2026-11-04T07:24:45.0127606Z Cloud: Azure
+2026-11-04T07:24:45.0127958Z ##[endgroup]
+2026-11-04T07:24:45.0128981Z ##[group]Operating System
+2026-11-04T07:24:45.0129348Z Ubuntu
+2026-11-04T07:24:45.0129750Z 26.04.1
+2026-11-04T07:24:45.0130066Z LTS
+2026-11-04T07:24:45.0130379Z ##[endgroup]
+2026-11-04T07:24:45.0130758Z ##[group]Runner Image
+2026-11-04T07:24:45.0131152Z Image: ubuntu-26.04
+2026-11-04T07:24:45.0131558Z Version: 20261025.179.1
+2026-11-04T07:24:45.0132317Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-04T07:24:45.0133246Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+2026-11-04T07:24:45.0133806Z ##[endgroup]
+2026-11-04T07:24:45.0134517Z ##[group]GITHUB_TOKEN Permissions
+2026-11-04T07:24:45.0135819Z Contents: read
+2026-11-04T07:24:45.0136228Z Metadata: read
+2026-11-04T07:24:45.0136570Z ##[endgroup]
+2026-11-04T07:24:45.0137889Z Secret source: Actions
+2026-11-04T07:24:45.0138530Z Cache mode: write
+2026-11-04T07:24:45.0138933Z Prepare workflow directory
+2026-11-04T07:24:45.0347794Z Prepare all required actions
+2026-11-04T07:24:45.0380259Z Getting action download info
+2026-11-04T07:24:45.2898040Z Download action repository 'actions/checkout@v7.0.1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-04T07:24:45.4671839Z Complete job name: Package catalog contracts
+2026-11-04T07:24:45.5248884Z ##[group]Run actions/checkout@v7.0.1
+2026-11-04T07:24:45.5249325Z with:
+2026-11-04T07:24:45.5249574Z   fetch-depth: 0
+2026-11-04T07:24:45.5249849Z   submodules: false
+2026-11-04T07:24:45.5250124Z   persist-credentials: false
+2026-11-04T07:24:45.5250428Z   repository: Hexalith/Hexalith.Builds
+2026-11-04T07:24:45.5252676Z   token: ***
+2026-11-04T07:24:45.5252922Z   ssh-strict: true
+2026-11-04T07:24:45.5253176Z   ssh-user: git
+2026-11-04T07:24:45.5253416Z   clean: true
+2026-11-04T07:24:45.5253676Z   sparse-checkout-cone-mode: true
+2026-11-04T07:24:45.5253982Z   fetch-tags: false
+2026-11-04T07:24:45.5254239Z   show-progress: true
+2026-11-04T07:24:45.5254500Z   lfs: false
+2026-11-04T07:24:45.5254747Z   set-safe-directory: true
+2026-11-04T07:24:45.5255036Z   allow-unsafe-pr-checkout: false
+2026-11-04T07:24:45.5255531Z ##[endgroup]
+2026-11-04T07:24:45.7558221Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-04T07:24:45.7559956Z ##[group]Getting Git version info
+2026-11-04T07:24:45.7560774Z Working directory is '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-04T07:24:45.7561762Z [command]/usr/bin/git version
+2026-11-04T07:24:45.7562281Z git version 2.56.0
+2026-11-04T07:24:45.7574634Z ##[endgroup]
+2026-11-04T07:24:45.7583207Z Temporarily overriding HOME='/home/runner/work/_temp/bcf18a58-98f9-455a-9ee2-b18c57d51552' before making global git config changes
+2026-11-04T07:24:45.7584484Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-04T07:24:45.7586891Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-04T07:24:45.7649064Z Deleting the contents of '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-04T07:24:45.7650250Z ##[group]Determining repository object format
+2026-11-04T07:24:45.7651022Z ##[endgroup]
+2026-11-04T07:24:45.7651645Z ##[group]Initializing the repository
+2026-11-04T07:24:45.7653921Z [command]/usr/bin/git init /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-04T07:24:45.7759765Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-04T07:24:45.7760774Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-04T07:24:45.7761979Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-04T07:24:45.7762674Z hint: call:
+2026-11-04T07:24:45.7763042Z hint:
+2026-11-04T07:24:45.7763519Z hint: 	git config --global init.defaultBranch <name>
+2026-11-04T07:24:45.7764087Z hint:
+2026-11-04T07:24:45.7764604Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-04T07:24:45.7765567Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-04T07:24:45.7766262Z hint:
+2026-11-04T07:24:45.7766637Z hint: 	git branch -m <name>
+2026-11-04T07:24:45.7767059Z hint:
+2026-11-04T07:24:45.7767608Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-04T07:24:45.7773673Z Initialized empty Git repository in /home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/
+2026-11-04T07:24:45.7783200Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-04T07:24:45.7830698Z ##[endgroup]
+2026-11-04T07:24:45.7831386Z ##[group]Disabling automatic garbage collection
+2026-11-04T07:24:45.7833789Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-04T07:24:45.7866824Z ##[endgroup]
+2026-11-04T07:24:45.7867920Z ##[group]Setting up auth
+2026-11-04T07:24:45.7868438Z Removing SSH command configuration
+2026-11-04T07:24:45.7871185Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T07:24:45.7904119Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-04T07:24:45.8303881Z Removing HTTP extra header
+2026-11-04T07:24:45.8309457Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T07:24:45.8336535Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-04T07:24:45.8554745Z Removing includeIf entries pointing to credentials config files
+2026-11-04T07:24:45.8559069Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T07:24:45.8586004Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-04T07:24:45.8801677Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-04T07:24:45.8831967Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path /home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:45.8858623Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:45.8887879Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:45.8913916Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:45.8938819Z ##[endgroup]
+2026-11-04T07:24:45.8939247Z ##[group]Fetching the repository
+2026-11-04T07:24:45.8943419Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +512d3c50091dcb99edd43fcd7550d4cbfef664ec:refs/remotes/pull/160/merge
+2026-11-04T07:24:52.2685027Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-04T07:24:52.2686173Z  * [new branch]        fix/retain-main-audit-lineage            -> origin/fix/retain-main-audit-lineage
+2026-11-04T07:24:52.2687131Z  * [new branch]        main                                     -> origin/main
+2026-11-04T07:24:52.2687677Z  * [new tag]           v1.60.0                                  -> v1.60.0
+2026-11-04T07:24:52.2688404Z  * [new tag]           v1.61.0                                  -> v1.61.0
+2026-11-04T07:24:52.2689159Z  * [new tag]           v1.62.0                                  -> v1.62.0
+2026-11-04T07:24:52.2689895Z  * [new tag]           v1.63.0                                  -> v1.63.0
+2026-11-04T07:24:52.2690639Z  * [new tag]           v2.0.0                                   -> v2.0.0
+2026-11-04T07:24:52.2691356Z  * [new tag]           v2.0.1                                   -> v2.0.1
+2026-11-04T07:24:52.2692078Z  * [new tag]           v2.0.2                                   -> v2.0.2
+2026-11-04T07:24:52.2692824Z  * [new tag]           v2.0.3                                   -> v2.0.3
+2026-11-04T07:24:52.2693589Z  * [new tag]           v3.0.0                                   -> v3.0.0
+2026-11-04T07:24:52.2694319Z  * [new tag]           v3.0.1                                   -> v3.0.1
+2026-11-04T07:24:52.2695019Z  * [new tag]           v3.0.2                                   -> v3.0.2
+2026-11-04T07:24:52.2696024Z  * [new tag]           v3.0.3                                   -> v3.0.3
+2026-11-04T07:24:52.2696875Z  * [new tag]           v3.0.4                                   -> v3.0.4
+2026-11-04T07:24:52.2697590Z  * [new tag]           v3.0.5                                   -> v3.0.5
+2026-11-04T07:24:52.2698313Z  * [new tag]           v3.1.0                                   -> v3.1.0
+2026-11-04T07:24:52.2699083Z  * [new tag]           v3.10.0                                  -> v3.10.0
+2026-11-04T07:24:52.2700096Z  * [new tag]           v3.10.1                                  -> v3.10.1
+2026-11-04T07:24:52.2700847Z  * [new tag]           v3.10.2                                  -> v3.10.2
+2026-11-04T07:24:52.2701572Z  * [new tag]           v3.10.3                                  -> v3.10.3
+2026-11-04T07:24:52.2702290Z  * [new tag]           v3.11.0                                  -> v3.11.0
+2026-11-04T07:24:52.2703006Z  * [new tag]           v3.11.1                                  -> v3.11.1
+2026-11-04T07:24:52.2703736Z  * [new tag]           v3.12.0                                  -> v3.12.0
+2026-11-04T07:24:52.2704478Z  * [new tag]           v3.12.1                                  -> v3.12.1
+2026-11-04T07:24:52.2705210Z  * [new tag]           v3.12.2                                  -> v3.12.2
+2026-11-04T07:24:52.2706119Z  * [new tag]           v3.13.0                                  -> v3.13.0
+2026-11-04T07:24:52.2706858Z  * [new tag]           v3.14.0                                  -> v3.14.0
+2026-11-04T07:24:52.2707747Z  * [new tag]           v3.14.1                                  -> v3.14.1
+2026-11-04T07:24:52.2708697Z  * [new tag]           v3.14.2                                  -> v3.14.2
+2026-11-04T07:24:52.2709160Z  * [new tag]           v3.14.3                                  -> v3.14.3
+2026-11-04T07:24:52.2709727Z  * [new tag]           v3.14.4                                  -> v3.14.4
+2026-11-04T07:24:52.2710173Z  * [new tag]           v3.14.5                                  -> v3.14.5
+2026-11-04T07:24:52.2710623Z  * [new tag]           v3.14.6                                  -> v3.14.6
+2026-11-04T07:24:52.2711069Z  * [new tag]           v3.15.0                                  -> v3.15.0
+2026-11-04T07:24:52.2711514Z  * [new tag]           v3.16.0                                  -> v3.16.0
+2026-11-04T07:24:52.2711959Z  * [new tag]           v3.17.0                                  -> v3.17.0
+2026-11-04T07:24:52.2712404Z  * [new tag]           v3.17.1                                  -> v3.17.1
+2026-11-04T07:24:52.2712861Z  * [new tag]           v3.17.10                                 -> v3.17.10
+2026-11-04T07:24:52.2713319Z  * [new tag]           v3.17.11                                 -> v3.17.11
+2026-11-04T07:24:52.2713899Z  * [new tag]           v3.17.12                                 -> v3.17.12
+2026-11-04T07:24:52.2714355Z  * [new tag]           v3.17.13                                 -> v3.17.13
+2026-11-04T07:24:52.2714816Z  * [new tag]           v3.17.14                                 -> v3.17.14
+2026-11-04T07:24:52.2715272Z  * [new tag]           v3.17.15                                 -> v3.17.15
+2026-11-04T07:24:52.2716106Z  * [new tag]           v3.17.16                                 -> v3.17.16
+2026-11-04T07:24:52.2716837Z  * [new tag]           v3.17.17                                 -> v3.17.17
+2026-11-04T07:24:52.2717598Z  * [new tag]           v3.17.18                                 -> v3.17.18
+2026-11-04T07:24:52.2718141Z  * [new tag]           v3.17.19                                 -> v3.17.19
+2026-11-04T07:24:52.2718596Z  * [new tag]           v3.17.2                                  -> v3.17.2
+2026-11-04T07:24:52.2719055Z  * [new tag]           v3.17.20                                 -> v3.17.20
+2026-11-04T07:24:52.2719517Z  * [new tag]           v3.17.21                                 -> v3.17.21
+2026-11-04T07:24:52.2719971Z  * [new tag]           v3.17.22                                 -> v3.17.22
+2026-11-04T07:24:52.2720423Z  * [new tag]           v3.17.3                                  -> v3.17.3
+2026-11-04T07:24:52.2720877Z  * [new tag]           v3.17.4                                  -> v3.17.4
+2026-11-04T07:24:52.2721326Z  * [new tag]           v3.17.5                                  -> v3.17.5
+2026-11-04T07:24:52.2721775Z  * [new tag]           v3.17.6                                  -> v3.17.6
+2026-11-04T07:24:52.2722227Z  * [new tag]           v3.17.7                                  -> v3.17.7
+2026-11-04T07:24:52.2722788Z  * [new tag]           v3.17.8                                  -> v3.17.8
+2026-11-04T07:24:52.2723240Z  * [new tag]           v3.17.9                                  -> v3.17.9
+2026-11-04T07:24:52.2723693Z  * [new tag]           v3.18.0                                  -> v3.18.0
+2026-11-04T07:24:52.2724142Z  * [new tag]           v3.18.1                                  -> v3.18.1
+2026-11-04T07:24:52.2724618Z  * [new tag]           v3.18.2                                  -> v3.18.2
+2026-11-04T07:24:52.2725069Z  * [new tag]           v3.2.0                                   -> v3.2.0
+2026-11-04T07:24:52.2725661Z  * [new tag]           v3.3.0                                   -> v3.3.0
+2026-11-04T07:24:52.2726121Z  * [new tag]           v3.4.0                                   -> v3.4.0
+2026-11-04T07:24:52.2726574Z  * [new tag]           v3.4.1                                   -> v3.4.1
+2026-11-04T07:24:52.2727020Z  * [new tag]           v3.5.0                                   -> v3.5.0
+2026-11-04T07:24:52.2793584Z  * [new tag]           v3.5.1                                   -> v3.5.1
+2026-11-04T07:24:52.2794737Z  * [new tag]           v3.5.2                                   -> v3.5.2
+2026-11-04T07:24:52.2795779Z  * [new tag]           v3.5.3                                   -> v3.5.3
+2026-11-04T07:24:52.2796448Z  * [new tag]           v3.6.0                                   -> v3.6.0
+2026-11-04T07:24:52.2797110Z  * [new tag]           v3.6.1                                   -> v3.6.1
+2026-11-04T07:24:52.2797776Z  * [new tag]           v3.6.2                                   -> v3.6.2
+2026-11-04T07:24:52.2798429Z  * [new tag]           v3.7.0                                   -> v3.7.0
+2026-11-04T07:24:52.2799071Z  * [new tag]           v3.7.1                                   -> v3.7.1
+2026-11-04T07:24:52.2799813Z  * [new tag]           v3.7.2                                   -> v3.7.2
+2026-11-04T07:24:52.2800495Z  * [new tag]           v3.8.0                                   -> v3.8.0
+2026-11-04T07:24:52.2801214Z  * [new tag]           v3.8.1                                   -> v3.8.1
+2026-11-04T07:24:52.2801929Z  * [new tag]           v3.8.2                                   -> v3.8.2
+2026-11-04T07:24:52.2802876Z  * [new tag]           v3.8.3                                   -> v3.8.3
+2026-11-04T07:24:52.2803614Z  * [new tag]           v3.9.0                                   -> v3.9.0
+2026-11-04T07:24:52.2804342Z  * [new tag]           v3.9.1                                   -> v3.9.1
+2026-11-04T07:24:52.2805067Z  * [new tag]           v4.0.0                                   -> v4.0.0
+2026-11-04T07:24:52.2805968Z  * [new tag]           v4.1.0                                   -> v4.1.0
+2026-11-04T07:24:52.2806699Z  * [new tag]           v4.10.0                                  -> v4.10.0
+2026-11-04T07:24:52.2807455Z  * [new tag]           v4.11.0                                  -> v4.11.0
+2026-11-04T07:24:52.2808194Z  * [new tag]           v4.12.0                                  -> v4.12.0
+2026-11-04T07:24:52.2808828Z  * [new tag]           v4.13.0                                  -> v4.13.0
+2026-11-04T07:24:52.2809271Z  * [new tag]           v4.13.1                                  -> v4.13.1
+2026-11-04T07:24:52.2809719Z  * [new tag]           v4.13.2                                  -> v4.13.2
+2026-11-04T07:24:52.2810160Z  * [new tag]           v4.13.3                                  -> v4.13.3
+2026-11-04T07:24:52.2810597Z  * [new tag]           v4.13.4                                  -> v4.13.4
+2026-11-04T07:24:52.2811035Z  * [new tag]           v4.14.0                                  -> v4.14.0
+2026-11-04T07:24:52.2811473Z  * [new tag]           v4.15.0                                  -> v4.15.0
+2026-11-04T07:24:52.2811911Z  * [new tag]           v4.16.0                                  -> v4.16.0
+2026-11-04T07:24:52.2812349Z  * [new tag]           v4.16.1                                  -> v4.16.1
+2026-11-04T07:24:52.2812792Z  * [new tag]           v4.16.2                                  -> v4.16.2
+2026-11-04T07:24:52.2813370Z  * [new tag]           v4.16.3                                  -> v4.16.3
+2026-11-04T07:24:52.2813811Z  * [new tag]           v4.16.4                                  -> v4.16.4
+2026-11-04T07:24:52.2814257Z  * [new tag]           v4.16.5                                  -> v4.16.5
+2026-11-04T07:24:52.2814695Z  * [new tag]           v4.17.0                                  -> v4.17.0
+2026-11-04T07:24:52.2815137Z  * [new tag]           v4.17.1                                  -> v4.17.1
+2026-11-04T07:24:52.2815853Z  * [new tag]           v4.17.10                                 -> v4.17.10
+2026-11-04T07:24:52.2816306Z  * [new tag]           v4.17.2                                  -> v4.17.2
+2026-11-04T07:24:52.2816753Z  * [new tag]           v4.17.3                                  -> v4.17.3
+2026-11-04T07:24:52.2817191Z  * [new tag]           v4.17.4                                  -> v4.17.4
+2026-11-04T07:24:52.2817632Z  * [new tag]           v4.17.5                                  -> v4.17.5
+2026-11-04T07:24:52.2818078Z  * [new tag]           v4.17.6                                  -> v4.17.6
+2026-11-04T07:24:52.2818516Z  * [new tag]           v4.17.7                                  -> v4.17.7
+2026-11-04T07:24:52.2818960Z  * [new tag]           v4.17.8                                  -> v4.17.8
+2026-11-04T07:24:52.2819396Z  * [new tag]           v4.17.9                                  -> v4.17.9
+2026-11-04T07:24:52.2819831Z  * [new tag]           v4.18.0                                  -> v4.18.0
+2026-11-04T07:24:52.2820268Z  * [new tag]           v4.18.1                                  -> v4.18.1
+2026-11-04T07:24:52.2820710Z  * [new tag]           v4.18.10                                 -> v4.18.10
+2026-11-04T07:24:52.2821162Z  * [new tag]           v4.18.11                                 -> v4.18.11
+2026-11-04T07:24:52.2821606Z  * [new tag]           v4.18.2                                  -> v4.18.2
+2026-11-04T07:24:52.2822052Z  * [new tag]           v4.18.3                                  -> v4.18.3
+2026-11-04T07:24:52.2822498Z  * [new tag]           v4.18.4                                  -> v4.18.4
+2026-11-04T07:24:52.2822936Z  * [new tag]           v4.18.5                                  -> v4.18.5
+2026-11-04T07:24:52.2823482Z  * [new tag]           v4.18.6                                  -> v4.18.6
+2026-11-04T07:24:52.2823920Z  * [new tag]           v4.18.7                                  -> v4.18.7
+2026-11-04T07:24:52.2824357Z  * [new tag]           v4.18.8                                  -> v4.18.8
+2026-11-04T07:24:52.2824792Z  * [new tag]           v4.18.9                                  -> v4.18.9
+2026-11-04T07:24:52.2825231Z  * [new tag]           v4.19.0                                  -> v4.19.0
+2026-11-04T07:24:52.2825898Z  * [new tag]           v4.19.1                                  -> v4.19.1
+2026-11-04T07:24:52.2826338Z  * [new tag]           v4.19.2                                  -> v4.19.2
+2026-11-04T07:24:52.2826782Z  * [new tag]           v4.2.0                                   -> v4.2.0
+2026-11-04T07:24:52.2827217Z  * [new tag]           v4.20.0                                  -> v4.20.0
+2026-11-04T07:24:52.2827655Z  * [new tag]           v4.21.0                                  -> v4.21.0
+2026-11-04T07:24:52.2828096Z  * [new tag]           v4.21.1                                  -> v4.21.1
+2026-11-04T07:24:52.2828535Z  * [new tag]           v4.21.2                                  -> v4.21.2
+2026-11-04T07:24:52.2828978Z  * [new tag]           v4.21.3                                  -> v4.21.3
+2026-11-04T07:24:52.2829418Z  * [new tag]           v4.21.4                                  -> v4.21.4
+2026-11-04T07:24:52.2829853Z  * [new tag]           v4.21.5                                  -> v4.21.5
+2026-11-04T07:24:52.2830289Z  * [new tag]           v4.21.6                                  -> v4.21.6
+2026-11-04T07:24:52.2830727Z  * [new tag]           v4.21.7                                  -> v4.21.7
+2026-11-04T07:24:52.2831254Z  * [new tag]           v4.22.0                                  -> v4.22.0
+2026-11-04T07:24:52.2831696Z  * [new tag]           v4.23.0                                  -> v4.23.0
+2026-11-04T07:24:52.2832148Z  * [new tag]           v4.24.0                                  -> v4.24.0
+2026-11-04T07:24:52.2832587Z  * [new tag]           v4.25.0                                  -> v4.25.0
+2026-11-04T07:24:52.2833041Z  * [new tag]           v4.25.1                                  -> v4.25.1
+2026-11-04T07:24:52.2833483Z  * [new tag]           v4.26.0                                  -> v4.26.0
+2026-11-04T07:24:52.2833921Z  * [new tag]           v4.27.0                                  -> v4.27.0
+2026-11-04T07:24:52.2834357Z  * [new tag]           v4.27.1                                  -> v4.27.1
+2026-11-04T07:24:52.2834796Z  * [new tag]           v4.27.2                                  -> v4.27.2
+2026-11-04T07:24:52.2835237Z  * [new tag]           v4.27.3                                  -> v4.27.3
+2026-11-04T07:24:52.2835821Z  * [new tag]           v4.27.4                                  -> v4.27.4
+2026-11-04T07:24:52.2836259Z  * [new tag]           v4.27.5                                  -> v4.27.5
+2026-11-04T07:24:52.2836708Z  * [new tag]           v4.28.0                                  -> v4.28.0
+2026-11-04T07:24:52.2837148Z  * [new tag]           v4.29.0                                  -> v4.29.0
+2026-11-04T07:24:52.2837586Z  * [new tag]           v4.29.1                                  -> v4.29.1
+2026-11-04T07:24:52.2838028Z  * [new tag]           v4.3.0                                   -> v4.3.0
+2026-11-04T07:24:52.2838468Z  * [new tag]           v4.30.0                                  -> v4.30.0
+2026-11-04T07:24:52.2838904Z  * [new tag]           v4.30.1                                  -> v4.30.1
+2026-11-04T07:24:52.2839343Z  * [new tag]           v4.31.0                                  -> v4.31.0
+2026-11-04T07:24:52.2839780Z  * [new tag]           v4.31.1                                  -> v4.31.1
+2026-11-04T07:24:52.2840228Z  * [new tag]           v4.31.2                                  -> v4.31.2
+2026-11-04T07:24:52.2840665Z  * [new tag]           v4.32.0                                  -> v4.32.0
+2026-11-04T07:24:52.2841200Z  * [new tag]           v4.33.0                                  -> v4.33.0
+2026-11-04T07:24:52.2841638Z  * [new tag]           v4.33.1                                  -> v4.33.1
+2026-11-04T07:24:52.2842077Z  * [new tag]           v4.34.0                                  -> v4.34.0
+2026-11-04T07:24:52.2842522Z  * [new tag]           v4.35.0                                  -> v4.35.0
+2026-11-04T07:24:52.2842963Z  * [new tag]           v4.35.1                                  -> v4.35.1
+2026-11-04T07:24:52.2843404Z  * [new tag]           v4.35.2                                  -> v4.35.2
+2026-11-04T07:24:52.2843841Z  * [new tag]           v4.36.0                                  -> v4.36.0
+2026-11-04T07:24:52.2844280Z  * [new tag]           v4.37.0                                  -> v4.37.0
+2026-11-04T07:24:52.2844721Z  * [new tag]           v4.38.0                                  -> v4.38.0
+2026-11-04T07:24:52.2845159Z  * [new tag]           v4.38.1                                  -> v4.38.1
+2026-11-04T07:24:52.2845767Z  * [new tag]           v4.38.2                                  -> v4.38.2
+2026-11-04T07:24:52.2846223Z  * [new tag]           v4.38.3                                  -> v4.38.3
+2026-11-04T07:24:52.2846674Z  * [new tag]           v4.39.0                                  -> v4.39.0
+2026-11-04T07:24:52.2847121Z  * [new tag]           v4.4.0                                   -> v4.4.0
+2026-11-04T07:24:52.2847563Z  * [new tag]           v4.40.0                                  -> v4.40.0
+2026-11-04T07:24:52.2848005Z  * [new tag]           v4.40.1                                  -> v4.40.1
+2026-11-04T07:24:52.2848443Z  * [new tag]           v4.41.0                                  -> v4.41.0
+2026-11-04T07:24:52.2848902Z  * [new tag]           v4.41.1                                  -> v4.41.1
+2026-11-04T07:24:52.2849431Z  * [new tag]           v4.42.0                                  -> v4.42.0
+2026-11-04T07:24:52.2849871Z  * [new tag]           v4.42.1                                  -> v4.42.1
+2026-11-04T07:24:52.2850316Z  * [new tag]           v4.43.0                                  -> v4.43.0
+2026-11-04T07:24:52.2850765Z  * [new tag]           v4.43.1                                  -> v4.43.1
+2026-11-04T07:24:52.2851206Z  * [new tag]           v4.43.2                                  -> v4.43.2
+2026-11-04T07:24:52.2851645Z  * [new tag]           v4.43.3                                  -> v4.43.3
+2026-11-04T07:24:52.2852082Z  * [new tag]           v4.43.4                                  -> v4.43.4
+2026-11-04T07:24:52.2852522Z  * [new tag]           v4.43.5                                  -> v4.43.5
+2026-11-04T07:24:52.2852964Z  * [new tag]           v4.43.6                                  -> v4.43.6
+2026-11-04T07:24:52.2853408Z  * [new tag]           v4.44.0                                  -> v4.44.0
+2026-11-04T07:24:52.2853848Z  * [new tag]           v4.44.1                                  -> v4.44.1
+2026-11-04T07:24:52.2854294Z  * [new tag]           v4.5.0                                   -> v4.5.0
+2026-11-04T07:24:52.2854743Z  * [new tag]           v4.5.1                                   -> v4.5.1
+2026-11-04T07:24:52.2855180Z  * [new tag]           v4.6.0                                   -> v4.6.0
+2026-11-04T07:24:52.2855788Z  * [new tag]           v4.6.1                                   -> v4.6.1
+2026-11-04T07:24:52.2856234Z  * [new tag]           v4.6.2                                   -> v4.6.2
+2026-11-04T07:24:52.2856693Z  * [new tag]           v4.6.3                                   -> v4.6.3
+2026-11-04T07:24:52.2857134Z  * [new tag]           v4.6.4                                   -> v4.6.4
+2026-11-04T07:24:52.2857585Z  * [new tag]           v4.7.0                                   -> v4.7.0
+2026-11-04T07:24:52.2858030Z  * [new tag]           v4.8.0                                   -> v4.8.0
+2026-11-04T07:24:52.2858464Z  * [new tag]           v4.9.0                                   -> v4.9.0
+2026-11-04T07:24:52.2858901Z  * [new tag]           v4.9.1                                   -> v4.9.1
+2026-11-04T07:24:52.2859473Z  * [new tag]           v4.9.2                                   -> v4.9.2
+2026-11-04T07:24:52.2859910Z  * [new tag]           v4.9.3                                   -> v4.9.3
+2026-11-04T07:24:52.2860412Z  * [new ref]           512d3c50091dcb99edd43fcd7550d4cbfef664ec -> pull/160/merge
+2026-11-04T07:24:52.2861734Z ##[endgroup]
+2026-11-04T07:24:52.2862187Z ##[group]Determining the checkout info
+2026-11-04T07:24:52.2862673Z ##[endgroup]
+2026-11-04T07:24:52.2862969Z [command]/usr/bin/git sparse-checkout disable
+2026-11-04T07:24:52.2863892Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-04T07:24:52.2864866Z ##[group]Checking out the ref
+2026-11-04T07:24:52.2865427Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/160/merge
+2026-11-04T07:24:52.4930325Z Note: switching to 'refs/remotes/pull/160/merge'.
+2026-11-04T07:24:52.4931263Z 
+2026-11-04T07:24:52.4931881Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-04T07:24:52.4933389Z changes and commit them, and you can discard any commits you make in this
+2026-11-04T07:24:52.4934835Z state without impacting any branches by switching back to a branch.
+2026-11-04T07:24:52.4935840Z 
+2026-11-04T07:24:52.4936413Z If you want to create a new branch to retain commits you create, you may
+2026-11-04T07:24:52.4937770Z do so (now or later) by using -c with the switch command. Example:
+2026-11-04T07:24:52.4938922Z 
+2026-11-04T07:24:52.4939260Z   git switch -c <new-branch-name>
+2026-11-04T07:24:52.4939797Z 
+2026-11-04T07:24:52.4940132Z Or undo this operation with:
+2026-11-04T07:24:52.4940624Z 
+2026-11-04T07:24:52.4940905Z   git switch -
+2026-11-04T07:24:52.4941289Z 
+2026-11-04T07:24:52.4942229Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-04T07:24:52.4943186Z 
+2026-11-04T07:24:52.4944323Z HEAD is now at 512d3c50 Merge adf782ef75b0e1453f861c486974237af4fac13f into ad54fc75b8a1da663ee39da6a2397fc2a965159c
+2026-11-04T07:24:52.4969524Z ##[endgroup]
+2026-11-04T07:24:52.5056631Z [command]/usr/bin/git log -1 --format=%H
+2026-11-04T07:24:52.5081096Z 512d3c50091dcb99edd43fcd7550d4cbfef664ec
+2026-11-04T07:24:52.5088643Z ##[group]Removing auth
+2026-11-04T07:24:52.5089253Z Removing SSH command configuration
+2026-11-04T07:24:52.5091247Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T07:24:52.5118726Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-04T07:24:52.5346020Z Removing HTTP extra header
+2026-11-04T07:24:52.5348114Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T07:24:52.5375216Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-04T07:24:52.5592974Z Removing includeIf entries pointing to credentials config files
+2026-11-04T07:24:52.5594970Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T07:24:52.5616663Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-04T07:24:52.5618597Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-04T07:24:52.5620277Z includeif.gitdir:/github/workspace/.git.path
+2026-11-04T07:24:52.5621330Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-04T07:24:52.5624282Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-04T07:24:52.5643694Z /home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:52.5652785Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-c5262c48\-e75f\-4794\-99f1\-91181b1e20da\.config
+2026-11-04T07:24:52.5687119Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-04T07:24:52.5707058Z /home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:52.5716990Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-c5262c48\-e75f\-4794\-99f1\-91181b1e20da\.config
+2026-11-04T07:24:52.5748399Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-04T07:24:52.5768140Z /github/runner_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:52.5775734Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c5262c48\-e75f\-4794\-99f1\-91181b1e20da\.config
+2026-11-04T07:24:52.5805761Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-04T07:24:52.5826865Z /github/runner_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config
+2026-11-04T07:24:52.5836900Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c5262c48\-e75f\-4794\-99f1\-91181b1e20da\.config
+2026-11-04T07:24:52.5865624Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-04T07:24:52.6087866Z Removing credentials config '/home/runner/work/_temp/git-credentials-c5262c48-e75f-4794-99f1-91181b1e20da.config'
+2026-11-04T07:24:52.6095789Z ##[endgroup]
+2026-11-04T07:24:52.6360051Z Prepare all required actions
+2026-11-04T07:24:52.6361091Z Getting action download info
+2026-11-04T07:24:52.7548216Z Download action repository 'actions/setup-dotnet@v6.0.0' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-04T07:24:53.4202301Z ##[group]Run ./Github/initialize-dotnet
+2026-11-04T07:24:53.4202486Z with:
+2026-11-04T07:24:53.4202619Z   global-json-file: global.json
+2026-11-04T07:24:53.4202779Z   dotnet-version: 10.0.403
+2026-11-04T07:24:53.4202925Z ##[endgroup]
+2026-11-04T07:24:53.4241376Z ##[start-action display=Setup .NET from global.json;id=__self.__actions_setup-dotnet]
+2026-11-04T07:24:53.4292171Z ##[group]Run actions/setup-dotnet@v6.0.0
+2026-11-04T07:24:53.4292347Z with:
+2026-11-04T07:24:53.4292477Z   global-json-file: global.json
+2026-11-04T07:24:53.4292625Z   cache: false
+2026-11-04T07:24:53.4292753Z ##[endgroup]
+2026-11-04T07:24:53.5274763Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-04T07:24:53.7719962Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-04T07:24:53.7737831Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-04T07:24:53.9654044Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-04T07:24:53.9759350Z ##[end-action id=__self.__actions_setup-dotnet;outcome=success;conclusion=success;duration_ms=551]
+2026-11-04T07:24:53.9778369Z ##[start-action display=Setup .NET 10.0.403;id=__self.__actions_setup-dotnet_2]
+2026-11-04T07:24:53.9783286Z ##[end-action id=__self.__actions_setup-dotnet_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-04T07:24:53.9784596Z ##[start-action display=Add Aspire Workloads;id=__self.__run]
+2026-11-04T07:24:53.9787119Z ##[end-action id=__self.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-04T07:24:53.9828056Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-central-package-versions.ps1
+2026-11-04T07:24:53.9828459Z [36;1mpwsh -NoProfile -File ./Tools/validate-central-package-versions.ps1[0m
+2026-11-04T07:24:53.9932370Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:24:53.9932553Z env:
+2026-11-04T07:24:53.9932687Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:24:53.9932838Z ##[endgroup]
+2026-11-04T07:24:55.7690995Z Central package version validation passed for 316 entries in '/home/runner/work/Hexalith.Builds/Hexalith.Builds/Props/Directory.Packages.props'.
+2026-11-04T07:24:56.2709935Z ##[group]Run pwsh -NoProfile -File ./Tools/test-authoritative-package-catalog.ps1
+2026-11-04T07:24:56.2710302Z [36;1mpwsh -NoProfile -File ./Tools/test-authoritative-package-catalog.ps1[0m
+2026-11-04T07:24:56.2751385Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:24:56.2751543Z env:
+2026-11-04T07:24:56.2751665Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:24:56.2751815Z ##[endgroup]
+2026-11-04T07:25:00.2911428Z Authoritative package catalog tests passed for 68 approved package identities, 4 shared package versions, and 3 canonical families with overrides prohibited.
+2026-11-04T07:25:00.7636494Z ##[group]Run pwsh -NoProfile -File ./Tools/test-central-package-version-validator.ps1
+2026-11-04T07:25:00.7636882Z [36;1mpwsh -NoProfile -File ./Tools/test-central-package-version-validator.ps1[0m
+2026-11-04T07:25:00.7676466Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:25:00.7676631Z env:
+2026-11-04T07:25:00.7676757Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:25:00.7676904Z ##[endgroup]
+2026-11-04T07:25:13.5022601Z Central package validator tests passed: 17 scenarios.
+2026-11-04T07:25:13.9841225Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-package-version-audit.ps1
+2026-11-04T07:25:13.9841571Z [36;1mpwsh -NoProfile -File ./Tools/validate-package-version-audit.ps1[0m
+2026-11-04T07:25:13.9881095Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:25:13.9881259Z env:
+2026-11-04T07:25:13.9881380Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:25:13.9881525Z ##[endgroup]
+2026-11-04T07:25:40.3220203Z Package version audit validation passed for 316 packages, 156 families, and 1 source(s).
+2026-11-04T07:25:40.4773947Z ##[group]Run pwsh -NoProfile -File ./Tools/test-package-version-audit-generator.ps1
+2026-11-04T07:25:40.4774325Z [36;1mpwsh -NoProfile -File ./Tools/test-package-version-audit-generator.ps1[0m
+2026-11-04T07:25:40.4813868Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:25:40.4814045Z env:
+2026-11-04T07:25:40.4814174Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:25:40.4814334Z ##[endgroup]
+2026-11-04T07:25:41.4504318Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/audit.json'.
+2026-11-04T07:25:42.6635055Z Central package freshness audit wrote 3 packages in complete mode (2 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/multi-package-prior.json'.
+2026-11-04T07:25:43.0299679Z Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 1 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/multi-package-refreshed.json'.
+2026-11-04T07:25:44.1732129Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/accepted-prior.json'.
+2026-11-04T07:25:44.4073119Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/preserved.json'.
+2026-11-04T07:25:45.7319359Z Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 2 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/incremental.json'.
+2026-11-04T07:25:46.9595752Z Central package freshness audit wrote 3 packages in incremental mode (1 refreshed, 2 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/incremental-deduplicated.json'.
+2026-11-04T07:25:47.1751340Z Central package freshness audit failed: incremental family selection contains unknown family 'package:unknown'.
+2026-11-04T07:25:47.3795015Z Central package freshness audit failed: incremental family selection contains a blank or duplicate family 'package:fixture.listed'.
+2026-11-04T07:25:47.6149973Z Central package freshness audit failed: incremental family selection contains unknown family 'PACKAGE:FIXTURE.LISTED'.
+2026-11-04T07:25:55.9300303Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/declaration-drift.json'.
+2026-11-04T07:25:56.1537682Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/catalog-byte-drift.json'.
+2026-11-04T07:25:56.3890224Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/legacy-refresh.json'.
+2026-11-04T07:25:57.2711141Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/consumer-drift.json'.
+2026-11-04T07:25:57.4865892Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/metadata-drift.json'.
+2026-11-04T07:25:57.6856046Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/diagnostic-prior.json'.
+2026-11-04T07:25:57.8870824Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/diagnostic-drift.json'.
+2026-11-04T07:25:58.1010499Z Central package freshness audit wrote 3 packages in complete mode (3 refreshed, 0 preserved) to '/tmp/package-audit-generator-cb71a43535604fd18bbb26f267bbadc4/source-drift.json'.
+2026-11-04T07:25:58.1043377Z Central package freshness audit failed: prior audit contains a blank or duplicate package identity 'Fixture.Listed'.
+2026-11-04T07:25:58.1066530Z Central package freshness audit failed: prior audit package 'Fixture.Listed' has no family identity.
+2026-11-04T07:25:58.1091754Z Central package freshness audit failed: prior audit family 'package:fixture.listed' package identities do not exactly match its package rows.
+2026-11-04T07:25:58.1112959Z Central package freshness audit failed: prior audit package 'Fixture.Listed' disposition does not match family 'package:fixture.listed'.
+2026-11-04T07:25:58.1135908Z Central package freshness audit failed: prior audit package 'Fixture.Listed' rollback group does not match family 'package:fixture.listed'.
+2026-11-04T07:25:58.1191017Z Central package freshness audit failed: prior audit package family 'package:fixture.listed' has no family decision identity.
+2026-11-04T07:25:58.1216727Z Central package freshness audit failed: prior audit package 'Fixture.Listed' contains a blank, undeclared, or duplicate source-result identity 'https://fixture.test/v3/index.json'.
+2026-11-04T07:25:58.1249312Z Central package freshness audit failed: prior audit contains a blank, unknown-package, or duplicate consumer identity 'Fixture.Consumer|Fixture.Unknown'.
+2026-11-04T07:25:58.1275259Z Central package freshness audit failed: prior audit contains a blank or duplicate source identity 'https://fixture.test/v3/index.json'.
+2026-11-04T07:25:58.1301466Z Central package freshness audit failed: prior audit package 'Fixture.Listed' does not contain exactly one result for every source identity.
+2026-11-04T07:25:58.1335817Z Central package freshness audit failed: prior audit contains a blank or duplicate family identity 'package:fixture.listed'.
+2026-11-04T07:25:58.1400883Z Central package freshness audit failed: prior audit family 'orphan-family' has no package identities.
+2026-11-04T07:25:58.1445944Z Central package freshness audit failed: prior audit contains a blank, unknown-package, or duplicate consumer identity 'Fixture.Consumer|Fixture.Listed'.
+2026-11-04T07:25:58.1476225Z Central package freshness audit failed: prior audit consumer 'Fixture.Consumer|Fixture.Listed' has an inconsistent family identity 'wrong-family'.
+2026-11-04T07:25:58.1514138Z Central package freshness audit failed: prior audit consumer evidence SHA-256 does not match its relations and declaration bytes.
+2026-11-04T07:25:58.1547890Z Central package freshness audit failed: prior audit consumer provenance has an incomplete declaration-byte binding.
+2026-11-04T07:25:58.1592182Z Central package freshness audit failed: prior package history for 'Fixture.Listed' uses unsupported schema 'unknown.package-history.v1'.
+2026-11-04T07:25:58.1615426Z Central package freshness audit failed: prior family history for 'package:fixture.listed' uses unsupported schema 'unknown.family-history.v1'.
+2026-11-04T07:25:58.2004814Z warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+2026-11-04T07:25:58.2006380Z warning: in the working copy of 'Props/Directory.Packages.props', LF will be replaced by CRLF the next time Git touches it
+2026-11-04T07:26:00.6660664Z warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+2026-11-04T07:26:01.4071174Z warning: in the working copy of 'Consumer.csproj', LF will be replaced by CRLF the next time Git touches it
+2026-11-04T07:26:02.1905520Z warning: in the working copy of 'Props/Directory.Packages.props', LF will be replaced by CRLF the next time Git touches it
+2026-11-04T07:26:07.5649042Z Package version audit generator tests passed: 115 scenarios.
+2026-11-04T07:26:07.7019153Z ##[group]Run pwsh -NoProfile -File ./Tools/test-package-version-audit-validator.ps1
+2026-11-04T07:26:07.7019884Z [36;1mpwsh -NoProfile -File ./Tools/test-package-version-audit-validator.ps1[0m
+2026-11-04T07:26:07.7060482Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:26:07.7060643Z env:
+2026-11-04T07:26:07.7060783Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:26:07.7060930Z ##[endgroup]
+2026-11-04T07:31:58.4043905Z Package version audit validator tests passed: 103 scenarios.
+2026-11-04T07:31:58.6378749Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-consumer-package-authority.ps1 -RepositoryRoot . -CatalogPath ./Props/Directory.Packages.props
+2026-11-04T07:31:58.6379361Z [36;1mpwsh -NoProfile -File ./Tools/validate-consumer-package-authority.ps1 -RepositoryRoot . -CatalogPath ./Props/Directory.Packages.props[0m
+2026-11-04T07:31:58.6414516Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:31:58.6414671Z env:
+2026-11-04T07:31:58.6414788Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:31:58.6414940Z ##[endgroup]
+2026-11-04T07:32:18.5938784Z Consumer package authority validation passed for 23 projects in '/home/runner/work/Hexalith.Builds/Hexalith.Builds'.
+2026-11-04T07:32:18.7048905Z ##[group]Run pwsh -NoProfile -File ./Tools/test-consumer-package-authority-validator.ps1
+2026-11-04T07:32:18.7049296Z [36;1mpwsh -NoProfile -File ./Tools/test-consumer-package-authority-validator.ps1[0m
+2026-11-04T07:32:18.7084985Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:32:18.7085143Z env:
+2026-11-04T07:32:18.7085268Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:32:18.7085568Z ##[endgroup]
+2026-11-04T07:32:38.7944395Z Consumer package authority validator tests passed: 32 scenarios.
+2026-11-04T07:32:38.8976766Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-package-version-exceptions.ps1 -InventoryPath ./Tools/package-version-exceptions.json -CatalogPath ./Props/Directory.Packages.props
+2026-11-04T07:32:38.8977493Z [36;1mpwsh -NoProfile -File ./Tools/validate-package-version-exceptions.ps1 -InventoryPath ./Tools/package-version-exceptions.json -CatalogPath ./Props/Directory.Packages.props[0m
+2026-11-04T07:32:38.9011999Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:32:38.9012154Z env:
+2026-11-04T07:32:38.9012270Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:32:38.9012414Z ##[endgroup]
+2026-11-04T07:32:39.7427416Z Package version exception inventory validated 16 allowlisted exceptions.
+2026-11-04T07:32:39.8511185Z ##[group]Run pwsh -NoProfile -File ./Tools/test-package-version-exception-validator.ps1
+2026-11-04T07:32:39.8511561Z [36;1mpwsh -NoProfile -File ./Tools/test-package-version-exception-validator.ps1[0m
+2026-11-04T07:32:39.8547521Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:32:39.8547686Z env:
+2026-11-04T07:32:39.8547806Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:32:39.8547947Z ##[endgroup]
+2026-11-04T07:33:27.3871487Z Package version exception validator tests passed: 30 scenarios.
+2026-11-04T07:33:27.5116489Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-platform-version-catalog.ps1
+2026-11-04T07:33:27.5117091Z [36;1mpwsh -NoProfile -File ./Tools/validate-platform-version-catalog.ps1[0m
+2026-11-04T07:33:27.5168429Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:33:27.5168705Z env:
+2026-11-04T07:33:27.5168906Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:33:27.5169158Z ##[endgroup]
+2026-11-04T07:33:29.9042976Z Platform version catalog validated: Hexalith.EventStore.Aspire/4.0.4, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+2026-11-04T07:33:30.0182084Z ##[group]Run pwsh -NoProfile -File ./Tools/test-platform-version-catalog.ps1
+2026-11-04T07:33:30.0182426Z [36;1mpwsh -NoProfile -File ./Tools/test-platform-version-catalog.ps1[0m
+2026-11-04T07:33:30.0220559Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:33:30.0220719Z env:
+2026-11-04T07:33:30.0220841Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:33:30.0220979Z ##[endgroup]
+2026-11-04T07:33:31.4431783Z PASS: current authoritative catalog with real selected package metadata
+2026-11-04T07:33:33.2110125Z PASS: current-pair
+2026-11-04T07:33:36.8804424Z PASS: cold metadata restore ignores caller response files
+2026-11-04T07:33:38.5370114Z PASS: caller-response-package-version-is-not-authority
+2026-11-04T07:33:40.2640042Z PASS: caller-response-runtime-version-is-not-authority
+2026-11-04T07:33:42.0486590Z PASS: historical-3-109-beta-767
+2026-11-04T07:33:42.8876530Z PASS: historical-preview-too-old
+2026-11-04T07:33:43.7218324Z PASS: eventstore-pin-changes-required-range
+2026-11-04T07:33:44.6004021Z PASS: toolkit-pin-outside-selected-range
+2026-11-04T07:33:46.3222447Z PASS: both-hosting-pins-compatible
+2026-11-04T07:33:48.0197979Z PASS: nuget-beta-numeric-ordering
+2026-11-04T07:33:49.7437982Z PASS: nuget-metadata-is-ignored
+2026-11-04T07:33:50.5696548Z PASS: missing-Hexalith.EventStore.Aspire
+2026-11-04T07:33:51.3476653Z PASS: duplicate-Hexalith.EventStore.Aspire
+2026-11-04T07:33:52.1115462Z PASS: missing-Hexalith.FrontComposer.Shell
+2026-11-04T07:33:52.8845613Z PASS: duplicate-Hexalith.FrontComposer.Shell
+2026-11-04T07:33:53.6455078Z PASS: missing-Dapr.Client
+2026-11-04T07:33:54.4352956Z PASS: duplicate-Dapr.Client
+2026-11-04T07:33:55.2042514Z PASS: missing-Aspire.Hosting
+2026-11-04T07:33:55.9820170Z PASS: duplicate-Aspire.Hosting
+2026-11-04T07:33:56.7600370Z PASS: missing-CommunityToolkit.Aspire.Hosting.Dapr
+2026-11-04T07:33:57.5466315Z PASS: duplicate-CommunityToolkit.Aspire.Hosting.Dapr
+2026-11-04T07:33:58.3402998Z PASS: missing-HexalithAspireAppHostSdkVersion
+2026-11-04T07:33:59.1229425Z PASS: missing-HexalithDaprRuntimeVersion
+2026-11-04T07:33:59.9141039Z PASS: missing-HexalithDaprCliVersion
+2026-11-04T07:34:00.7580243Z PASS: missing-HexalithRedisImage
+2026-11-04T07:34:01.6028398Z PASS: missing-HexalithRedisImageTag
+2026-11-04T07:34:02.4490064Z PASS: missing-HexalithRedisImageDigest
+2026-11-04T07:34:03.2266933Z PASS: missing-eventstore-property-names-package
+2026-11-04T07:34:03.8154996Z PASS: duplicate-property-HexalithAspireAppHostSdkVersion
+2026-11-04T07:34:04.3989707Z PASS: duplicate-property-HexalithDaprRuntimeVersion
+2026-11-04T07:34:04.9920539Z PASS: duplicate-property-HexalithDaprCliVersion
+2026-11-04T07:34:05.5987096Z PASS: duplicate-property-HexalithRedisImage
+2026-11-04T07:34:06.1795851Z PASS: duplicate-property-HexalithRedisImageTag
+2026-11-04T07:34:06.8177007Z PASS: duplicate-property-HexalithRedisImageDigest
+2026-11-04T07:34:07.4119565Z PASS: duplicate-property-HexalithEventStoreVersion
+2026-11-04T07:34:08.0061256Z PASS: duplicate-property-HexalithFrontComposerVersion
+2026-11-04T07:34:08.5720916Z PASS: duplicate-property-HexalithAspireHostingDaprVersion
+2026-11-04T07:34:09.1713271Z PASS: duplicate-self-default-HexalithEventStoreVersion
+2026-11-04T07:34:09.7558077Z PASS: default-then-unconditional-HexalithEventStoreVersion
+2026-11-04T07:34:10.3462334Z PASS: duplicate-self-default-HexalithFrontComposerVersion
+2026-11-04T07:34:10.9369988Z PASS: default-then-unconditional-HexalithFrontComposerVersion
+2026-11-04T07:34:12.5555201Z PASS: intentional-conditional-property
+2026-11-04T07:34:13.3298326Z PASS: invalid-image-43
+2026-11-04T07:34:14.1471995Z PASS: invalid-image-44
+2026-11-04T07:34:14.9949424Z PASS: invalid-image-45
+2026-11-04T07:34:15.9025786Z PASS: invalid-image-46
+2026-11-04T07:34:16.7567795Z PASS: invalid-image-47
+2026-11-04T07:34:17.6937856Z PASS: invalid-image-48
+2026-11-04T07:34:18.5748937Z PASS: invalid-image-49
+2026-11-04T07:34:19.4158678Z PASS: invalid-image-50
+2026-11-04T07:34:21.2060726Z PASS: valid-image-51
+2026-11-04T07:34:23.0297446Z PASS: valid-image-52
+2026-11-04T07:34:24.7868051Z PASS: valid-image-53
+2026-11-04T07:34:26.6572498Z PASS: valid-image-54
+2026-11-04T07:34:28.4439532Z PASS: valid-redis-tag
+2026-11-04T07:34:30.2801018Z PASS: valid-redis-digest
+2026-11-04T07:34:31.9814919Z PASS: wildcard-range
+2026-11-04T07:34:33.6661459Z PASS: short-range-bounds
+2026-11-04T07:34:34.4921122Z PASS: inverted-range
+2026-11-04T07:34:35.3193947Z PASS: nonnumeric-range-bound
+2026-11-04T07:34:36.1453204Z PASS: numeric-prerelease-leading-zero
+2026-11-04T07:34:36.9554566Z PASS: misplaced-dependency
+2026-11-04T07:34:38.6331922Z PASS: different-valid-framework-ranges
+2026-11-04T07:34:39.4930744Z PASS: net8-selects-incompatible-net8-range
+2026-11-04T07:34:41.1507018Z PASS: net8-selects-compatible-net8-range
+2026-11-04T07:34:41.9554111Z PASS: net8-has-no-compatible-group
+2026-11-04T07:34:42.3537034Z PASS: invalid-supplied-framework
+2026-11-04T07:34:44.0926074Z PASS: nearest-compatible-framework
+2026-11-04T07:34:44.9047370Z PASS: effective-framework-missing-dependency
+2026-11-04T07:34:45.7097749Z PASS: invalid-framework-group
+2026-11-04T07:34:46.5023580Z PASS: malformed-sdk
+2026-11-04T07:34:47.2968228Z PASS: malformed-package
+2026-11-04T07:34:48.1345868Z PASS: missing-dependency-metadata
+2026-11-04T07:34:48.9898915Z PASS: invalid-dependency-range
+2026-11-04T07:34:49.7784451Z PASS: wrong-metadata-identity
+2026-11-04T07:34:50.5718043Z PASS: missing-metadata-element
+2026-11-04T07:34:51.3587920Z PASS: duplicate-metadata-elements
+2026-11-04T07:34:52.1529348Z PASS: missing-metadata-id
+2026-11-04T07:34:52.9525052Z PASS: duplicate-metadata-ids
+2026-11-04T07:34:53.7468068Z PASS: missing-metadata-version
+2026-11-04T07:34:54.5408987Z PASS: duplicate-metadata-versions
+2026-11-04T07:34:55.3885260Z PASS: release validation wrapper propagates metadata failure
+2026-11-04T07:34:56.3106034Z PASS: environment-override-rejected
+2026-11-04T07:34:58.4278673Z PASS: matching-environment-selection
+2026-11-04T07:35:00.7166672Z PASS: matching-environment-with-caller-response
+2026-11-04T07:35:02.8967839Z PASS: overwritten-environment-property-is-not-effective-drift
+2026-11-04T07:35:05.0968081Z PASS: conditional-release-context
+2026-11-04T07:35:07.2715219Z PASS: evaluated-item-update
+2026-11-04T07:35:18.5300956Z PASS: alternate production catalog with matching override cannot replace the owning authority
+2026-11-04T07:35:30.9221904Z PASS: relative and absolute intermediate paths, including incremental resources
+2026-11-04T07:35:39.2801015Z PASS: controlled overrides reject divergence and permit matching selections
+2026-11-04T07:35:51.8493292Z PASS: all successful generated snapshots load with offline NuGet semantics
+2026-11-04T07:35:51.8494008Z PASS: isolated catalog mutation and incremental rebuild
+2026-11-04T07:35:51.8506246Z Platform version catalog tests passed: 101 scenarios. No Platform acceptance granted.
+2026-11-04T07:35:52.0738082Z ##[group]Run pwsh -NoProfile -File ./Tools/validate-dapr-package-versions.ps1
+2026-11-04T07:35:52.0738420Z [36;1mpwsh -NoProfile -File ./Tools/validate-dapr-package-versions.ps1[0m
+2026-11-04T07:35:52.0776972Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:35:52.0777138Z env:
+2026-11-04T07:35:52.0777265Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:35:52.0777409Z ##[endgroup]
+2026-11-04T07:35:52.8802534Z Dapr package validation passed: 8 unique Dapr.* package IDs use 1.19.0 and all required shared SDK IDs are present.
+2026-11-04T07:35:53.0109754Z ##[group]Run pwsh -NoProfile -File ./Tools/test-dapr-package-version-validator.ps1
+2026-11-04T07:35:53.0110353Z [36;1mpwsh -NoProfile -File ./Tools/test-dapr-package-version-validator.ps1[0m
+2026-11-04T07:35:53.0164508Z shell: /usr/bin/pwsh -command ". '{0}'"
+2026-11-04T07:35:53.0164812Z env:
+2026-11-04T07:35:53.0165020Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-04T07:35:53.0165260Z ##[endgroup]
+2026-11-04T07:35:54.1788054Z [PASS] canonical catalog uses the validator production default
+2026-11-04T07:35:54.9437054Z [PASS] imported PackageVersion items are evaluated
+2026-11-04T07:35:55.6067793Z [PASS] mixed-case required identity uses NuGet identity semantics
+2026-11-04T07:35:56.3378057Z [PASS] aligned additional Dapr family item is allowed
+2026-11-04T07:35:56.9451644Z [PASS] mismatched additional Dapr family item is rejected
+2026-11-04T07:35:57.6053359Z [PASS] case-insensitive duplicate SDK identity is rejected
+2026-11-04T07:35:58.2127588Z [PASS] property-expanded versions are evaluated
+2026-11-04T07:35:58.8184106Z [PASS] inactive conditional items are ignored
+2026-11-04T07:35:59.3802723Z [PASS] case-variant bare Dapr ID is rejected
+2026-11-04T07:35:59.9903907Z [PASS] all SDK packages follow a changed evaluated Dapr.Client selection
+2026-11-04T07:36:00.5877538Z [PASS] numeric prerelease leading zero is rejected: 1.18.10-beta.01
+2026-11-04T07:36:01.2261852Z [PASS] numeric prerelease leading zero is rejected: 1.18.10-01
+2026-11-04T07:36:01.8121460Z [PASS] valid prerelease follows evaluated Dapr.Client: 1.18.10-beta.0
+2026-11-04T07:36:02.3807301Z [PASS] valid prerelease follows evaluated Dapr.Client: 1.18.10-beta.1
+2026-11-04T07:36:02.9401564Z [PASS] valid prerelease follows evaluated Dapr.Client: 1.18.10-beta01
+2026-11-04T07:36:03.4446435Z [PASS] valid prerelease follows evaluated Dapr.Client: 1.18.10-beta.1+build.01
+2026-11-04T07:36:03.9462944Z [PASS] catalog with no Dapr family is rejected
+2026-11-04T07:36:04.4667217Z [PASS] Update-driven required package mismatch is rejected
+2026-11-04T07:36:04.9686528Z [PASS] missing required SDK ID Dapr.Client is rejected
+2026-11-04T07:36:05.4673663Z [PASS] missing required SDK ID Dapr.AspNetCore is rejected
+2026-11-04T07:36:05.9986265Z [PASS] missing required SDK ID Dapr.Actors.AspNetCore is rejected
+2026-11-04T07:36:06.5072486Z [PASS] missing required SDK ID Dapr.Actors.Generators is rejected
+2026-11-04T07:36:07.0165711Z [PASS] missing required SDK ID Dapr.Actors is rejected
+2026-11-04T07:36:07.5169183Z [PASS] missing required SDK ID Dapr.Workflow is rejected
+2026-11-04T07:36:08.0237038Z [PASS] benign stderr does not corrupt valid stdout JSON
+2026-11-04T07:36:09.3403003Z [PASS] evaluator timeout is controlled and bounded
+2026-11-04T07:36:12.6738540Z [PASS] evaluator timeout terminates its long-lived process tree
+2026-11-04T07:36:13.1184001Z [PASS] nonzero evaluator exit preserves useful output tail
+2026-11-04T07:36:13.6710224Z [PASS] nonzero evaluator drains large stdout and stderr without deadlock
+2026-11-04T07:36:14.0927307Z [PASS] empty evaluator stdout is rejected
+2026-11-04T07:36:14.5539755Z [PASS] malformed evaluator JSON is rejected
+2026-11-04T07:36:15.0067317Z [PASS] missing evaluator JSON schema object is rejected
+2026-11-04T07:36:15.4777821Z [PASS] blank evaluator identity violates JSON schema
+2026-11-04T07:36:15.9124977Z [PASS] blank evaluator version violates JSON schema
+2026-11-04T07:36:17.3624633Z [PASS] redirected stream drain timeout is controlled and bounded
+2026-11-04T07:36:17.3657670Z [PASS] release workflow orders initializer and both gates before release
+2026-11-04T07:36:17.3780916Z Dapr validator fixture suite passed: 36 scenarios.
+2026-11-04T07:36:17.4952452Z Post job cleanup.
+2026-11-04T07:36:17.4954930Z ##[start-action display=Setup .NET from global.json;id=__191fe32e-6f49-41af-8d4b-6b9c0de29226.__actions_setup-dotnet]
+2026-11-04T07:36:17.4999550Z Post job cleanup.
+2026-11-04T07:36:17.5893150Z ##[end-action id=__191fe32e-6f49-41af-8d4b-6b9c0de29226.__actions_setup-dotnet;outcome=success;conclusion=success;duration_ms=93]
+2026-11-04T07:36:17.5977573Z Post job cleanup.
+2026-11-04T07:36:17.6650277Z [command]/usr/bin/git version
+2026-11-04T07:36:17.6687913Z git version 2.56.0
+2026-11-04T07:36:17.6710579Z Temporarily overriding HOME='/home/runner/work/_temp/b89a7ade-b6f4-4705-83ae-b7cfedf82db5' before making global git config changes
+2026-11-04T07:36:17.6711391Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-04T07:36:17.6713552Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-04T07:36:17.6749704Z Removing SSH command configuration
+2026-11-04T07:36:17.6754754Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T07:36:17.6791018Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-04T07:36:17.7044333Z Removing HTTP extra header
+2026-11-04T07:36:17.7050462Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T07:36:17.7107950Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-04T07:36:17.7335928Z Removing includeIf entries pointing to credentials config files
+2026-11-04T07:36:17.7341788Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T07:36:17.7373539Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-04T07:36:17.7728417Z Cleaning up orphan processes
+2026-11-04T07:36:17.7952112Z Terminate orphan process: pid (27454) (VBCSCompiler)
+2026-11-04T07:36:17.7965595Z Terminate orphan process: pid (30724) (pwsh)

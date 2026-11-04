@@ -1,0 +1,106 @@
+{
+  "recordedAt": "2026-11-04T06:37:25.269628+00:00",
+  "status": "normal-pr-open-current-head-hosted-gates-pending",
+  "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+  "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "parent": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-final-20261104/Hexalith.Builds",
+  "branch": "fix/retain-complete-ci-diagnostics",
+  "worktreeClean": true,
+  "pr": {
+    "number": 159,
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/159",
+    "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+    "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+    "mergeable": true,
+    "state": "open",
+    "commits": 5,
+    "changedFiles": 9
+  },
+  "patches": [
+    {
+      "base": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+      "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+      "path": "builds-memory-retention-codacy.patch",
+      "sha256": "2fed5d1d4303b8eee26fe0ce29ed01adee0c5fb55f7e0dab1f8a407d9f98b8d4"
+    },
+    {
+      "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+      "head": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+      "path": "builds-memory-retention-proposed.patch",
+      "sha256": "12684ffcac4f4383cf85dc9c00c964e039913838d68a69ab1e8b70c08a9ebabe"
+    }
+  ],
+  "followupScope": "Only existing helper and existing helper tests; complete proposal remains9paths. No catalog/C#/compiled-package source change from05e.",
+  "currentSourceControls": {
+    "helper": 43,
+    "provenance": 95,
+    "preparation": 16,
+    "legacyAssertions": 411,
+    "v2Assertions": 254,
+    "style": "pycodestyle2.14.0 all2files159characters, no ignores",
+    "complexity": "mccabe0.7.0 +Radon6.0.1 all2files at actual15bound, no exceptions",
+    "lockedCommitlint": "21.2.4 exact full final message passed after preserving first overlong-body rejection",
+    "whitespace": "passed",
+    "receipts": [
+      "builds-memory-retention-codacy-helper.json",
+      "builds-memory-retention-codacy-provenance.json",
+      "builds-memory-retention-codacy-preparation.json",
+      "builds-memory-retention-codacy-legacy.json",
+      "builds-memory-retention-codacy-v2.json",
+      "builds-memory-retention-codacy-style.json",
+      "builds-memory-retention-codacy-commit-preflight.json"
+    ]
+  },
+  "priorCompleteQualification": {
+    "source": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+    "exitCode": 0,
+    "receipt": "builds-memory-retention-package-qualification-final.json",
+    "log": "builds-memory-retention-package-qualification-final.txt",
+    "inventory": "builds-memory-retention-05e-package-inventory.json",
+    "output": "builds-memory-retention-05e-package-output.json",
+    "module": {
+      "total": 2811,
+      "passed": 2806,
+      "failed": 0,
+      "skipped": 5
+    },
+    "evidence": {
+      "total": 191,
+      "passed": 191,
+      "failed": 0,
+      "skipped": 0
+    },
+    "toolingIntegration": {
+      "total": 13,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 12
+    },
+    "sourceValidation": "executed/passed",
+    "requiredPackageControls": "executed/passed",
+    "notRelabeledToCurrentHead": true,
+    "unpublishedLocalVersion": "0.0.0-story28-retention-final"
+  },
+  "currentHostedReceipt": "builds-memory-retention-hosted-4c1606d-initial.json",
+  "currentCI": {
+    "id": 41786512669,
+    "attempt": 1,
+    "status": "pending at observed06:36UTC"
+  },
+  "requiredCodacy": {
+    "previous05e": "action_required16annotations preserved in parent receipt",
+    "current4cCheck": 126429790079,
+    "currentState": "in_progress at observed06:36UTC"
+  },
+  "remaining": [
+    "actual exact4c normal CI/package and required app gates",
+    "parent independent review and normal merge/release decision",
+    "published content/tuple qualification before any accepted dependency changes",
+    "coherent actual reference native + cancellation/lifecycle acceptance remain incomplete"
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "publicationPerformed": false,
+  "storyComplete": false
+}

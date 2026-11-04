@@ -1,0 +1,78 @@
+{
+  "at": "2026-11-04T05:40:57.425797+00:00",
+  "source": "a0c65bec419138e79d763557c73573f894217f24",
+  "runId": 41779614495,
+  "attempt": 1,
+  "reports": [
+    {
+      "artifactId": 13298852247,
+      "archiveSha256": "4b37e208782c5c92e25c90a3618ccbacf8acb253ce8cd5dfd17a4fcb0f4d81b7",
+      "name": "contracts",
+      "trx": [
+        {
+          "file": "Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.trx",
+          "sha256": "db6e55580b43896f6164d7abfeced279a5545c4aa953ce238bdba63ee1b32581",
+          "counters": {
+            "total": "1520",
+            "executed": "1518",
+            "passed": "1518",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "2",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 1520,
+          "outcomes": {
+            "NotExecuted": 2,
+            "Passed": 1518
+          }
+        }
+      ]
+    },
+    {
+      "artifactId": 13298786389,
+      "archiveSha256": "dae11c8cb54c40801223d5bc78cde6c6204af8a419a8288911e51078c3e27d1d",
+      "name": "tenants-source",
+      "trx": [
+        {
+          "file": "Hexalith.EventStore.AppHost.Tests.trx",
+          "sha256": "4a1565ec11f871d777b009756f1dc4a72d49229904b63171b76f9a4953332d5e",
+          "counters": {
+            "total": "7",
+            "executed": "7",
+            "passed": "7",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 7,
+          "outcomes": {
+            "Passed": 7
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "Completed independent gates only; main isolated/native execution still pending.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

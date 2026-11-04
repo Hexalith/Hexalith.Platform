@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-04T07:14:07.354991+00:00",
+  "lockedVersion": "21.2.4",
+  "checks": [
+    {
+      "kind": "message",
+      "argv": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--verbose"
+      ],
+      "candidate": "build(audit): anchor Memories provenance in retained main history\n\nRegenerate only Memories through the normal audit generator using the prior published snapshot.\nBind the observation to accepted main ad54fc75b8a1da663ee39da6a2397fc2a965159c so squash preserves reachable provenance.\nPreserve every package selection and the unchanged ancestry validator.\n",
+      "exitCode": 0
+    },
+    {
+      "kind": "title",
+      "argv": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--verbose"
+      ],
+      "candidate": "build(audit): anchor Memories provenance in retained main history\n",
+      "exitCode": 0
+    }
+  ],
+  "whitespaceExit": 0,
+  "PlatformDraftAll8SourceHashesUnchanged": true
+}

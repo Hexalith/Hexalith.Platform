@@ -1,0 +1,3 @@
+Second preservation verifier compared the raw working-file bytes with normalized Git blob bytes.
+AssertionError: tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
+Actual raw SHA f40026d6a0c3e8e22727fe28357a918735a68f3f0fa0119c966d2af9000ee451 exactly equals the retained b63raw SHA; that existing working file has50CRLF lines, while its immutable Git blob has LF. Four other existing native diagnostic files have the same unchanged raw/index distinction. The corrected receipt checks both prior raw SHA and unchanged exact Git object separately; no file or attribute was rewritten.

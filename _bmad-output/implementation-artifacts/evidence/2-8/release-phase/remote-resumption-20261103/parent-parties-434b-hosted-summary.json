@@ -1,0 +1,90 @@
+{
+  "at": "2026-11-04T12:32:16.613354+00:00",
+  "source": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "testedSource": "2a42732aefef62653b2bae96aa1b43390bfc0325",
+  "run": 41824961081,
+  "attempt": 1,
+  "isolatedProjectReports": 15,
+  "isolatedCounters": {
+    "total": 6344,
+    "executed": 6330,
+    "passed": 6330,
+    "failed": 0,
+    "notExecuted": 14
+  },
+  "nativeCasesExecuted": 0,
+  "owner": {
+    "attemptId": "394a5d2a865e92fc235763e7b1276061",
+    "attemptSequence": 1,
+    "environmentId": "5e1da929b5da4e93a93cffe6a2455d8a",
+    "ownerRunId": "1e7a5f526274574c243cf1f160982bf8",
+    "role": "owner",
+    "runId": "1e7a5f526274574c243cf1f160982bf8"
+  },
+  "executionContext": {
+    "disposable": true,
+    "jobId": "build-and-test",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "41824961081"
+  },
+  "terminal": {
+    "cause": "startup-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "failed",
+    "recordedAt": "2026-11-04T12:26:25.0861208Z"
+  },
+  "diagnostics": [
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "platform",
+      "hint": "Supply the named owner input; no resources were started.",
+      "location": null,
+      "message": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/1e7a5f526274574c243cf1f160982bf8'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXP020",
+      "source": null
+    }
+  ],
+  "cleanup": {
+    "attemptId": "0e53c0bb3f2850ffdae927a513a5f342",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-04T12:26:28.8535110Z",
+    "ownedResourceIds": [],
+    "state": "populated"
+  },
+  "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+  },
+  "retainedDeclaredDiagnostics": [
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:e7cd30656a58121d6d7c0c8c2c048efc315db17c60252ab206e2279efa9cb043",
+      "id": "lifecycle",
+      "redacted": true,
+      "reference": "lifecycle-e7cd30656a58121d6d7c0c8c2c048efc315db17c60252ab206e2279efa9cb043.json"
+    }
+  ],
+  "scope": "Actual failed parent-handoff/source proof preflight before resource startup. Exact empty cleanup and retained first failure verified; no realservice/native/Story/candidate acceptance.",
+  "next": "Same agent local-only investigation of concrete generated helper Git cleanliness mismatch; all other guard conditions remain strict.",
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

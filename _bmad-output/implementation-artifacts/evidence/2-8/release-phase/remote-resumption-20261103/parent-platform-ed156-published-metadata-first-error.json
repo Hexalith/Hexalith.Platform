@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-11-03T19:08:47.729495+00:00",
+  "error": "KeyError: published/_rels/.rels absent from retained Actions ZIP",
+  "kind": "Independent expanded static verifier assumed every extracted package metadata file was retained",
+  "actualOmittedMembers": [
+    "_rels/.rels",
+    ".signature.p7s"
+  ],
+  "resolutionRequired": "Verify official signed nupkg and all inventory members; independently compare every actually retained published member and explicitly report missing metadata bodies as artifact limits. Require actual Tooling/host/SDK runtime members.",
+  "sourceOrPackageMismatchObserved": false,
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

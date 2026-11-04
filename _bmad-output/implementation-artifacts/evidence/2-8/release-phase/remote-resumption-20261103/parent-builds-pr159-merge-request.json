@@ -1,0 +1,19 @@
+{
+  "at": {
+    "current_time": "2026-11-04 06:59:56 UTC"
+  },
+  "args": {
+    "repository_full_name": "Hexalith/Hexalith.Builds",
+    "pr_number": 159,
+    "merge_method": "squash",
+    "expected_head_sha": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+    "commit_title": "fix(ci): retain declared diagnostics and adopt Memories 3.0.23 (#159)",
+    "commit_message": "Preserve only receipt-bound redacted lifecycle, native and functional diagnostics after exact cleanup.\nUse complete fsynced snapshots and atomic non-replacing promotion so interrupted collection can retry safely.\nSelect the authenticated Memories 3.0.23 catalog while preserving other audited package families."
+  },
+  "sourceMain": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "premergeState": "clean",
+  "qualificationAudit": "parent-builds-4c160-hosted-package-audit.json",
+  "effectiveRules": "parent-builds-pr159-premerge-api.json",
+  "selfApprovalPerformed": false,
+  "bypassRequested": false
+}

@@ -1,0 +1,116 @@
+{
+  "recordedAt": "2026-11-04T07:26:16.488658+00:00",
+  "status": "normal-follow-up-PR-open-exact-head-CI-active",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/builds-audit-main-lineage-20261104/Hexalith.Builds",
+  "branch": "fix/retain-main-audit-lineage",
+  "base": "ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+  "head": "adf782ef75b0e1453f861c486974237af4fac13f",
+  "pr": {
+    "number": 160,
+    "url": "https://github.com/Hexalith/Hexalith.Builds/pull/160",
+    "state": "open",
+    "head": "adf782ef75b0e1453f861c486974237af4fac13f",
+    "base": "ad54fc75b8a1da663ee39da6a2397fc2a965159c"
+  },
+  "changedPaths": [
+    "Tools/package-version-audit.json"
+  ],
+  "changedLines": {
+    "added": 5,
+    "deleted": 5
+  },
+  "completePatch": {
+    "base": "ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+    "head": "adf782ef75b0e1453f861c486974237af4fac13f",
+    "path": "builds-audit-main-lineage.patch",
+    "bytes": 1999,
+    "sha256": "a24b4297ab054aa15e973fcbfa3166534acb7d7b3dabfa54d98bc81982aec2e9"
+  },
+  "candidateSha256": "97f5d28706224507b15f4db3fc53baa0d654eed2ec1def02d244f96836a2844a",
+  "lineage": {
+    "newObservationAnchor": "ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+    "priorPublishedAuditSource": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+    "orphanFeatureSource": "2bc5fff679e37318f6e18fc6b25047653faf3261",
+    "normalGeneratorOnly": true,
+    "freshLivePublicMetadata": true,
+    "acceptedHistoryPreserved": true,
+    "originalBranchObservationRetainedInBeforeEvidence": true
+  },
+  "preservation": {
+    "nonMemoryFamiliesRawIdentical": 155,
+    "nonMemoryPackageRowsRawIdentical": 311,
+    "allPackageRowsIdenticalToBefore": 316,
+    "packageVersionPinsUnchanged": true,
+    "runtimeHelperWorkflowCatalogValidatorCodeUnchanged": true
+  },
+  "actualControls": {
+    "coldMainOnlyReproduction": {
+      "fullAncestryCommits": 1594,
+      "orphan2bcUnavailable": true,
+      "alternatesGraftsReplacements": false,
+      "initialUnchangedValidator": "failed3050errors as expected",
+      "candidateUnchangedValidator": "passed316packages/156families/1source",
+      "copiedOnlyAuditBytes": true,
+      "receipts": [
+        "builds-audit-main-lineage-cold-custody.json",
+        "builds-audit-main-lineage-cold-first.json",
+        "builds-audit-main-lineage-cold-proof.json",
+        "builds-audit-main-lineage-cold-green.json"
+      ]
+    },
+    "normalLiveGenerator": "passed316packages/1familyrefreshed/155preserved",
+    "centralCatalog": "passed316entries",
+    "authoritativeCatalog": "passed68approvedIDs/4sharedversions/3canonicalfamilies",
+    "generatorRegressions": "passed115scenarios",
+    "validatorRegressions": {
+      "status": "incomplete-local-wrapper-timeout",
+      "limitSeconds": 600,
+      "normalScriptTerminalResult": null,
+      "passingCredit": false,
+      "receipt": "builds-audit-main-lineage-control-validator.json"
+    },
+    "lockedMessageAndTitle": "21.2.4 passed exact full candidates",
+    "whitespace": "passed"
+  },
+  "actualHosted": {
+    "CI": {
+      "id": 41792073107,
+      "attempt": 1,
+      "status": "in_progress at initial observation",
+      "source": "adf782ef75b0e1453f861c486974237af4fac13f",
+      "observedReusableWorkflowMerge": "512d3c50091dcb99edd43fcd7550d4cbfef664ec"
+    },
+    "commitlint": [
+      {
+        "id": 41792073502,
+        "conclusion": "success"
+      },
+      {
+        "id": 41792096089,
+        "conclusion": "success"
+      },
+      {
+        "id": 41792108998,
+        "conclusion": "success"
+      }
+    ],
+    "receipt": "builds-audit-main-lineage-hosted-initial.json"
+  },
+  "preservedPlatformDraft": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+    "all8SourceHashesUnchanged": true,
+    "resumption": "only on next exact sole-spec handoff"
+  },
+  "remaining": [
+    "normal exact-head CI and required app gates, including full validator regressions",
+    "parent normal review/merge and successful fresh-main CI before protected publication",
+    "genuine published tool/catalog/archive/inventory authentication before accepted tuple adoption",
+    "preserved Platform draft compile errors/tests/docs and finite full-profile source remain unfinished",
+    "original hosted native/lifecycle/cancellation acceptance and complete baseline audit remain incomplete"
+  ],
+  "mergeReleaseTagManualDispatchPerformed": false,
+  "rootOrEPOrAcceptedPlatformPinMutation": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-method",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests",
+    "--filter-method",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pull_only_secrets",
+    "--filter-method",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Contracts_and_live_sidecar_workflow_jobs_remain_blocking",
+    "--minimum-expected-tests",
+    "3",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/contract-results",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "caller-contract.trx",
+    "-p:UseHexalithProjectReferences=false"
+  ],
+  "startedAt": "2026-11-03T19:48:06.814296+00:00",
+  "completedAt": "2026-11-03T19:48:08.983897+00:00",
+  "exitCode": 0,
+  "mode": "Release/package",
+  "scope": "3 owning caller/permissions/independent-gate controls; no real services",
+  "candidateAcceptance": false
+}

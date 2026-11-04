@@ -1,0 +1,5 @@
+build(audit): anchor Memories provenance in retained main history
+
+Regenerate only Memories through the normal audit generator using the prior published snapshot.
+Bind the observation to accepted main ad54fc75b8a1da663ee39da6a2397fc2a965159c so squash preserves reachable provenance.
+Preserve every package selection and the unchanged ancestry validator.

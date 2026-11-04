@@ -1,0 +1,15 @@
+test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry (test_run_module_integration.IntegrationTests.test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry) ... FAIL
+
+======================================================================
+FAIL: test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry (test_run_module_integration.IntegrationTests.test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-final-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 329, in test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry
+    self.assertEqual(target.stat().st_nlink, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+FAILED (failures=1)

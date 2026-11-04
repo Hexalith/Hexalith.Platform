@@ -1,0 +1,18 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "-c",
+    "push.recurseSubmodules=no",
+    "push",
+    "origin",
+    "feat/qualify-full-parties-package"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T10:28:26.892634+00:00",
+  "completedAt": "2026-11-04T10:28:38.254826+00:00",
+  "reason": "One normal retry after actual unchanged remote refs confirmed GitHub commit_refs failure; no CI retry or force.",
+  "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+  "force": false
+}

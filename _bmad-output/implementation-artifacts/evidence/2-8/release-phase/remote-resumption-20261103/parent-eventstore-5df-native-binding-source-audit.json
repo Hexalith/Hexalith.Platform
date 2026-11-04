@@ -1,0 +1,85 @@
+{
+  "observedAtUtc": "2026-11-03T20:20:37.289393+00:00",
+  "base": "2253b733539a84f436443d3b4996ce2136437bef",
+  "head": "5df9d07df44dca400ff09468a91c34e9685c3dd1",
+  "changedPaths": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "aabb89ccae56f7aa2bb64e78ed75083add8e039bfe08b59d18df603d8598df6d"
+    },
+    {
+      "path": "docs/ci.md",
+      "sha256": "274cf1bd8c57a222d2a486b56239b5e6fcf9f999b132e6d6e32d670733562772"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "sha256": "e5c61916263626f1f7c0bbf8b8f0b5299e4378aa4eb47594e53ad6165ef704ac"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+      "sha256": "092139bed6e97a2226d3a8cf00a6d90aa1c05d6e37eebcc595b84a551f1d05b2"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "sha256": "1678c794acb5fd55e73bbed9a542ea7cdfbd56bca2dbe4b03b23e70b8fee44e5"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "sha256": "dd90659358775a4bdaaa0f6f525a51cc187add011ec8b8fdb984d57c3831a08a"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "sha256": "9a86b44603f71af4d0b6cf8e88e5a928299a85e563c21ca314cdf309137f74d1"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+      "sha256": "4e4b3d9462ea4346fec8f52288f04fd929584920986326c6e8c7868a2b7e1bcb"
+    }
+  ],
+  "preservation": {
+    "entireCallerWorkflowIdenticalExceptApprovedRef": true,
+    "allOtherIncomingPathsAndGitlinksPreserved": true,
+    "fullRealGatewayAndRedisAssertionsPreserved": true
+  },
+  "independentSourceRead": [
+    "complete8path net patch",
+    "actual published725 SourceMapping serialization/hash",
+    "CompositionRunPlan ResourceClaimStateDirectory and SelectedTest",
+    "CompositionRunState identity/context",
+    "NativeTestHandoff explicit path variables",
+    "previous CompositionProcess environment allowlist/source mapping materializer"
+  ],
+  "verifiedRoute": "Native handoff -> recomputed immutable source mapping -> original Git caller root, plan-bound state -> descriptor/owner/context cross-check, original caller invocation/context/profile -> private existing classified directory",
+  "boundaryEvidence": {
+    "trx": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/scrubbed-handoff-results/scrubbed-handoff.trx",
+    "sha256": "2a5f61540babc2b4055ccd0de727750ba9cde398973aaf5e55c915f27966e242",
+    "counters": {
+      "total": "7",
+      "executed": "7",
+      "passed": "7",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "actualLocalControlScope": true
+  },
+  "limitations": [
+    "No real hosted native acceptance yet",
+    "Real native suite now includes7local controls; both named real gateway tests must separately pass",
+    "No claim that external T7 DLL was actually loaded until measured artifact is retained",
+    "Other independent owner gates remain required"
+  ],
+  "candidateAcceptance": false,
+  "nativeAcceptance": false,
+  "producerModified": false
+}

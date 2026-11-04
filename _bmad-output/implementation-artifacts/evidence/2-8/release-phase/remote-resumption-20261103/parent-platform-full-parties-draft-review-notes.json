@@ -1,0 +1,25 @@
+{
+  "at": "2026-11-04T07:12:06.596180+00:00",
+  "draftBase": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+  "sourceFiles": {
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs": "aa343bc0aa97f605fe72f2b96c6634ef090827a45eb99a345deab5b3b3422e79",
+    "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs": "1f56d9f0f9bd70defd8eb5f371cd0640aa50ad4ccaac98d5a28e2e39ad504f87",
+    "src/Hexalith.Platform.CatalogBuilder/Program.cs": "2285ca4543f8d56567899db35324d19565d473677c02016dedf3db219a88884c",
+    "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+  },
+  "reviewedBeforeCompileOrTestsPass": true,
+  "positiveObservations": [
+    "Existing E/T and new full-Parties reader owner sets and hash dictionaries are separate; old name does not silently accept new owners.",
+    "New proof is internal/nonserialized, explicitly documents ordinary plan has no issuer MAC, and uses no additive owners.",
+    "Actual runner plan.json location and producer CompositionIdentity dataflow were independently read; SourceHash inaccessible-API correction must retain its exact uppercase digest field semantics."
+  ],
+  "resumptionCaseToDemonstrate": {
+    "name": "Clean active Parties Git HEAD drift after proof creation",
+    "sourceObservation": "SourceMappingEntry contains only identity/origin/path; ContentHash does not bind the active consumer commit. Current draft checks active-root cleanliness but only binds exact HEAD for Platform and Builds, and stores selected manifest/project file hashes. A clean checkout advance retaining those two files could change native source without changing proof metadata.",
+    "requiredWithinExistingScope": "On resumption, demonstrate that source replay/changed active Git revision is refused before effects, and bind the actual active revision at proof creation if no other real producer guard supplies it. Do not add a fake issuer MAC or fabricate positive Git metadata.",
+    "executionCredit": false
+  },
+  "scope": "Read-only review of preserved unfinished source. No edit to active Builds audit task, no full profile or native qualification.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

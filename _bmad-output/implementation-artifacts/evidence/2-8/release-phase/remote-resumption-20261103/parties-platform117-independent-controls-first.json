@@ -1,0 +1,47 @@
+{
+  "commands": [
+    {
+      "name": "declaration-controls",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T20:03:03.835522+00:00",
+      "completedAt": "2026-11-03T20:03:05.682450+00:00"
+    },
+    {
+      "name": "generator",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T20:03:05.682984+00:00",
+      "completedAt": "2026-11-03T20:03:05.738068+00:00"
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci.yml",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T20:03:05.738330+00:00",
+      "completedAt": "2026-11-03T20:03:06.200796+00:00"
+    }
+  ],
+  "scope": "own declaration/generator/workflow source only; no native credit",
+  "candidateAcceptance": false
+}

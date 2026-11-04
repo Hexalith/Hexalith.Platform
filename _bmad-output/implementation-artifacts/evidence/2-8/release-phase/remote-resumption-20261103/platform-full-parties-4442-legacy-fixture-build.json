@@ -1,0 +1,19 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "--nologo",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsRoot=/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/references/Hexalith.Builds",
+    "-p:HexalithBuildsPublishedToolRoot=/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/builds4442-qualification/final-artifacts/published/tools/net10.0/any"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T10:16:03.166361+00:00",
+  "completedAt": "2026-11-04T10:16:08.197325+00:00"
+}

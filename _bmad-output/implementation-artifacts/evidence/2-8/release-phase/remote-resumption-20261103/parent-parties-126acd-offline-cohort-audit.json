@@ -1,0 +1,29 @@
+{
+  "observedAtUtc": "2026-11-03T20:59:31.731527+00:00",
+  "runId": 41714178534,
+  "attempt": 1,
+  "jobId": 126189732377,
+  "name": "EventStore4.0.4packagecohort offline",
+  "sourceHead": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "actualPrMerge": "b1f400ec068d589ea2c52d59d13b6e64b01736a2",
+  "conclusion": "success",
+  "log": "parent-parties-126acd-offline-cohort-job.txt",
+  "logSha256": "3734024a3b1245b97fdbd585c187b66d5574539bbaac622892c45e506034e25a",
+  "actualFocusedTestGroups": [
+    {
+      "total": 3,
+      "failed": 0,
+      "passed": 3,
+      "skipped": 0
+    },
+    {
+      "total": 22,
+      "failed": 0,
+      "passed": 22,
+      "skipped": 0
+    }
+  ],
+  "scope": "offline package/contract gate, not realservice/native execution or physical SDK loaded-output qualification",
+  "realNativeAcceptance": false,
+  "candidateAcceptance": false
+}

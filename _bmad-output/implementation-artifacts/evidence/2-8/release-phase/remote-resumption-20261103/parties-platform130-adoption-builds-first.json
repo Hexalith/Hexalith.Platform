@@ -1,0 +1,78 @@
+[
+  {
+    "name": "caller",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:52.107834+00:00",
+    "completedAt": "2026-11-04T11:23:54.942031+00:00"
+  },
+  {
+    "name": "native",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:54.942271+00:00",
+    "completedAt": "2026-11-04T11:23:59.179888+00:00"
+  },
+  {
+    "name": "lifecycle",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:23:59.180103+00:00",
+    "completedAt": "2026-11-04T11:24:02.041860+00:00"
+  },
+  {
+    "name": "selection",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:24:02.042041+00:00",
+    "completedAt": "2026-11-04T11:24:22.322711+00:00"
+  }
+]

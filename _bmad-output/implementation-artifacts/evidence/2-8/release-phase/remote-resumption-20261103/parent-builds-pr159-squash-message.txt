@@ -1,0 +1,5 @@
+fix(ci): retain declared diagnostics and adopt Memories 3.0.23 (#159)
+
+Preserve only receipt-bound redacted lifecycle, native and functional diagnostics after exact cleanup.
+Use complete fsynced snapshots and atomic non-replacing promotion so interrupted collection can retry safely.
+Select the authenticated Memories 3.0.23 catalog while preserving other audited package families.

@@ -1,0 +1,1155 @@
+{
+  "at": "2026-11-04T08:44:44.292374+00:00",
+  "source": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+  "prMerge": "e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+  "runId": 41796717649,
+  "attempt": 1,
+  "jobId": 126462440216,
+  "artifacts": [
+    {
+      "name": "blocking",
+      "artifactId": 13307527735,
+      "archiveSha256": "3d90fdb195c9cc5be31838e17bab72449eb69d8783ac63af15cdcf2e494607ac",
+      "members": [
+        "Hexalith.EventStore.Admin.Abstractions.Tests/Hexalith.EventStore.Admin.Abstractions.Tests.trx",
+        "Hexalith.EventStore.Admin.Cli.Tests/Hexalith.EventStore.Admin.Cli.Tests.trx",
+        "Hexalith.EventStore.Admin.Mcp.Tests/Hexalith.EventStore.Admin.Mcp.Tests.trx",
+        "Hexalith.EventStore.Admin.Server.Host.Tests/Hexalith.EventStore.Admin.Server.Host.Tests.trx",
+        "Hexalith.EventStore.Admin.Server.Tests/Hexalith.EventStore.Admin.Server.Tests.trx",
+        "Hexalith.EventStore.Admin.UI.Tests/Hexalith.EventStore.Admin.UI.Tests.trx",
+        "Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.trx",
+        "Hexalith.EventStore.Client.Tests/Hexalith.EventStore.Client.Tests.trx",
+        "Hexalith.EventStore.DomainService.Tests/Hexalith.EventStore.DomainService.Tests.trx",
+        "Hexalith.EventStore.LoadTests.Tests/Hexalith.EventStore.LoadTests.Tests.trx",
+        "Hexalith.EventStore.Operations.Tests/Hexalith.EventStore.Operations.Tests.trx",
+        "Hexalith.EventStore.ProviderVerification.Tests/Hexalith.EventStore.ProviderVerification.Tests.trx",
+        "Hexalith.EventStore.QueryRouting.Tests/Hexalith.EventStore.QueryRouting.Tests.trx",
+        "Hexalith.EventStore.RestApi.Generators.Tests/Hexalith.EventStore.RestApi.Generators.Tests.trx",
+        "Hexalith.EventStore.Sample.Tests/Hexalith.EventStore.Sample.Tests.trx",
+        "Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.trx",
+        "Hexalith.EventStore.ServiceDefaults.Tests/Hexalith.EventStore.ServiceDefaults.Tests.trx",
+        "Hexalith.EventStore.SignalR.Tests/Hexalith.EventStore.SignalR.Tests.trx",
+        "Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.trx",
+        "Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.trx"
+      ]
+    },
+    {
+      "name": "native",
+      "artifactId": 13307652192,
+      "archiveSha256": "a4bb2b7b35038418e8fee433d9d51fa11109abf48f6b483ff7e3be90cbda373d",
+      "members": [
+        "cleanup.json",
+        "execution.json",
+        "invocation.json",
+        "loaded-assemblies-440a075645c5fbb7a1b0f64a2c94a26e.json",
+        "test-result.json"
+      ]
+    }
+  ],
+  "isolatedReports": [
+    {
+      "file": "Hexalith.EventStore.Admin.Abstractions.Tests/Hexalith.EventStore.Admin.Abstractions.Tests.trx",
+      "sha256": "86ef84e80964c37a38df9fbd2adefd30abe956b9e71bf4f60389fd8f8cbc1342",
+      "counters": {
+        "total": "510",
+        "executed": "510",
+        "passed": "510",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 510
+    },
+    {
+      "file": "Hexalith.EventStore.Admin.Cli.Tests/Hexalith.EventStore.Admin.Cli.Tests.trx",
+      "sha256": "5c455231d9426cf6c598fad97eacaf3d067457fcfa7a49661fc98010aca1b84d",
+      "counters": {
+        "total": "384",
+        "executed": "384",
+        "passed": "384",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 384
+    },
+    {
+      "file": "Hexalith.EventStore.Admin.Mcp.Tests/Hexalith.EventStore.Admin.Mcp.Tests.trx",
+      "sha256": "ef00ddae55b6a24a10c2eff2ffc02ba1a7a8a7d6d3240f664143c91b49bdc643",
+      "counters": {
+        "total": "437",
+        "executed": "429",
+        "passed": "429",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "8",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 437
+    },
+    {
+      "file": "Hexalith.EventStore.Admin.Server.Host.Tests/Hexalith.EventStore.Admin.Server.Host.Tests.trx",
+      "sha256": "cebe71c8e2870e3bef91dc0424cd8a6dab20da28a406481568fac597f88b9445",
+      "counters": {
+        "total": "70",
+        "executed": "70",
+        "passed": "70",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 70
+    },
+    {
+      "file": "Hexalith.EventStore.Admin.Server.Tests/Hexalith.EventStore.Admin.Server.Tests.trx",
+      "sha256": "3072fb7e29cf41e10680c7d03e4975924cc83bc86adac889775e2795b22ba435",
+      "counters": {
+        "total": "852",
+        "executed": "839",
+        "passed": "839",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "13",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 852
+    },
+    {
+      "file": "Hexalith.EventStore.Admin.UI.Tests/Hexalith.EventStore.Admin.UI.Tests.trx",
+      "sha256": "07e8a08b53984fabdb424005629f861b5452097df206fe7ebf74f4c8d7aa13c9",
+      "counters": {
+        "total": "1137",
+        "executed": "1137",
+        "passed": "1137",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 1137
+    },
+    {
+      "file": "Hexalith.EventStore.AppHost.Tests/Hexalith.EventStore.AppHost.Tests.trx",
+      "sha256": "7ffd87f7aa7270005d18b2a5e633ed13741b471ab82a1b4025f1cf1846c5a4b4",
+      "counters": {
+        "total": "319",
+        "executed": "319",
+        "passed": "319",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 319
+    },
+    {
+      "file": "Hexalith.EventStore.Client.Tests/Hexalith.EventStore.Client.Tests.trx",
+      "sha256": "2ea5fad0114d949b547bedab951ac3becd01e1af766fb7510aabc947f6576f1b",
+      "counters": {
+        "total": "2379",
+        "executed": "2377",
+        "passed": "2377",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "2",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 2379
+    },
+    {
+      "file": "Hexalith.EventStore.DomainService.Tests/Hexalith.EventStore.DomainService.Tests.trx",
+      "sha256": "7adea01d2e4899608b03be709a7d3d544b971c548c33043b7acb2688059789bc",
+      "counters": {
+        "total": "1360",
+        "executed": "1359",
+        "passed": "1359",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "1",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 1360
+    },
+    {
+      "file": "Hexalith.EventStore.LoadTests.Tests/Hexalith.EventStore.LoadTests.Tests.trx",
+      "sha256": "d5c12d9398de157f09b803ede74c933a15128428410364719ab13c552c53549c",
+      "counters": {
+        "total": "9",
+        "executed": "9",
+        "passed": "9",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 9
+    },
+    {
+      "file": "Hexalith.EventStore.Operations.Tests/Hexalith.EventStore.Operations.Tests.trx",
+      "sha256": "f134b08c25a8e626431475b72b0c6b98c97369bf564d4bbdb6eda546328e85ff",
+      "counters": {
+        "total": "111",
+        "executed": "111",
+        "passed": "111",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 111
+    },
+    {
+      "file": "Hexalith.EventStore.ProviderVerification.Tests/Hexalith.EventStore.ProviderVerification.Tests.trx",
+      "sha256": "ebdf1f28bc4675f58fce1358bf7d86666e9831b38daa4f118ccaf9803d1f8869",
+      "counters": {
+        "total": "80",
+        "executed": "80",
+        "passed": "80",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 80
+    },
+    {
+      "file": "Hexalith.EventStore.QueryRouting.Tests/Hexalith.EventStore.QueryRouting.Tests.trx",
+      "sha256": "68d9fd908fe32a3e0a699f86c42b3b1908fb909734f9e333776886e404b14f1f",
+      "counters": {
+        "total": "15",
+        "executed": "15",
+        "passed": "15",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 15
+    },
+    {
+      "file": "Hexalith.EventStore.RestApi.Generators.Tests/Hexalith.EventStore.RestApi.Generators.Tests.trx",
+      "sha256": "41c61495cc7a582889a5103fe7b0294a0fec67b73570ae08ad501058008679e9",
+      "counters": {
+        "total": "137",
+        "executed": "137",
+        "passed": "137",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 137
+    },
+    {
+      "file": "Hexalith.EventStore.Sample.Tests/Hexalith.EventStore.Sample.Tests.trx",
+      "sha256": "75a8269ba26dcc8491df8cc3731ecbb565f5d6b713e4780e6ebdefbd7f2b3b71",
+      "counters": {
+        "total": "222",
+        "executed": "222",
+        "passed": "222",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 222
+    },
+    {
+      "file": "Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.trx",
+      "sha256": "c6e78cd8748f774040e5c9d78c90b402006f8b6908dc3cad93c60b03721f730f",
+      "counters": {
+        "total": "7645",
+        "executed": "7620",
+        "passed": "7620",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "25",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 7645
+    },
+    {
+      "file": "Hexalith.EventStore.ServiceDefaults.Tests/Hexalith.EventStore.ServiceDefaults.Tests.trx",
+      "sha256": "a0ee921a35a46e199a3403c089d54cbd96ca9a0001b6f756b21deeaa82b799b2",
+      "counters": {
+        "total": "157",
+        "executed": "157",
+        "passed": "157",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 157
+    },
+    {
+      "file": "Hexalith.EventStore.SignalR.Tests/Hexalith.EventStore.SignalR.Tests.trx",
+      "sha256": "304f75ffcfa7e911b7693bfa663941bab74fa8a597026b8d92b0613c7661ff27",
+      "counters": {
+        "total": "63",
+        "executed": "63",
+        "passed": "63",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 63
+    },
+    {
+      "file": "Hexalith.EventStore.Testing.Integration.Tests/Hexalith.EventStore.Testing.Integration.Tests.trx",
+      "sha256": "7cc720ba4ea6f0aaf4b006d91b0d253bec31952647bc0bb264a746227fdc6f92",
+      "counters": {
+        "total": "59",
+        "executed": "59",
+        "passed": "59",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 59
+    },
+    {
+      "file": "Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.trx",
+      "sha256": "3dca61d682f65ee8d8252ad76ea12e279fd85d4d3f1dbe877f552469e24c1dc6",
+      "counters": {
+        "total": "263",
+        "executed": "263",
+        "passed": "263",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": 263
+    }
+  ],
+  "isolatedTotals": {
+    "total": 16209,
+    "executed": 16160,
+    "passed": 16160,
+    "failed": 0,
+    "notExecuted": 49
+  },
+  "retainedNativeDocuments": {
+    "cleanup.json": {
+      "diagnostics": [
+        {
+          "category": "None",
+          "field": "down",
+          "hint": null,
+          "location": null,
+          "message": "Runner-owned invocation cleanup completed.",
+          "phase": "Cleanup",
+          "row": null,
+          "ruleId": "HXI001",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "None",
+        "exitCode": "Success",
+        "phase": "None",
+        "ruleId": null
+      },
+      "remainingResources": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "runId": "440a075645c5fbb7a1b0f64a2c94a26e",
+      "status": "completed",
+      "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/440a075645c5fbb7a1b0f64a2c94a26e/test-result.json"
+    },
+    "execution.json": {
+      "diagnostics": [
+        {
+          "category": "None",
+          "field": "readiness",
+          "hint": null,
+          "location": null,
+          "message": "Every run resource reported healthy. deadline='600s'.",
+          "phase": "Topology",
+          "row": null,
+          "ruleId": "HXI010",
+          "source": null
+        },
+        {
+          "category": "None",
+          "field": "nativeTests",
+          "hint": null,
+          "location": null,
+          "message": "The native test report passed.",
+          "phase": "Test",
+          "row": null,
+          "ruleId": "HXI005",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "None",
+        "exitCode": "Success",
+        "phase": "None",
+        "ruleId": null
+      },
+      "remainingResources": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "runId": "440a075645c5fbb7a1b0f64a2c94a26e",
+      "status": "completed",
+      "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/440a075645c5fbb7a1b0f64a2c94a26e/test-result.json"
+    },
+    "invocation.json": {
+      "classification": "baseline-only",
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.EventStore",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "41796717649"
+      },
+      "profiles": [
+        "platform-package"
+      ],
+      "qualificationOwners": [
+        "tenants"
+      ]
+    },
+    "loaded-assemblies-440a075645c5fbb7a1b0f64a2c94a26e.json": {
+      "kind": "real-native-test-loaded-assemblies",
+      "ownerRunId": "440a075645c5fbb7a1b0f64a2c94a26e",
+      "ownerAttemptId": "a0fafebf3e6824fb3ff923fbbb887dcc",
+      "environmentId": "e1259e430be4fc962d91d887ec6ed55f",
+      "revision": "e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+      "mappingHash": "7054950c15e57a9768938ac402f290cbca6a2185eb56ec63daced08e45d015ed",
+      "executionContext": {
+        "kind": "ci",
+        "repository": "Hexalith/Hexalith.EventStore",
+        "workflowRunId": "41796717649",
+        "workflowAttempt": 1,
+        "jobId": "build-and-test",
+        "runnerKind": "github-hosted",
+        "operatingSystem": "Linux",
+        "disposable": true
+      },
+      "assemblies": [
+        {
+          "identity": "Hexalith.EventStore.Platform.IntegrationTests, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+          "moduleVersionId": "afeb7959-fbce-45b1-a9ed-01a179783021",
+          "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Platform.IntegrationTests.dll",
+          "sha256": "eb84ed658e131c3bf22f0141672dff9416085d3e1f5f97b8db6f9ed96ebbd4f9"
+        },
+        {
+          "identity": "Hexalith.EventStore.Testing, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+          "moduleVersionId": "4199aefe-1dac-44cc-9e77-955b6e8c538c",
+          "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.dll",
+          "sha256": "c59ede72e26a95b61821a858aaea1da9c2fb72e5d5823659ad1b2740dab03a9a"
+        },
+        {
+          "identity": "Hexalith.EventStore.Testing.Integration, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+          "moduleVersionId": "8b5ed042-cf04-4f7f-87a5-a5bbc5dac008",
+          "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.Integration.dll",
+          "sha256": "493490d9ee1f5f26aee7a6d030da321c3293a357a680326633f0318be59d88ed"
+        },
+        {
+          "identity": "StackExchange.Redis, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46",
+          "informationalVersion": "3.4.31+9d17974fca",
+          "moduleVersionId": "789a4301-495e-461c-8124-1ae65e18ed80",
+          "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/StackExchange.Redis.dll",
+          "sha256": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909"
+        }
+      ]
+    },
+    "test-result.json": {
+      "bindings": {
+        "artifacts": {
+          "expected": {
+            "state": "not-yet-populated"
+          },
+          "loaded": {
+            "state": "not-yet-populated"
+          }
+        },
+        "attachments": {
+          "holds": [],
+          "state": "populated"
+        },
+        "candidate": {
+          "classification": "baseline-only",
+          "reason": "No authenticated candidate request was selected.",
+          "state": "populated"
+        },
+        "deadlines": {
+          "execution": {
+            "actualDurationSeconds": 65.7059757,
+            "configurationContentIdentity": "sha256:31d637e81157f578a455f107e3844c9f17c498086aaa9592c23a9028e2bdce00",
+            "effectiveSeconds": 120,
+            "expiresAt": "2026-11-04T08:44:26.1962703Z",
+            "origin": "test-execution-started",
+            "originAt": "2026-11-04T08:42:26.1962703Z",
+            "state": "populated"
+          },
+          "startup": {
+            "actualDurationSeconds": 102.6304858,
+            "effectiveSeconds": 600,
+            "expiresAt": "2026-11-04T08:50:43.5025968Z",
+            "origin": "environment-requested",
+            "originAt": "2026-11-04T08:40:43.5025968Z",
+            "override": {
+              "state": "not-overridden"
+            },
+            "state": "populated"
+          }
+        },
+        "decision": {
+          "state": "not-yet-populated"
+        },
+        "environment": {
+          "catalog": {
+            "commit": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+            "instanceId": "e1259e430be4fc962d91d887ec6ed55f-catalog"
+          },
+          "composition": {
+            "contentIdentity": "sha256:a7ad76375956249aeb6db45171347f90000a35defc2b8bf0605373f133f8ed8d",
+            "id": "eventstore"
+          },
+          "executionContext": {
+            "disposable": true,
+            "jobId": "build-and-test",
+            "kind": "ci",
+            "operatingSystem": "Linux",
+            "repository": "Hexalith/Hexalith.EventStore",
+            "runnerKind": "github-hosted",
+            "workflowAttempt": 1,
+            "workflowRunId": "41796717649"
+          },
+          "isolation": {
+            "catalogScopeId": "e1259e430be4fc962d91d887ec6ed55f-catalog",
+            "dataIsolationId": "g4r-440a075645c5",
+            "resourceScopeId": "e1259e430be4fc962d91d887ec6ed55f",
+            "state": "populated",
+            "syntheticTenantId": "g4t-440a075645c5"
+          },
+          "mode": "package",
+          "readiness": {
+            "observedAt": "2026-11-04T08:42:25.8657879Z",
+            "resources": [
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8611528Z",
+                "resourceId": "dapr-placement-mtls",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8611753Z",
+                "resourceId": "dapr-scheduler-mtls",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8611952Z",
+                "resourceId": "dapr-sentry",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8611269Z",
+                "resourceId": "eventstore",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8612234Z",
+                "resourceId": "eventstore-dapr-cli",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8610951Z",
+                "resourceId": "redis",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8612466Z",
+                "resourceId": "tenants",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8612672Z",
+                "resourceId": "tenants-api",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8612975Z",
+                "resourceId": "tenants-api-dapr-cli",
+                "status": "ready"
+              },
+              {
+                "diagnosticIds": [],
+                "observedAt": "2026-11-04T08:42:25.8613264Z",
+                "resourceId": "tenants-dapr-cli",
+                "status": "ready"
+              }
+            ],
+            "state": "populated",
+            "status": "ready"
+          },
+          "resources": [
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "tcp",
+                  "uri": "tcp://localhost:11670/"
+                },
+                {
+                  "name": "health",
+                  "protocol": "http",
+                  "uri": "http://localhost:41577/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "dapr-placement-mtls"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "tcp",
+                  "uri": "tcp://localhost:23030/"
+                },
+                {
+                  "name": "health",
+                  "protocol": "http",
+                  "uri": "http://localhost:39231/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "dapr-scheduler-mtls"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "tcp",
+                  "uri": "tcp://localhost:15798/"
+                },
+                {
+                  "name": "health",
+                  "protocol": "http",
+                  "uri": "http://localhost:43407/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "dapr-sentry"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:43979/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "eventstore"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "http",
+                  "uri": "http://localhost:29357/"
+                },
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:14171/"
+                },
+                {
+                  "name": "metrics",
+                  "protocol": "http",
+                  "uri": "http://localhost:19373/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "eventstore-dapr-cli"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "tcp",
+                  "protocol": "tcp",
+                  "uri": "tcp://localhost:10370/"
+                }
+              ],
+              "moduleId": "eventstore",
+              "resourceId": "redis"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:34205/"
+                }
+              ],
+              "moduleId": "tenants",
+              "resourceId": "tenants"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:39721/"
+                }
+              ],
+              "moduleId": "tenants",
+              "resourceId": "tenants-api"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "http",
+                  "uri": "http://localhost:23374/"
+                },
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:28366/"
+                },
+                {
+                  "name": "metrics",
+                  "protocol": "http",
+                  "uri": "http://localhost:19167/"
+                }
+              ],
+              "moduleId": "tenants",
+              "resourceId": "tenants-api-dapr-cli"
+            },
+            {
+              "endpoints": [
+                {
+                  "name": "grpc",
+                  "protocol": "http",
+                  "uri": "http://localhost:23233/"
+                },
+                {
+                  "name": "http",
+                  "protocol": "http",
+                  "uri": "http://localhost:17779/"
+                },
+                {
+                  "name": "metrics",
+                  "protocol": "http",
+                  "uri": "http://localhost:22026/"
+                }
+              ],
+              "moduleId": "tenants",
+              "resourceId": "tenants-dapr-cli"
+            }
+          ],
+          "startupTasks": {
+            "state": "populated",
+            "tasks": []
+          }
+        },
+        "reuseLineage": {
+          "state": "not-yet-populated"
+        },
+        "run": {
+          "attemptId": "a0fafebf3e6824fb3ff923fbbb887dcc",
+          "attemptSequence": 1,
+          "environmentId": "e1259e430be4fc962d91d887ec6ed55f",
+          "ownerRunId": "440a075645c5fbb7a1b0f64a2c94a26e",
+          "role": "owner",
+          "runId": "440a075645c5fbb7a1b0f64a2c94a26e"
+        },
+        "suite": {
+          "completion": {
+            "state": "not-yet-populated"
+          },
+          "declared": {
+            "state": "not-yet-populated"
+          }
+        },
+        "tool": {
+          "state": "not-yet-populated"
+        }
+      },
+      "cleanup": {
+        "attemptId": "40b361dd25ef51f408f781c830f3b40e",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "disposition": "complete",
+        "failures": [],
+        "leftoverResourceIds": [],
+        "observedAt": "2026-11-04T08:43:37.7277528Z",
+        "ownedResourceIds": [
+          "resource:dapr-placement-mtls",
+          "resource:dapr-scheduler-mtls",
+          "resource:dapr-sentry",
+          "resource:eventstore",
+          "resource:eventstore-dapr-cli",
+          "resource:redis",
+          "resource:tenants",
+          "resource:tenants-api",
+          "resource:tenants-api-dapr-cli",
+          "resource:tenants-dapr-cli"
+        ],
+        "state": "populated"
+      },
+      "diagnostics": [
+        {
+          "classification": "internal",
+          "contentIdentity": "sha256:e68b1c3b42ad5b1e0b25ad0b4085d999a315c6644cfb73049d2ba422cfacab6b",
+          "id": "lifecycle",
+          "redacted": true,
+          "reference": "lifecycle-e68b1c3b42ad5b1e0b25ad0b4085d999a315c6644cfb73049d2ba422cfacab6b.json"
+        },
+        {
+          "classification": "internal",
+          "contentIdentity": "sha256:c719894492207f51733714e7427c1d93718ff97a01f78d18bc76bf27e13be5c0",
+          "id": "native-report",
+          "redacted": true,
+          "reference": "native-c719894492207f51733714e7427c1d93718ff97a01f78d18bc76bf27e13be5c0.trx"
+        }
+      ],
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "retention": {
+        "disposition": "not-retained",
+        "failureRunIds": [],
+        "reason": "local-failure-retention-not-established",
+        "recordedAt": "2026-11-04T08:43:37.7277528Z",
+        "retainedResourceIds": [],
+        "state": "populated"
+      },
+      "schema": "hexalith.test-result.v1",
+      "terminal": {
+        "cause": "tests-completed",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "passed",
+        "recordedAt": "2026-11-04T08:43:31.9264676Z"
+      },
+      "termination": {
+        "state": "not-yet-populated"
+      }
+    }
+  },
+  "interpretation": "Completed successful actual hosted E/T package environment: all10resources ready, execution and exact finalizer succeeded, immutable passed/tests-completed first outcome retained; isolated and independent results separately verified. Corrected Platform1.2.3overcame prior005cstartup timeout.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "observedLivePackageSuccess": true,
+  "actualAll10ResourcesReady": [
+    "dapr-placement-mtls",
+    "dapr-scheduler-mtls",
+    "dapr-sentry",
+    "eventstore",
+    "eventstore-dapr-cli",
+    "redis",
+    "tenants",
+    "tenants-api",
+    "tenants-api-dapr-cli",
+    "tenants-dapr-cli"
+  ],
+  "immutableFirstTerminal": {
+    "cause": "tests-completed",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "passed",
+    "recordedAt": "2026-11-04T08:43:31.9264676Z"
+  },
+  "actualVerifiedCleanup": {
+    "attemptId": "40b361dd25ef51f408f781c830f3b40e",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-04T08:43:37.7277528Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "state": "populated"
+  },
+  "actualNativeObservationBodies": {
+    "kind": "real-native-test-loaded-assemblies",
+    "ownerRunId": "440a075645c5fbb7a1b0f64a2c94a26e",
+    "ownerAttemptId": "a0fafebf3e6824fb3ff923fbbb887dcc",
+    "environmentId": "e1259e430be4fc962d91d887ec6ed55f",
+    "revision": "e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+    "mappingHash": "7054950c15e57a9768938ac402f290cbca6a2185eb56ec63daced08e45d015ed",
+    "executionContext": {
+      "kind": "ci",
+      "repository": "Hexalith/Hexalith.EventStore",
+      "workflowRunId": "41796717649",
+      "workflowAttempt": 1,
+      "jobId": "build-and-test",
+      "runnerKind": "github-hosted",
+      "operatingSystem": "Linux",
+      "disposable": true
+    },
+    "assemblies": [
+      {
+        "identity": "Hexalith.EventStore.Platform.IntegrationTests, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+        "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+        "moduleVersionId": "afeb7959-fbce-45b1-a9ed-01a179783021",
+        "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Platform.IntegrationTests.dll",
+        "sha256": "eb84ed658e131c3bf22f0141672dff9416085d3e1f5f97b8db6f9ed96ebbd4f9"
+      },
+      {
+        "identity": "Hexalith.EventStore.Testing, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+        "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+        "moduleVersionId": "4199aefe-1dac-44cc-9e77-955b6e8c538c",
+        "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.dll",
+        "sha256": "c59ede72e26a95b61821a858aaea1da9c2fb72e5d5823659ad1b2740dab03a9a"
+      },
+      {
+        "identity": "Hexalith.EventStore.Testing.Integration, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+        "informationalVersion": "4.0.4+e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+        "moduleVersionId": "8b5ed042-cf04-4f7f-87a5-a5bbc5dac008",
+        "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.Integration.dll",
+        "sha256": "493490d9ee1f5f26aee7a6d030da321c3293a357a680326633f0318be59d88ed"
+      },
+      {
+        "identity": "StackExchange.Redis, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46",
+        "informationalVersion": "3.4.31+9d17974fca",
+        "moduleVersionId": "789a4301-495e-461c-8124-1ae65e18ed80",
+        "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/440a075645c5fbb7a1b0f64a2c94a26e/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/StackExchange.Redis.dll",
+        "sha256": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909"
+      }
+    ]
+  },
+  "missingPublishedDiagnosticReferences": [
+    "lifecycle-e68b1c3b42ad5b1e0b25ad0b4085d999a315c6644cfb73049d2ba422cfacab6b.json",
+    "native-c719894492207f51733714e7427c1d93718ff97a01f78d18bc76bf27e13be5c0.trx"
+  ],
+  "limits": [
+    "Native CLI reports its test report passed, but4.44.0helper did not retain actual native TRX or lifecycle bodies, so individual native case counts/diagnostic content cannot be independently recounted.",
+    "All4loaded-body identities are observations only; actual DLL bodies are not retained. Active test/harness source is the real synthetic PRmerge, not relabelled as released SDK source.",
+    "Final new coherent tuple must rerun real required native integration with corrected diagnostic retention. Full Parties/native/wire/manual lifecycle qualification remains incomplete."
+  ],
+  "storyComplete": false
+}

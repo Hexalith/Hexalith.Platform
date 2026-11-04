@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 38592cefb6103e886ef92da0e0b73b863bf509be..df3bc85099c5a4d27d28b18437caad36647a9ba4 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -44,7 +44,7 @@ jobs:
+         tests/Hexalith.Parties.Tests
+         tests/Hexalith.Parties.Sample.Tests
+         tests/Hexalith.Parties.Ci.Tests
+-      build-timeout-minutes: 60
++      build-timeout-minutes: 120
+     secrets:
+       registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}
+       registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}

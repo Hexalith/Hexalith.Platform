@@ -1,0 +1,19 @@
+{
+  "number": 159,
+  "url": "https://github.com/Hexalith/Hexalith.Builds/pull/159",
+  "title": "fix(ci): retain declared diagnostics and adopt Memories 3.0.23",
+  "body": "The v2 integration finalizer currently drops content-addressed diagnostics declared by the published test result. Retain only the exact receipt-bound redacted lifecycle, native report and functional observations, with bounded private-file reads and SHA-256 checks. Publish complete fsynced bytes through Linux no-replace rename so an interrupted collector can retry without overwriting immutable evidence. Collection failures follow exact cleanup and remain separate from the original native outcome.\n\nSelect the published Memories 3.0.23/source 82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f and its unchanged declaration snapshot. Refresh only that family's normal audit records; preserve all other catalog selections and existing Platform admission.\n\nValidation:\n- Current Python refactor: 43 helper controls, including all original negative cases and the real child-process kill/retry control; 95 provenance and 16 preparation controls; legacy 411/v2 254 workflow assertions.\n- Full-file pycodestyle, mccabe and Radon checks pass at the actual 159-character/15-complexity bounds, with no suppressions or analysis configuration changes. The required 05e Codacy findings are preserved; current-head hosted gates are pending.\n- At predecessor 05e5117166cd0f445befa685f68802ea1ffd71b5, complete normal local Release/package qualification with required controls passed: Evidence 191 passed; Module 2,806 passed/5 existing optional skips; Tooling Integration 1 passed/12 explicit opt-in live skips. Both packages built/restored and source/package consumer controls passed. The subsequent two-file Python refactor leaves compiled package/catalog source unchanged; its hosted package gates must still pass.\n- Normal catalog/audit checks, 34 declaration/closure tests and 101 platform catalog scenarios passed.\n\nThe preserved first qualifier at 9369 failed four fixture-cache cases because an injected NUGET_PACKAGES overrode their own NuGet.Config. All four unchanged cases pass with that override unset; no assertion or producer cache policy changed. The local qualification version is unpublished. No publication, accepted dependency pin, Platform admission or Story 2.8 native/lifecycle acceptance is claimed.\n",
+  "state": "open",
+  "merged": false,
+  "draft": false,
+  "mergeable": true,
+  "base": "main",
+  "base_sha": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "head": "fix/retain-complete-ci-diagnostics",
+  "head_sha": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+  "updated_at": "2026-11-04T06:35:48Z",
+  "commits": 5,
+  "changed_files": 9,
+  "additions": 1766,
+  "deletions": 56
+}

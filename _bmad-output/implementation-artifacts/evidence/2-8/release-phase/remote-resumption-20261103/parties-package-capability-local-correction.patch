@@ -1,0 +1,217 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index b9ae7bc2..205874e9 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -32,12 +32,12 @@
+       <DefineConstants>$(DefineConstants);HES_CANCELLABLE_PROJECTIONS</DefineConstants>
+     </PropertyGroup>
+ 
+-    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.1' or '$(HexalithFrontComposerVersion)' == '4.7.3' or '$(HexalithFrontComposerVersion)' == '4.7.4' or '$(HexalithFrontComposerVersion)' == '4.7.5'">
++    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.1' or '$(HexalithFrontComposerVersion)' == '4.7.3' or '$(HexalithFrontComposerVersion)' == '4.7.4' or '$(HexalithFrontComposerVersion)' == '4.7.5' or '$(HexalithFrontComposerVersion)' == '4.7.6'">
+       <DefineConstants>$(DefineConstants);HFC_SHARED_UI</DefineConstants>
+     </PropertyGroup>
+-    <!-- 4.7.5 publishes readiness, operation witnesses, retry clocks and recovery generations.
++    <!-- 4.7.5 and 4.7.6 publish readiness, operation witnesses, retry clocks and recovery generations.
+          Older or unknown packages retain local reconciliation. -->
+-    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.5'">
++    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.5' or '$(HexalithFrontComposerVersion)' == '4.7.6'">
+       <DefineConstants>$(DefineConstants);HFC_SHARED_RECONCILE_READINESS</DefineConstants>
+     </PropertyGroup>
+   </Target>
+@@ -47,9 +47,9 @@
+     <PropertyGroup>
+       <MemoriesSourceRefreshSupported>false</MemoriesSourceRefreshSupported>
+     </PropertyGroup>
+-    <!-- The qualified 3.0.3, 3.0.10 through 3.0.13 and 3.0.18 packages expose the same explicit revision/refresh protocol.
++    <!-- The qualified 3.0.3, 3.0.10 through 3.0.13, 3.0.18 and 3.0.23 packages expose the same explicit revision/refresh protocol.
+          Qualify exact package selections; future or older packages remain fail closed. -->
+-    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12' or '$(HexalithMemoriesVersion)' == '3.0.13' or '$(HexalithMemoriesVersion)' == '3.0.18'">
++    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12' or '$(HexalithMemoriesVersion)' == '3.0.13' or '$(HexalithMemoriesVersion)' == '3.0.18' or '$(HexalithMemoriesVersion)' == '3.0.23'">
+       <DefineConstants>$(DefineConstants);HEXALITH_MEMORIES_SOURCE_REFRESH</DefineConstants>
+       <MemoriesSourceRefreshSupported>true</MemoriesSourceRefreshSupported>
+     </PropertyGroup>
+diff --git a/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs b/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs
+index 63403075..3e245a58 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs
+@@ -528,6 +528,52 @@ public sealed class AspireRuntimePreparationTests
+         finally { Directory.Delete(workspace, recursive: true); }
+     }
+ 
++    /// <summary>Evaluates exact published UI and readiness capabilities without accepting unknown packages.</summary>
++    /// <param name="version">The isolated candidate package selection.</param>
++    /// <param name="source">The existing source selector branch.</param>
++    /// <param name="sharedUi">Whether shared UI APIs are enabled.</param>
++    /// <param name="readiness">Whether shared reconciliation readiness is enabled.</param>
++    [Theory]
++    [InlineData("4.7.1", false, true, false)]
++    [InlineData("4.7.3", false, true, false)]
++    [InlineData("4.7.4", false, true, false)]
++    [InlineData("4.7.5", false, true, true)]
++    [InlineData("4.7.6", false, true, true)]
++    [InlineData("4.7.0", false, false, false)]
++    [InlineData("4.7.2", false, false, false)]
++    [InlineData("4.7.7", false, false, false)]
++    [InlineData("4.8.0", false, false, false)]
++    [InlineData("4.7.6-preview.1", false, false, false)]
++    [InlineData("invalid", false, false, false)]
++    [InlineData("", false, false, false)]
++    [InlineData("4.7.0", true, true, true)]
++    [InlineData("", true, true, true)]
++    public async Task FrontComposerExactSelectionPreservesUiAndReadinessBoundaries(
++        string version, bool source, bool sharedUi, bool readiness)
++    {
++        string workspace = Directory.CreateTempSubdirectory("parties-feedback-capability-").FullName;
++        try
++        {
++            string project = Path.Combine(workspace, "Capability.csproj");
++            new XDocument(new XElement("Project",
++                new XElement("PropertyGroup", new XElement("DefineConstants", "UNCHANGED"),
++                    new XElement("HexalithEventStoreVersion", "4.0.4"),
++                    new XElement("HexalithFrontComposerVersion", version),
++                    new XElement("HexalithFrontComposerFromSource", source.ToString().ToLowerInvariant())),
++                new XElement("Import", new XAttribute("Project", CiTestPaths.RepoFile("Directory.Build.targets")))))
++                .Save(project);
++            var result = await RunDotnetAsync(workspace, "msbuild", project, "-nologo",
++                "-target:ConfigureFrontComposerFeedbackCandidate", "-getProperty:DefineConstants").ConfigureAwait(true);
++            result.ExitCode.ShouldBe(0, result.Output + result.Error);
++            string[] symbols = result.Output.Trim().Split(';');
++            symbols.ShouldContain("UNCHANGED");
++            symbols.ShouldContain("HES_CANCELLABLE_PROJECTIONS");
++            symbols.Contains("HFC_SHARED_UI", StringComparer.Ordinal).ShouldBe(sharedUi);
++            symbols.Contains("HFC_SHARED_RECONCILE_READINESS", StringComparer.Ordinal).ShouldBe(readiness);
++        }
++        finally { Directory.Delete(workspace, recursive: true); }
++    }
++
+     private static string[] RepresentativeSampleSources(string owner) => [.. new[]
+     {
+         "samples/Hexalith.EventStore.Sample/Program.cs",
+diff --git a/tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs b/tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs
+new file mode 100644
+index 00000000..6581127c
+--- /dev/null
++++ b/tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs
+@@ -0,0 +1,85 @@
++using System.Diagnostics;
++using System.Text.Json;
++using System.Xml.Linq;
++
++using Hexalith.Parties.PackageTests;
++
++namespace Hexalith.Parties.Ci.Tests;
++
++/// <summary>Evaluates the owning build target without restoring packages or granting source/runtime qualification.</summary>
++/// <param name="output">The actual evaluated build-policy diagnostics.</param>
++public sealed class MemoriesRefreshCompilationTests(ITestOutputHelper output)
++{
++    /// <summary>Keeps exact package activation, unknown-version fallback and the existing source branch explicit.</summary>
++    /// <param name="version">The candidate package version for this isolated policy evaluation.</param>
++    /// <param name="source">The source selector branch to evaluate.</param>
++    /// <param name="supported">Whether the owning projects must compile the refresh protocol.</param>
++    [Theory]
++    [InlineData("3.0.3", false, true)]
++    [InlineData("3.0.10", false, true)]
++    [InlineData("3.0.11", false, true)]
++    [InlineData("3.0.12", false, true)]
++    [InlineData("3.0.13", false, true)]
++    [InlineData("3.0.18", false, true)]
++    [InlineData("3.0.23", false, true)]
++    [InlineData("3.0.2", false, false)]
++    [InlineData("3.0.22", false, false)]
++    [InlineData("3.0.24", false, false)]
++    [InlineData("3.1.0", false, false)]
++    [InlineData("3.0.23-preview.1", false, false)]
++    [InlineData("invalid", false, false)]
++    [InlineData("", false, false)]
++    [InlineData("3.0.24", true, true)]
++    [InlineData("", true, true)]
++    public void ExactSelectionControlsSymbolAndAssemblyMetadata(string version, bool source, bool supported)
++    {
++        string workspace = Directory.CreateTempSubdirectory("parties-refresh-compilation-").FullName;
++        try
++        {
++            foreach (string name in new[] { "Hexalith.Parties", "Hexalith.Parties.Tests", "Unrelated" })
++            {
++                string project = Path.Combine(workspace, name + ".csproj");
++                new XDocument(new XElement("Project",
++                    new XElement("PropertyGroup", new XElement("DefineConstants", "UNCHANGED"),
++                        new XElement("HexalithMemoriesVersion", version),
++                        new XElement("HexalithMemoriesFromSource", source.ToString().ToLowerInvariant())),
++                    new XElement("Import", new XAttribute("Project", CiTestPaths.RepoFile("Directory.Build.targets")))))
++                    .Save(project);
++                var start = new ProcessStartInfo("dotnet");
++                foreach (string argument in new[] { "msbuild", project, "-nologo",
++                    "-target:ConfigureMemoriesSourceCompilation",
++                    "-getProperty:DefineConstants,MemoriesSourceRefreshSupported", "-getItem:AssemblyMetadata" })
++                {
++                    start.ArgumentList.Add(argument);
++                }
++
++                PackageTestProcessResult result = PackageTestProcess.Run(start, workspace, 30_000);
++                result.ExitCode.ShouldBe(0, result.Diagnostic);
++                using JsonDocument evaluation = JsonDocument.Parse(result.StandardOutput);
++                JsonElement properties = evaluation.RootElement.GetProperty("Properties");
++                bool owner = name != "Unrelated";
++                string[] symbols = properties.GetProperty("DefineConstants").GetString()!.Split(';');
++                symbols.ShouldContain("UNCHANGED");
++                symbols.Contains("HEXALITH_MEMORIES_SOURCE_REFRESH", StringComparer.Ordinal).ShouldBe(owner && supported);
++                properties.GetProperty("MemoriesSourceRefreshSupported").GetString()
++                    .ShouldBe(owner ? supported ? "true" : "false" : string.Empty);
++                JsonElement[] metadata = evaluation.RootElement.GetProperty("Items").GetProperty("AssemblyMetadata")
++                    .EnumerateArray().Where(item => item.GetProperty("Identity").GetString() == "HexalithMemoriesSourceRefresh").ToArray();
++                if (owner)
++                {
++                    metadata.ShouldHaveSingleItem().GetProperty("Value").GetString().ShouldBe(supported ? "true" : "false");
++                }
++                else
++                {
++                    metadata.ShouldBeEmpty();
++                }
++
++                output.WriteLine($"Build-policy evaluation only: project={name}; version={version}; source={source}; supported={owner && supported}; properties={properties}.");
++            }
++        }
++        finally
++        {
++            Directory.Delete(workspace, recursive: true);
++        }
++    }
++}
+diff --git a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+index ff0ed3e6..9ed0c036 100644
+--- a/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
++++ b/tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs
+@@ -30,6 +30,19 @@ public sealed class PartyEnvironmentTests(PlatformEnvironmentFixture fixture, IT
+     public Task RealDependencies_CreateQueryAndPersistMatchingPartyEvents() =>
+         ExerciseRealDependenciesAsync(recordCanonicalObservation: true);
+ 
++    /// <summary>Verifies the live full Parties gateway rejects an anonymous command-status request.</summary>
++    /// <returns>The real gateway authorization check on the issued environment.</returns>
++    [Fact]
++    public async Task GatewayRefusesAnonymousCommandStatusAsync()
++    {
++        using CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken, fixture.Descriptor.RequestCancellation);
++        bound.CancelAfter(TimeSpan.FromSeconds(30));
++        Uri endpoint = fixture.Descriptor.GetEndpoint("eventstore", "eventstore", "http");
++        using HttpClient anonymous = new(new SocketsHttpHandler { AllowAutoRedirect = false, UseProxy = false }) { BaseAddress = endpoint };
++        using HttpResponseMessage response = await anonymous.GetAsync("/api/v1/commands/status/01J00000000000000000000000", bound.Token).ConfigureAwait(true);
++        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
++    }
++
+     /// <summary>Rechecks the full real persistence path after a qualification hold without rewriting the first observation.</summary>
+     /// <returns>The bounded real-service command, query and exact-stream assertions.</returns>
+     internal Task RecheckRealDependenciesAsync() =>
+diff --git a/tests/e2e/helpers/frontcomposer-assets.ts b/tests/e2e/helpers/frontcomposer-assets.ts
+index dce13f0d..0a1c0066 100644
+--- a/tests/e2e/helpers/frontcomposer-assets.ts
++++ b/tests/e2e/helpers/frontcomposer-assets.ts
+@@ -17,7 +17,7 @@ export async function qualifyFrontComposerAssets(page: Page, testInfo?: TestInfo
+     expect(mode, 'Source qualification requires the validated pinned-tool mapping.').toBe('source');
+     expect(path.isAbsolute(root)).toBe(true);
+   } else {
+-    expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');
++    expect(version, 'This adoption authorizes exactly the selected 4.7.6 package capabilities.').toBe('4.7.6');
+     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);
+   }
+   const assets = [];

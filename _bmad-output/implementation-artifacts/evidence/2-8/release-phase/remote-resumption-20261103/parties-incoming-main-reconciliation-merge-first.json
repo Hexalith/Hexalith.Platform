@@ -1,0 +1,25 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "-c",
+    "submodule.recurse=false",
+    "merge",
+    "--no-ff",
+    "--no-commit",
+    "-F",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-incoming-main-reconciliation-merge-message.txt",
+    "origin/main"
+  ],
+  "exitCode": 1,
+  "preMergeHead": "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+  "mergeHead": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "conflicts": [
+    ".gitlink-signoff.tsv",
+    "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+    "docs/ci.md",
+    "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+  ],
+  "completedAt": "2026-11-04T08:39:26.743012+00:00"
+}

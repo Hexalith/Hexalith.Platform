@@ -1,0 +1,122 @@
+{
+  "recordedAt": "2026-11-04T11:30:10.735878+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "branch": "fix/adopt-platform-117",
+  "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "head": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "parents": [
+    "26658feb2aea894ac4cc76b0a0259efa09a62735"
+  ],
+  "tree": "06f1c9e8f4595b5199a84d5675b82f04ba89b16e",
+  "preservedMerge": {
+    "head": "26658feb2aea894ac4cc76b0a0259efa09a62735",
+    "parents": [
+      "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+      "3e4367622764118fc2ad710ad1040994ae4cfa49"
+    ]
+  },
+  "clean": true,
+  "gitlinks": {
+    "references/Hexalith.EventStore": {
+      "index": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+      "actualCheckout": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+      "clean": true
+    },
+    "references/Hexalith.Memories": {
+      "index": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "actualCheckout": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "clean": true
+    },
+    "references/Hexalith.FrontComposer": {
+      "index": "fbe01c913cb863abb0fd4a317d370d36fff593b3",
+      "actualCheckout": "fbe01c913cb863abb0fd4a317d370d36fff593b3",
+      "clean": true
+    },
+    "references/Hexalith.Tenants": {
+      "index": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "actualCheckout": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "clean": true
+    },
+    "references/Hexalith.AI.Tools": {
+      "index": "1745b6663ad32bb1288167135ed0f979366c53a0",
+      "actualCheckout": "1745b6663ad32bb1288167135ed0f979366c53a0",
+      "clean": true
+    },
+    "references/Hexalith.Commons": {
+      "index": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "actualCheckout": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "clean": true
+    },
+    "references/Hexalith.Builds": {
+      "index": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "actualCheckout": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "clean": true
+    },
+    "references/Hexalith.PolymorphicSerializations": {
+      "index": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "actualCheckout": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "clean": true
+    },
+    "references/Hexalith.McpCli": {
+      "index": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+      "actualCheckout": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+      "clean": true
+    },
+    "references/Hexalith.Platform": {
+      "index": "338a6afc31850761f49c0de7d399266dd15cfe84",
+      "actualCheckout": "338a6afc31850761f49c0de7d399266dd15cfe84",
+      "clean": true
+    }
+  },
+  "activeDeclarationSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+  "patches": {
+    "adoption": {
+      "file": "parties-platform130-adoption-adoption.patch",
+      "sha256": "45d48d0991eae6779c882139692d00c6d1593e8c8c1e37494a45f7c479fe692b",
+      "bytes": 32277,
+      "paths": [
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci-lifecycle-qualification.yml",
+        ".github/workflows/ci.yml",
+        ".gitlink-signoff.tsv",
+        "README.md",
+        "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+        "docs/architecture.md",
+        "docs/ci-lifecycle-qualification.md",
+        "docs/ci.md",
+        "docs/getting-started.md",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+        "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+      ]
+    },
+    "full-proposal": {
+      "file": "parties-platform130-adoption-full-proposal.patch",
+      "sha256": "48282d190a5cf99e684d75f177300cead6237f1349318228fc85d408a0b7e27f",
+      "bytes": 92144,
+      "paths": [
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci-lifecycle-qualification.yml",
+        ".github/workflows/ci.yml",
+        ".gitlink-signoff.tsv",
+        "README.md",
+        "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+        "docs/architecture.md",
+        "docs/ci-lifecycle-qualification.md",
+        "docs/ci.md",
+        "docs/getting-started.md",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+      ]
+    }
+  },
+  "candidateAcceptance": false
+}

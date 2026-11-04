@@ -1,0 +1,48 @@
+{
+  "source": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "isolatedProjects": [
+    "tests/Hexalith.Parties.Aspire.Tests",
+    "tests/Hexalith.Parties.Contracts.Tests",
+    "tests/Hexalith.Parties.Authentication.Tests",
+    "tests/Hexalith.Parties.Client.Tests",
+    "tests/Hexalith.Parties.Server.Tests",
+    "tests/Hexalith.Parties.Projections.Tests",
+    "tests/Hexalith.Parties.Security.Tests",
+    "tests/Hexalith.Parties.AdminPortal.Tests",
+    "tests/Hexalith.Parties.ConsumerPortal.Tests",
+    "tests/Hexalith.Parties.UI.Tests",
+    "tests/Hexalith.Parties.Picker.Tests",
+    "tests/Hexalith.Parties.Mcp.Tests",
+    "tests/Hexalith.Parties.Tests",
+    "tests/Hexalith.Parties.Sample.Tests",
+    "tests/Hexalith.Parties.Ci.Tests"
+  ],
+  "isolatedProjectCount": 15,
+  "jobs": [
+    "push",
+    "pull_request",
+    "schedule",
+    "repository_dispatch",
+    "ci",
+    "eventstore-404-package-cohort",
+    "memories-3018-package-protocol",
+    "owner-publish",
+    "ui-a11y",
+    "bmad-config",
+    "platform-declaration"
+  ],
+  "independentJobs": 6,
+  "ordinaryTimeoutMinutes": 120,
+  "manualBaselineTimeoutMinutes": 60,
+  "declarationTimeoutMinutes": 10,
+  "ordinaryAndManualExecutor": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+  "onlyWorkflowMutation": "exact executor SHA; all other bytes identical to26658",
+  "unchangedManifestSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+  "effectiveBudgetsUnchanged": {
+    "startupSeconds": 600,
+    "suiteExecutionSeconds": 300,
+    "suiteStopSeconds": 90,
+    "qualificationHoldSeconds": 240
+  },
+  "candidateAcceptance": false
+}

@@ -1,0 +1,724 @@
+{
+  "at": "2026-11-04T08:44:40.723Z",
+  "artifacts": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "artifacts": [
+          {
+            "id": 13307652192,
+            "name": "module-integration-diagnostics",
+            "size_in_bytes": 4687,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13307652192",
+            "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13307652192/zip",
+            "expired": false,
+            "created_at": "2026-11-04T08:43:39Z",
+            "expires_at": "2026-11-11T08:43:37Z",
+            "updated_at": "2026-11-04T08:43:39Z",
+            "digest": "sha256:a4bb2b7b35038418e8fee433d9d51fa11109abf48f6b483ff7e3be90cbda373d",
+            "workflow_run": {
+              "id": 41796717649,
+              "repository_id": 1155154671,
+              "head_repository_id": 1155154671,
+              "head_branch": "fix/adopt-platform-117",
+              "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed"
+            }
+          },
+          {
+            "id": 13307527735,
+            "name": "blocking-test-results",
+            "size_in_bytes": 2459992,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13307527735",
+            "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13307527735/zip",
+            "expired": false,
+            "created_at": "2026-11-04T08:43:41Z",
+            "expires_at": "2026-11-11T08:43:39Z",
+            "updated_at": "2026-11-04T08:43:41Z",
+            "digest": "sha256:3d90fdb195c9cc5be31838e17bab72449eb69d8783ac63af15cdcf2e494607ac",
+            "workflow_run": {
+              "id": 41796717649,
+              "repository_id": 1155154671,
+              "head_repository_id": 1155154671,
+              "head_branch": "fix/adopt-platform-117",
+              "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed"
+            }
+          },
+          {
+            "id": 13306215804,
+            "name": "contracts-test-results",
+            "size_in_bytes": 448063,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13306215804",
+            "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13306215804/zip",
+            "expired": false,
+            "created_at": "2026-11-04T08:09:29Z",
+            "expires_at": "2026-11-11T08:09:27Z",
+            "updated_at": "2026-11-04T08:09:29Z",
+            "digest": "sha256:61a1d027952e6340094a1a360c492fbb2c51761553a036e32320f3504ac38b20",
+            "workflow_run": {
+              "id": 41796717649,
+              "repository_id": 1155154671,
+              "head_repository_id": 1155154671,
+              "head_branch": "fix/adopt-platform-117",
+              "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed"
+            }
+          },
+          {
+            "id": 13305153516,
+            "name": "tenants-source-mode-test-results",
+            "size_in_bytes": 1799,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13305153516",
+            "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13305153516/zip",
+            "expired": false,
+            "created_at": "2026-11-04T08:06:21Z",
+            "expires_at": "2026-11-11T08:06:21Z",
+            "updated_at": "2026-11-04T08:06:21Z",
+            "digest": "sha256:20dba827b704e5f6141fccfe23a9cf5476bcbb7acea5df2037d961a66846080b",
+            "workflow_run": {
+              "id": 41796717649,
+              "repository_id": 1155154671,
+              "head_repository_id": 1155154671,
+              "head_branch": "fix/adopt-platform-117",
+              "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed"
+            }
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "run": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "content": "{\"id\":41796717649,\"name\":\"CI\",\"node_id\":\"WFR_kwLORNpC788AAAAJu0dMUQ\",\"head_branch\":\"fix/adopt-platform-117\",\"head_sha\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"path\":\".github/workflows/ci.yml\",\"display_title\":\"ci: qualify EventStore package integration with Platform 1.2.3\",\"run_number\":2474,\"event\":\"pull_request\",\"status\":\"completed\",\"conclusion\":\"success\",\"workflow_id\":238596342,\"check_suite_id\":113257150789,\"check_suite_node_id\":\"CS_kwDORNpC788AAAAaXqb5RQ\",\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649\",\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649\",\"pull_requests\":[{\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls/392\",\"id\":5143622095,\"number\":392,\"head\":{\"ref\":\"fix/adopt-platform-117\",\"sha\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"repo\":{\"id\":1155154671,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"name\":\"Hexalith.EventStore\"}},\"base\":{\"ref\":\"main\",\"sha\":\"8a1aca637dad45d6c67806ae7c68508ef42b1206\",\"repo\":{\"id\":1155154671,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"name\":\"Hexalith.EventStore\"}}}],\"created_at\":\"2026-11-04T08:04:31Z\",\"updated_at\":\"2026-11-04T08:43:46Z\",\"actor\":{\"login\":\"jpiquot\",\"id\":6775094,\"node_id\":\"MDQ6VXNlcjY3NzUwOTQ=\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/6775094?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jpiquot\",\"html_url\":\"https://github.com/jpiquot\",\"followers_url\":\"https://api.github.com/users/jpiquot/followers\",\"following_url\":\"https://api.github.com/users/jpiquot/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jpiquot/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jpiquot/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jpiquot/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jpiquot/orgs\",\"repos_url\":\"https://api.github.com/users/jpiquot/repos\",\"events_url\":\"https://api.github.com/users/jpiquot/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jpiquot/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"run_attempt\":1,\"referenced_workflows\":[{\"path\":\"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\",\"sha\":\"6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\"}],\"run_started_at\":\"2026-11-04T08:04:31Z\",\"triggering_actor\":{\"login\":\"jpiquot\",\"id\":6775094,\"node_id\":\"MDQ6VXNlcjY3NzUwOTQ=\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/6775094?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jpiquot\",\"html_url\":\"https://github.com/jpiquot\",\"followers_url\":\"https://api.github.com/users/jpiquot/followers\",\"following_url\":\"https://api.github.com/users/jpiquot/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jpiquot/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jpiquot/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jpiquot/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jpiquot/orgs\",\"repos_url\":\"https://api.github.com/users/jpiquot/repos\",\"events_url\":\"https://api.github.com/users/jpiquot/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jpiquot/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"jobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/jobs\",\"logs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/logs\",\"check_suite_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-suites/113257150789\",\"artifacts_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/artifacts\",\"cancel_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/cancel\",\"rerun_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/rerun\",\"previous_attempt_url\":null,\"workflow_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/workflows/238596342\",\"head_commit\":{\"id\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"tree_id\":\"d738bfd26b8bfd7d965990f67ee8715ba9986e60\",\"message\":\"ci: adopt released Platform 1.2.3 for package integration\\n\\nAdvance the direct Platform source to the published Tenants API channel-token correction.\\nPreserve Builds6249, CLI4.44.0, Tenants1b2 and every workflow, native assertion and timeout.\\nRetain the prior startup failure and require fresh hosted native and cleanup qualification.\",\"timestamp\":\"2026-11-04T08:01:52Z\",\"author\":{\"name\":\"Jérôme Piquot\",\"email\":\"jpiquot@itaneo.com\"},\"committer\":{\"name\":\"Jérôme Piquot\",\"email\":\"jpiquot@itaneo.com\"}},\"repository\":{\"id\":1155154671,\"node_id\":\"R_kgDORNpC7w\",\"name\":\"Hexalith.EventStore\",\"full_name\":\"Hexalith/Hexalith.EventStore\",\"private\":false,\"owner\":{\"login\":\"Hexalith\",\"id\":80614290,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/80614290?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/Hexalith\",\"html_url\":\"https://github.com/Hexalith\",\"followers_url\":\"https://api.github.com/users/Hexalith/followers\",\"following_url\":\"https://api.github.com/users/Hexalith/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/Hexalith/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/Hexalith/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/Hexalith/subscriptions\",\"organizations_url\":\"https://api.github.com/users/Hexalith/orgs\",\"repos_url\":\"https://api.github.com/users/Hexalith/repos\",\"events_url\":\"https://api.github.com/users/Hexalith/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/Hexalith/received_events\",\"type\":\"Organization\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore\",\"description\":null,\"fork\":false,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"forks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks\",\"keys_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams\",\"hooks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks\",\"issue_events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/events\",\"assignees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags\",\"blobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages\",\"stargazers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers\",\"contributors_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors\",\"subscribers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers\",\"subscription_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription\",\"commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges\",\"archive_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads\",\"issues_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments\"},\"head_repository\":{\"id\":1155154671,\"node_id\":\"R_kgDORNpC7w\",\"name\":\"Hexalith.EventStore\",\"full_name\":\"Hexalith/Hexalith.EventStore\",\"private\":false,\"owner\":{\"login\":\"Hexalith\",\"id\":80614290,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/80614290?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/Hexalith\",\"html_url\":\"https://github.com/Hexalith\",\"followers_url\":\"https://api.github.com/users/Hexalith/followers\",\"following_url\":\"https://api.github.com/users/Hexalith/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/Hexalith/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/Hexalith/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/Hexalith/subscriptions\",\"organizations_url\":\"https://api.github.com/users/Hexalith/orgs\",\"repos_url\":\"https://api.github.com/users/Hexalith/repos\",\"events_url\":\"https://api.github.com/users/Hexalith/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/Hexalith/received_events\",\"type\":\"Organization\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore\",\"description\":null,\"fork\":false,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"forks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks\",\"keys_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams\",\"hooks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks\",\"issue_events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/events\",\"assignees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags\",\"blobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages\",\"stargazers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers\",\"contributors_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors\",\"subscribers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers\",\"subscription_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription\",\"commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges\",\"archive_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads\",\"issues_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments\"}}",
+        "title": "41796717649",
+        "modified_date": null,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649",
+        "display_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649",
+        "display_title": "41796717649",
+        "structuredContent": {
+          "title": "41796717649",
+          "content": "{\"id\":41796717649,\"name\":\"CI\",\"node_id\":\"WFR_kwLORNpC788AAAAJu0dMUQ\",\"head_branch\":\"fix/adopt-platform-117\",\"head_sha\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"path\":\".github/workflows/ci.yml\",\"display_title\":\"ci: qualify EventStore package integration with Platform 1.2.3\",\"run_number\":2474,\"event\":\"pull_request\",\"status\":\"completed\",\"conclusion\":\"success\",\"workflow_id\":238596342,\"check_suite_id\":113257150789,\"check_suite_node_id\":\"CS_kwDORNpC788AAAAaXqb5RQ\",\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649\",\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649\",\"pull_requests\":[{\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls/392\",\"id\":5143622095,\"number\":392,\"head\":{\"ref\":\"fix/adopt-platform-117\",\"sha\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"repo\":{\"id\":1155154671,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"name\":\"Hexalith.EventStore\"}},\"base\":{\"ref\":\"main\",\"sha\":\"8a1aca637dad45d6c67806ae7c68508ef42b1206\",\"repo\":{\"id\":1155154671,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"name\":\"Hexalith.EventStore\"}}}],\"created_at\":\"2026-11-04T08:04:31Z\",\"updated_at\":\"2026-11-04T08:43:46Z\",\"actor\":{\"login\":\"jpiquot\",\"id\":6775094,\"node_id\":\"MDQ6VXNlcjY3NzUwOTQ=\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/6775094?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jpiquot\",\"html_url\":\"https://github.com/jpiquot\",\"followers_url\":\"https://api.github.com/users/jpiquot/followers\",\"following_url\":\"https://api.github.com/users/jpiquot/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jpiquot/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jpiquot/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jpiquot/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jpiquot/orgs\",\"repos_url\":\"https://api.github.com/users/jpiquot/repos\",\"events_url\":\"https://api.github.com/users/jpiquot/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jpiquot/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"run_attempt\":1,\"referenced_workflows\":[{\"path\":\"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\",\"sha\":\"6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\"}],\"run_started_at\":\"2026-11-04T08:04:31Z\",\"triggering_actor\":{\"login\":\"jpiquot\",\"id\":6775094,\"node_id\":\"MDQ6VXNlcjY3NzUwOTQ=\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/6775094?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jpiquot\",\"html_url\":\"https://github.com/jpiquot\",\"followers_url\":\"https://api.github.com/users/jpiquot/followers\",\"following_url\":\"https://api.github.com/users/jpiquot/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jpiquot/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jpiquot/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jpiquot/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jpiquot/orgs\",\"repos_url\":\"https://api.github.com/users/jpiquot/repos\",\"events_url\":\"https://api.github.com/users/jpiquot/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jpiquot/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"jobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/jobs\",\"logs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/logs\",\"check_suite_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-suites/113257150789\",\"artifacts_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/artifacts\",\"cancel_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/cancel\",\"rerun_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649/rerun\",\"previous_attempt_url\":null,\"workflow_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/workflows/238596342\",\"head_commit\":{\"id\":\"b63dc2fe15e41621741d0e49e088f10046ec7bed\",\"tree_id\":\"d738bfd26b8bfd7d965990f67ee8715ba9986e60\",\"message\":\"ci: adopt released Platform 1.2.3 for package integration\\n\\nAdvance the direct Platform source to the published Tenants API channel-token correction.\\nPreserve Builds6249, CLI4.44.0, Tenants1b2 and every workflow, native assertion and timeout.\\nRetain the prior startup failure and require fresh hosted native and cleanup qualification.\",\"timestamp\":\"2026-11-04T08:01:52Z\",\"author\":{\"name\":\"Jérôme Piquot\",\"email\":\"jpiquot@itaneo.com\"},\"committer\":{\"name\":\"Jérôme Piquot\",\"email\":\"jpiquot@itaneo.com\"}},\"repository\":{\"id\":1155154671,\"node_id\":\"R_kgDORNpC7w\",\"name\":\"Hexalith.EventStore\",\"full_name\":\"Hexalith/Hexalith.EventStore\",\"private\":false,\"owner\":{\"login\":\"Hexalith\",\"id\":80614290,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/80614290?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/Hexalith\",\"html_url\":\"https://github.com/Hexalith\",\"followers_url\":\"https://api.github.com/users/Hexalith/followers\",\"following_url\":\"https://api.github.com/users/Hexalith/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/Hexalith/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/Hexalith/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/Hexalith/subscriptions\",\"organizations_url\":\"https://api.github.com/users/Hexalith/orgs\",\"repos_url\":\"https://api.github.com/users/Hexalith/repos\",\"events_url\":\"https://api.github.com/users/Hexalith/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/Hexalith/received_events\",\"type\":\"Organization\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore\",\"description\":null,\"fork\":false,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"forks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks\",\"keys_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams\",\"hooks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks\",\"issue_events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/events\",\"assignees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags\",\"blobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages\",\"stargazers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers\",\"contributors_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors\",\"subscribers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers\",\"subscription_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription\",\"commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges\",\"archive_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads\",\"issues_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments\"},\"head_repository\":{\"id\":1155154671,\"node_id\":\"R_kgDORNpC7w\",\"name\":\"Hexalith.EventStore\",\"full_name\":\"Hexalith/Hexalith.EventStore\",\"private\":false,\"owner\":{\"login\":\"Hexalith\",\"id\":80614290,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/80614290?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/Hexalith\",\"html_url\":\"https://github.com/Hexalith\",\"followers_url\":\"https://api.github.com/users/Hexalith/followers\",\"following_url\":\"https://api.github.com/users/Hexalith/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/Hexalith/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/Hexalith/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/Hexalith/subscriptions\",\"organizations_url\":\"https://api.github.com/users/Hexalith/orgs\",\"repos_url\":\"https://api.github.com/users/Hexalith/repos\",\"events_url\":\"https://api.github.com/users/Hexalith/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/Hexalith/received_events\",\"type\":\"Organization\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/Hexalith/Hexalith.EventStore\",\"description\":null,\"fork\":false,\"url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore\",\"forks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks\",\"keys_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams\",\"hooks_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks\",\"issue_events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/events\",\"assignees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags\",\"blobs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages\",\"stargazers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers\",\"contributors_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors\",\"subscribers_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers\",\"subscription_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription\",\"commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges\",\"archive_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads\",\"issues_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments\"}}",
+          "display_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41796717649"
+        }
+      },
+      "isError": false
+    }
+  },
+  "jobs": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "jobs": [
+          {
+            "id": 126462439830,
+            "name": "ci / folded-snapshot-compatibility",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Initialize root-declared submodules",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Verify published and current folded snapshot compatibility",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Post Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              }
+            ]
+          },
+          {
+            "id": 126462440216,
+            "name": "ci / build-and-test",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Validate governed CI contract",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 3
+              },
+              {
+                "name": "Checkout approved Builds actions",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 4
+              },
+              {
+                "name": "Evaluate governed workflow provenance",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 5
+              },
+              {
+                "name": "Initialize root-declared submodules (governed)",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 6
+              },
+              {
+                "name": "Initialize root-declared submodules",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Checkout workflow-owned Builds preparation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Prepare module build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Cache NuGet packages",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Validate test platform input",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 12
+              },
+              {
+                "name": "Prepare package dependencies",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 13
+              },
+              {
+                "name": "Restore",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Validate package consumer references",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 16
+              },
+              {
+                "name": "Unit tests (Tier 1, VSTest)",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17
+              },
+              {
+                "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18
+              },
+              {
+                "name": "Require isolated success before integration",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 19
+              },
+              {
+                "name": "Install integration toolchain without starting services",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 20
+              },
+              {
+                "name": "Prepare integration binaries",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21
+              },
+              {
+                "name": "Authenticate pull-only integration registry",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22
+              },
+              {
+                "name": "Runner-owned package integration",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 23
+              },
+              {
+                "name": "Finalize exact CI owner",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 24
+              },
+              {
+                "name": "Remove integration registry credentials",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 25
+              },
+              {
+                "name": "Upload classified integration diagnostics",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 26
+              },
+              {
+                "name": "Validate coverage gates",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 27
+              },
+              {
+                "name": "Fail on blocking test failures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 28
+              },
+              {
+                "name": "Upload test and coverage evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 29
+              },
+              {
+                "name": "Post Cache NuGet packages",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 55
+              },
+              {
+                "name": "Post Checkout workflow-owned Builds preparation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 56
+              },
+              {
+                "name": "Post Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 57
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 58
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 59
+              }
+            ]
+          },
+          {
+            "id": 126462440226,
+            "name": "ci / tenants-source-mode",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Initialize root-declared submodules",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Restore source-mode AppHost tests",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Build source-mode AppHost tests",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify Tenants source-mode topology guardrails",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Upload Tenants source-mode test results",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Post Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 16
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 17
+              }
+            ]
+          },
+          {
+            "id": 126462440227,
+            "name": "ci / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Initialize root-declared submodules",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Run generated API smoke preflight regression",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Verify package publication dependency guards",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify qualification runner exit preservation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Restore Contracts tests",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Build Contracts tests",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Run Contracts tests",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Upload Contracts test results",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Post Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21
+              },
+              {
+                "name": "Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 23
+              }
+            ]
+          },
+          {
+            "id": 126462440292,
+            "name": "ci / checkpointed process packages",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Initialize root-declared submodules",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Prove checkpointed process Release packages",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Post Initialize .NET",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              }
+            ]
+          },
+          {
+            "id": 126462440845,
+            "name": "ci / semantic-release-governance",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41796717649,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Set up supported Node",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Install locked npm dependencies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Verify semantic-release GitHub success lifecycle",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Checkout exact approved publication engine for regression controls",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify one-use publication authority and same-run source controls",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Verify finite current-source proofs before production and OIDC",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Verify native maintenance candidate qualification",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Post Checkout exact approved publication engine for regression controls",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 16
+              },
+              {
+                "name": "Post Set up supported Node",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 17
+              },
+              {
+                "name": "Post Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 19
+              }
+            ]
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+}

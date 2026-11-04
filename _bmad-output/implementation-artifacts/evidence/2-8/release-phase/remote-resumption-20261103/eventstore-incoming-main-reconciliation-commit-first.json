@@ -1,0 +1,20 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "commit",
+    "-F",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-incoming-main-reconciliation-merge-message.txt"
+  ],
+  "exitCode": 0,
+  "completedAt": "2026-11-04T09:26:12.983300+00:00",
+  "head": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+  "parents": [
+    "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "aeec5012fa3e1e07426a8fdd145709bce93f619a"
+  ],
+  "tree": "66ce877efa59fc7a06446a1a6e7e3bb70bc447dd",
+  "status": "",
+  "message": "build: reconcile incoming EventStore main locally\n\nMerge inspected main aeec5012fa3e1e07426a8fdd145709bce93f619a\ninto the existing adoption branch without rewriting either history.\n\nPreserve incoming tenant security, catalog admission and bootstrap work\nwith the owner-bound native harness and diagnostic source. Keep final\npublished tuple adoption and hosted runtime qualification pending.\n\n"
+}

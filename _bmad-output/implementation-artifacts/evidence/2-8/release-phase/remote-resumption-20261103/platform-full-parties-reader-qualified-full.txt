@@ -1,0 +1,7 @@
+Unhandled exception. System.IO.DirectoryNotFoundException: Could not find a part of the path '/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-component-20261104/qualified-full/catalog.json'.
+   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+   at System.IO.File.WriteAllBytes(String path, ReadOnlySpan`1 bytes)
+   at Program.<Main>$(String[] args) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-component-20261104/reader/Program.cs:line 130

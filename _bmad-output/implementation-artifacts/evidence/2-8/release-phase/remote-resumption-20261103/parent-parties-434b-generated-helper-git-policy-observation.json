@@ -1,0 +1,8 @@
+{
+  "scope": "Read-only reproduction of actual committed caller ignore policy in an owned temporary Git fixture; no proof/native/CI acceptance.",
+  "actualCaller": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "status": "?? .gitignore\n?? .hexalith/\n",
+  "checkIgnoreExit": 1,
+  "checkIgnoreStdout": "",
+  "finding": "Known generated helper path is visible as untracked under actual caller policy. Exact runtime guard condition may have other causes; investigation pending."
+}

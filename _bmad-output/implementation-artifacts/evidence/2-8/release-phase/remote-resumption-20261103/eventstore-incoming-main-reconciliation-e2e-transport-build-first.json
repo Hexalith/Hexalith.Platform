@@ -1,0 +1,21 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.EventStore.Admin.UI.E2E/Hexalith.EventStore.Admin.UI.E2E.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "--nologo"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T09:19:49.883258+00:00",
+  "completedAt": "2026-11-04T09:20:02.216138+00:00",
+  "mode": "Release/package",
+  "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/incoming-main-reconciliation/prepared-build.env",
+  "nugetCache": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103",
+  "signatureRevocationMode": "offline",
+  "mergeNotYetCommitted": true
+}

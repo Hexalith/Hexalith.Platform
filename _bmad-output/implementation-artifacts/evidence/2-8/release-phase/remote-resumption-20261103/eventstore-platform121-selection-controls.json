@@ -1,0 +1,100 @@
+{
+  "at": "2026-11-04T05:13:14.558850+00:00",
+  "source": "a0c65bec419138e79d763557c73573f894217f24",
+  "mappingHash": "a35a81341477da18699ef567eebd149f9860d29f44dd5b66d6a2ac5e9924e133",
+  "commands": [
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "--version"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdout": "4.44.0+6249a8c0a0480a4b8a8ba04fc214c6104c3c9045\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--output=json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdout": "{\"status\":\"validated\",\"outcome\":{\"exitCode\":\"Success\",\"phase\":\"None\",\"category\":\"None\",\"ruleId\":null},\"diagnostics\":[]}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "test",
+        "--help"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdout": "Description:\n  Runs a named module qualification profile.\n\nUsage:\n  Hexalith.Builds.Module.Cli test [options]\n\nOptions:\n  --manifest <manifest> (REQUIRED)\n  --profile <profile> (REQUIRED)\n  --filter <filter>\n  --evidence <evidence>\n  --with-owner <with-owner>                Add an authenticated reference owner and its declared dependencies to a fresh qualification run.\n  --candidate-request <candidate-request>  Signed GitHub gate issuance; requires independently enrolled host authority.\n  --ci-owner-receipt <ci-owner-receipt>    External durable ownership receipt for disposable Linux GitHub-hosted package integration.\n  --output <human|json>                    [default: human]\n  --mode <package|source>                  [default: source]\n  -?, -h, --help                           Show help and usage information\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "references/Hexalith.Builds/Github/run-module-integration/tests",
+        "-p",
+        "test_run_module_integration.py",
+        "-k",
+        "additive_owners",
+        "-k",
+        "invalid_owners",
+        "-k",
+        "default_invocation",
+        "-v"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdout": "",
+      "stderr": "test_additive_owners_use_canonical_literal_arguments_and_are_recorded (test_run_module_integration.IntegrationTests.test_additive_owners_use_canonical_literal_arguments_and_are_recorded) ... ok\ntest_default_invocation_has_no_owner_request_or_arguments (test_run_module_integration.IntegrationTests.test_default_invocation_has_no_owner_request_or_arguments) ... ok\ntest_invalid_owners_refuse_before_context_paths_tool_or_evidence_effects (test_run_module_integration.IntegrationTests.test_invalid_owners_refuse_before_context_paths_tool_or_evidence_effects) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py",
+        "run",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--profiles",
+        "platform-package",
+        "--owners",
+        "tenants",
+        "--receipt",
+        "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/hexalith-ci-owner.json",
+        "--evidence",
+        "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/TestResults/module-integration"
+      ],
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "stdout": "",
+      "stderr": "run-module-integration: ValueError: integration requires complete disposable Linux GitHub-hosted job identity\n"
+    }
+  ],
+  "limit": "Existing producer unit fixtures prove argument transport only. Actual helper refuses local identity. No service/native/candidate acceptance claimed."
+}

@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-04T07:48:12.959191+00:00",
+  "firstFailure": "Required DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync git rev-parse v4.44.0^{commit} exited128 because isolated dependency had no tag.",
+  "sourceFirstResult": "platform-full-parties-final-group-2.json",
+  "normalRemoteCheck": {
+    "command": [
+      "git",
+      "-c",
+      "core.commitGraph=false",
+      "ls-remote",
+      "--tags",
+      "origin",
+      "refs/tags/v4.44.0",
+      "refs/tags/v4.44.0^{}"
+    ],
+    "result": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045 refs/tags/v4.44.0"
+  },
+  "normalFetch": {
+    "command": [
+      "git",
+      "-c",
+      "core.commitGraph=false",
+      "fetch",
+      "--no-recurse-submodules",
+      "origin",
+      "tag",
+      "v4.44.0"
+    ],
+    "result": "new tag v4.44.0 -> v4.44.0",
+    "exitCode": 0
+  },
+  "tag": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "status": "",
+  "sourceOrPinChanged": false,
+  "nestedDependenciesInitialized": false
+}

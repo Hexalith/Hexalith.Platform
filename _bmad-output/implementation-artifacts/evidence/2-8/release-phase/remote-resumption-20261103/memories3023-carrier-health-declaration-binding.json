@@ -1,0 +1,125 @@
+{
+  "source": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+  "version": "3.0.23",
+  "setSha256": "b559cf12b2263f8d9a47852789eb6aa5882efd7531cbc342d7c412ba90e36ea1",
+  "setHashRecomputedFromActualCanonicalProducerAlgorithm": true,
+  "sourceManifestSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
+  "currentPlatformSnapshotByteIdentical": true,
+  "currentPlatformMemoriesProvenance": {
+    "repository": "Hexalith.Memories",
+    "version": "3.0.18",
+    "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+    "source": "module/hexalith.module-manifest.v2.json",
+    "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+  },
+  "normalAdoptionNeeds": "Truthful version/source update and authenticated source requalification; declaration bytes need no fabricated change",
+  "defaultRequiredMemoriesServers": [
+    "server",
+    "clock",
+    "telemetry",
+    "domain"
+  ],
+  "images": [
+    {
+      "name": "server",
+      "healthContract": "liveness",
+      "endpoint": "/alive",
+      "producerHealthAndCleanupOutcomes": [
+        {
+          "cleanup": "pass",
+          "digest": "sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b",
+          "outcome": "pass",
+          "platform": "linux/amd64"
+        },
+        {
+          "cleanup": "pass",
+          "digest": "sha256:2260f7699e711d36f3d5b4cb1fb27150dc5c76a7c82d0955a682b28cd5e5f4df",
+          "outcome": "pass",
+          "platform": "linux/arm64"
+        }
+      ],
+      "scope": "retained producer health/cleanup observations only; not rerun here"
+    },
+    {
+      "name": "mcp",
+      "healthContract": "liveness",
+      "endpoint": "/alive",
+      "producerHealthAndCleanupOutcomes": [
+        {
+          "cleanup": "pass",
+          "digest": "sha256:a731e63376869e0f133536f9725a5cecd37562ece50aedbea8c0be1eb74af702",
+          "outcome": "pass",
+          "platform": "linux/amd64"
+        },
+        {
+          "cleanup": "pass",
+          "digest": "sha256:7dc0586124c161a739b9cbffefa56004ad26e64c338913fecfb2873ac42e2183",
+          "outcome": "pass",
+          "platform": "linux/arm64"
+        }
+      ],
+      "scope": "retained producer health/cleanup observations only; not rerun here"
+    },
+    {
+      "name": "access-telemetry",
+      "healthContract": "disabled-readiness",
+      "endpoint": "/ready",
+      "producerHealthAndCleanupOutcomes": [
+        {
+          "cleanup": "pass",
+          "digest": "sha256:ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a",
+          "outcome": "pass",
+          "platform": "linux/amd64"
+        },
+        {
+          "cleanup": "pass",
+          "digest": "sha256:2cb5257d36ab0d449ff45add871f98b2d4359a3e5330e39a31bfdb5cff4d58d2",
+          "outcome": "pass",
+          "platform": "linux/arm64"
+        }
+      ],
+      "scope": "retained producer health/cleanup observations only; not rerun here"
+    },
+    {
+      "name": "access-telemetry-clock",
+      "healthContract": "signed-readiness",
+      "endpoint": "/ready",
+      "producerHealthAndCleanupOutcomes": [
+        {
+          "cleanup": "pass",
+          "digest": "sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f",
+          "outcome": "pass",
+          "platform": "linux/amd64"
+        },
+        {
+          "cleanup": "pass",
+          "digest": "sha256:cc05b5ad55a89d3a37f148044e65e205c632a7fe3f4a0422920891cde441d1fb",
+          "outcome": "pass",
+          "platform": "linux/arm64"
+        }
+      ],
+      "scope": "retained producer health/cleanup observations only; not rerun here"
+    },
+    {
+      "name": "domain-service",
+      "healthContract": "liveness",
+      "endpoint": "/alive",
+      "producerHealthAndCleanupOutcomes": [
+        {
+          "cleanup": "pass",
+          "digest": "sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
+          "outcome": "pass",
+          "platform": "linux/amd64"
+        },
+        {
+          "cleanup": "pass",
+          "digest": "sha256:08d46f327475f8c780c7ec315c31b0ab7ae764cea2d774b8001fa2591761000e",
+          "outcome": "pass",
+          "platform": "linux/arm64"
+        }
+      ],
+      "scope": "retained producer health/cleanup observations only; not rerun here"
+    }
+  ],
+  "candidateAcceptance": false
+}

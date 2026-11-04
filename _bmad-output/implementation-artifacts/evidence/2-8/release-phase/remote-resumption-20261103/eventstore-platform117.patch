@@ -1,0 +1,283 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9ac8f4c68..c05583496 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -60,7 +60,7 @@ jobs:
+         run: python3 scripts/verify-process-packages.py
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e
+     with:
+       solution: Hexalith.EventStore.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+diff --git a/docs/ci.md b/docs/ci.md
+index 735986512..96f3b6328 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -8,7 +8,7 @@ Hexalith CI/CD standards and reusable workflow guidance live in
+ 
+ | Workflow | File | Triggers | Purpose |
+ |----------|------|----------|---------|
+-| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
++| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
+ | **Advisory Tests** | `.github/workflows/advisory-tests.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Visible non-release-blocking browser and governance suites. It installs Chromium before Playwright E2E tests, runs with `continue-on-error`, and release does not listen to this workflow. |
+ | **Integration Tests** | `.github/workflows/integration.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Dedicated DAPR lane for `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`. It is intentionally separate from the release trigger. |
+ | **Payload Protection Lifecycle** | `.github/workflows/payload-protection-lifecycle.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Isolated Dapr 1.18.7/PostgreSQL v2 capability, catalog, lease, drain, recovery, rotation, generation and restore tests. Requires at least thirty-one executed tests with zero skips, including cumulative transport limits, writer capacity, conditional restore decisions and authority races. Local qualification and its limits are recorded in the Story 8.5 spec; a CI run is separate evidence. |
+@@ -76,7 +76,7 @@ Reusable CI/CD logic belongs in `Hexalith.Builds`:
+ EventStore keeps only module-specific wiring here:
+ 
+ - `Hexalith.EventStore.slnx`.
+-- The isolated test project list passed to `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb`.
++- The isolated test project list passed to `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e`.
+ - The advisory test project list and Playwright browser install needed by the
+   Admin UI E2E suite.
+ - Manifest-backed package validation scripts under `scripts/`.
+@@ -117,7 +117,7 @@ place for run output.
+ 
+ | Lane | Projects | Workflow behavior |
+ |------|----------|-------------------|
+-| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
++| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
+ | Semantic-release governance | `tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs`, `tools/tests/test_release_publication_authority.py` | Blocking EventStore-owned CI job. It provisions Node 24, installs exactly `package-lock.json` with `npm ci`, and exercises both release-history cases against an Undici-guarded loopback-only fake GitHub boundary. It also runs the publication-authority regressions against the exact approved Builds publication engine. |
+ | Live-sidecar DAPR lane | `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`, plus `scripts/check-committed-files.sh`, `tools/tests/test_check_committed_files.py` and `tools/tests/test_dapr_broker_qualification.py` | Dedicated `Integration Tests` workflow after `dapr init`; its required `live-sidecar` job first runs the committed-file guard and the two Python suites. This lane is visible but not part of the semantic-release gate. It is not a `dotnet test` of `Server.Tests`. |
+ | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |
+@@ -131,22 +131,24 @@ The v2 caller explicitly maps only `HEXALITH_CI_REGISTRY_USERNAME` and
+ accepts no inherited secrets, caller Dapr overrides or direct integration/AppHost
+ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ 
+-The package-profile bootstrap records Builds
+-`89f62052c932d054bda2b435bdfef60d96e77612` and released Platform `v1.1.6`
+-(`8ea8fe092f8abb5c932a61830aae16051d442463`). Platform records the same Builds
+-catalog, which selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+-Azure.Security.KeyVault.Keys 4.10.2. These recorded source identities remain
+-unchanged by the tool update.
+-
+-The executing module CLI is genuine public 4.43.6, released from Builds
+-`725754075e1d6369430a3adf94d46fb71e6eaf9e` by successful normal release
++The package-profile bootstrap, v2 workflow and executing public module CLI
++4.43.6 now select the same Builds source
++`725754075e1d6369430a3adf94d46fb71e6eaf9e`, with genuine released Platform
++[`v1.1.7`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.1.7)
++(`ed1560a57f4d4cb55b6b03f485cbfa01316837a7`). Platform records that exact
++Builds gitlink and tool floor `[4.43.6,5.0.0-0)`. The approved catalog still
++selects public EventStore 4.0.4, Azure.Core 1.64.0 and
++Azure.Security.KeyVault.Keys 4.10.2, with catalog blob
++`ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`.
++
++The CLI was published by successful normal Builds release
+ [41666723123](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41666723123).
+-Its source differs from the recorded catalog source. Platform's supported tool
+-range `[4.43.5,5.0.0-0)` admits that CLI; both sources contain the same catalog
+-blob `ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`. The newer tool resolves a cold
+-direct-only module from its verified direct Builds checkout, without requiring
+-Platform's nested dependency checkouts. Matching catalog bytes do not replace
+-the separately verified source identities or the supported-range check.
++It resolves a cold direct-only module from the verified direct Builds checkout,
++without requiring Platform's nested dependency checkouts. Exact source, signed
++package content and supported-range checks remain required. The real native
++persistence test emits bounded TRX diagnostics for the SDK assemblies actually
++loaded in its test process, including their versions and SHA-256 hashes. Those
++measurements do not claim a dependency was loaded in a different process.
+ 
+ The catalog's EventStore 4.0.4 selection remains the package-profile bootstrap
+ input. A new EventStore producer and subsequent catalog/cohort adoption need
+@@ -248,7 +250,7 @@ dedicated LiveSidecar lane; they are not a reason to add the project to
+ 
+ ## Package Validation
+ 
+-Shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` calls these EventStore entry points when
++Shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` calls these EventStore entry points when
+ `run-consumer-validation: true`:
+ 
+ ```bash
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+index 9f50f3a54..17f7469ee 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+@@ -559,7 +559,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(workflow, "ci");
+         string tenantsSourceModeJob = ExtractTopLevelWorkflowJobBlock(workflow, "tenants-source-mode");
+ 
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e");
+         ciJob.ShouldContain("build-timeout-minutes: 180");
+         ciJob.ShouldContain("test-platform: microsoft-testing-platform");
+         ciJob.ShouldContain("run-consumer-validation: true");
+@@ -779,7 +779,7 @@ public sealed class ReleasePackageManifestTests
+         liveSidecarJob.ShouldNotContain("set +e");
+ 
+         string ciJob = ExtractTopLevelWorkflowJobBlock(ci, "ci");
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e");
+         ciJob.ShouldContain("unit-test-projects: |");
+         ciJob.ShouldNotContain("tests/Hexalith.EventStore.Contracts.Tests");
+         ciJob.ShouldNotContain("continue-on-error");
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
+index 89882e7fb..b08df2332 100644
+--- a/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
+@@ -6,7 +6,9 @@ using Shouldly;
+ using StackExchange.Redis;
+ 
+ /// <summary>Requires a live gateway and real run-scoped persistence; no absent-environment skip is permitted.</summary>
+-public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture) : IClassFixture<PlatformEnvironmentFixture>
++/// <param name="fixture">The actual runner-owned environment.</param>
++/// <param name="output">The native TRX diagnostic channel.</param>
++public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture, ITestOutputHelper output) : IClassFixture<PlatformEnvironmentFixture>
+ {
+     /// <summary>Proves the declared gateway is ready and the supplied isolated store retains the exact synthetic payload.</summary>
+     /// <returns>The real gateway and persistence checks.</returns>
+@@ -29,6 +31,7 @@ public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture)
+         string value = fixture.Descriptor.RunId + ":" + fixture.Descriptor.SyntheticTenantId;
+         (await store.StringSetAsync(key, value, TimeSpan.FromMinutes(10), When.NotExists).WaitAsync(bound.Token).ConfigureAwait(true)).ShouldBeTrue();
+         (await store.StringGetAsync(key).WaitAsync(bound.Token).ConfigureAwait(true)).ToString().ShouldBe(value);
++        NativeAssemblyObservations.Write(output, fixture.Descriptor.RunId);
+         // Leave the asserted state intact for runner-owned teardown; the suite never stops infrastructure.
+     }
+ 
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs
+new file mode 100644
+index 000000000..ba3eb8dfa
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs
+@@ -0,0 +1,44 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using Shouldly;
++
++/// <summary>Exercises actual local diagnostic file boundaries without simulating a CI or native owner.</summary>
++public sealed class NativeAssemblyObservationTests
++{
++    /// <summary>Preserves the original private diagnostic and refuses a duplicate write.</summary>
++    [Fact]
++    public void PrivateDiagnosticRetainsFirstBytesAndRefusesOverwrite()
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("This file boundary control requires Linux.");
++        string directory = Directory.CreateTempSubdirectory("eventstore-diagnostic-io-control-").FullName;
++        try
++        {
++            const string fileIdentity = "local-io-control";
++            const string observation = "{\"scope\":\"local-file-control-no-native-credit\"}";
++            NativeAssemblyObservations.WritePrivateObservation(directory, fileIdentity, observation);
++            string path = Path.Combine(directory, "loaded-assemblies-" + fileIdentity + ".json");
++            byte[] original = File.ReadAllBytes(path);
++            File.GetUnixFileMode(path).ShouldBe(UnixFileMode.UserRead | UnixFileMode.UserWrite);
++            Should.Throw<IOException>(() => NativeAssemblyObservations.WritePrivateObservation(directory, fileIdentity, "replacement"));
++            File.ReadAllBytes(path).ShouldBe(original);
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++
++    /// <summary>Refuses a linked directory before creating any diagnostic file.</summary>
++    [Fact]
++    public void PrivateDiagnosticRefusesSymbolicDirectory()
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("This file boundary control requires Linux.");
++        string directory = Directory.CreateTempSubdirectory("eventstore-diagnostic-link-control-").FullName;
++        try
++        {
++            string target = Directory.CreateDirectory(Path.Combine(directory, "target")).FullName;
++            string linked = Path.Combine(directory, "linked");
++            Directory.CreateSymbolicLink(linked, target);
++            Should.Throw<IOException>(() => NativeAssemblyObservations.WritePrivateObservation(linked, "local-io-control", "{}"));
++            Directory.GetFiles(target).ShouldBeEmpty();
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs
+new file mode 100644
+index 000000000..ff9a98c3c
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs
+@@ -0,0 +1,89 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using System.Reflection;
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++
++/// <summary>Retains bounded identities of SDK assemblies already loaded by the real native test.</summary>
++internal static class NativeAssemblyObservations
++{
++    /// <summary>Writes actual test-process measurements after the persistence assertions have passed.</summary>
++    /// <param name="output">The native TRX diagnostic channel.</param>
++    /// <param name="ownerRunId">The validated descriptor's actual owner run.</param>
++    internal static void Write(ITestOutputHelper output, string ownerRunId)
++    {
++        var assemblies = AppDomain.CurrentDomain.GetAssemblies()
++            .Where(assembly => !assembly.IsDynamic && (assembly.GetName().Name!.StartsWith("Hexalith.", StringComparison.Ordinal)
++                || assembly.GetName().Name == "StackExchange.Redis"))
++            .OrderBy(assembly => assembly.FullName, StringComparer.Ordinal)
++            .Take(65)
++            .Select(assembly =>
++            {
++                using FileStream bytes = File.OpenRead(assembly.Location);
++                return new
++                {
++                    identity = assembly.FullName,
++                    informationalVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
++                    moduleVersionId = assembly.ManifestModule.ModuleVersionId,
++                    loadedPath = assembly.Location,
++                    sha256 = Convert.ToHexStringLower(SHA256.HashData(bytes)),
++                };
++            }).ToArray();
++        string observation = JsonSerializer.Serialize(new
++        {
++            kind = "real-native-test-loaded-assemblies",
++            ownerRunId,
++            repository = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"),
++            revision = Environment.GetEnvironmentVariable("GITHUB_SHA"),
++            workflowRunId = Environment.GetEnvironmentVariable("GITHUB_RUN_ID"),
++            workflowAttempt = Environment.GetEnvironmentVariable("GITHUB_RUN_ATTEMPT"),
++            jobId = Environment.GetEnvironmentVariable("GITHUB_JOB"),
++            assemblies,
++        });
++        if (assemblies.Length is 0 or > 64 || Encoding.UTF8.GetByteCount(observation) > 65536)
++            throw new InvalidOperationException("The native loaded-assembly observation exceeds its bounded diagnostic contract.");
++        output.WriteLine(observation);
++        RetainHostedObservation(observation, ownerRunId);
++    }
++
++    /// <summary>Preserves the bounded diagnostic in the existing classified integration upload before teardown.</summary>
++    /// <param name="observation">The measured test-process assemblies and actual run bindings.</param>
++    /// <param name="ownerRunId">The validated descriptor's owner identity.</param>
++    private static void RetainHostedObservation(string observation, string ownerRunId)
++    {
++        if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true") return;
++        string? workspace = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE");
++        string[] required = ["GITHUB_REPOSITORY", "GITHUB_SHA", "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_JOB"];
++        if (!OperatingSystem.IsLinux() || Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") != "github-hosted"
++            || required.Any(name => string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(name)))
++            || string.IsNullOrWhiteSpace(workspace) || !Path.IsPathFullyQualified(workspace)
++            || ownerRunId.Length != 32 || ownerRunId.Any(character => character is not (>= 'a' and <= 'f' or >= '0' and <= '9')))
++            throw new InvalidOperationException("Hosted native diagnostics require the actual disposable job and owner binding.");
++        string directory = Path.Combine(workspace, "TestResults", "module-integration");
++        if (!Directory.Exists(directory))
++            throw new InvalidOperationException("The classified integration evidence directory must already belong to the invoking runner.");
++        WritePrivateObservation(directory, ownerRunId, observation);
++    }
++
++    /// <summary>Writes once through non-linked directories using private file creation.</summary>
++    /// <param name="directory">The existing classified output directory.</param>
++    /// <param name="ownerRunId">The descriptor-bound diagnostic filename suffix.</param>
++    /// <param name="observation">The previously bounded diagnostic JSON.</param>
++    internal static void WritePrivateObservation(string directory, string ownerRunId, string observation)
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Hosted native diagnostic retention requires Linux.");
++        for (DirectoryInfo? parent = new(directory); parent is not null; parent = parent.Parent)
++            if (parent.LinkTarget is not null) throw new IOException("Native diagnostic output cannot traverse symbolic links.");
++        FileStreamOptions options = new()
++        {
++            Mode = FileMode.CreateNew,
++            Access = FileAccess.Write,
++            Share = FileShare.None,
++            UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite,
++        };
++        using FileStream stream = new(Path.Combine(directory, "loaded-assemblies-" + ownerRunId + ".json"), options);
++        stream.Write(Encoding.UTF8.GetBytes(observation + "\n"));
++    }
++
++}

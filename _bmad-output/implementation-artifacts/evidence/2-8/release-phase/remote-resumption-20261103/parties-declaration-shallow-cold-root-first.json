@@ -1,0 +1,27 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "submodule.recurse=false",
+    "clone",
+    "--no-local",
+    "--depth",
+    "1",
+    "--no-recurse-submodules",
+    "--branch",
+    "fix/adopt-platform-117",
+    "file:///home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+    "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103"
+  ],
+  "startedAt": "2026-11-03T20:59:42.222972+00:00",
+  "completedAt": "2026-11-03T20:59:44.077475+00:00",
+  "durationSeconds": 1.854,
+  "exitCode": 0,
+  "coldRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103",
+  "rootTransport": "local file transport with no-local and depth1; owner modules are separate fresh network clones",
+  "sourceHead": "7a464e3d1d61458898183a930ec29949885ee50c",
+  "candidateAcceptance": false,
+  "initializedSubmoduleStoresBefore": [],
+  "rootAlternatesAbsent": true,
+  "rootHead": "7a464e3d1d61458898183a930ec29949885ee50c"
+}

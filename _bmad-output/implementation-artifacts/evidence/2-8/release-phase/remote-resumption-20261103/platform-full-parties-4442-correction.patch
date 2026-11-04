@@ -1,0 +1,472 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index 7fd047607fcf85ec6286bec8fa449d5c432fa500..751c20f3ca9ce3decfa8d06b62b2b2599976adee 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "4.44.0",
++      "version": "4.44.2",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/README.md b/README.md
+index 12f3ee940cae12ec4b5de9034f4794c00c18a414..fba825e35913afdbc97d4dff5e34132ce8108d0d 100644
+--- a/README.md
++++ b/README.md
+@@ -36,11 +36,11 @@ dotnet tool restore
+ dotnet tool run hexalith-module --version
+ ```
+ 
+-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.0`,
+-with range `[4.44.0, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
+-exact [v4.44.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-source `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, published by successful normal
+-[release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
++The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.2`,
++with range `[4.44.2, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
++exact [v4.44.2 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, published by successful normal
++[release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
+ The catalog and observed signed package identities are recorded in
+ [`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
+ gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
+@@ -112,9 +112,11 @@ Local Debug defaults retain source references. For owner CI,
+ verified signed tool archive, including the host dependency manifest and MVC
+ Testing content root. CI rejects foreign project references and changed extracted
+ bytes, requires clean recorded source, builds Release and enforces the declared
+-suite counts. The required profile preserves the prior 160 cases and adds 23
+-finite-cohort controls, five actual `ComposeRun` controls, eight private
+-package-reader controls and five declared-channel controls, for 201 cases.
++suite counts. The required profile preserves the prior 201 E/T, reader and
++channel cases, adds 37 Parties proof cases, three actual mapped-owner cases,
++21 full entry cases and nine full reader cases, for 271 required cases.
++Local signed-tool component results and audit-only graph checks remain distinct
++from the mandatory exact-HEAD hosted tuple and real native qualification.
+ Every group must execute its exact count with no errors, failures, skips or unrun
+ cases. Before and after those tests, the result records the actual test assembly,
+ five SDK/Tenants dependency hashes and operating-system/architecture
+@@ -179,7 +181,7 @@ Parties' owner-led enrollment; see the
+ Use the [enrollment guide](docs/domain-module-enrollment.md) and
+ [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
+ direct-only initialization, source mapping, Dapr conventions, hosting inventory
+-and human SM-2 evidence. The accepted `4.35.2` tool provides read-only
++and human SM-2 evidence. The pinned published `4.44.2` tool provides read-only
+ `validate --adoption` reports in human and JSON formats. Static reports leave
+ SM-2 for the module owner to demonstrate. See
+ [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
+diff --git a/docs/current-tuple-preparation.md b/docs/current-tuple-preparation.md
+index 38de7190871a2daaeb4399eebecf05a6c783617a..a020a96b4df45ab62ef85576e4effc73de9b413a 100644
+--- a/docs/current-tuple-preparation.md
++++ b/docs/current-tuple-preparation.md
+@@ -1,13 +1,14 @@
+ # Current tuple preparation
+ 
+-> Historical preparation record. Current owner configuration selects published
+-> [Builds v4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-> at `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, from successful normal
+-> [release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+-> Observed signed archive, Tooling and inventory identities are in
+-> [`eng/builds-tuple.json`](../eng/builds-tuple.json). Fresh recorded Platform
+-> tuple qualification (188 required cases), the catalog matrix and real package
+-> runtime evidence remain separate requirements.
++> Historical preparation record. Current proposed owner configuration selects
++> [Builds v4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++> at `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, from successful normal
++> [release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661),
++> with supported floor `4.44.2`. Actual signed archive, Tooling and inventory
++> identities are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
++> The required profile contains 271 cases. Local signed-tool component checks
++> and audit-only graph checks do not replace pending exact-HEAD hosted tuple,
++> catalog-matrix and real package-runtime qualification.
+ > The procedure below preserves the earlier unqualified candidate and its
+ > historical authorization context; it does not describe current acceptance.
+ 
+diff --git a/docs/domain-module-enrollment.md b/docs/domain-module-enrollment.md
+index a2553baddf9ab19511c5f20294e1d2b3947284ee..36fedb34e9fd060224ed52834b6cf6c51a8a0b95 100644
+--- a/docs/domain-module-enrollment.md
++++ b/docs/domain-module-enrollment.md
+@@ -1,12 +1,14 @@
+ # Enroll a domain module
+ 
+ The module owner uses this kit to prepare enrollment in Platform. Static validation
+-and the human demonstration are separate gates. The accepted published tool is
+-`4.35.2`, including ordinary declaration validation and the read-only `--adoption`
+-report. Copy the exact pin from the direct Platform checkout as described below.
+-[Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
+-records owner approval, gated publication and fresh acceptance. Static PASS rows
+-leave the owner's live SM-2 demonstration separately unverified.
++and the human demonstration are separate gates. This proposed Platform source
++pins the genuine published tool `4.44.2`, including ordinary declaration validation
++and the read-only `--adoption` report. Copy the exact pin from the selected direct
++Platform checkout as described below; the [tuple binding](../eng/builds-tuple.json)
++records its public package and source identities. The original
++[enrollment release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
++remains historical. Source/component checks and published tooling leave the
++owner's live SM-2 demonstration separately unverified.
+ 
+ ## 1. Declare and initialize the minimum workspace
+ 
+diff --git a/docs/package-catalog-qualification.md b/docs/package-catalog-qualification.md
+index d007920a9cc9cc67c8c005112a41762b483fa7f8..18c9ced562c842252c72b70368a2fd3f88e360a3 100644
+--- a/docs/package-catalog-qualification.md
++++ b/docs/package-catalog-qualification.md
+@@ -47,7 +47,7 @@ DLLs. A bounded compiled-reader comparison produced identical canonical catalogs
+ for those two owner inputs; that observation is compatibility evidence, not a
+ claim that their binaries are identical or that every runtime request is proven.
+ 
+-Memories `3.0.18` remains outside the finite admitted profile. Its measured domain
++The earlier Memories `3.0.18` output did not qualify the full Parties profile. Its measured domain
+ image omits EventStoreExtensions. That omission alone does not demonstrate a
+ missing runtime dependency: the actual domain capture uses compiled owner
+ contracts, installed receivers and empty intent admission; the public adapter
+@@ -55,23 +55,24 @@ factories run in the catalog reader and gateway. The independently authenticated
+ `3.0.23` image/source measurements preserve this distinction. They establish no
+ real wire, bootstrap or health qualification.
+ 
+-Published [Builds 4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-contains the owner-selection and seed receiver changes. Its exact source is
+-`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, released through successful normal
+-[run 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+-The released seed compiles its technical receiver against the resolved public Gateway
+-`4.0.4` package. The [Platform tuple](../eng/builds-tuple.json) records the observed
+-signed archive, embedded Tooling and inventory identities. Its catalog still
+-selects SDK `4.0.4` from producer
+-`326bfef884543cdbcaf96de7f4c4ad378dbad6d7`; this tooling adoption introduces no new
+-SDK or owner cohort.
+-
+-Fresh recorded Platform qualification must use those published artifacts and
+-execute all 201 existing required cases, including the 28 finite admission/entry-point
+-controls, plus the catalog compatibility matrix. The before/after test-output
+-receipt binds the actual test assembly and five SDK/Tenants DLLs to its OS and
+-architecture. Local source assemblies and prior component receipts do not replace
+-that fresh evidence or the subsequent real package run.
++This proposal adopts published [Builds 4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++at exact source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, produced by normal
++[release run 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
++The [recorded tuple](../eng/builds-tuple.json) binds the actual signed archive,
++embedded Tooling, inventory and catalog; the local tool and supported floor are
++both `4.44.2`. This catalog genuinely selects Memories `3.0.23` and FrontComposer
++`4.7.6`, while SDK `4.0.4`, Tenants `7.0.0` and Parties `3.0.0` retain their
++existing released provenance. Published package bodies remain separate from
++image bodies and active test source.
++
++The required source profile contains 271 cases: the existing 201 E/T, token,
++source and analyzer cases, 37 Parties proof cases, three real mapped-owner cases,
++and 30 full entry/reader cases. The latter 33 additions actually executed without
++skips after coherent tuple adoption. Each full negative first proves its genuine
++positive baseline. Fresh exact-committed-source execution of the complete profile,
++the four-SDK matrix and real runtime qualification remain separate gates.
++The test-output receipt binds actual output bytes to the executing OS and
++architecture; local component results never replace hosted tuple qualification.
+ 
+ Component tests, signature checks, compiled-owner comparisons and reader refusal
+ controls are supporting evidence. Accepted package execution still requires the
+@@ -82,11 +83,9 @@ guards and exact-run cleanup remain mandatory. No package runtime or Works Story
+ 
+ 
+ The finite ordinary Parties source proposal adds a separate full-cohort boundary.
+-It remains pending coherent adoption and qualification of a genuine new Builds
+-publication selecting Memories `3.0.23`. The accepted tuple, tool floor and M18
+-provenance remain unchanged during source preparation. The new 37 required proof
+-controls supplement the 201 existing cases (including the incoming five channel controls); their execution cannot replace the
+-remaining positive full-entry and genuine-tuple qualification.
++It now adopts the genuine Builds `4.44.2` publication and exact Memories `3.0.23`
++provenance. Its source/component controls preserve the existing E/T and token
++boundary; source proof and probe doubles do not establish live compatibility.
+ 
+ The profile selects Development Linux/x64, a fresh ordinary Parties package test,
+ and only its actual `platform-package` or `lifecycle-package` suite. Parties
+@@ -157,13 +156,18 @@ no invented consumer release tag or synthetic/legacy mapping fallback. The fixtu
+ no service. Its probe responses are deterministic component doubles; they do not
+ claim fresh registry/image inspection.
+ 
+-These prepared cases are not yet part of `eng/tuple-ci-suites.json`: the existing
+-238 required cases remain intact. The accepted M18 output currently fails the
+-explicit M23 prerequisite. New full-entry/negative/reader cases and their counts
+-must be executed after genuine tuple adoption and coherent fixture preparation
+-before they enter the required profile. Compilation alone supplies no full
+-admission, reader, attachment or runtime qualification. The first real prerequisite
+-failure and all unexecuted cases remain explicit in the evidence checkpoint.
++These cases are now registered in `eng/tuple-ci-suites.json` with their actual
++observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
++all 238 previous cases. The original M18 prerequisite failures and the first
++three reader-fixture failures remain historical evidence. Version/assets refusal
++now mutates the reader's actual direct Memories.EventStore reference; all twelve
++public bodies, including transitive Memories.Contracts, remain independently
++verified. The ordinary duplicate control reintroduces a genuine Parties package
++after normal source reconciliation and requires the unchanged HXW005 guard to
++refuse it before unrelated active-source restore. No assertion or guard is waived.
++Reader output retains the actual public-body, catalog and mapping identities.
++The full required source profile still needs exact-head hosted execution; native,
++attachment, lifecycle and wire compatibility remain unqualified by these controls.
+ 
+ The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
+ selects the released backend declaration `86002eeb...`. This isolated draft now
+@@ -173,5 +177,6 @@ selects the already reviewed and merged lifecycle test source
+ manifest fields are unchanged; only the lifecycle suite and its source are added.
+ This source prerequisite does not relabel the published P3.0.0/backend639
+ artifacts or their released `86002eeb...` declaration. Canonical accepted pins and
+-the Parties caller proposal are untouched. The genuine M23 Builds publication,
+-coherent tuple/provenance adoption and real full qualification remain pending.
++the Parties caller proposal are untouched. The genuine M23 Builds publication
++and this isolated tuple/provenance adoption are recorded; exact-head hosted gates,
++normal Platform publication and real reference/lifecycle qualification remain pending.
+diff --git a/eng/builds-tuple.json b/eng/builds-tuple.json
+index 0d9b3e6fa7094ee86ca742995ec44a5afcb48ce8..7fbf569fb6cdf850fab44d3d57726c617142d9e1 100644
+--- a/eng/builds-tuple.json
++++ b/eng/builds-tuple.json
+@@ -3,21 +3,21 @@
+   "candidateAcceptance": false,
+   "producer": {
+     "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+-    "sourceRevision": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
++    "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+     "catalog": {
+       "path": "Props/Directory.Packages.props",
+-      "blob": "ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b",
+-      "sha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce"
++      "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
++      "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+     }
+   },
+   "publication": {
+-    "version": "4.44.0",
+-    "sourceRevision": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+-    "releaseTag": "v4.44.0",
+-    "catalogSha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce",
+-    "archiveSha256": "bd454ebae17256eb27d67d197a18295e0153bc11f01b6f73e22defe0c21e53a9",
+-    "toolingSha256": "c85d688e71e17afd5f1a6b706d7cda896fe2b9f04852360c657c31d2c46b52d5",
+-    "inventorySha256": "04f97587db775b4aa2df30f903d66dabe45ab282418b661b5c69b443e2ecd894",
+-    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.0/g4-tool-package-inventory.json"
++    "version": "4.44.2",
++    "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
++    "releaseTag": "v4.44.2",
++    "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
++    "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
++    "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
++    "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
++    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+   }
+ }
+diff --git a/eng/tuple-ci-suites.json b/eng/tuple-ci-suites.json
+index 062fb76dcbc588cbd187d6b6c35980dd7e6b47ff..ecd239b875449b0be50055fb705a4c99c51ec593 100644
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -86,6 +86,30 @@
+         "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
+       ],
+       "requiredCount": 37
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
++      ],
++      "requiredCount": 3
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
++      ],
++      "requiredCount": 21
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
++      ],
++      "requiredCount": 9
+     }
+   ]
+ }
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index 0f51f79cb3dacec7c58e34b5e347177578faf097..3259aa836cbd186b78f990073bf8a7cdd025064b 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[4.44.0, 5.0.0-0)"
++  "toolVersionRange": "[4.44.2, 5.0.0-0)"
+ }
+Submodule references/Hexalith.Builds 6249a8c0...ae68c59b:
+  > build(audit): anchor Memories provenance in retained main history (#160)
+  > fix(ci): retain declared diagnostics and adopt Memories 3.0.23 (#159)
+  > build(audit): record qualified Memories catalog snapshot
+  < build: merge authenticated qualification owners (#158)
+diff --git a/src/Hexalith.Platform.Composition/Declarations/provenance.json b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+index bf2490925c8da6368a27b2b2382cda9d3ae93f27..06b35a1d159ec4da7e8a3c61c4dfc53f68a6b641 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/provenance.json
++++ b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+@@ -15,8 +15,8 @@
+   },
+   "memories": {
+     "repository": "Hexalith.Memories",
+-    "version": "3.0.18",
+-    "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
++    "version": "3.0.23",
++    "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+   }
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
+index fff2c30ccaca867aadd519c397c19b5a709bfb8b..6bfe5c4a2c11483a61fd6f290612bd0d2d5d9210 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
+@@ -26,6 +26,8 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
+         File.Exists(Seed).ShouldBeTrue("The actual published tool seed is required for this package component fixture.");
+         using JsonDocument binding = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "eng", "builds-tuple.json")));
+         string pin = binding.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString()!;
++        using JsonDocument identity = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "hexalith-platform.json")));
++        string range = identity.RootElement.GetProperty("toolVersionRange").GetString()!;
+         var observed = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], platform, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
+         observed.ExitCode.ShouldBe(0);
+         string source = observed.Output.Trim();
+@@ -33,7 +35,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
+             [new("Hexalith.Builds", "source", builds), new("Hexalith.EventStore", "source", _owner.Root), new("Hexalith.Platform", "source", platform),
+              new("Hexalith.Tenants", "package", null), new("Hexalith.Memories", "package", null)], true)
+         {
+-            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, "[4.44.0,5.0.0-0)", Path.Combine(platform, "hexalith-platform.json"), true),
++            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, range, Path.Combine(platform, "hexalith-platform.json"), true),
+         };
+         // These empty projects are solely source-identity negative fixtures. The package reader must never consume their assemblies.
+         foreach (string id in new[] { "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults" })
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs
+index 8bf1e0b30a969f5578ceebaedf1693fb7391685a..9ad40df63fc284db48140a724dadd760a913cd1d 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs
+@@ -1,6 +1,7 @@
+ namespace Hexalith.Platform.Composition.Tests;
+ 
+ using System.Runtime.Loader;
++using System.Security.Cryptography;
+ using System.Text.Json;
+ using System.Text.Json.Nodes;
+ using System.Xml.Linq;
+@@ -10,7 +11,8 @@ using Hexalith.Platform.CatalogArtifacts;
+ using Shouldly;
+ 
+ /// <summary>Runs the production-generated full reader only with the genuinely coherent owner fixture; no conditional positive or legacy mapping fallback.</summary>
+-public sealed class PlatformPartiesPackageReaderTests
++/// <param name="diagnostics">Retains the actual generated-reader guard diagnostics.</param>
++public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnostics)
+ {
+     private static readonly string[] _publicNames = ["Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService",
+         "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server", "Hexalith.Memories.Contracts", "Hexalith.Memories.EventStore", "Hexalith.Memories.EventStoreExtensions",
+@@ -70,6 +72,7 @@ public sealed class PlatformPartiesPackageReaderTests
+         File.WriteAllText(path, request.ToJsonString());
+         var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll"), path], fixture.Reader, null),
+             TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
+         result.ExitCode.ShouldNotBe(0);
+         result.TimedOut.ShouldBeFalse();
+         (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "exact signed public artifact bytes" : "not qualified");
+@@ -89,12 +92,18 @@ public sealed class PlatformPartiesPackageReaderTests
+         PlatformRoutingCatalog catalog = fixture.Generate();
+         AssertFullReader(fixture, catalog);
+         byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
++        using JsonDocument versions = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json")));
++        XDocument bindings = XDocument.Load(Path.Combine(fixture.Reader, "bindings.props"));
++        bindings.Descendants("PackageReference").Select(item => (string?)item.Attribute("Include"))
++            .ShouldContain("Hexalith.Memories.EventStore", "Mutate an actual direct owner reference validated by the generated task.");
++        versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
++            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe("3.0.23");
+         string path = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
+         XDocument project = XDocument.Load(path);
+         string target;
+         if (fault == "version")
+         {
+-            project.Root!.Add(new XElement("ItemGroup", new XElement("PackageVersion", new XAttribute("Update", "Hexalith.Memories.Contracts"), new XAttribute("Version", "3.0.18"))));
++            project.Root!.Add(new XElement("ItemGroup", new XElement("PackageVersion", new XAttribute("Update", "Hexalith.Memories.EventStore"), new XAttribute("Version", "3.0.18"))));
+             target = "ValidatePrivateReaderCatalogBeforeRestore";
+         }
+         else
+@@ -102,9 +111,9 @@ public sealed class PlatformPartiesPackageReaderTests
+             string assetsPath = Path.Combine(fixture.Reader, "obj", "project.assets.json");
+             JsonNode assets = JsonNode.Parse(File.ReadAllBytes(assetsPath))!;
+             JsonObject packages = assets["targets"]!.AsObject().Single().Value!.AsObject();
+-            JsonNode changed = packages["Hexalith.Memories.Contracts/3.0.23"]!.DeepClone();
+-            packages.Remove("Hexalith.Memories.Contracts/3.0.23");
+-            packages["Hexalith.Memories.Contracts/3.0.18"] = changed;
++            JsonNode changed = packages["Hexalith.Memories.EventStore/3.0.23"]!.DeepClone();
++            packages.Remove("Hexalith.Memories.EventStore/3.0.23");
++            packages["Hexalith.Memories.EventStore/3.0.18"] = changed;
+             File.WriteAllText(assetsPath, assets.ToJsonString());
+             project.Root!.Elements("Target").Single(element => (string?)element.Attribute("Name") == "ValidatePrivateReaderCatalogAfterRestore").Attribute("DependsOnTargets")!.Remove();
+             target = "ValidatePrivateReaderCatalogAfterRestore";
+@@ -114,6 +123,7 @@ public sealed class PlatformPartiesPackageReaderTests
+             ["msbuild", path, "-target:" + target, "-nologo", "-m:1", "-nodeReuse:false", "-p:AlternateCommonProps=" + Path.Combine(fixture.Reader, "reader-common.props"),
+              "-p:CentralPackageVersionsFileImported=true", "-p:ImportDirectoryPackagesProps=false", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
+              "-p:PlatformCatalogBindings=" + Path.Combine(fixture.Reader, "bindings.props")], fixture.Options.PlatformRoot, null), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
+         result.ExitCode.ShouldNotBe(0);
+         (result.Output + result.ErrorOutput).ShouldContain("requires 3.0.23");
+         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
+@@ -125,18 +135,27 @@ public sealed class PlatformPartiesPackageReaderTests
+     {
+         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
+         fixture.AssertPositiveEntry();
++        // The producer correctly reconciles an initial active-owner package to source.
++        // A consumer that adds it back afterwards must still hit the real duplicate guard
++        // before a restore of unrelated active-owner dependencies can mask that boundary.
+         string path = Path.Combine(fixture.Workspace, "ordinary.csproj");
+         File.WriteAllText(path, "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup><Import Project=\""
+             + Path.Combine(fixture.Options.PlatformRoot, "Directory.Build.props") + "\"/><Import Project=\"" + Path.Combine(fixture.Options.PlatformRoot, "Directory.Packages.props")
+-            + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Project>");
++            + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup>"
++            + "<Target Name=\"ReintroduceOrdinaryPackage\" AfterTargets=\"HexalithReconcileSourceMapping\">"
++            + "<ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Target></Project>");
+         var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["build", path, "-c", "Release", "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:CentralPackageVersionsFileImported=true", "--nologo"],
+             fixture.Options.PlatformRoot, SourceMappingMaterializer.Environment(fixture.Options.Mapping, fixture.Workspace)), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
+         result.ExitCode.ShouldNotBe(0);
++        result.TimedOut.ShouldBeFalse();
+         (result.Output + result.ErrorOutput).ShouldContain("HXW005");
++        (result.Output + result.ErrorOutput).ShouldContain("Source 'Hexalith.Parties'");
++        (result.Output + result.ErrorOutput).ShouldContain("duplicates direct package 'Hexalith.Parties.Contracts/");
+         Directory.GetFiles(fixture.Workspace, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
+     }
+ 
+-    private static void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
++    private void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
+     {
+         using JsonDocument generated = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
+         generated.RootElement.GetProperty("routes").GetArrayLength().ShouldBe(70);
+@@ -146,6 +165,8 @@ public sealed class PlatformPartiesPackageReaderTests
+         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "command").ShouldBe(46);
+         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "query").ShouldBe(20);
+         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "projection").ShouldBe(4);
++        diagnostics.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
++            + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=70 policies=46");
+         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
+         request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.FullPartiesName);
+         request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
+@@ -159,6 +180,7 @@ public sealed class PlatformPartiesPackageReaderTests
+             {
+                 string body = Path.Combine(fixture.Reader, "output", name + ".dll");
+                 PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), PublishedCatalogArtifactCohort.FullPartiesName).ShouldBe(body);
++                diagnostics.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))));
+             }
+         }
+         finally { context.Unload(); }
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+index 3a47d83998dfb83f21ae6b96211219f906ebb878..6db3df73f6b188ab6e26701ccbd33181e49dfa97 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+@@ -25,7 +25,9 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
+         }
+         string catalog = Path.Combine(Root, "references", "Hexalith.Builds", "Props");
+         Directory.CreateDirectory(catalog);
+-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>4.0.4</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.0</HexalithTenantsVersion><HexalithMemoriesVersion>3.0.18</HexalithMemoriesVersion></PropertyGroup></Project>");
++        string memoriesVersion = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!["memories"]!["version"]!.GetValue<string>();
++        // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
++        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>4.0.4</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.0</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup></Project>");
+         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
+         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
+         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);

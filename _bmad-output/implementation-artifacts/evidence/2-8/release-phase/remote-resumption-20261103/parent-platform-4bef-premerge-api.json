@@ -1,0 +1,140 @@
+{
+  "source": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+  "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+  "actor": {
+    "id": "6775094",
+    "login": "jpiquot"
+  },
+  "effectiveRule": {
+    "id": 24657106,
+    "name": "Platform main reviewed changes",
+    "target": "branch",
+    "source_type": "Repository",
+    "source": "Hexalith/Hexalith.Platform",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/heads/main"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "pull_request",
+        "parameters": {
+          "required_approving_review_count": 1,
+          "dismiss_stale_reviews_on_push": false,
+          "required_reviewers": [],
+          "require_code_owner_review": true,
+          "dismissal_restriction": {
+            "enabled": false,
+            "allowed_actors": []
+          },
+          "require_last_push_approval": false,
+          "required_review_thread_resolution": false,
+          "require_extra_approval_for_unattributed_changes": true,
+          "allowed_merge_methods": [
+            "merge",
+            "squash",
+            "rebase"
+          ]
+        }
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5PMKqKzgF4PNI",
+    "created_at": "2026-10-07T16:02:23.904+02:00",
+    "updated_at": "2026-10-07T16:02:23.997+02:00",
+    "bypass_actors": [
+      {
+        "actor_id": 6775094,
+        "actor_type": "User",
+        "bypass_mode": "always"
+      }
+    ],
+    "current_user_can_bypass": "always",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106"
+      },
+      "html": {
+        "href": "https://github.com/Hexalith/Hexalith.Platform/rules/24657106"
+      }
+    }
+  },
+  "pr": {
+    "title": "feat(composition): qualify the full Parties package cohort",
+    "draft": false,
+    "mergeable": true,
+    "mergeable_state": "blocked"
+  },
+  "checks": {
+    "check_runs": [
+      {
+        "conclusion": "neutral",
+        "details_url": "https://cursor.com/docs/bugbot",
+        "id": 126527812950,
+        "name": "Cursor Bugbot",
+        "status": "completed"
+      },
+      {
+        "conclusion": "neutral",
+        "details_url": "https://cursor.com/agents/bc-ff56aa99-1597-4f2d-ba9e-d1432f37b217",
+        "id": 126527757197,
+        "name": "Cursor Approval Agent: Pull Request Router",
+        "status": "completed"
+      },
+      {
+        "conclusion": "neutral",
+        "details_url": "https://cursor.com/agents/bc-276b9330-5d73-48a6-8927-80221a600e1c",
+        "id": 126527754228,
+        "name": "Cursor Security Agent: Security Reviewer",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492/job/126522069980",
+        "id": 126522069980,
+        "name": "tuple",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521550452",
+        "id": 126521550452,
+        "name": "consumer-binding (3.132.1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521549222",
+        "id": 126521549222,
+        "name": "consumer-binding (3.130.0)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521548829",
+        "id": 126521548829,
+        "name": "consumer-binding (3.130.1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "details_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521548673",
+        "id": 126521548673,
+        "name": "consumer-binding (3.130.2)",
+        "status": "completed"
+      }
+    ],
+    "total_count": 8
+  },
+  "decision": "Ordinary expected-head merge using existing explicit owner exception after all actual checks and artifact/source audits. No self-review, rule/actor change, force, or failed-check override."
+}

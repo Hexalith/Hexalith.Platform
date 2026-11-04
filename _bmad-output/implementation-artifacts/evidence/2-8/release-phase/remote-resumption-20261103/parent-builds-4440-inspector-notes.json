@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-04T05:18:12.334929+00:00",
+  "officialAudit": "parent-builds-4440-official-audit.json",
+  "inspectorFailures": [
+    {
+      "step": "fixture source comparison",
+      "exitCode": 1,
+      "cause": "Raw Git LF C# blobs differ from checkout CRLF imposed by owning .gitattributes",
+      "resolution": "Applied only *.cs checkout conversion; all295 fixture bodies match."
+    },
+    {
+      "step": "nuspec parsing after first Evidence signature verification",
+      "exitCode": 1,
+      "cause": "Assumed2013 nuspec XML namespace; official package uses its declared namespace",
+      "resolution": "Read actual root namespace dynamically; both official source/version identities and signature verifications pass."
+    }
+  ],
+  "producerFailure": false,
+  "producerRerun": false,
+  "sourceChanged": false,
+  "nativeAcceptance": false
+}

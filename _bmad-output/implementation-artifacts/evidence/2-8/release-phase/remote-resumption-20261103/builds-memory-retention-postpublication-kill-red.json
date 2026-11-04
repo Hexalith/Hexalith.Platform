@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "Github/run-module-integration/tests",
+    "-k",
+    "actual_collector_kill",
+    "-v"
+  ],
+  "exitCode": 1,
+  "source": "9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+  "expected": "actual SIGKILL after real hardlink produces nlink2 and blocks retry"
+}

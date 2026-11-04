@@ -1,0 +1,93 @@
+{
+  "observedAt": "2026-11-03T21:04:28.277351+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "branch": "fix/adopt-platform-117",
+  "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/61",
+  "priorReviewedHead": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "actualIncomingMain": "7d3bc8879c39d32f34866df5098a0d369821db03",
+  "normalMerge": "7a464e3d1d61458898183a930ec29949885ee50c",
+  "head": "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+  "sourceClean": true,
+  "correctionPaths": [
+    ".github/workflows/ci.yml"
+  ],
+  "completeProposalPathCount": 16,
+  "preservedReviewedPaths": [
+    ".github/workflows/ci-lifecycle-qualification.yml",
+    ".gitlink-signoff.tsv",
+    "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+    "docs/architecture.md",
+    "docs/ci-lifecycle-qualification.md",
+    "docs/ci.md",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+    "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+  ],
+  "incomingChange": "separate reusable build-timeout input60\u2192120 preserved from external main, not raised by this correction",
+  "declarationTimeoutMinutes": 10,
+  "initializationCommand": "git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.EventStore references/Hexalith.Tenants references/Hexalith.Memories",
+  "onlyCorrection": "depth1 explicit checkout for unchanged three recorded direct owners",
+  "correctionPatch": "parties-declaration-shallow-correction.patch",
+  "correctionPatchSha256": "9124b0484d0e491b5b8b40e748bd172ed72bccb329c0c54bfc1f79fbd47090b6",
+  "completePatch": "parties-declaration-shallow-current-main.patch",
+  "completePatchSha256": "556cd0da6aedf31d421a3e4887254ffb19f13efe82066e75f0a354e8b9ecd7ed",
+  "incomingPatch": "parties-declaration-shallow-incoming-main.patch",
+  "coldRoot": "parties-declaration-shallow-cold-root-first.json",
+  "coldDependencies": "parties-declaration-shallow-cold-dependencies-first.json",
+  "coldValidation": "parties-declaration-shallow-cold-validation-first.json",
+  "coldCloneLogWriteSpanSeconds": 17.296195,
+  "coldTimingLimitation": "filesystem timestamps bound the real command log; exact in-memory monotonic duration lost in verifier failure",
+  "coldNetworkCloneRepeated": false,
+  "coldRootTransport": "standalone depth1 file-transport owner clone, no prior module stores/alternates; all three direct module clones use actual HTTPS GitHub remotes",
+  "tool": "4.43.6+725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "fourManifestValidationPassed": true,
+  "coldStrictDeclarationTests": 7,
+  "currentLocalControls": {
+    "caller": 69,
+    "lifecycle": 32,
+    "declaration": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "callerTrx": "parties-declaration-shallow-caller-controls-results.trx",
+  "callerTrxSha256": "bff4b40b21e93d855be8721970831cc87726786e715bef8f5c0ebb71435cba22",
+  "fastControls": "parties-declaration-shallow-fast-controls-first.json",
+  "messageValidation": "parties-declaration-shallow-message-validation.json",
+  "sourceAndTitleValidatedWithLockedCommitlint": "21.2.4",
+  "push": {
+    "command": [
+      "git",
+      "push",
+      "origin",
+      "fix/adopt-platform-117"
+    ],
+    "exitCode": 0,
+    "fromHead": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+    "toHead": "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+    "force": false
+  },
+  "hostedAcceptance": "fresh new-head workflows pending; local cold timing does not prove hosted10-minute completion",
+  "firstHostedTimeoutPreserved": "parent-parties-126acd-declaration-first-cancellation.json",
+  "receiptVerifierErrorsRetained": [
+    "first post-command verifier assumed .git/modules/references instead of actual declared submodule names",
+    "second receipt attempt used stat %n as a newline rather than filename; source and command unchanged"
+  ],
+  "unchangedSdkAndSelectionControls": "13/3 prior reviewed controls at126 retained; C# bytes unchanged and not rerun",
+  "manualDispatch": false,
+  "candidateAcceptance": false,
+  "incomplete": [
+    "Fresh exact-source hosted declaration completion within unchanged10-minute limit",
+    "All20E/15P isolated projects and named real native persistence facts",
+    "Actual measured SDK outputs compared with official archives",
+    "Verified receipt-bound zero-owned cleanup",
+    "Real lifecycle matrix/startup/execution cancellation qualification",
+    "Known Memories image-source binding limitation",
+    "Original unchecked reference tasks and final baseline audit/step04"
+  ]
+}

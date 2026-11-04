@@ -1,0 +1,19 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "--nologo",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T11:50:28.856912+00:00",
+  "completedAt": "2026-11-04T11:50:31.219654+00:00",
+  "anonymous401ActualExecution": "Not run locally; requires actual issued hosted full Parties environment."
+}

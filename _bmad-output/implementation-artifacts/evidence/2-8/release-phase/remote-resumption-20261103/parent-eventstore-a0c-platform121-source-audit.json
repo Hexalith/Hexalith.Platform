@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-04T05:15:27.029685+00:00",
+  "source": "a0c65bec419138e79d763557c73573f894217f24",
+  "previousHead": "f15c74b61938722a367b16060b42c3a6bcd203b6",
+  "changedPaths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+  ],
+  "completePatchReadByParent": true,
+  "patchSha256": "34dfeaf0980e58da316c71deba13fe1878041f8cca3bb773f039ede92f88552d",
+  "focusedTrxSha256": "09cf3294d21e5a426c7c359f5aeebd2543a2cea7b685b475fcff79c64c6d5daa",
+  "actualPassedCases": [
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \"Release\", source: False)",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \"Debug\", source: True)",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Contracts_and_live_sidecar_workflow_jobs_remain_blocking",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pull_only_secrets",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests"
+  ],
+  "productionManifestAndAllNativeFilesByteIdentical": true,
+  "directTupleVerified": true,
+  "pushPendingPriorRunTerminal": 41774344462,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

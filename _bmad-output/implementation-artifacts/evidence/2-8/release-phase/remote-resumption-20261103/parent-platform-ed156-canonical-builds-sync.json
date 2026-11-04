@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-03T18:21:35.533426+00:00",
+  "operation": "Synchronize clean canonical direct dependency with actual accepted recorded pin",
+  "ownerBefore": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+  "ownerAfter": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+  "recordedPinBefore": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "recordedPinAfter": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "checkoutBefore": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "checkoutAfter": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "beforeClean": true,
+  "afterClean": true,
+  "argv": [
+    "git",
+    "-c",
+    "submodule.recurse=false",
+    "submodule",
+    "update",
+    "--init",
+    "--checkout",
+    "--",
+    "references/Hexalith.Builds"
+  ],
+  "exitCode": 0,
+  "stdout": "Submodule path 'references/Hexalith.Builds': checked out '725754075e1d6369430a3adf94d46fb71e6eaf9e'\n",
+  "stderr": "",
+  "nestedDependenciesInitialized": false,
+  "ownerCommitOrIndexChanged": false,
+  "parentPerformedExternalMerge": false,
+  "candidateAcceptance": false
+}

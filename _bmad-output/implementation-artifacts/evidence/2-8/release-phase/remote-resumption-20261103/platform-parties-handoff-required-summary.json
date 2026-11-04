@@ -1,0 +1,317 @@
+{
+  "source": "580625cf1d910a33481adeb05d1343aa359964a2",
+  "groups": [
+    {
+      "group": 1,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-01.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 83,
+      "totals": {
+        "total": 83,
+        "passed": 83,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 5.155
+    },
+    {
+      "group": 2,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-02.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 2,
+      "totals": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 0.311
+    },
+    {
+      "group": 3,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-03.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 24,
+      "totals": {
+        "total": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 0.438
+    },
+    {
+      "group": 4,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-04.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 44,
+      "totals": {
+        "total": 44,
+        "passed": 44,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 2.005
+    },
+    {
+      "group": 5,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-05.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 7,
+      "totals": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 0.693
+    },
+    {
+      "group": 6,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-06.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 28,
+      "totals": {
+        "total": 28,
+        "passed": 28,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 1.38
+    },
+    {
+      "group": 7,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-07.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 9,
+      "totals": {
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 19.25
+    },
+    {
+      "group": 8,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-08.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 4,
+      "totals": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 0.542
+    },
+    {
+      "group": 9,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-09.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 37,
+      "totals": {
+        "total": 37,
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 2.213
+    },
+    {
+      "group": 10,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-10.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 3,
+      "totals": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 0.805
+    },
+    {
+      "group": 11,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-11.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 21,
+      "totals": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 27.512
+    },
+    {
+      "group": 12,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-12.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 9,
+      "totals": {
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 40.991
+    },
+    {
+      "group": 13,
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-parties-handoff-required-13.xml"
+      ],
+      "exitCode": 0,
+      "requiredCount": 22,
+      "totals": {
+        "total": 22,
+        "passed": 22,
+        "failed": 0,
+        "skipped": 0,
+        "not-run": 0,
+        "errors": 0
+      },
+      "seconds": 18.34
+    }
+  ]
+}

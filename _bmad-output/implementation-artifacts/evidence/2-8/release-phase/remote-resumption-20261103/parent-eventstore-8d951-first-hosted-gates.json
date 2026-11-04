@@ -1,0 +1,68 @@
+{
+  "observedAtUtc": "2026-11-03T21:12:05.523720+00:00",
+  "runId": 41711963375,
+  "attempt": 1,
+  "head": "8d95170b5babd0aa3552f4b087528b6ab6987fa8",
+  "base": "d836aaf2f2ad299f398c8f8d1b7ff6ec47604cf8",
+  "actualCheckedOutMerge": "625b6c066c36fd143f8f3ee305280e6ecca9351d",
+  "actualParents": [
+    "d836aaf2f2ad299f398c8f8d1b7ff6ec47604cf8",
+    "8d95170b5babd0aa3552f4b087528b6ab6987fa8"
+  ],
+  "actualMergeTree": "2af8154dbc55338fc4127b9cb96afa69e4b9c656",
+  "mergeTreeEqualsReviewedHeadTree": true,
+  "completedIndependentJobs": [
+    {
+      "label": "folded-snapshot",
+      "jobId": 126182809904,
+      "log": "parent-eventstore-8d951-folded-snapshot-job.txt",
+      "sha256": "57e8f3f125f30197715df00edc2183d04065f6b9846a835edc85555ff41575c5"
+    },
+    {
+      "label": "tenants-source",
+      "jobId": 126182810156,
+      "log": "parent-eventstore-8d951-tenants-source-job.txt",
+      "sha256": "9b4b8372831bec67008f710411d63ff48dd73f3abffb346316c9f531bbb1a0d4"
+    },
+    {
+      "label": "release-governance",
+      "jobId": 126182810229,
+      "log": "parent-eventstore-8d951-release-governance-job.txt",
+      "sha256": "d566a22e02711c9b29e0e64a010f10a0833269f1cfc3189450adbe1b6c170459"
+    }
+  ],
+  "tenantsSourceArtifact": {
+    "id": 13271072227,
+    "officialAndActualSha256": "21d20639f8e42b712ef39c72c020a8c41110d95b586553add42ebac667f25ef0",
+    "cache": "/home/administrator/.cache/hexalith/story-2-8/eventstore-8d951-source-mode-hosted-20261103",
+    "reports": [
+      {
+        "name": "Hexalith.EventStore.AppHost.Tests.trx",
+        "sha256": "6bed09da3d09ff92af35f6ccc96f37d995404ec5f92f7d8a324139be7368741a",
+        "counters": {
+          "total": "7",
+          "executed": "7",
+          "passed": "7",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      }
+    ]
+  },
+  "releaseGovernanceScope": "10+4+19Pythoncontrolspassed and2isolatedsemanticreleasehistories; no actualpublishercall",
+  "foldedSnapshotScope": "actualsuccessfulcompatibilityprogrambuilds0warning/error; no inventedtestcount",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "remaining": "all20wholeisolatedprojectreports, actual2realgatewayfacts plusmeasuredSDKandreceipt-boundcleanup; Contracts/checkpointjobsstillrequired"
+}

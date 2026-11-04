@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-04T06:25:08.346525+00:00",
+  "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "head": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+  "changedRows": {
+    "familyDecisions": [
+      "hexalith-memories"
+    ],
+    "packages": [
+      "Hexalith.Memories.Aspire",
+      "Hexalith.Memories.Client.Rest",
+      "Hexalith.Memories.Contracts",
+      "Hexalith.Memories.EventStore",
+      "Hexalith.Memories.EventStoreExtensions"
+    ]
+  },
+  "unchangedNonMemoriesRows": {
+    "familyDecisions": 155,
+    "packages": 311
+  },
+  "auditSha256": "4d525f3348e607244d4a3f4f186b2e8e56925001ac26fd61799239291ebba34c",
+  "topLevelChangedKeys": [
+    "generatedFromRevision",
+    "catalogSha256",
+    "catalogRawSha256",
+    "snapshot",
+    "consumerEvidence",
+    "familyDecisions",
+    "packages"
+  ],
+  "assertion": "All non-Memories family and package row objects exactly unchanged. Generated audit provenance fields refresh normally; this is a scope audit, not runtime acceptance."
+}

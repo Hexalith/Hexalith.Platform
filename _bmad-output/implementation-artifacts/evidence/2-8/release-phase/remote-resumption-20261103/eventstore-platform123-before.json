@@ -1,0 +1,70 @@
+{
+  "at": "2026-11-04T08:01:05.119117+00:00",
+  "head": "005c9cfb0f938214ba889e645f81e389d82476b6",
+  "branch": "fix/adopt-platform-117",
+  "status": "",
+  "main": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "protectedFiles": {
+    ".config/dotnet-tools.json": "33edbbec21c4daf94d0bdce72c99ae7392587980f4898f4e5794d12b51e29d54",
+    ".github/workflows/advisory-tests.yml": "fb998b8a9f43c5477c56696b0cd261ca14f25913c3a4a0d87c4b766366686ce6",
+    ".github/workflows/ci.yml": "5c789dd6939736c75ad1cf76c6a6a33b9a7ea8f549698a07bb468a1d9f738a28",
+    ".github/workflows/codeql.yml": "8344d484402fcf2032df96e603e13d074bb53dd58f987b70cdb4bf488c52a035",
+    ".github/workflows/commitlint.yml": "500943a9364cc834cb530db0a8cf1e4b51b3abb14a24b42621bd0958f77d144b",
+    ".github/workflows/dapr-broker-qualification.yml": "6cfdd8f2af8a312de9a7d4226a8ded4bec92f66cdbbf772f662577f458c9aa84",
+    ".github/workflows/dependency-review.yml": "cac1cf54933224dac97682da9c5fbd7c305232f8b20cdd35fc1c73c4203d8bec",
+    ".github/workflows/integration.yml": "91fde72c067d062fc69d2ee082c90b099c9f1140f5551099f776a1144a1286ec",
+    ".github/workflows/payload-protection-azure.yml": "ec89ca1119c3519b53caf4014dace42aab02ff547e618db14772e0dcb8f8edb1",
+    ".github/workflows/payload-protection-lifecycle.yml": "78470f785475dc1d574e058d3014711d837eeace97bc55ee28952439f6095be3",
+    ".github/workflows/payload-protection.yml": "97964efab57b20ca1cd90e16945cc698be2ab7a1bab6ccd37699b88ab8ac46c2",
+    ".github/workflows/release.yml": "084a883c20cafbcb4e1ba49de2e414c5cdc57fe410b08e6fd00c3bdf197fd799",
+    "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs": "aa1cd47385d2d08a79cc5058c42ee4ede1fb52a0918ffe90ca4657bc79fa5b5a",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkAggregateDefinition.cs": "6d5655ac3a35505454cf284986be2fea892eec7ad4693b8c0317bfffa76aa35e",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkAggregateReceipt.cs": "2186e3a665a308e7f36d12e871f7b447e0019c6b794e7e9b5fcf9aa148ac064d",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkDatasetBuilder.cs": "2bbba86c0c3dea8c7a3888d9e5f35646fcf4e3aeeb862a910ad32ab3af01ea31",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkDatasetBuilderOptions.cs": "3929f284d878447ab00994e05b0b6590a80a1db8d4bd43d639aa7b02144d4bdc",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkDatasetDefinition.cs": "ac16b67080d339c5f730b80b31a71e6165f728443f820f391b810cb3ae4cfb02",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkDatasetReceipt.cs": "a5ffa10332cb40045a64600f96250eaa6912443bf1aabeeccbbe314ac0a85d5a",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkEventDefinition.cs": "b4489a6e7dbc2be1c130fe16a6488c8e7dd02cdf7dc59fa4e6f694c07d48815a",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/BenchmarkSnapshotDefinition.cs": "547a0c054c9b350170d803f28aea6c28045526135dcb8339c1ae801980ef3b42",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/DaprBenchmarkActorLifecycle.cs": "e5a6900c3a6f9610637f08b4b8a94da0f41a06fdd7979cde5409b8a8ab00ffe8",
+    "src/Hexalith.EventStore.Testing.Integration/Benchmarking/IBenchmarkActorLifecycle.cs": "5f5069ce01b57f3e87de2095457ac2db9b8c6ecec166dfa0bc45ac2364394caf",
+    "src/Hexalith.EventStore.Testing.Integration/DaprDiagnostics.cs": "166c9851988998eefa57f518ca5591b3ba82af152249b82cf8a9d6a8ee5f1ff6",
+    "src/Hexalith.EventStore.Testing.Integration/DaprDomainServiceTestFixtureBase.cs": "bb17f85cfb09856b670b326e7ef9d61990b02e28222c4f9004311f3c8368efa3",
+    "src/Hexalith.EventStore.Testing.Integration/DaprFactAttribute.cs": "69b0443a85bfc7c21f60cf5e889f69c48d735535bd25353d5ee5f549c38a99bb",
+    "src/Hexalith.EventStore.Testing.Integration/DaprLocalEndpoints.cs": "a3a245673a0b765e8e9a03465a016e96d391cc416311284347307a65d878a4d1",
+    "src/Hexalith.EventStore.Testing.Integration/DaprPerformanceFactAttribute.cs": "83f05f52e1d5e23384288d63980eed15ae14dbed52012fe3a8257cf446c9f441",
+    "src/Hexalith.EventStore.Testing.Integration/DaprPerformanceTestPrerequisites.cs": "6d27415c7cf616c00517f00ed0a26f76b0803a17e4b8ca25e2f1db688182af04",
+    "src/Hexalith.EventStore.Testing.Integration/DaprTestEnvironment.cs": "a293db0f43f273a5889cc38b766a2de42efaf38e15ec4039235d04c38fc7d97b",
+    "src/Hexalith.EventStore.Testing.Integration/DaprTestExecutionGate.cs": "8e052a9f26f38e30248b96ecc654ca73558eedf398449785a9dd6a1c92d67dd8",
+    "src/Hexalith.EventStore.Testing.Integration/DaprTestSerializationAttribute.cs": "03751ee0e02fbaab0866d5da0a4d3a84f6c8fdd7fb195e5ab54f1ce7a560430a",
+    "src/Hexalith.EventStore.Testing.Integration/Hexalith.EventStore.Testing.Integration.csproj": "3a667296d87180b2462e306d398d54ea679efd041b7d3f63c3f2f13cb1cf633f",
+    "src/Hexalith.EventStore.Testing.Integration/TestEnvironmentEndpoint.cs": "921f72ed23972aa0c40292cb3cd3780b6a02ef7866bd0925ab860504664029ae",
+    "src/Hexalith.EventStore.Testing.Integration/TestEnvironmentStreamReader.cs": "5f1511df780d49ca56821230d9dce650ab2571fbc5f80895ccd6a3a79e6952a8",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs": "2086997302ad64f8b493c28de2b8dacd306a228d22425305f11114c3b48a975a",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "f40026d6a0c3e8e22727fe28357a918735a68f3f0fa0119c966d2af9000ee451",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj": "1663d5f9ecc438086f5af33fc41596d51521909807df8373b37dd74a3411871b",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "cf7955af2cbfa944b83abfede234eb91afd1abb45cef49ab46c9b092d9251491",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs": "99818ad66dfcfb19dbdd920846f064eee9539ea7b5123ad1552549bf805e0270",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "fbc3c899d5af43eef2241fe9f6ff7940269b17e22cea757f64f0995859eefdfd",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "b6ea613f1367a3dc3ed603cb112413dc072e94d45bca862cd84c7a7fde71714c",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901"
+  },
+  "directModules": {
+    "Hexalith.Builds": {
+      "pin": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": ""
+    },
+    "Hexalith.Platform": {
+      "pin": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+      "head": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+      "status": ""
+    },
+    "Hexalith.Tenants": {
+      "pin": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "head": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "status": ""
+    }
+  }
+}

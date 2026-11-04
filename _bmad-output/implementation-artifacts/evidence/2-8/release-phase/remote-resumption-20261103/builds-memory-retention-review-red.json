@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "Github/run-module-integration/tests",
+    "-k",
+    "partial_diagnostic",
+    "-k",
+    "failed_diagnostic_flush",
+    "-k",
+    "fixed_metadata_above",
+    "-v"
+  ],
+  "exitCode": 1,
+  "expected": "all3 fail against first implementation: partial/flush leave final names; >1MiB fixed metadata refused"
+}

@@ -1,0 +1,223 @@
+{
+  "at": "2026-11-04T05:23:15.648791+00:00",
+  "principal": "ci-reader",
+  "registryMutation": false,
+  "repository": "parties",
+  "tag": "3.0.0",
+  "indexDigest": "sha256:6d477a020effe31f90dd63382a4e35740c5a30590708295f191d96c7ffd3425a",
+  "images": [
+    {
+      "platform": "linux/amd64",
+      "manifestDigest": "sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
+      "configDigest": "sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b",
+      "labels": {
+        "org.opencontainers.image.licenses": "MIT",
+        "org.opencontainers.image.vendor": "Hexalith",
+        "org.opencontainers.artifact.description": "DAPR-native party management microservice for .NET",
+        "org.opencontainers.image.description": "DAPR-native party management microservice for .NET",
+        "org.opencontainers.image.authors": "Hexalith Contributors",
+        "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+        "net.dot.runtime.majorminor": "10.0",
+        "net.dot.sdk.version": "10.0.403",
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+        "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.0.0",
+        "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/639d6e98b496429eb0490d1f8feeec97bd1a3280/README.md",
+        "org.opencontainers.image.revision": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+        "org.opencontainers.image.version": "3.0.0",
+        "org.opencontainers.image.created": "2026-11-01T12:25:19Z",
+        "org.opencontainers.artifact.created": "2026-11-01T12:25:19Z",
+        "org.opencontainers.image.base.digest": "sha256:7e3205ef1189ab2b63a02040e02638a62bd70c67ac3a3a70a5a908be8e5da96c"
+      },
+      "layers": [
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 3853109,
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 1111864,
+          "digest": "sha256:f1a51f5ffc37d4b0b4eb345ddb7c2a704354ee6af14b20d76a32fa882efd0006"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 952,
+          "digest": "sha256:83301d18cf30e6b349228287f7e849691cc2fb6f300ea50fc12bb24c513ca925"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 37581973,
+          "digest": "sha256:77e9b76dcc1728e044fc9c934f2b482eddca87bfce99e351b4704c3ee3de8415"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 169,
+          "digest": "sha256:37f410eb48ed677cb8cf4ab52bfa6d310a0a8c256af19201901967b709d8b38d"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 13087118,
+          "digest": "sha256:1254b4746ba9844abd08ea79379bf6f9f3decec0692f9012316056b22fa457ee"
+        },
+        {
+          "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+          "size": 6100640,
+          "digest": "sha256:e45dc7a457e7e7a917d9546adf81058af32cc0063fdb84699918d5ab11be3a0f"
+        }
+      ],
+      "rootfsDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:eb1da3340149e40e0cc5643f4ef1b1ea5c11e6dd6f21a5005744a18f356f302f",
+        "sha256:0445543c747fc66a72c142736a371e67d4eceabdced1f75c85940d1946036c6e",
+        "sha256:319688affe66bb796b3bbc64c087596cdb3f326211d6cece84d681848fb95ff7",
+        "sha256:58767e8208c1acdbf4a55132fbde2e04f31a51331ccc539f9f02172e80ff0246",
+        "sha256:d69d26c6444d6de4a2ddf19e19bf0ab85c665500b5e2a1d18c8bd34806c689de",
+        "sha256:c385320d40ba5e84c48458cae0668b02d5dc4601dc2b6199f75187a0634195b0"
+      ],
+      "runtime": {
+        "Entrypoint": [
+          "dotnet",
+          "/app/Hexalith.Parties.dll"
+        ],
+        "Cmd": null,
+        "WorkingDir": "/app/",
+        "ExposedPorts": {
+          "8080/tcp": {}
+        },
+        "User": "app"
+      }
+    },
+    {
+      "platform": "linux/arm64",
+      "manifestDigest": "sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497",
+      "configDigest": "sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7",
+      "labels": {
+        "org.opencontainers.image.licenses": "MIT",
+        "org.opencontainers.image.vendor": "Hexalith",
+        "org.opencontainers.artifact.description": "DAPR-native party management microservice for .NET",
+        "org.opencontainers.image.description": "DAPR-native party management microservice for .NET",
+        "org.opencontainers.image.authors": "Hexalith Contributors",
+        "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+        "net.dot.runtime.majorminor": "10.0",
+        "net.dot.sdk.version": "10.0.403",
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+        "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.0.0",
+        "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/639d6e98b496429eb0490d1f8feeec97bd1a3280/README.md",
+        "org.opencontainers.image.revision": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+        "org.opencontainers.image.version": "3.0.0",
+        "org.opencontainers.image.created": "2026-11-01T12:25:19Z",
+        "org.opencontainers.artifact.created": "2026-11-01T12:25:19Z",
+        "org.opencontainers.image.base.digest": "sha256:4c4a70cc1b0b7a56e8153bbb87bcd19a0bdd11a4d8818a6520b86e134a382b22"
+      },
+      "layers": [
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 4190488,
+          "digest": "sha256:d3531b7a4f217bdc3426c57bcff84c170f086f456a39689d4a615c6d026c4be0"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 1037862,
+          "digest": "sha256:76b18c52d80b88f0dddce6a1df7d84c15042b79b97e47b3bb22523b0d722f16f"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 950,
+          "digest": "sha256:21700fd1cd1a64e618c98e8b8bd4aba5b648d61eda86d258eb7bbb5a9a4dcbee"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 35221237,
+          "digest": "sha256:ad63ff8a025a1279ca13dfe00870ff039fe021cee5e660f8a472ef9ad1e05ed1"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 170,
+          "digest": "sha256:46962c08a16b991059500d6d2f1b1d613009081998640699b61b80ae72966e86"
+        },
+        {
+          "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+          "size": 12547944,
+          "digest": "sha256:cc9ff83e82bb66216c343cecc324137ab65bcdb6c334fffb9a9a705f37453777"
+        },
+        {
+          "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+          "size": 6101200,
+          "digest": "sha256:f5e314f34837053fc6abac9b3ce9c5c74d5f6f30a2945d3b018c69f57b0f60c0"
+        }
+      ],
+      "rootfsDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:e869e9dac618f655ec9be2f001b9fa7fead8a96a68bcc995ae9865b2eb53b8ec",
+        "sha256:32fd27e050e7f46c406af2107a9c6740a4e5db52629852b523368894ef5a8315",
+        "sha256:78185f102b413408ccecbb45af14f98291b2367e93f1ada6e90dde35071ba7b0",
+        "sha256:ccd991b6d9b1a55db764aca021a3ce7289d27ca70cbf5a1b27a0d67b86bc54ca",
+        "sha256:63598716d5350ca13222e5d8a3803d43f4f69e85657c6b5f866ff0c3e25ebab2",
+        "sha256:138c73838a8b5905836336d2bfc8a278aed674faf6232572dd66011085786ed0"
+      ],
+      "runtime": {
+        "Entrypoint": [
+          "dotnet",
+          "/app/Hexalith.Parties.dll"
+        ],
+        "Cmd": null,
+        "WorkingDir": "/app/",
+        "ExposedPorts": {
+          "8080/tcp": {}
+        },
+        "User": "app"
+      }
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/parties/manifests/3.0.0",
+      "status": 200,
+      "bytes": 493,
+      "sha256": "sha256:6d477a020effe31f90dd63382a4e35740c5a30590708295f191d96c7ffd3425a",
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-registry/index.json",
+      "expectedDigest": null
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/parties/manifests/sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
+      "status": 200,
+      "bytes": 1399,
+      "sha256": "sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-registry/amd64-manifest.json",
+      "expectedDigest": "sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/parties/blobs/sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b",
+      "status": 200,
+      "bytes": 4149,
+      "sha256": "sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b",
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-registry/amd64-config.json",
+      "expectedDigest": "sha256:faa86a70f74870edb2abc300b2023791a94758a62bd1f0a62d63bda768e98c6b"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/parties/manifests/sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497",
+      "status": 200,
+      "bytes": 1399,
+      "sha256": "sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497",
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-registry/arm64-manifest.json",
+      "expectedDigest": "sha256:f7f0f27b63b4eff4f3d3921a707af8589783339f2a50fd82dd6a8d061d8e9497"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/parties/blobs/sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7",
+      "status": 200,
+      "bytes": 4150,
+      "sha256": "sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7",
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-registry/arm64-config.json",
+      "expectedDigest": "sha256:3cd919f6faccbfb2aa410a38a858ae6f1526e9de06346e72fb9723833e9ea5e7"
+    }
+  ],
+  "scope": "read-only component; image labels observed without inferred source",
+  "authorityRegistered": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

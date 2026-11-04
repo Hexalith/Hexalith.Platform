@@ -1,0 +1,103 @@
+diff --git a/.gitignore b/.gitignore
+index 6a525280..ce15a25b 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -458,3 +458,6 @@ _bmad/render/
+ 
+ # Generated exact native Admin UI asset staging for the private fixture host.
+ tests/Hexalith.Parties.EventStoreAdminUI.TestHost/wwwroot/
++
++# Workflow-owned immutable Builds preparation/helper checkout, separate from caller source.
++/.hexalith/builds-execution/
+diff --git a/tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs b/tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs
+new file mode 100644
+index 00000000..92905393
+--- /dev/null
++++ b/tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs
+@@ -0,0 +1,86 @@
++using System.Diagnostics;
++
++using Hexalith.Parties.PackageTests;
++
++namespace Hexalith.Parties.Ci.Tests;
++
++/// <summary>Exercises the caller's generated-checkout boundary with real Git and the selected Builds source.</summary>
++/// <param name="output">The actual Git observations, without hosted or native qualification credit.</param>
++public sealed class GeneratedBuildsCheckoutTests(ITestOutputHelper output)
++{
++    /// <summary>Excludes only the root workflow checkout while preserving source, declaration and configuration dirtiness.</summary>
++    [Fact]
++    public void WorkflowCheckoutPreservesStrictSourceCleanliness()
++    {
++        string root = Directory.CreateTempSubdirectory("parties-generated-checkout-").FullName;
++        string[] tracked = [".gitignore", ".config/dotnet-tools.json", "module/hexalith.module-manifest.v2.json",
++            "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
++            "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs"];
++        try
++        {
++            Git(root, "init", "--quiet");
++            foreach (string path in tracked)
++            {
++                string destination = Path.Combine(root, path);
++                Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
++                File.Copy(CiTestPaths.RepoFile(path), destination);
++            }
++
++            Git(root, ["add", "--", .. tracked]);
++            Git(root, "-c", "user.name=Source boundary fixture", "-c", "user.email=fixture@example.invalid",
++                "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "test: seed the source boundary fixture");
++            Status(root).ShouldBeEmpty();
++            string builds = CiTestPaths.RepoFile("references/Hexalith.Builds");
++            string expected = Git(builds, "rev-parse", "HEAD");
++            string helper = Path.Combine(root, ".hexalith", "builds-execution");
++            string source = new Uri(Path.GetFullPath(builds) + Path.DirectorySeparatorChar).AbsoluteUri;
++            Git(root, "clone", "--quiet", "--depth", "1", "--no-hardlinks", "--no-recurse-submodules", source, helper);
++            Git(helper, "rev-parse", "HEAD").ShouldBe(expected);
++            output.WriteLine($"Actual local workflow checkout: Builds={expected}; GitStatus={Status(root)}");
++            Status(root).ShouldBeEmpty("The exact generated helper checkout must not make the trusted caller dirty.");
++
++            foreach (string path in tracked.Skip(1))
++            {
++                string file = Path.Combine(root, path);
++                byte[] original = File.ReadAllBytes(file);
++                File.AppendAllText(file, "\nsource-boundary mutation\n");
++                string status = Status(root);
++                output.WriteLine($"Tracked mutation {path}: {status}");
++                status.ShouldContain(" M " + path);
++                File.WriteAllBytes(file, original);
++                Status(root).ShouldBeEmpty();
++            }
++
++            foreach (string path in new[] { "untracked-source.cs", ".hexalith/unrelated-source.cs",
++                ".hexalith/builds-execution-lookalike/source.cs", "src/.hexalith/builds-execution/source.cs" })
++            {
++                string file = Path.Combine(root, path);
++                Directory.CreateDirectory(Path.GetDirectoryName(file)!);
++                File.WriteAllText(file, "// unrelated source must remain visible\n");
++                string status = Status(root);
++                output.WriteLine($"Untracked mutation {path}: {status}");
++                status.ShouldNotBeEmpty();
++                status.ShouldContain("?? ");
++                File.Delete(file);
++                Status(root).ShouldBeEmpty();
++            }
++        }
++        finally
++        {
++            Directory.Delete(root, recursive: true);
++        }
++    }
++
++    private static string Status(string root) => Git(root, "status", "--porcelain", "--untracked-files=normal");
++
++    private static string Git(string root, params string[] arguments)
++    {
++        var start = new ProcessStartInfo("git");
++        start.ArgumentList.Add("-c");
++        start.ArgumentList.Add("core.commitGraph=false");
++        foreach (string argument in arguments) start.ArgumentList.Add(argument);
++        PackageTestProcessResult result = PackageTestProcess.Run(start, root, 30_000);
++        result.ExitCode.ShouldBe(0, result.Diagnostic);
++        return result.StandardOutput.TrimEnd();
++    }
++}

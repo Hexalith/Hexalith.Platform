@@ -1,0 +1,56 @@
+{
+  "base": "6c8aa5bbe77745d951cb70fc7cfcc98cff422d25",
+  "head": "fabf7ab40c7e646dba057f599127271d2c38105d",
+  "changedPaths": [
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs"
+  ],
+  "preservedIsolatedProjects": [
+    "tests/Hexalith.EventStore.Client.Tests",
+    "tests/Hexalith.EventStore.ServiceDefaults.Tests",
+    "tests/Hexalith.EventStore.Testing.Tests",
+    "tests/Hexalith.EventStore.SignalR.Tests",
+    "tests/Hexalith.EventStore.Admin.Abstractions.Tests",
+    "tests/Hexalith.EventStore.Admin.Cli.Tests",
+    "tests/Hexalith.EventStore.Admin.Mcp.Tests",
+    "tests/Hexalith.EventStore.Admin.Server.Tests",
+    "tests/Hexalith.EventStore.Operations.Tests",
+    "tests/Hexalith.EventStore.Admin.Server.Host.Tests",
+    "tests/Hexalith.EventStore.Admin.UI.Tests",
+    "tests/Hexalith.EventStore.DomainService.Tests",
+    "tests/Hexalith.EventStore.QueryRouting.Tests",
+    "tests/Hexalith.EventStore.RestApi.Generators.Tests",
+    "tests/Hexalith.EventStore.LoadTests.Tests",
+    "tests/Hexalith.EventStore.Sample.Tests",
+    "tests/Hexalith.EventStore.Testing.Integration.Tests",
+    "tests/Hexalith.EventStore.Server.Tests",
+    "tests/Hexalith.EventStore.ProviderVerification.Tests",
+    "tests/Hexalith.EventStore.AppHost.Tests"
+  ],
+  "projectCount": 20,
+  "independentJobsAndSecrets": "unchanged by source diff except exact v2 ref",
+  "existingCoherentGitlinksUnchanged": true,
+  "gitlinks": "160000 commit 725754075e1d6369430a3adf94d46fb71e6eaf9e\treferences/Hexalith.Builds\n160000 commit ed1560a57f4d4cb55b6b03f485cbfa01316837a7\treferences/Hexalith.Platform\n",
+  "allOtherIncomingPaths": "unchanged",
+  "humanApprovalAndLedgerPaths": "unchanged; no EventStore ledger edits",
+  "patchSha256": "95b86fe31aa832d2c6a3b3ea2af1da582210b6d6cb2b952d141ede6749b06c24",
+  "officialPrivateCache": {
+    "hexalith.builds.module.cli/4.43.6/hexalith.builds.module.cli.4.43.6.nupkg": {
+      "exists": false,
+      "sha256": null
+    },
+    "hexalith.builds.module.cli/4.43.6/tools/net10.0/any/Hexalith.Builds.Tooling.dll": {
+      "exists": false,
+      "sha256": null
+    },
+    "hexalith.tenants.contracts/7.0.0/lib/net10.0/Hexalith.Tenants.Contracts.dll": {
+      "exists": true,
+      "sha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40"
+    }
+  },
+  "candidateAcceptance": false
+}

@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-04T06:53:16.216355+00:00",
+  "source": "005c9cfb0f938214ba889e645f81e389d82476b6",
+  "runId": 41787766444,
+  "attempt": 1,
+  "artifacts": [
+    {
+      "artifactId": 13302191883,
+      "name": "contracts-test-results",
+      "sha256": "d11f7ecc37fb4354d0e17fc77498b8660e0532991d60bfeefb4184eafdbcd25a",
+      "reports": [
+        {
+          "file": "Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.trx",
+          "sha256": "bc04fb0cda7160f61e788776cdb7c1e4f8085dd163f85ce8e3f50291861370a8",
+          "counters": {
+            "total": "1520",
+            "executed": "1518",
+            "passed": "1518",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "2",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          }
+        }
+      ]
+    },
+    {
+      "artifactId": 13301843441,
+      "name": "tenants-source-mode-test-results",
+      "sha256": "f839b4245509b5f7a6359df59d3206f6f0f2af66fd847c5b1c375e8595cc4361",
+      "reports": [
+        {
+          "file": "Hexalith.EventStore.AppHost.Tests.trx",
+          "sha256": "5c55cab7f4badc584e306680de3c441068b7ab65a89d02ac23668e7f55f35ff9",
+          "counters": {
+            "total": "7",
+            "executed": "7",
+            "passed": "7",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          }
+        }
+      ]
+    }
+  ],
+  "downloadBoundary": "Connected download tool succeeded and returned file/download references; no available tool reads those ZIP bytes into workspace. Authenticated gh API fallback materialized actual archives for SHA/TRX audit. No file-service URLs or credentials retained.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "commit",
+    "-F",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parties-incoming-main-reconciliation-merge-message.txt"
+  ],
+  "exitCode": 0,
+  "completedAt": "2026-11-04T08:45:48.669485+00:00",
+  "head": "26658feb2aea894ac4cc76b0a0259efa09a62735",
+  "parents": [
+    "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+    "3e4367622764118fc2ad710ad1040994ae4cfa49"
+  ],
+  "tree": "d77ad01cba32261f3ea3c181e7383f77b361fd9a",
+  "status": "",
+  "message": "build: reconcile incoming Parties main locally\n\nMerge inspected main 3e4367622764118fc2ad710ad1040994ae4cfa49\ninto the existing adoption branch without rewriting either history.\n\nRetain the coherent Platform 1.1.7 and Builds 4.43.6 caller tuple,\npreserve incoming subscription fixes and dated selection observations,\nand keep publication and native qualification explicitly pending.\n\n"
+}

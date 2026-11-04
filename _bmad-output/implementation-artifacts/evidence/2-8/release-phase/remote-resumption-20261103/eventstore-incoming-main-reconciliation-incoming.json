@@ -1,0 +1,30 @@
+{
+  "actualMain": "aeec5012fa3e1e07426a8fdd145709bce93f619a",
+  "mergeBase": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "incomingPaths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci.yml",
+    "_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md",
+    "docs/ci.md",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs",
+    "src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs",
+    "src/Hexalith.EventStore/Controllers/CommandsController.cs",
+    "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+    "src/Hexalith.EventStore/Controllers/StreamsController.cs",
+    "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs",
+    "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs"
+  ],
+  "incomingPatchSha256": "e7fe2240b596d3ff2cfbc6a7a9bc824f420248c9bc30688c578246fe026860aa",
+  "incomingCommits": "aeec5012fa3e1e07426a8fdd145709bce93f619a fix(routing): rebase dispatch lease admission onto an unchanged catalog authority\n1a547e4c34dc50d42f9d30fd71a0631358cb657d fix(auth): validate canonical scope before gateway side effects\nda1ca631c6cd44c8c2dcd3328bd90f642068ef09 fix(ci): qualify the published reference package bootstrap (#393)\n"
+}

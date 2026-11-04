@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-04T09:19:18.024747+00:00",
+  "incomingSource": "da1ca631c6cd44c8c2dcd3328bd90f642068ef09",
+  "filesRead": {
+    ".github/workflows/ci.yml": "48faf89250d5c7c98d1c5d80450649d88f4cfe1b4b3087cc8712c3ed52d1a164",
+    ".config/dotnet-tools.json": "33edbbec21c4daf94d0bdce72c99ae7392587980f4898f4e5794d12b51e29d54",
+    "docs/ci.md": "9b24f85282cf4740d7ac4a56e500933af6ea5fa67238b20bf2e832c635433953",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs": "57bd139c3921bc4d763b29481115bb301d49e3fff8b2bfbac11b99862d3207cb"
+  },
+  "executor": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+  "publishedCatalogAndToolSource": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "publicCli": "4.44.0",
+  "publicPlatform": "1.2.3/991e2df97dc8493e41096006b0d3203a71730ae8",
+  "decision": "Preserve actual incoming independent immutable workflow executor pin and matching contracts/docs. Executor is reviewed merged main with successful exact pushCI; no NuGet version/source relabelling. Reusable workflow obtains helper from actualjob.workflow_sha; moduletool/catalog follow actual separately authenticated recorded tuple. Governed provenance and approved release publisher untouched.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

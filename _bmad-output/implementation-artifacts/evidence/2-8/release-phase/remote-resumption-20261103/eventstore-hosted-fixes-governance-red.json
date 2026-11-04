@@ -1,0 +1,26 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+    "--configuration",
+    "Release",
+    "--no-build",
+    "--no-restore",
+    "--filter-method",
+    "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Semantic_release_governance_validation_rejects_skip_or_tolerance_mutations",
+    "--minimum-expected-tests",
+    "5",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/governance-fixture-red",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "governance-red.trx"
+  ],
+  "exitCode": 2,
+  "completedAt": "2026-11-04T04:33:29.615029+00:00",
+  "expected": "new positive baseline assertion exposes five stale valid-fixture cases before mutation",
+  "candidateAcceptance": false
+}

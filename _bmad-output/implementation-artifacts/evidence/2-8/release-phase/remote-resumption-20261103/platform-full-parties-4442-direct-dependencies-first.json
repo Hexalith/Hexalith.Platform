@@ -1,0 +1,27 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "-c",
+    "submodule.recurse=false",
+    "submodule",
+    "update",
+    "--init",
+    "--depth",
+    "1",
+    "--checkout",
+    "--",
+    "references/Hexalith.EventStore",
+    "references/Hexalith.Tenants",
+    "references/Hexalith.Memories",
+    "references/Hexalith.Commons",
+    "references/Hexalith.McpCli",
+    "references/Hexalith.PolymorphicSerializations"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T09:54:42.408033+00:00",
+  "completedAt": "2026-11-04T09:55:07.458221+00:00",
+  "nestedInitialization": false,
+  "pinsChanged": false
+}

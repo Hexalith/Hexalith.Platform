@@ -1,0 +1,27 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "--project",
+    "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-class",
+    "Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests",
+    "--minimum-expected-tests",
+    "1",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/package-capability-local/memory-before",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "memory-before.trx"
+  ],
+  "exitCode": 2,
+  "source": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "startedAt": "2026-11-04T11:39:59.252917+00:00",
+  "completedAt": "2026-11-04T11:40:00.560498+00:00"
+}

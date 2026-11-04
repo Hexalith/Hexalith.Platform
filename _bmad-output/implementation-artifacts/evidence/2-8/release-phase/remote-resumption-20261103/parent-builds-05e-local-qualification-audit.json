@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-04T06:32:18.126424+00:00",
+  "source": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+  "inventorySha256": "93ac79d615869870e66889c3a1d28507996fbb4205482e56707bcd5c456c045e",
+  "logSha256": "15fa11daecb0f3b5ceb8564674fabbd87743066f24e9afe64854b8c5391caa58",
+  "qualificationReceipt": {
+    "startedAt": "2026-11-04T06:11:56.599315+00:00",
+    "source": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-g4-tool-package-contracts.ps1",
+      "-Version",
+      "0.0.0-story28-retention-final",
+      "-PackageDirectory",
+      "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-final-20261104/qualification-local-story28-retention-final-1",
+      "-RequireControls",
+      "-RetainPackageDirectory"
+    ],
+    "status": "completed",
+    "NUGET_PACKAGES": "unset for source validation; fixture NuGet.Config retains its own cache authority; packaged consumer creates its own private cache",
+    "localUnpublishedVersionOnly": true,
+    "nativeAcceptance": false,
+    "candidateAcceptance": false,
+    "completedAt": "2026-11-04T06:27:17.371213+00:00",
+    "exitCode": 0
+  },
+  "packages": [
+    {
+      "id": "Hexalith.Builds.Evidence.Cli",
+      "version": "0.0.0-story28-retention-final",
+      "nupkg": {
+        "file": "Hexalith.Builds.Evidence.Cli.0.0.0-story28-retention-final.nupkg",
+        "sha256": "C12BBE640934C4529878EE81A81EAD79C58E2F8CC1A272ACBAD0F02EAE966DDB",
+        "sizeBytes": 3267892
+      },
+      "snupkg": {
+        "file": "Hexalith.Builds.Evidence.Cli.0.0.0-story28-retention-final.snupkg",
+        "sha256": "1A6198B2F50E1B4A16ACACC850ADB0529F011156EE9F37F5B5FE73AF53B130B5",
+        "sizeBytes": 577920
+      }
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "0.0.0-story28-retention-final",
+      "nupkg": {
+        "file": "Hexalith.Builds.Module.Cli.0.0.0-story28-retention-final.nupkg",
+        "sha256": "A3C31AF3910EAD83C182E6DBE6FC2A7F9BFC1A7E8AB00B4FA4DEEBE84BA691FF",
+        "sizeBytes": 41508188
+      },
+      "snupkg": {
+        "file": "Hexalith.Builds.Module.Cli.0.0.0-story28-retention-final.snupkg",
+        "sha256": "0A9AE00C1FA58ADEFC29CCF033F01712A7507CDBEFA09497FFDE6F29912B7D7C",
+        "sizeBytes": 1245048
+      }
+    }
+  ],
+  "qualificationEvidenceFilesVerified": 55,
+  "immutableGitFixtureHashesVerifiedWithOwningLineEndings": 296,
+  "localUnpublishedVersion": "0.0.0-story28-retention-final",
+  "sourceValidationCounters": {
+    "Evidence": {
+      "total": 191,
+      "passed": 191
+    },
+    "Module": {
+      "total": 2811,
+      "passed": 2806,
+      "skipped": 5
+    },
+    "Tooling.Integration": {
+      "total": 13,
+      "passed": 1,
+      "skipped": 12
+    }
+  },
+  "scope": "Normal local Release/package and consumer controls at exact05e, before later Python refactor. Optional live skips supply no native acceptance.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

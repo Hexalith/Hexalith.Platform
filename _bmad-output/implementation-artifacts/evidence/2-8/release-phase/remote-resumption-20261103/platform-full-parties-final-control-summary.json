@@ -1,0 +1,416 @@
+{
+  "at": "2026-11-04T07:49:23.549286+00:00",
+  "head": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+  "counts": {
+    "required": 238,
+    "executed": 238,
+    "passed": 238,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "retainedIncomingCases": 201,
+  "newProofCases": 37,
+  "groups": [
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-1.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:04.222049+00:00",
+      "finished": "2026-11-04T07:47:09.205318+00:00",
+      "exitCode": 0,
+      "expected": 83,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "67a7ffbe-6eeb-474f-9ebf-18c3f6dcec4e",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:47:04",
+        "start-rtf": "2026-11-04T07:47:04.3974657+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:47:09.1540151+00:00",
+        "not-run": "0",
+        "passed": "83",
+        "skipped": "0",
+        "time": "4.757",
+        "time-rtf": "00:00:04.7570000",
+        "total": "83"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-2-tag-hydrated.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:56.739292+00:00",
+      "finished": "2026-11-04T07:47:57.051108+00:00",
+      "exitCode": 0,
+      "expected": 2,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "b5419d33-db6a-43d4-95f8-07e41976d600",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:47:56",
+        "start-rtf": "2026-11-04T07:47:56.9159317+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:47:57.0336597+00:00",
+        "not-run": "0",
+        "passed": "2",
+        "skipped": "0",
+        "time": "0.118",
+        "time-rtf": "00:00:00.1180000",
+        "total": "2"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-3.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:57.051284+00:00",
+      "finished": "2026-11-04T07:47:57.468197+00:00",
+      "exitCode": 0,
+      "expected": 24,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "1299347b-c5a0-41be-87a9-ac942b482474",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:47:57",
+        "start-rtf": "2026-11-04T07:47:57.2092950+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:47:57.4444634+00:00",
+        "not-run": "0",
+        "passed": "24",
+        "skipped": "0",
+        "time": "0.235",
+        "time-rtf": "00:00:00.2350000",
+        "total": "24"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-4.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:57.468343+00:00",
+      "finished": "2026-11-04T07:47:59.270955+00:00",
+      "exitCode": 0,
+      "expected": 44,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "287abf7e-b812-4c5e-bb8f-aacc2293d264",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:47:57",
+        "start-rtf": "2026-11-04T07:47:57.6162313+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:47:59.2445338+00:00",
+        "not-run": "0",
+        "passed": "44",
+        "skipped": "0",
+        "time": "1.629",
+        "time-rtf": "00:00:01.6290000",
+        "total": "44"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-5.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:59.271108+00:00",
+      "finished": "2026-11-04T07:47:59.920705+00:00",
+      "exitCode": 0,
+      "expected": 7,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "2721ef08-2ddf-41ae-afab-00d01a2d281a",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:47:59",
+        "start-rtf": "2026-11-04T07:47:59.4580513+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:47:59.8974086+00:00",
+        "not-run": "0",
+        "passed": "7",
+        "skipped": "0",
+        "time": "0.439",
+        "time-rtf": "00:00:00.4390000",
+        "total": "7"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-6.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:47:59.920841+00:00",
+      "finished": "2026-11-04T07:48:01.153206+00:00",
+      "exitCode": 0,
+      "expected": 28,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "b21580a9-e9f1-4f33-be32-c080b7f8a400",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:48:00",
+        "start-rtf": "2026-11-04T07:48:00.0849489+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:48:01.1279105+00:00",
+        "not-run": "0",
+        "passed": "28",
+        "skipped": "0",
+        "time": "1.043",
+        "time-rtf": "00:00:01.0430000",
+        "total": "28"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-7.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:48:01.153345+00:00",
+      "finished": "2026-11-04T07:48:19.398684+00:00",
+      "exitCode": 0,
+      "expected": 9,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "bade8951-5eaf-495d-930d-fe23ca1c4430",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:48:01",
+        "start-rtf": "2026-11-04T07:48:01.3053866+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:48:19.3736386+00:00",
+        "not-run": "0",
+        "passed": "9",
+        "skipped": "0",
+        "time": "18.069",
+        "time-rtf": "00:00:18.0690000",
+        "total": "9"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-8.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:48:19.398885+00:00",
+      "finished": "2026-11-04T07:48:19.924578+00:00",
+      "exitCode": 0,
+      "expected": 4,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "db9abe1e-0307-4eac-a835-96288391d7fe",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:48:19",
+        "start-rtf": "2026-11-04T07:48:19.5651506+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:48:19.9024855+00:00",
+        "not-run": "0",
+        "passed": "4",
+        "skipped": "0",
+        "time": "0.337",
+        "time-rtf": "00:00:00.3370000",
+        "total": "4"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-final-group-9.xml"
+      ],
+      "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+      "started": "2026-11-04T07:48:19.924714+00:00",
+      "finished": "2026-11-04T07:48:21.889160+00:00",
+      "exitCode": 0,
+      "expected": 37,
+      "actual": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "140fd6ae-0f27-4342-85aa-9f77606e3d45",
+        "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-04",
+        "run-time": "07:48:20",
+        "start-rtf": "2026-11-04T07:48:20.0915913+00:00",
+        "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-04T07:48:21.8687569+00:00",
+        "not-run": "0",
+        "passed": "37",
+        "skipped": "0",
+        "time": "1.778",
+        "time-rtf": "00:00:01.7780000",
+        "total": "37"
+      }
+    }
+  ],
+  "firstGroup2FailureRetained": "platform-full-parties-final-group-2.json",
+  "tagHydration": "platform-full-parties-isolated-tag-hydration.json",
+  "notFinalNewTupleQualification": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "actualBinaries": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+      "sha256": "6083b30337bb5b20f99d2ba569b828a9fdabcbb1310671f4de5c35145592e077",
+      "bytes": 995328
+    },
+    {
+      "name": "Hexalith.Platform.Composition",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.dll",
+      "sha256": "99ddc2f0b8a7c7135e46ebbbafcef71e95d49141bf27da3a1abf1c63a55c1643",
+      "bytes": 551424
+    },
+    {
+      "name": "Hexalith.Builds.Tooling",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Builds.Tooling.dll",
+      "sha256": "c85d688e71e17afd5f1a6b706d7cda896fe2b9f04852360c657c31d2c46b52d5",
+      "bytes": 1660416
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.EventStore.Contracts.dll",
+      "sha256": "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+      "bytes": 950784
+    },
+    {
+      "name": "Hexalith.EventStore.Client",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.EventStore.Client.dll",
+      "sha256": "0bca680b2fc475720a113e05a73d328f01f7a7a37e98fb2babc94a35532e0e9c",
+      "bytes": 1288192
+    },
+    {
+      "name": "Hexalith.EventStore.DomainService",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.dll",
+      "sha256": "f35786f3df58263d34e60ddfa83844cb43b2e7ac345420cb901f9ef49b7e3eb8",
+      "bytes": 1243136
+    },
+    {
+      "name": "Hexalith.EventStore.ServiceDefaults",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "860b843eb81e5e1b1e6176b8865e79a116b62182c28cf5a39230f00bfac2115d",
+      "bytes": 559104
+    },
+    {
+      "name": "Hexalith.Tenants.Contracts",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Tenants.Contracts.dll",
+      "sha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+      "bytes": 116224
+    },
+    {
+      "name": "Hexalith.Memories.Contracts",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Memories.Contracts.dll",
+      "sha256": "3787184c7bca6f5cc3079c55e16a91e6c52629d76b874023d63728c4dbe8a98b",
+      "bytes": 1298432
+    },
+    {
+      "name": "Hexalith.Parties.Contracts",
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Parties.Contracts.dll",
+      "sha256": "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9",
+      "bytes": 304640
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "at": "2026-11-04T09:58:46.829718+00:00",
+  "source": "aeec5012fa3e1e07426a8fdd145709bce93f619a",
+  "runId": 41805685299,
+  "attempt": 1,
+  "fullAudit": "parent-eventstore-aeec-hosted-artifact-audit.json",
+  "fullAuditSha256": "a48246f56f99eee02f24ba5e6d35d2a2967eea4208a0de1a5c87f09b40741b75",
+  "isolatedProjectReports": 20,
+  "isolatedCounters": {
+    "total": 16273,
+    "executed": 16224,
+    "passed": 16224,
+    "failed": 0,
+    "notExecuted": 49
+  },
+  "nativeCounters": {
+    "total": "2",
+    "executed": "2",
+    "passed": "2",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "actualNativeCaseNames": [
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync",
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync"
+  ],
+  "owner": {
+    "attemptId": "65e430a5c99e266d744a5d91ebb1675c",
+    "attemptSequence": 1,
+    "environmentId": "9ddd2bf60bffdae34e13077b4170ebf9",
+    "ownerRunId": "472ac6954c902ba1d0b10c873e26b75a",
+    "role": "owner",
+    "runId": "472ac6954c902ba1d0b10c873e26b75a"
+  },
+  "retainedDiagnosticReferences": [
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:2747c75353e7c55ac74966bb071ce546d7940049831e5714265a8936e88b7178",
+      "id": "lifecycle",
+      "redacted": true,
+      "reference": "lifecycle-2747c75353e7c55ac74966bb071ce546d7940049831e5714265a8936e88b7178.json"
+    },
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:aedfab06ad8174c1a02bba993322b90c7e2aa8e05cc8d650bfdbf6532df2c759",
+      "id": "native-report",
+      "redacted": true,
+      "reference": "native-aedfab06ad8174c1a02bba993322b90c7e2aa8e05cc8d650bfdbf6532df2c759.trx"
+    }
+  ],
+  "terminal": {
+    "cause": "tests-completed",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "passed",
+    "recordedAt": "2026-11-04T09:52:35.1433630Z"
+  },
+  "cleanup": {
+    "attemptId": "ee6331926f5a7f52aa4d6e2cc46a60db",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-04T09:52:40.8959640Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "state": "populated"
+  },
+  "limits": [
+    "This is incoming main aeec, not the proposed04d head. Its ordinary two real native cases and diagnostic retention do not replace exact04d execution.",
+    "No main native assembly-observation source was enrolled; no absent DLL/body observation inferred.",
+    "Blocking archive contains native TRX too; isolated counters explicitly exclude module-integration/ to avoid double counting.",
+    "Initial inspection command used unavailable python (exit127); corrected python3 executed the audit normally."
+  ],
+  "storyComplete": false,
+  "candidateAcceptance": false
+}

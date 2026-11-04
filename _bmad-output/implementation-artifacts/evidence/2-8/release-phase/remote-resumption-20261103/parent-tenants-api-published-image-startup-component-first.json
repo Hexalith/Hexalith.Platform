@@ -1,0 +1,40 @@
+{
+  "createdAt": "2026-11-04T07:41:36.614944+00:00",
+  "purpose": "Bounded real-image startup component only; not exact hosted environment, no routing catalog mounts or Dapr backend, no CI identity or native acceptance.",
+  "probeId": "17f795a22cbb46a6833d38d30ebe95c9",
+  "image": "registry.hexalith.com/tenants-api@sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6",
+  "state": "finalized",
+  "network": "none",
+  "environmentKeys": [
+    "ASPNETCORE_ENVIRONMENT",
+    "ASPNETCORE_URLS",
+    "Authentication__JwtBearer__Audience",
+    "Authentication__JwtBearer__Issuer",
+    "Authentication__JwtBearer__SigningKey",
+    "Authentication__JwtBearer__ValidAudiences",
+    "DAPR_GRPC_ENDPOINT",
+    "DAPR_HTTP_ENDPOINT",
+    "DOTNET_ENVIRONMENT",
+    "EventStore__Authentication__Audience",
+    "EventStore__Authentication__Issuer",
+    "EventStore__Authentication__SigningKey",
+    "Jwt__SigningKey"
+  ],
+  "containerId": "0b49ce0e974c7cbb88e5884fde740245d8d3a37e130c850e67f8b05f39aab832",
+  "privateLogSha256": "aea037dffe32cb9d0cf7102209d41475ef5de13e52f23fb38780e9ec27a930b5",
+  "privateLogBytes": 2465,
+  "exactRemovalExitCode": 0,
+  "containerAbsentAfterCleanup": true,
+  "completedAt": "2026-11-04T07:41:47.377364+00:00",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "observedState": {
+    "Status": "running",
+    "Running": true,
+    "ExitCode": 0,
+    "StartedAt": "2026-11-04T07:41:36.744191535Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "privateReceipt": "/home/administrator/.cache/hexalith/story-2-8/tenants-api-startup-probe-20261104/17f795a22cbb46a6833d38d30ebe95c9/owner.json",
+  "safeErrorLines": []
+}

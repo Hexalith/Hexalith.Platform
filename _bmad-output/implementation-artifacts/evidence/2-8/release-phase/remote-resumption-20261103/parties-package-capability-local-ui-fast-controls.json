@@ -1,0 +1,28 @@
+[
+  {
+    "name": "typescript",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "browser-config",
+    "command": [
+      "npm",
+      "run",
+      "test:config"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "restored-assets",
+    "command": [
+      "python3",
+      "../Hexalith.Parties.UI.Tests/verify-restored-assets.py"
+    ],
+    "exitCode": 0
+  }
+]

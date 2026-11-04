@@ -1,0 +1,348 @@
+{
+  "packages": [
+    {
+      "package": "Hexalith.Memories.Aspire",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "f17fedd511e3f2b64010cb9aacb8b10c4d2b1580c618b51323231a2d59b8e758",
+      "verifiedNugetSignatureContentHash": "tdRjsyRltqU09SSU55fSWhKxnYdN41ZhgFJl3d+D8202G8AjlxutWp9ah8zJhzumC4CyWNmMEzIVfhIGaRIgQg==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "CommunityToolkit.Aspire.Hosting.Dapr",
+          "version": "13.6.2-beta.959",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "MessagePack",
+          "version": "3.1.12",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.Cli",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "81fbaac23d1ec565495730f049abad25ec3953bf8f7c7e4df8329fe93ea909a9",
+      "verifiedNugetSignatureContentHash": "KPag3VyygO1zkmUo7CfaeyABYgH2T9E6q9e+3XUnDIXz8nHcUD5WKLov0Sl/4vHI7PpcqIvMN/wBlwAP3MQkIA==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 68,
+      "dependencies": []
+    },
+    {
+      "package": "Hexalith.Memories.Client.Rest",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "095e5fe8674e429504c7e44cef077959b3ffe62bfd23dfbf586dd4cda88f9282",
+      "verifiedNugetSignatureContentHash": "sQPTZbrfTVLgd7nl2UiD/xGwckG9ILFvpbjspZPfdRL6T8y+hmpObw5o10DvwTYfoFHd+KQGSiTUBqVn5U7bng==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.Http",
+          "version": "10.0.14",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.Http.Resilience",
+          "version": "10.11.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.14",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.Options",
+          "version": "10.0.14",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.Contracts",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "c64fc4172c1523d45767a266ce6bf250b0ccf783b658f99897d4d5e25aaa3983",
+      "verifiedNugetSignatureContentHash": "0Bq9iGkUypknUpbG4eDLiJ7Zm2r9EsFbDNRifdgdyFhUP60RAs+2h9a/vUyFx0RXX8dcJ+NBUlZEgbMSXDXViA==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": []
+    },
+    {
+      "package": "Hexalith.Memories.EventStore",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "4d569db4e4f99fb4efdeb2cf9b87c46c3d97834094ba869c0ace915f4cf7d3ba",
+      "verifiedNugetSignatureContentHash": "cr09y3tGPXoDiVxoR71djeMNLeFmiSlFWuXpfnGe1hBzh+i6mGDf3sQ+lpYCKrN2w8rlM5FEsLJL2nWy++lCIA==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Dapr.AspNetCore",
+          "version": "1.19.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Dapr.Client",
+          "version": "1.19.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Dapr.Workflow",
+          "version": "1.19.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "StackExchange.Redis",
+          "version": "3.4.29",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.EventStoreExtensions",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "b97a1a661bdcdd042fe797ac691b585e641d59f56db9ca2f9a1243221f8966fc",
+      "verifiedNugetSignatureContentHash": "Wz9Mz28pzo1JLxzygcX6/7hxZDi5f+p3kSgTowXNgaiDhs+GRQZjx6GIp2JL1EEzod6beya3HD4+Ewqos0vPsw==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "Hexalith.Memories.EventStore",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.EventStore.DomainService",
+          "version": "3.132.2",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.Mcp",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "8b70eb34b3677cff128a6da79e689c0b20d316f697ea10f7f9ceb469d81c06a9",
+      "verifiedNugetSignatureContentHash": "77gJjQ9iJ3zDb1ngd6o/s/lA4T5Su7IOPZNZ5VG7QMNgSkIABGQPaBWHEr4UgRe5RzakRewSf7XjoPrAsXu4UA==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 12,
+      "dependencies": [
+        {
+          "id": "Hexalith.Memories.Client.Rest",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Telemetry",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Dapr.AspNetCore",
+          "version": "1.19.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Dapr.Client",
+          "version": "1.19.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.AspNetCore.Authentication.JwtBearer",
+          "version": "10.0.14",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "ModelContextProtocol.AspNetCore",
+          "version": "2.3.0",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.Redis",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "92995913a664486a2fe976e824bab41043671263b813a54418cfdec9d4d1020b",
+      "verifiedNugetSignatureContentHash": "gQoGDtxBk/SWehTNWwH6D8U8lhAALTAhgLyY7PpVVKZDDIeWs/T0UBiTWqgmkqV65CPzcPzAPbQ3VDOCX7it4Q==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "NFalkorDB",
+          "version": "1.2.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "NRedisStack",
+          "version": "1.8.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "StackExchange.Redis",
+          "version": "3.4.29",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.ServiceDefaults",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "2a6db63539d7cd5c65e41eb4c9004e32cbd3bda9b899fb91a11ef5950fe7d62c",
+      "verifiedNugetSignatureContentHash": "jmeHjxQ4x0pJCTsIDdOfa1dPQfy0WbpZFlfF7idPfrZq1zg3p8spIEZom+RuingvlFk5PsNX1MBpS47hqpAtRg==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": [
+        {
+          "id": "Hexalith.Memories.Contracts",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Hexalith.Memories.Telemetry",
+          "version": "3.0.23",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.Http.Resilience",
+          "version": "10.11.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "Microsoft.Extensions.ServiceDiscovery",
+          "version": "10.11.0",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Instrumentation.AspNetCore",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Instrumentation.Http",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Instrumentation.Runtime",
+          "version": "1.20.1",
+          "exclude": "Build,Analyzers"
+        },
+        {
+          "id": "OpenTelemetry.Instrumentation.StackExchangeRedis",
+          "version": "1.20.1-beta.1",
+          "exclude": "Build,Analyzers"
+        }
+      ]
+    },
+    {
+      "package": "Hexalith.Memories.Telemetry",
+      "version": "3.0.23",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Memories",
+        "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+      },
+      "archiveSha256": "b931066554f4d83971b03a4ade555c5af7870b802dbf5cc625c9beef0dfcebd3",
+      "verifiedNugetSignatureContentHash": "1LIUJTc359EdFj/BwG/WP+CKlXgafaZCKM2Xk61VKwRZb7oCYOm2jiLlLc0aUfxFx3qlNUA7bQvR0hnz0YiYnA==",
+      "signature": "Repository",
+      "offlineVerifyExitCode": 0,
+      "memberCount": 7,
+      "dependencies": []
+    }
+  ],
+  "signedArchiveHashesAreDistinctFromNugetContentHashes": true,
+  "candidateAcceptance": false
+}

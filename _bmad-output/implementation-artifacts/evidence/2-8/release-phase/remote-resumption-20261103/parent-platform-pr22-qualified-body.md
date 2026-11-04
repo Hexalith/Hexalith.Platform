@@ -1,0 +1,12 @@
+Ordinary Parties package suites currently fail Platform’s finite cohort gate. Admit the genuine SDK 4.0.4 / Tenants 7.0.0 / Memories 3.0.23 / Parties 3.0.0 profile for Development Linux/x64. The trusted runner entry binds the actual owner source, selected test, mapping, declarations, catalog and run context before image probes. Its closure is the gateway plus seven pinned images; the generated reader checks all twelve public package bodies before owner metadata or factories. Existing EventStore/Tenants expansion authentication remains intact.
+
+Bind published Builds 4.44.2 at `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, including its signed archive, Tooling, inventory, catalog and supported floor. Record genuine Memories 3.0.23 provenance and retain the distinction between active Parties lifecycle test source and released Parties 3.0.0 backend artifacts.
+
+Validation of exact head `4bef0fa38ce99b3f0b177a8853685a1509ad4ce9`:
+
+- [Hosted tuple preflight](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492): all 271 required cases passed, with zero errors, failures, skips or unrun cases; all 238 previous cases retained.
+- [Four-SDK consumer matrix](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739): 60 activation/refusal cases and 208 finite MSBuild evaluations passed.
+- Parent independently verified 19,425 source hashes against Git, all 317 signed archive members and 315 retained extracted bodies, unchanged test output identities, and eight full reader baselines checking twelve public binaries, 70 routes and 46 policies.
+- Release/package builds have zero warnings/errors. Binding, host resolution, source/package refusal, actionlint and locked commitlint checks passed.
+
+These are source/component gates. Probe doubles establish no live service readiness. Actual Parties native wire/persistence checks and same-job attachment/cancellation/cleanup qualification follow genuine Platform publication; this PR grants no candidate or whole-story acceptance.

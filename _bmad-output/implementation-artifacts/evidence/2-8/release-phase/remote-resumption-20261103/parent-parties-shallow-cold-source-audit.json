@@ -1,0 +1,90 @@
+{
+  "observedAtUtc": "2026-11-03T21:03:31.427953+00:00",
+  "coldRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103",
+  "coldRootHead": "7a464e3d1d61458898183a930ec29949885ee50c",
+  "localRootTransport": "no-local depth1 file clone; three owner dependencies independently use fresh actual GithubHTTPS transports",
+  "ownersIndependentlyRead": [
+    {
+      "path": "references/Hexalith.EventStore",
+      "head": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "shallow": true,
+      "reachableCommitCount": 1,
+      "remoteIsActualGithubHttps": true,
+      "alternatesAbsent": true,
+      "initializedNestedGitMarkers": []
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "head": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "shallow": true,
+      "reachableCommitCount": 1,
+      "remoteIsActualGithubHttps": true,
+      "alternatesAbsent": true,
+      "initializedNestedGitMarkers": []
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "head": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "shallow": true,
+      "reachableCommitCount": 1,
+      "remoteIsActualGithubHttps": true,
+      "alternatesAbsent": true,
+      "initializedNestedGitMarkers": []
+    }
+  ],
+  "actualDirectStores": [
+    "Hexalith.EventStore",
+    "Hexalith.Memories",
+    "Hexalith.Tenants"
+  ],
+  "actualReleasedToolFourManifestAnd7StrictControlLogs": {
+    "parties-declaration-shallow-cold-tool-version-first.txt": {
+      "sha256": "12e9ed7fa6827acd326611657611b81a830243d059b208b2ed89f0626304e063",
+      "bytes": 48
+    },
+    "parties-declaration-shallow-cold-four-manifest-first.txt": {
+      "sha256": "670f8f82620ce8ee37554566e6d02a245a5c0bab0f76359e0d2b35bed45cb199",
+      "bytes": 19
+    },
+    "parties-declaration-shallow-cold-declaration-first.txt": {
+      "sha256": "7fb1731db4aa3fd45ffe241e3fc350ec18fbb5c748f190b244dfb096dd0d6924",
+      "bytes": 1887
+    },
+    "parties-declaration-shallow-lifecycle-first.txt": {
+      "sha256": "1d06ea2a826bc1830fa4d061855a7d747a6dee649e868748b38ffc3ad4739602",
+      "bytes": 10672
+    },
+    "parties-declaration-shallow-declaration-first.txt": {
+      "sha256": "1641e9c128eb16b498219df03b8f1f57004d2361e95fcd355b6d92cbd8c1a70b",
+      "bytes": 1887
+    }
+  },
+  "callerReport": {
+    "file": "parties-declaration-shallow-caller-controls-results.trx",
+    "sha256": "bff4b40b21e93d855be8721970831cc87726786e715bef8f5c0ebb71435cba22",
+    "counters": {
+      "total": "69",
+      "executed": "69",
+      "passed": "69",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    }
+  },
+  "timingLimit": "Original monotonic clone duration was lost to retained receipt verifier failures; log filesystem timestamps bound about17.3seconds. Parent does not claim precise duration or hosted10minute completion.",
+  "coldLocalSetupVerified": true,
+  "hostedAcceptance": false,
+  "nativeAcceptance": false,
+  "producerChanged": false,
+  "candidateAcceptance": false
+}

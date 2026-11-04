@@ -1,0 +1,222 @@
+{
+  "recordedAt": "2026-11-04T07:06:02.994883+00:00",
+  "status": "source-preparation-suspended-for-concrete-Builds-audit-prerequisite",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "branch": "feat/qualify-full-parties-package",
+  "base": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+  "head": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+  "sourceCommitted": false,
+  "sourcePushed": false,
+  "pullRequestCreated": false,
+  "trackedChanges": [
+    "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+    "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+    "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+    "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs"
+  ],
+  "newFiles": [
+    "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs"
+  ],
+  "patch": {
+    "path": "platform-full-parties-source-preparation.patch",
+    "sha256": "0ed1d774ab2accc529599f32bb8e54720cc00801a33964da414751961571b547",
+    "bytes": 31395,
+    "includesAllUntrackedSource": true
+  },
+  "sourceFiles": [
+    {
+      "path": "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+      "sha256": "2285ca4543f8d56567899db35324d19565d473677c02016dedf3db219a88884c",
+      "bytes": 10260
+    },
+    {
+      "path": "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+      "sha256": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26",
+      "bytes": 5064
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+      "sha256": "1728459b58cb48839616f5d3dd83ab8818d678d3bf4ee6a6e6d899c9fafe0841",
+      "bytes": 47202
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+      "sha256": "7b9a0b066808460d15933584db05c5b3d2d3544f6d179185efdd92d09588f5a7",
+      "bytes": 4918
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+      "sha256": "36138993c7a1fd369853e60c5f59045bb5768c8d7c03782c9ef088c25d420719",
+      "bytes": 4606
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+      "sha256": "1f56d9f0f9bd70defd8eb5f371cd0640aa50ad4ccaac98d5a28e2e39ad504f87",
+      "bytes": 6507
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+      "sha256": "aa343bc0aa97f605fe72f2b96c6634ef090827a45eb99a345deab5b3b3422e79",
+      "bytes": 9113
+    },
+    {
+      "path": "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+      "sha256": "8c216821f863cdcc2b3fbf7622b619915468464197f373be7d37ffb8e6ddc3de",
+      "bytes": 9453
+    }
+  ],
+  "acceptedMetadataUnchanged": {
+    "eng/builds-tuple.json": "ca0f97e903516cc9d185fe4af10f6d1674bf31a9ffc3cb083a9337b403566e27",
+    "hexalith-platform.json": "69c15b6e93affe5b32e9507029037a937317920119e249754d8d1a39117b82f9",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json": "c3b6226a39bfb4d5ff53dea9d0eab93a830398ce0ee7da59229d56f61b7b7286"
+  },
+  "directOnlyModules": {
+    "Hexalith.Builds": {
+      "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": "",
+      "nestedMarkers": []
+    }
+  },
+  "reverifiedComponentInventories": [
+    {
+      "path": "full-owner-component-actual-loaded-package-bindings.json",
+      "sha256": "576567660d0807146d7adecc69d72bde1aa66655ec17f70a52d416d7caee5c44"
+    },
+    {
+      "path": "full-owner-component-all-image-comparison.json",
+      "sha256": "f2df66aabf5554728a48d9da7a4e5991fbaa585decab645d6740d3f35a6b3983"
+    },
+    {
+      "path": "full-owner-component-authenticated-inputs.json",
+      "sha256": "1e0a9f0a5f8552c8d4185eeed947ec1ef01681ed31b049a49b86a240bac7425c"
+    },
+    {
+      "path": "full-owner-component-catalog-first.json",
+      "sha256": "f3e749cf9c2950da289e5e1b3f6a58e10103fbe2a7db19de944be5549862d3e6"
+    },
+    {
+      "path": "full-owner-component-catalog-semantics.json",
+      "sha256": "d08c75c83f07122d895eaf3ecba447ae35649a96084e4f2d692d3d9a79b55e19"
+    },
+    {
+      "path": "full-owner-component-command-and-output-index.json",
+      "sha256": "072ba42048ff96725231323141baa3dde597882feb4d53911e96f0f520537577"
+    },
+    {
+      "path": "full-owner-component-custody-and-source-audit.json",
+      "sha256": "009d8995e5cafa253286c2d96b708cd73a1e8c39b6727cbcea4abb03d6fa4f79"
+    },
+    {
+      "path": "full-owner-component-findings.md",
+      "sha256": "fd7ab4885d6921907fcca03d7876088f12bfa37d7dac17e167cd18f18adb5c5d"
+    },
+    {
+      "path": "full-owner-component-full-all-image-owners-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19"
+    },
+    {
+      "path": "full-owner-component-full-all-image-owners-receipt.json",
+      "sha256": "27819efeccb5f4026f9776ae8bb74c3f3688b8291f87817719753a0d480437d4"
+    },
+    {
+      "path": "full-owner-component-full-memory-image-owner-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19"
+    },
+    {
+      "path": "full-owner-component-full-memory-image-owner-receipt.json",
+      "sha256": "d23e6b169d6a3987e4977957235b730d21b3844ea15e18182cd9f7fef271f22d"
+    },
+    {
+      "path": "full-owner-component-full-public-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19"
+    },
+    {
+      "path": "full-owner-component-full-public-receipt.json",
+      "sha256": "d1f773e9b6f8a039c9b127dd3921f1acd55c1ca388ba978431c1aa6dac96ed3b"
+    },
+    {
+      "path": "full-owner-component-memories-image-owner-catalog.json",
+      "sha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4"
+    },
+    {
+      "path": "full-owner-component-memories-image-owner-receipt.json",
+      "sha256": "91fb3911d9f8007fe21f48d5a7b5da8d1ec6b2462f371d8e8578da13b1f0fd69"
+    },
+    {
+      "path": "full-owner-component-memories-public-catalog.json",
+      "sha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4"
+    },
+    {
+      "path": "full-owner-component-memories-public-receipt.json",
+      "sha256": "c4fe270cbfd8fc09ba710f5fa5168c3a49b0ed574829486c13e37322208534c4"
+    },
+    {
+      "path": "full-owner-component-memory-image-comparison.json",
+      "sha256": "69e50308600f0ee5fc6f7ae0741c28c3d432950201440e804174b0d8203377f8"
+    },
+    {
+      "path": "full-owner-component-reader-refusals.json",
+      "sha256": "7549934640c0c775fef0ce546242fc937474e846a56117ece07caaa70ea95577"
+    },
+    {
+      "path": "full-owner-component-resolved-assets.json",
+      "sha256": "4378d1a5e74d7052a21fb89aa46e7f08513b9d0de6c04da876d77a6a1e1b60fa"
+    },
+    {
+      "path": "parties300-actual-image-assembly-metadata.json",
+      "sha256": "71e7802eeea2103e19a628dd861c145e5749ea24819f47112d2fcfd901d967d8"
+    },
+    {
+      "path": "parties300-current-image-graph.json",
+      "sha256": "c51826bfdd1d22feab084365bb00fcd0775ed6af598aa7ff3407049599090934"
+    },
+    {
+      "path": "parties300-image-layer-application-inventory.json",
+      "sha256": "735e4d6b253718b503ab86cbf226d6fdf200a3887ed0bea01daa6bc831b118e2"
+    },
+    {
+      "path": "parties300-official-source-image-package-binding.json",
+      "sha256": "e083ecb859fc661e995efa3100859e9c7ed190896075144c80927fe8024d6dbe"
+    },
+    {
+      "path": "parties300-published-current-declaration-delta.json",
+      "sha256": "cd5cd64a8c0119221e96f5071b46a159414d9b5f788f11a7069db030a03cebb3"
+    }
+  ],
+  "implementationDraft": [
+    "Separate nonserialized ordinary-Parties proof entered only from key-bearing ComposeRun; ordinary plan issuer-MAC absence is documented. Additive-owner proof/HMAC is unchanged.",
+    "Draft proof captures complete options/plan and actual source/test/mapping inputs; finite full bindings require exact8server closure,4owners,public SDK4.0.4/T7/M23/P3 catalog and measured image manifests.",
+    "Distinct finite full-cohort reader name verifies all12measured public dependencies before owner attributes/factories; existing E/T cohort retained.",
+    "Reader now refuses invalidated/missing package proof before rendering rather than dropping to an unqualified request."
+  ],
+  "actualVerification": {
+    "componentReceipts": "all26hashed inputs parsed/reverified; public/image bytes remain distinct",
+    "sourceDataflow": "Engine/private plan-key environment/RunPlanSource/RunTopology exact declaration/ComposeRun read",
+    "productionCompile": "FAILED3errors,source-preparation compile only, no profile acceptance",
+    "productionCompileReceipt": "platform-full-parties-production-build-first.json",
+    "productionCompileLog": "platform-full-parties-production-build-first.txt",
+    "testsExecuted": false
+  },
+  "knownSourceCorrectionsPending": [
+    "RepositoryPathResolver is internal; use existing public SourceMapping.ContainsProject with owner-only view plus explicit nested-repository checks.",
+    "PlatformModuleDeclaration.SourceHash is internal; reproduce the exact existing ordinary producer identity with uppercaseSHA256 of each actual declaration source, not an invented public API.",
+    "Resolve the resulting nullable entry warning, then compile and add the still-unwritten strict profile/proof/reader regressions."
+  ],
+  "remainingSourceWork": [
+    "Focused regressions and actual key-bearing entry/no-effects/mutation/replay controls",
+    "Real full measured generated reader with active-owner source and exact public package/asset verification",
+    "Docs and exact additional eng/tuple-ci-suites counts retaining all196cases",
+    "Normal compile/source checks, locked-message commit/draft proposal after concrete source is ready"
+  ],
+  "prerequisite": {
+    "reportedByParent": "mainad54CI41789206152 Package catalog126438395713 failed because auditgeneratedFromRevision2bc5 was removed from fresh main history by squash;3050ancestry errors",
+    "requiredNext": "normal narrow Builds audit refresh from accepted main history/previous published snapshot; preserve validators/history, no fabricated origins,publication,retry or bypass",
+    "futureFullQualification": "genuine new normal published Builds tuple and truthfulM23provenance must be recorded/adopted before positive normal full-profile qualification"
+  },
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

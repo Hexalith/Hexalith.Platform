@@ -1,0 +1,95 @@
+{
+  "at": "2026-11-03T19:09:11.033628+00:00",
+  "source": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+  "runId": 41692654232,
+  "attempt": 1,
+  "artifact": 13261979140,
+  "archiveSha256": "857671418da43d3077c35762a80ea5551a4473efa42fe5fae74112797b47092a",
+  "status": "passed",
+  "bootstrap": {
+    "status": "completed",
+    "candidateAcceptance": false,
+    "context": {
+      "PLATFORM_CANDIDATE_SHA": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "GITHUB_RUN_ID": "41692654232",
+      "GITHUB_RUN_ATTEMPT": "1",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64",
+      "ImageOS": "ubuntu26",
+      "ImageVersion": "20261026.180.1"
+    },
+    "outcomes": {
+      "CHECKOUT_OUTCOME": "success",
+      "DEPENDENCIES_OUTCOME": "success",
+      "SDK_OUTCOME": "success",
+      "PREFLIGHT_OUTCOME": "success"
+    },
+    "finishedUtc": "2026-11-03T19:06:48.628193+00:00"
+  },
+  "sourceClean": true,
+  "sourceDigest": "2fd2c319d4c6eeaa7e22065b3d5377106b8d5e288219c64a50d906b3621ac3c3",
+  "actualRequiredPassed": 160,
+  "groupCounts": [
+    83,
+    2,
+    24,
+    44,
+    7
+  ],
+  "failed": 0,
+  "skipped": 0,
+  "allCommandsExitZero": true,
+  "tupleResultSha256": "38420bcfd80759ab928e2d681ec31fd73896fd63cdeb16eb16ae9f3ad8064328",
+  "official4_43_6ArchiveAndToolingMatch": true,
+  "all317PublishedManifestHashesMatchOfficialSignedPackage": true,
+  "actuallyRetainedPublishedMembersVerified": 315,
+  "metadataBodiesAbsentFromRetainedExtractionButPresentInSignedNupkg": [
+    "_rels/.rels",
+    ".signature.p7s"
+  ],
+  "assetCount": 30,
+  "tenants7Assets": [
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/0.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/19.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/2.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/21.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/22.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/24.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/25.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/26.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    },
+    {
+      "asset": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/assets/3.project.assets.json",
+      "signatureContentHash": "TsYZitTvzdxx/fRjwRaaytAzO5//84YuS9AtRBLNUVWy+NHW09zGfTmd3pNMLp87g50rIxLxSmWXiSXjvcFZyQ=="
+    }
+  ],
+  "selectedTenants7SignatureContentHashMatchesOfficial": true,
+  "tenants7ActualOutputDllHashNotRetained": true,
+  "tenantsLimit": "Authenticated selected package content hash is verified; actual copied/loaded Tenants output DLL is not retained by this tuple artifact and remains a native reference evidence requirement.",
+  "candidateAcceptance": false,
+  "nativeAcceptance": false,
+  "hostedLifecycleAcceptance": false
+}

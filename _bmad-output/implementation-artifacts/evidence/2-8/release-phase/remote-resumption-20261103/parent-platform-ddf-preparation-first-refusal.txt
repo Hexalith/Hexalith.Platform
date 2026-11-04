@@ -1,0 +1,14 @@
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/prepare_builds_artifacts.py", line 87, in <module>
+    main()
+    ~~~~^^
+  File "/home/administrator/projects/hexalith/platform/eng/prepare_builds_artifacts.py", line 41, in main
+    validate_recorded_source(binding, pin, state["dirty"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/builds_tuple.py", line 66, in validate_recorded_source
+    raise ValueError("CI requires clean recorded Platform source with the exact approved Builds pin.")
+ValueError: CI requires clean recorded Platform source with the exact approved Builds pin.

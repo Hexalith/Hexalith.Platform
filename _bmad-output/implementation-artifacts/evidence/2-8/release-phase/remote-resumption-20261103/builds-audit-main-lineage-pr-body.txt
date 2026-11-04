@@ -1,0 +1,10 @@
+Main CI fails after squash because the audit names feature revision 2bc5fff679e37318f6e18fc6b25047653faf3261, which is absent from a fresh main checkout. Regenerate only the Memories observation through the existing generator, using the prior published d398 audit and accepted main ad54fc75b8a1da663ee39da6a2397fc2a965159c as the retained observation anchor.
+
+The complete delta is five provenance/time lines in Tools/package-version-audit.json. All 316 package rows and all 155 non-Memories family objects remain byte-identical; accepted Memories history from the prior published snapshot is preserved. Catalog selections, runtime code and ancestry validation remain unchanged. The original feature observation stays in retained evidence at its original identity.
+
+Validation:
+- Fresh real-repository main-only clone: full 1,594-commit ancestry, no alternates/grafts/replacements, and 2bc unavailable. The unchanged validator reproduced all 3,050 errors, then passed 316 packages/156 families after receiving only candidate audit bytes.
+- Normal live generator: one family refreshed/155 preserved. Generator regression suite: 115 scenarios passed.
+- Central catalog validation and authoritative catalog controls passed; exact full commit/title passed locked commitlint 21.2.4 and whitespace checks.
+
+The local audit-validator regression invocation reached its 600-second wrapper limit before a terminal script result. It remains explicitly incomplete; its normal hosted CI gate must pass. No local C# suite was repeated for this generated-data-only correction. Publication remains subject to the normal final-head and subsequent main gates.

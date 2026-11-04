@@ -1,0 +1,208 @@
+{
+  "at": "2026-11-04T05:30:10.497596+00:00",
+  "privateCache": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104",
+  "publicLoadedAssembliesMatchedActualSignedPackages": 12,
+  "readerBuild": {
+    "at": "2026-11-04T05:21:40.591161+00:00",
+    "argv": [
+      "dotnet",
+      "build",
+      "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/Hexalith.Platform.CatalogBuilder.csproj",
+      "-c",
+      "Release",
+      "--output",
+      "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader/output",
+      "-m:1",
+      "-nr:false",
+      "--disable-build-servers",
+      "-warnaserror",
+      "-p:GeneratePackageOnBuild=false",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:CentralPackageVersionsFileImported=true",
+      "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-p:HexalithTenantsVersion=7.0.0",
+      "-p:HexalithMemoriesVersion=3.0.23",
+      "-p:HexalithPartiesVersion=3.0.0",
+      "-p:RestoreAdditionalProjectSources=/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/feed",
+      "-p:RestoreSources=https://api.nuget.org/v3/index.json"
+    ],
+    "exitCode": 0,
+    "log": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/reader-build-first.log",
+    "authorityRegistered": false,
+    "nativeAcceptance": false,
+    "candidateAcceptance": false
+  },
+  "retainedGeneratedOutputs": [
+    {
+      "path": "full-owner-component-memories-public-catalog.json",
+      "sha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4",
+      "bytes": 21370
+    },
+    {
+      "path": "full-owner-component-memories-public-receipt.json",
+      "sha256": "c4fe270cbfd8fc09ba710f5fa5168c3a49b0ed574829486c13e37322208534c4",
+      "bytes": 3636
+    },
+    {
+      "path": "full-owner-component-full-public-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "bytes": 258100
+    },
+    {
+      "path": "full-owner-component-full-public-receipt.json",
+      "sha256": "d1f773e9b6f8a039c9b127dd3921f1acd55c1ca388ba978431c1aa6dac96ed3b",
+      "bytes": 6096
+    },
+    {
+      "path": "full-owner-component-memories-image-owner-catalog.json",
+      "sha256": "2e6ccf4f58e6011e9bf218494675482f1eb0b20f6f22797268f6994ff3bbb6c4",
+      "bytes": 21370
+    },
+    {
+      "path": "full-owner-component-memories-image-owner-receipt.json",
+      "sha256": "91fb3911d9f8007fe21f48d5a7b5da8d1ec6b2462f371d8e8578da13b1f0fd69",
+      "bytes": 3756
+    },
+    {
+      "path": "full-owner-component-full-memory-image-owner-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "bytes": 258100
+    },
+    {
+      "path": "full-owner-component-full-memory-image-owner-receipt.json",
+      "sha256": "d23e6b169d6a3987e4977957235b730d21b3844ea15e18182cd9f7fef271f22d",
+      "bytes": 6324
+    },
+    {
+      "path": "full-owner-component-full-all-image-owners-catalog.json",
+      "sha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "bytes": 258100
+    },
+    {
+      "path": "full-owner-component-full-all-image-owners-receipt.json",
+      "sha256": "27819efeccb5f4026f9776ae8bb74c3f3688b8291f87817719753a0d480437d4",
+      "bytes": 6286
+    }
+  ],
+  "inspectionOutputs": [
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-capture-decompiled.json",
+      "sha256": "f73ecead3a38db10341d1ab560ef13ecd6874c54e3a87accca08cd48ed3bdee8",
+      "bytes": 853
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-lambda-decompiled.json",
+      "sha256": "b4c7889679b2d7a410f368bdae207d2c11a73e22615532f297bc59b3a92dc94a",
+      "bytes": 110
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-lambda-dotted-decompiled.json",
+      "sha256": "9c57bf625490ee893fed339f6a38c8f3e79872241751b83203a9302c4f8cd04d",
+      "bytes": 72
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-capture-members.json",
+      "sha256": "225ead4e85a7e8c7c5636dbae9b606cc16b92e272e7b6cc46bfd0a60b386d146",
+      "bytes": 56
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-hidden-display-types.json",
+      "sha256": "f5f96d3004f726dd64182bac9638c2a17d9e52d5cdb8732847e238596752aa3a",
+      "bytes": 40
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-complete-decompiled.cs",
+      "sha256": "4a33a965f1a19164b42f4ccc00f8e6a5c1fe983667c228bd13809617ca884936",
+      "bytes": 11495
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/public404-gateway-decompiled.cs",
+      "sha256": "73e04b39c70a71a554606439229f256f59ccbb36b92eb19fc879de903e94baa5",
+      "bytes": 11982
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/party-domain-sdk-decompiled.cs",
+      "sha256": "0082f84dac0af0675655847b12309cf8283be8e4ed6c4bfe7e1eb6d2b5e80985",
+      "bytes": 7938
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties300-main-decompiled.cs",
+      "sha256": "a0536ca45d96283a16a45d7c74ef5447e87ce49f2312e19a86d372a049a48c89",
+      "bytes": 4684
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-sdk-finite-receiver-il.json",
+      "sha256": "2ee6d16ada9e357657d12676e147dfdbb42fcc88a1f7b114bbb270b590203240",
+      "bytes": 6641
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/ilspy-version-first.txt",
+      "sha256": "af1768dac15be424ddb49e361f39534c90d6812440bb2345c2707f5e6ad71968",
+      "bytes": 60
+    }
+  ],
+  "firstInspectionFailures": [
+    {
+      "file": "sdk31322-domain-lambda-decompiled.json",
+      "error": "Error: Type 'Hexalith.EventStore.DomainService.DevelopmentDomainRouteCatalog+<>c__DisplayClass1_0' not found."
+    },
+    {
+      "file": "sdk31322-domain-lambda-dotted-decompiled.json",
+      "error": "Error: Exact-member section selection requires exactly one member name."
+    },
+    {
+      "file": "sdk31322-domain-capture-members.json",
+      "error": "Error: No members matched filter '<>c__DisplayClass1_0'"
+    },
+    {
+      "file": "sdk31322-hidden-display-types.json",
+      "error": "Error: Type '*DisplayClass*' not found."
+    }
+  ],
+  "note": "Compiled generated-member lookup in dotnet-inspect0.27.0 was unsupported for this nested closure. Full original image type decompilation with ilspycmd11.2.0.10050 resolved the actual async body. Both tools are inspection only.",
+  "additionalActualInspectionCommands": [
+    {
+      "argv": [
+        "dnx",
+        "ilspycmd",
+        "-y",
+        "--",
+        "--version"
+      ],
+      "exitCode": 0,
+      "output": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/ilspy-version-first.txt"
+    },
+    {
+      "argv": [
+        "dnx",
+        "ilspycmd",
+        "-y",
+        "--",
+        "-t",
+        "Hexalith.EventStore.DomainService.DevelopmentDomainRouteCatalog",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.EventStore.DomainService.dll"
+      ],
+      "exitCode": 0,
+      "output": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/sdk31322-domain-complete-decompiled.cs"
+    },
+    {
+      "argv": [
+        "dnx",
+        "ilspycmd",
+        "-y",
+        "--",
+        "-t",
+        "Program",
+        "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-application-files/app/Hexalith.Parties.dll"
+      ],
+      "exitCode": 0,
+      "output": "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties300-main-decompiled.cs"
+    }
+  ],
+  "otherInspectionCommandReceipts": [
+    "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/inspection-commands.json",
+    "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/additional-decompilation-commands.json",
+    "/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/parties-inspection-commands.json"
+  ]
+}

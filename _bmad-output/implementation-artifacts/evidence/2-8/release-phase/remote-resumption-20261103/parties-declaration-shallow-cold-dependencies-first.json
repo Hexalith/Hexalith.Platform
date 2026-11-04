@@ -1,0 +1,65 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "submodule.recurse=false",
+    "submodule",
+    "update",
+    "--init",
+    "--depth",
+    "1",
+    "--checkout",
+    "--",
+    "references/Hexalith.EventStore",
+    "references/Hexalith.Tenants",
+    "references/Hexalith.Memories"
+  ],
+  "cloneSubprocessExitCode": 0,
+  "firstReceiptAssemblyExitCode": 1,
+  "receiptAssemblyErrors": [
+    "first post-command verifier assumed .git/modules/references instead of actual declared submodule names",
+    "second receipt attempt used stat %n as a newline rather than filename; source and command unchanged"
+  ],
+  "commandNotRepeated": true,
+  "observedAt": "2026-11-03T21:02:15.779319+00:00",
+  "timing": {
+    "logCreatedAt": "2026-11-03 22:00:31.414441942 +0100",
+    "lastCloneOutputAt": "2026-11-03T21:00:48.710636+00:00",
+    "scope": "filesystem timestamps bound the real command log; exact in-memory monotonic duration lost in verifier failure",
+    "cloneLogWriteSpanSeconds": 17.296195
+  },
+  "initializedSubmoduleStoresBefore": [],
+  "owners": [
+    {
+      "path": "references/Hexalith.EventStore",
+      "expectedGitlink": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "actualHead": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "shallow": true,
+      "gitDirectory": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103/.git/modules/Hexalith.EventStore",
+      "alternatesAbsent": true,
+      "initializedNestedDependencies": []
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "expectedGitlink": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "actualHead": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "shallow": true,
+      "gitDirectory": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103/.git/modules/Hexalith.Tenants",
+      "alternatesAbsent": true,
+      "initializedNestedDependencies": []
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "expectedGitlink": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "actualHead": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "shallow": true,
+      "gitDirectory": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103/.git/modules/Hexalith.Memories",
+      "alternatesAbsent": true,
+      "initializedNestedDependencies": []
+    }
+  ],
+  "onlyThreeActualDirectStoresPresent": true,
+  "ownerTransport": "fresh network clones into new module stores; no alternates/local object reuse",
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

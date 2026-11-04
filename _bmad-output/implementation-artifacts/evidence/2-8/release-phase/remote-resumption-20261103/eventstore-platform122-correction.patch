@@ -1,0 +1,17 @@
+diff --git a/docs/ci.md b/docs/ci.md
+index 1ff18848f..fbcde219f 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -134,8 +134,8 @@ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ The package-profile bootstrap, v2 workflow and executing public module CLI
+ 4.44.0 now select the same Builds source
+ `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, with genuine released Platform
+-[`v1.2.1`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.1)
+-(`728baa7c0f006d86e71d6c9b29527dabc8e16e49`). Platform records that exact
++[`v1.2.2`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.2)
++(`bd0d370d5b2b59f6a9f2f01aa67a34b115055006`). Platform records that exact
+ Builds gitlink and tool floor `[4.44.0,5.0.0-0)`. The approved catalog still
+ selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+ Azure.Security.KeyVault.Keys 4.10.2, with catalog blob
+Submodule references/Hexalith.Platform 728baa7c0..bd0d370d5:
+  > fix(composition): isolate published catalog reader builds (#20)

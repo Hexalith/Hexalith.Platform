@@ -1,0 +1,108 @@
+{
+  "at": "2026-11-04T12:43:10.274004+00:00",
+  "head": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173",
+  "parent": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "tree": "ce8e8df1f44b875feb910ac8f5a2c49abf755ef5",
+  "clean": true,
+  "paths": [
+    ".gitignore",
+    "tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs"
+  ],
+  "correctionSha256": "fc25bf316bde3b33f100cdb83cf2210aaaba3d60f56193e4a64672af23eefbb2",
+  "fullProposalPaths": 25,
+  "parentRead": "Entire two-path committed correction read, including all4tracked and4untracked/lookalike/nested mutation boundaries. Prior23path proposal independently read/verified.",
+  "evidenceFilesRehashed": 27,
+  "actualTrx": [
+    {
+      "file": "parties-generated-builds-checkout-after.trx",
+      "counts": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "parties-generated-builds-checkout-before.trx",
+      "counts": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "parties-generated-builds-checkout-caller-contract.trx",
+      "counts": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "parties-generated-builds-checkout-source-selections.trx",
+      "counts": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "uniquePassingCases": 5,
+  "actualLayoutProof": "Genuine shallowAE helper checkout and caller/Platform338/directBuildsAE all clean under exactproductionGitstatus; signed4.44.2 resource-free preparation succeeds.",
+  "protectedInputsByteIdentical": 9,
+  "scope": "Known dirty-Git boundary corrected; full privateplan/key/normalentry and native execution remain unproved until changed-source hosted run. No Platform/Builds/proof/tuple/budget/assertion changes.",
+  "pushed": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

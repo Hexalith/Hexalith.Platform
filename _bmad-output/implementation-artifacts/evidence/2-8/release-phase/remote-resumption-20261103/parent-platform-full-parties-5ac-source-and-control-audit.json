@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-04T08:33:27.890978+00:00",
+  "head": "5ac302c3a15fbeb127bb387722aec4012b913c4d",
+  "parent": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+  "actualEvidenceFilesRehashed": 28,
+  "sourceReview": "Parent read complete9path correction: owner/catalog roots, every new fixture/entry/reader case, honest docs and exact reviewed Parties test-source prerequisite.",
+  "actualFocusedPassed": 77,
+  "actualFullPositiveFailures": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"platform-package\\\")",
+      "message": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.",
+      "stack": "   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs:line 82\n   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Matches(String name, String cohort) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs:line 53\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 50\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(String profile) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs:line 20\n--- End of stack trace from previous location ---"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"lifecycle-package\\\")",
+      "message": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.",
+      "stack": "   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs:line 82\n   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Matches(String name, String cohort) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs:line 53\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 50\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(String profile) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs:line 20\n--- End of stack trace from previous location ---"
+    }
+  ],
+  "firstRefusal": "Actual loaded M18Contracts hash check insideMatches/Verify, before mapping/ComposeRun. Not full-entry execution.",
+  "associatedUnrun": 28,
+  "requiredProfileRemains": 238,
+  "correctionPatchSha256": "e245c9ec8c84bed2e6338763f35f87e6dca48927453b69af7baaedc2988b77d5",
+  "pushed": false,
+  "acceptedTupleUnchanged": true,
+  "firstParentAuditError": "Expected ShouldBeTrue custom message, but actual Matches directly propagates InvalidDataException from Verify for a mismatched body. Parent matched retained actual message and stack; no test/product rerun or change.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

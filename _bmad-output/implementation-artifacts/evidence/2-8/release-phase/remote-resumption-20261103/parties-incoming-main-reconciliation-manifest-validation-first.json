@@ -1,0 +1,22 @@
+{
+  "command": [
+    "dotnet",
+    "tool",
+    "run",
+    "hexalith-module",
+    "--",
+    "validate",
+    "--manifest",
+    "module/hexalith.module-manifest.v2.json",
+    "--manifest",
+    "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+    "--manifest",
+    "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+    "--manifest",
+    "references/Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T08:44:26.716209+00:00",
+  "completedAt": "2026-11-04T08:44:27.101844+00:00",
+  "candidateAcceptance": false
+}

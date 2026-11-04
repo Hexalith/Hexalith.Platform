@@ -1,0 +1,199 @@
+{
+  "at": "2026-11-04T10:05:56.548347+00:00",
+  "source": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+  "testedSource": "971e9b66861499326fba7c84e2e592aa76d3e066",
+  "testedTree": "66ce877efa59fc7a06446a1a6e7e3bb70bc447dd",
+  "runId": 41808430947,
+  "attempt": 1,
+  "fullAudit": "parent-eventstore-04d-hosted-artifact-audit.json",
+  "fullAuditSha256": "9c44d69bb980568b8da4cac7c91eb88d602acdcd3e1ad2eb071ba4c2d268abef",
+  "isolatedProjectReports": 20,
+  "isolatedCounters": {
+    "total": 16273,
+    "executed": 16224,
+    "passed": 16224,
+    "failed": 0,
+    "notExecuted": 49
+  },
+  "nativeCounters": {
+    "total": "9",
+    "executed": "9",
+    "passed": "9",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "actualNativeCaseNames": [
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRetainsFirstBytesAndRefusesOverwrite",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRefusesSymbolicDirectory",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-mapping\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-run\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"valid-local\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-attempt\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-context\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync",
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync"
+  ],
+  "owner": {
+    "attemptId": "84583cc3bcb8b9abb8bce194da63edc5",
+    "attemptSequence": 1,
+    "environmentId": "bdd5be75f4a0b7ce464023f80cdabdc3",
+    "ownerRunId": "08cdfbb26d06859356ab1d60a5381b65",
+    "role": "owner",
+    "runId": "08cdfbb26d06859356ab1d60a5381b65"
+  },
+  "executionContext": {
+    "disposable": true,
+    "jobId": "build-and-test",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.EventStore",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "41808430947"
+  },
+  "catalog": {
+    "commit": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+    "instanceId": "bdd5be75f4a0b7ce464023f80cdabdc3-catalog"
+  },
+  "retainedDiagnosticReferences": [
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:749fd85f85b6f01422e5cd98b6d1e5071ee5b733236789fc24d8c6c045c98e4e",
+      "id": "lifecycle",
+      "redacted": true,
+      "reference": "lifecycle-749fd85f85b6f01422e5cd98b6d1e5071ee5b733236789fc24d8c6c045c98e4e.json"
+    },
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:899d923dc5779b3be41b877ce6b95b86c297be1375a0c380b131fd4159f37236",
+      "id": "native-report",
+      "redacted": true,
+      "reference": "native-899d923dc5779b3be41b877ce6b95b86c297be1375a0c380b131fd4159f37236.trx"
+    }
+  ],
+  "terminal": {
+    "cause": "tests-completed",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "passed",
+    "recordedAt": "2026-11-04T10:04:00.9098839Z"
+  },
+  "cleanup": {
+    "attemptId": "e71990c2f9585d951c05449635266652",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-04T10:04:05.1470600Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "state": "populated"
+  },
+  "deadlines": {
+    "execution": {
+      "actualDurationSeconds": 43.2081424,
+      "configurationContentIdentity": "sha256:31d637e81157f578a455f107e3844c9f17c498086aaa9592c23a9028e2bdce00",
+      "effectiveSeconds": 120,
+      "expiresAt": "2026-11-04T10:05:17.6847268Z",
+      "origin": "test-execution-started",
+      "originAt": "2026-11-04T10:03:17.6847268Z",
+      "state": "populated"
+    },
+    "startup": {
+      "actualDurationSeconds": 74.1789914,
+      "effectiveSeconds": 600,
+      "expiresAt": "2026-11-04T10:12:03.4621685Z",
+      "origin": "environment-requested",
+      "originAt": "2026-11-04T10:02:03.4621685Z",
+      "override": {
+        "state": "not-overridden"
+      },
+      "state": "populated"
+    }
+  },
+  "actualNativeObservations": [
+    {
+      "file": "loaded-assemblies-08cdfbb26d06859356ab1d60a5381b65.json",
+      "body": {
+        "kind": "real-native-test-loaded-assemblies",
+        "ownerRunId": "08cdfbb26d06859356ab1d60a5381b65",
+        "ownerAttemptId": "84583cc3bcb8b9abb8bce194da63edc5",
+        "environmentId": "bdd5be75f4a0b7ce464023f80cdabdc3",
+        "revision": "971e9b66861499326fba7c84e2e592aa76d3e066",
+        "mappingHash": "7054950c15e57a9768938ac402f290cbca6a2185eb56ec63daced08e45d015ed",
+        "executionContext": {
+          "kind": "ci",
+          "repository": "Hexalith/Hexalith.EventStore",
+          "workflowRunId": "41808430947",
+          "workflowAttempt": 1,
+          "jobId": "build-and-test",
+          "runnerKind": "github-hosted",
+          "operatingSystem": "Linux",
+          "disposable": true
+        },
+        "assemblies": [
+          {
+            "identity": "Hexalith.EventStore.Platform.IntegrationTests, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.0.4+971e9b66861499326fba7c84e2e592aa76d3e066",
+            "moduleVersionId": "6e33e5c6-ed5e-488a-9a52-23b10022b3a2",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/08cdfbb26d06859356ab1d60a5381b65/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Platform.IntegrationTests.dll",
+            "sha256": "7696887f6c2c4972760074e977c81a7a5b99038a3b758d16556f32ef970a0dba"
+          },
+          {
+            "identity": "Hexalith.EventStore.Testing, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.0.4+971e9b66861499326fba7c84e2e592aa76d3e066",
+            "moduleVersionId": "1e5d77dc-89c4-4f2b-8a00-08094e6c7268",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/08cdfbb26d06859356ab1d60a5381b65/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.dll",
+            "sha256": "62d94e1fa98b2b5d390c0c941e9618625b94768dccd24752a515ebd2b0b81732"
+          },
+          {
+            "identity": "Hexalith.EventStore.Testing.Integration, Version=4.0.4.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.0.4+971e9b66861499326fba7c84e2e592aa76d3e066",
+            "moduleVersionId": "91363603-693d-4a17-ae44-bb38975dfa9e",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/08cdfbb26d06859356ab1d60a5381b65/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.Integration.dll",
+            "sha256": "3d9ec2a1fefa173610dae032fd4fa8b27c9c4b3a04038a961d727ba85131b847"
+          },
+          {
+            "identity": "StackExchange.Redis, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46",
+            "informationalVersion": "3.4.31+9d17974fca",
+            "moduleVersionId": "789a4301-495e-461c-8124-1ae65e18ed80",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/08cdfbb26d06859356ab1d60a5381b65/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/StackExchange.Redis.dll",
+            "sha256": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909"
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Actual proposed EventStore source qualified through main v2 CI, including9nativecases (2realgateway/persistence plus7binding/filecontrols), exact report retention and zero-leftover final cleanup. Required separate live-sidecar still pending; no PRmerge/whole-story/candidate acceptance yet.",
+  "limits": [
+    "Assembly SHA/MVIDs are actual native-process observations; DLL bodies are not retained and current test/harness assemblies are not relabelled as public release binaries.",
+    "Blocking archive includes native TRX too; isolated20project totals exclude module-integration/ to avoid duplicate counting.",
+    "Parties full native/wire and all3manual lifecycle qualifications remain incomplete."
+  ],
+  "storyComplete": false,
+  "candidateAcceptance": false
+}

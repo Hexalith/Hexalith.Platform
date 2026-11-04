@@ -1,0 +1,11 @@
+The v2 integration finalizer currently drops content-addressed diagnostics declared by the published test result. Retain only the exact receipt-bound redacted lifecycle, native report and functional observations, with bounded private-file reads and SHA-256 checks. Publish complete fsynced bytes through Linux no-replace rename so an interrupted collector can retry without overwriting immutable evidence. Collection failures follow exact cleanup and remain separate from the original native outcome.
+
+Select the published Memories 3.0.23/source 82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f and its unchanged declaration snapshot. Refresh only that family's normal audit records; preserve all other catalog selections and existing Platform admission.
+
+Validation:
+- Current Python refactor: 43 helper controls, including all original negative cases and the real child-process kill/retry control; 95 provenance and 16 preparation controls; legacy 411/v2 254 workflow assertions.
+- Full-file pycodestyle, mccabe and Radon checks pass at the actual 159-character/15-complexity bounds, with no suppressions or analysis configuration changes. The required 05e Codacy findings are preserved; current-head hosted gates are pending.
+- At predecessor 05e5117166cd0f445befa685f68802ea1ffd71b5, complete normal local Release/package qualification with required controls passed: Evidence 191 passed; Module 2,806 passed/5 existing optional skips; Tooling Integration 1 passed/12 explicit opt-in live skips. Both packages built/restored and source/package consumer controls passed. The subsequent two-file Python refactor leaves compiled package/catalog source unchanged; its hosted package gates must still pass.
+- Normal catalog/audit checks, 34 declaration/closure tests and 101 platform catalog scenarios passed.
+
+The preserved first qualifier at 9369 failed four fixture-cache cases because an injected NUGET_PACKAGES overrode their own NuGet.Config. All four unchanged cases pass with that override unset; no assertion or producer cache policy changed. The local qualification version is unpublished. No publication, accepted dependency pin, Platform admission or Story 2.8 native/lifecycle acceptance is claimed.

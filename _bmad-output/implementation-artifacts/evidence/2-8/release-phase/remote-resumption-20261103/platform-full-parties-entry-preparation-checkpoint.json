@@ -1,0 +1,173 @@
+{
+  "at": "2026-11-04T08:31:01.164101+00:00",
+  "status": "bounded committed source preparation; genuine publication/full positives pending",
+  "source": {
+    "at": "2026-11-04T08:31:01.159968+00:00",
+    "head": "5ac302c3a15fbeb127bb387722aec4012b913c4d",
+    "parent": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+    "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+    "branch": "feat/qualify-full-parties-package",
+    "clean": true,
+    "pushed": false,
+    "remotePR22RetainsHead": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "paths": [
+      "docs/package-catalog-qualification.md",
+      "references/Hexalith.Parties",
+      "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+      "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs"
+    ],
+    "files": [
+      {
+        "path": "docs/package-catalog-qualification.md",
+        "sha256": "df0eb9114fbe523c81c381cfcb049deeab16599b6a77ce1e532360ad565ac1b0"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+        "sha256": "cd13ade31c95d92f272ddd86fec8177c82ada6ec967c16a43ae8a40c36667ae2"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+        "sha256": "b9c4cce6e49b58edfebfef6a856c3bd5a089dfb3ee20ecb73d41b0e45ee42e02"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs",
+        "sha256": "b7d62ac8b30db2322565a29993ff9f233fbbcc6091e11d87f1799367cae6f48d"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs",
+        "sha256": "14dd96fe190881b22e8c88dc11399cb555e36a00b65932c2d4129a0207d03304"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+        "sha256": "86c2f8afb07ba7e809d6145b78a1f3827442718601656f0f2bd33e570ef913f0"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs",
+        "sha256": "f9f384649b26da1655b7cb09ccbda945579288f96f99401511cb22f765ec03d0"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs",
+        "sha256": "4e1d1bcd4f205df3b6dd41d6c327d6d44de4a80030c02f7f76b76f160c349205"
+      }
+    ],
+    "acceptedBindingsUnchanged": {
+      "eng/builds-tuple.json": true,
+      "hexalith-platform.json": true,
+      "eng/tuple-ci-suites.json": true,
+      "src/Hexalith.Platform.Composition/Declarations/provenance.json": true,
+      "BuildsGitlink": true
+    },
+    "patches": [
+      {
+        "path": "platform-full-parties-entry-preparation-correction.patch",
+        "base": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+        "head": "5ac302c3a15fbeb127bb387722aec4012b913c4d",
+        "sha256": "e245c9ec8c84bed2e6338763f35f87e6dca48927453b69af7baaedc2988b77d5",
+        "bytes": 52657
+      },
+      {
+        "path": "platform-full-parties-entry-preparation-full-proposal.patch",
+        "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+        "head": "5ac302c3a15fbeb127bb387722aec4012b913c4d",
+        "sha256": "89724a86fe4ae37f8eb8c38571b83f0d49f869b0fdc4140c52aa2bf27ced6d44",
+        "bytes": 120069
+      }
+    ],
+    "isolatedDirectParties": {
+      "old": "f1bf359383b225df14ac2b98bcc6f8a8479c9437",
+      "selected": "f1f33f8de655d9aa9307bafba128b0c7ea5c2570",
+      "actualDeclarationSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+      "lifecycleProjectSha256": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "productionSrcChangedPaths": [],
+      "nestedGitMarkers": [],
+      "reviewedSourceOnlyException": true,
+      "releasedBackendSource": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+      "releasedBackendDeclarationSha256": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504"
+    }
+  },
+  "build": {
+    "record": "platform-full-parties-entry-preparation-committed-build.json",
+    "configuration": "Release/package; actual unchanged signed4.44.0 Tooling and officialT7cache",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "actualFocused": {
+    "total": 77,
+    "passed": 77,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "includes": "37existing proof +3mapped-owner (including normal actual producer) +23existing finite E/T +5E/T entry +9real private-reader controls",
+    "record": "platform-full-parties-entry-preparation-committed-focused.xml"
+  },
+  "actualNewFullPositive": {
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "record": "platform-full-parties-entry-preparation-committed-positive.xml",
+    "firstRefusal": "InvalidDataException: exact signed public artifact bytes required, from Matches/Verify on loaded Memories.Contracts at fixture CreateAsync before normal mapping or ComposeRun.",
+    "actualBody": "3787184c7bca6f5cc3079c55e16a91e6c52629d76b874023d63728c4dbe8a98b",
+    "requiredM23Body": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+    "entryOrProbeReached": false,
+    "redNotAcceptance": true
+  },
+  "newFullCasesPrepared": {
+    "entryPositive": 2,
+    "entryAuthorityMutations": 11,
+    "topologyRuntimeMutations": 8,
+    "readerPositiveAndMutations": 9,
+    "total": 30,
+    "executedRed": 2,
+    "remainingUnrun": 28,
+    "negativeControlsFirstRequireSuccessfulFullBaseline": true,
+    "conditionalPositiveReturnsOrSkips": false,
+    "requiredProfileCountsUnchanged": 238
+  },
+  "actualOutputBinaries": {
+    "Hexalith.Platform.Composition.Tests": "a45f1a769314da355d53057729d7ff899aaf432aa842545338fc215fb8de675d",
+    "Hexalith.Platform.Composition": "f50adb45e4d3e2000746e42e7f3558907259b6e7b80ba287d925981b4fb3b511",
+    "Hexalith.Builds.Tooling": "c85d688e71e17afd5f1a6b706d7cda896fe2b9f04852360c657c31d2c46b52d5",
+    "Hexalith.Memories.Contracts": "3787184c7bca6f5cc3079c55e16a91e6c52629d76b874023d63728c4dbe8a98b",
+    "Hexalith.Tenants.Contracts": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+    "Hexalith.Parties.Contracts": "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9"
+  },
+  "ordinaryPlanHasIssuerMac": false,
+  "scopeDetails": [
+    "Normal actual source mapping replaces no declaration/hash and requires no fabricated Platform tag.",
+    "Private proof derives actual active-owner path, requires exact repository boundary/clean HEAD, owner-relative tests and direct Gitlink; package-mode Builds null-path representation binds exact real direct root/HEAD/recorded Gitlink, retaining explicit source checks.",
+    "Internal runtime-scope overload exercises full existing admission from an actual positive baseline; production uses real OS/architecture.",
+    "Full reader fixture invokes real production generator with actual materialized mapping and all12public checks/asset identities/70routes/46policies; remains unexecuted.",
+    "Wrong-public-body case tampers only a private child reader copy, never accepted output/cache/archive.",
+    "First historical860-vs40declaration blocker retained separately; reviewed isolated source exception now resolves that dependency without altering release roles."
+  ],
+  "firstControlRecords": [
+    "platform-full-parties-entry-preparation-build-first.json",
+    "platform-full-parties-entry-preparation-build-mapped-owner.json",
+    "platform-full-parties-entry-preparation-build-final.json",
+    "platform-full-parties-entry-preparation-focused.json",
+    "platform-full-parties-entry-preparation-positive-first.json",
+    "platform-full-parties-entry-preparation-declaration-prerequisite.json"
+  ],
+  "remainingRequired": [
+    "Parent authenticate actual corrected normal Builds publication and give concrete tuple/provenance adoption scope; current accepted B6249/tool4.44.0/M18 remains untouched.",
+    "Adopt genuine published archive/Tooling/inventory/catalog/direct-source/floor and M23provenance coherently; never substitute M23DLLs into old output or invent a producer tag.",
+    "Compile/run both unconditional positives and all28associated entry/topology/runtime/reader mutation cases on that coherent context; fixture execution beyond the loaded-body prerequisite remains unverified.",
+    "Advance required counts only from actual complete execution, retain all238existing cases, run full normal tuple/SDK matrix and hosted gates.",
+    "Parent review local9path preparation, then normal PR update/gates/release; no remote push performed in this checkpoint.",
+    "Real fleet/native/wire and subsequent lifecycle/same-job/refusal/cancellation/cleanup qualification remain separate pending story requirements."
+  ],
+  "servicesStarted": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false,
+  "otherWorktreeOrCanonicalPinMutationByThisTask": false,
+  "manualDispatchOrReleaseOrPRMutation": false
+}

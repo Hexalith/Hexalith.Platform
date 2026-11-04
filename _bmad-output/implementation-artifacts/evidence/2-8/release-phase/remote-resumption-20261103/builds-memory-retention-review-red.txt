@@ -1,0 +1,44 @@
+test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds (test_run_module_integration.IntegrationTests.test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds) ... run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+FAIL
+test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound (test_run_module_integration.IntegrationTests.test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound) ... run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+FAIL
+test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds (test_run_module_integration.IntegrationTests.test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds) ... run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+FAIL
+
+======================================================================
+FAIL: test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds (test_run_module_integration.IntegrationTests.test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 306, in test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds
+    self.assert_collection_failure_can_retry(patch.object(helper.os, "fsync", side_effect=OSError("simulated durable flush failure")))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 282, in assert_collection_failure_can_retry
+    self.assertFalse(any((self.evidence / name).exists() for name in files), "Incomplete publication must not occupy an immutable final name.")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Incomplete publication must not occupy an immutable final name.
+
+======================================================================
+FAIL: test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound (test_run_module_integration.IntegrationTests.test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 317, in test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound
+    self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds (test_run_module_integration.IntegrationTests.test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 303, in test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds
+    self.assert_collection_failure_can_retry(patch.object(helper.os, "fdopen", side_effect=interrupted_open))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 282, in assert_collection_failure_can_retry
+    self.assertFalse(any((self.evidence / name).exists() for name in files), "Incomplete publication must not occupy an immutable final name.")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Incomplete publication must not occupy an immutable final name.
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.038s
+
+FAILED (failures=3)

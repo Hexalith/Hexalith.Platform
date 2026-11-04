@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "Github/run-module-integration/tests",
+    "-p",
+    "test_run_module_integration.py",
+    "-k",
+    "published_redacted_diagnostics",
+    "-v"
+  ],
+  "exitCode": 1,
+  "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "expected": "failure: all3 published diagnostic files missing from retained evidence"
+}

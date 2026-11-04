@@ -1,0 +1,63 @@
+{
+  "source": "0db867a7b1b22193e29b67fa63163afe1b2ef594",
+  "parent": "5ac302c3a15fbeb127bb387722aec4012b913c4d",
+  "paths": [
+    ".config/dotnet-tools.json",
+    "eng/builds-tuple.json",
+    "hexalith-platform.json",
+    "references/Hexalith.Builds",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+  ],
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
+        "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+      }
+    },
+    "publication": {
+      "version": "4.44.2",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "releaseTag": "v4.44.2",
+      "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
+      "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
+      "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+      "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+    }
+  },
+  "buildsPin": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+  "activePartiesSourcePin": "f1f33f8de655d9aa9307bafba128b0c7ea5c2570",
+  "provenance": {
+    "eventstore": {
+      "repository": "Hexalith.EventStore",
+      "version": "4.0.4",
+      "commit": "326bfef884543cdbcaf96de7f4c4ad378dbad6d7",
+      "source": "module/hexalith.module-manifest.v2.json",
+      "sha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+    },
+    "tenants": {
+      "repository": "Hexalith.Tenants",
+      "version": "7.0.0",
+      "commit": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "source": "module/hexalith.module-manifest.v2.json",
+      "sha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+    },
+    "memories": {
+      "repository": "Hexalith.Memories",
+      "version": "3.0.23",
+      "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "source": "module/hexalith.module-manifest.v2.json",
+      "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+    }
+  },
+  "patchSha256": "53295b8ff9a664f6bcde1d0d28d75ba1123753daa1aa737463be82c7f9a32687",
+  "scope": "Concrete five-path adoption reviewed independently against authenticated public tuple. Full controls/hosted qualification/Platform publication remain pending.",
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

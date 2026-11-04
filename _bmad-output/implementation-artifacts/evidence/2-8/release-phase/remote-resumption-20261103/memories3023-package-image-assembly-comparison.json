@@ -1,0 +1,76 @@
+{
+  "assemblies": [
+    {
+      "assembly": "Hexalith.Memories.Contracts",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock",
+        "domain-service"
+      ],
+      "imageSha256": "b7b241fa22ec443d856acdc6b22c74754ebb88a0ced9755e465d72e452406cc5",
+      "signedNugetMemberSha256": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    },
+    {
+      "assembly": "Hexalith.Memories.EventStore",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "imageSha256": "db75fd0eed1b99d9a6c9a11893a08e87b688eb9c41c0cc509e402920dad14f9f",
+      "signedNugetMemberSha256": "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    },
+    {
+      "assembly": "Hexalith.Memories.ServiceDefaults",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock"
+      ],
+      "imageSha256": "92e71a8dc652feaf7d3d4beb9fbdc4793804e562165a90bb7db248fc1b62e69c",
+      "signedNugetMemberSha256": "cd01a384cae0b0fb882e9973187e20e6be44be76ddd8bda81ffdf721ec3f7205",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    },
+    {
+      "assembly": "Hexalith.Memories.Telemetry",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock"
+      ],
+      "imageSha256": "865dab6b0668b9d4c9257ec12bee927bafe2c59d5b3bdb78c2a138fea7faac70",
+      "signedNugetMemberSha256": "4353721951827ac614738f34647f83ffa8e5b7490e18a1d39103c5dc56f1058e",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    },
+    {
+      "assembly": "Hexalith.Memories.Client.Rest",
+      "images": [
+        "mcp"
+      ],
+      "imageSha256": "ac6ca4af3b2453e2cd1a7b56c5b295a6659a96591871b65cbb9d16f29ab67bd6",
+      "signedNugetMemberSha256": "9de75dc88bd01c3b12ae5cb1388a4f83610f8630be38a66f8ae23b1b00318494",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    },
+    {
+      "assembly": "Hexalith.Memories.Mcp",
+      "images": [
+        "mcp"
+      ],
+      "imageSha256": "a6c97bf6e6075e7a0014ddb64cf927a41ea0ea28dd14e358ec1e5d887cdeb6b3",
+      "signedNugetMemberSha256": "545730a70bdc96948662a5c915b893d117a59f9a54f66215733d39d1681741f6",
+      "identical": false,
+      "scope": "actual static files; equal labels do not establish binary identity"
+    }
+  ],
+  "candidateAcceptance": false
+}

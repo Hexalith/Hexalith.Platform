@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/Hexalith.Platform/eng/prepare_builds_artifacts.py", line 87, in <module>
+    main()
+    ~~~~^^
+  File "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/Hexalith.Platform/eng/prepare_builds_artifacts.py", line 41, in main
+    validate_recorded_source(binding, pin, state["dirty"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/Hexalith.Platform/eng/builds_tuple.py", line 66, in validate_recorded_source
+    raise ValueError("CI requires clean recorded Platform source with the exact approved Builds pin.")
+ValueError: CI requires clean recorded Platform source with the exact approved Builds pin.

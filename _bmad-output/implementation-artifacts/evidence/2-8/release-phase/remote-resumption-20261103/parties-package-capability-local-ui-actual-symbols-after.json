@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dotnet",
+    "msbuild",
+    "src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj",
+    "-nologo",
+    "-p:Configuration=Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-target:ConfigureFrontComposerFeedbackCandidate",
+    "-getProperty:HexalithFrontComposerVersion,HexalithFrontComposerFromSource,DefineConstants"
+  ],
+  "exitCode": 0,
+  "stdout": "{\n  \"Properties\": {\n    \"HexalithFrontComposerVersion\": \"4.7.6\",\n    \"HexalithFrontComposerFromSource\": \"false\",\n    \"DefineConstants\": \"TRACE;HEXALITH_EVENTSTORE_CATALOG_API;HEXALITH_EVENTSTORE_CATALOG_HOSTS;RELEASE;HES_CANCELLABLE_PROJECTIONS;HFC_SHARED_UI;HFC_SHARED_RECONCILE_READINESS\"\n  }\n}\n",
+  "stderr": "",
+  "scope": "Actual Release/package target with signed4.44.2 mapping"
+}

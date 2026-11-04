@@ -1,0 +1,19 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/gitlink-rc-gate.sh",
+      "--worktree"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/gitlink-rc-gate.sh",
+      "--diff",
+      "3e4367622764118fc2ad710ad1040994ae4cfa49"
+    ],
+    "exitCode": 0
+  }
+]

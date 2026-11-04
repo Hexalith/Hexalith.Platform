@@ -1,0 +1,416 @@
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Program.cs b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+index 58ee9378..3866c211 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Program.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+@@ -21,14 +21,21 @@ if (gatewayAppId != "eventstore")
+ #endif
+ List<string> qualifiedArtifacts = [];
+ bool qualified = input.TryGetProperty("qualificationCohort", out var cohort) && cohort.ValueKind != JsonValueKind.Null;
++string? qualificationName = qualified && cohort.ValueKind == JsonValueKind.String ? cohort.GetString() : null;
+ if (qualified)
+ {
+     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
+-    if (cohort.ValueKind != JsonValueKind.String || cohort.GetString() != PublishedCatalogArtifactCohort.Name
+-        || requestedOwners.Length != 1 || requestedOwners[0].GetProperty("assembly").GetString() != "Hexalith.Tenants.Contracts"
+-        || requestedOwners[0].GetProperty("adapterAssembly").GetString() != "Hexalith.Tenants.Server")
++    string[] expected = qualificationName switch
++    {
++        PublishedCatalogArtifactCohort.Name => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        PublishedCatalogArtifactCohort.FullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
++    };
++    if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
++        .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
+         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
+-    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.VerifySdk());
++    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.FullPartiesName
++        ? PublishedCatalogArtifactCohort.VerifyFullParties() : PublishedCatalogArtifactCohort.VerifySdk());
+ }
+ List<RouteContractDeclaration> declarations = [];
+ List<RouteOperationContract> operations = [];
+@@ -44,8 +51,8 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
+     adapters.Add(adapterAssembly.Location);
+     if (qualified)
+     {
+-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly));
+-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly));
++        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly, qualificationName!));
++        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly, qualificationName!));
+     }
+     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
+     declarations.AddRange(routes);
+diff --git a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+index f9a4ea10..4e33e919 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+@@ -9,6 +9,8 @@ internal static class PublishedCatalogArtifactCohort
+ {
+     /// <summary>The sole measured public package cohort identifier.</summary>
+     internal const string Name = "eventstore-4.0.4-tenants-7.0.0";
++    /// <summary>The independently measured complete ordinary-Parties public reader cohort.</summary>
++    internal const string FullPartiesName = "parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memories-3.0.23";
+     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+@@ -19,6 +21,16 @@ internal static class PublishedCatalogArtifactCohort
+         ["Hexalith.Tenants.Server"] = "4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93",
+     }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
++    private static readonly FrozenDictionary<string, string> _fullPartiesHashes = _hashes.Concat(new Dictionary<string, string>(StringComparer.Ordinal)
++    {
++        ["Hexalith.Memories.Contracts"] = "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
++        ["Hexalith.Memories.EventStore"] = "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
++        ["Hexalith.Memories.EventStoreExtensions"] = "c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25",
++        ["Hexalith.Parties.Contracts"] = "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9",
++        ["Hexalith.Parties.EventStoreExtensions"] = "8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604",
++        ["Hexalith.McpCli.Abstractions"] = "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
++    }).ToFrozenDictionary(StringComparer.Ordinal);
++
+     /// <summary>Checks the actual loaded SDK files; versions and informational strings alone grant no capability.</summary>
+     internal static bool MatchesSdk()
+     {
+@@ -34,11 +46,11 @@ internal static class PublishedCatalogArtifactCohort
+     }
+ 
+     /// <summary>Checks an actual loaded package dependency against the same finite public artifact authority.</summary>
+-    internal static bool Matches(string name)
++    internal static bool Matches(string name, string cohort = Name)
+     {
+         try
+         {
+-            _ = Verify(Assembly.Load(name));
++            _ = Verify(Assembly.Load(name), cohort);
+             return true;
+         }
+         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or BadImageFormatException)
+@@ -51,11 +63,21 @@ internal static class PublishedCatalogArtifactCohort
+     internal static IReadOnlyList<string> VerifySdk() => _hashes.Keys.Where(name => name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
+         .Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name))).ToArray();
+ 
++    /// <summary>Checks every measured public dependency before any full-owner attribute or factory is consumed.</summary>
++    internal static IReadOnlyList<string> VerifyFullParties() => _fullPartiesHashes.Keys.Order(StringComparer.Ordinal)
++        .Select(name => Verify(Assembly.Load(name), FullPartiesName)).ToArray();
++
+     /// <summary>Verifies a loaded owner or SDK artifact before reading its attributes or invoking its factory.</summary>
+-    internal static string Verify(Assembly assembly)
++    internal static string Verify(Assembly assembly, string cohort = Name)
+     {
++        IReadOnlyDictionary<string, string> hashes = cohort switch
++        {
++            Name => _hashes,
++            FullPartiesName => _fullPartiesHashes,
++            _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
++        };
+         string? name = assembly.GetName().Name;
+-        if (name is null || !_hashes.TryGetValue(name, out string? expected) || string.IsNullOrWhiteSpace(assembly.Location)
++        if (name is null || !hashes.TryGetValue(name, out string? expected) || string.IsNullOrWhiteSpace(assembly.Location)
+             || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(assembly.Location))) != expected)
+             throw new InvalidDataException("The qualified package catalog reader requires the exact signed public artifact bytes.");
+         return assembly.Location;
+diff --git a/src/Hexalith.Platform.Composition/PlatformAppModel.cs b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+index f4cbd753..c2fdf826 100644
+--- a/src/Hexalith.Platform.Composition/PlatformAppModel.cs
++++ b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+@@ -68,7 +68,7 @@ public static class PlatformAppModel
+         Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
+     }
+ 
+-    /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
++    /// <summary>Composes the key-bearing Builds runner handoff, keeping its package-mode gateway seed.</summary>
+     public static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
+     {
+         ArgumentNullException.ThrowIfNull(builder);
+@@ -98,13 +98,16 @@ public static class PlatformAppModel
+             configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
+             configuration[server + "/Jwt:SigningKey"] = signingKey;
+         }
+-        Compose(builder, configureOptions(new PlatformCompositionOptions
++        PlatformCompositionOptions options = new()
+         {
+             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
+             QualificationOwners = plan.QualificationOwners ?? [], QualificationOwnerProof = ownerProof,
+             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
+             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
+-        }));
++        };
++        if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
++            options = options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
++        Compose(builder, configureOptions(options));
+     }
+ 
+     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
+diff --git a/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs b/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
+index 54ed16a4..9dca2fc1 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
+@@ -26,6 +26,9 @@ public sealed record PlatformCompositionOptions
+     /// <summary>Gets the nonserialized entry-point proof; ordinary Compose callers cannot supply one.</summary>
+     [System.Text.Json.Serialization.JsonIgnore]
+     internal PlatformQualificationOwnerProof? QualificationOwnerProof { get; init; }
++    /// <summary>Gets the separate nonserialized ordinary-Parties proof from the trusted key-bearing runner handoff.</summary>
++    [System.Text.Json.Serialization.JsonIgnore]
++    internal PlatformPartiesRunProof? PartiesRunProof { get; init; }
+     /// <summary>Gets the explicitly selected module class. Known reference technical owners need no override.</summary>
+     public bool? DomainModule { get; init; }
+     /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>
+diff --git a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+index 06142dc0..3d400c9a 100644
+--- a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
++++ b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+@@ -16,6 +16,8 @@ internal static class PlatformPackageCatalogQualification
+     /// <summary>Checks all finite inputs before image probes, filesystem rendering or resource allocation.</summary>
+     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
+     {
++        if (options.ActiveModule == "parties")
++            return PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
+         CompositionRunPlan? plan = options.RunPlan;
+         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+             || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+index dfcb20d7..01743830 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+@@ -27,6 +27,10 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
+             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
+         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
++        string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
++            : options.PartiesRunProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.FullPartiesName
++            : options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name
++            : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
+         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
+         string build = Path.Combine(workspace, "catalog-reader");
+         CompositionWorkspace.CreatePrivateDirectory(build);
+@@ -74,7 +78,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+         string request = Path.Combine(build, "request.json");
+         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
+         {
+-            qualificationCohort = options.Mapping.Mode == WorkspaceMode.Package && options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name : null,
++            qualificationCohort,
+             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
+             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
+diff --git a/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+new file mode 100644
+index 00000000..416d2db5
+--- /dev/null
++++ b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+@@ -0,0 +1,80 @@
++namespace Hexalith.Platform.Composition;
++
++using System.Runtime.InteropServices;
++using System.Security.Cryptography;
++using System.Text.Json;
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Platform.CatalogArtifacts;
++
++/// <summary>The finite ordinary-Parties public/image cohort; this does not grant candidate or runtime qualification.</summary>
++internal static class PlatformPartiesPackageCatalogQualification
++{
++    /// <summary>The selected current test declaration, including its actual additive lifecycle suite.</summary>
++    internal const string ActiveDeclarationHash = "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b";
++    /// <summary>The independently published backend declaration at source639; it has no lifecycle suite.</summary>
++    internal const string ReleasedDeclarationHash = "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504";
++
++    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _images = new Dictionary<string, (string, string)>(StringComparer.Ordinal)
++    {
++        ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.0", "2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"),
++        ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.0", "2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6"),
++        ["memories/server"] = ("registry.hexalith.com/memories:3.0.23", "f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b"),
++        ["memories/domain"] = ("registry.hexalith.com/memories-domain-service:3.0.23", "fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e"),
++        ["memories/clock"] = ("registry.hexalith.com/memories-access-telemetry-clock:3.0.23", "b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f"),
++        ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.23", "ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a"),
++        ["parties/domain"] = ("registry.hexalith.com/parties:3.0.0", "25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b"),
++    };
++
++    /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
++    internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
++        IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
++    {
++        if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
++            || options.PartiesRunProof?.Matches(options) != true
++            || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal)
++                .SequenceEqual(["eventstore", "memories", "parties", "tenants"], StringComparer.Ordinal)
++            || !servers.Select(Identity).Order(StringComparer.Ordinal).SequenceEqual(_images.Keys.Append("eventstore/gateway").Order(StringComparer.Ordinal), StringComparer.Ordinal)
++            || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
++            || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
++            || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
++            || !Snapshot(options, declarations, "parties", ActiveDeclarationHash)
++            || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes()
++            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts")
++            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
++            || !CompositionMatches(options, declarations)) throw Refusal();
++        return servers.Select(server =>
++        {
++            if (Identity(server) == "eventstore/gateway")
++                return server.Image is null && server.ProjectPath == options.EventStoreSeedProject ? server : throw Refusal();
++            var expected = _images[Identity(server)];
++            return server.Image == expected.Image && server.ImageDigest is null ? server with { ImageDigest = expected.Digest } : throw Refusal();
++        }).ToArray();
++    }
++
++    private static bool VersionsMatch(PlatformCompositionOptions options) => new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23"), ("parties", "3.0.0") }
++        .All(item => PlatformServerBindings.Version(options, item.Item1, "full-Parties qualification") == item.Item2);
++
++    private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)
++    {
++        PlatformModuleDeclaration selected = declarations.Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
++        PlatformModuleDeclaration authority = PlatformDeclarationSet.Load(options).Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
++        return Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(selected.Source))) == expected
++            && selected.Source == authority.Source && JsonElement.DeepEquals(selected.Declaration, authority.Declaration);
++    }
++
++    // The existing producer's ordinary closure identity has no additive-owner binding or MAC.
++    private static bool CompositionMatches(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations)
++    {
++        var selected = options.RunPlan!.SelectedTest;
++        string digest = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            modules = declarations.OrderBy(declaration => PlatformDeclarationSet.Id(declaration.Declaration), StringComparer.Ordinal)
++                .Select(declaration => new { declaration.Declaration, declaration.SourceHash }),
++            selected?.Mode, selected?.DaprRuntimeVersion, retention = false,
++        })));
++        return options.RunPlan.CompositionContentIdentity == digest;
++    }
++
++    private static string Identity(PlatformServerBinding server) => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId;
++    private static InvalidDataException Refusal() => new("The ordinary Parties package profile requires its exact qualified full owner/public/image cohort.");
++}
+diff --git a/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs b/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs
+new file mode 100644
+index 00000000..62a83ba1
+--- /dev/null
++++ b/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs
+@@ -0,0 +1,132 @@
++namespace Hexalith.Platform.Composition;
++
++using System.Security.Cryptography;
++using System.Text.Json;
++using Hexalith.Builds.Tooling.Filesystem;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++
++/// <summary>A nonserialized ordinary-Parties purpose proof issued only inside the trusted key-bearing ComposeRun call.</summary>
++/// <remarks>The ordinary plan has no issuer MAC. This proof preserves the verified parent handoff in memory; it is not candidate authority.</remarks>
++internal sealed class PlatformPartiesRunProof
++{
++    private readonly string _optionsDigest;
++    private readonly IReadOnlyDictionary<string, string> _files;
++
++    private PlatformPartiesRunProof(PlatformCompositionOptions options)
++    {
++        _optionsDigest = Digest(options);
++        _files = Inputs(options).Distinct(StringComparer.Ordinal).ToDictionary(path => path, Hash, StringComparer.Ordinal);
++    }
++
++    /// <summary>Checks actual parent plan, mapping, selected tests and source inputs before retaining their private in-memory binding.</summary>
++    internal static PlatformPartiesRunProof Create(PlatformCompositionOptions options, string signingKey)
++    {
++        Span<byte> key = stackalloc byte[48];
++        if (!Convert.TryFromBase64String(signingKey, key, out int size) || size != key.Length)
++            throw Refusal();
++        CryptographicOperations.ZeroMemory(key);
++        Validate(options);
++        return new(options);
++    }
++
++    /// <summary>Refuses replay or mutable plan, source, mapping, declaration, configuration or test inputs before composition effects.</summary>
++    internal bool Matches(PlatformCompositionOptions options)
++    {
++        try
++        {
++            Validate(options);
++            return Digest(options) == _optionsDigest && _files.All(pair => Hash(pair.Key) == pair.Value);
++        }
++        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException or InvalidOperationException)
++        {
++            return false;
++        }
++    }
++
++    private static void Validate(PlatformCompositionOptions options)
++    {
++        CompositionRunPlan plan = options.RunPlan ?? throw Refusal();
++        SourceMapping mapping = options.Mapping;
++        PlatformIdentity identity = mapping.PlatformIdentity ?? throw Refusal();
++        if (plan.Schema != CompositionRunPlan.SupportedSchema || !CompositionRunPlanFactory.IsRunId(plan.RunId)
++            || !CompositionRunPlanFactory.IsRunId(plan.AttemptId) || !CompositionRunPlanFactory.IsRunId(plan.EnvironmentId)
++            || new[] { plan.RunId, plan.AttemptId, plan.EnvironmentId }.Distinct(StringComparer.Ordinal).Count() != 3
++            || plan.CandidatePolicy is not null || plan.QualificationOwners is not null || plan.QualificationOwnersBinding is not null
++            || options.QualificationOwners.Count != 0 || options.ActiveModule != "parties" || plan.PlatformActiveModule != "parties"
++            || mapping.Mode != WorkspaceMode.Package || !mapping.HasGit || mapping.ActiveModule != "Hexalith.Parties"
++            || plan.SourceMappingHash != mapping.ContentHash || options.PlatformRoot != identity.PlatformPath
++            || identity.Commit != identity.CompositionCommit || identity.Commit != identity.CheckoutCommit
++            || options.EnvironmentId is not null && options.EnvironmentId != plan.EnvironmentId
++            || !options.DeclarationPaths.SequenceEqual(plan.PlatformDeclarationPaths, StringComparer.Ordinal)
++            || plan.PlatformDeclarationPaths.Count != 1 || plan.SelectedTest is null || plan.SelectedTests.Count is < 1 or > 2
++            || plan.SelectedTests[0] != plan.SelectedTest || plan.SelectedTests.Select(test => test.Name).Distinct(StringComparer.Ordinal).Count() != plan.SelectedTests.Count)
++            throw Refusal();
++        string declaration = Path.Combine(mapping.Root, "module", "hexalith.module-manifest.v2.json");
++        if (plan.PlatformDeclarationPaths[0] != declaration || !Hash(declaration).Equals(plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase))
++            throw Refusal();
++        SourceMapping persisted = SourceMapping.LoadVerified(Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), mapping.ContentHash);
++        if (persisted.ContentHash != mapping.ContentHash) throw Refusal();
++        CompositionRunPlan recorded = CompositionDocumentStore.TryReadAsync<CompositionRunPlan>(Path.Combine(plan.Workspace, "plan.json"), CancellationToken.None)
++            .GetAwaiter().GetResult() ?? throw Refusal();
++        if (CompositionDocumentStore.Serialize(recorded) != CompositionDocumentStore.Serialize(plan)) throw Refusal();
++        ValidateTests(plan, declaration, mapping.Root);
++        SourceMappingEntry active = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties");
++        SourceMappingEntry builds = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds");
++        if (active.Origin != "source" || active.Path != mapping.Root || builds.Origin != "source" || builds.Path is null
++            || Git(identity.PlatformPath, "rev-parse", "HEAD") != identity.CheckoutCommit
++            || Git(builds.Path, "rev-parse", "HEAD") != identity.CatalogCommit
++            || new[] { mapping.Root, identity.PlatformPath, builds.Path }.Any(root => Git(root, "status", "--porcelain", "--untracked-files=normal").Length != 0))
++            throw Refusal();
++    }
++
++    private static void ValidateTests(CompositionRunPlan plan, string declaration, string root)
++    {
++        using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
++        JsonElement tests = document.RootElement.GetProperty("modules").EnumerateArray()
++            .Single(module => module.GetProperty("identity").GetProperty("moduleId").GetString() == "parties").GetProperty("tests");
++        foreach (ModuleTestSelection selected in plan.SelectedTests)
++        {
++            if (selected.ModuleId != "parties" || selected.Mode != "package" || selected.Name is not ("platform-package" or "lifecycle-package")
++                || !RepositoryPathResolver.TryResolveExistingFile(root, selected.Entry, out string? entry)
++                || selected.Entry.StartsWith("references/", StringComparison.OrdinalIgnoreCase)
++                || !Hash(entry).Equals(selected.EntryHash, StringComparison.OrdinalIgnoreCase)
++                || !Hash(declaration).Equals(selected.ManifestHash, StringComparison.OrdinalIgnoreCase)) throw Refusal();
++            JsonElement declared = tests.EnumerateArray().Single(test => test.GetProperty("name").GetString() == selected.Name);
++            if (declared.GetProperty("entry").GetString() != selected.Entry || declared.GetProperty("mode").GetString() != selected.Mode
++                || declared.GetProperty("executor").GetString() != selected.Executor
++                || declared.GetProperty("executionTimeoutSeconds").GetInt32() != selected.ExecutionTimeoutSeconds
++                || declared.GetProperty("stopTimeoutSeconds").GetInt32() != selected.StopTimeoutSeconds) throw Refusal();
++        }
++    }
++
++    private static IEnumerable<string> Inputs(PlatformCompositionOptions options)
++    {
++        CompositionRunPlan plan = options.RunPlan!;
++        return options.DeclarationPaths.Concat(plan.SelectedTests.Select(test => Path.Combine(options.Mapping.Root, test.Entry)))
++            .Concat([Path.Combine(plan.Workspace, "plan.json"), Path.Combine(plan.Workspace, "source-mapping", "mapping.json"),
++                Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"),
++                Path.Combine(plan.Workspace, "source-mapping", "pinned-tree", "Props", "Directory.Packages.props"),
++                options.Mapping.PlatformIdentity!.RecordPath,
++                options.EventStoreSeedProject ?? throw Refusal(), plan.PlatformModelAssemblyPath ?? throw Refusal()]);
++    }
++
++    private static string Git(string root, params string[] arguments)
++    {
++        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None)
++            .GetAwaiter().GetResult();
++        return result.ExitCode == 0 && !result.TimedOut && !result.OutputTruncated ? result.Output.Trim() : throw Refusal();
++    }
++
++    private static string Hash(string path)
++    {
++        FileInfo file = new(path);
++        if (!Path.IsPathFullyQualified(path) || !file.Exists || file.Length > 4 * 1024 * 1024 || file.LinkTarget is not null) throw Refusal();
++        for (DirectoryInfo? directory = file.Directory; directory is not null; directory = directory.Parent)
++            if (directory.LinkTarget is not null) throw Refusal();
++        return Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
++    }
++
++    private static string Digest(PlatformCompositionOptions options) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(options)));
++    private static InvalidDataException Refusal() => new("The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.");
++}

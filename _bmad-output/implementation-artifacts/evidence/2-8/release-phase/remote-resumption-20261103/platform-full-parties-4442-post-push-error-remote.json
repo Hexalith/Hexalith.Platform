@@ -1,0 +1,17 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "ls-remote",
+    "origin",
+    "refs/heads/main",
+    "refs/heads/feat/qualify-full-parties-package"
+  ],
+  "exitCode": 0,
+  "observedAt": "2026-11-04T10:28:06.337968+00:00",
+  "refs": {
+    "refs/heads/feat/qualify-full-parties-package": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "refs/heads/main": "991e2df97dc8493e41096006b0d3203a71730ae8"
+  }
+}

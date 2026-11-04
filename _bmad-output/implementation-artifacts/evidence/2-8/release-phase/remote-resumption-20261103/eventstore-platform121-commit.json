@@ -1,0 +1,29 @@
+[
+  {
+    "argv": [
+      "git",
+      "add",
+      "--",
+      ".config/dotnet-tools.json",
+      ".github/workflows/ci.yml",
+      "docs/ci.md",
+      "references/Hexalith.Builds",
+      "references/Hexalith.Platform",
+      "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "warning: in the working copy of 'tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs', CRLF will be replaced by LF the next time Git touches it\n"
+  },
+  {
+    "argv": [
+      "git",
+      "commit",
+      "--file",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform121-commit-message.txt"
+    ],
+    "exitCode": 0,
+    "stdout": "[fix/adopt-platform-117 a0c65bec4] ci: qualify fresh EventStore package integration with Tenants\n 6 files changed, 33 insertions(+), 20 deletions(-)\n",
+    "stderr": ""
+  }
+]

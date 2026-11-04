@@ -1,0 +1,36 @@
+test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) ... 
+  test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='lifecycle-15093733e66ef4d19b467ee1db11acd49d265ba28b105fa2969d7bb379f51073.json') ... FAIL
+  test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='native-4aedfb2782fbc4ef4b730ec2cccf0852c71a09c38b340a002f5d335f2a8d220f.trx') ... FAIL
+  test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='functional-observations-90d9f970a70291d38ea1a0e6c1f0ce8d5e94f65468e75db1a2c6ff879f000bb2.json') ... FAIL
+
+======================================================================
+FAIL: test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='lifecycle-15093733e66ef4d19b467ee1db11acd49d265ba28b105fa2969d7bb379f51073.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 116, in test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry
+    self.assertTrue((self.evidence / filename).is_file(), "Published diagnostic must survive owned cleanup.")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Published diagnostic must survive owned cleanup.
+
+======================================================================
+FAIL: test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='native-4aedfb2782fbc4ef4b730ec2cccf0852c71a09c38b340a002f5d335f2a8d220f.trx')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 116, in test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry
+    self.assertTrue((self.evidence / filename).is_file(), "Published diagnostic must survive owned cleanup.")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Published diagnostic must survive owned cleanup.
+
+======================================================================
+FAIL: test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry (test_run_module_integration.IntegrationTests.test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry) (reference='functional-observations-90d9f970a70291d38ea1a0e6c1f0ce8d5e94f65468e75db1a2c6ff879f000bb2.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py", line 116, in test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry
+    self.assertTrue((self.evidence / filename).is_file(), "Published diagnostic must survive owned cleanup.")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Published diagnostic must survive owned cleanup.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.011s
+
+FAILED (failures=3)

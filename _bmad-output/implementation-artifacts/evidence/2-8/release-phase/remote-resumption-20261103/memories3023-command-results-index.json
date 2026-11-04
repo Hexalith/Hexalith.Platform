@@ -1,0 +1,673 @@
+{
+  "observedAt": "2026-11-04T04:59:26.430588+00:00",
+  "commands": [
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.aspire/3.0.23/hexalith.memories.aspire.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "f17fedd511e3f2b64010cb9aacb8b10c4d2b1580c618b51323231a2d59b8e758"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.contracts/3.0.23/hexalith.memories.contracts.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "c64fc4172c1523d45767a266ce6bf250b0ccf783b658f99897d4d5e25aaa3983"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.client.rest/3.0.23/hexalith.memories.client.rest.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "095e5fe8674e429504c7e44cef077959b3ffe62bfd23dfbf586dd4cda88f9282"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.redis/3.0.23/hexalith.memories.redis.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "92995913a664486a2fe976e824bab41043671263b813a54418cfdec9d4d1020b"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.cli/3.0.23/hexalith.memories.cli.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "81fbaac23d1ec565495730f049abad25ec3953bf8f7c7e4df8329fe93ea909a9"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.mcp/3.0.23/hexalith.memories.mcp.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "8b70eb34b3677cff128a6da79e689c0b20d316f697ea10f7f9ceb469d81c06a9"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.servicedefaults/3.0.23/hexalith.memories.servicedefaults.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "2a6db63539d7cd5c65e41eb4c9004e32cbd3bda9b899fb91a11ef5950fe7d62c"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstore/3.0.23/hexalith.memories.eventstore.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "4d569db4e4f99fb4efdeb2cf9b87c46c3d97834094ba869c0ace915f4cf7d3ba"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.telemetry/3.0.23/hexalith.memories.telemetry.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "b931066554f4d83971b03a4ade555c5af7870b802dbf5cc625c9beef0dfcebd3"
+    },
+    {
+      "operation": "public HTTPS GET",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstoreextensions/3.0.23/hexalith.memories.eventstoreextensions.3.0.23.nupkg",
+      "result": "downloaded",
+      "sha256": "b97a1a661bdcdd042fe797ac691b585e641d59f56db9ca2f9a1243221f8966fc"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Aspire.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Aspire.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Cli.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Cli.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Client.Rest.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Client.Rest.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Contracts.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Contracts.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.EventStore.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.EventStore.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.EventStoreExtensions.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.EventStoreExtensions.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Mcp.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Mcp.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Redis.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Redis.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.ServiceDefaults.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.ServiceDefaults.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/official-nuget/Hexalith.Memories.Telemetry.3.0.23.nupkg",
+        "--all",
+        "--verbosity",
+        "detailed"
+      ],
+      "exitCode": 0,
+      "log": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/Hexalith.Memories.Telemetry.3.0.23-signature.txt"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Commons.UniqueIds.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Client.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-b858c8fa9b412f8c0f609a4d45d02b181bf8f251032f92ea86dcfa25a593c3a2.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-197f57905405864ebf23692eb7003d820df5bd7338d5462a06f6026a62b4ec81.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.DomainService.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-069b0433a75b7964447ccef2e9008bda50d81bf5ed8d4bd45372f51e1ca6010a.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.ServiceDefaults.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a6ba3a8dfeef535d1bf20fe5f7dd649f93d1c74c5f273071e6f6f5f4da0d87ba.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-5ff6e4934a594d021c5d56d1f9651ddf30b8645cb7be0bf279763dca2f2f0062.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-b7b241fa22ec443d856acdc6b22c74754ebb88a0ced9755e465d72e452406cc5.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.EventStore.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-db75fd0eed1b99d9a6c9a11893a08e87b688eb9c41c0cc509e402920dad14f9f.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Server.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-f25d8cbc59f55376886f3220b77868cea44fa857c2777103e1c87fcdb791bfa3.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.ServiceDefaults.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-92e71a8dc652feaf7d3d4beb9fbdc4793804e562165a90bb7db248fc1b62e69c.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Telemetry.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-865dab6b0668b9d4c9257ec12bee927bafe2c59d5b3bdb78c2a138fea7faac70.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Client.Rest.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-ac6ca4af3b2453e2cd1a7b56c5b295a6659a96591871b65cbb9d16f29ab67bd6.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Mcp.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a6c97bf6e6075e7a0014ddb64cf927a41ea0ea28dd14e358ec1e5d887cdeb6b3.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry/app/Hexalith.Memories.AccessTelemetry.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-5825c7e04e19c57e1a0b0d76c1cc44da11c25b750c78b7b18e659695405dc90f.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a066e51a3b2d09b5d32eedba3211c41f87f50d4b2ab18b7e6152c3b0289a478d.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.Memories.DomainService.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadata": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-f23ea4b45ee8279d4011b64e9de94eb7828d78c0d1b33f04892de8081b02f7ea.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "member",
+        "Hexalith.Memories.DomainService.Program",
+        "--library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.Memories.DomainService.dll",
+        "-m",
+        "Main",
+        "-S",
+        "IL",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/dotnet-inspect-domain-main-il.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "member",
+        "Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions",
+        "--library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.EventStore.DomainService.dll",
+        "-m",
+        "UseEventStoreDomainService",
+        "-S",
+        "IL",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/dotnet-inspect-sdk-use-il.json"
+    },
+    {
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "member",
+        "Hexalith.EventStore.DomainService.DevelopmentDomainRouteCatalog",
+        "--library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.EventStore.DomainService.dll",
+        "-m",
+        "AddEventStoreDevelopmentDomainCatalog",
+        "-S",
+        "IL",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/dotnet-inspect-sdk-catalog-il.json"
+    }
+  ],
+  "registryRequests": [
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/manifests/3.0.23",
+      "status": 200,
+      "verifiedDigest": "sha256:676dc45fcbb6abf8b3e44ff13b78dba0794e081418611f23ac0ee0ffff92c4a1"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/manifests/sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b",
+      "verifiedDigest": "sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:8b962d71d89a4d9e62dc0180844641ac1cf6efd82b9b3000c21f65093a62f3d5",
+      "verifiedDigest": "sha256:8b962d71d89a4d9e62dc0180844641ac1cf6efd82b9b3000c21f65093a62f3d5"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/manifests/sha256:2260f7699e711d36f3d5b4cb1fb27150dc5c76a7c82d0955a682b28cd5e5f4df",
+      "verifiedDigest": "sha256:2260f7699e711d36f3d5b4cb1fb27150dc5c76a7c82d0955a682b28cd5e5f4df"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:c3e4882b19d63f7e5b47b958fb626cda2f1c978d80927d1f939c4572e3520ece",
+      "verifiedDigest": "sha256:c3e4882b19d63f7e5b47b958fb626cda2f1c978d80927d1f939c4572e3520ece"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/manifests/3.0.23",
+      "status": 200,
+      "verifiedDigest": "sha256:c43ca2dff4b31358a4b8122737220a4c0f705ea4bb8384339d215ae92eb7ad1e"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/manifests/sha256:a731e63376869e0f133536f9725a5cecd37562ece50aedbea8c0be1eb74af702",
+      "verifiedDigest": "sha256:a731e63376869e0f133536f9725a5cecd37562ece50aedbea8c0be1eb74af702"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/blobs/sha256:8e430f04e2f25beb374b74fdcb8fa9a1b1f3152c8c991c86b9ae6a4b3053e400",
+      "verifiedDigest": "sha256:8e430f04e2f25beb374b74fdcb8fa9a1b1f3152c8c991c86b9ae6a4b3053e400"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/manifests/sha256:7dc0586124c161a739b9cbffefa56004ad26e64c338913fecfb2873ac42e2183",
+      "verifiedDigest": "sha256:7dc0586124c161a739b9cbffefa56004ad26e64c338913fecfb2873ac42e2183"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/blobs/sha256:b18988a5f6c0438b0cb937f118a78cfd657ef1a91f9db5370d844f2ea74dcbd7",
+      "verifiedDigest": "sha256:b18988a5f6c0438b0cb937f118a78cfd657ef1a91f9db5370d844f2ea74dcbd7"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/manifests/3.0.23",
+      "status": 200,
+      "verifiedDigest": "sha256:253742621f58e474edbb4766e92d45c740fa72e7095c220044a4c047bef42676"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/manifests/sha256:ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a",
+      "verifiedDigest": "sha256:ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/blobs/sha256:9746efec7e90c722cb52373c48c6246f3d03386a171e71600c17134a9bf203d2",
+      "verifiedDigest": "sha256:9746efec7e90c722cb52373c48c6246f3d03386a171e71600c17134a9bf203d2"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/manifests/sha256:2cb5257d36ab0d449ff45add871f98b2d4359a3e5330e39a31bfdb5cff4d58d2",
+      "verifiedDigest": "sha256:2cb5257d36ab0d449ff45add871f98b2d4359a3e5330e39a31bfdb5cff4d58d2"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/blobs/sha256:c8263559bb9c0cb7e381945917c2224597b12acfe4cde3bf34f5216c0a9e99a4",
+      "verifiedDigest": "sha256:c8263559bb9c0cb7e381945917c2224597b12acfe4cde3bf34f5216c0a9e99a4"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/manifests/3.0.23",
+      "status": 200,
+      "verifiedDigest": "sha256:8c0837bf25a772c08a650df33e850db6132f8452c4592ee8aa8d19713d49da28"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/manifests/sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f",
+      "verifiedDigest": "sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/blobs/sha256:d63ce60af5ca5e09dcaf7edcaea2bc46aa6d92a4b8012fd9d97f324dfbda787f",
+      "verifiedDigest": "sha256:d63ce60af5ca5e09dcaf7edcaea2bc46aa6d92a4b8012fd9d97f324dfbda787f"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/manifests/sha256:cc05b5ad55a89d3a37f148044e65e205c632a7fe3f4a0422920891cde441d1fb",
+      "verifiedDigest": "sha256:cc05b5ad55a89d3a37f148044e65e205c632a7fe3f4a0422920891cde441d1fb"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/blobs/sha256:043ca576bb47c8eb780604694b770a8c14eacc06f4f2db1b505cd6fc34bab994",
+      "verifiedDigest": "sha256:043ca576bb47c8eb780604694b770a8c14eacc06f4f2db1b505cd6fc34bab994"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/manifests/3.0.23",
+      "status": 200,
+      "verifiedDigest": "sha256:ab4c2cf8d3ceb43117b161a5231eba6a0e29b7ae8c4e8380f49d57c6d82f33ff"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/manifests/sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
+      "verifiedDigest": "sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/blobs/sha256:7d88da85b38ffbbfce617ec7a3fa7bf509b52f246fe817c74da1a0cdbbabb349",
+      "verifiedDigest": "sha256:7d88da85b38ffbbfce617ec7a3fa7bf509b52f246fe817c74da1a0cdbbabb349"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/manifests/sha256:08d46f327475f8c780c7ec315c31b0ab7ae764cea2d774b8001fa2591761000e",
+      "verifiedDigest": "sha256:08d46f327475f8c780c7ec315c31b0ab7ae764cea2d774b8001fa2591761000e"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/blobs/sha256:ca5b25f8cc26bcdc49b95d912ac0cca6b245447e69ece591bc0c5c6b111c4402",
+      "verifiedDigest": "sha256:ca5b25f8cc26bcdc49b95d912ac0cca6b245447e69ece591bc0c5c6b111c4402"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+      "verifiedDigest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:f1a51f5ffc37d4b0b4eb345ddb7c2a704354ee6af14b20d76a32fa882efd0006",
+      "verifiedDigest": "sha256:f1a51f5ffc37d4b0b4eb345ddb7c2a704354ee6af14b20d76a32fa882efd0006"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:83301d18cf30e6b349228287f7e849691cc2fb6f300ea50fc12bb24c513ca925",
+      "verifiedDigest": "sha256:83301d18cf30e6b349228287f7e849691cc2fb6f300ea50fc12bb24c513ca925"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:77e9b76dcc1728e044fc9c934f2b482eddca87bfce99e351b4704c3ee3de8415",
+      "verifiedDigest": "sha256:77e9b76dcc1728e044fc9c934f2b482eddca87bfce99e351b4704c3ee3de8415"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:37f410eb48ed677cb8cf4ab52bfa6d310a0a8c256af19201901967b709d8b38d",
+      "verifiedDigest": "sha256:37f410eb48ed677cb8cf4ab52bfa6d310a0a8c256af19201901967b709d8b38d"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:1254b4746ba9844abd08ea79379bf6f9f3decec0692f9012316056b22fa457ee",
+      "verifiedDigest": "sha256:1254b4746ba9844abd08ea79379bf6f9f3decec0692f9012316056b22fa457ee"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories/blobs/sha256:10a9066417223dec3d9fd16153b0cfae3ed2c2cf9378c9352c7d399903385e60",
+      "verifiedDigest": "sha256:10a9066417223dec3d9fd16153b0cfae3ed2c2cf9378c9352c7d399903385e60"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-mcp/blobs/sha256:700b6e7f893a028eba139db496fdd8d83d6f152d9327aa90e6a4b48bf19871f9",
+      "verifiedDigest": "sha256:700b6e7f893a028eba139db496fdd8d83d6f152d9327aa90e6a4b48bf19871f9"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry/blobs/sha256:b06e622597c002de54d4efc386673e0af3b0cc503fb9d68344167acf530de109",
+      "verifiedDigest": "sha256:b06e622597c002de54d4efc386673e0af3b0cc503fb9d68344167acf530de109"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-access-telemetry-clock/blobs/sha256:0fb53e37f887e331fae3990e9b49cb14f2afb73088e7a845056fa454ef74e012",
+      "verifiedDigest": "sha256:0fb53e37f887e331fae3990e9b49cb14f2afb73088e7a845056fa454ef74e012"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.hexalith.com/v2/memories-domain-service/blobs/sha256:c2b4b5c231490f1ada0f3811e4732b92d0d62a6b84c3c62db0536c4d86f8b081",
+      "verifiedDigest": "sha256:c2b4b5c231490f1ada0f3811e4732b92d0d62a6b84c3c62db0536c4d86f8b081"
+    }
+  ],
+  "registryAuthentication": "existing ci-reader600 custody loaded internally; no credential/header on argv/output",
+  "registryChildHttpStatusLimit": "Exact child/config/layer HTTP statuses were not serialized; successful bytes/digests and index200 statuses retained",
+  "staticInspectorVersion": "0.27.0",
+  "nugetPackageCache": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/nuget",
+  "firstControlFailures": [
+    {
+      "phase": "GitHub file retrieval parsing",
+      "finding": "contents connector returned decoded YAML rather than REST JSON; metadata parser corrected, no source failure"
+    },
+    {
+      "phase": "static inspection CLI syntax",
+      "command": "library DLL -D sections --json",
+      "result": "section sections not found; plain library metadata later succeeded"
+    },
+    {
+      "phase": "static inspection CLI syntax",
+      "command": "library DLL --json -n30",
+      "result": "rendered-line selection incompatible with JSON; unbounded metadata saved privately"
+    },
+    {
+      "phase": "static inspection CLI source selection",
+      "command": "member Program --package DLL",
+      "result": "configured authority expects package ID; corrected --library returned static method and IL"
+    }
+  ],
+  "candidateAcceptance": false
+}

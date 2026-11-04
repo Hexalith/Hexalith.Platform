@@ -1,0 +1,11 @@
+The v2 integration finalizer currently drops content-addressed diagnostics declared by the published test result. Retain only the exact receipt-bound redacted lifecycle, native report and functional observations, with bounded private-file reads and SHA-256 checks. Publish complete fsynced bytes through Linux no-replace rename so an interrupted collector can retry without overwriting immutable evidence. Collection failures remain separate from the original native outcome and follow exact cleanup.
+
+Select the already published Memories 3.0.23/source82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f and its unchanged declaration snapshot. Refresh only that family's normal audit records; preserve all other catalog selections and existing Platform admission.
+
+Validation:
+- 41 helper controls, including real child-process interruption and retry, strict link/content refusals, partial-write/publication failures and metadata above1MiB.
+- 95 provenance controls,16 package-preparation controls, legacy411/v2254 workflow assertions.
+- 34 declaration/closure tests and101 platform catalog scenarios; normal authoritative catalog and audit checks pass.
+- Complete normal Release/package qualification is running at the exact proposed source; its initial Release build and191 evidence tests passed. This result is pending and supplies no hosted/native acceptance.
+
+The preserved first package-qualification attempt at predecessor9369 failed four fixture-cache tests because an injected NUGET_PACKAGES overrode each fixture's NuGet.Config. All four unchanged cases pass with the global override unset; the final-source normal qualification uses that environment. No assertions or producer cache policy changed. No publication, accepted dependency pin, Platform admission or Story2.8 native/lifecycle acceptance is claimed.

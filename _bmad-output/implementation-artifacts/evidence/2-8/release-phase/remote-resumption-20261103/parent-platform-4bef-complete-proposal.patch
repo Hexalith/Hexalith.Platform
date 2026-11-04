@@ -1,0 +1,2257 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index 7fd047607fcf85ec6286bec8fa449d5c432fa500..751c20f3ca9ce3decfa8d06b62b2b2599976adee 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "4.44.0",
++      "version": "4.44.2",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.gitattributes b/.gitattributes
+index f42eeb214de83680fab82fce0f6334a7ed657045..3dbb13e2cf961a2f4a84b73c82f62f179a358c4e 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -87,3 +87,6 @@ docs/implementation/story-1-17-main-mapping-approval-2026-11-02.md text eol=lf
+ 
+ # Preserve the measured C# source and recognize its required CRLF line endings.
+ tests/Hexalith.Platform.Composition.Tests/ConversationsCatalogSourceVerificationTests.cs -text diff whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
++
++# Preserve the measured active Parties lifecycle declaration fixture bytes.
++tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json -text
+diff --git a/README.md b/README.md
+index 641062c2fd830d178c24814b848ac2a05615785a..fba825e35913afdbc97d4dff5e34132ce8108d0d 100644
+--- a/README.md
++++ b/README.md
+@@ -36,11 +36,11 @@ dotnet tool restore
+ dotnet tool run hexalith-module --version
+ ```
+ 
+-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.0`,
+-with range `[4.44.0, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
+-exact [v4.44.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-source `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, published by successful normal
+-[release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
++The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.2`,
++with range `[4.44.2, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
++exact [v4.44.2 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, published by successful normal
++[release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
+ The catalog and observed signed package identities are recorded in
+ [`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
+ gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
+@@ -112,9 +112,11 @@ Local Debug defaults retain source references. For owner CI,
+ verified signed tool archive, including the host dependency manifest and MVC
+ Testing content root. CI rejects foreign project references and changed extracted
+ bytes, requires clean recorded source, builds Release and enforces the declared
+-suite counts. The required profile preserves the prior 160 cases and adds 23
+-finite-cohort controls, five actual `ComposeRun` controls, eight private
+-package-reader controls and five declared-channel controls, for 201 cases.
++suite counts. The required profile preserves the prior 201 E/T, reader and
++channel cases, adds 37 Parties proof cases, three actual mapped-owner cases,
++21 full entry cases and nine full reader cases, for 271 required cases.
++Local signed-tool component results and audit-only graph checks remain distinct
++from the mandatory exact-HEAD hosted tuple and real native qualification.
+ Every group must execute its exact count with no errors, failures, skips or unrun
+ cases. Before and after those tests, the result records the actual test assembly,
+ five SDK/Tenants dependency hashes and operating-system/architecture
+@@ -179,7 +181,7 @@ Parties' owner-led enrollment; see the
+ Use the [enrollment guide](docs/domain-module-enrollment.md) and
+ [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
+ direct-only initialization, source mapping, Dapr conventions, hosting inventory
+-and human SM-2 evidence. The accepted `4.35.2` tool provides read-only
++and human SM-2 evidence. The pinned published `4.44.2` tool provides read-only
+ `validate --adoption` reports in human and JSON formats. Static reports leave
+ SM-2 for the module owner to demonstrate. See
+ [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
+@@ -427,3 +429,7 @@ rollback composition until that gate passes.
+ ## Owner
+ 
+ Platform Maintainer (Hexalith).
++
++The [package catalog qualification boundary](docs/package-catalog-qualification.md)
++documents the separate finite ordinary Parties source proposal, measured public
++and image roles, and pending genuine tuple/native qualification.
+diff --git a/docs/current-tuple-preparation.md b/docs/current-tuple-preparation.md
+index 38de7190871a2daaeb4399eebecf05a6c783617a..a020a96b4df45ab62ef85576e4effc73de9b413a 100644
+--- a/docs/current-tuple-preparation.md
++++ b/docs/current-tuple-preparation.md
+@@ -1,13 +1,14 @@
+ # Current tuple preparation
+ 
+-> Historical preparation record. Current owner configuration selects published
+-> [Builds v4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-> at `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, from successful normal
+-> [release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+-> Observed signed archive, Tooling and inventory identities are in
+-> [`eng/builds-tuple.json`](../eng/builds-tuple.json). Fresh recorded Platform
+-> tuple qualification (188 required cases), the catalog matrix and real package
+-> runtime evidence remain separate requirements.
++> Historical preparation record. Current proposed owner configuration selects
++> [Builds v4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++> at `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, from successful normal
++> [release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661),
++> with supported floor `4.44.2`. Actual signed archive, Tooling and inventory
++> identities are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
++> The required profile contains 271 cases. Local signed-tool component checks
++> and audit-only graph checks do not replace pending exact-HEAD hosted tuple,
++> catalog-matrix and real package-runtime qualification.
+ > The procedure below preserves the earlier unqualified candidate and its
+ > historical authorization context; it does not describe current acceptance.
+ 
+diff --git a/docs/domain-module-enrollment.md b/docs/domain-module-enrollment.md
+index a2553baddf9ab19511c5f20294e1d2b3947284ee..36fedb34e9fd060224ed52834b6cf6c51a8a0b95 100644
+--- a/docs/domain-module-enrollment.md
++++ b/docs/domain-module-enrollment.md
+@@ -1,12 +1,14 @@
+ # Enroll a domain module
+ 
+ The module owner uses this kit to prepare enrollment in Platform. Static validation
+-and the human demonstration are separate gates. The accepted published tool is
+-`4.35.2`, including ordinary declaration validation and the read-only `--adoption`
+-report. Copy the exact pin from the direct Platform checkout as described below.
+-[Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
+-records owner approval, gated publication and fresh acceptance. Static PASS rows
+-leave the owner's live SM-2 demonstration separately unverified.
++and the human demonstration are separate gates. This proposed Platform source
++pins the genuine published tool `4.44.2`, including ordinary declaration validation
++and the read-only `--adoption` report. Copy the exact pin from the selected direct
++Platform checkout as described below; the [tuple binding](../eng/builds-tuple.json)
++records its public package and source identities. The original
++[enrollment release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
++remains historical. Source/component checks and published tooling leave the
++owner's live SM-2 demonstration separately unverified.
+ 
+ ## 1. Declare and initialize the minimum workspace
+ 
+diff --git a/docs/package-catalog-qualification.md b/docs/package-catalog-qualification.md
+index b2314958509e4e544090d1eb12b9389e13bc58a2..18c9ced562c842252c72b70368a2fd3f88e360a3 100644
+--- a/docs/package-catalog-qualification.md
++++ b/docs/package-catalog-qualification.md
+@@ -7,7 +7,7 @@ production declaration and native test facts stay unchanged. Selection preserves
+ every declared dependency; it does not remove Memories from a default or domain
+ composition that already requires it.
+ 
+-Platform admits only the following additive package profile:
++The existing additive package profile remains:
+ 
+ - A Development run on Linux/x64, owned by a fresh EventStore package test.
+ - The canonical additional owner set is exactly `tenants`.
+@@ -47,29 +47,32 @@ DLLs. A bounded compiled-reader comparison produced identical canonical catalogs
+ for those two owner inputs; that observation is compatibility evidence, not a
+ claim that their binaries are identical or that every runtime request is proven.
+ 
+-Memories `3.0.18` remains refused. Its ordinary domain image lacks the required
+-EventStoreExtensions artifact, and the retained publication evidence does not bind
+-the observed image digests to a source revision. Its package adapter compilation
+-alone does not establish image or runtime eligibility. Future SDK or owner versions
+-require new finite artifact and runtime qualification.
+-
+-Published [Builds 4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+-contains the owner-selection and seed receiver changes. Its exact source is
+-`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, released through successful normal
+-[run 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+-The released seed compiles its technical receiver against the resolved public Gateway
+-`4.0.4` package. The [Platform tuple](../eng/builds-tuple.json) records the observed
+-signed archive, embedded Tooling and inventory identities. Its catalog still
+-selects SDK `4.0.4` from producer
+-`326bfef884543cdbcaf96de7f4c4ad378dbad6d7`; this tooling adoption introduces no new
+-SDK or owner cohort.
+-
+-Fresh recorded Platform qualification must use those published artifacts and
+-execute all 188 required cases, including the 28 finite admission/entry-point
+-controls, plus the catalog compatibility matrix. The before/after test-output
+-receipt binds the actual test assembly and five SDK/Tenants DLLs to its OS and
+-architecture. Local source assemblies and prior component receipts do not replace
+-that fresh evidence or the subsequent real package run.
++The earlier Memories `3.0.18` output did not qualify the full Parties profile. Its measured domain
++image omits EventStoreExtensions. That omission alone does not demonstrate a
++missing runtime dependency: the actual domain capture uses compiled owner
++contracts, installed receivers and empty intent admission; the public adapter
++factories run in the catalog reader and gateway. The independently authenticated
++`3.0.23` image/source measurements preserve this distinction. They establish no
++real wire, bootstrap or health qualification.
++
++This proposal adopts published [Builds 4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
++at exact source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, produced by normal
++[release run 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
++The [recorded tuple](../eng/builds-tuple.json) binds the actual signed archive,
++embedded Tooling, inventory and catalog; the local tool and supported floor are
++both `4.44.2`. This catalog genuinely selects Memories `3.0.23` and FrontComposer
++`4.7.6`, while SDK `4.0.4`, Tenants `7.0.0` and Parties `3.0.0` retain their
++existing released provenance. Published package bodies remain separate from
++image bodies and active test source.
++
++The required source profile contains 271 cases: the existing 201 E/T, token,
++source and analyzer cases, 37 Parties proof cases, three real mapped-owner cases,
++and 30 full entry/reader cases. The latter 33 additions actually executed without
++skips after coherent tuple adoption. Each full negative first proves its genuine
++positive baseline. Fresh exact-committed-source execution of the complete profile,
++the four-SDK matrix and real runtime qualification remain separate gates.
++The test-output receipt binds actual output bytes to the executing OS and
++architecture; local component results never replace hosted tuple qualification.
+ 
+ Component tests, signature checks, compiled-owner comparisons and reader refusal
+ controls are supporting evidence. Accepted package execution still requires the
+@@ -77,3 +80,103 @@ normal published tool/source bindings and a real package run. The 600-second
+ startup bound, all health checks, writer-protocol cutover condition, source/byte
+ guards and exact-run cleanup remain mandatory. No package runtime or Works Story
+ 4.9 acceptance follows from this preparation alone.
++
++
++The finite ordinary Parties source proposal adds a separate full-cohort boundary.
++It now adopts the genuine Builds `4.44.2` publication and exact Memories `3.0.23`
++provenance. Its source/component controls preserve the existing E/T and token
++boundary; source proof and probe doubles do not establish live compatibility.
++
++The profile selects Development Linux/x64, a fresh ordinary Parties package test,
++and only its actual `platform-package` or `lifecycle-package` suite. Parties
++already declares EventStore, Tenants and Memories: the plan has no additive
++QualificationOwners or binding. This keeps the existing ordinary same-job
++attachment path available; the separate expanded-owner attachment refusal is
++unchanged. Real attachment/lifecycle qualification remains pending.
++
++The public key-bearing `ComposeRun` entry receives the parent's private signing
++key after Builds checks its run plan and declaration. An ordinary plan has no
++issuer MAC. A separate nonserialized in-memory proof binds that trusted handoff,
++its complete options/plan/mapping, actual declaration and selected test files,
++private materialized catalog inputs, model/seed files and clean source revisions.
++It records the active Parties HEAD and refuses even a clean revision advance that
++retains manifest/project bytes. Ordinary serialized `Compose` cannot supply the
++proof. Parent admission checks the loaded SDK plus Tenants, Memories and Parties
++Contracts before image probes; the child reader independently checks all twelve
++public bodies before owner attributes or adapter factories.
++
++The complete closure is gateway, Tenants domain/API, Memories server/domain/clock/
++telemetry and Parties domain. No Mcp or extra/missing server is admitted. The
++catalog must select SDK `4.0.4`, Tenants `7.0.0`, Memories `3.0.23` and Parties
++`3.0.0`. The child cohort is
++`parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memories-3.0.23`; the original E/T
++cohort remains separate. Changed public bodies, unknown owners/cohorts, version
++labels without measured bytes and default/unbound options confer no authority.
++
++| Role | Measured identity |
++| --- | --- |
++| Active Parties test declaration | `40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b` |
++| Released Parties backend declaration, source `639d6e98b496429eb0490d1f8feeec97bd1a3280` | `86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504` |
++| Memories declaration at source `82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f` | `56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840` |
++
++The two Parties declarations differ only by the additive lifecycle suite; their
++production fields match. The released backend is never relabelled as containing
++that suite. Memories declaration bytes are unchanged from M18; its provenance
++must change only with the genuine published catalog.
++
++| Full-profile server | Linux/amd64 manifest SHA-256 |
++| --- | --- |
++| Tenants domain | `2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42` |
++| Tenants API | `2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6` |
++| Memories server | `f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b` |
++| Memories domain | `fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e` |
++| Memories clock | `b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f` |
++| Memories telemetry | `ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a` |
++| Parties domain | `25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b` |
++
++The unadmitted reader component compared public and measured image-owner variants
++at 70 routes and 46 intent policies. Its fixed instance root is an observation,
++not an unconditional runtime root. Image and public DLLs differ and remain in
++separate custody. Backend SDK/client versions differ from the public reader;
++actual Tenants API/domain, Memories server/domain/clock/telemetry, Parties and
++gateway cutover/receiver/health and persistent native operations must still pass.
++No service, native, lifecycle, parity, candidate or Story acceptance follows from
++source/component preparation.
++
++
++The remaining full-entry and production-generated reader controls are prepared in
++`PlatformPartiesPackageEntryTests` and `PlatformPartiesPackageReaderTests`. They
++are unconditional positive controls. Their fixture first requires the actual
++loaded public M23 Contracts body, then the collecting
++Platform repository with its actual clean root-declared Parties and Builds
++checkouts. Normal Platform-owned workspace resolution and catalog materialization
++produce the mapping and accepted published catalog. This binds the active Parties
++entry and committed gitlink separately from the outer Platform root; it requires
++no invented consumer release tag or synthetic/legacy mapping fallback. The fixture changes no source pin, creates no Git metadata and starts
++no service. Its probe responses are deterministic component doubles; they do not
++claim fresh registry/image inspection.
++
++These cases are now registered in `eng/tuple-ci-suites.json` with their actual
++observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
++all 238 previous cases. The original M18 prerequisite failures and the first
++three reader-fixture failures remain historical evidence. Version/assets refusal
++now mutates the reader's actual direct Memories.EventStore reference; all twelve
++public bodies, including transitive Memories.Contracts, remain independently
++verified. The ordinary duplicate control reintroduces a genuine Parties package
++after normal source reconciliation and requires the unchanged HXW005 guard to
++refuse it before unrelated active-source restore. No assertion or guard is waived.
++Reader output retains the actual public-body, catalog and mapping identities.
++The full required source profile still needs exact-head hosted execution; native,
++attachment, lifecycle and wire compatibility remain unqualified by these controls.
++
++The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
++selects the released backend declaration `86002eeb...`. This isolated draft now
++selects the already reviewed and merged lifecycle test source
++`f1f33f8de655d9aa9307bafba128b0c7ea5c2570`, whose actual declaration is
++`40cee6ce...`. Compared to the prior pin, production `src/` and all non-test
++manifest fields are unchanged; only the lifecycle suite and its source are added.
++This source prerequisite does not relabel the published P3.0.0/backend639
++artifacts or their released `86002eeb...` declaration. Canonical accepted pins and
++the Parties caller proposal are untouched. The genuine M23 Builds publication
++and this isolated tuple/provenance adoption are recorded; exact-head hosted gates,
++normal Platform publication and real reference/lifecycle qualification remain pending.
+diff --git a/eng/builds-tuple.json b/eng/builds-tuple.json
+index 0d9b3e6fa7094ee86ca742995ec44a5afcb48ce8..7fbf569fb6cdf850fab44d3d57726c617142d9e1 100644
+--- a/eng/builds-tuple.json
++++ b/eng/builds-tuple.json
+@@ -3,21 +3,21 @@
+   "candidateAcceptance": false,
+   "producer": {
+     "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+-    "sourceRevision": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
++    "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+     "catalog": {
+       "path": "Props/Directory.Packages.props",
+-      "blob": "ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b",
+-      "sha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce"
++      "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
++      "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+     }
+   },
+   "publication": {
+-    "version": "4.44.0",
+-    "sourceRevision": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+-    "releaseTag": "v4.44.0",
+-    "catalogSha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce",
+-    "archiveSha256": "bd454ebae17256eb27d67d197a18295e0153bc11f01b6f73e22defe0c21e53a9",
+-    "toolingSha256": "c85d688e71e17afd5f1a6b706d7cda896fe2b9f04852360c657c31d2c46b52d5",
+-    "inventorySha256": "04f97587db775b4aa2df30f903d66dabe45ab282418b661b5c69b443e2ecd894",
+-    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.0/g4-tool-package-inventory.json"
++    "version": "4.44.2",
++    "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
++    "releaseTag": "v4.44.2",
++    "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
++    "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
++    "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
++    "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
++    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+   }
+ }
+diff --git a/eng/tuple-ci-suites.json b/eng/tuple-ci-suites.json
+index 262834c2f0359aa7e55c41b272200d74fd599d03..ecd239b875449b0be50055fb705a4c99c51ec593 100644
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -78,6 +78,38 @@
+         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
+       ],
+       "requiredCount": 4
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
++      ],
++      "requiredCount": 37
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
++      ],
++      "requiredCount": 3
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
++      ],
++      "requiredCount": 21
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
++      ],
++      "requiredCount": 9
+     }
+   ]
+ }
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index 0f51f79cb3dacec7c58e34b5e347177578faf097..3259aa836cbd186b78f990073bf8a7cdd025064b 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[4.44.0, 5.0.0-0)"
++  "toolVersionRange": "[4.44.2, 5.0.0-0)"
+ }
+diff --git a/references/Hexalith.Builds b/references/Hexalith.Builds
+index 6249a8c0a0480a4b8a8ba04fc214c6104c3c9045..ae68c59bd2f4145a23ccf68c3711f98eaf62195f 160000
+--- a/references/Hexalith.Builds
++++ b/references/Hexalith.Builds
+@@ -1 +1 @@
+-Subproject commit 6249a8c0a0480a4b8a8ba04fc214c6104c3c9045
++Subproject commit ae68c59bd2f4145a23ccf68c3711f98eaf62195f
+diff --git a/references/Hexalith.Parties b/references/Hexalith.Parties
+index f1bf359383b225df14ac2b98bcc6f8a8479c9437..f1f33f8de655d9aa9307bafba128b0c7ea5c2570 160000
+--- a/references/Hexalith.Parties
++++ b/references/Hexalith.Parties
+@@ -1 +1 @@
+-Subproject commit f1bf359383b225df14ac2b98bcc6f8a8479c9437
++Subproject commit f1f33f8de655d9aa9307bafba128b0c7ea5c2570
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Program.cs b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+index 58ee93780d81262b6d8f56c44e228927015f5148..3866c211530142ac3e16e76783fa0009836f60b1 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Program.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+@@ -21,14 +21,21 @@ if (gatewayAppId != "eventstore")
+ #endif
+ List<string> qualifiedArtifacts = [];
+ bool qualified = input.TryGetProperty("qualificationCohort", out var cohort) && cohort.ValueKind != JsonValueKind.Null;
++string? qualificationName = qualified && cohort.ValueKind == JsonValueKind.String ? cohort.GetString() : null;
+ if (qualified)
+ {
+     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
+-    if (cohort.ValueKind != JsonValueKind.String || cohort.GetString() != PublishedCatalogArtifactCohort.Name
+-        || requestedOwners.Length != 1 || requestedOwners[0].GetProperty("assembly").GetString() != "Hexalith.Tenants.Contracts"
+-        || requestedOwners[0].GetProperty("adapterAssembly").GetString() != "Hexalith.Tenants.Server")
++    string[] expected = qualificationName switch
++    {
++        PublishedCatalogArtifactCohort.Name => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        PublishedCatalogArtifactCohort.FullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
++    };
++    if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
++        .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
+         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
+-    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.VerifySdk());
++    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.FullPartiesName
++        ? PublishedCatalogArtifactCohort.VerifyFullParties() : PublishedCatalogArtifactCohort.VerifySdk());
+ }
+ List<RouteContractDeclaration> declarations = [];
+ List<RouteOperationContract> operations = [];
+@@ -44,8 +51,8 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
+     adapters.Add(adapterAssembly.Location);
+     if (qualified)
+     {
+-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly));
+-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly));
++        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly, qualificationName!));
++        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly, qualificationName!));
+     }
+     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
+     declarations.AddRange(routes);
+diff --git a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+index f9a4ea10b5126dc9f9a1606f316efb66a6795717..4e33e9193a7e07417e0e4920a8214de73b80a8c0 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+@@ -9,6 +9,8 @@ internal static class PublishedCatalogArtifactCohort
+ {
+     /// <summary>The sole measured public package cohort identifier.</summary>
+     internal const string Name = "eventstore-4.0.4-tenants-7.0.0";
++    /// <summary>The independently measured complete ordinary-Parties public reader cohort.</summary>
++    internal const string FullPartiesName = "parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memories-3.0.23";
+     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+@@ -19,6 +21,16 @@ internal static class PublishedCatalogArtifactCohort
+         ["Hexalith.Tenants.Server"] = "4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93",
+     }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
++    private static readonly FrozenDictionary<string, string> _fullPartiesHashes = _hashes.Concat(new Dictionary<string, string>(StringComparer.Ordinal)
++    {
++        ["Hexalith.Memories.Contracts"] = "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
++        ["Hexalith.Memories.EventStore"] = "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
++        ["Hexalith.Memories.EventStoreExtensions"] = "c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25",
++        ["Hexalith.Parties.Contracts"] = "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9",
++        ["Hexalith.Parties.EventStoreExtensions"] = "8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604",
++        ["Hexalith.McpCli.Abstractions"] = "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
++    }).ToFrozenDictionary(StringComparer.Ordinal);
++
+     /// <summary>Checks the actual loaded SDK files; versions and informational strings alone grant no capability.</summary>
+     internal static bool MatchesSdk()
+     {
+@@ -34,11 +46,11 @@ internal static class PublishedCatalogArtifactCohort
+     }
+ 
+     /// <summary>Checks an actual loaded package dependency against the same finite public artifact authority.</summary>
+-    internal static bool Matches(string name)
++    internal static bool Matches(string name, string cohort = Name)
+     {
+         try
+         {
+-            _ = Verify(Assembly.Load(name));
++            _ = Verify(Assembly.Load(name), cohort);
+             return true;
+         }
+         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or BadImageFormatException)
+@@ -51,11 +63,21 @@ internal static class PublishedCatalogArtifactCohort
+     internal static IReadOnlyList<string> VerifySdk() => _hashes.Keys.Where(name => name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
+         .Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name))).ToArray();
+ 
++    /// <summary>Checks every measured public dependency before any full-owner attribute or factory is consumed.</summary>
++    internal static IReadOnlyList<string> VerifyFullParties() => _fullPartiesHashes.Keys.Order(StringComparer.Ordinal)
++        .Select(name => Verify(Assembly.Load(name), FullPartiesName)).ToArray();
++
+     /// <summary>Verifies a loaded owner or SDK artifact before reading its attributes or invoking its factory.</summary>
+-    internal static string Verify(Assembly assembly)
++    internal static string Verify(Assembly assembly, string cohort = Name)
+     {
++        IReadOnlyDictionary<string, string> hashes = cohort switch
++        {
++            Name => _hashes,
++            FullPartiesName => _fullPartiesHashes,
++            _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
++        };
+         string? name = assembly.GetName().Name;
+-        if (name is null || !_hashes.TryGetValue(name, out string? expected) || string.IsNullOrWhiteSpace(assembly.Location)
++        if (name is null || !hashes.TryGetValue(name, out string? expected) || string.IsNullOrWhiteSpace(assembly.Location)
+             || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(assembly.Location))) != expected)
+             throw new InvalidDataException("The qualified package catalog reader requires the exact signed public artifact bytes.");
+         return assembly.Location;
+diff --git a/src/Hexalith.Platform.Composition/Declarations/provenance.json b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+index bf2490925c8da6368a27b2b2382cda9d3ae93f27..06b35a1d159ec4da7e8a3c61c4dfc53f68a6b641 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/provenance.json
++++ b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+@@ -15,8 +15,8 @@
+   },
+   "memories": {
+     "repository": "Hexalith.Memories",
+-    "version": "3.0.18",
+-    "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
++    "version": "3.0.23",
++    "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+   }
+diff --git a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+index 17f204991f20ba586e62c48b5888c0d667eef60a..a2a0c0525dad9027be089a8c0bf577872e88b285 100644
+--- a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
++++ b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+@@ -35,6 +35,7 @@
+     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
+     <PackageReference Include="Hexalith.Tenants.Contracts" />
+     <PackageReference Include="Hexalith.Memories.Contracts" />
++    <PackageReference Include="Hexalith.Parties.Contracts" />
+   </ItemGroup>
+   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
+     <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
+diff --git a/src/Hexalith.Platform.Composition/PlatformAppModel.cs b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+index f4cbd753364d1800c66449870f4e20224f442f46..c2fdf826158df03d7b80c2c9b9a7d9ee1b488dc6 100644
+--- a/src/Hexalith.Platform.Composition/PlatformAppModel.cs
++++ b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+@@ -68,7 +68,7 @@ public static class PlatformAppModel
+         Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
+     }
+ 
+-    /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
++    /// <summary>Composes the key-bearing Builds runner handoff, keeping its package-mode gateway seed.</summary>
+     public static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
+     {
+         ArgumentNullException.ThrowIfNull(builder);
+@@ -98,13 +98,16 @@ public static class PlatformAppModel
+             configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
+             configuration[server + "/Jwt:SigningKey"] = signingKey;
+         }
+-        Compose(builder, configureOptions(new PlatformCompositionOptions
++        PlatformCompositionOptions options = new()
+         {
+             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
+             QualificationOwners = plan.QualificationOwners ?? [], QualificationOwnerProof = ownerProof,
+             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
+             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
+-        }));
++        };
++        if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
++            options = options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
++        Compose(builder, configureOptions(options));
+     }
+ 
+     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
+diff --git a/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs b/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
+index 54ed16a4bcbdf932e349b0345dbc43b1e3c67443..9dca2fc12e4461bbec2d2af8836b4dedf6148e64 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs
+@@ -26,6 +26,9 @@ public sealed record PlatformCompositionOptions
+     /// <summary>Gets the nonserialized entry-point proof; ordinary Compose callers cannot supply one.</summary>
+     [System.Text.Json.Serialization.JsonIgnore]
+     internal PlatformQualificationOwnerProof? QualificationOwnerProof { get; init; }
++    /// <summary>Gets the separate nonserialized ordinary-Parties proof from the trusted key-bearing runner handoff.</summary>
++    [System.Text.Json.Serialization.JsonIgnore]
++    internal PlatformPartiesRunProof? PartiesRunProof { get; init; }
+     /// <summary>Gets the explicitly selected module class. Known reference technical owners need no override.</summary>
+     public bool? DomainModule { get; init; }
+     /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>
+diff --git a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+index 06142dc05662df49afc17dd1eb9e4e1fed9768c5..3d400c9aa8857a5485579692fad7bc5dbc3bf67e 100644
+--- a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
++++ b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+@@ -16,6 +16,8 @@ internal static class PlatformPackageCatalogQualification
+     /// <summary>Checks all finite inputs before image probes, filesystem rendering or resource allocation.</summary>
+     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
+     {
++        if (options.ActiveModule == "parties")
++            return PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
+         CompositionRunPlan? plan = options.RunPlan;
+         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+             || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
+diff --git a/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..dbe651477f95c3db414e4ed30602206232a835fb
+--- /dev/null
++++ b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+@@ -0,0 +1,86 @@
++namespace Hexalith.Platform.Composition;
++
++using System.Runtime.InteropServices;
++using System.Security.Cryptography;
++using System.Text.Json;
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Platform.CatalogArtifacts;
++
++/// <summary>The finite ordinary-Parties public/image cohort; this does not grant candidate or runtime qualification.</summary>
++internal static class PlatformPartiesPackageCatalogQualification
++{
++    /// <summary>The selected current test declaration, including its actual additive lifecycle suite.</summary>
++    internal const string ActiveDeclarationHash = "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b";
++    /// <summary>The independently published backend declaration at source639; it has no lifecycle suite.</summary>
++    internal const string ReleasedDeclarationHash = "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504";
++
++    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _images = new Dictionary<string, (string, string)>(StringComparer.Ordinal)
++    {
++        ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.0", "2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"),
++        ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.0", "2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6"),
++        ["memories/server"] = ("registry.hexalith.com/memories:3.0.23", "f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b"),
++        ["memories/domain"] = ("registry.hexalith.com/memories-domain-service:3.0.23", "fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e"),
++        ["memories/clock"] = ("registry.hexalith.com/memories-access-telemetry-clock:3.0.23", "b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f"),
++        ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.23", "ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a"),
++        ["parties/domain"] = ("registry.hexalith.com/parties:3.0.0", "25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b"),
++    };
++
++    /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
++    internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
++        IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
++        => Bind(options, declarations, servers, developmentRun, OperatingSystem.IsLinux(), RuntimeInformation.ProcessArchitecture);
++
++    /// <summary>Exercises the same complete guard with an explicit runtime scope; the production entry always supplies the actual OS and architecture.</summary>
++    internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
++        IReadOnlyList<PlatformServerBinding> servers, bool developmentRun, bool linux, Architecture architecture)
++    {
++        if (!developmentRun || !linux || architecture != Architecture.X64
++            || options.PartiesRunProof?.Matches(options) != true
++            || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal)
++                .SequenceEqual(["eventstore", "memories", "parties", "tenants"], StringComparer.Ordinal)
++            || !servers.Select(Identity).Order(StringComparer.Ordinal).SequenceEqual(_images.Keys.Append("eventstore/gateway").Order(StringComparer.Ordinal), StringComparer.Ordinal)
++            || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
++            || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
++            || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
++            || !Snapshot(options, declarations, "parties", ActiveDeclarationHash)
++            || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes()
++            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts")
++            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
++            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
++            || !CompositionMatches(options, declarations)) throw Refusal();
++        return servers.Select(server =>
++        {
++            if (Identity(server) == "eventstore/gateway")
++                return server.Image is null && server.ProjectPath == options.EventStoreSeedProject ? server : throw Refusal();
++            var expected = _images[Identity(server)];
++            return server.Image == expected.Image && server.ImageDigest is null ? server with { ImageDigest = expected.Digest } : throw Refusal();
++        }).ToArray();
++    }
++
++    private static bool VersionsMatch(PlatformCompositionOptions options) => new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23"), ("parties", "3.0.0") }
++        .All(item => PlatformServerBindings.Version(options, item.Item1, "full-Parties qualification") == item.Item2);
++
++    private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)
++    {
++        PlatformModuleDeclaration selected = declarations.Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
++        PlatformModuleDeclaration authority = PlatformDeclarationSet.Load(options).Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
++        return Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(selected.Source))) == expected
++            && selected.Source == authority.Source && JsonElement.DeepEquals(selected.Declaration, authority.Declaration);
++    }
++
++    // The existing producer's ordinary closure identity has no additive-owner binding or MAC.
++    private static bool CompositionMatches(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations)
++    {
++        var selected = options.RunPlan!.SelectedTest;
++        string digest = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
++        {
++            modules = declarations.OrderBy(declaration => PlatformDeclarationSet.Id(declaration.Declaration), StringComparer.Ordinal)
++                .Select(declaration => new { declaration.Declaration, SourceHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(declaration.Source))) }),
++            selected?.Mode, selected?.DaprRuntimeVersion, retention = false,
++        })));
++        return options.RunPlan.CompositionContentIdentity == digest;
++    }
++
++    private static string Identity(PlatformServerBinding server) => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId;
++    private static InvalidDataException Refusal() => new("The ordinary Parties package profile requires its exact qualified full owner/public/image cohort.");
++}
+diff --git a/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs b/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..13941405aadfce7689c50e0619a967e5c930fc37
+--- /dev/null
++++ b/src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs
+@@ -0,0 +1,154 @@
++namespace Hexalith.Platform.Composition;
++
++using System.Security.Cryptography;
++using System.Text.Json;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++
++/// <summary>A nonserialized ordinary-Parties purpose proof issued only inside the trusted key-bearing ComposeRun call.</summary>
++/// <remarks>The ordinary plan has no issuer MAC. This proof preserves the verified parent handoff in memory; it is not candidate authority.</remarks>
++internal sealed class PlatformPartiesRunProof
++{
++    private readonly string _optionsDigest;
++    private readonly string _activeRevision;
++    private readonly IReadOnlyDictionary<string, string> _files;
++
++    private PlatformPartiesRunProof(PlatformCompositionOptions options)
++    {
++        _optionsDigest = Digest(options);
++        _activeRevision = Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD");
++        _files = Inputs(options).Distinct(StringComparer.Ordinal).ToDictionary(path => path, Hash, StringComparer.Ordinal);
++    }
++
++    /// <summary>Checks actual parent plan, mapping, selected tests and source inputs before retaining their private in-memory binding.</summary>
++    internal static PlatformPartiesRunProof Create(PlatformCompositionOptions options, string signingKey)
++    {
++        Span<byte> key = stackalloc byte[48];
++        if (!Convert.TryFromBase64String(signingKey, key, out int size) || size != key.Length)
++            throw Refusal();
++        CryptographicOperations.ZeroMemory(key);
++        Validate(options);
++        return new(options);
++    }
++
++    /// <summary>Refuses replay or mutable plan, source, mapping, declaration, configuration or test inputs before composition effects.</summary>
++    internal bool Matches(PlatformCompositionOptions options)
++    {
++        try
++        {
++            Validate(options);
++            return Digest(options) == _optionsDigest && Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD") == _activeRevision
++                && _files.All(pair => Hash(pair.Key) == pair.Value);
++        }
++        catch (Exception exception) when (exception is IOException or InvalidDataException or UnauthorizedAccessException or JsonException or InvalidOperationException or KeyNotFoundException)
++        {
++            return false;
++        }
++    }
++
++    private static void Validate(PlatformCompositionOptions options)
++    {
++        CompositionRunPlan plan = options.RunPlan ?? throw Refusal();
++        SourceMapping mapping = options.Mapping;
++        PlatformIdentity identity = mapping.PlatformIdentity ?? throw Refusal();
++        if (plan.Schema != CompositionRunPlan.SupportedSchema || !CompositionRunPlanFactory.IsRunId(plan.RunId)
++            || !CompositionRunPlanFactory.IsRunId(plan.AttemptId) || !CompositionRunPlanFactory.IsRunId(plan.EnvironmentId)
++            || new[] { plan.RunId, plan.AttemptId, plan.EnvironmentId }.Distinct(StringComparer.Ordinal).Count() != 3
++            || plan.PlatformModelAssemblyPath != typeof(PlatformAppModel).Assembly.Location
++            || plan.CandidatePolicy is not null || plan.QualificationOwners is not null || plan.QualificationOwnersBinding is not null
++            || options.QualificationOwners.Count != 0 || options.ActiveModule != "parties" || plan.PlatformActiveModule != "parties"
++            || mapping.Mode != WorkspaceMode.Package || !mapping.HasGit || mapping.ActiveModule != "Hexalith.Parties"
++            || plan.SourceMappingHash != mapping.ContentHash || options.PlatformRoot != identity.PlatformPath
++            || identity.Commit != identity.CompositionCommit || identity.Commit != identity.CheckoutCommit
++            || options.EnvironmentId is not null && options.EnvironmentId != plan.EnvironmentId
++            || !options.DeclarationPaths.SequenceEqual(plan.PlatformDeclarationPaths, StringComparer.Ordinal)
++            || plan.PlatformDeclarationPaths.Count != 1 || plan.SelectedTest is null || plan.SelectedTests.Count is < 1 or > 2
++            || plan.SelectedTests[0] != plan.SelectedTest || plan.SelectedTests.Select(test => test.Name).Distinct(StringComparer.Ordinal).Count() != plan.SelectedTests.Count)
++            throw Refusal();
++        string activeRoot = ActiveRoot(mapping);
++        string declaration = Path.Combine(activeRoot, "module", "hexalith.module-manifest.v2.json");
++        if (plan.PlatformDeclarationPaths[0] != declaration || !Hash(declaration).Equals(plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase))
++            throw Refusal();
++        SourceMapping persisted = SourceMapping.LoadVerified(Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), mapping.ContentHash);
++        if (persisted.ContentHash != mapping.ContentHash) throw Refusal();
++        CompositionRunPlan recorded = CompositionDocumentStore.TryReadAsync<CompositionRunPlan>(Path.Combine(plan.Workspace, "plan.json"), CancellationToken.None)
++            .GetAwaiter().GetResult() ?? throw Refusal();
++        if (CompositionDocumentStore.Serialize(recorded) != CompositionDocumentStore.Serialize(plan)) throw Refusal();
++        ValidateTests(plan, declaration, mapping);
++        SourceMappingEntry active = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties");
++        SourceMappingEntry builds = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds");
++        string buildsRoot = builds.Origin switch
++        {
++            "package" when builds.Path is null => Path.Combine(mapping.Root, "references", "Hexalith.Builds"),
++            "source" when builds.Path is not null => builds.Path,
++            _ => throw Refusal(),
++        };
++        if (active.Origin != "source" || Git(activeRoot, "rev-parse", "--show-toplevel") != activeRoot
++            || activeRoot != mapping.Root && (activeRoot != Path.Combine(mapping.Root, "references", "Hexalith.Parties")
++                || Git(mapping.Root, "rev-parse", "HEAD:references/Hexalith.Parties") != Git(activeRoot, "rev-parse", "HEAD"))
++            || Git(identity.PlatformPath, "rev-parse", "HEAD") != identity.CheckoutCommit
++            || Git(buildsRoot, "rev-parse", "--show-toplevel") != buildsRoot
++            || Git(buildsRoot, "rev-parse", "HEAD") != identity.CatalogCommit
++            || builds.Origin == "package" && Git(mapping.Root, "rev-parse", "HEAD:references/Hexalith.Builds") != identity.CatalogCommit
++            || new[] { activeRoot, mapping.Root, identity.PlatformPath, buildsRoot }.Distinct(StringComparer.Ordinal).Any(root => Git(root, "status", "--porcelain", "--untracked-files=normal").Length != 0))
++            throw Refusal();
++    }
++
++    private static void ValidateTests(CompositionRunPlan plan, string declaration, SourceMapping mapping)
++    {
++        using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
++        JsonElement tests = document.RootElement.GetProperty("modules").EnumerateArray()
++            .Single(module => module.GetProperty("identity").GetProperty("moduleId").GetString() == "parties").GetProperty("tests");
++        SourceMapping owner = mapping with
++        {
++            Entries = mapping.Entries.Where(entry => entry.Identity == "Hexalith.Parties").ToArray(), PlatformIdentity = null,
++        };
++        foreach (ModuleTestSelection selected in plan.SelectedTests)
++        {
++            string entry = Path.GetFullPath(Path.Combine(ActiveRoot(mapping), selected.Entry));
++            if (selected.ModuleId != "parties" || selected.Mode != "package" || selected.Name is not ("platform-package" or "lifecycle-package")
++                || Path.IsPathRooted(selected.Entry) || !owner.ContainsProject(entry)
++                || Git(Path.GetDirectoryName(entry)!, "rev-parse", "--show-toplevel") != ActiveRoot(mapping)
++                || selected.Entry.StartsWith("references/", StringComparison.OrdinalIgnoreCase)
++                || !Hash(entry).Equals(selected.EntryHash, StringComparison.OrdinalIgnoreCase)
++                || !Hash(declaration).Equals(selected.ManifestHash, StringComparison.OrdinalIgnoreCase)) throw Refusal();
++            JsonElement declared = tests.EnumerateArray().Single(test => test.GetProperty("name").GetString() == selected.Name);
++            if (declared.GetProperty("entry").GetString() != selected.Entry || declared.GetProperty("mode").GetString() != selected.Mode
++                || declared.GetProperty("executor").GetString() != selected.Executor
++                || declared.GetProperty("executionTimeoutSeconds").GetInt32() != selected.ExecutionTimeoutSeconds
++                || declared.GetProperty("stopTimeoutSeconds").GetInt32() != selected.StopTimeoutSeconds) throw Refusal();
++        }
++    }
++
++    private static IEnumerable<string> Inputs(PlatformCompositionOptions options)
++    {
++        CompositionRunPlan plan = options.RunPlan!;
++        return options.DeclarationPaths.Concat(plan.SelectedTests.Select(test => Path.Combine(ActiveRoot(options.Mapping), test.Entry)))
++            .Concat([Path.Combine(plan.Workspace, "plan.json"), Path.Combine(plan.Workspace, "source-mapping", "mapping.json"),
++                Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"),
++                Path.Combine(plan.Workspace, "source-mapping", "pinned-tree", "Props", "Directory.Packages.props"),
++                options.Mapping.PlatformIdentity!.RecordPath,
++                options.EventStoreSeedProject ?? throw Refusal(), plan.PlatformModelAssemblyPath ?? throw Refusal()]);
++    }
++
++    private static string ActiveRoot(SourceMapping mapping) => mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path ?? throw Refusal();
++
++    private static string Git(string root, params string[] arguments)
++    {
++        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None)
++            .GetAwaiter().GetResult();
++        return result.ExitCode == 0 && !result.TimedOut && !result.OutputTruncated ? result.Output.Trim() : throw Refusal();
++    }
++
++    private static string Hash(string path)
++    {
++        FileInfo file = new(path);
++        if (!Path.IsPathFullyQualified(path) || !file.Exists || file.Length > 4 * 1024 * 1024 || file.LinkTarget is not null) throw Refusal();
++        for (DirectoryInfo? directory = file.Directory; directory is not null; directory = directory.Parent)
++            if (directory.LinkTarget is not null) throw Refusal();
++        return Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
++    }
++
++    private static string Digest(PlatformCompositionOptions options) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(options)));
++    private static InvalidDataException Refusal() => new("The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.");
++}
+diff --git a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+index dfcb20d7a98cf1eaea764926e8a33d326b7a4cb4..017438309b98cea5edf75d7a1f909b60011b8ad6 100644
+--- a/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
++++ b/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs
+@@ -27,6 +27,10 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
+             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
+         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
++        string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
++            : options.PartiesRunProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.FullPartiesName
++            : options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name
++            : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
+         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
+         string build = Path.Combine(workspace, "catalog-reader");
+         CompositionWorkspace.CreatePrivateDirectory(build);
+@@ -74,7 +78,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
+         string request = Path.Combine(build, "request.json");
+         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
+         {
+-            qualificationCohort = options.Mapping.Mode == WorkspaceMode.Package && options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name : null,
++            qualificationCohort,
+             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
+             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
+             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
+diff --git a/tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json b/tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..3d6d716f11faa31bb7c674420767f26b0289c992
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json
+@@ -0,0 +1,452 @@
++{
++  "schema": "hexalith.module-manifest.v2",
++  "modules": [
++    {
++      "identity": {
++        "moduleId": "parties",
++        "servers": [
++          {
++            "id": "domain",
++            "appId": "parties",
++            "resourceId": "parties",
++            "enabled": true,
++            "required": true
++          }
++        ],
++        "dependencies": [
++          "eventstore",
++          "tenants",
++          "memories"
++        ]
++      },
++      "runtime": {
++        "dapr": [
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "Parties:Security:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:CommandStatus:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:DataProtection:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:Projections:ReadModelStateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:Projections:CheckpointStateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "Parties:MemoriesSearch:MappingStore:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "events",
++            "capability": "pubsub",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "Tenants:PubSubName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "events",
++            "capability": "pubsub",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "EventStore:ProjectionChanges:PubSubName",
++            "servers": [
++              "domain"
++            ]
++          }
++        ],
++        "extensions": [
++          {
++            "packageId": "Hexalith.Parties",
++            "configurationInputs": [
++              {
++                "key": "EventStore:DomainService:AppId",
++                "source": "configuration",
++                "reference": "eventstore-domainservice-appid"
++              },
++              {
++                "key": "Authentication:JwtBearer:Authority",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-authority"
++              },
++              {
++                "key": "Authentication:JwtBearer:Issuer",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-issuer"
++              },
++              {
++                "key": "Authentication:JwtBearer:Audience",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-audience"
++              },
++              {
++                "key": "Authentication:JwtBearer:ValidAudiences",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-validaudiences"
++              },
++              {
++                "key": "Authentication:JwtBearer:AllowedAlgorithms",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-allowedalgorithms"
++              },
++              {
++                "key": "Authentication:JwtBearer:RequireHttpsMetadata",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-requirehttpsmetadata"
++              },
++              {
++                "key": "Authentication:JwtBearer:AllowInsecureSymmetricKey",
++                "source": "configuration",
++                "reference": "authentication-jwtbearer-allowinsecuresymmetrickey"
++              },
++              {
++                "key": "Authentication:JwtBearer:SigningKey",
++                "source": "secret",
++                "reference": "domain-jwt-signing-key"
++              },
++              {
++                "key": "Authentication:Workload:Audience",
++                "source": "configuration",
++                "reference": "authentication-workload-audience"
++              },
++              {
++                "key": "Authentication:Workload:AllowedCallers",
++                "source": "configuration",
++                "reference": "authentication-workload-allowedcallers"
++              },
++              {
++                "key": "Authentication:Workload:MaximumLifetimeSeconds",
++                "source": "configuration",
++                "reference": "authentication-workload-maximumlifetimeseconds"
++              },
++              {
++                "key": "EventStore:AppChannelToken",
++                "source": "secret",
++                "reference": "app-channel-token"
++              },
++              {
++                "key": "EventStore:DataProtection:PersistToStateStore",
++                "source": "configuration",
++                "reference": "eventstore-dataprotection-persisttostatestore"
++              },
++              {
++                "key": "Tenants:Enabled",
++                "source": "configuration",
++                "reference": "tenants-enabled"
++              },
++              {
++                "key": "Tenants:ServiceName",
++                "source": "configuration",
++                "reference": "tenants-servicename"
++              },
++              {
++                "key": "Tenants:CommandApiAppId",
++                "source": "configuration",
++                "reference": "tenants-commandapiappid"
++              },
++              {
++                "key": "Tenants:TopicName",
++                "source": "configuration",
++                "reference": "tenants-topicname"
++              },
++              {
++                "key": "Parties:MemoriesSearch:Enabled",
++                "source": "configuration",
++                "reference": "parties-memoriessearch-enabled"
++              }
++            ]
++          }
++        ],
++        "resources": [
++          {
++            "server": "domain",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          }
++        ]
++      },
++      "surfaces": {
++        "interfaces": [
++          {
++            "name": "party-domain",
++            "server": "domain",
++            "protocol": "http",
++            "routePrefix": "/",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "eventstore"
++            ],
++            "operations": [
++              {
++                "name": "process",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "query",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "project",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "replay-state",
++                "kind": "administration",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "admin-operational-index-metadata",
++                "kind": "administration",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "eventstore",
++                "path": "/process",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/query",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/admin/operational-index-metadata",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/v2",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/v2/reconcile",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/replay-state",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/v1",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/shared/v1",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/stage/v1",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/commit/v1",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/abort/v1",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/project/rebuild/verify/v1",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          }
++        ]
++      },
++      "integration": {
++        "topics": [
++          {
++            "name": "tenants-events",
++            "role": "events",
++            "deadLetter": {
++              "strategy": "none"
++            },
++            "subscription": {
++              "server": "domain",
++              "route": "/tenants/events",
++              "topic": "system.tenants.events"
++            }
++          }
++        ],
++        "secrets": [
++          {
++            "name": "domain-jwt-signing-key",
++            "configurationKey": "Authentication:JwtBearer:SigningKey"
++          },
++          {
++            "name": "app-channel-token",
++            "configurationKey": "EventStore:AppChannelToken"
++          }
++        ],
++        "dynamicSecretNamespaces": [],
++        "identityNeeds": [],
++        "egress": [
++          {
++            "name": "domain-oidc-metadata",
++            "protocol": "https",
++            "destination": "Authentication:JwtBearer:Authority/.well-known/openid-configuration"
++          },
++          {
++            "name": "domain-oidc-jwks",
++            "protocol": "https",
++            "destination": "Authentication:JwtBearer:Authority -> metadata.jwks_uri"
++          }
++        ],
++        "providers": [],
++        "workers": []
++      },
++      "tests": [
++        {
++          "name": "platform-source",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 300,
++          "stopTimeoutSeconds": 90,
++          "mode": "source"
++        },
++        {
++          "name": "platform-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 300,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
++        },
++        {
++          "name": "lifecycle-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 300,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
++        }
++      ],
++      "lifecycle": {
++        "readiness": [
++          {
++            "server": "domain",
++            "kind": "http",
++            "endpoint": "/ready"
++          }
++        ],
++        "tasks": [],
++        "recoveryHooks": [],
++        "fenceHooks": [],
++        "replay": {
++          "reopenBeforeReplay": false
++        },
++        "startup": {},
++        "criticalFlows": [
++          {
++            "name": "party-management",
++            "surface": "party-domain",
++            "operations": [
++              "process",
++              "query"
++            ]
++          }
++        ],
++        "smokeSurfaces": [],
++        "classification": {
++          "changeClass": "additive",
++          "reason": "Enroll the existing Parties domain server; retain legacy hosts outside Platform and keep optional rich search disabled."
++        },
++        "recoveryInventory": []
++      }
++    }
++  ]
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+index 1422ef11e1cf9c07bcbd1fc1afabe35542f1cdcf..bdaac126b9bce8ad05b8bb8df9e1b87c1e4ed92e 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++++ b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+@@ -24,7 +24,7 @@
+   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
+   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
+   <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /><PackageReference Include="NSubstitute" /><PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" /><PackageReference Include="Dapr.Client" /></ItemGroup>
+-  <ItemGroup><Using Include="Xunit" /></ItemGroup>
++  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="Fixtures/parties-active-declaration.json" /></ItemGroup>
+   <!-- This source integration requires an explicit producer mapping and retains its evidence without launching resources. -->
+   <ItemGroup Condition="'$(ConversationsCatalogSourceVerification)' != 'true'">
+     <Compile Remove="ConversationsCatalogSourceVerificationTests.cs" />
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
+index fff2c30ccaca867aadd519c397c19b5a709bfb8b..6bfe5c4a2c11483a61fd6f290612bd0d2d5d9210 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs
+@@ -26,6 +26,8 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
+         File.Exists(Seed).ShouldBeTrue("The actual published tool seed is required for this package component fixture.");
+         using JsonDocument binding = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "eng", "builds-tuple.json")));
+         string pin = binding.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString()!;
++        using JsonDocument identity = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "hexalith-platform.json")));
++        string range = identity.RootElement.GetProperty("toolVersionRange").GetString()!;
+         var observed = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], platform, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
+         observed.ExitCode.ShouldBe(0);
+         string source = observed.Output.Trim();
+@@ -33,7 +35,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
+             [new("Hexalith.Builds", "source", builds), new("Hexalith.EventStore", "source", _owner.Root), new("Hexalith.Platform", "source", platform),
+              new("Hexalith.Tenants", "package", null), new("Hexalith.Memories", "package", null)], true)
+         {
+-            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, "[4.44.0,5.0.0-0)", Path.Combine(platform, "hexalith-platform.json"), true),
++            PlatformIdentity = new PlatformIdentity(source, source, source, platform, null, pin, range, Path.Combine(platform, "hexalith-platform.json"), true),
+         };
+         // These empty projects are solely source-identity negative fixtures. The package reader must never consume their assemblies.
+         foreach (string id in new[] { "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults" })
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..f6a5b0c6e518feb174f2184be4df2d1fa73f6d58
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs
+@@ -0,0 +1,55 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Security.Cryptography;
++using Hexalith.Builds.Tooling.Workspace;
++using Shouldly;
++
++/// <summary>Tests the actual outer-root/active-owner and package-catalog representations using real local Git identities; no public cohort or CI acceptance.</summary>
++public sealed class PlatformPartiesMappedOwnerProofTests
++{
++    /// <summary>The normal producer resolves the actual reviewed direct owner and catalog without a fabricated consumer Platform tag or mapping.</summary>
++    [Fact]
++    public async Task ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync()
++    {
++        string root = PlatformTestRepository.Root;
++        string active = Path.Combine(root, "references", "Hexalith.Parties");
++        string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
++        PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD:references/Hexalith.Parties").ShouldBe("f1f33f8de655d9aa9307bafba128b0c7ea5c2570");
++        PlatformPartiesProofFixture.Git(active, "rev-parse", "HEAD").ShouldBe("f1f33f8de655d9aa9307bafba128b0c7ea5c2570");
++        Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(manifest))).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
++        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
++        mapping.Root.ShouldBe(root);
++        mapping.ActiveModule.ShouldBe("Hexalith.Parties");
++        mapping.PlatformIdentity!.IsPlatformRepository.ShouldBeTrue();
++        mapping.PlatformIdentity.CheckoutCommit.ShouldBe(PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD"));
++        mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
++        mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Origin.ShouldBe("package");
++        mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Path.ShouldBeNull();
++        mapping.PlatformIdentity.CatalogCommit.ShouldBe(PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD:references/Hexalith.Builds"));
++    }
++
++    /// <summary>The proof binds the actual direct Parties owner rather than assuming it equals the outer Platform root.</summary>
++    [Fact]
++    public void PlatformOwnedMappingBindsItsActiveOwnerAndDirectCatalog()
++    {
++        using PlatformPartiesProofFixture fixture = new(platformOwned: true);
++        var options = fixture.Options;
++        options.Mapping.Root.ShouldBe(options.PlatformRoot);
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldNotBe(options.Mapping.Root);
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Origin.ShouldBe("package");
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Path.ShouldBeNull();
++        options.PartiesRunProof!.Matches(options).ShouldBeTrue();
++    }
++
++    /// <summary>A direct owner revision that no longer matches the actual outer Git tree invalidates the proof.</summary>
++    [Fact]
++    public void PlatformOwnedMappingRejectsChangedDirectOwnerGitlink()
++    {
++        using PlatformPartiesProofFixture fixture = new(platformOwned: true);
++        string active = fixture.Options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path!;
++        File.AppendAllText(Path.Combine(active, "Native.cs"), "// A different real local source revision.\n");
++        PlatformPartiesProofFixture.Commit(active);
++        PlatformPartiesProofFixture.Git(active, "status", "--porcelain").ShouldBeEmpty();
++        fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeFalse();
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..bfa376777d5546c8ed7cca7bc2ae540e189f97fa
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs
+@@ -0,0 +1,105 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Runtime.InteropServices;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++using Hexalith.Builds.Tooling.Manifest;
++using Hexalith.Builds.Tooling.Runtime;
++using Shouldly;
++
++/// <summary>Unconditional full-profile component cases; publication and a coherent real owner checkout are mandatory prerequisites.</summary>
++public sealed class PlatformPartiesPackageEntryTests
++{
++    /// <summary>Both real declared package suites reach all seven exact image probes through the trusted entry without adding owners or starting resources.</summary>
++    /// <param name="profile">The actual declared suite.</param>
++    [Theory]
++    [InlineData("platform-package")]
++    [InlineData("lifecycle-package")]
++    public async Task QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(string profile)
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(profile);
++        fixture.AssertPositiveEntry();
++    }
++
++    /// <summary>Each replay/serialization/scope mutation starts from an actually admitted full closure and refuses before probes or effects.</summary>
++    /// <param name="fault">The altered authority input.</param>
++    [Theory]
++    [InlineData("run")]
++    [InlineData("attempt")]
++    [InlineData("environment")]
++    [InlineData("mapping")]
++    [InlineData("source")]
++    [InlineData("declaration-path")]
++    [InlineData("selected-test")]
++    [InlineData("expanded-owner")]
++    [InlineData("serialized")]
++    [InlineData("production")]
++    [InlineData("catalog-bytes")]
++    public async Task ChangedFullEntryRefusesBeforeEffectsAsync(string fault)
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        var builder = PlatformPartiesPackageFixture.Builder(fault == "production" ? "Production" : "Development");
++        int probes = 0;
++        Should.Throw<InvalidDataException>(() => fixture.Compose(builder, original =>
++        {
++            if (fault == "catalog-bytes") File.AppendAllText(Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json"), " ");
++            var plan = original.RunPlan!;
++            var options = fault switch
++            {
++                "run" => original with { RunPlan = plan with { RunId = CompositionRunPlanFactory.NewRunId() } },
++                "attempt" => original with { RunPlan = plan with { AttemptId = CompositionRunPlanFactory.NewRunId() } },
++                "environment" => original with { EnvironmentId = CompositionRunPlanFactory.NewRunId() },
++                "mapping" => original with { Mapping = original.Mapping with { ActiveModule = "Hexalith.Foreign" } },
++                "source" => original with { Mapping = original.Mapping with { PlatformIdentity = original.Mapping.PlatformIdentity! with { CheckoutCommit = new string('0', 40) } } },
++                "declaration-path" => original with { DeclarationPaths = [] },
++                "selected-test" => original with { RunPlan = plan with { SelectedTest = plan.SelectedTest! with { EntryHash = new string('0', 64) } } },
++                "expanded-owner" => original with { QualificationOwners = ["tenants"] },
++                "serialized" => JsonSerializer.Deserialize<PlatformCompositionOptions>(JsonSerializer.Serialize(original))!,
++                "production" or "catalog-bytes" => original,
++                _ => throw new ArgumentOutOfRangeException(nameof(fault)),
++            };
++            return options with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("Unexpected image probe."); } };
++        }));
++        probes.ShouldBe(0);
++        fixture.AssertNoEffects(builder);
++    }
++
++    /// <summary>Mutated closure/topology/image/declaration inputs are tested only after complete positive entry, independently of earlier missing prerequisites.</summary>
++    /// <param name="fault">The altered full-profile input.</param>
++    [Theory]
++    [InlineData("missing-server")]
++    [InlineData("extra-server")]
++    [InlineData("foreign-image")]
++    [InlineData("preset-digest")]
++    [InlineData("missing-owner")]
++    [InlineData("changed-declaration")]
++    [InlineData("non-linux")]
++    [InlineData("arm64")]
++    public async Task ChangedQualifiedTopologyOrRuntimeRefusesAsync(string fault)
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        var options = fixture.Options;
++        IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
++        var servers = PlatformAppModel.Prepare(options);
++        switch (fault)
++        {
++            case "missing-server": servers = servers.Where(server => server.ServerId != "api").ToArray(); break;
++            case "extra-server": servers = [.. servers, servers[0] with { ServerId = "mcp" }]; break;
++            case "foreign-image": servers = servers.Select(server => server.Image is null ? server : server with { Image = "registry.example/foreign:3.0.23" }).ToArray(); break;
++            case "preset-digest": servers = servers.Select(server => server.Image is null ? server : server with { ImageDigest = new string('0', 64) }).ToArray(); break;
++            case "missing-owner": declarations = declarations.Where(module => PlatformDeclarationSet.Id(module.Declaration) != "memories").ToArray(); break;
++            case "changed-declaration":
++                JsonNode changed = JsonNode.Parse(declarations[0].Declaration.GetRawText())!;
++                changed["identity"]!["dependencies"] = new JsonArray("foreign");
++                declarations = [new(declarations[0].Source, JsonSerializer.SerializeToElement(changed)), .. declarations.Skip(1)];
++                break;
++            case "non-linux" or "arm64": break;
++            default: throw new ArgumentOutOfRangeException(nameof(fault));
++        }
++        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers,
++            developmentRun: true, linux: fault != "non-linux", architecture: fault == "arm64" ? Architecture.Arm64 : Architecture.X64));
++        fixture.AssertNoEffects(PlatformPartiesPackageFixture.Builder());
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..621625969df6cb001825f48d4cf7534bc5536b8b
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs
+@@ -0,0 +1,177 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Reflection;
++using System.Security.Cryptography;
++using System.Text.Json;
++using Aspire.Hosting;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++using Hexalith.Platform.CatalogArtifacts;
++using Shouldly;
++
++/// <summary>Uses the coherent real Platform-owned direct Parties checkout and its actual accepted published tuple; never changes source pins or creates Git metadata.</summary>
++internal sealed class PlatformPartiesPackageFixture : IDisposable
++{
++    private readonly string _key = CompositionSigningKey.Create();
++
++    private PlatformPartiesPackageFixture(string workspace, CompositionRunPlan plan, string seed)
++    {
++        Workspace = workspace;
++        Plan = plan;
++        Seed = seed;
++    }
++
++    /// <summary>The seven authenticated Linux/amd64 identities expected at the real image-preflight boundary.</summary>
++    internal static IReadOnlySet<string> Images { get; } = new HashSet<string>(StringComparer.Ordinal)
++    {
++        "registry.hexalith.com/tenants@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42",
++        "registry.hexalith.com/tenants-api@sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6",
++        "registry.hexalith.com/memories@sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b",
++        "registry.hexalith.com/memories-domain-service@sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
++        "registry.hexalith.com/memories-access-telemetry-clock@sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f",
++        "registry.hexalith.com/memories-access-telemetry@sha256:ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a",
++        "registry.hexalith.com/parties@sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
++    };
++
++    /// <summary>Gets the independently owned private workspace; no source checkout is copied or edited.</summary>
++    internal string Workspace { get; }
++    /// <summary>Gets the actual selected declaration/test/mapping handoff persisted by the fixture.</summary>
++    internal CompositionRunPlan Plan { get; }
++    /// <summary>Gets the verified published tool's package seed project.</summary>
++    internal string Seed { get; }
++    /// <summary>Gets the production-entry proof-bearing options captured after successful full admission.</summary>
++    internal PlatformCompositionOptions Options { get; private set; } = null!;
++    /// <summary>Gets the actual production-generated reader directory.</summary>
++    internal string Reader => Path.Combine(Workspace, "platform-components", "catalog-reader");
++
++    /// <summary>Requires the real full public bodies before resolving an explicitly prepared coherent workspace; there is no legacy or synthetic fallback.</summary>
++    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
++    {
++        PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
++            .ShouldBeTrue("Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
++        PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
++        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts").ShouldBeTrue();
++        PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.FullPartiesName).ShouldBeTrue();
++        string root = PlatformTestRepository.Root;
++        string active = Path.Combine(root, "references", "Hexalith.Parties");
++        foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
++        {
++            string marker = Path.Combine(root, "references", repository, ".git");
++            (File.Exists(marker) || Directory.Exists(marker)).ShouldBeTrue("Direct dependencies must already be prepared; this test must not initialize them.");
++        }
++        string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
++        Hash(manifest).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
++        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
++        mapping.Root.ShouldBe(root);
++        mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
++        mapping.ActiveModule.ShouldBe("Hexalith.Parties");
++        PlatformIdentity identity = mapping.PlatformIdentity.ShouldNotBeNull();
++        identity.IsPlatformRepository.ShouldBeTrue("This is the real Platform-owned qualification path; it does not invent a consumer release tag.");
++        identity.CheckoutCommit.ShouldBe(Git(PlatformTestRepository.Root, "rev-parse", "HEAD"), "The actual selected Platform source must equal the collecting source revision.");
++        using JsonDocument tuple = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "eng", "builds-tuple.json")));
++        identity.CatalogCommit.ShouldBe(tuple.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString());
++        string seed = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "projects", "EventStore", "Host.csproj");
++        File.Exists(seed).ShouldBeTrue("The actual published tool seed must be present.");
++        string workspace = Path.Combine(Path.GetTempPath(), "platform-full-parties-" + Guid.NewGuid().ToString("N"));
++        CompositionWorkspace.CreatePrivateDirectory(workspace);
++        try
++        {
++            await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken);
++            SourceMapping.LoadVerified(Path.Combine(workspace, "source-mapping", "mapping.json"), mapping.ContentHash).ContentHash.ShouldBe(mapping.ContentHash);
++            using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(manifest));
++            JsonElement declared = document.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray().Single(test => test.GetProperty("name").GetString() == profile);
++            string entry = declared.GetProperty("entry").GetString()!;
++            DateTimeOffset now = DateTimeOffset.UtcNow;
++            int timeout = declared.GetProperty("executionTimeoutSeconds").GetInt32();
++            ModuleTestSelection selected = new("parties", profile, declared.GetProperty("executor").GetString()!, entry,
++                Hash(manifest), Hash(Path.Combine(active, entry)), timeout, declared.GetProperty("stopTimeoutSeconds").GetInt32(), now, now.AddSeconds(timeout), now.AddSeconds(timeout), "package");
++            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, Path.Combine(workspace, "dapr-home"),
++                new CompositionRunPorts(20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, [20014], 20015, 20016, 20017, [new(20018, 20019, 20020, 20021)]), [], [],
++                mapping, [manifest], "parties", typeof(PlatformAppModel).Assembly.Location) with
++            {
++                PlatformDeclarationHash = Hash(manifest), SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
++            };
++            PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
++            var declarations = PlatformDeclarationSet.Load(options);
++            foreach (var pair in new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23"), ("parties", "3.0.0") })
++                PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
++            // This is the existing producer's ordinary closure format, without an additive-owner MAC.
++            plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
++            {
++                modules = declarations.OrderBy(module => PlatformDeclarationSet.Id(module.Declaration), StringComparer.Ordinal)
++                    .Select(module => new { module.Declaration, SourceHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(module.Source))) }),
++                selected.Mode, selected.DaprRuntimeVersion, retention = false,
++            }))) };
++            await CompositionDocumentStore.WriteAsync(Path.Combine(workspace, "plan.json"), plan, TestContext.Current.CancellationToken);
++            return new(workspace, plan, seed);
++        }
++        catch
++        {
++            Directory.Delete(workspace, true);
++            throw;
++        }
++    }
++
++    /// <summary>Reaches all seven exact image-probe identities in the actual trusted entry, then stops before rendering or allocation.</summary>
++    internal void AssertPositiveEntry()
++    {
++        var builder = Builder();
++        HashSet<string> seen = new(StringComparer.Ordinal);
++        Should.Throw<InvalidOperationException>(() => Compose(builder, options =>
++        {
++            Options = options;
++            return options with { ImageProbeRunner = (start, timeout, _) =>
++            {
++                start.FileName.ShouldBe("docker");
++                timeout.ShouldBe(TimeSpan.FromSeconds(20));
++                start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
++                start.ArgumentList.Count.ShouldBe(3);
++                Images.ShouldContain(start.ArgumentList[2]);
++                seen.Add(start.ArgumentList[2]).ShouldBeTrue();
++                if (seen.Count == Images.Count) throw new InvalidOperationException("Expected all seven full-Parties image identities; stop before rendering.");
++                return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
++            } };
++        })).Message.ShouldBe("Expected all seven full-Parties image identities; stop before rendering.");
++        seen.Order(StringComparer.Ordinal).ShouldBe(Images.Order(StringComparer.Ordinal));
++        Options.PartiesRunProof!.Matches(Options).ShouldBeTrue();
++        Options.QualificationOwners.ShouldBeEmpty();
++        Plan.QualificationOwners.ShouldBeNull();
++        Plan.QualificationOwnersBinding.ShouldBeNull();
++        PlatformAppModel.Prepare(Options).Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId)
++            .Order(StringComparer.Ordinal).ShouldBe(["eventstore/gateway", "memories/clock", "memories/domain", "memories/server", "memories/telemetry", "parties/domain", "tenants/api", "tenants/domain"]);
++        AssertNoEffects(builder);
++    }
++
++    /// <summary>Invokes the actual key-bearing entry without exposing or replacing its private key.</summary>
++    internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure)
++        => PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, configure);
++
++    /// <summary>Requires zero model resources and no rendering from an entry-only control.</summary>
++    internal void AssertNoEffects(IDistributedApplicationBuilder builder)
++    {
++        builder.Resources.ShouldBeEmpty();
++        Directory.Exists(Path.Combine(Workspace, "platform-components")).ShouldBeFalse();
++    }
++
++    /// <summary>Runs the actual production-generated public-package reader with this genuine mapping and proof.</summary>
++    internal PlatformRoutingCatalog Generate() => PlatformRoutingCatalog.Generate(Options, PlatformAppModel.Prepare(Options), Path.Combine(Workspace, "platform-components"));
++
++    /// <summary>Creates an unstarted Development model.</summary>
++    internal static IDistributedApplicationBuilder Builder(string environment = "Development") => DistributedApplication.CreateBuilder(new DistributedApplicationOptions
++    {
++        Args = ["--environment=" + environment], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
++    });
++
++    private static string Metadata(string key) => typeof(PlatformPartiesPackageFixture).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
++        .SingleOrDefault(attribute => attribute.Key == key)?.Value ?? "";
++    private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
++    private static string Git(string root, params string[] arguments)
++    {
++        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
++        result.ExitCode.ShouldBe(0);
++        return result.Output.Trim();
++    }
++
++    /// <inheritdoc />
++    public void Dispose() => Directory.Delete(Workspace, true);
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..9ad40df63fc284db48140a724dadd760a913cd1d
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs
+@@ -0,0 +1,195 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Runtime.Loader;
++using System.Security.Cryptography;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++using System.Xml.Linq;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++using Hexalith.Platform.CatalogArtifacts;
++using Shouldly;
++
++/// <summary>Runs the production-generated full reader only with the genuinely coherent owner fixture; no conditional positive or legacy mapping fallback.</summary>
++/// <param name="diagnostics">Retains the actual generated-reader guard diagnostics.</param>
++public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnostics)
++{
++    private static readonly string[] _publicNames = ["Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService",
++        "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server", "Hexalith.Memories.Contracts", "Hexalith.Memories.EventStore", "Hexalith.Memories.EventStoreExtensions",
++        "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions", "Hexalith.McpCli.Abstractions"];
++
++    /// <summary>The real generated reader retains all twelve measured public bodies, exact mapping and complete declaration/factory-checked canonical catalog.</summary>
++    [Fact]
++    public async Task CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync()
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        PlatformRoutingCatalog catalog = fixture.Generate();
++        AssertFullReader(fixture, catalog);
++    }
++
++    /// <summary>Each owner/cohort/body mutation follows a real successful full reader and preserves the previous catalog without publishing new output.</summary>
++    /// <param name="fault">The altered private child input.</param>
++    [Theory]
++    [InlineData("missing-owner")]
++    [InlineData("foreign-owner")]
++    [InlineData("legacy-cohort")]
++    [InlineData("unknown-cohort")]
++    [InlineData("foreign-body")]
++    public async Task ChangedFullReaderAuthorityRefusesBeforeOutputAsync(string fault)
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        PlatformRoutingCatalog catalog = fixture.Generate();
++        AssertFullReader(fixture, catalog);
++        byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
++        string failed = Path.Combine(fixture.Workspace, "refused-output");
++        Directory.CreateDirectory(failed);
++        JsonNode request = JsonNode.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")))!;
++        request["outputDirectory"] = failed;
++        string output = Path.Combine(fixture.Reader, "output");
++        switch (fault)
++        {
++            case "missing-owner": request["owners"]!.AsArray().RemoveAt(0); break;
++            case "foreign-owner": request["owners"]![0]!["assembly"] = "Hexalith.Foreign.Contracts"; break;
++            case "legacy-cohort": request["qualificationCohort"] = PublishedCatalogArtifactCohort.Name; break;
++            case "unknown-cohort": request["qualificationCohort"] = "unknown"; break;
++            case "foreign-body":
++                string copy = Path.Combine(fixture.Workspace, "tampered-reader");
++                foreach (string file in Directory.GetFiles(output, "*", SearchOption.AllDirectories))
++                {
++                    string destination = Path.Combine(copy, Path.GetRelativePath(output, file));
++                    Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
++                    File.Copy(file, destination);
++                }
++                output = copy;
++                // Alter only a private child copy. Accepted outputs, signed archives and package caches are untouched.
++                using (FileStream body = new(Path.Combine(copy, "Hexalith.Memories.Contracts.dll"), FileMode.Append, FileAccess.Write)) body.WriteByte(0);
++                break;
++            default: throw new ArgumentOutOfRangeException(nameof(fault));
++        }
++        string path = Path.Combine(fixture.Reader, "refused-request.json");
++        File.WriteAllText(path, request.ToJsonString());
++        var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll"), path], fixture.Reader, null),
++            TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
++        result.ExitCode.ShouldNotBe(0);
++        result.TimedOut.ShouldBeFalse();
++        (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "exact signed public artifact bytes" : "not qualified");
++        Directory.GetFiles(failed).ShouldBeEmpty();
++        File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
++    }
++
++    /// <summary>Effective owner versions and restored package assets remain independently bound to the real pinned full catalog.</summary>
++    /// <param name="fault">The changed private version or asset target.</param>
++    [Theory]
++    [InlineData("version")]
++    [InlineData("assets")]
++    public async Task FullReaderRejectsChangedOwnerVersionOrAssetsAsync(string fault)
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        PlatformRoutingCatalog catalog = fixture.Generate();
++        AssertFullReader(fixture, catalog);
++        byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
++        using JsonDocument versions = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json")));
++        XDocument bindings = XDocument.Load(Path.Combine(fixture.Reader, "bindings.props"));
++        bindings.Descendants("PackageReference").Select(item => (string?)item.Attribute("Include"))
++            .ShouldContain("Hexalith.Memories.EventStore", "Mutate an actual direct owner reference validated by the generated task.");
++        versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
++            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe("3.0.23");
++        string path = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
++        XDocument project = XDocument.Load(path);
++        string target;
++        if (fault == "version")
++        {
++            project.Root!.Add(new XElement("ItemGroup", new XElement("PackageVersion", new XAttribute("Update", "Hexalith.Memories.EventStore"), new XAttribute("Version", "3.0.18"))));
++            target = "ValidatePrivateReaderCatalogBeforeRestore";
++        }
++        else
++        {
++            string assetsPath = Path.Combine(fixture.Reader, "obj", "project.assets.json");
++            JsonNode assets = JsonNode.Parse(File.ReadAllBytes(assetsPath))!;
++            JsonObject packages = assets["targets"]!.AsObject().Single().Value!.AsObject();
++            JsonNode changed = packages["Hexalith.Memories.EventStore/3.0.23"]!.DeepClone();
++            packages.Remove("Hexalith.Memories.EventStore/3.0.23");
++            packages["Hexalith.Memories.EventStore/3.0.18"] = changed;
++            File.WriteAllText(assetsPath, assets.ToJsonString());
++            project.Root!.Elements("Target").Single(element => (string?)element.Attribute("Name") == "ValidatePrivateReaderCatalogAfterRestore").Attribute("DependsOnTargets")!.Remove();
++            target = "ValidatePrivateReaderCatalogAfterRestore";
++        }
++        project.Save(path);
++        var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
++            ["msbuild", path, "-target:" + target, "-nologo", "-m:1", "-nodeReuse:false", "-p:AlternateCommonProps=" + Path.Combine(fixture.Reader, "reader-common.props"),
++             "-p:CentralPackageVersionsFileImported=true", "-p:ImportDirectoryPackagesProps=false", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
++             "-p:PlatformCatalogBindings=" + Path.Combine(fixture.Reader, "bindings.props")], fixture.Options.PlatformRoot, null), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
++        result.ExitCode.ShouldNotBe(0);
++        (result.Output + result.ErrorOutput).ShouldContain("requires 3.0.23");
++        File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
++    }
++
++    /// <summary>The independent full reader does not weaken the ordinary active-Parties source/package duplicate refusal.</summary>
++    [Fact]
++    public async Task OrdinaryConsumerRetainsActivePartiesSourceGuardAsync()
++    {
++        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
++        fixture.AssertPositiveEntry();
++        // The producer correctly reconciles an initial active-owner package to source.
++        // A consumer that adds it back afterwards must still hit the real duplicate guard
++        // before a restore of unrelated active-owner dependencies can mask that boundary.
++        string path = Path.Combine(fixture.Workspace, "ordinary.csproj");
++        File.WriteAllText(path, "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup><Import Project=\""
++            + Path.Combine(fixture.Options.PlatformRoot, "Directory.Build.props") + "\"/><Import Project=\"" + Path.Combine(fixture.Options.PlatformRoot, "Directory.Packages.props")
++            + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup>"
++            + "<Target Name=\"ReintroduceOrdinaryPackage\" AfterTargets=\"HexalithReconcileSourceMapping\">"
++            + "<ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Target></Project>");
++        var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["build", path, "-c", "Release", "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:CentralPackageVersionsFileImported=true", "--nologo"],
++            fixture.Options.PlatformRoot, SourceMappingMaterializer.Environment(fixture.Options.Mapping, fixture.Workspace)), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
++        diagnostics.WriteLine(result.Output + result.ErrorOutput);
++        result.ExitCode.ShouldNotBe(0);
++        result.TimedOut.ShouldBeFalse();
++        (result.Output + result.ErrorOutput).ShouldContain("HXW005");
++        (result.Output + result.ErrorOutput).ShouldContain("Source 'Hexalith.Parties'");
++        (result.Output + result.ErrorOutput).ShouldContain("duplicates direct package 'Hexalith.Parties.Contracts/");
++        Directory.GetFiles(fixture.Workspace, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
++    }
++
++    private void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
++    {
++        using JsonDocument generated = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
++        generated.RootElement.GetProperty("routes").GetArrayLength().ShouldBe(70);
++        generated.RootElement.GetProperty("operations").GetArrayLength().ShouldBe(70);
++        generated.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(46);
++        var declarations = generated.RootElement.GetProperty("declarations").EnumerateArray().ToArray();
++        declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "command").ShouldBe(46);
++        declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "query").ShouldBe(20);
++        declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "projection").ShouldBe(4);
++        diagnostics.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
++            + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=70 policies=46");
++        using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
++        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.FullPartiesName);
++        request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
++        SourceMapping.LoadVerified(Path.Combine(fixture.Workspace, "source-mapping", "mapping.json"), fixture.Options.Mapping.ContentHash).ContentHash.ShouldBe(fixture.Options.Mapping.ContentHash);
++        using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
++        receipt.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
++        var context = new AssemblyLoadContext("full-reader-public-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
++        try
++        {
++            foreach (string name in _publicNames)
++            {
++                string body = Path.Combine(fixture.Reader, "output", name + ".dll");
++                PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), PublishedCatalogArtifactCohort.FullPartiesName).ShouldBe(body);
++                diagnostics.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))));
++            }
++        }
++        finally { context.Unload(); }
++        JsonNode assets = JsonNode.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "obj", "project.assets.json")))!;
++        foreach (string name in _publicNames)
++        {
++            string version = name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) ? "4.0.4" : name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) ? "7.0.0"
++                : name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) ? "3.0.23" : name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) ? "3.0.0" : "2.0.0";
++            assets["libraries"]![name + "/" + version]!["type"]!.GetValue<string>().ShouldBe("package");
++        }
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f1e4e4ab96f2a3f64c09fa37237162c88836a9a
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs
+@@ -0,0 +1,103 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Security.Cryptography;
++using System.Text.Json;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Builds.Tooling.Workspace;
++using Shouldly;
++
++/// <summary>Real local Git repositories and a measured declaration for proof-only controls; never a published tuple or CI identity.</summary>
++internal sealed class PlatformPartiesProofFixture : IDisposable
++{
++    /// <summary>Creates clean local histories and private parent handoff files without invoking a service or granting cohort authority.</summary>
++    /// <param name="platformOwned">Whether the actual owner is a direct Git child of the outer Platform root, with a package-mode Builds entry.</param>
++    internal PlatformPartiesProofFixture(bool platformOwned = false)
++    {
++        Root = Path.Combine(Path.GetTempPath(), "platform-parties-proof-" + Guid.NewGuid().ToString("N"));
++        string active = platformOwned ? Path.Combine(Root, "platform", "references", "Hexalith.Parties") : Path.Combine(Root, "parties");
++        string platform = Path.Combine(Root, "platform");
++        string builds = platformOwned ? Path.Combine(platform, "references", "Hexalith.Builds") : Path.Combine(Root, "builds");
++        string workspace = Path.Combine(Root, "run");
++        foreach (string root in new[] { active, platform, builds }) Directory.CreateDirectory(root);
++        string declaration = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
++        Directory.CreateDirectory(Path.GetDirectoryName(declaration)!);
++        using (Stream source = typeof(PlatformPartiesProofFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures.parties-active-declaration.json")!)
++        using (FileStream target = File.Create(declaration)) source.CopyTo(target);
++        Hash(declaration).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
++        using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
++        JsonElement suite = document.RootElement.GetProperty("modules")[0].GetProperty("tests")
++            .EnumerateArray().Single(test => test.GetProperty("name").GetString() == "platform-package");
++        string entry = suite.GetProperty("entry").GetString()!;
++        string project = Path.Combine(active, entry);
++        Directory.CreateDirectory(Path.GetDirectoryName(project)!);
++        File.WriteAllText(project, "<Project />");
++        File.WriteAllText(Path.Combine(active, "Native.cs"), "// Explicit synthetic native source for clean revision-drift control.\n");
++        string record = Path.Combine(platform, "hexalith-platform.json");
++        File.WriteAllText(record, "{}");
++        string catalog = Path.Combine(builds, "Props", "Directory.Packages.props");
++        Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
++        File.WriteAllText(catalog, "<Project />");
++        foreach (string root in new[] { active, builds, platform })
++        {
++            Git(root, "init", "-q");
++            Commit(root);
++        }
++        SourceMapping mapping = new(WorkspaceMode.Package, platformOwned ? platform : active, "Hexalith.Parties",
++            [new("Hexalith.Parties", "source", active), platformOwned ? new("Hexalith.Builds", "package", null) : new("Hexalith.Builds", "source", builds)], true)
++        {
++            PlatformIdentity = new PlatformIdentity(Git(platform, "rev-parse", "HEAD"), Git(platform, "rev-parse", "HEAD"),
++                Git(platform, "rev-parse", "HEAD"), platform, null, Git(builds, "rev-parse", "HEAD"), "[4.44.0,5.0.0-0)", record, true),
++        };
++        string privateMapping = Path.Combine(workspace, "source-mapping");
++        Directory.CreateDirectory(Path.Combine(privateMapping, "pinned-tree", "Props"));
++        File.WriteAllText(Path.Combine(privateMapping, "mapping.json"), JsonSerializer.Serialize(mapping));
++        File.WriteAllText(Path.Combine(privateMapping, "catalog-versions.json"), "{}");
++        File.Copy(catalog, Path.Combine(privateMapping, "pinned-tree", "Props", "Directory.Packages.props"));
++        string seed = Path.Combine(Root, "seed.csproj");
++        File.WriteAllText(seed, "<Project />");
++        DateTimeOffset now = DateTimeOffset.UtcNow;
++        ModuleTestSelection selected = new("parties", "platform-package", suite.GetProperty("executor").GetString()!, entry,
++            Hash(declaration), Hash(project), 300, 90, now, now.AddSeconds(300), now.AddSeconds(300), "package");
++        CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, Path.Combine(Root, "dapr"),
++            new CompositionRunPorts(20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, [20014], 20015, 20016, 20017, [new(20018, 20019, 20020, 20021)]), [new CompositionRunModule("parties", "parties", "parties", project)], []) with
++        {
++            SourceMapping = mapping, PlatformActiveModule = "parties", PlatformDeclarationPaths = [declaration], PlatformDeclarationHash = Hash(declaration),
++            PlatformModelAssemblyPath = typeof(PlatformAppModel).Assembly.Location, SelectedTest = selected, SelectedTests = [selected],
++        };
++        CompositionDocumentStore.WriteAsync(Path.Combine(workspace, "plan.json"), plan, CancellationToken.None).GetAwaiter().GetResult();
++        Key = CompositionSigningKey.Create();
++        Options = new PlatformCompositionOptions
++        {
++            PlatformRoot = platform, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [declaration], EventStoreSeedProject = seed, RunPlan = plan,
++        };
++        Options = Options with { PartiesRunProof = PlatformPartiesRunProof.Create(Options, Key) };
++    }
++
++    /// <summary>Gets the parent directory of this disposable proof-only fixture.</summary>
++    internal string Root { get; }
++    /// <summary>Gets the locally issued secret, never retained in diagnostic output.</summary>
++    internal string Key { get; }
++    /// <summary>Gets proof-only options; the fixture has no admitted public catalog or released image authority.</summary>
++    internal PlatformCompositionOptions Options { get; }
++
++    /// <summary>Records an actual clean local revision without rewriting history.</summary>
++    internal static void Commit(string root)
++    {
++        Git(root, "add", ".");
++        Git(root, "-c", "user.name=Local proof fixture", "-c", "user.email=fixture@invalid", "-c", "commit.gpgsign=false", "commit", "-q", "-m", "test(proof): record local boundary inputs");
++    }
++
++    /// <summary>Executes real local Git and requires a successful bounded result.</summary>
++    internal static string Git(string root, params string[] arguments)
++    {
++        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
++        result.ExitCode.ShouldBe(0, result.ErrorOutput);
++        result.TimedOut.ShouldBeFalse();
++        return result.Output.Trim();
++    }
++
++    private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
++
++    /// <inheritdoc />
++    public void Dispose() => Directory.Delete(Root, true);
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..a9430b12d6356d4cc077c6c9d2abe4c141e08e14
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs
+@@ -0,0 +1,201 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using System.Text.Json;
++using Aspire.Hosting;
++using Hexalith.Builds.Tooling.Runtime;
++using Hexalith.Platform.CatalogArtifacts;
++using Shouldly;
++
++/// <summary>Exercises the ordinary trusted-entry proof separately from public/image cohort admission and real service qualification.</summary>
++public sealed class PlatformPartiesRunProofTests
++{
++    /// <summary>The real key-bearing entry creates the private proof before its composition callback; this is not image or fleet qualification.</summary>
++    [Fact]
++    public void TrustedComposeRunCreatesOrdinaryProofWithoutExpandedOwners()
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
++        {
++            Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
++        });
++        int configured = 0;
++        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeRun(builder, fixture.Options.RunPlan!, fixture.Key,
++            fixture.Options.EventStoreSeedProject, options =>
++            {
++                configured++;
++                options.PartiesRunProof!.Matches(options).ShouldBeTrue();
++                options.QualificationOwnerProof.ShouldBeNull();
++                options.QualificationOwners.ShouldBeEmpty();
++                options.RunPlan!.QualificationOwners.ShouldBeNull();
++                options.RunPlan.QualificationOwnersBinding.ShouldBeNull();
++                throw new InvalidOperationException("Expected trusted-entry proof boundary.");
++            })).Message.ShouldBe("Expected trusted-entry proof boundary.");
++        configured.ShouldBe(1);
++        builder.Resources.ShouldBeEmpty();
++        Directory.Exists(Path.Combine(fixture.Options.RunPlan!.Workspace, "platform-components")).ShouldBeFalse();
++    }
++
++    /// <summary>The actual private parent files and clean local source retain the proof without creating additive owner authority.</summary>
++    [Fact]
++    public void OrdinaryProofBindsActualParentInputsWithoutAnExpansionMac()
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeTrue();
++        fixture.Options.RunPlan!.QualificationOwners.ShouldBeNull();
++        fixture.Options.RunPlan.QualificationOwnersBinding.ShouldBeNull();
++        fixture.Options.QualificationOwners.ShouldBeEmpty();
++        fixture.Options.QualificationOwnerProof.ShouldBeNull();
++        Directory.Exists(Path.Combine(fixture.Options.RunPlan.Workspace, "platform-components")).ShouldBeFalse();
++    }
++
++    /// <summary>A clean active revision advance changes native source while preserving manifest/project bytes and must invalidate the proof.</summary>
++    [Fact]
++    public void CleanActiveGitRevisionDriftInvalidatesTheOriginalProof()
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        string active = fixture.Options.Mapping.Root;
++        string before = PlatformPartiesProofFixture.Git(active, "rev-parse", "HEAD");
++        File.AppendAllText(Path.Combine(active, "Native.cs"), "// A different committed native implementation.\n");
++        PlatformPartiesProofFixture.Commit(active);
++        PlatformPartiesProofFixture.Git(active, "status", "--porcelain", "--untracked-files=normal").ShouldBeEmpty();
++        PlatformPartiesProofFixture.Git(active, "rev-parse", "HEAD").ShouldNotBe(before);
++        fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeFalse();
++    }
++
++    /// <summary>Copies or mutations of the ordinary plan cannot replay the in-memory proof across its issued inputs.</summary>
++    /// <param name="fault">The changed trusted input.</param>
++    [Theory]
++    [InlineData("run")]
++    [InlineData("attempt")]
++    [InlineData("environment")]
++    [InlineData("source")]
++    [InlineData("mapping")]
++    [InlineData("platform-root")]
++    [InlineData("owner")]
++    [InlineData("selected-test")]
++    [InlineData("declaration")]
++    [InlineData("model")]
++    [InlineData("catalog-generation")]
++    [InlineData("configuration")]
++    [InlineData("images")]
++    [InlineData("projects")]
++    [InlineData("expanded-owner")]
++    [InlineData("expansion-binding")]
++    public void MutatedOptionsCannotReplayProof(string fault)
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        PlatformCompositionOptions original = fixture.Options;
++        CompositionRunPlan plan = original.RunPlan!;
++        PlatformCompositionOptions changed = fault switch
++        {
++            "run" => original with { RunPlan = plan with { RunId = CompositionRunPlanFactory.NewRunId() } },
++            "attempt" => original with { RunPlan = plan with { AttemptId = CompositionRunPlanFactory.NewRunId() } },
++            "environment" => original with { EnvironmentId = CompositionRunPlanFactory.NewRunId() },
++            "source" => original with { Mapping = original.Mapping with { PlatformIdentity = original.Mapping.PlatformIdentity! with { CheckoutCommit = new string('0', 40) } } },
++            "mapping" => original with { Mapping = original.Mapping with { ActiveModule = "Hexalith.Foreign" } },
++            "platform-root" => original with { PlatformRoot = fixture.Root },
++            "owner" => original with { ActiveModule = "eventstore" },
++            "selected-test" => original with { RunPlan = plan with { SelectedTest = plan.SelectedTest! with { Name = "undeclared" } } },
++            "declaration" => original with { DeclarationPaths = [] },
++            "model" => original with { RunPlan = plan with { PlatformModelAssemblyPath = typeof(PlatformPartiesRunProofTests).Assembly.Location } },
++            "catalog-generation" => original with { CatalogGeneration = 2 },
++            "configuration" => original with { Configuration = new Dictionary<string, string> { ["foreign"] = "value" } },
++            "images" => original with { Images = new Dictionary<string, string>() },
++            "projects" => original with { Projects = new Dictionary<string, string>() },
++            "expanded-owner" => original with { QualificationOwners = ["tenants"] },
++            "expansion-binding" => original with { RunPlan = plan with { QualificationOwnersBinding = new string('a', 64) } },
++            _ => throw new ArgumentOutOfRangeException(nameof(fault)),
++        };
++        original.PartiesRunProof!.Matches(changed).ShouldBeFalse();
++        Directory.Exists(Path.Combine(plan.Workspace, "platform-components")).ShouldBeFalse();
++    }
++
++    /// <summary>Private handoff, selected entry and source changes invalidate the original proof even with unchanged option values.</summary>
++    /// <param name="file">The mutated private or source input.</param>
++    [Theory]
++    [InlineData("plan")]
++    [InlineData("mapping")]
++    [InlineData("catalog")]
++    [InlineData("pinned-catalog")]
++    [InlineData("declaration")]
++    [InlineData("test")]
++    [InlineData("seed")]
++    [InlineData("identity")]
++    public void ChangedPhysicalInputsInvalidateProof(string file)
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        PlatformCompositionOptions options = fixture.Options;
++        CompositionRunPlan plan = options.RunPlan!;
++        string selected = file switch
++        {
++            "plan" => Path.Combine(plan.Workspace, "plan.json"),
++            "mapping" => Path.Combine(plan.Workspace, "source-mapping", "mapping.json"),
++            "catalog" => Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"),
++            "pinned-catalog" => Path.Combine(plan.Workspace, "source-mapping", "pinned-tree", "Props", "Directory.Packages.props"),
++            "declaration" => options.DeclarationPaths[0],
++            "test" => Path.Combine(options.Mapping.Root, plan.SelectedTest!.Entry),
++            "seed" => options.EventStoreSeedProject!,
++            "identity" => options.Mapping.PlatformIdentity!.RecordPath,
++            _ => throw new ArgumentOutOfRangeException(nameof(file)),
++        };
++        File.AppendAllText(selected, " ");
++        options.PartiesRunProof!.Matches(options).ShouldBeFalse();
++    }
++
++    /// <summary>The actual selected project must belong to the active root rather than a nested repository.</summary>
++    [Fact]
++    public void NestedSelectedTestRepositoryIsRefusedAtProofCreation()
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        string nested = Path.GetDirectoryName(Path.Combine(fixture.Options.Mapping.Root, fixture.Options.RunPlan!.SelectedTest!.Entry))!;
++        PlatformPartiesProofFixture.Git(nested, "init", "-q");
++        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(fixture.Options, fixture.Key));
++    }
++
++    /// <summary>The ordinary handoff requires the actual 384-bit parent key shape; no ordinary-plan MAC is invented.</summary>
++    /// <param name="key">A missing or malformed parent handoff key.</param>
++    [Theory]
++    [InlineData("")]
++    [InlineData("not-base64")]
++    [InlineData("AAAAAAAAAAAAAAAAAAAAAA==")]
++    public void InvalidParentKeyRefusesProofCreation(string key)
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(fixture.Options, key));
++    }
++
++    /// <summary>Serialized options never carry the proof and cannot reach probes or resources through ordinary Compose.</summary>
++    [Fact]
++    public void SerializedOrdinaryOptionsCannotAcquireAdmission()
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        string serialized = JsonSerializer.Serialize(fixture.Options);
++        serialized.ShouldNotContain("PartiesRunProof");
++        PlatformCompositionOptions unbound = JsonSerializer.Deserialize<PlatformCompositionOptions>(serialized)!;
++        unbound.PartiesRunProof.ShouldBeNull();
++        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(unbound, [], [], true));
++    }
++
++    /// <summary>A valid ordinary proof alone does not authorize an empty or foreign cohort, topology or production scope.</summary>
++    /// <param name="development">Whether the caller requested the sole Development scope.</param>
++    [Theory]
++    [InlineData(true)]
++    [InlineData(false)]
++    public void ProofDoesNotReplaceFiniteCohortAndTopologyChecks(bool development)
++    {
++        using PlatformPartiesProofFixture fixture = new();
++        fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeTrue();
++        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(fixture.Options, [], [], development));
++    }
++
++    /// <summary>The independent reader allowlist refuses foreign bodies in both separate public cohorts.</summary>
++    /// <param name="cohort">The supported or unknown requested cohort.</param>
++    [Theory]
++    [InlineData(PublishedCatalogArtifactCohort.Name)]
++    [InlineData(PublishedCatalogArtifactCohort.FullPartiesName)]
++    [InlineData("unknown")]
++    public void ReaderAuthorityRefusesForeignPublicBytes(string cohort)
++    {
++        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformPartiesRunProofTests).Assembly, cohort));
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+index 3a47d83998dfb83f21ae6b96211219f906ebb878..6db3df73f6b188ab6e26701ccbd33181e49dfa97 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+@@ -25,7 +25,9 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
+         }
+         string catalog = Path.Combine(Root, "references", "Hexalith.Builds", "Props");
+         Directory.CreateDirectory(catalog);
+-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>4.0.4</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.0</HexalithTenantsVersion><HexalithMemoriesVersion>3.0.18</HexalithMemoriesVersion></PropertyGroup></Project>");
++        string memoriesVersion = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!["memories"]!["version"]!.GetValue<string>();
++        // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
++        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>4.0.4</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.0</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup></Project>");
+         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
+         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
+         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);

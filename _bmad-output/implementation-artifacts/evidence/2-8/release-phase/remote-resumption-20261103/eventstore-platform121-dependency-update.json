@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-04T05:09:40.558634+00:00",
+  "head": "f15c74b61938722a367b16060b42c3a6bcd203b6",
+  "preservedFiles": {
+    "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "f40026d6a0c3e8e22727fe28357a918735a68f3f0fa0119c966d2af9000ee451",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "cf7955af2cbfa944b83abfede234eb91afd1abb45cef49ab46c9b092d9251491",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs": "99818ad66dfcfb19dbdd920846f064eee9539ea7b5123ad1552549bf805e0270",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "fbc3c899d5af43eef2241fe9f6ff7940269b17e22cea757f64f0995859eefdfd",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "b6ea613f1367a3dc3ed603cb112413dc072e94d45bca862cd84c7a7fde71714c",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901"
+  },
+  "directDependencies": {
+    "Hexalith.Builds": {
+      "before": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "after": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "fetch",
+            "--no-recurse-submodules",
+            "--no-tags",
+            "origin",
+            "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045"
+          ],
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": "From https://github.com/Hexalith/Hexalith.Builds\n * branch              6249a8c0a0480a4b8a8ba04fc214c6104c3c9045 -> FETCH_HEAD\n"
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "submodule.recurse=false",
+            "checkout",
+            "--detach",
+            "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045"
+          ],
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": "Previous HEAD position was 72575407 build: merge refs/remotes/origin/fix/remove-duplicate-keyvault-keys-pin into main via /pushall\nHEAD is now at 6249a8c0 build: merge authenticated qualification owners (#158)\n"
+        }
+      ]
+    },
+    "Hexalith.Platform": {
+      "before": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "after": "728baa7c0f006d86e71d6c9b29527dabc8e16e49",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "fetch",
+            "--no-recurse-submodules",
+            "--no-tags",
+            "origin",
+            "728baa7c0f006d86e71d6c9b29527dabc8e16e49"
+          ],
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": "From https://github.com/Hexalith/Hexalith.Platform\n * branch              728baa7c0f006d86e71d6c9b29527dabc8e16e49 -> FETCH_HEAD\n"
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "submodule.recurse=false",
+            "checkout",
+            "--detach",
+            "728baa7c0f006d86e71d6c9b29527dabc8e16e49"
+          ],
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": "Previous HEAD position was ed1560a5 build: merge refs/remotes/origin/fix/restore-builds-4436-gitlink into main via /pushall\nHEAD is now at 728baa7c fix(composition): probe canonical immutable image references (#19)\n"
+        }
+      ]
+    }
+  },
+  "setupFirstFailure": "Initial custody inventory referenced NativeAssemblyObservationsTests.cs; actual path is NativeAssemblyObservationTests.cs. No source or dependency mutation had occurred."
+}

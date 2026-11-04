@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-03T18:02:43.408992+00:00",
+  "base": "8432397c66ebc0fd22e5671ce620a7d2139f7453",
+  "source": "ddf49bec88fd26d44ecd1b60238330989298cfbd",
+  "sourcePathsOutsideStoryArtifacts": [
+    "M\treferences/Hexalith.Builds"
+  ],
+  "changedPathCount": 209,
+  "incomingSourceGitlink": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "tupleSource": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "argv": [
+    "python3",
+    "-B",
+    "eng/prepare_builds_artifacts.py",
+    "--archive",
+    "/home/administrator/.cache/hexalith/story-2-8/builds-4436-official-20261103/hexalith.builds.module.cli.4.43.6.nupkg",
+    "--output",
+    "/home/administrator/.cache/hexalith/story-2-8/platform-ddf-first-refusal-20261103",
+    "--require-recorded"
+  ],
+  "exitCode": 1,
+  "output": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nTraceback (most recent call last):\n  File \"/home/administrator/projects/hexalith/platform/eng/prepare_builds_artifacts.py\", line 87, in <module>\n    main()\n    ~~~~^^\n  File \"/home/administrator/projects/hexalith/platform/eng/prepare_builds_artifacts.py\", line 41, in main\n    validate_recorded_source(binding, pin, state[\"dirty\"])\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/administrator/projects/hexalith/platform/eng/builds_tuple.py\", line 66, in validate_recorded_source\n    raise ValueError(\"CI requires clean recorded Platform source with the exact approved Builds pin.\")\nValueError: CI requires clean recorded Platform source with the exact approved Builds pin.\n",
+  "nativeAllocation": false,
+  "normalSourceRepairRequired": true,
+  "candidateAcceptance": false
+}

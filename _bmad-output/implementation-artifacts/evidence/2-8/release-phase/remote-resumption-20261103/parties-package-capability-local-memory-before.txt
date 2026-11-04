@@ -1,0 +1,29 @@
+Running tests from /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+failed Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests.SelectedPackageSendsRefreshRevisionAndAdvertisesItsCompiledCapability (14ms)
+  from /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : PartyMemoryIndexingService.SupportsExplicitSourceRefresh
+      should be
+  True
+      but was
+  False
+    at Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests.SelectedPackageSendsRefreshRevisionAndAdvertisesItsCompiledCapability() in /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs:25
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    --- End of stack trace from previous location ---
+    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64) failed with 1 error(s) (742ms)
+Exit code: 2
+
+  In process file artifacts produced:
+    - /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/package-capability-local/memory-before/memory-before.trx
+
+Test run summary: Failed!
+  total: 18
+  failed: 1
+  succeeded: 17
+  skipped: 0
+  duration: 872ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

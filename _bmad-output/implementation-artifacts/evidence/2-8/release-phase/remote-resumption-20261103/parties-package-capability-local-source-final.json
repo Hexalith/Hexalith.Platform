@@ -1,0 +1,69 @@
+{
+  "recordedAt": "2026-11-04T11:54:20.657636+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "branch": "fix/adopt-platform-117",
+  "head": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "parents": [
+    "b7dcd84e5ebdc79f975c3a645727ddf89f199d76"
+  ],
+  "tree": "ac32ce49067657b8f3c862d1f4a759c76f35443a",
+  "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "remoteTrackingHead": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "clean": true,
+  "unpushed": true,
+  "remoteOperationsDuringTask": false,
+  "patches": {
+    "correction": {
+      "file": "parties-package-capability-local-correction.patch",
+      "sha256": "0e970ebcc51682a6fe8da0711f9c1fbd65b308595f74cd5352c38af0b4324093",
+      "bytes": 14325,
+      "paths": [
+        "Directory.Build.targets",
+        "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "tests/e2e/helpers/frontcomposer-assets.ts"
+      ]
+    },
+    "full-proposal": {
+      "file": "parties-package-capability-local-full-proposal.patch",
+      "sha256": "d59a6c822a9ec1d767def2ea0eba4355cbabb42574bd2eb97d6af34700f73a43",
+      "bytes": 106115,
+      "paths": [
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci-lifecycle-qualification.yml",
+        ".github/workflows/ci.yml",
+        ".gitlink-signoff.tsv",
+        "Directory.Build.targets",
+        "README.md",
+        "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+        "docs/architecture.md",
+        "docs/ci-lifecycle-qualification.md",
+        "docs/ci.md",
+        "docs/getting-started.md",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+        "tests/e2e/helpers/frontcomposer-assets.ts"
+      ]
+    }
+  },
+  "changedSourceHashes": {
+    "Directory.Build.targets": "34060a7353cb7b6ddca367bbccd43253c0203c907e4a3917571a24e263e48889",
+    "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs": "0ab1efe42721b846dd549f85d53dfc648234b5d1db02d6e99641d87ecf0404a3",
+    "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs": "e517da0c093d18370530f825ac33430b43d2245c96e930893d0700faf43d8a97",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": "362622666298627c2763f6ed3e3bed90dd7d63260e25dfecd2f8bfac25591a45",
+    "tests/e2e/helpers/frontcomposer-assets.ts": "da14073c3fa3dcef72487472b9d3dd63affa6d17753a184b27a132258f11145b"
+  },
+  "actualLocalTestsRanOnContentBeforeNormalCommit": true,
+  "metadataCommitDoesNotGrantHostedEvidence": true,
+  "candidateAcceptance": false
+}

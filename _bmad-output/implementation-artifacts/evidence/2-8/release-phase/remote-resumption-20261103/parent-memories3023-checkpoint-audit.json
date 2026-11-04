@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-04T05:11:23.638109+00:00",
+  "checkpointSha256": "0062a614b38aa50b91356094c1f7679c38b9787262b1b61184209d3d9c243326",
+  "supportingInventoriesVerified": [
+    "memories3023-carrier-file-inventory.json",
+    "memories3023-carrier-health-declaration-binding.json",
+    "memories3023-command-results-index.json",
+    "memories3023-github-public-nuget-comparison-first.json",
+    "memories3023-image-application-file-inventory.json",
+    "memories3023-image-assembly-metadata.json",
+    "memories3023-image-rootfs-linkage.json",
+    "memories3023-nuget-member-inventory.json",
+    "memories3023-official-publication-identity.json",
+    "memories3023-package-image-assembly-comparison.json",
+    "memories3023-producer-helper-hashes-first.json",
+    "memories3023-public-nuget-download-first.json",
+    "memories3023-public-nuget-identity.json",
+    "memories3023-registry-layers-first.json",
+    "memories3023-registry-manifest-config-first.json",
+    "memories3023-signature-verification-first.json"
+  ],
+  "scope": "Parent verified evidence-file integrity and read actual ordinary DomainService project/Program; no independent service execution.",
+  "observedSource": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+  "finding": "Normal project references own Memories.EventStore; EventStoreExtensions is only a package reference in a non-publishing test profile. Compiled catalog/receiver calls are present.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,490 @@
+{
+  "run": {
+    "id": 41815243579,
+    "name": "Integration Tests",
+    "node_id": "WFR_kwLORNpC788AAAAJvGH7Ow",
+    "head_branch": "main",
+    "head_sha": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+    "path": ".github/workflows/integration.yml",
+    "display_title": "test(ci): bind package native diagnostics to the verified owner (#392)",
+    "run_number": 1508,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "workflow_id": 300068044,
+    "check_suite_id": 113306120735,
+    "check_suite_node_id": "CS_kwDORNpC788AAAAaYZIyHw",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579",
+    "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41815243579",
+    "pull_requests": [],
+    "created_at": "2026-11-04T10:36:05Z",
+    "updated_at": "2026-11-04T11:35:35Z",
+    "actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [],
+    "run_started_at": "2026-11-04T10:36:05Z",
+    "triggering_actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579/jobs",
+    "logs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579/logs",
+    "check_suite_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/check-suites/113306120735",
+    "artifacts_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579/artifacts",
+    "cancel_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579/cancel",
+    "rerun_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/41815243579/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/workflows/300068044",
+    "head_commit": {
+      "id": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+      "tree_id": "66ce877efa59fc7a06446a1a6e7e3bb70bc447dd",
+      "message": "test(ci): bind package native diagnostics to the verified owner (#392)\n\nBind native observations to the published handoff, verified owner metadata,\nmapped caller and classified artifact invocation before writing once.\n\nPreserve gateway readiness, persisted Redis end-state and anonymous status\nrefusal assertions. Add focused binding and file-boundary controls.",
+      "timestamp": "2026-11-04T10:36:01Z",
+      "author": {
+        "name": "Jérôme Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com"
+      }
+    },
+    "repository": {
+      "id": 1155154671,
+      "node_id": "R_kgDORNpC7w",
+      "name": "Hexalith.EventStore",
+      "full_name": "Hexalith/Hexalith.EventStore",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore",
+      "description": null,
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments"
+    },
+    "head_repository": {
+      "id": 1155154671,
+      "node_id": "R_kgDORNpC7w",
+      "name": "Hexalith.EventStore",
+      "full_name": "Hexalith/Hexalith.EventStore",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore",
+      "description": null,
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/deployments"
+    }
+  },
+  "jobs": {
+    "jobs": [
+      {
+        "id": 126524217776,
+        "name": "published-compatibility",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41815243579,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Checkout exact executor and comparison tags",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Initialize only root Builds dependency",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Pull the original qualified Redis profile",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Verify published runner exit propagation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Build the isolated qualification runner",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run isolated published qualification and ownership regressions",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Upload measured outcomes and bounded command logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Checkout exact executor and comparison tags",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      {
+        "id": 126524219760,
+        "name": "live-sidecar",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41815243579,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Checkout repository",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Reject committed evidence and oversized files",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Verify committed-file guard regressions",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify Dapr broker qualification inputs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Initialize Hexalith.Builds submodule",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Cache NuGet packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Restore",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify canonical tenant and generated explicit-scope boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Initialize Dapr",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Pull PostgreSQL container image",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Verify catalog Docker selection without daemon access",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Prepare pinned route catalog Development tools",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Run Live-Sidecar Integration Tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Verify IntegrationTests serialized execution metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Upload live-sidecar test results",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Cache NuGet packages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 32
+          },
+          {
+            "name": "Post Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 33
+          },
+          {
+            "name": "Post Checkout repository",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 34
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 35
+          }
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "artifacts": [
+      {
+        "id": 13317331416,
+        "name": "published-compatibility-results",
+        "size_in_bytes": 12777184,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13317331416",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13317331416/zip",
+        "expired": false,
+        "created_at": "2026-11-04T11:35:32Z",
+        "expires_at": "2026-11-11T11:35:27Z",
+        "updated_at": "2026-11-04T11:35:32Z",
+        "digest": "sha256:cb2ca9fd579764bf5ab47d86dc220cfc069cb683096b61ece0707ead80a9fbe3",
+        "workflow_run": {
+          "id": 41815243579,
+          "repository_id": 1155154671,
+          "head_repository_id": 1155154671,
+          "head_branch": "main",
+          "head_sha": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        }
+      },
+      {
+        "id": 13316291789,
+        "name": "live-sidecar-test-results",
+        "size_in_bytes": 1382373,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13316291789",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13316291789/zip",
+        "expired": false,
+        "created_at": "2026-11-04T11:18:23Z",
+        "expires_at": "2026-11-11T11:18:23Z",
+        "updated_at": "2026-11-04T11:18:23Z",
+        "digest": "sha256:30219d80f691e9a5d89f68602feb092bdab207007b4c63c6c7bb8a53e02e58a6",
+        "workflow_run": {
+          "id": 41815243579,
+          "repository_id": 1155154671,
+          "head_repository_id": 1155154671,
+          "head_branch": "main",
+          "head_sha": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        }
+      }
+    ]
+  }
+}

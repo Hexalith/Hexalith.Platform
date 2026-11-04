@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-04T11:55:16.282705+00:00",
+  "head": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "parent": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "tree": "ac32ce49067657b8f3c862d1f4a759c76f35443a",
+  "localOnly": true,
+  "clean": true,
+  "paths": [
+    "Directory.Build.targets",
+    "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+    "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+    "tests/e2e/helpers/frontcomposer-assets.ts"
+  ],
+  "correctionSha256": "0e970ebcc51682a6fe8da0711f9c1fbd65b308595f74cd5352c38af0b4324093",
+  "fullProposalSha256": "d59a6c822a9ec1d767def2ea0eba4355cbabb42574bd2eb97d6af34700f73a43",
+  "fullProposalPaths": 23,
+  "parentRead": "All5changed paths fully read including committed new85line Memories policy file; full previous19path b7proposal previouslyread and immutablematchverified.",
+  "evidenceFilesRehashed": 67,
+  "passingTrxReports": [
+    {
+      "file": "parties-package-capability-local-admin-components.trx",
+      "cases": 124
+    },
+    {
+      "file": "parties-package-capability-local-combined-policy.trx",
+      "cases": 16
+    },
+    {
+      "file": "parties-package-capability-local-consumer-components.trx",
+      "cases": 37
+    },
+    {
+      "file": "parties-package-capability-local-fc-policy.trx",
+      "cases": 14
+    },
+    {
+      "file": "parties-package-capability-local-memory-rest-after.trx",
+      "cases": 27
+    },
+    {
+      "file": "parties-package-capability-local-memory-safety.trx",
+      "cases": 111
+    },
+    {
+      "file": "parties-package-capability-local-refresh-policy.trx",
+      "cases": 16
+    },
+    {
+      "file": "parties-package-capability-local-ui-components.trx",
+      "cases": 120
+    }
+  ],
+  "uniquePassingAffectedDotnetCases": 449,
+  "uiAudit": "parent-parties-capability-local-ui-audit.json",
+  "preservation": "Parent independently compared all7protected inputs and preserved original native fact around inserted401fact. Only intended5paths changed.",
+  "messageValidationReceipt": "parties-package-capability-local-message-validation.txt",
+  "new401RuntimeStatus": "Compiled; actual hosted-only execution remains required.",
+  "remaining": "Actual complete changed-source CI, real allowner native and retained reports/exactcleanup, then manual matrix/startup/execution cancellation and normal merge/freshmain/finalstorydiffreview.",
+  "storyComplete": false,
+  "candidateAcceptance": false
+}

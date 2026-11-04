@@ -1,0 +1,39 @@
+{
+  "commands": [
+    {
+      "name": "contracts-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj",
+        "--configuration",
+        "Release",
+        "-warnaserror",
+        "-m:1",
+        "-p:UseHexalithProjectReferences=false"
+      ],
+      "startedAt": "2026-11-03T19:47:13.562136+00:00",
+      "completedAt": "2026-11-03T19:47:36.463510+00:00",
+      "exitCode": 0
+    },
+    {
+      "name": "native-fixture-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "--configuration",
+        "Release",
+        "-warnaserror",
+        "-m:1",
+        "-p:UseHexalithProjectReferences=false"
+      ],
+      "startedAt": "2026-11-03T19:47:36.463836+00:00",
+      "completedAt": "2026-11-03T19:47:42.097032+00:00",
+      "exitCode": 0
+    }
+  ],
+  "mode": "Release/package",
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

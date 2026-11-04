@@ -1,0 +1,21 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+    "--configuration",
+    "Release",
+    "--disable-build-servers",
+    "-m:1",
+    "-warnaserror",
+    "--nologo"
+  ],
+  "exitCode": 0,
+  "startedAt": "2026-11-04T08:43:33.698853+00:00",
+  "completedAt": "2026-11-04T08:43:54.648601+00:00",
+  "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/incoming-main-reconciliation/prepared-build.env",
+  "nugetCache": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103",
+  "signatureRevocationMode": "offline",
+  "mode": "Release/package",
+  "mergeNotYetCommitted": true
+}

@@ -1,0 +1,50 @@
+{
+  "at": "2026-11-04T09:33:09.874Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+      "number": 392,
+      "state": "open",
+      "merged": false,
+      "mergeable": true,
+      "draft": false,
+      "body": "The native test process receives a scrubbed environment, so diagnostics need a verified route to the caller's retained artifact directory. This change binds that route to the published G4 descriptor, plan, source mapping and owner state, then records loaded assembly identities after the real persistence assertions.\n\nThe caller uses authenticated CLI 4.44.0/catalog source 6249a8c0a0480a4b8a8ba04fc214c6104c3c9045 and Platform 1.2.3. Current main's independent executor ae68c59bd2f4145a23ccf68c3711f98eaf62195f supplies bounded, receipt-bound diagnostic retention. The normal merge preserves the incoming tenant-boundary and routing-authority fixes.\n\nValidation:\n- Three Release/package project builds completed with zero warnings or errors.\n- 363 focused .NET cases and three released-owner controls passed with zero skips.\n- Fresh hosted package integration, retained native TRX/lifecycle bodies and exact cleanup remain required for this head. The prior b63 run's successful environment/cleanup and missing report bodies remain separately recorded.\n",
+      "title": "test(ci): bind package native diagnostics to the verified owner",
+      "base": "main",
+      "base_sha": "aeec5012fa3e1e07426a8fdd145709bce93f619a",
+      "head": "fix/adopt-platform-117",
+      "head_sha": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+      "head_repo_id": 1155154671,
+      "head_repo_full_name": "Hexalith/Hexalith.EventStore",
+      "merge_commit_sha": "971e9b66861499326fba7c84e2e592aa76d3e066",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": null,
+      "comments": null,
+      "created_at": "2026-11-03T19:55:18Z",
+      "updated_at": "2026-11-04T09:33:07Z",
+      "closed_at": null,
+      "merged_at": null,
+      "commits": 12,
+      "changed_files": 7,
+      "additions": 398,
+      "deletions": 1,
+      "display_url": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+      "display_title": "test(ci): bind package native diagnostics to the verified owner"
+    },
+    "isError": false
+  }
+}

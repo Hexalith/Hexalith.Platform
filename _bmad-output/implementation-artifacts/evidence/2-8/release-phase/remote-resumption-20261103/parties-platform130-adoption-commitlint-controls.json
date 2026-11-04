@@ -1,0 +1,42 @@
+{
+  "version": "21.2.4",
+  "checks": [
+    {
+      "name": "adoption-message",
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/administrator/projects/hexalith/platform/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "commitlint.config.mjs",
+        "--verbose"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "pr-title",
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/administrator/projects/hexalith/platform/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "commitlint.config.mjs",
+        "--verbose"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "full-range",
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "/home/administrator/projects/hexalith/platform/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "commitlint.config.mjs",
+        "--from",
+        "3e4367622764118fc2ad710ad1040994ae4cfa49",
+        "--to",
+        "HEAD",
+        "--verbose"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

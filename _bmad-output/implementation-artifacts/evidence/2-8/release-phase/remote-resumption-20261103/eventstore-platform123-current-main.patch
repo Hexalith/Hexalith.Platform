@@ -1,0 +1,646 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index fc6cadbfe..e5605ace1 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -17,7 +17,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.43.6",
++      "version": "4.44.0",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9ac8f4c68..6d96712f7 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -60,11 +60,12 @@ jobs:
+         run: python3 scripts/verify-process-packages.py
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045
+     with:
+       solution: Hexalith.EventStore.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+       integration-test-profiles: platform-package
++      integration-test-reference-owners: tenants
+       build-timeout-minutes: 180
+       test-platform: microsoft-testing-platform
+       run-consumer-validation: true
+diff --git a/docs/ci.md b/docs/ci.md
+index 735986512..880fb53bc 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -8,7 +8,7 @@ Hexalith CI/CD standards and reusable workflow guidance live in
+ 
+ | Workflow | File | Triggers | Purpose |
+ |----------|------|----------|---------|
+-| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
++| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
+ | **Advisory Tests** | `.github/workflows/advisory-tests.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Visible non-release-blocking browser and governance suites. It installs Chromium before Playwright E2E tests, runs with `continue-on-error`, and release does not listen to this workflow. |
+ | **Integration Tests** | `.github/workflows/integration.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Dedicated DAPR lane for `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`. It is intentionally separate from the release trigger. |
+ | **Payload Protection Lifecycle** | `.github/workflows/payload-protection-lifecycle.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Isolated Dapr 1.18.7/PostgreSQL v2 capability, catalog, lease, drain, recovery, rotation, generation and restore tests. Requires at least thirty-one executed tests with zero skips, including cumulative transport limits, writer capacity, conditional restore decisions and authority races. Local qualification and its limits are recorded in the Story 8.5 spec; a CI run is separate evidence. |
+@@ -76,7 +76,7 @@ Reusable CI/CD logic belongs in `Hexalith.Builds`:
+ EventStore keeps only module-specific wiring here:
+ 
+ - `Hexalith.EventStore.slnx`.
+-- The isolated test project list passed to `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb`.
++- The isolated test project list passed to `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`.
+ - The advisory test project list and Playwright browser install needed by the
+   Admin UI E2E suite.
+ - Manifest-backed package validation scripts under `scripts/`.
+@@ -117,12 +117,12 @@ place for run output.
+ 
+ | Lane | Projects | Workflow behavior |
+ |------|----------|-------------------|
+-| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
++| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
+ | Semantic-release governance | `tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs`, `tools/tests/test_release_publication_authority.py` | Blocking EventStore-owned CI job. It provisions Node 24, installs exactly `package-lock.json` with `npm ci`, and exercises both release-history cases against an Undici-guarded loopback-only fake GitHub boundary. It also runs the publication-authority regressions against the exact approved Builds publication engine. |
+ | Live-sidecar DAPR lane | `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`, plus `scripts/check-committed-files.sh`, `tools/tests/test_check_committed_files.py` and `tools/tests/test_dapr_broker_qualification.py` | Dedicated `Integration Tests` workflow after `dapr init`; its required `live-sidecar` job first runs the committed-file guard and the two Python suites. This lane is visible but not part of the semantic-release gate. It is not a `dotnet test` of `Server.Tests`. |
+ | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |
+ | Advisory browser/governance suites | `tests/Hexalith.EventStore.Admin.UI.E2E`, `tests/Hexalith.EventStore.DeferredWorkGovernance.Tests` | Separate `Advisory Tests` workflow. It installs Playwright Chromium for the browser suite and runs with `continue-on-error`, preserving push/PR signal without making semantic-release depend on these suites. |
+-| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.43.6 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
++| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.44.0 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
+ | Full Aspire E2E | `tests/Hexalith.EventStore.IntegrationTests` | Deferred until a reliable Aspire-in-CI topology exists. |
+ | Isolated synthetic sharding | `tests/Hexalith.EventStore.Sharding.Tests` | Deferred CI automation; the operator opt-in Debug lane and its owned `Sharding.TestHost` fixture are documented in `tests/Hexalith.EventStore.Sharding.Tests/README.md`. Synthetic observations do not qualify a production provider profile or release gate. |
+ 
+@@ -131,27 +131,61 @@ The v2 caller explicitly maps only `HEXALITH_CI_REGISTRY_USERNAME` and
+ accepts no inherited secrets, caller Dapr overrides or direct integration/AppHost
+ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ 
+-The package-profile bootstrap records Builds
+-`89f62052c932d054bda2b435bdfef60d96e77612` and released Platform `v1.1.6`
+-(`8ea8fe092f8abb5c932a61830aae16051d442463`). Platform records the same Builds
+-catalog, which selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+-Azure.Security.KeyVault.Keys 4.10.2. These recorded source identities remain
+-unchanged by the tool update.
+-
+-The executing module CLI is genuine public 4.43.6, released from Builds
+-`725754075e1d6369430a3adf94d46fb71e6eaf9e` by successful normal release
+-[41666723123](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41666723123).
+-Its source differs from the recorded catalog source. Platform's supported tool
+-range `[4.43.5,5.0.0-0)` admits that CLI; both sources contain the same catalog
+-blob `ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`. The newer tool resolves a cold
+-direct-only module from its verified direct Builds checkout, without requiring
+-Platform's nested dependency checkouts. Matching catalog bytes do not replace
+-the separately verified source identities or the supported-range check.
++The package-profile bootstrap, v2 workflow and executing public module CLI
++4.44.0 now select the same Builds source
++`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, with genuine released Platform
++[`v1.2.3`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.3)
++(`991e2df97dc8493e41096006b0d3203a71730ae8`). Platform records that exact
++Builds gitlink and tool floor `[4.44.0,5.0.0-0)`. The approved catalog still
++selects public EventStore 4.0.4, Azure.Core 1.64.0 and
++Azure.Security.KeyVault.Keys 4.10.2, with catalog blob
++`ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`.
++
++Platform 1.2.3 forwards each declared Tenants domain/API app-channel credential
++to `APP_API_TOKEN` on the application and its own sidecar. The API's separate
++`Tenants:ApiDaprToken` still supplies `DAPR_API_TOKEN`. Its source-bound
++[tuple run 41790026906](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41790026906)
++passed all 201 required cases, including the actual unstarted model callbacks
++and SDK missing, wrong and duplicate-token controls. This is component evidence;
++it does not establish a reference native pass.
++
++The prior EventStore revision `005c9cfb0f938214ba889e645f81e389d82476b6`
++[hosted run 41787766444](https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41787766444)
++passed all twenty isolated projects and five independent jobs, then exhausted the
++unchanged 600-second startup bound with `HXR021`. Native facts never ran. Exact
++cleanup verified no remaining owned resources; detailed API exit text was not
++retained. The published 4.44.0 helper's separate lifecycle-diagnostic retention
++gap remains pending a coherent producer adoption. Fresh hosted gateway/persistence
++facts and cleanup remain mandatory after this dependency correction.
++
++The CLI was published by successful normal Builds release
++[41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
++It resolves a cold direct-only module from the verified direct Builds checkout,
++without requiring Platform's nested dependency checkouts. Exact source, signed
++package content and supported-range checks remain required. The real native
++persistence test emits bounded TRX diagnostics for the SDK assemblies actually
++loaded in its test process, including their versions and SHA-256 hashes. Those
++measurements do not claim a dependency was loaded in a different process.
++The diagnostic reads the existing descriptor/plan/issued owner and verified
++source mapping to bind the actual context and caller Git revision. Its surviving
++output is the original caller's existing `TestResults/module-integration`
++directory; the native process keeps the published scrubbed environment.
++
++The caller selects `integration-test-reference-owners: tenants`. The released
++helper passes the additive `--with-owner=tenants` request to the fresh package
++test; Platform admits only its qualified Development Linux/x64 EventStore
++4.0.4/Tenants 7.0.0 cohort. The production declaration stays unchanged, and all
++declared dependencies remain required. The complete server closure includes
++the SDK gateway and the released Tenants domain and API, whose Linux/amd64
++images are pinned by Platform to their measured immutable digests. Expanded
++owner candidate reuse and attachments remain unsupported. Memories and other
++SDK/owner cohorts require separate qualification.
+ 
+ The catalog's EventStore 4.0.4 selection remains the package-profile bootstrap
+ input. A new EventStore producer and subsequent catalog/cohort adoption need
+-normal publication and fresh qualification. This tooling adoption does not
+-claim hosted acceptance for the current SDK revision.
++normal publication and fresh qualification. The real gateway/Redis assertions,
++actual loaded-SDK observations and exact-run cleanup must pass in fresh hosted
++CI; this tuple adoption alone does not claim native acceptance.
+ 
+ Standalone package probes and synthetic MSBuild fixtures select independent
+ child build environments before applying their deliberate test mapping inputs.
+@@ -248,7 +282,7 @@ dedicated LiveSidecar lane; they are not a reason to add the project to
+ 
+ ## Package Validation
+ 
+-Shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` calls these EventStore entry points when
++Shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` calls these EventStore entry points when
+ `run-consumer-validation: true`:
+ 
+ ```bash
+Submodule references/Hexalith.Builds 725754075..6249a8c0a:
+  > build: merge authenticated qualification owners (#158)
+  > fix(ci): pin Dapr port guard in shared CI
+  > fix(ci): wait for scheduler port before Dapr init
+  > build: merge refs/remotes/origin/main into main via /pushall
+  > build(deps): select the canonical EventStore McpCli and Tenants cohort
+Submodule references/Hexalith.Platform ed1560a57..991e2df97:
+  > fix(composition): bind the Tenants API app-channel token (#21)
+  > fix(composition): isolate published catalog reader builds (#20)
+  > fix(composition): probe canonical immutable image references (#19)
+  > feat(runtime): qualify the released SDK catalog cohort (#18)
+  > fix(composition): allow qualified package catalog graphs
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+index 17200fdca..0bed50641 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+@@ -559,7 +559,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(workflow, "ci");
+         string tenantsSourceModeJob = ExtractTopLevelWorkflowJobBlock(workflow, "tenants-source-mode");
+ 
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045");
+         ciJob.ShouldContain("build-timeout-minutes: 180");
+         ciJob.ShouldContain("test-platform: microsoft-testing-platform");
+         ciJob.ShouldContain("run-consumer-validation: true");
+@@ -583,6 +583,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(File.ReadAllText(Path.Combine(root, ".github", "workflows", "ci.yml")), "ci");
+         ciJob.ShouldContain("module-manifest: module/hexalith.module-manifest.v2.json");
+         ciJob.ShouldContain("integration-test-profiles: platform-package");
++        ciJob.ShouldContain("integration-test-reference-owners: tenants");
+         ciJob.ShouldContain("registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}");
+         ciJob.ShouldContain("registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}");
+         foreach (string retired in new[] { "integration-test-projects:", "aspire-test-project:", "dapr-version:", "dapr-runtime-version:", "secrets: inherit" })
+@@ -592,7 +593,7 @@ public sealed class ReleasePackageManifestTests
+ 
+         using JsonDocument tools = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config", "dotnet-tools.json")));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("4.43.6");
++        tool.GetProperty("version").GetString().ShouldBe("4.44.0");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "module", "hexalith.module-manifest.v2.json")));
+         JsonElement suite = manifest.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray()
+@@ -653,6 +654,7 @@ public sealed class ReleasePackageManifestTests
+     public void Semantic_release_governance_validation_rejects_skip_or_tolerance_mutations(string mutation)
+     {
+         string job = CreateValidSemanticReleaseGovernanceJobBlock();
++        AssertSemanticReleaseGovernanceJobIsBlocking(job);
+         string mutatedJob = mutation switch
+         {
+             "job-skip" => job.Replace(
+@@ -779,7 +781,7 @@ public sealed class ReleasePackageManifestTests
+         liveSidecarJob.ShouldNotContain("set +e");
+ 
+         string ciJob = ExtractTopLevelWorkflowJobBlock(ci, "ci");
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045");
+         ciJob.ShouldContain("unit-test-projects: |");
+         ciJob.ShouldNotContain("tests/Hexalith.EventStore.Contracts.Tests");
+         ciJob.ShouldNotContain("continue-on-error");
+@@ -2385,7 +2387,7 @@ public sealed class ReleasePackageManifestTests
+             [
+                 "  semantic-release-governance:",
+                 "    runs-on: ubuntu-latest",
+-                "    timeout-minutes: 10",
++                "    timeout-minutes: 45",
+                 "    steps:",
+                 $"      - uses: actions/checkout@{CheckoutActionSha} # v7.0.0",
+                 "        with:",
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
+index 89882e7fb..b08df2332 100644
+--- a/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs
+@@ -6,7 +6,9 @@ using Shouldly;
+ using StackExchange.Redis;
+ 
+ /// <summary>Requires a live gateway and real run-scoped persistence; no absent-environment skip is permitted.</summary>
+-public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture) : IClassFixture<PlatformEnvironmentFixture>
++/// <param name="fixture">The actual runner-owned environment.</param>
++/// <param name="output">The native TRX diagnostic channel.</param>
++public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture, ITestOutputHelper output) : IClassFixture<PlatformEnvironmentFixture>
+ {
+     /// <summary>Proves the declared gateway is ready and the supplied isolated store retains the exact synthetic payload.</summary>
+     /// <returns>The real gateway and persistence checks.</returns>
+@@ -29,6 +31,7 @@ public sealed class GatewayPersistenceTests(PlatformEnvironmentFixture fixture)
+         string value = fixture.Descriptor.RunId + ":" + fixture.Descriptor.SyntheticTenantId;
+         (await store.StringSetAsync(key, value, TimeSpan.FromMinutes(10), When.NotExists).WaitAsync(bound.Token).ConfigureAwait(true)).ShouldBeTrue();
+         (await store.StringGetAsync(key).WaitAsync(bound.Token).ConfigureAwait(true)).ToString().ShouldBe(value);
++        NativeAssemblyObservations.Write(output, fixture.Descriptor.RunId);
+         // Leave the asserted state intact for runner-owned teardown; the suite never stops infrastructure.
+     }
+ 
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs
+new file mode 100644
+index 000000000..ba3eb8dfa
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs
+@@ -0,0 +1,44 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using Shouldly;
++
++/// <summary>Exercises actual local diagnostic file boundaries without simulating a CI or native owner.</summary>
++public sealed class NativeAssemblyObservationTests
++{
++    /// <summary>Preserves the original private diagnostic and refuses a duplicate write.</summary>
++    [Fact]
++    public void PrivateDiagnosticRetainsFirstBytesAndRefusesOverwrite()
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("This file boundary control requires Linux.");
++        string directory = Directory.CreateTempSubdirectory("eventstore-diagnostic-io-control-").FullName;
++        try
++        {
++            const string fileIdentity = "local-io-control";
++            const string observation = "{\"scope\":\"local-file-control-no-native-credit\"}";
++            NativeAssemblyObservations.WritePrivateObservation(directory, fileIdentity, observation);
++            string path = Path.Combine(directory, "loaded-assemblies-" + fileIdentity + ".json");
++            byte[] original = File.ReadAllBytes(path);
++            File.GetUnixFileMode(path).ShouldBe(UnixFileMode.UserRead | UnixFileMode.UserWrite);
++            Should.Throw<IOException>(() => NativeAssemblyObservations.WritePrivateObservation(directory, fileIdentity, "replacement"));
++            File.ReadAllBytes(path).ShouldBe(original);
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++
++    /// <summary>Refuses a linked directory before creating any diagnostic file.</summary>
++    [Fact]
++    public void PrivateDiagnosticRefusesSymbolicDirectory()
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("This file boundary control requires Linux.");
++        string directory = Directory.CreateTempSubdirectory("eventstore-diagnostic-link-control-").FullName;
++        try
++        {
++            string target = Directory.CreateDirectory(Path.Combine(directory, "target")).FullName;
++            string linked = Path.Combine(directory, "linked");
++            Directory.CreateSymbolicLink(linked, target);
++            Should.Throw<IOException>(() => NativeAssemblyObservations.WritePrivateObservation(linked, "local-io-control", "{}"));
++            Directory.GetFiles(target).ShouldBeEmpty();
++        }
++        finally { Directory.Delete(directory, recursive: true); }
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs
+new file mode 100644
+index 000000000..84b33ec7e
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs
+@@ -0,0 +1,83 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using System.Reflection;
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++
++/// <summary>Retains bounded identities of SDK assemblies already loaded by the real native test.</summary>
++internal static class NativeAssemblyObservations
++{
++    /// <summary>Writes actual test-process measurements after the persistence assertions have passed.</summary>
++    /// <param name="output">The native TRX diagnostic channel.</param>
++    /// <param name="ownerRunId">The validated descriptor's actual owner run.</param>
++    internal static void Write(ITestOutputHelper output, string ownerRunId)
++    {
++        NativeDiagnosticBinding binding = NativeDiagnosticBinding.Read(ownerRunId);
++        var assemblies = AppDomain.CurrentDomain.GetAssemblies()
++            .Where(assembly => !assembly.IsDynamic && (assembly.GetName().Name!.StartsWith("Hexalith.", StringComparison.Ordinal)
++                || assembly.GetName().Name == "StackExchange.Redis"))
++            .OrderBy(assembly => assembly.FullName, StringComparer.Ordinal)
++            .Take(65)
++            .Select(assembly =>
++            {
++                using FileStream bytes = File.OpenRead(assembly.Location);
++                return new
++                {
++                    identity = assembly.FullName,
++                    informationalVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
++                    moduleVersionId = assembly.ManifestModule.ModuleVersionId,
++                    loadedPath = assembly.Location,
++                    sha256 = Convert.ToHexStringLower(SHA256.HashData(bytes)),
++                };
++            }).ToArray();
++        string observation = JsonSerializer.Serialize(new
++        {
++            kind = "real-native-test-loaded-assemblies",
++            ownerRunId,
++            ownerAttemptId = binding.AttemptId,
++            environmentId = binding.EnvironmentId,
++            revision = binding.Revision,
++            mappingHash = binding.MappingHash,
++            executionContext = binding.ExecutionContext,
++            assemblies,
++        });
++        if (assemblies.Length is 0 or > 64 || Encoding.UTF8.GetByteCount(observation) > 65536)
++            throw new InvalidOperationException("The native loaded-assembly observation exceeds its bounded diagnostic contract.");
++        output.WriteLine(observation);
++        RetainHostedObservation(observation, binding);
++    }
++
++    /// <summary>Preserves the bounded diagnostic in the existing classified integration upload before teardown.</summary>
++    /// <param name="observation">The measured test-process assemblies and actual run bindings.</param>
++    /// <param name="binding">The actual descriptor, mapping and owner metadata binding.</param>
++    private static void RetainHostedObservation(string observation, NativeDiagnosticBinding binding)
++    {
++        if (binding.ExecutionContext.GetProperty("kind").GetString() == "local") return;
++        if (binding.ExecutionContext.GetProperty("kind").GetString() != "ci" || !OperatingSystem.IsLinux())
++            throw new InvalidDataException("Native diagnostic retention requires the actual CI owner metadata.");
++        binding.VerifyCallerArtifact();
++        WritePrivateObservation(binding.ArtifactDirectory, binding.RunId, observation);
++    }
++
++    /// <summary>Writes once through non-linked directories using private file creation.</summary>
++    /// <param name="directory">The existing classified output directory.</param>
++    /// <param name="ownerRunId">The descriptor-bound diagnostic filename suffix.</param>
++    /// <param name="observation">The previously bounded diagnostic JSON.</param>
++    internal static void WritePrivateObservation(string directory, string ownerRunId, string observation)
++    {
++        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Hosted native diagnostic retention requires Linux.");
++        for (DirectoryInfo? parent = new(directory); parent is not null; parent = parent.Parent)
++            if (parent.LinkTarget is not null) throw new IOException("Native diagnostic output cannot traverse symbolic links.");
++        FileStreamOptions options = new()
++        {
++            Mode = FileMode.CreateNew,
++            Access = FileAccess.Write,
++            Share = FileShare.None,
++            UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite,
++        };
++        using FileStream stream = new(Path.Combine(directory, "loaded-assemblies-" + ownerRunId + ".json"), options);
++        stream.Write(Encoding.UTF8.GetBytes(observation + "\n"));
++    }
++
++}
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs
+new file mode 100644
+index 000000000..a7fa57360
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs
+@@ -0,0 +1,159 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++
++/// <summary>Reads only the existing native handoff and cross-bound, credential-free owner metadata.</summary>
++/// <param name="RunId">The descriptor-issued owner run.</param>
++/// <param name="AttemptId">The descriptor-issued owner attempt.</param>
++/// <param name="EnvironmentId">The descriptor-issued environment.</param>
++/// <param name="OwnerWorkspace">The disposable owner workspace.</param>
++/// <param name="CallerRoot">The original Git root selected by the verified mapping.</param>
++/// <param name="Revision">That root's actual Git HEAD at measurement time.</param>
++/// <param name="MappingHash">The verified immutable source mapping.</param>
++/// <param name="ExecutionContext">The actual context shared by descriptor and issued owner state.</param>
++/// <param name="Profile">The original selected declared native profile.</param>
++internal sealed record NativeDiagnosticBinding(string RunId, string AttemptId, string EnvironmentId,
++    string OwnerWorkspace, string CallerRoot, string Revision, string MappingHash, JsonElement ExecutionContext, string Profile)
++{
++    /// <summary>Gets the original caller's existing classified artifact directory, outside disposable workspaces.</summary>
++    internal string ArtifactDirectory => Path.Combine(CallerRoot, "TestResults", "module-integration");
++
++    /// <summary>Consumes only variables explicitly passed by the published native executor.</summary>
++    /// <param name="runId">The fixture's validated owner run.</param>
++    /// <returns>The cross-bound public diagnostic identity.</returns>
++    internal static NativeDiagnosticBinding Read(string runId) => Read(runId, new[]
++    {
++        "HEXALITH_G4_RUN_ID", "HEXALITH_TEST_ENVIRONMENT_PATH", "HEXALITH_G4_PLAN_PATH",
++        "HEXALITH_G4_TEST_REPORT_PATH", "HEXALITH_G4_SOURCE_MAPPING_PATH", "HEXALITH_SOURCE_MAPPING_HASH",
++    }.ToDictionary(name => name, name => Environment.GetEnvironmentVariable(name) ?? string.Empty, StringComparer.Ordinal));
++
++    /// <summary>Validates the exact handoff without requiring stripped GitHub environment variables.</summary>
++    /// <param name="runId">The already validated fixture owner.</param>
++    /// <param name="handoff">Only the published native handoff fields.</param>
++    /// <returns>The actual existing ownership and caller-output binding.</returns>
++    internal static NativeDiagnosticBinding Read(string runId, IReadOnlyDictionary<string, string> handoff)
++    {
++        if (runId.Length != 32 || runId.Any(value => value is not (>= '0' and <= '9' or >= 'a' and <= 'f'))
++            || handoff["HEXALITH_G4_RUN_ID"] != runId) throw new InvalidDataException("Native diagnostic owner mismatch.");
++        string workspace = Path.GetDirectoryName(Path.GetFullPath(handoff["HEXALITH_TEST_ENVIRONMENT_PATH"]))!;
++        RequireEqual(handoff["HEXALITH_TEST_ENVIRONMENT_PATH"], Path.Combine(workspace, "test-environment.json"));
++        RequireEqual(handoff["HEXALITH_G4_PLAN_PATH"], Path.Combine(workspace, "plan.json"));
++        RequireEqual(handoff["HEXALITH_G4_TEST_REPORT_PATH"], Path.Combine(workspace, "native-tests", "native.trx"));
++        RequireEqual(handoff["HEXALITH_G4_SOURCE_MAPPING_PATH"], Path.Combine(workspace, "source-mapping", "mapping.json"));
++        using JsonDocument descriptor = ReadDocument(handoff["HEXALITH_TEST_ENVIRONMENT_PATH"]);
++        using JsonDocument plan = ReadDocument(handoff["HEXALITH_G4_PLAN_PATH"]);
++        using JsonDocument mapping = ReadDocument(handoff["HEXALITH_G4_SOURCE_MAPPING_PATH"]);
++        JsonElement selected = mapping.RootElement;
++        string hash = handoff["HEXALITH_SOURCE_MAPPING_HASH"];
++        VerifyMapping(selected, plan.RootElement, hash);
++        RequireEqual(plan.RootElement.GetProperty("schema").GetString(), "hexalith.g4-run-plan.v1");
++        RequireEqual(plan.RootElement.GetProperty("runId").GetString(), runId);
++        RequireEqual(plan.RootElement.GetProperty("workspace").GetString(), workspace);
++        string stateDirectory = plan.RootElement.GetProperty("resourceClaimStateDirectory").GetString()!;
++        using JsonDocument state = ReadDocument(Path.Combine(stateDirectory, runId + ".json"));
++        JsonElement run = descriptor.RootElement.GetProperty("bindings").GetProperty("run");
++        VerifyOwner(runId, workspace, run, plan.RootElement, state.RootElement);
++        JsonElement context = descriptor.RootElement.GetProperty("bindings").GetProperty("environment").GetProperty("executionContext");
++        if (!JsonElement.DeepEquals(context, state.RootElement.GetProperty("executionContext")))
++            throw new InvalidDataException("Native diagnostic execution context mismatch.");
++        VerifyContext(context);
++        string root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(selected.GetProperty("Root").GetString()!));
++        VerifyDirectory(root);
++        if (Path.GetFullPath(root).StartsWith(workspace + Path.DirectorySeparatorChar, StringComparison.Ordinal) || root == workspace)
++            throw new InvalidDataException("Disposable native workspaces cannot select the caller artifact root.");
++        return new(runId, run.GetProperty("attemptId").GetString()!, run.GetProperty("environmentId").GetString()!,
++            workspace, root, ReadRevision(root), hash, context.Clone(), plan.RootElement.GetProperty("selectedTest").GetProperty("name").GetString()!);
++    }
++
++    /// <summary>Verifies the original caller helper declared this artifact directory for the exact job and profile.</summary>
++    internal void VerifyCallerArtifact()
++    {
++        using JsonDocument invocation = ReadDocument(Path.Combine(ArtifactDirectory, "invocation.json"));
++        RequireEqual(invocation.RootElement.GetProperty("classification").GetString(), "baseline-only");
++        if (!JsonElement.DeepEquals(ExecutionContext, invocation.RootElement.GetProperty("executionContext"))
++            || !invocation.RootElement.GetProperty("profiles").EnumerateArray().Any(value => value.GetString() == Profile))
++            throw new InvalidDataException("Native diagnostics differ from the original caller artifact invocation.");
++    }
++
++    private static void VerifyMapping(JsonElement mapping, JsonElement plan, string hash)
++    {
++        string[] fields = ["Mode", "Root", "ActiveModule", "Entries", "HasGit", "PlatformIdentity", "IdentityFindings"];
++        var original = fields.ToDictionary(name => name, mapping.GetProperty, StringComparer.Ordinal);
++        string calculated = Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(original)));
++        RequireEqual(calculated, hash);
++        RequireEqual(mapping.GetProperty("ContentHash").GetString(), hash);
++        RequireEqual(plan.GetProperty("sourceMappingHash").GetString(), hash);
++        RequireEqual(plan.GetProperty("sourceMapping").GetProperty("contentHash").GetString(), hash);
++        RequireEqual(plan.GetProperty("sourceMapping").GetProperty("root").GetString(), mapping.GetProperty("Root").GetString());
++        if (!mapping.GetProperty("HasGit").GetBoolean()) throw new InvalidDataException("Native diagnostic caller requires its real Git root.");
++    }
++
++    private static void VerifyContext(JsonElement context)
++    {
++        string kind = context.GetProperty("kind").GetString()!;
++        string[] names = kind == "local" ? ["kind"]
++            : ["kind", "repository", "workflowRunId", "workflowAttempt", "jobId", "runnerKind", "operatingSystem", "disposable"];
++        if (context.EnumerateObject().Select(property => property.Name).Order(StringComparer.Ordinal)
++            .SequenceEqual(names.Order(StringComparer.Ordinal)) is false || kind is not ("local" or "ci"))
++            throw new InvalidDataException("Native diagnostic context has unexpected fields.");
++        if (kind == "local") return;
++        RequireEqual(context.GetProperty("runnerKind").GetString(), "github-hosted");
++        RequireEqual(context.GetProperty("operatingSystem").GetString(), "Linux");
++        if (!context.GetProperty("disposable").GetBoolean() || context.GetProperty("workflowAttempt").GetInt32() <= 0
++            || new[] { "repository", "workflowRunId", "jobId" }.Any(name => string.IsNullOrWhiteSpace(context.GetProperty(name).GetString())))
++            throw new InvalidDataException("Native diagnostic CI context is incomplete.");
++    }
++
++    private static void VerifyOwner(string runId, string workspace, JsonElement run, JsonElement plan, JsonElement state)
++    {
++        RequireEqual(state.GetProperty("schema").GetString(), "hexalith.g4-run-state.v1");
++        RequireEqual(state.GetProperty("runId").GetString(), runId);
++        RequireEqual(state.GetProperty("workspace").GetString(), workspace);
++        RequireEqual(run.GetProperty("runId").GetString(), runId);
++        RequireEqual(run.GetProperty("ownerRunId").GetString(), runId);
++        RequireEqual(run.GetProperty("role").GetString(), "owner");
++        foreach (string name in new[] { "attemptId", "environmentId" })
++        {
++            string value = run.GetProperty(name).GetString()!;
++            RequireEqual(state.GetProperty(name).GetString(), value);
++            RequireEqual(plan.GetProperty(name).GetString(), value);
++        }
++    }
++
++    private static JsonDocument ReadDocument(string path)
++    {
++        VerifyDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
++        FileInfo file = new(path);
++        if (!Path.IsPathFullyQualified(path) || file.LinkTarget is not null || file.Length is <= 0 or > 4194304)
++            throw new InvalidDataException("Native diagnostic metadata must be bounded regular non-linked files.");
++        return JsonDocument.Parse(File.ReadAllBytes(path));
++    }
++
++    private static void VerifyDirectory(string path)
++    {
++        if (!Path.IsPathFullyQualified(path) || !Directory.Exists(path)) throw new InvalidDataException("Native diagnostic directory is unavailable.");
++        for (DirectoryInfo? parent = new(path); parent is not null; parent = parent.Parent)
++            if (parent.LinkTarget is not null) throw new IOException("Native diagnostic paths cannot traverse links.");
++    }
++
++    private static string ReadRevision(string root)
++    {
++        ProcessStartInfo start = new("git") { WorkingDirectory = root, RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false };
++        start.ArgumentList.Add("rev-parse"); start.ArgumentList.Add("--show-toplevel"); start.ArgumentList.Add("HEAD");
++        using Process child = Process.Start(start) ?? throw new IOException("Cannot inspect the original caller Git root.");
++        Task<string> output = child.StandardOutput.ReadToEndAsync(); Task<string> error = child.StandardError.ReadToEndAsync();
++        if (!child.WaitForExit(5000)) { child.Kill(entireProcessTree: true); throw new IOException("Caller Git identity inspection exceeded its finite bound."); }
++        _ = error.GetAwaiter().GetResult();
++        string[] lines = output.GetAwaiter().GetResult().Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
++        if (child.ExitCode != 0 || lines.Length != 2 || lines[0] != root || lines[1].Length != 40 || lines[1].Any(value => !char.IsAsciiHexDigit(value)))
++            throw new InvalidDataException("Original caller Git identity cannot be verified.");
++        return lines[1];
++    }
++
++    private static void RequireEqual(string? actual, string? expected)
++    {
++        if (string.IsNullOrEmpty(actual) || actual != expected) throw new InvalidDataException("Native diagnostic metadata binding mismatch.");
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs
+new file mode 100644
+index 000000000..e5c5d888a
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs
+@@ -0,0 +1,88 @@
++namespace Hexalith.EventStore.Platform.IntegrationTests;
++
++using System.Text.Json;
++
++using Shouldly;
++
++/// <summary>Uses the actual published mapping and explicitly local metadata controls, never a simulated CI owner.</summary>
++public sealed class NativeDiagnosticBindingTests
++{
++    /// <summary>Checks the surviving caller route and immutable cross-document refusals with GitHub variables absent.</summary>
++    /// <param name="mutation">The local metadata boundary to exercise.</param>
++    [Theory]
++    [InlineData("valid-local")]
++    [InlineData("foreign-run")]
++    [InlineData("foreign-attempt")]
++    [InlineData("changed-mapping")]
++    [InlineData("changed-context")]
++    public void PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(string mutation)
++    {
++        Environment.GetEnvironmentVariable("GITHUB_ACTIONS").ShouldBeNull();
++        Environment.GetEnvironmentVariable("GITHUB_WORKSPACE").ShouldBeNull();
++        string prepared = Path.Combine(Path.GetDirectoryName(Environment.GetEnvironmentVariable("CustomAfterMicrosoftCommonProps"))!, "mapping.json");
++        using JsonDocument mapping = JsonDocument.Parse(File.ReadAllText(prepared));
++        string caller = mapping.RootElement.GetProperty("Root").GetString()!;
++        string hash = mapping.RootElement.GetProperty("ContentHash").GetString()!;
++        string control = Directory.CreateTempSubdirectory("eventstore-local-handoff-control-").FullName;
++        string workspace = Directory.CreateDirectory(Path.Combine(control, "workspace")).FullName;
++        string state = Directory.CreateDirectory(Path.Combine(control, "state")).FullName;
++        string run = Guid.NewGuid().ToString("N"), attempt = Guid.NewGuid().ToString("N"), environment = Guid.NewGuid().ToString("N");
++        string? retained = null;
++        try
++        {
++            Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
++            Directory.CreateDirectory(Path.Combine(workspace, "native-tests"));
++            File.Copy(prepared, Path.Combine(workspace, "source-mapping", "mapping.json"));
++            File.WriteAllText(Path.Combine(workspace, "test-environment.json"), JsonSerializer.Serialize(new
++            {
++                bindings = new
++                {
++                    run = new { runId = run, ownerRunId = run, attemptId = attempt, environmentId = environment, role = "owner" },
++                    environment = new { executionContext = new { kind = "local" } },
++                },
++            }));
++            File.WriteAllText(Path.Combine(workspace, "plan.json"), JsonSerializer.Serialize(new
++            {
++                schema = "hexalith.g4-run-plan.v1", runId = run, workspace, resourceClaimStateDirectory = state,
++                attemptId = mutation == "foreign-attempt" ? Guid.NewGuid().ToString("N") : attempt, environmentId = environment,
++                sourceMappingHash = hash, sourceMapping = new { root = caller, contentHash = hash },
++                selectedTest = new { name = "platform-package" },
++            }));
++            File.WriteAllText(Path.Combine(state, run + ".json"), JsonSerializer.Serialize(new
++            {
++                schema = "hexalith.g4-run-state.v1", runId = run, workspace, attemptId = attempt, environmentId = environment,
++                executionContext = new { kind = mutation == "changed-context" ? "unsupported-local-control" : "local" },
++            }));
++            Dictionary<string, string> handoff = new(StringComparer.Ordinal)
++            {
++                ["HEXALITH_G4_RUN_ID"] = mutation == "foreign-run" ? Guid.NewGuid().ToString("N") : run,
++                ["HEXALITH_TEST_ENVIRONMENT_PATH"] = Path.Combine(workspace, "test-environment.json"),
++                ["HEXALITH_G4_PLAN_PATH"] = Path.Combine(workspace, "plan.json"),
++                ["HEXALITH_G4_TEST_REPORT_PATH"] = Path.Combine(workspace, "native-tests", "native.trx"),
++                ["HEXALITH_G4_SOURCE_MAPPING_PATH"] = Path.Combine(workspace, "source-mapping", "mapping.json"),
++                ["HEXALITH_SOURCE_MAPPING_HASH"] = mutation == "changed-mapping" ? new string('0', 64) : hash,
++            };
++            if (mutation != "valid-local")
++            {
++                Should.Throw<InvalidDataException>(() => NativeDiagnosticBinding.Read(run, handoff));
++                return;
++            }
++            NativeDiagnosticBinding binding = NativeDiagnosticBinding.Read(run, handoff);
++            binding.CallerRoot.ShouldBe(caller);
++            binding.OwnerWorkspace.ShouldBe(workspace);
++            binding.ExecutionContext.GetProperty("kind").GetString().ShouldBe("local");
++            binding.ArtifactDirectory.ShouldBe(Path.Combine(caller, "TestResults", "module-integration"));
++            Directory.CreateDirectory(binding.ArtifactDirectory);
++            NativeAssemblyObservations.WritePrivateObservation(binding.ArtifactDirectory, "local-control-" + run, "{\"scope\":\"local-handoff-io-only\"}");
++            retained = Path.Combine(binding.ArtifactDirectory, "loaded-assemblies-local-control-" + run + ".json");
++            byte[] original = File.ReadAllBytes(retained);
++            Directory.Delete(workspace, recursive: true);
++            File.ReadAllBytes(retained).ShouldBe(original);
++        }
++        finally
++        {
++            if (retained is not null) File.Delete(retained);
++            Directory.Delete(control, recursive: true);
++        }
++    }
++}

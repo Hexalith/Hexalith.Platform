@@ -1,0 +1,25 @@
+{
+  "at": "2026-11-04T05:35:02.920355+00:00",
+  "actualRun": 41774344462,
+  "artifactId": 13297539171,
+  "artifactSha256": "edc3782959f5ce0e7b0fb39aa18be2bcebc8fa0530dcaf4e6cb8bbf7cdb4a53d",
+  "source": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "sourceFiles": {
+    "Github/run-module-integration/run_module_integration.py": "c3b9d5f04f143bf130a5759f3549df53f3522b3230c489e22e7a9ba42e37e5fe",
+    "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs": "30e12330f55818e1f2e83abb6bf93c9f917fc0f76e64d73a8f94162a5b8c58fb",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedNativeTestReport.cs": "061c6b9df686818b5161823874d8eb6d372a5fd733c2842132fb675d018cad3d"
+  },
+  "actualMissingDeclaredReference": "lifecycle-956cdfca65af8e8eabb9e66eb24cce444b374fcb3712cf2ecf37b8deef259ffd.json",
+  "actualArtifactMembers": [
+    "cleanup.json",
+    "invocation.json",
+    "execution.json",
+    "test-result.json"
+  ],
+  "cause": "retain_artifacts copies only fixed test-result.json, attachments.json and attachment-withdrawals.json. It never retains content-addressed published diagnostics.",
+  "otherDemonstratedSourceGap": "TestResultWriter also declares sanitized native-<sha>.trx and functional-observations-<sha>.json, but helper does not copy either. Native report bytes are inspected/redacted by SelectedNativeTestReport before snapshots.",
+  "requiredNarrowFix": "Copy only exact known published redacted diagnostic references with matching SHA256, fixed owner root, bounded count/size, safe private regular-file handles, immutable byte-preserving output and idempotent same-content retry. Refuse unsafe/missing/changed declared references after exact cleanup. Never upload arbitrary owner.json/plan/credentials/rawlogs or metadata roots.",
+  "notEstablished": "Actual old gateway unhealthy cause beyond HXR021; no logs retained and no HXP020 claim for gateway-only graph.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

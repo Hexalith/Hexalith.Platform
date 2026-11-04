@@ -1,0 +1,161 @@
+{
+  "recordedAt": "2026-11-04T06:48:54.702265+00:00",
+  "status": "normal-existing-PR-updated-fresh-hosted-qualification-active",
+  "source": "005c9cfb0f938214ba889e645f81e389d82476b6",
+  "priorProposal": "a0c65bec419138e79d763557c73573f894217f24",
+  "observedMain": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "branch": "fix/adopt-platform-117",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore",
+  "worktreeClean": true,
+  "pullRequest": {
+    "number": 392,
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+    "head": "005c9cfb0f938214ba889e645f81e389d82476b6",
+    "base": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+    "merge": "bfce7e79001634caaaa61c01df348e32c93939cd",
+    "mergeable": true
+  },
+  "changedPaths": [
+    "docs/ci.md",
+    "references/Hexalith.Platform"
+  ],
+  "fullProposalPaths": 11,
+  "patches": [
+    {
+      "base": "a0c65bec419138e79d763557c73573f894217f24",
+      "head": "005c9cfb0f938214ba889e645f81e389d82476b6",
+      "path": "eventstore-platform122-correction.patch",
+      "sha256": "433dfb9d73d2dbf65870ea8cdffa1ce47e7a8146545012ab7000b8ba666787c3"
+    },
+    {
+      "base": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+      "head": "005c9cfb0f938214ba889e645f81e389d82476b6",
+      "path": "eventstore-platform122-current-main.patch",
+      "sha256": "d97dd8245d8a5842ab7d58df8c4fb3eee92b996b93d5df76eec6dc7d21e7d778"
+    }
+  ],
+  "tuple": {
+    "Platform": {
+      "version": "1.2.2",
+      "source": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+      "authenticatedTag": "v1.2.2",
+      "supportedToolRange": "[4.44.0, 5.0.0-0)"
+    },
+    "Builds": {
+      "version": "4.44.0",
+      "source": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "publicSignedArchiveSha256": "bd454ebae17256eb27d67d197a18295e0153bc11f01b6f73e22defe0c21e53a9"
+    },
+    "Tenants": {
+      "version": "7.0.0",
+      "source": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27"
+    },
+    "additionalOwners": [
+      "tenants"
+    ],
+    "testProfile": "platform-package"
+  },
+  "directOnlyModules": {
+    "Hexalith.Builds": {
+      "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": "",
+      "nestedMarkers": []
+    },
+    "Hexalith.Platform": {
+      "head": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+      "status": "",
+      "nestedMarkers": []
+    },
+    "Hexalith.Tenants": {
+      "head": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "status": "",
+      "nestedMarkers": []
+    }
+  },
+  "preservedFiles": {
+    ".github/workflows/ci.yml": "5c789dd6939736c75ad1cf76c6a6a33b9a7ea8f549698a07bb468a1d9f738a28",
+    ".config/dotnet-tools.json": "33edbbec21c4daf94d0bdce72c99ae7392587980f4898f4e5794d12b51e29d54",
+    "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "f40026d6a0c3e8e22727fe28357a918735a68f3f0fa0119c966d2af9000ee451",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj": "1663d5f9ecc438086f5af33fc41596d51521909807df8373b37dd74a3411871b",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "cf7955af2cbfa944b83abfede234eb91afd1abb45cef49ab46c9b092d9251491",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs": "99818ad66dfcfb19dbdd920846f064eee9539ea7b5123ad1552549bf805e0270",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "fbc3c899d5af43eef2241fe9f6ff7940269b17e22cea757f64f0995859eefdfd",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "b6ea613f1367a3dc3ed603cb112413dc072e94d45bca862cd84c7a7fde71714c",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901"
+  },
+  "mappingHash": "34cd9002ed869bd594bee1a69eaf973e78f9ac13b309ff2b846c50ffd35e75dc",
+  "focusedCounters": {
+    "total": "5",
+    "executed": "5",
+    "passed": "5",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "validation": [
+    "authenticated exact tag/source and unchanged remote main/proposal before normal push",
+    "genuine official signed CLI SHA256 match and offline NuGet signature verification exit0",
+    "normal package preparation exit0, no fabricated CI identity",
+    "Contracts Release/package build exit0,zero warnings/errors",
+    "all5caller/harness tests passed with0skips; actual TRX retained",
+    "released helper owner-selection3/3, actualCLI4.44.0+6249 and unchanged manifest validation passed",
+    "actionlint,whitespace,exact full commit/PRtitle locked commitlint21.2.4 passed"
+  ],
+  "evidence": [
+    "eventstore-platform122-before.json",
+    "eventstore-platform122-direct-checkout.json",
+    "eventstore-platform122-static-controls.json",
+    "eventstore-platform122-preparation.json",
+    "eventstore-platform122-tool-signature.json",
+    "eventstore-platform122-contracts-build.json",
+    "eventstore-platform122-contracts-tests.json",
+    "eventstore-platform122-contracts.trx",
+    "eventstore-platform122-selection-controls.json",
+    "eventstore-platform122-commit.json",
+    "eventstore-platform122-push.json",
+    "eventstore-platform122-pr-updated.json",
+    "eventstore-platform122-hosted-initial.json"
+  ],
+  "actualHosted": {
+    "CI": {
+      "id": 41787766444,
+      "attempt": 1,
+      "status": "in_progress at latest observation",
+      "pinnedProducer": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045"
+    },
+    "latestCommitlint": {
+      "id": 41787827114,
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "dependencyReview": {
+      "id": 41787766537,
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  "remaining": [
+    "parent independent source review and actual current-head hosted20isolated+5independent gates",
+    "both real native Facts and complete retained diagnostics/first-outcome/exact-cleanup audit",
+    "normal Builds proposal publication/content qualification and later finite full-Parties source task remain separate",
+    "original Story2.8 lifecycle/cancellation matrix and final baseline audit/step04 remain incomplete"
+  ],
+  "rootOrPartiesPinMutation": false,
+  "manualDispatchMergeTagReleasePerformed": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

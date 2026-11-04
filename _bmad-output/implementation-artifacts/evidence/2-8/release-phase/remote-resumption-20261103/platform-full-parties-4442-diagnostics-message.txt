@@ -1,0 +1,5 @@
+test(composition): retain full reader guard diagnostics
+
+Require the actual pinned Memories selection before private mutations
+and retain generated-target outputs for exact refusal diagnosis.
+The three observed guard failures remain unresolved and recorded.

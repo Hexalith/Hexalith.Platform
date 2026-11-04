@@ -1,0 +1,48 @@
+{
+  "caller": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "ContentHash": "e6d08356ee6faa9c54294c2b40d48f69de7c46abc0a94ea16cd573e103dd6454",
+  "PlatformIdentity": {
+    "Commit": "338a6afc31850761f49c0de7d399266dd15cfe84",
+    "CompositionCommit": "338a6afc31850761f49c0de7d399266dd15cfe84",
+    "CheckoutCommit": "338a6afc31850761f49c0de7d399266dd15cfe84",
+    "PlatformPath": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Platform",
+    "ReleaseTag": "v1.3.0",
+    "CatalogCommit": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "ToolVersionRange": "[4.44.2, 5.0.0-0)",
+    "RecordPath": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Platform/hexalith-platform.json",
+    "IsPlatformRepository": false
+  },
+  "manifestHash": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+  "selectedTests": [
+    "platform-package"
+  ],
+  "modelPath": "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/actual-c83-validator-transport/hosts/platform-model/Hexalith.Platform.Composition.dll",
+  "modelSha256": "feea066dfc77a881f3d313b1fab165d0d05af5c647ae4945994997d7cb25b8d7",
+  "toolSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+  "rows": [
+    {
+      "canonicalClaimsPresent": false,
+      "Started": true,
+      "ExitCode": 3,
+      "TimedOut": false,
+      "OutputTruncated": false,
+      "stderr": "../../parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/tenants.json: tenants/domain: image \u0027registry.hexalith.com/tenants:7.0.0\u0027 is unavailable from its released registry.\n",
+      "imageProbeCalls": [
+        "manifest inspect registry.hexalith.com/tenants@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"
+      ],
+      "expected": true
+    },
+    {
+      "canonicalClaimsPresent": true,
+      "Started": true,
+      "ExitCode": 3,
+      "TimedOut": false,
+      "OutputTruncated": false,
+      "stderr": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.\n",
+      "imageProbeCalls": [],
+      "expected": true
+    }
+  ],
+  "componentOnly": true,
+  "servicesStarted": false
+}

@@ -1,0 +1,3886 @@
+{
+  "observedAt": "2026-11-04T04:53:53.579439+00:00",
+  "scope": "metadata only; no artificial backend consumption or runtime acceptance",
+  "assemblies": [
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Commons.UniqueIds.dll",
+      "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Commons.UniqueIds.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9.json",
+      "assembly": "Hexalith.Commons.UniqueIds",
+      "assemblyVersion": "2.30.10.0",
+      "informationalVersion": "2.30.10+dca0ad4c530ed2a6813c2f5138b8202b9a6db193",
+      "architecture": "AnyCPU",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "ByteAether.Ulid",
+          "version": "1.0.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Commons"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Client.dll",
+      "sha256": "b858c8fa9b412f8c0f609a4d45d02b181bf8f251032f92ea86dcfa25a593c3a2",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Client.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-b858c8fa9b412f8c0f609a4d45d02b181bf8f251032f92ea86dcfa25a593c3a2.json",
+      "assembly": "Hexalith.EventStore.Client",
+      "assemblyVersion": "3.132.2.0",
+      "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+      "architecture": "AnyCPU",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "ByteAether.Ulid",
+          "version": "1.0.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections.Immutable",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.DataProtection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Common",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Security.Claims",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Encoding.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.EventStore"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Client.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.CatalogConstruction"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Conversations.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.LiveSidecar.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Testing"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Contracts.dll",
+      "sha256": "197f57905405864ebf23692eb7003d820df5bd7338d5462a06f6026a62b4ec81",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-197f57905405864ebf23692eb7003d820df5bd7338d5462a06f6026a62b4ec81.json",
+      "assembly": "Hexalith.EventStore.Contracts",
+      "assemblyVersion": "3.132.2.0",
+      "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+      "architecture": "AnyCPU",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "ByteAether.Ulid",
+          "version": "1.0.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Runtime.Serialization.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Encoding.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.10.0",
+          "culture": "neutral"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.EventStore"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Client"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.LiveSidecar.Tests"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.DomainService.dll",
+      "sha256": "069b0433a75b7964447ccef2e9008bda50d81bf5ed8d4bd45372f51e1ca6010a",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.DomainService.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-069b0433a75b7964447ccef2e9008bda50d81bf5ed8d4bd45372f51e1ca6010a.json",
+      "assembly": "Hexalith.EventStore.DomainService",
+      "assemblyVersion": "3.132.2.0",
+      "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+      "architecture": "AnyCPU",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.EventStore.Client",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Encoding.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections.Immutable",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Claims",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Actors",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.DataProtection",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Xml.XDocument",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.ServiceDefaults",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Metadata",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Telemetry.Abstractions",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Common",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Results",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api.ProviderBuilderExtensions",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Dapr.Actors.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.AspNetCore.DataProtection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.EventStore"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Parties.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.LiveSidecar.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Testing.Integration"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "a6ba3a8dfeef535d1bf20fe5f7dd649f93d1c74c5f273071e6f6f5f4da0d87ba",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.EventStore.ServiceDefaults.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a6ba3a8dfeef535d1bf20fe5f7dd649f93d1c74c5f273071e6f6f5f4da0d87ba.json",
+      "assembly": "Hexalith.EventStore.ServiceDefaults",
+      "assemblyVersion": "3.132.2.0",
+      "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+      "architecture": "AnyCPU",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Http.Resilience",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.Extensions.Telemetry.Abstractions",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api.ProviderBuilderExtensions",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Console",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.AspNetCore",
+          "version": "1.20.1.1505",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Metadata",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Reflection.Metadata",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Security.Claims",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.JwtBearer",
+          "version": "10.0.14.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.IdentityModel.Protocols.OpenIdConnect",
+          "version": "8.23.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.IdentityModel.JsonWebTokens",
+          "version": "8.23.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.IdentityModel.Tokens",
+          "version": "8.23.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.Extensions.ServiceDiscovery",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.IdentityModel.Protocols",
+          "version": "8.23.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Microsoft.Net.Http.Headers",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Polly.Core",
+          "version": "8.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "c8a3ffc3f8f825cc"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.Http",
+          "version": "1.20.1.1498",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.Runtime",
+          "version": "1.20.1.1508",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Hexalith.Commons.UniqueIds",
+          "version": "2.30.10.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Results",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "HostingStartup",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.ServiceDefaults.Routing.DevelopmentAuxiliaryClientCatalogHostingStartup"
+        },
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.EventStore"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Gateway"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.Server.LiveSidecar.Tests"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+      "sha256": "5ff6e4934a594d021c5d56d1f9651ddf30b8645cb7be0bf279763dca2f2f0062",
+      "images": [
+        "server",
+        "access-telemetry",
+        "access-telemetry-clock"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-5ff6e4934a594d021c5d56d1f9651ddf30b8645cb7be0bf279763dca2f2f0062.json",
+      "assembly": "Hexalith.Memories.AccessTelemetry.Contracts",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Runtime.Serialization.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "ByteAether.Ulid",
+          "version": "1.0.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Collections.Immutable",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        }
+      ],
+      "attributes": null,
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Contracts.dll",
+      "sha256": "b7b241fa22ec443d856acdc6b22c74754ebb88a0ced9755e465d72e452406cc5",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Contracts.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-b7b241fa22ec443d856acdc6b22c74754ebb88a0ced9755e465d72e452406cc5.json",
+      "assembly": "Hexalith.Memories.Contracts",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Runtime.Serialization.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.EventStore.dll",
+      "sha256": "db75fd0eed1b99d9a6c9a11893a08e87b688eb9c41c0cc509e402920dad14f9f",
+      "images": [
+        "server",
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.EventStore.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-db75fd0eed1b99d9a6c9a11893a08e87b688eb9c41c0cc509e402920dad14f9f.json",
+      "assembly": "Hexalith.Memories.EventStore",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.Memories.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Common",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Dapr.Workflow",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Grpc.Core.Api",
+          "version": "2.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "d754f35622e28bad"
+        },
+        {
+          "name": "Dapr.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.ComponentModel.Annotations",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "StackExchange.Redis",
+          "version": "3.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "c219ff1ca8c2ce46"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.DataAnnotations",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "RouteCatalogDeclarationSource",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.EventStore.Routing.MemoriesCatalogDeclarations"
+        },
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.EventStore.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Server"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "DynamicProxyGenAssembly2"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Server.dll",
+      "sha256": "f25d8cbc59f55376886f3220b77868cea44fa857c2777103e1c87fcdb791bfa3",
+      "images": [
+        "server"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Server.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-f25d8cbc59f55376886f3220b77868cea44fa857c2777103e1c87fcdb791bfa3.json",
+      "assembly": "Hexalith.Memories.Server",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.Memories.EventStore",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Hexalith.EventStore.ServiceDefaults",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Workflow.Abstractions",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Dapr.Workflow.Versioning.Runtime",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Dapr.Workflow.Versioning.Abstractions",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Hexalith.Memories.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Telemetry.Abstractions",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Common",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "StackExchange.Redis",
+          "version": "3.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "c219ff1ca8c2ce46"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "NFalkorDB",
+          "version": "1.2.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Memories.AccessTelemetry.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Grpc.Core.Api",
+          "version": "2.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "d754f35622e28bad"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections.Immutable",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Runtime.Numerics",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "NRedisStack",
+          "version": "1.8.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Threading.RateLimiting",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Dapr.Workflow",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Dapr.Actors",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Kreuzberg",
+          "version": "4.10.4.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "ByteAether.Ulid",
+          "version": "1.0.0.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.Client",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.RateLimiting",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.IO.Pipelines",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Diagnostics.Process",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Diagnostics",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.JwtBearer",
+          "version": "10.0.14.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Claims",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Runtime.Serialization.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.AI",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Google.Protobuf",
+          "version": "3.35.0.0",
+          "culture": "neutral",
+          "public_key_token": "a7d26565bac4d604"
+        },
+        {
+          "name": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Actors.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.Memories.Telemetry",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Text.Encodings.Web",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Results",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.DataProtection",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Http.Resilience",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Hexalith.EventStore.DomainService",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.IdentityModel.Tokens",
+          "version": "8.23.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Threading.Tasks.Parallel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.NameResolution",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.DerivedStores.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Benchmarks"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "DynamicProxyGenAssembly2"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Dapr.AspNetCore"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.ServiceDefaults"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.EventStore"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.ServiceDefaults.dll",
+      "sha256": "92e71a8dc652feaf7d3d4beb9fbdc4793804e562165a90bb7db248fc1b62e69c",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.ServiceDefaults.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-92e71a8dc652feaf7d3d4beb9fbdc4793804e562165a90bb7db248fc1b62e69c.json",
+      "assembly": "Hexalith.Memories.ServiceDefaults",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "StackExchange.Redis",
+          "version": "2.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "c219ff1ca8c2ce46"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Api",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.StackExchangeRedis",
+          "version": "1.20.1.1510",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Console",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.AspNetCore",
+          "version": "1.20.1.1505",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.ServiceDiscovery",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "OpenTelemetry.Api.ProviderBuilderExtensions",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Hexalith.Memories.Telemetry",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Console",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Memories.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Http.Resilience",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.Http",
+          "version": "1.20.1.1498",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "OpenTelemetry.Instrumentation.Runtime",
+          "version": "1.20.1.1508",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Server.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Telemetry.dll",
+      "sha256": "865dab6b0668b9d4c9257ec12bee927bafe2c59d5b3bdb78c2a138fea7faac70",
+      "images": [
+        "server",
+        "mcp",
+        "access-telemetry",
+        "access-telemetry-clock"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/server/app/Hexalith.Memories.Telemetry.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-865dab6b0668b9d4c9257ec12bee927bafe2c59d5b3bdb78c2a138fea7faac70.json",
+      "assembly": "Hexalith.Memories.Telemetry",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Client.Rest.dll",
+      "sha256": "ac6ca4af3b2453e2cd1a7b56c5b295a6659a96591871b65cbb9d16f29ab67bd6",
+      "images": [
+        "mcp"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Client.Rest.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-ac6ca4af3b2453e2cd1a7b56c5b295a6659a96591871b65cbb9d16f29ab67bd6.json",
+      "assembly": "Hexalith.Memories.Client.Rest",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Memories.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Mcp.dll",
+      "sha256": "a6c97bf6e6075e7a0014ddb64cf927a41ea0ea28dd14e358ec1e5d887cdeb6b3",
+      "images": [
+        "mcp"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/mcp/app/Hexalith.Memories.Mcp.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a6c97bf6e6075e7a0014ddb64cf927a41ea0ea28dd14e358ec1e5d887cdeb6b3.json",
+      "assembly": "Hexalith.Memories.Mcp",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "ModelContextProtocol.AspNetCore",
+          "version": "2.3.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Hexalith.Memories.Client.Rest",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "ModelContextProtocol.Core",
+          "version": "2.3.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Hexalith.Memories.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.ComponentModel.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.JwtBearer",
+          "version": "10.0.14.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Claims",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authentication",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "ModelContextProtocol",
+          "version": "2.3.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Features",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.IdentityModel.Tokens",
+          "version": "8.19.2.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Extensions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "AssemblyMetadata(RepositoryUrl)",
+          "target": "Assembly",
+          "value": "https://github.com/Hexalith/Hexalith.Memories"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.Mcp.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "DynamicProxyGenAssembly2"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Dapr.AspNetCore"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry/app/Hexalith.Memories.AccessTelemetry.dll",
+      "sha256": "5825c7e04e19c57e1a0b0d76c1cc44da11c25b750c78b7b18e659695405dc90f",
+      "images": [
+        "access-telemetry"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry/app/Hexalith.Memories.AccessTelemetry.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-5825c7e04e19c57e1a0b0d76c1cc44da11c25b750c78b7b18e659695405dc90f.json",
+      "assembly": "Hexalith.Memories.AccessTelemetry",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.Memories.AccessTelemetry.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "OpenTelemetry.Api",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Dapr.Actors",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Diagnostics.DiagnosticSource",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "System.Text.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Grpc.Core.Api",
+          "version": "2.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "d754f35622e28bad"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Threading",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Logging.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Telemetry.Abstractions",
+          "version": "10.11.0.0",
+          "culture": "neutral",
+          "public_key_token": "31bf3856ad364e35"
+        },
+        {
+          "name": "Dapr.Common",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Dapr.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "7bd6737fe5b67e3c"
+        },
+        {
+          "name": "Dapr.Actors.AspNetCore",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Results",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Memory",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.AccessTelemetry.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Dapr.AspNetCore"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.dll",
+      "sha256": "a066e51a3b2d09b5d32eedba3211c41f87f50d4b2ab18b7e6152c3b0289a478d",
+      "images": [
+        "access-telemetry-clock"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-a066e51a3b2d09b5d32eedba3211c41f87f50d4b2ab18b7e6152c3b0289a478d.json",
+      "assembly": "Hexalith.Memories.AccessTelemetry.Clock",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Dapr.Client",
+          "version": "1.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "a686d5d635c0f0e6"
+        },
+        {
+          "name": "Hexalith.Memories.AccessTelemetry.Contracts",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Security.Cryptography",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Collections",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Net.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Hexalith.Memories.ServiceDefaults",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Http",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Hosting.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Binder",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Routing",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Authorization.Policy",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "System.Linq",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "System.Net.Http.Json",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "cc7b13ffcd2ddd51"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Http.Results",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.AccessTelemetry.Tests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.IntegrationTests"
+        },
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "DynamicProxyGenAssembly2"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.Memories.DomainService.dll",
+      "sha256": "f23ea4b45ee8279d4011b64e9de94eb7828d78c0d1b33f04892de8081b02f7ea",
+      "images": [
+        "domain-service"
+      ],
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/application-files/domain-service/app/Hexalith.Memories.DomainService.dll",
+        "--json"
+      ],
+      "exitCode": 0,
+      "metadataFile": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104/metadata-f23ea4b45ee8279d4011b64e9de94eb7828d78c0d1b33f04892de8081b02f7ea.json",
+      "assembly": "Hexalith.Memories.DomainService",
+      "assemblyVersion": "3.0.23.0",
+      "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+      "architecture": "x64",
+      "references": [
+        {
+          "name": "System.Runtime",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "b03f5f7f11d50a3a"
+        },
+        {
+          "name": "Microsoft.AspNetCore.Mvc.Core",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.Client",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Hexalith.Memories.EventStore",
+          "version": "3.0.23.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.AspNetCore",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Hexalith.EventStore.DomainService",
+          "version": "3.132.2.0",
+          "culture": "neutral"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        },
+        {
+          "name": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.0.0",
+          "culture": "neutral",
+          "public_key_token": "adb9793829ddae60"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "InternalsVisibleTo",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.DomainService.Tests"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Dapr.AspNetCore"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.DomainService"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.EventStore.ServiceDefaults"
+        },
+        {
+          "name": "ApplicationPart",
+          "target": "Assembly",
+          "value": "Hexalith.Memories.EventStore"
+        }
+      ],
+      "inspectionLimitations": [
+        {
+          "section": "Source Documents",
+          "finding": "Source document",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation Options",
+          "finding": "Compilation option",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        },
+        {
+          "section": "Compilation References",
+          "finding": "Compilation reference",
+          "reason": "A matching portable PDB remains unresolved after acquisition."
+        }
+      ]
+    }
+  ],
+  "candidateAcceptance": false
+}

@@ -1,0 +1,49 @@
+{
+  "commands": [
+    {
+      "name": "retention-io-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "--configuration",
+        "Release",
+        "-warnaserror",
+        "-m:1",
+        "-p:UseHexalithProjectReferences=false"
+      ],
+      "startedAt": "2026-11-03T19:52:18.413977+00:00",
+      "completedAt": "2026-11-03T19:52:20.550180+00:00",
+      "exitCode": 0
+    },
+    {
+      "name": "retention-io-tests",
+      "command": [
+        "dotnet",
+        "test",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "--no-build",
+        "--no-restore",
+        "--configuration",
+        "Release",
+        "--filter-class",
+        "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests",
+        "--minimum-expected-tests",
+        "2",
+        "--fail-skips",
+        "on",
+        "--results-directory",
+        "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/retention-io-results",
+        "--report-xunit-trx",
+        "--report-xunit-trx-filename",
+        "retention-io.trx",
+        "-p:UseHexalithProjectReferences=false"
+      ],
+      "startedAt": "2026-11-03T19:52:20.550473+00:00",
+      "completedAt": "2026-11-03T19:52:21.604849+00:00",
+      "exitCode": 0
+    }
+  ],
+  "scope": "actual local I/O boundaries; no simulated CI/native owner",
+  "candidateAcceptance": false
+}

@@ -1,0 +1,77 @@
+test_cancellation_phase (unittest.loader._FailedTest.test_cancellation_phase) ... ERROR
+test_launch_recovery (unittest.loader._FailedTest.test_launch_recovery) ... ERROR
+test_qualification_controller (unittest.loader._FailedTest.test_qualification_controller) ... ERROR
+test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate (test_workflow_boundaries.WorkflowBoundaryTests.test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate) ... ok
+test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build (test_workflow_boundaries.WorkflowBoundaryTests.test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build) ... ok
+test_reader_permissions_and_independent_finalizer_remain_explicit (test_workflow_boundaries.WorkflowBoundaryTests.test_reader_permissions_and_independent_finalizer_remain_explicit) ... ok
+
+======================================================================
+ERROR: test_cancellation_phase (unittest.loader._FailedTest.test_cancellation_phase)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_cancellation_phase
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 13, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 26, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_launch_recovery (unittest.loader._FailedTest.test_launch_recovery)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_launch_recovery
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/ci-lifecycle/test_launch_recovery.py", line 16, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 26, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_qualification_controller (unittest.loader._FailedTest.test_qualification_controller)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_qualification_controller
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 16, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 26, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+FAILED (errors=3)

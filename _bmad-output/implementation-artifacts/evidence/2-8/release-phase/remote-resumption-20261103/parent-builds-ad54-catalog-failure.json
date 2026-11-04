@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-04T07:07:19.017805+00:00",
+  "source": "ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+  "runId": 41789206152,
+  "attempt": 1,
+  "jobId": 126438395713,
+  "failedStep": "Validate package version audit",
+  "reportedErrors": 3050,
+  "firstError": "Generated-from revision '2bc5fff679e37318f6e18fc6b25047653faf3261' is not an available Git commit.",
+  "cause": "PR history contained generated-audit branch source2bc; normal squash retained the identical code tree but not that branch commit in fresh main history. Further ancestry errors cascade from the unavailable generated source.",
+  "fullActualLogSha256": "bd37929bd0702e5d0307468f7ee1ab8a74483f1179b7b78793af92fb0adecab1",
+  "publicationPerformed": false,
+  "requiresNormalFollowup": true,
+  "noUnchangedRerun": true,
+  "scope": "Actual main catalog validation failure; other jobs may still be running. No native acceptance."
+}

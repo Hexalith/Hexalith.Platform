@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-04T07:13:17.369658+00:00",
+  "firstFailureReproduced": true,
+  "firstErrors": [
+    "Package version audit validation failed with 3050 error(s):",
+    "- Generated-from revision '2bc5fff679e37318f6e18fc6b25047653faf3261' is not an available Git commit."
+  ],
+  "inspectionNote": "The first receipt exact-string flag was false because the actual diagnostic uses Generated-from capitalization and quoted revision; this separately verifies the unchanged retained raw log without rerunning the failure.",
+  "commonGitDirectory": ".git",
+  "mainAncestryCommitCount": 1594,
+  "shallow": "false",
+  "allRefs": [
+    "refs/heads/main ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+    "refs/remotes/origin/main ad54fc75b8a1da663ee39da6a2397fc2a965159c"
+  ],
+  "alternatesPresent": false,
+  "graftsPresent": false,
+  "replacementRefs": "",
+  "onlyCandidateFileModified": true,
+  "coldCandidateHash": "97f5d28706224507b15f4db3fc53baa0d654eed2ec1def02d244f96836a2844a"
+}

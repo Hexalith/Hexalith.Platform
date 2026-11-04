@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-03T20:05:50.178121+00:00",
+  "producer": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "affectedReferenceHead": "107679d27313c6083472b7ce6c05f155028df53c",
+  "files": [
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs",
+      "sha256": "3aab0e93f4d63e44aec5de7de259c8ecaa9cd35bdc86d02097b851079b0167df"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs",
+      "sha256": "16ed3987fe7e3d41622938f7d40e104d4cf85ddabf793b07538fbef6b2bec1ca"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+      "sha256": "c7c64add9b6ca201ad9d1da6c76f246404af539f11d21c2ebf2a71db7081b34d"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Workspace/SourceMappingMaterializer.cs",
+      "sha256": "40118070d0acce4c13263e2ef2f001f2912e6a3bef41ccbeca2de93f0d696503"
+    }
+  ],
+  "finding": "Native child has no GITHUB_ACTIONS/GITHUB_WORKSPACE/GITHUB_*/RUNNER_ENVIRONMENT. CompositionProcess clears environment and inherits an explicit list lacking those fields; NativeTestHandoff adds HEXALITH_G4_* values and SourceMappingMaterializer adds seven build/mapping controls only.",
+  "effect": "EventStore NativeAssemblyObservations.RetainHostedObservation returns without copying the measurement; emitted GitHub fields are null. Native TRX remains outside the helper upload, so the intended retained consumed-byte proof would be missing.",
+  "context": "The existing helper creates TestResults/module-integration through invocation.json before launching public CLI. Original caller source/root and exact owner metadata must be obtained through existing validated channels, not assumed environment inheritance.",
+  "notAFindingAgainstCurrentPartiesLifecycleControl": "Actual Parties679 lifecycle fixture already derives fixed private control from inherited HEXALITH_G4_RUN_ID plus local application data; preserve that incoming correction. Do not regress to custom environment control.",
+  "requiredScope": "Test-only reference diagnostic channel correction; no producer allowlist/schema/API/retention-budget change or fake CI identity",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

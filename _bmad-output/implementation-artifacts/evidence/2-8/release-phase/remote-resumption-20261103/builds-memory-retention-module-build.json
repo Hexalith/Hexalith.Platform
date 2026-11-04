@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "-warnaserror",
+    "-p:GeneratePackageOnBuild=false"
+  ],
+  "exitCode": 0,
+  "configuration": "Release/package",
+  "privateNugetCache": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103"
+}

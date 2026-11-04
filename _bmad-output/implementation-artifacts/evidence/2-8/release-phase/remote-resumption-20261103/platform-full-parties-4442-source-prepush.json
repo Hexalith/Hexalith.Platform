@@ -1,0 +1,108 @@
+{
+  "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+  "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+  "remoteHeadBeforePush": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+  "tree": "882c030ee4e16b43ae9d07ae0fdde4795459223b",
+  "sourceClean": true,
+  "fullProposalPatchSha256": "5b49ea8db365eb9c787d17072a8f37d97f38616ef4a835d1e4f654c30436df07",
+  "correctionPatchSha256": "70ffdd3877416c60ce61b9cf3700fb48d7a414861c1c211c54d47ae6addffa49",
+  "paths": [
+    ".config/dotnet-tools.json",
+    ".gitattributes",
+    "README.md",
+    "docs/current-tuple-preparation.md",
+    "docs/domain-module-enrollment.md",
+    "docs/package-catalog-qualification.md",
+    "eng/builds-tuple.json",
+    "eng/tuple-ci-suites.json",
+    "hexalith-platform.json",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Parties",
+    "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+    "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+    "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+    "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+    "tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs"
+  ],
+  "history": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9 test(composition): align fixtures with the adopted tuple\nfdf2f56cabb59a32706d2cd161996fefad5a19b7 test(composition): require the full Parties source cohort\n6f8adee14e8fd697eefb571567984f9fbada7100 test(composition): target the real full reader guard inputs\nde349f08eb332e4e91f9481b1187700e3c1ea56a test(composition): retain full reader guard diagnostics\n0db867a7b1b22193e29b67fa63163afe1b2ef594 build: adopt the qualified Builds 4.44.2 tuple\n5ac302c3a15fbeb127bb387722aec4012b913c4d fix(composition): bind the actual Parties owner and catalog roots\n9f8d4402c8d0f17aca6290a3b93fe8ae660ab480 build(merge): preserve the incoming Tenants channel boundary\n7ebb9c2ed750dac881f1ceba088f742bbffdde5d feat(composition): prepare the finite ordinary Parties package cohort\n",
+  "currentBinding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
+        "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+      }
+    },
+    "publication": {
+      "version": "4.44.2",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "releaseTag": "v4.44.2",
+      "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
+      "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
+      "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+      "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+    }
+  },
+  "directDependencies": [
+    {
+      "path": "references/Hexalith.Builds",
+      "recordedAndActualHead": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Parties",
+      "recordedAndActualHead": "f1f33f8de655d9aa9307bafba128b0c7ea5c2570",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.EventStore",
+      "recordedAndActualHead": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "recordedAndActualHead": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "recordedAndActualHead": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Commons",
+      "recordedAndActualHead": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.McpCli",
+      "recordedAndActualHead": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.PolymorphicSerializations",
+      "recordedAndActualHead": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "status": ""
+    }
+  ]
+}

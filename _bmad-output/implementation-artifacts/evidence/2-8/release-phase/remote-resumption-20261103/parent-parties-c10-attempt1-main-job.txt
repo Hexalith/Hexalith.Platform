@@ -1,0 +1,1461 @@
+﻿2026-11-03T21:19:33.3366530Z Current runner version: '2.338.2'
+2026-11-03T21:19:33.3387618Z ##[group]Runner Image Provisioner
+2026-11-03T21:19:33.3388306Z Hosted Compute Agent
+2026-11-03T21:19:33.3388679Z Version: 20261021.618
+2026-11-03T21:19:33.3389104Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-03T21:19:33.3389604Z Build Date: 2026-10-21T00:45:21Z
+2026-11-03T21:19:33.3390180Z Worker ID: {5026bdda-6d24-44cc-ae3f-29526dd3a95e}
+2026-11-03T21:19:33.3390665Z Region: centralus
+2026-11-03T21:19:33.3391015Z Cloud: Azure
+2026-11-03T21:19:33.3391385Z ##[endgroup]
+2026-11-03T21:19:33.3392283Z ##[group]Operating System
+2026-11-03T21:19:33.3392686Z Ubuntu
+2026-11-03T21:19:33.3393079Z 26.04.1
+2026-11-03T21:19:33.3393406Z LTS
+2026-11-03T21:19:33.3393759Z ##[endgroup]
+2026-11-03T21:19:33.3394188Z ##[group]Runner Image
+2026-11-03T21:19:33.3394577Z Image: ubuntu-26.04
+2026-11-03T21:19:33.3394998Z Version: 20261025.179.1
+2026-11-03T21:19:33.3395837Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261025.179/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-03T21:19:33.3396862Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261025.179
+2026-11-03T21:19:33.3397453Z ##[endgroup]
+2026-11-03T21:19:33.3398256Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T21:19:33.3400239Z Contents: read
+2026-11-03T21:19:33.3400657Z Metadata: read
+2026-11-03T21:19:33.3401030Z ##[endgroup]
+2026-11-03T21:19:33.3402699Z Secret source: Actions
+2026-11-03T21:19:33.3403283Z Cache mode: write
+2026-11-03T21:19:33.3403989Z Prepare workflow directory
+2026-11-03T21:19:33.3674833Z Prepare all required actions
+2026-11-03T21:19:33.3722782Z Getting action download info
+2026-11-03T21:19:33.6318577Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-03T21:19:33.7696480Z Download action repository 'Hexalith/Hexalith.Builds@e171c5a788eab183b32683431b084198c9b8d373' (SHA:e171c5a788eab183b32683431b084198c9b8d373)
+2026-11-03T21:19:36.3295930Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-03T21:19:36.9037246Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-11-03T21:19:37.1295651Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-11-03T21:19:37.3825246Z Uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T21:19:37.3827683Z ##[group] Inputs
+2026-11-03T21:19:37.3827869Z   solution: Hexalith.Parties.Standalone.slnx
+2026-11-03T21:19:37.3828089Z   module-manifest: module/hexalith.module-manifest.v2.json
+2026-11-03T21:19:37.3828303Z   dotnet-global-json: global.json
+2026-11-03T21:19:37.3828627Z   packages-lock-file: Directory.Packages.props, global.json, references/Hexalith.Builds/Props/Directory.Packages.props
+2026-11-03T21:19:37.3828958Z   test-platform: microsoft-testing-platform
+2026-11-03T21:19:37.3830342Z   unit-test-projects: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T21:19:37.3831575Z   integration-test-projects: 
+2026-11-03T21:19:37.3831747Z   integration-test-profiles: platform-package
+2026-11-03T21:19:37.3831942Z   aspire-test-project: 
+2026-11-03T21:19:37.3832281Z   run-consumer-validation: true
+2026-11-03T21:19:37.3832738Z   package-prepare-script: scripts/prepare-ci-package-dependencies.sh
+2026-11-03T21:19:37.3833111Z   run-coverage-gate: false
+2026-11-03T21:19:37.3833530Z   coverage-minimum-line: 80
+2026-11-03T21:19:37.3833687Z   coverage-required-branch: 100
+2026-11-03T21:19:37.3833840Z   coverage-isolation-targets: 
+2026-11-03T21:19:37.3833990Z   coverage-line-scope: 
+2026-11-03T21:19:37.3834136Z   build-timeout-minutes: 120
+2026-11-03T21:19:37.3834292Z   governed-ci: false
+2026-11-03T21:19:37.3834424Z   builds-execution-sha: 
+2026-11-03T21:19:37.3834566Z   candidate-commit: 
+2026-11-03T21:19:37.3834709Z   dependency-policy-repository: 
+2026-11-03T21:19:37.3834870Z   dependency-policy-path: 
+2026-11-03T21:19:37.3835018Z   dependency-policy-commit: 
+2026-11-03T21:19:37.3835164Z   dependency-policy-sha256: 
+2026-11-03T21:19:37.3835321Z   expected-ci-evaluator-digest: 
+2026-11-03T21:19:37.3835494Z ##[endgroup]
+2026-11-03T21:19:37.3835634Z Complete job name: ci / build-and-test
+2026-11-03T21:19:37.4365918Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T21:19:37.4366259Z with:
+2026-11-03T21:19:37.4366384Z   fetch-depth: 0
+2026-11-03T21:19:37.4366510Z   submodules: false
+2026-11-03T21:19:37.4366696Z   repository: Hexalith/Hexalith.Parties
+2026-11-03T21:19:37.4368117Z   token: ***
+2026-11-03T21:19:37.4368247Z   ssh-strict: true
+2026-11-03T21:19:37.4368369Z   ssh-user: git
+2026-11-03T21:19:37.4368507Z   persist-credentials: true
+2026-11-03T21:19:37.4368649Z   clean: true
+2026-11-03T21:19:37.4368781Z   sparse-checkout-cone-mode: true
+2026-11-03T21:19:37.4368939Z   fetch-tags: false
+2026-11-03T21:19:37.4369067Z   show-progress: true
+2026-11-03T21:19:37.4369193Z   lfs: false
+2026-11-03T21:19:37.4369316Z   set-safe-directory: true
+2026-11-03T21:19:37.4369467Z   allow-unsafe-pr-checkout: false
+2026-11-03T21:19:37.4369695Z ##[endgroup]
+2026-11-03T21:19:37.7141537Z Syncing repository: Hexalith/Hexalith.Parties
+2026-11-03T21:19:37.7142469Z ##[group]Getting Git version info
+2026-11-03T21:19:37.7142809Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T21:19:37.7143521Z [command]/usr/bin/git version
+2026-11-03T21:19:37.7164843Z git version 2.56.0
+2026-11-03T21:19:37.7176812Z ##[endgroup]
+2026-11-03T21:19:37.7183890Z Temporarily overriding HOME='/home/runner/work/_temp/05faa87d-74f8-4b2c-8466-b452a322e28a' before making global git config changes
+2026-11-03T21:19:37.7184558Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T21:19:37.7186954Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T21:19:37.7260947Z Deleting the contents of '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T21:19:37.7282320Z ##[group]Determining repository object format
+2026-11-03T21:19:37.7283195Z ##[endgroup]
+2026-11-03T21:19:37.7283502Z ##[group]Initializing the repository
+2026-11-03T21:19:37.7283784Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T21:19:37.7340659Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T21:19:37.7341248Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T21:19:37.7341848Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T21:19:37.7342322Z hint: call:
+2026-11-03T21:19:37.7342632Z hint:
+2026-11-03T21:19:37.7343041Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T21:19:37.7343485Z hint:
+2026-11-03T21:19:37.7343904Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T21:19:37.7344480Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T21:19:37.7344954Z hint:
+2026-11-03T21:19:37.7345276Z hint: 	git branch -m <name>
+2026-11-03T21:19:37.7345625Z hint:
+2026-11-03T21:19:37.7346104Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T21:19:37.7360186Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/
+2026-11-03T21:19:37.7368105Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T21:19:37.7415973Z ##[endgroup]
+2026-11-03T21:19:37.7416370Z ##[group]Disabling automatic garbage collection
+2026-11-03T21:19:37.7418959Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T21:19:37.7447647Z ##[endgroup]
+2026-11-03T21:19:37.7448003Z ##[group]Setting up auth
+2026-11-03T21:19:37.7448316Z Removing SSH command configuration
+2026-11-03T21:19:37.7452950Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T21:19:37.7480546Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T21:19:37.7887564Z Removing HTTP extra header
+2026-11-03T21:19:37.7892909Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T21:19:37.7922256Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T21:19:37.8150689Z Removing includeIf entries pointing to credentials config files
+2026-11-03T21:19:37.8154704Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T21:19:37.8181581Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T21:19:37.8405763Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T21:19:37.8436279Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path /home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T21:19:37.8506625Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T21:19:37.8536128Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T21:19:37.8562362Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T21:19:37.8591160Z ##[endgroup]
+2026-11-03T21:19:37.8591511Z ##[group]Fetching the repository
+2026-11-03T21:19:37.8592139Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +218c8c0e5c3b4609254d1527c68e9b52b461d448:refs/remotes/pull/61/merge
+2026-11-03T21:19:54.9614490Z From https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T21:19:54.9614995Z  * [new branch]        fix/adopt-platform-117                   -> origin/fix/adopt-platform-117
+2026-11-03T21:19:54.9615313Z  * [new branch]        main                                     -> origin/main
+2026-11-03T21:19:54.9615625Z  * [new tag]           evidence/story-8-3-final                 -> evidence/story-8-3-final
+2026-11-03T21:19:54.9615922Z  * [new tag]           v1.0.0                                   -> v1.0.0
+2026-11-03T21:19:54.9616161Z  * [new tag]           v1.1.0                                   -> v1.1.0
+2026-11-03T21:19:54.9616390Z  * [new tag]           v1.1.1                                   -> v1.1.1
+2026-11-03T21:19:54.9616829Z  * [new tag]           v1.2.0                                   -> v1.2.0
+2026-11-03T21:19:54.9617070Z  * [new tag]           v1.2.1                                   -> v1.2.1
+2026-11-03T21:19:54.9617308Z  * [new tag]           v1.3.0                                   -> v1.3.0
+2026-11-03T21:19:54.9617729Z  * [new tag]           v1.4.0                                   -> v1.4.0
+2026-11-03T21:19:54.9617952Z  * [new tag]           v1.5.0                                   -> v1.5.0
+2026-11-03T21:19:54.9618190Z  * [new tag]           v1.5.1                                   -> v1.5.1
+2026-11-03T21:19:54.9618423Z  * [new tag]           v1.5.2                                   -> v1.5.2
+2026-11-03T21:19:54.9618732Z  * [new tag]           v1.6.0                                   -> v1.6.0
+2026-11-03T21:19:54.9618987Z  * [new tag]           v2.0.0                                   -> v2.0.0
+2026-11-03T21:19:54.9619223Z  * [new tag]           v3.0.0                                   -> v3.0.0
+2026-11-03T21:19:54.9619485Z  * [new ref]           218c8c0e5c3b4609254d1527c68e9b52b461d448 -> pull/61/merge
+2026-11-03T21:19:54.9621892Z ##[endgroup]
+2026-11-03T21:19:54.9622478Z ##[group]Determining the checkout info
+2026-11-03T21:19:54.9622893Z ##[endgroup]
+2026-11-03T21:19:54.9623649Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T21:19:54.9675261Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T21:19:54.9706967Z ##[group]Checking out the ref
+2026-11-03T21:19:54.9711126Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/61/merge
+2026-11-03T21:19:55.5138986Z Note: switching to 'refs/remotes/pull/61/merge'.
+2026-11-03T21:19:55.5139264Z 
+2026-11-03T21:19:55.5139398Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T21:19:55.5139992Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T21:19:55.5140447Z state without impacting any branches by switching back to a branch.
+2026-11-03T21:19:55.5140712Z 
+2026-11-03T21:19:55.5140868Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T21:19:55.5141378Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T21:19:55.5141639Z 
+2026-11-03T21:19:55.5141752Z   git switch -c <new-branch-name>
+2026-11-03T21:19:55.5141922Z 
+2026-11-03T21:19:55.5142014Z Or undo this operation with:
+2026-11-03T21:19:55.5142162Z 
+2026-11-03T21:19:55.5142241Z   git switch -
+2026-11-03T21:19:55.5142357Z 
+2026-11-03T21:19:55.5142570Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T21:19:55.5142859Z 
+2026-11-03T21:19:55.5143174Z HEAD is now at 218c8c0e Merge c10ce7e8f323ded3a69711160c5b814fb95f5904 into 7d3bc8879c39d32f34866df5098a0d369821db03
+2026-11-03T21:19:55.5189284Z ##[endgroup]
+2026-11-03T21:19:55.5240227Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T21:19:55.5265573Z 218c8c0e5c3b4609254d1527c68e9b52b461d448
+2026-11-03T21:19:55.5477796Z ##[group]Run Hexalith/Hexalith.Builds/Github/initialize-build@e171c5a788eab183b32683431b084198c9b8d373
+2026-11-03T21:19:55.5478099Z ##[endgroup]
+2026-11-03T21:19:55.5514746Z ##[start-action display=Initialize root-declared submodules;id=__Hexalith_Hexalith_Builds.__run]
+2026-11-03T21:19:55.5543371Z ##[group]Run git -c submodule.recurse=false submodule update --init
+2026-11-03T21:19:55.5543746Z [36;1mgit -c submodule.recurse=false submodule update --init[0m
+2026-11-03T21:19:55.5571459Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T21:19:55.5571666Z ##[endgroup]
+2026-11-03T21:19:55.5863289Z Submodule 'Hexalith.AI.Tools' (https://github.com/Hexalith/Hexalith.AI.Tools.git) registered for path 'references/Hexalith.AI.Tools'
+2026-11-03T21:19:55.5867916Z Submodule 'Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+2026-11-03T21:19:55.5874008Z Submodule 'Hexalith.Commons' (https://github.com/Hexalith/Hexalith.Commons.git) registered for path 'references/Hexalith.Commons'
+2026-11-03T21:19:55.5878671Z Submodule 'Hexalith.EventStore' (https://github.com/Hexalith/Hexalith.EventStore.git) registered for path 'references/Hexalith.EventStore'
+2026-11-03T21:19:55.5883863Z Submodule 'Hexalith.FrontComposer' (https://github.com/Hexalith/Hexalith.FrontComposer.git) registered for path 'references/Hexalith.FrontComposer'
+2026-11-03T21:19:55.5888559Z Submodule 'Hexalith.McpCli' (https://github.com/Hexalith/Hexalith.McpCli.git) registered for path 'references/Hexalith.McpCli'
+2026-11-03T21:19:55.5893611Z Submodule 'Hexalith.Memories' (https://github.com/Hexalith/Hexalith.Memories.git) registered for path 'references/Hexalith.Memories'
+2026-11-03T21:19:55.5898609Z Submodule 'Hexalith.Platform' (https://github.com/Hexalith/Hexalith.Platform.git) registered for path 'references/Hexalith.Platform'
+2026-11-03T21:19:55.5903890Z Submodule 'Hexalith.PolymorphicSerializations' (https://github.com/Hexalith/Hexalith.PolymorphicSerializations.git) registered for path 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T21:19:55.5909028Z Submodule 'Hexalith.Tenants' (https://github.com/Hexalith/Hexalith.Tenants.git) registered for path 'references/Hexalith.Tenants'
+2026-11-03T21:19:55.5936353Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.AI.Tools'...
+2026-11-03T21:20:06.2209437Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds'...
+2026-11-03T21:21:40.7143526Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Commons'...
+2026-11-03T21:21:50.1733845Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.EventStore'...
+2026-11-03T21:23:39.8762332Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.FrontComposer'...
+2026-11-03T22:08:53.2867787Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.McpCli'...
+2026-11-03T22:09:10.2156139Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Memories'...
+2026-11-03T22:09:36.7298664Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform'...
+2026-11-03T22:10:16.9875144Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.PolymorphicSerializations'...
+2026-11-03T22:10:19.5593541Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Tenants'...
+2026-11-03T22:10:59.5043222Z Submodule path 'references/Hexalith.AI.Tools': checked out '1745b6663ad32bb1288167135ed0f979366c53a0'
+2026-11-03T22:10:59.7250370Z Submodule path 'references/Hexalith.Builds': checked out '725754075e1d6369430a3adf94d46fb71e6eaf9e'
+2026-11-03T22:10:59.7420922Z Submodule path 'references/Hexalith.Commons': checked out '11555ace9efcae2928a00122dcba91243e5a8a1a'
+2026-11-03T22:11:00.3744395Z Submodule path 'references/Hexalith.EventStore': checked out 'a9205f511b4f96b5daf94d65369d6dee63e0c623'
+2026-11-03T22:11:00.9060634Z Submodule path 'references/Hexalith.FrontComposer': checked out 'fbe01c913cb863abb0fd4a317d370d36fff593b3'
+2026-11-03T22:11:01.6258664Z Submodule path 'references/Hexalith.McpCli': checked out '2e80701c31aafdf00abee05ac469a45ed76dfdf5'
+2026-11-03T22:11:02.1603299Z Submodule path 'references/Hexalith.Memories': checked out 'd959bdae5af9c22f53573eda71c091cb5c0aae4c'
+2026-11-03T22:11:03.5402368Z Submodule path 'references/Hexalith.Platform': checked out 'ed1560a57f4d4cb55b6b03f485cbfa01316837a7'
+2026-11-03T22:11:03.5512748Z Submodule path 'references/Hexalith.PolymorphicSerializations': checked out 'bce4eb9f45c6b131b960ab4fa39e50ff01e51960'
+2026-11-03T22:11:04.0963196Z Submodule path 'references/Hexalith.Tenants': checked out '33835a03e92579a26400e7cb7cf68d666c715b3e'
+2026-11-03T22:11:04.0984832Z ##[end-action id=__Hexalith_Hexalith_Builds.__run;outcome=success;conclusion=success;duration_ms=3068546]
+2026-11-03T22:11:04.1038116Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+2026-11-03T22:11:04.1038341Z with:
+2026-11-03T22:11:04.1038470Z   global-json-file: global.json
+2026-11-03T22:11:04.1038611Z   cache: false
+2026-11-03T22:11:04.1038731Z ##[endgroup]
+2026-11-03T22:11:04.1952224Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-03T22:11:04.6506480Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-03T22:11:04.6523755Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-03T22:11:04.9416077Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-03T22:11:04.9568177Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T22:11:04.9568405Z with:
+2026-11-03T22:11:04.9568533Z   repository: Hexalith/Hexalith.Builds
+2026-11-03T22:11:04.9568707Z   ref: 725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T22:11:04.9568884Z   path: .hexalith/builds-execution
+2026-11-03T22:11:04.9569042Z   persist-credentials: false
+2026-11-03T22:11:04.9570666Z   token: ***
+2026-11-03T22:11:04.9570786Z   ssh-strict: true
+2026-11-03T22:11:04.9570911Z   ssh-user: git
+2026-11-03T22:11:04.9571042Z   clean: true
+2026-11-03T22:11:04.9571174Z   sparse-checkout-cone-mode: true
+2026-11-03T22:11:04.9571327Z   fetch-depth: 1
+2026-11-03T22:11:04.9571447Z   fetch-tags: false
+2026-11-03T22:11:04.9571574Z   show-progress: true
+2026-11-03T22:11:04.9571700Z   lfs: false
+2026-11-03T22:11:04.9571832Z   submodules: false
+2026-11-03T22:11:04.9571964Z   set-safe-directory: true
+2026-11-03T22:11:04.9572115Z   allow-unsafe-pr-checkout: false
+2026-11-03T22:11:04.9572284Z env:
+2026-11-03T22:11:04.9572403Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:04.9572546Z ##[endgroup]
+2026-11-03T22:11:05.0122242Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-03T22:11:05.0122788Z ##[group]Getting Git version info
+2026-11-03T22:11:05.0123315Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution'
+2026-11-03T22:11:05.0143656Z [command]/usr/bin/git version
+2026-11-03T22:11:05.0179399Z git version 2.56.0
+2026-11-03T22:11:05.0191965Z ##[endgroup]
+2026-11-03T22:11:05.0199296Z Temporarily overriding HOME='/home/runner/work/_temp/fb657f10-3d37-4131-afc9-04329bf51c3d' before making global git config changes
+2026-11-03T22:11:05.0200253Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T22:11:05.0204277Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T22:11:05.0236358Z ##[group]Determining repository object format
+2026-11-03T22:11:05.0237763Z ##[endgroup]
+2026-11-03T22:11:05.0238115Z ##[group]Initializing the repository
+2026-11-03T22:11:05.0241228Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T22:11:05.0286811Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T22:11:05.0287353Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T22:11:05.0287845Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T22:11:05.0288213Z hint: call:
+2026-11-03T22:11:05.0288403Z hint:
+2026-11-03T22:11:05.0288703Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T22:11:05.0288978Z hint:
+2026-11-03T22:11:05.0289271Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T22:11:05.0289752Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T22:11:05.0290245Z hint:
+2026-11-03T22:11:05.0290446Z hint: 	git branch -m <name>
+2026-11-03T22:11:05.0290660Z hint:
+2026-11-03T22:11:05.0290973Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T22:11:05.0291644Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/
+2026-11-03T22:11:05.0295081Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T22:11:05.0327082Z ##[endgroup]
+2026-11-03T22:11:05.0327542Z ##[group]Disabling automatic garbage collection
+2026-11-03T22:11:05.0330348Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T22:11:05.0358501Z ##[endgroup]
+2026-11-03T22:11:05.0358845Z ##[group]Setting up auth
+2026-11-03T22:11:05.0359211Z Removing SSH command configuration
+2026-11-03T22:11:05.0363035Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T22:11:05.0393513Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T22:11:05.0629776Z Removing HTTP extra header
+2026-11-03T22:11:05.0635137Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T22:11:05.0675229Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T22:11:05.0888969Z Removing includeIf entries pointing to credentials config files
+2026-11-03T22:11:05.0893321Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:11:05.0919246Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T22:11:05.1131164Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T22:11:05.1160510Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path /home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:05.1185599Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:05.1212571Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.hexalith/builds-execution/.git.path /github/runner_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:05.1237047Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path /github/runner_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:05.1260792Z ##[endgroup]
+2026-11-03T22:11:05.1261018Z ##[group]Fetching the repository
+2026-11-03T22:11:05.1265017Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T22:11:10.1393304Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T22:11:10.1393828Z  * branch            725754075e1d6369430a3adf94d46fb71e6eaf9e -> FETCH_HEAD
+2026-11-03T22:11:10.1403999Z [command]/usr/bin/git rev-parse --verify --quiet 725754075e1d6369430a3adf94d46fb71e6eaf9e^{object}
+2026-11-03T22:11:10.1429061Z 725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T22:11:10.1432946Z ##[endgroup]
+2026-11-03T22:11:10.1433186Z ##[group]Determining the checkout info
+2026-11-03T22:11:10.1433700Z ##[endgroup]
+2026-11-03T22:11:10.1436670Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T22:11:10.1540246Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T22:11:10.1603942Z ##[group]Checking out the ref
+2026-11-03T22:11:10.1612710Z [command]/usr/bin/git checkout --progress --force 725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T22:11:10.3857149Z Note: switching to '725754075e1d6369430a3adf94d46fb71e6eaf9e'.
+2026-11-03T22:11:10.3857361Z 
+2026-11-03T22:11:10.3857514Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T22:11:10.3857812Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T22:11:10.3858460Z state without impacting any branches by switching back to a branch.
+2026-11-03T22:11:10.3858705Z 
+2026-11-03T22:11:10.3858836Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T22:11:10.3859115Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T22:11:10.3859260Z 
+2026-11-03T22:11:10.3859344Z   git switch -c <new-branch-name>
+2026-11-03T22:11:10.3859451Z 
+2026-11-03T22:11:10.3859674Z Or undo this operation with:
+2026-11-03T22:11:10.3859766Z 
+2026-11-03T22:11:10.3859824Z   git switch -
+2026-11-03T22:11:10.3860060Z 
+2026-11-03T22:11:10.3860226Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T22:11:10.3860403Z 
+2026-11-03T22:11:10.3860645Z HEAD is now at 7257540 build: merge refs/remotes/origin/fix/remove-duplicate-keyvault-keys-pin into main via /pushall
+2026-11-03T22:11:10.3861487Z ##[endgroup]
+2026-11-03T22:11:10.3897123Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T22:11:10.3921464Z 725754075e1d6369430a3adf94d46fb71e6eaf9e
+2026-11-03T22:11:10.3928205Z ##[group]Removing auth
+2026-11-03T22:11:10.3928480Z Removing SSH command configuration
+2026-11-03T22:11:10.3930697Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T22:11:10.3958796Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T22:11:10.4188935Z Removing HTTP extra header
+2026-11-03T22:11:10.4191543Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T22:11:10.4218437Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T22:11:10.4435406Z Removing includeIf entries pointing to credentials config files
+2026-11-03T22:11:10.4437686Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:11:10.4459004Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path
+2026-11-03T22:11:10.4460093Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T22:11:10.4460935Z includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path
+2026-11-03T22:11:10.4461658Z includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T22:11:10.4467020Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path
+2026-11-03T22:11:10.4494300Z /home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:10.4501630Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-ac72afd9\-348c\-40a4\-9462\-01c68ba2d363\.config
+2026-11-03T22:11:10.4533772Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T22:11:10.4554746Z /home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:10.4561698Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-ac72afd9\-348c\-40a4\-9462\-01c68ba2d363\.config
+2026-11-03T22:11:10.4594714Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path
+2026-11-03T22:11:10.4616921Z /github/runner_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:10.4622466Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git.path \/github\/runner_temp\/git\-credentials\-ac72afd9\-348c\-40a4\-9462\-01c68ba2d363\.config
+2026-11-03T22:11:10.4653771Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path
+2026-11-03T22:11:10.4673643Z /github/runner_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config
+2026-11-03T22:11:10.4679316Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.hexalith/builds-execution/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-ac72afd9\-348c\-40a4\-9462\-01c68ba2d363\.config
+2026-11-03T22:11:10.4707743Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T22:11:10.4929391Z Removing credentials config '/home/runner/work/_temp/git-credentials-ac72afd9-348c-40a4-9462-01c68ba2d363.config'
+2026-11-03T22:11:10.4937634Z ##[endgroup]
+2026-11-03T22:11:10.5055065Z Prepare all required actions
+2026-11-03T22:11:10.5075915Z ##[group]Run ./.hexalith/builds-execution/Github/prepare-module-build
+2026-11-03T22:11:10.5076139Z with:
+2026-11-03T22:11:10.5076287Z   manifest: module/hexalith.module-manifest.v2.json
+2026-11-03T22:11:10.5076466Z env:
+2026-11-03T22:11:10.5076588Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:10.5076741Z ##[endgroup]
+2026-11-03T22:11:10.5103104Z ##[start-action display=Prepare package build imports;id=__self_2.__run]
+2026-11-03T22:11:10.5115489Z ##[group]Run python3 "$MODULE_BUILD_HELPER" --manifest "$MODULE_BUILD_MANIFEST"
+2026-11-03T22:11:10.5115809Z [36;1mpython3 "$MODULE_BUILD_HELPER" --manifest "$MODULE_BUILD_MANIFEST"[0m
+2026-11-03T22:11:10.5141384Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:11:10.5141573Z env:
+2026-11-03T22:11:10.5141701Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:10.5141902Z   MODULE_BUILD_MANIFEST: module/hexalith.module-manifest.v2.json
+2026-11-03T22:11:10.5142382Z   MODULE_BUILD_HELPER: /home/runner/work/Hexalith.Parties/Hexalith.Parties/./.hexalith/builds-execution/Github/prepare-module-build/prepare_module_build.py
+2026-11-03T22:11:10.5142758Z ##[endgroup]
+2026-11-03T22:11:16.5981485Z ##[end-action id=__self_2.__run;outcome=success;conclusion=success;duration_ms=6087]
+2026-11-03T22:11:16.6631054Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-11-03T22:11:16.6631278Z with:
+2026-11-03T22:11:16.6631405Z   path: ~/.nuget/packages
+2026-11-03T22:11:16.6631540Z   key: nuget-
+2026-11-03T22:11:16.6631663Z   restore-keys: nuget-
+2026-11-03T22:11:16.6631805Z   enableCrossOsArchive: false
+2026-11-03T22:11:16.6631955Z   fail-on-cache-miss: false
+2026-11-03T22:11:16.6632098Z   lookup-only: false
+2026-11-03T22:11:16.6632227Z   save-always: false
+2026-11-03T22:11:16.6632348Z env:
+2026-11-03T22:11:16.6632478Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:16.6632868Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:11:16.6633282Z   Configuration: Release
+2026-11-03T22:11:16.6633657Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:11:16.6634314Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:11:16.6634904Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:11:16.6635543Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:11:16.6636070Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:11:16.6636475Z ##[endgroup]
+2026-11-03T22:11:16.9329164Z Cache hit for: nuget-
+2026-11-03T22:11:18.1152570Z Received 121634816 of 545075092 (22.3%), 116.0 MBs/sec
+2026-11-03T22:11:19.1160922Z Received 318767104 of 545075092 (58.5%), 151.9 MBs/sec
+2026-11-03T22:11:20.1191655Z Received 432013312 of 545075092 (79.3%), 137.2 MBs/sec
+2026-11-03T22:11:20.7655879Z Received 545075092 of 545075092 (100.0%), 142.4 MBs/sec
+2026-11-03T22:11:20.7657105Z Cache Size: ~520 MB (545075092 B)
+2026-11-03T22:11:20.7684954Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d3d2ff96-afa8-4483-bcf2-2019b6eb27d4/cache.tzst -P -C /home/runner/work/Hexalith.Parties/Hexalith.Parties --use-compress-program unzstd
+2026-11-03T22:11:22.5101440Z Cache restored successfully
+2026-11-03T22:11:22.5462061Z Cache restored from key: nuget-
+2026-11-03T22:11:22.6000514Z ##[group]Run set -euo pipefail
+2026-11-03T22:11:22.6000747Z [36;1mset -euo pipefail[0m
+2026-11-03T22:11:22.6001139Z [36;1mif [[ ! "$PACKAGE_PREPARE_SCRIPT" =~ ^[A-Za-z0-9_./-]+\.sh$ || "$PACKAGE_PREPARE_SCRIPT" = /* || "$PACKAGE_PREPARE_SCRIPT" =~ (^|/)\.\.?(/|$) || ! -f "$PACKAGE_PREPARE_SCRIPT" ]]; then[0m
+2026-11-03T22:11:22.6001653Z [36;1m  echo "Package preparation must select an existing repository-relative bash script." >&2[0m
+2026-11-03T22:11:22.6001921Z [36;1m  exit 1[0m
+2026-11-03T22:11:22.6002051Z [36;1mfi[0m
+2026-11-03T22:11:22.6002198Z [36;1mchecked_path="$PACKAGE_PREPARE_SCRIPT"[0m
+2026-11-03T22:11:22.6002389Z [36;1mwhile [ "$checked_path" != . ]; do[0m
+2026-11-03T22:11:22.6002571Z [36;1m  if [ -L "$checked_path" ]; then[0m
+2026-11-03T22:11:22.6002782Z [36;1m    echo "Package preparation forbids symbolic links." >&2[0m
+2026-11-03T22:11:22.6002984Z [36;1m    exit 1[0m
+2026-11-03T22:11:22.6003112Z [36;1m  fi[0m
+2026-11-03T22:11:22.6003297Z [36;1m  checked_path="$(dirname "$checked_path")"[0m
+2026-11-03T22:11:22.6003477Z [36;1mdone[0m
+2026-11-03T22:11:22.6003703Z [36;1mtimeout --signal=TERM --kill-after=30s 1800 bash "$PACKAGE_PREPARE_SCRIPT" </dev/null[0m
+2026-11-03T22:11:22.6029018Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:11:22.6029228Z env:
+2026-11-03T22:11:22.6029359Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:22.6029768Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:11:22.6030310Z   Configuration: Release
+2026-11-03T22:11:22.6030689Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:11:22.6031311Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:11:22.6031926Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:11:22.6032578Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:11:22.6033115Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:11:22.6033452Z   PACKAGE_PREPARE_SCRIPT: scripts/prepare-ci-package-dependencies.sh
+2026-11-03T22:11:22.6033673Z ##[endgroup]
+2026-11-03T22:11:26.2461071Z   Determining projects to restore...
+2026-11-03T22:11:29.2196156Z   Restored /home/runner/work/_temp/parties-aspire-restore.qkhiYk/apphost.cs.csproj (in 2.74 sec).
+2026-11-03T22:11:29.2716211Z ##[group]Run dotnet restore "$SOLUTION" -p:Configuration=Release
+2026-11-03T22:11:29.2716518Z [36;1mdotnet restore "$SOLUTION" -p:Configuration=Release[0m
+2026-11-03T22:11:29.2741453Z shell: /usr/bin/bash -e {0}
+2026-11-03T22:11:29.2741602Z env:
+2026-11-03T22:11:29.2741733Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:29.2742125Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:11:29.2742675Z   Configuration: Release
+2026-11-03T22:11:29.2743055Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:11:29.2743664Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:11:29.2744293Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:11:29.2744919Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:11:29.2745436Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:11:29.2745727Z   SOLUTION: Hexalith.Parties.Standalone.slnx
+2026-11-03T22:11:29.2745899Z ##[endgroup]
+2026-11-03T22:11:37.9861753Z   Determining projects to restore...
+2026-11-03T22:11:39.7961732Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact.csproj (in 891 ms).
+2026-11-03T22:11:40.2648498Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Mcp/Hexalith.Parties.Mcp.csproj (in 1.38 sec).
+2026-11-03T22:11:40.2672729Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/Hexalith.Parties.EventStoreGateway.TestHost.csproj (in 1.38 sec).
+2026-11-03T22:11:40.6751772Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.csproj (in 1.7 sec).
+2026-11-03T22:11:40.6801146Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj (in 869 ms).
+2026-11-03T22:11:40.7041657Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj (in 19 ms).
+2026-11-03T22:11:42.2088784Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj (in 405 ms).
+2026-11-03T22:11:42.3662761Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.csproj (in 2.01 sec).
+2026-11-03T22:11:42.4792749Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.csproj (in 1.6 sec).
+2026-11-03T22:11:42.5711691Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.csproj (in 2.04 sec).
+2026-11-03T22:11:42.6658260Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Testing/Hexalith.Parties.Testing.csproj (in 2 ms).
+2026-11-03T22:11:42.6954655Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj (in 4 ms).
+2026-11-03T22:11:42.7616455Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj (in 5 ms).
+2026-11-03T22:11:42.8147728Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/samples/Hexalith.Parties.Sample/Hexalith.Parties.Sample.csproj (in 4 ms).
+2026-11-03T22:11:42.8692249Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Picker/Hexalith.Parties.Picker.csproj (in 59 ms).
+2026-11-03T22:11:42.9736445Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj (in 554 ms).
+2026-11-03T22:11:43.2081379Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.csproj (in 10 ms).
+2026-11-03T22:11:43.2115511Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj (in 17 ms).
+2026-11-03T22:11:43.2331377Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj (in 2 ms).
+2026-11-03T22:11:43.2389812Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Client/Hexalith.Parties.Client.csproj (in 3 ms).
+2026-11-03T22:11:43.3090157Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.ConsumerPortal/Hexalith.Parties.ConsumerPortal.csproj (in 5 ms).
+2026-11-03T22:11:43.3111081Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj (in 848 ms).
+2026-11-03T22:11:43.3121516Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj (in 2 ms).
+2026-11-03T22:11:43.3941873Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AdminPortal/Hexalith.Parties.AdminPortal.csproj (in 6 ms).
+2026-11-03T22:11:44.3853825Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.csproj (in 1.36 sec).
+2026-11-03T22:11:44.7762766Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.csproj (in 1 sec).
+2026-11-03T22:11:45.1160929Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Aspire/Hexalith.Parties.Aspire.csproj (in 1.69 sec).
+2026-11-03T22:11:45.2971547Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AppHost/Hexalith.Parties.AppHost.csproj (in 1.83 sec).
+2026-11-03T22:11:45.3781597Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.csproj (in 14 ms).
+2026-11-03T22:11:45.3972866Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.csproj (in 408 ms).
+2026-11-03T22:11:45.5060431Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.csproj (in 10 ms).
+2026-11-03T22:11:45.5372502Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.csproj (in 9 ms).
+2026-11-03T22:11:45.5537092Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.csproj (in 12 ms).
+2026-11-03T22:11:45.5635989Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.csproj (in 6 ms).
+2026-11-03T22:11:45.5832561Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/Hexalith.Parties.EventStoreSample.TestHost.csproj (in 3 ms).
+2026-11-03T22:11:45.5933538Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj (in 1.17 sec).
+2026-11-03T22:11:45.6936265Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.IntegrationTests/Hexalith.Parties.IntegrationTests.csproj (in 131 ms).
+2026-11-03T22:11:45.7542020Z ##[group]Run dotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror
+2026-11-03T22:11:45.7542556Z [36;1mdotnet build "$SOLUTION" --no-restore --configuration Release -warnaserror[0m
+2026-11-03T22:11:45.7567172Z shell: /usr/bin/bash -e {0}
+2026-11-03T22:11:45.7577118Z env:
+2026-11-03T22:11:45.7577261Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:11:45.7577825Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:11:45.7578209Z   Configuration: Release
+2026-11-03T22:11:45.7578575Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:11:45.7579158Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:11:45.7579766Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:11:45.7580445Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:11:45.7580939Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:11:45.7581214Z   SOLUTION: Hexalith.Parties.Standalone.slnx
+2026-11-03T22:11:45.7581380Z ##[endgroup]
+2026-11-03T22:11:49.8801369Z   Determining projects to restore...
+2026-11-03T22:11:50.7351656Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj (in 564 ms).
+2026-11-03T22:11:51.0761819Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T22:11:51.2080539Z   Hexalith.Parties.Aspire -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Aspire/bin/Release/net10.0/Hexalith.Parties.Aspire.dll
+2026-11-03T22:11:51.5442849Z   Hexalith.Parties.EventStoreSample.Contracts.TestArtifact -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.Contracts.TestArtifact/bin/Release/net10.0/Hexalith.EventStore.Sample.Contracts.dll
+2026-11-03T22:11:51.7261731Z   Hexalith.Parties.Ci.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll
+2026-11-03T22:11:52.6793007Z   Hexalith.Parties.EventStoreSample.TestHost -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreSample.TestHost/bin/Release/net10.0/Hexalith.Parties.EventStoreSample.TestHost.dll
+2026-11-03T22:11:52.6940839Z   Hexalith.Parties.EventStoreGateway.TestHost -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreGateway.TestHost/bin/Release/net10.0/Hexalith.Parties.EventStoreGateway.TestHost.dll
+2026-11-03T22:11:54.5359723Z   Hexalith.Parties.Security -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Security/bin/Release/net10.0/Hexalith.Parties.Security.dll
+2026-11-03T22:11:54.5546152Z   Hexalith.Parties.EventStoreExtensions -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/bin/Release/net10.0/Hexalith.Parties.EventStoreExtensions.dll
+2026-11-03T22:11:55.8011936Z   Hexalith.Parties.Projections -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Projections/bin/Release/net10.0/Hexalith.Parties.Projections.dll
+2026-11-03T22:11:55.9153841Z   Hexalith.Parties.Authentication -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/bin/Release/net10.0/Hexalith.Parties.Authentication.dll
+2026-11-03T22:11:58.9211057Z   Hexalith.Parties.Authentication.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Authentication.Tests/bin/Release/net10.0/Hexalith.Parties.Authentication.Tests.dll
+2026-11-03T22:11:59.0755998Z   Hexalith.Parties -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties/bin/Release/net10.0/Hexalith.Parties.dll
+2026-11-03T22:12:02.3913143Z   Hexalith.EventStore.Admin.UI -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.UI/bin/Release/net10.0/Hexalith.EventStore.Admin.UI.dll
+2026-11-03T22:12:02.5569580Z   Hexalith.Parties.Testing -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Testing/bin/Release/net10.0/Hexalith.Parties.Testing.dll
+2026-11-03T22:12:03.0578281Z   Hexalith.Parties.Client -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+2026-11-03T22:12:03.7112312Z   Hexalith.Parties.Aspire.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Aspire.Tests/bin/Release/net10.0/Hexalith.Parties.Aspire.Tests.dll
+2026-11-03T22:12:04.3207976Z   Hexalith.Parties.EventStoreAdminUI.TestHost -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/bin/Release/net10.0/Hexalith.Parties.EventStoreAdminUI.TestHost.dll
+2026-11-03T22:12:04.4227972Z   Hexalith.Parties.Catalog.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/bin/Release/net10.0/Hexalith.Parties.Catalog.Tests.dll
+2026-11-03T22:12:07.0624378Z   Hexalith.Parties.Mcp -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Mcp/bin/Release/net10.0/Hexalith.Parties.Mcp.dll
+2026-11-03T22:12:07.0796190Z   Hexalith.Parties.Sample -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/samples/Hexalith.Parties.Sample/bin/Release/net10.0/Hexalith.Parties.Sample.dll
+2026-11-03T22:12:07.1562327Z   Hexalith.Parties.ConsumerPortal -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.ConsumerPortal/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.dll
+2026-11-03T22:12:07.1783920Z   Hexalith.Parties.AdminPortal -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AdminPortal/bin/Release/net10.0/Hexalith.Parties.AdminPortal.dll
+2026-11-03T22:12:11.9093585Z   Hexalith.Parties.Contracts.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/bin/Release/net10.0/Hexalith.Parties.Contracts.Tests.dll
+2026-11-03T22:12:11.9423547Z   Hexalith.Parties.Client.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Client.Tests/bin/Release/net10.0/Hexalith.Parties.Client.Tests.dll
+2026-11-03T22:12:12.2673039Z   Hexalith.Parties.ConsumerPortal.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.ConsumerPortal.Tests/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.Tests.dll
+2026-11-03T22:12:13.9941822Z   Hexalith.Parties.Projections.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Projections.Tests/bin/Release/net10.0/Hexalith.Parties.Projections.Tests.dll
+2026-11-03T22:12:14.1188593Z   Hexalith.Parties.Picker -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Picker/bin/Release/net10.0/Hexalith.Parties.Picker.dll
+2026-11-03T22:12:16.1137077Z   Hexalith.Parties.Security.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Security.Tests/bin/Release/net10.0/Hexalith.Parties.Security.Tests.dll
+2026-11-03T22:12:17.0466376Z   Hexalith.Parties.AdminPortal.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.AdminPortal.Tests/bin/Release/net10.0/Hexalith.Parties.AdminPortal.Tests.dll
+2026-11-03T22:12:18.1732109Z   Hexalith.Parties.Server.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Server.Tests/bin/Release/net10.0/Hexalith.Parties.Server.Tests.dll
+2026-11-03T22:12:30.4562151Z   Hexalith.Parties.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll
+2026-11-03T22:12:31.1475315Z   Hexalith.Parties.Sample.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Sample.Tests/bin/Release/net10.0/Hexalith.Parties.Sample.Tests.dll
+2026-11-03T22:12:32.0220791Z   Hexalith.Parties.Mcp.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Mcp.Tests/bin/Release/net10.0/Hexalith.Parties.Mcp.Tests.dll
+2026-11-03T22:12:33.8352241Z   Hexalith.Parties.Picker.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Picker.Tests/bin/Release/net10.0/Hexalith.Parties.Picker.Tests.dll
+2026-11-03T22:12:33.8615391Z   Hexalith.Parties.UI -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.UI/bin/Release/net10.0/Hexalith.Parties.UI.dll
+2026-11-03T22:12:39.1232593Z   Hexalith.Parties.AppHost -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AppHost/bin/Release/net10.0/Hexalith.Parties.AppHost.dll
+2026-11-03T22:12:41.6803592Z   Hexalith.Parties.IntegrationTests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.IntegrationTests/bin/Release/net10.0/Hexalith.Parties.IntegrationTests.dll
+2026-11-03T22:12:42.2438155Z   Hexalith.Parties.UI.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.UI.Tests/bin/Release/net10.0/Hexalith.Parties.UI.Tests.dll
+2026-11-03T22:12:42.3757280Z 
+2026-11-03T22:12:42.3757896Z Build succeeded.
+2026-11-03T22:12:42.3758251Z     0 Warning(s)
+2026-11-03T22:12:42.3758655Z     0 Error(s)
+2026-11-03T22:12:42.3758844Z 
+2026-11-03T22:12:42.3759152Z Time Elapsed 00:00:56.41
+2026-11-03T22:12:42.4145125Z ##[group]Run set -euo pipefail
+2026-11-03T22:12:42.4145467Z [36;1mset -euo pipefail[0m
+2026-11-03T22:12:42.4145707Z [36;1mrm -rf ./nupkgs[0m
+2026-11-03T22:12:42.4146068Z [36;1mpython3 scripts/pack-release-packages.py ./nupkgs 0.0.0-ci-test[0m
+2026-11-03T22:12:42.4146512Z [36;1mpython3 scripts/validate-nuget-packages.py ./nupkgs[0m
+2026-11-03T22:12:42.4146973Z [36;1mpython3 scripts/validate-consumer-package-references.py ./nupkgs[0m
+2026-11-03T22:12:42.4182407Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:12:42.4182763Z env:
+2026-11-03T22:12:42.4182985Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:12:42.4183683Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:12:42.4184375Z   Configuration: Release
+2026-11-03T22:12:42.4185078Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:12:42.4186139Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:12:42.4187197Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:12:42.4188329Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:12:42.4189255Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:12:42.4189708Z ##[endgroup]
+2026-11-03T22:12:43.8011920Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Aspire.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:44.6698022Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Contracts.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:45.5805163Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.EventStoreExtensions.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:46.5101677Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Client.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:47.5644819Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.AdminPortal.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:48.6285059Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.ConsumerPortal.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:49.6904831Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Picker.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:50.6056194Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Authentication.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:51.5576300Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Projections.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:52.5353372Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Security.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:53.4532542Z   Successfully created package '/home/runner/work/Hexalith.Parties/Hexalith.Parties/nupkgs/Hexalith.Parties.Testing.0.0.0-ci-test.nupkg'.
+2026-11-03T22:12:54.2687870Z Validated 11 NuGet packages at version 0.0.0-ci-test:
+2026-11-03T22:12:54.2688378Z - Hexalith.Parties.AdminPortal
+2026-11-03T22:12:54.2688683Z - Hexalith.Parties.Aspire
+2026-11-03T22:12:54.2688964Z - Hexalith.Parties.Authentication
+2026-11-03T22:12:54.2689254Z - Hexalith.Parties.Client
+2026-11-03T22:12:54.2689534Z - Hexalith.Parties.ConsumerPortal
+2026-11-03T22:12:54.2690523Z - Hexalith.Parties.Contracts
+2026-11-03T22:12:54.2690845Z - Hexalith.Parties.EventStoreExtensions
+2026-11-03T22:12:54.2691162Z - Hexalith.Parties.Picker
+2026-11-03T22:12:54.2691434Z - Hexalith.Parties.Projections
+2026-11-03T22:12:54.2691706Z - Hexalith.Parties.Security
+2026-11-03T22:12:54.2691972Z - Hexalith.Parties.Testing
+2026-11-03T22:12:56.2127058Z   Determining projects to restore...
+2026-11-03T22:12:57.3281466Z   Restored /tmp/hexalith-parties-consumer-package-smoke/client-consumer/ClientConsumer.csproj (in 934 ms).
+2026-11-03T22:12:58.0215288Z   ClientConsumer -> /tmp/hexalith-parties-consumer-package-smoke/client-consumer/bin/Release/net10.0/ClientConsumer.dll
+2026-11-03T22:12:58.0318400Z 
+2026-11-03T22:12:58.0322690Z Build succeeded.
+2026-11-03T22:12:58.0322976Z     0 Warning(s)
+2026-11-03T22:12:58.0323124Z     0 Error(s)
+2026-11-03T22:12:58.0323909Z 
+2026-11-03T22:12:58.0324145Z Time Elapsed 00:00:00.52
+2026-11-03T22:12:58.7551125Z Published catalog: 41 routes, 41 operation schemas, 28 canonical intent adapters.
+2026-11-03T22:12:59.1534717Z   Determining projects to restore...
+2026-11-03T22:12:59.6977909Z   Restored /tmp/hexalith-parties-consumer-package-smoke/portal-consumer/PortalConsumer.csproj (in 392 ms).
+2026-11-03T22:13:00.4967426Z   PortalConsumer -> /tmp/hexalith-parties-consumer-package-smoke/portal-consumer/bin/Release/net10.0/PortalConsumer.dll
+2026-11-03T22:13:00.5102493Z 
+2026-11-03T22:13:00.5107226Z Build succeeded.
+2026-11-03T22:13:00.5109240Z     0 Warning(s)
+2026-11-03T22:13:00.5109449Z     0 Error(s)
+2026-11-03T22:13:00.5109562Z 
+2026-11-03T22:13:00.5109722Z Time Elapsed 00:00:00.64
+2026-11-03T22:13:00.5299500Z Validated package-only consumers for Hexalith.Parties packages at version 0.0.0-ci-test.
+2026-11-03T22:13:00.5411393Z ##[group]Run set -euo pipefail
+2026-11-03T22:13:00.5411685Z [36;1mset -euo pipefail[0m
+2026-11-03T22:13:00.5411835Z [36;1mfailures=0[0m
+2026-11-03T22:13:00.5411962Z [36;1m{[0m
+2026-11-03T22:13:00.5412134Z [36;1m  echo "## Tier 1 Unit Tests (Microsoft.Testing.Platform)"[0m
+2026-11-03T22:13:00.5412344Z [36;1m  echo[0m
+2026-11-03T22:13:00.5412491Z [36;1m  echo "| Project | Status | Exit code |"[0m
+2026-11-03T22:13:00.5412678Z [36;1m  echo "| --- | --- | ---: |"[0m
+2026-11-03T22:13:00.5412847Z [36;1m} >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5413005Z [36;1mwhile IFS= read -r proj; do[0m
+2026-11-03T22:13:00.5413167Z [36;1m  [ -z "$proj" ] && continue[0m
+2026-11-03T22:13:00.5413330Z [36;1m  name=$(basename "$proj")[0m
+2026-11-03T22:13:00.5413513Z [36;1m  result_file="TestResults/${name}/${name}.trx"[0m
+2026-11-03T22:13:00.5413713Z [36;1m  rm -f -- "$result_file"[0m
+2026-11-03T22:13:00.5414033Z [36;1m  mkdir -p "TestResults/${name}"[0m
+2026-11-03T22:13:00.5414267Z [36;1m  report_marker="TestResults/${name}/.started"[0m
+2026-11-03T22:13:00.5414455Z [36;1m  touch "$report_marker"[0m
+2026-11-03T22:13:00.5414619Z [36;1m  summary_proj=${proj//\\/\\\\}[0m
+2026-11-03T22:13:00.5414798Z [36;1m  summary_proj=${summary_proj//|/\\|}[0m
+2026-11-03T22:13:00.5414983Z [36;1m  summary_proj=${summary_proj//\`/\\\`}[0m
+2026-11-03T22:13:00.5415166Z [36;1m  coverage_args=()[0m
+2026-11-03T22:13:00.5415331Z [36;1m  if [ "$RUN_COVERAGE_GATE" = "true" ]; then[0m
+2026-11-03T22:13:00.5415654Z [36;1m    coverage_args+=(--coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml)[0m
+2026-11-03T22:13:00.5415958Z [36;1m  fi[0m
+2026-11-03T22:13:00.5416136Z [36;1m  if dotnet test "$proj" --no-build --configuration Release \[0m
+2026-11-03T22:13:00.5416383Z [36;1m      --results-directory "TestResults/${name}" \[0m
+2026-11-03T22:13:00.5416581Z [36;1m      --report-xunit-trx \[0m
+2026-11-03T22:13:00.5416777Z [36;1m      --report-xunit-trx-filename "${name}.trx" \[0m
+2026-11-03T22:13:00.5416991Z [36;1m      "${coverage_args[@]}" </dev/null; then[0m
+2026-11-03T22:13:00.5417175Z [36;1m    status=PASS[0m
+2026-11-03T22:13:00.5417316Z [36;1m    exit_code=0[0m
+2026-11-03T22:13:00.5417448Z [36;1m  else[0m
+2026-11-03T22:13:00.5417576Z [36;1m    exit_code=$?[0m
+2026-11-03T22:13:00.5417735Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-11-03T22:13:00.5417915Z [36;1m    if [ "$exit_code" -eq 10 ]; then[0m
+2026-11-03T22:13:00.5418261Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with infrastructure code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-11-03T22:13:00.5418684Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5418925Z [36;1m      exit "$exit_code"[0m
+2026-11-03T22:13:00.5419078Z [36;1m    fi[0m
+2026-11-03T22:13:00.5419211Z [36;1m    if [ ! -f "$result_file" ]; then[0m
+2026-11-03T22:13:00.5419413Z [36;1m      annotation_result_file=${result_file//%/%25}[0m
+2026-11-03T22:13:00.5419733Z [36;1m      printf '::error title=Test shard infrastructure failure::%s exited with code %d without producing %s.\n' \[0m
+2026-11-03T22:13:00.5420290Z [36;1m        "$annotation_proj" "$exit_code" "$annotation_result_file"[0m
+2026-11-03T22:13:00.5420572Z [36;1m      printf '| %s | FAIL | %d |\n' "$summary_proj" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5420809Z [36;1m      exit "$exit_code"[0m
+2026-11-03T22:13:00.5420954Z [36;1m    fi[0m
+2026-11-03T22:13:00.5421082Z [36;1m    status=FAIL[0m
+2026-11-03T22:13:00.5421230Z [36;1m    failures=$((failures + 1))[0m
+2026-11-03T22:13:00.5421506Z [36;1m    printf '::error title=Test shard failed::%s exited with code %d.\n' "$annotation_proj" "$exit_code"[0m
+2026-11-03T22:13:00.5421774Z [36;1m  fi[0m
+2026-11-03T22:13:00.5421969Z [36;1m  # A zero child exit is insufficient: require this invocation's nonzero TRX.[0m
+2026-11-03T22:13:00.5422416Z [36;1m  # The heredoc also keeps the verifier from consuming the project-list stdin.[0m
+2026-11-03T22:13:00.5422717Z [36;1m  if ! python3 - "$result_file" "$report_marker" "$exit_code" <<'PYTRX'[0m
+2026-11-03T22:13:00.5422942Z [36;1mimport pathlib[0m
+2026-11-03T22:13:00.5423081Z [36;1mimport sys[0m
+2026-11-03T22:13:00.5423233Z [36;1mimport xml.etree.ElementTree as ET[0m
+2026-11-03T22:13:00.5423405Z [36;1m[0m
+2026-11-03T22:13:00.5423519Z [36;1mtry:[0m
+2026-11-03T22:13:00.5423663Z [36;1m    report = pathlib.Path(sys.argv[1])[0m
+2026-11-03T22:13:00.5423920Z [36;1m    if report.stat().st_mtime_ns < pathlib.Path(sys.argv[2]).stat().st_mtime_ns:[0m
+2026-11-03T22:13:00.5424174Z [36;1m        raise ValueError("stale report")[0m
+2026-11-03T22:13:00.5424366Z [36;1m    root = ET.parse(report).getroot()[0m
+2026-11-03T22:13:00.5424612Z [36;1m    ns = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"[0m
+2026-11-03T22:13:00.5424923Z [36;1m    if root.tag != ns + "TestRun":[0m
+2026-11-03T22:13:00.5425120Z [36;1m        raise ValueError("invalid TRX root")[0m
+2026-11-03T22:13:00.5425345Z [36;1m    counters = root.find(f"{ns}ResultSummary/{ns}Counters")[0m
+2026-11-03T22:13:00.5425604Z [36;1m    results = root.findall(f"{ns}Results/{ns}UnitTestResult")[0m
+2026-11-03T22:13:00.5425816Z [36;1m    if counters is None:[0m
+2026-11-03T22:13:00.5425992Z [36;1m        raise ValueError("missing counters")[0m
+2026-11-03T22:13:00.5426192Z [36;1m    total = int(counters.get("total", "-1"))[0m
+2026-11-03T22:13:00.5426396Z [36;1m    executed = int(counters.get("executed", "-1"))[0m
+2026-11-03T22:13:00.5426630Z [36;1m    outcomes = [result.get("outcome") for result in results][0m
+2026-11-03T22:13:00.5426965Z [36;1m    if total != len(results) or executed <= 0 or executed != sum(outcome != "NotExecuted" for outcome in outcomes):[0m
+2026-11-03T22:13:00.5427301Z [36;1m        raise ValueError("missing or inconsistent test results")[0m
+2026-11-03T22:13:00.5427604Z [36;1m    if any(outcome not in {"Passed", "Failed", "NotExecuted"} for outcome in outcomes):[0m
+2026-11-03T22:13:00.5427875Z [36;1m        raise ValueError("invalid result outcome")[0m
+2026-11-03T22:13:00.5428092Z [36;1m    summary = root.find(f"{ns}ResultSummary")[0m
+2026-11-03T22:13:00.5428363Z [36;1m    if summary is None or summary.get("outcome") not in {"Completed", "Passed", "Failed"}:[0m
+2026-11-03T22:13:00.5428639Z [36;1m        raise ValueError("invalid result summary")[0m
+2026-11-03T22:13:00.5428936Z [36;1m    for name, outcome in (("passed", "Passed"), ("failed", "Failed"), ("notExecuted", "NotExecuted")):[0m
+2026-11-03T22:13:00.5429308Z [36;1m        if name in counters.attrib and int(counters.get(name)) != outcomes.count(outcome):[0m
+2026-11-03T22:13:00.5429596Z [36;1m            raise ValueError("contradictory outcome counters")[0m
+2026-11-03T22:13:00.5429925Z [36;1m    failures = [int(counters.get(name, "0")) for name in[0m
+2026-11-03T22:13:00.5430274Z [36;1m                ("failed", "error", "timeout", "aborted", "inconclusive", "passedButRunAborted", "notRunnable", "disconnected")][0m
+2026-11-03T22:13:00.5430598Z [36;1m    if any(value < 0 for value in failures):[0m
+2026-11-03T22:13:00.5430813Z [36;1m        raise ValueError("invalid failure counters")[0m
+2026-11-03T22:13:00.5431122Z [36;1m    if int(sys.argv[3]) == 0 and ("Failed" in outcomes or summary.get("outcome") == "Failed" or any(failures)):[0m
+2026-11-03T22:13:00.5431469Z [36;1m        raise ValueError("failed summary or counters with successful exit")[0m
+2026-11-03T22:13:00.5431727Z [36;1mexcept (OSError, ValueError, ET.ParseError):[0m
+2026-11-03T22:13:00.5432013Z [36;1m    print("Expected a fresh, valid TRX with nonzero executed test results.", file=sys.stderr)[0m
+2026-11-03T22:13:00.5432280Z [36;1m    sys.exit(1)[0m
+2026-11-03T22:13:00.5432415Z [36;1mPYTRX[0m
+2026-11-03T22:13:00.5432537Z [36;1m  then[0m
+2026-11-03T22:13:00.5432682Z [36;1m    annotation_proj=${proj//%/%25}[0m
+2026-11-03T22:13:00.5433093Z [36;1m    printf '::error title=Invalid test report::%s did not produce fresh nonzero test evidence.\n' "$annotation_proj"[0m
+2026-11-03T22:13:00.5433452Z [36;1m    printf '| %s | FAIL | 1 |\n' "$summary_proj" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5433667Z [36;1m    exit 1[0m
+2026-11-03T22:13:00.5433793Z [36;1m  fi[0m
+2026-11-03T22:13:00.5434010Z [36;1m  printf '| %s | %s | %d |\n' "$summary_proj" "$status" "$exit_code" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5434260Z [36;1mdone <<< "$UNIT_TEST_PROJECTS"[0m
+2026-11-03T22:13:00.5434432Z [36;1mecho >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-03T22:13:00.5434642Z [36;1mprintf 'failure-count=%d\n' "$failures" >> "$GITHUB_OUTPUT"[0m
+2026-11-03T22:13:00.5459490Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:13:00.5459730Z env:
+2026-11-03T22:13:00.5459957Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:13:00.5460366Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:13:00.5460930Z   Configuration: Release
+2026-11-03T22:13:00.5461312Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:13:00.5461937Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:13:00.5462542Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:13:00.5463189Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:13:00.5463721Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:13:00.5465060Z   UNIT_TEST_PROJECTS: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T22:13:00.5466297Z   RUN_COVERAGE_GATE: false
+2026-11-03T22:13:00.5466446Z ##[endgroup]
+2026-11-03T22:13:01.1461141Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Aspire.Tests/bin/Release/net10.0/Hexalith.Parties.Aspire.Tests.dll (net10.0|x64)
+2026-11-03T22:13:01.8943617Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Aspire.Tests/bin/Release/net10.0/Hexalith.Parties.Aspire.Tests.dll (net10.0|x64) [32mpassed[m [90m(749ms)[m
+2026-11-03T22:13:01.8987636Z 
+2026-11-03T22:13:01.8988569Z   In process file artifacts produced:
+2026-11-03T22:13:01.8990237Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx
+2026-11-03T22:13:01.8990840Z 
+2026-11-03T22:13:01.8996288Z [32mTest run summary: Passed!
+2026-11-03T22:13:01.8999538Z [m  total: 9
+2026-11-03T22:13:01.8999997Z   failed: 0
+2026-11-03T22:13:01.9000334Z [32m  succeeded: 9
+2026-11-03T22:13:01.9000581Z [m  skipped: 0
+2026-11-03T22:13:01.9001541Z   duration: 905ms
+2026-11-03T22:13:02.6005888Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/bin/Release/net10.0/Hexalith.Parties.Contracts.Tests.dll (net10.0|x64)
+2026-11-03T22:13:13.9375075Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Contracts.Tests/bin/Release/net10.0/Hexalith.Parties.Contracts.Tests.dll (net10.0|x64) [32mpassed[m [90m(11s 337ms)[m
+2026-11-03T22:13:13.9422158Z 
+2026-11-03T22:13:13.9423254Z   In process file artifacts produced:
+2026-11-03T22:13:13.9424534Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx
+2026-11-03T22:13:13.9424993Z 
+2026-11-03T22:13:13.9430661Z [32mTest run summary: Passed!
+2026-11-03T22:13:13.9433918Z [m  total: 233
+2026-11-03T22:13:13.9434121Z   failed: 0
+2026-11-03T22:13:13.9434344Z [32m  succeeded: 233
+2026-11-03T22:13:13.9434561Z [m  skipped: 0
+2026-11-03T22:13:13.9436251Z   duration: 11s 513ms
+2026-11-03T22:13:14.5632060Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Authentication.Tests/bin/Release/net10.0/Hexalith.Parties.Authentication.Tests.dll (net10.0|x64)
+2026-11-03T22:13:15.1132886Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Authentication.Tests/bin/Release/net10.0/Hexalith.Parties.Authentication.Tests.dll (net10.0|x64) [32mpassed[m [90m(551ms)[m
+2026-11-03T22:13:15.1180327Z 
+2026-11-03T22:13:15.1181858Z   In process file artifacts produced:
+2026-11-03T22:13:15.1183120Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx
+2026-11-03T22:13:15.1183681Z 
+2026-11-03T22:13:15.1189353Z [32mTest run summary: Passed!
+2026-11-03T22:13:15.1192791Z [m  total: 12
+2026-11-03T22:13:15.1193013Z   failed: 0
+2026-11-03T22:13:15.1193245Z [32m  succeeded: 12
+2026-11-03T22:13:15.1193435Z [m  skipped: 0
+2026-11-03T22:13:15.1193580Z   duration: 702ms
+2026-11-03T22:13:15.8385525Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Client.Tests/bin/Release/net10.0/Hexalith.Parties.Client.Tests.dll (net10.0|x64)
+2026-11-03T22:13:37.5084529Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Client.Tests/bin/Release/net10.0/Hexalith.Parties.Client.Tests.dll (net10.0|x64) [32mpassed[m [90m(21s 670ms)[m
+2026-11-03T22:13:37.5116070Z 
+2026-11-03T22:13:37.5117482Z   In process file artifacts produced:
+2026-11-03T22:13:37.5118625Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx
+2026-11-03T22:13:37.5119146Z 
+2026-11-03T22:13:37.5126491Z [32mTest run summary: Passed!
+2026-11-03T22:13:37.5130114Z [m  total: 345
+2026-11-03T22:13:37.5130340Z   failed: 0
+2026-11-03T22:13:37.5130598Z [32m  succeeded: 345
+2026-11-03T22:13:37.5130837Z [m  skipped: 0
+2026-11-03T22:13:37.5131057Z   duration: 21s 826ms
+2026-11-03T22:13:38.1598115Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Server.Tests/bin/Release/net10.0/Hexalith.Parties.Server.Tests.dll (net10.0|x64)
+2026-11-03T22:13:38.9230399Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Server.Tests/bin/Release/net10.0/Hexalith.Parties.Server.Tests.dll (net10.0|x64) [32mpassed[m [90m(763ms)[m
+2026-11-03T22:13:38.9276718Z 
+2026-11-03T22:13:38.9277975Z   In process file artifacts produced:
+2026-11-03T22:13:38.9278980Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx
+2026-11-03T22:13:38.9279315Z 
+2026-11-03T22:13:38.9286215Z [32mTest run summary: Passed!
+2026-11-03T22:13:38.9290279Z [m  total: 315
+2026-11-03T22:13:38.9290532Z   failed: 0
+2026-11-03T22:13:38.9290816Z [32m  succeeded: 315
+2026-11-03T22:13:38.9291060Z [m  skipped: 0
+2026-11-03T22:13:38.9291291Z   duration: 919ms
+2026-11-03T22:13:39.5836824Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Projections.Tests/bin/Release/net10.0/Hexalith.Parties.Projections.Tests.dll (net10.0|x64)
+2026-11-03T22:13:40.0380013Z [33mskipped[m Hexalith.Parties.Projections.Tests.Handlers.PartySdkProjectionHandlerTests.PublishedSdkPreservesLargeLegacyLiveAndRebuildCompatibilityAsync
+2026-11-03T22:13:40.0387136Z   Runs against the unchanged published SDK package; source generation behavior has its separate control.
+2026-11-03T22:13:40.0388298Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Projections.Tests/bin/Release/net10.0/Hexalith.Parties.Projections.Tests.dll (net10.0|x64)
+2026-11-03T22:13:41.0234159Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Projections.Tests/bin/Release/net10.0/Hexalith.Parties.Projections.Tests.dll (net10.0|x64) [32mpassed[m [90m(1s 441ms)[m
+2026-11-03T22:13:41.0280973Z 
+2026-11-03T22:13:41.0281717Z   In process file artifacts produced:
+2026-11-03T22:13:41.0283108Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx
+2026-11-03T22:13:41.0283686Z 
+2026-11-03T22:13:41.0290109Z [32mTest run summary: Passed!
+2026-11-03T22:13:41.0302565Z [m  total: 467
+2026-11-03T22:13:41.0303276Z   failed: 0
+2026-11-03T22:13:41.0303617Z [32m  succeeded: 466
+2026-11-03T22:13:41.0303919Z [m  skipped: 1
+2026-11-03T22:13:41.0304184Z   duration: 1s 599ms
+2026-11-03T22:13:41.6734237Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Security.Tests/bin/Release/net10.0/Hexalith.Parties.Security.Tests.dll (net10.0|x64)
+2026-11-03T22:13:42.6122596Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Security.Tests/bin/Release/net10.0/Hexalith.Parties.Security.Tests.dll (net10.0|x64) [32mpassed[m [90m(940ms)[m
+2026-11-03T22:13:42.6166709Z 
+2026-11-03T22:13:42.6168346Z   In process file artifacts produced:
+2026-11-03T22:13:42.6169620Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx
+2026-11-03T22:13:42.6170357Z 
+2026-11-03T22:13:42.6175912Z [32mTest run summary: Passed!
+2026-11-03T22:13:42.6179351Z [m  total: 334
+2026-11-03T22:13:42.6179614Z   failed: 0
+2026-11-03T22:13:42.6180007Z [32m  succeeded: 334
+2026-11-03T22:13:42.6180205Z [m  skipped: 0
+2026-11-03T22:13:42.6180457Z   duration: 1s 095ms
+2026-11-03T22:13:43.2707600Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.AdminPortal.Tests/bin/Release/net10.0/Hexalith.Parties.AdminPortal.Tests.dll (net10.0|x64)
+2026-11-03T22:13:56.6951901Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.AdminPortal.Tests/bin/Release/net10.0/Hexalith.Parties.AdminPortal.Tests.dll (net10.0|x64) [32mpassed[m [90m(13s 425ms)[m
+2026-11-03T22:13:56.7002021Z 
+2026-11-03T22:13:56.7003221Z   In process file artifacts produced:
+2026-11-03T22:13:56.7004539Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx
+2026-11-03T22:13:56.7005090Z 
+2026-11-03T22:13:56.7011257Z [32mTest run summary: Passed!
+2026-11-03T22:13:56.7014944Z [m  total: 327
+2026-11-03T22:13:56.7015224Z   failed: 0
+2026-11-03T22:13:56.7015523Z [32m  succeeded: 327
+2026-11-03T22:13:56.7015774Z [m  skipped: 0
+2026-11-03T22:13:56.7016016Z   duration: 13s 577ms
+2026-11-03T22:13:57.3744929Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.ConsumerPortal.Tests/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.Tests.dll (net10.0|x64)
+2026-11-03T22:13:59.2945421Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.ConsumerPortal.Tests/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.Tests.dll (net10.0|x64) [32mpassed[m [90m(1s 921ms)[m
+2026-11-03T22:13:59.2990408Z 
+2026-11-03T22:13:59.2991547Z   In process file artifacts produced:
+2026-11-03T22:13:59.2992959Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx
+2026-11-03T22:13:59.2993324Z 
+2026-11-03T22:13:59.2998975Z [32mTest run summary: Passed!
+2026-11-03T22:13:59.3003308Z [m  total: 85
+2026-11-03T22:13:59.3003563Z   failed: 0
+2026-11-03T22:13:59.3004235Z [32m  succeeded: 85
+2026-11-03T22:13:59.3004513Z [m  skipped: 0
+2026-11-03T22:13:59.3004751Z   duration: 2s 076ms
+2026-11-03T22:14:00.0069017Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.UI.Tests/bin/Release/net10.0/Hexalith.Parties.UI.Tests.dll (net10.0|x64)
+2026-11-03T22:14:06.4571162Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.UI.Tests/bin/Release/net10.0/Hexalith.Parties.UI.Tests.dll (net10.0|x64) [32mpassed[m [90m(6s 451ms)[m
+2026-11-03T22:14:06.4632664Z 
+2026-11-03T22:14:06.4660770Z   In process file artifacts produced:
+2026-11-03T22:14:06.4661334Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx
+2026-11-03T22:14:06.4661773Z 
+2026-11-03T22:14:06.4662159Z [32mTest run summary: Passed!
+2026-11-03T22:14:06.4662441Z [m  total: 458
+2026-11-03T22:14:06.4663049Z   failed: 0
+2026-11-03T22:14:06.4663277Z [32m  succeeded: 458
+2026-11-03T22:14:06.4663516Z [m  skipped: 0
+2026-11-03T22:14:06.4663715Z   duration: 6s 614ms
+2026-11-03T22:14:07.1483903Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Picker.Tests/bin/Release/net10.0/Hexalith.Parties.Picker.Tests.dll (net10.0|x64)
+2026-11-03T22:14:08.3381371Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Picker.Tests/bin/Release/net10.0/Hexalith.Parties.Picker.Tests.dll (net10.0|x64) [32mpassed[m [90m(1s 190ms)[m
+2026-11-03T22:14:08.3426774Z 
+2026-11-03T22:14:08.3427936Z   In process file artifacts produced:
+2026-11-03T22:14:08.3429008Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx
+2026-11-03T22:14:08.3429461Z 
+2026-11-03T22:14:08.3435064Z [32mTest run summary: Passed!
+2026-11-03T22:14:08.3438533Z [m  total: 171
+2026-11-03T22:14:08.3438782Z   failed: 0
+2026-11-03T22:14:08.3439017Z [32m  succeeded: 171
+2026-11-03T22:14:08.3439282Z [m  skipped: 0
+2026-11-03T22:14:08.3439501Z   duration: 1s 349ms
+2026-11-03T22:14:09.0043590Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Mcp.Tests/bin/Release/net10.0/Hexalith.Parties.Mcp.Tests.dll (net10.0|x64)
+2026-11-03T22:14:09.7089939Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Mcp.Tests/bin/Release/net10.0/Hexalith.Parties.Mcp.Tests.dll (net10.0|x64) [32mpassed[m [90m(705ms)[m
+2026-11-03T22:14:09.7136118Z 
+2026-11-03T22:14:09.7137603Z   In process file artifacts produced:
+2026-11-03T22:14:09.7138992Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx
+2026-11-03T22:14:09.7139490Z 
+2026-11-03T22:14:09.7145212Z [32mTest run summary: Passed!
+2026-11-03T22:14:09.7148776Z [m  total: 94
+2026-11-03T22:14:09.7148995Z   failed: 0
+2026-11-03T22:14:09.7149234Z [32m  succeeded: 94
+2026-11-03T22:14:09.7149391Z [m  skipped: 0
+2026-11-03T22:14:09.7149569Z   duration: 861ms
+2026-11-03T22:14:10.3929399Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:14:11.4092579Z [33mskipped[m Hexalith.Parties.Tests.Search.PartyMemoryPersistenceRuntimeTests.ActualSdkHealthDetectsInventoryPrefixAclDenialAndRepairInBothModes
+2026-11-03T22:14:11.4111000Z   Set PARTIES_MEMORIES_INVENTORY_ACL_CONFIG to an owned authenticated ACL runtime and loopback repair controller.
+2026-11-03T22:14:11.4141010Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:14:11.4171398Z [33mskipped[m Hexalith.Parties.Tests.Search.PartyMemoryPersistenceRuntimeTests.ActualSdkPersistencePreservesLegacyListsEtagsProbeDeletionAndCanonicalReceipts
+2026-11-03T22:14:11.4172954Z   Set PARTIES_MEMORIES_STATE_RUNTIME_CONFIG to private owned Dapr endpoints and credentials.
+2026-11-03T22:14:11.4173841Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:14:11.4175145Z [33mskipped[m Hexalith.Parties.Tests.Search.PartyMemoryPersistenceRuntimeTests.ActualSdkRejectsTwoClientStaleEtagsAndCompetingAbsentKeyCreation
+2026-11-03T22:14:11.4176132Z   Set PARTIES_MEMORIES_STATE_RUNTIME_CONFIG to private owned Dapr endpoints and credentials.
+2026-11-03T22:14:11.4177000Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:14:22.3907339Z [33mskipped[m Hexalith.Parties.Tests.Search.PartyMemoryRuntimeTests.SelectedMemoriesIngestionAndCleanupPersistAcrossRestart
+2026-11-03T22:14:22.3930893Z   Set PARTIES_MEMORIES_RUNTIME_CONFIG to an owned local runtime's private JSON configuration.
+2026-11-03T22:14:22.3951047Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6682255Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderRebuildPersistsAcrossFreshClientsAndPreservesErasureAndRollbackBytes(existing: True)
+2026-11-03T22:15:01.6686618Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6688318Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6702805Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderRebuildPersistsAcrossFreshClientsAndPreservesErasureAndRollbackBytes(existing: False)
+2026-11-03T22:15:01.6704333Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6705338Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6710586Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "detail", existing: True)
+2026-11-03T22:15:01.6713571Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6715802Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6718928Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "processing", existing: False)
+2026-11-03T22:15:01.6721563Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6723250Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6725950Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "index", existing: True)
+2026-11-03T22:15:01.6727731Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6728849Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6731203Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "detail", existing: False)
+2026-11-03T22:15:01.6733215Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6734342Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6736338Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "index", existing: False)
+2026-11-03T22:15:01.6737894Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6738936Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:15:01.6741076Z [33mskipped[m Hexalith.Parties.Tests.Projections.PartyLegacyReadModelBackfillRuntimeTests.ActualProviderCompetingWriteAfterPreparationRefusesPublicationAndPreservesEveryCanonicalKey(target: "processing", existing: True)
+2026-11-03T22:15:01.6742899Z   Set PARTIES_BACKFILL_STATE_RUNTIME_CONFIG to an owned disposable Redis/Dapr provider.
+2026-11-03T22:15:01.6743953Z   from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64)
+2026-11-03T22:16:16.1937433Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/bin/Release/net10.0/Hexalith.Parties.Tests.dll (net10.0|x64) [32mpassed[m [90m(2m 05s 801ms)[m
+2026-11-03T22:16:16.1971567Z 
+2026-11-03T22:16:16.1973059Z   In process file artifacts produced:
+2026-11-03T22:16:16.1974093Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx
+2026-11-03T22:16:16.1974384Z 
+2026-11-03T22:16:16.1980241Z [32mTest run summary: Passed!
+2026-11-03T22:16:16.1983612Z [m  total: 2855
+2026-11-03T22:16:16.1984014Z   failed: 0
+2026-11-03T22:16:16.1984375Z [32m  succeeded: 2843
+2026-11-03T22:16:16.1984633Z [m  skipped: 12
+2026-11-03T22:16:16.1984883Z   duration: 2m 05s 965ms
+2026-11-03T22:16:16.8841601Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Sample.Tests/bin/Release/net10.0/Hexalith.Parties.Sample.Tests.dll (net10.0|x64)
+2026-11-03T22:16:17.6427209Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Sample.Tests/bin/Release/net10.0/Hexalith.Parties.Sample.Tests.dll (net10.0|x64) [32mpassed[m [90m(760ms)[m
+2026-11-03T22:16:17.6474325Z 
+2026-11-03T22:16:17.6476061Z   In process file artifacts produced:
+2026-11-03T22:16:17.6477535Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx
+2026-11-03T22:16:17.6478135Z 
+2026-11-03T22:16:17.6485249Z [32mTest run summary: Passed!
+2026-11-03T22:16:17.6488313Z [m  total: 66
+2026-11-03T22:16:17.6488543Z   failed: 0
+2026-11-03T22:16:17.6488740Z [32m  succeeded: 66
+2026-11-03T22:16:17.6488893Z [m  skipped: 0
+2026-11-03T22:16:17.6489041Z   duration: 912ms
+2026-11-03T22:16:18.2794998Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+2026-11-03T22:18:16.0076862Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64) [32mpassed[m [90m(1m 57s 728ms)[m
+2026-11-03T22:18:16.0109083Z 
+2026-11-03T22:18:16.0110303Z   In process file artifacts produced:
+2026-11-03T22:18:16.0111443Z     - /home/runner/work/Hexalith.Parties/Hexalith.Parties/TestResults/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx
+2026-11-03T22:18:16.0111736Z 
+2026-11-03T22:18:16.0118692Z [32mTest run summary: Passed!
+2026-11-03T22:18:16.0122467Z [m  total: 536
+2026-11-03T22:18:16.0122688Z   failed: 0
+2026-11-03T22:18:16.0122936Z [32m  succeeded: 536
+2026-11-03T22:18:16.0123234Z [m  skipped: 0
+2026-11-03T22:18:16.0123465Z   duration: 1m 57s 890ms
+2026-11-03T22:18:16.0615911Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:16.0616113Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:16.0616296Z [36;1mif [ -n "$LEGACY_INTEGRATION$LEGACY_ASPIRE" ]; then[0m
+2026-11-03T22:18:16.0616718Z [36;1m  echo 'Direct integration and advisory AppHost testing are retired; declare package suites and pass module-manifest/integration-test-profiles.' >&2[0m
+2026-11-03T22:18:16.0617083Z [36;1m  exit 1[0m
+2026-11-03T22:18:16.0617202Z [36;1mfi[0m
+2026-11-03T22:18:16.0617507Z [36;1mif [ -z "$MODULE_MANIFEST" ] || [ -z "${INTEGRATION_PROFILES//[[:space:]]/}" ] || [ -z "${UNIT_PROJECTS//[[:space:]]/}" ] || [ "$UNIT_FAILURE_COUNT" != 0 ]; then[0m
+2026-11-03T22:18:16.0617981Z [36;1m  echo 'Declared package integration requires nonempty suites and successful isolated tests before provisioning.' >&2[0m
+2026-11-03T22:18:16.0618280Z [36;1m  exit 1[0m
+2026-11-03T22:18:16.0618395Z [36;1mfi[0m
+2026-11-03T22:18:16.0643450Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:16.0643644Z env:
+2026-11-03T22:18:16.0643773Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:16.0644171Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:16.0644562Z   Configuration: Release
+2026-11-03T22:18:16.0644942Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:16.0645540Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:16.0646130Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:16.0646756Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:16.0647276Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:16.0647576Z   MODULE_MANIFEST: module/hexalith.module-manifest.v2.json
+2026-11-03T22:18:16.0647786Z   INTEGRATION_PROFILES: platform-package
+2026-11-03T22:18:16.0647956Z   LEGACY_INTEGRATION: 
+2026-11-03T22:18:16.0648087Z   LEGACY_ASPIRE: 
+2026-11-03T22:18:16.0649237Z   UNIT_PROJECTS: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T22:18:16.0650582Z   UNIT_FAILURE_COUNT: 0
+2026-11-03T22:18:16.0650723Z ##[endgroup]
+2026-11-03T22:18:16.0712492Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:16.0712682Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:16.0712831Z [36;1mpython3 - <<'PYTHON'[0m
+2026-11-03T22:18:16.0712979Z [36;1mimport os[0m
+2026-11-03T22:18:16.0713129Z [36;1mimport xml.etree.ElementTree as ET[0m
+2026-11-03T22:18:16.0713310Z [36;1mfrom pathlib import Path[0m
+2026-11-03T22:18:16.0713579Z [36;1mroot = ET.parse('.hexalith/builds-execution/Props/Directory.Packages.props').getroot()[0m
+2026-11-03T22:18:16.0713886Z [36;1mwith Path(os.environ['GITHUB_ENV']).open('a') as stream:[0m
+2026-11-03T22:18:16.0714363Z [36;1m    for key, element in [('CI_ASPIRE_VERSION', 'HexalithAspireAppHostSdkVersion'), ('CI_DAPR_CLI_VERSION', 'HexalithDaprCliVersion'), ('CI_DAPR_RUNTIME_VERSION', 'HexalithDaprRuntimeVersion')]:[0m
+2026-11-03T22:18:16.0714821Z [36;1m        value = root.find('.//' + element).text[0m
+2026-11-03T22:18:16.0715117Z [36;1m        if not value or any(c not in '0123456789.-abcdefghijklmnopqrstuvwxyz' for c in value):[0m
+2026-11-03T22:18:16.0715432Z [36;1m            raise ValueError('invalid workflow-owned toolchain version')[0m
+2026-11-03T22:18:16.0715671Z [36;1m        stream.write(key + '=' + value + '\n')[0m
+2026-11-03T22:18:16.0715844Z [36;1mPYTHON[0m
+2026-11-03T22:18:16.0736291Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:16.0736487Z env:
+2026-11-03T22:18:16.0736616Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:16.0737009Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:16.0737412Z   Configuration: Release
+2026-11-03T22:18:16.0737789Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:16.0738519Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:16.0739111Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:16.0739749Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:16.0740404Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:16.0740665Z ##[endgroup]
+2026-11-03T22:18:16.0986075Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:16.0986258Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:16.0986431Z [36;1mtools="$RUNNER_TEMP/hexalith-ci-tools"[0m
+2026-11-03T22:18:16.0986629Z [36;1mdapr_home="$RUNNER_TEMP/hexalith-ci-dapr"[0m
+2026-11-03T22:18:16.0986866Z [36;1mmkdir -p "$tools" "$dapr_home/tools" "$dapr_home/.dapr/bin"[0m
+2026-11-03T22:18:16.0987157Z [36;1mdotnet tool install --tool-path "$tools" Aspire.Cli --version "$CI_ASPIRE_VERSION"[0m
+2026-11-03T22:18:16.0987716Z [36;1mcurl --fail --location --proto '=https' --proto-redir '=https' --retry 3 "https://github.com/dapr/cli/releases/download/v$CI_DAPR_CLI_VERSION/dapr_linux_amd64.tar.gz" -o "$RUNNER_TEMP/dapr-cli.tar.gz"[0m
+2026-11-03T22:18:16.0988223Z [36;1mtar -xzf "$RUNNER_TEMP/dapr-cli.tar.gz" -C "$dapr_home/tools" dapr[0m
+2026-11-03T22:18:16.0988465Z [36;1mfor binary in daprd placement scheduler; do[0m
+2026-11-03T22:18:16.0988975Z [36;1m  curl --fail --location --proto '=https' --proto-redir '=https' --retry 3 "https://github.com/dapr/dapr/releases/download/v$CI_DAPR_RUNTIME_VERSION/${binary}_linux_amd64.tar.gz" -o "$RUNNER_TEMP/$binary.tar.gz"[0m
+2026-11-03T22:18:16.0989501Z [36;1m  tar -xzf "$RUNNER_TEMP/$binary.tar.gz" -C "$dapr_home/.dapr/bin" "$binary"[0m
+2026-11-03T22:18:16.0989732Z [36;1mdone[0m
+2026-11-03T22:18:16.0990029Z [36;1mecho "$tools" >> "$GITHUB_PATH"[0m
+2026-11-03T22:18:16.0990232Z [36;1mecho "HEXALITH_DAPR_HOME=$dapr_home" >> "$GITHUB_ENV"[0m
+2026-11-03T22:18:16.1011627Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:16.1011824Z env:
+2026-11-03T22:18:16.1011951Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:16.1012346Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:16.1012749Z   Configuration: Release
+2026-11-03T22:18:16.1013124Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:16.1013729Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:16.1014346Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:16.1014980Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:16.1015494Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:16.1015762Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:16.1015910Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:16.1016061Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:16.1016217Z ##[endgroup]
+2026-11-03T22:18:19.7110184Z You can invoke the tool using the following command: aspire
+2026-11-03T22:18:19.7110535Z Tool 'aspire.cli' (version '13.6.4') was successfully installed.
+2026-11-03T22:18:19.7335427Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-03T22:18:19.7336117Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-03T22:18:19.7336328Z 
+2026-11-03T22:18:19.9303006Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:19.9303492Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:19.9303856Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:19.9304070Z 
+2026-11-03T22:18:20.2953428Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:20.2953909Z 100 53.29M 100 53.29M   0      0 94.83M      0                              0
+2026-11-03T22:18:20.2954691Z 100 53.29M 100 53.29M   0      0 94.83M      0                              0
+2026-11-03T22:18:20.2955169Z 100 53.29M 100 53.29M   0      0 94.82M      0                              0
+2026-11-03T22:18:20.6436187Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-03T22:18:20.6436693Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-03T22:18:20.6436845Z 
+2026-11-03T22:18:20.8398304Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:20.8398612Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:20.8398852Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:20.8400060Z 
+2026-11-03T22:18:21.2269773Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:21.2270307Z 100 61.04M 100 61.04M   0      0 104.6M      0                              0
+2026-11-03T22:18:21.2270654Z 100 61.04M 100 61.04M   0      0 104.6M      0                              0
+2026-11-03T22:18:21.2270909Z 100 61.04M 100 61.04M   0      0 104.5M      0                              0
+2026-11-03T22:18:21.8153822Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-03T22:18:21.8154378Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-03T22:18:21.8154588Z 
+2026-11-03T22:18:22.0455524Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.0455994Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.0456358Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.0456565Z 
+2026-11-03T22:18:22.3182919Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.3183361Z 100 13.73M 100 13.73M   0      0 27.30M      0                              0
+2026-11-03T22:18:22.3183809Z 100 13.73M 100 13.73M   0      0 27.29M      0                              0
+2026-11-03T22:18:22.3184195Z 100 13.73M 100 13.73M   0      0 27.29M      0                              0
+2026-11-03T22:18:22.4586903Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-03T22:18:22.4587444Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-03T22:18:22.4587599Z 
+2026-11-03T22:18:22.7022026Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.7022489Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.7022866Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.7023075Z 
+2026-11-03T22:18:22.9220619Z   0      0   0      0   0      0      0      0                              0
+2026-11-03T22:18:22.9221098Z 100 17.90M 100 17.90M   0      0 38.63M      0                              0
+2026-11-03T22:18:22.9221679Z 100 17.90M 100 17.90M   0      0 38.62M      0                              0
+2026-11-03T22:18:22.9221947Z 100 17.90M 100 17.90M   0      0 38.62M      0                              0
+2026-11-03T22:18:23.0996711Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:23.0996927Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:23.0997306Z [36;1mif [[ -z "$REGISTRY_PULL_USERNAME" || -z "$REGISTRY_PULL_PASSWORD" ]]; then[0m
+2026-11-03T22:18:23.0997617Z [36;1m  echo '::error::Dedicated pull-only registry credentials are required.'[0m
+2026-11-03T22:18:23.0997851Z [36;1m  exit 1[0m
+2026-11-03T22:18:23.0997976Z [36;1mfi[0m
+2026-11-03T22:18:23.0998135Z [36;1mrunner_temp="$(realpath -e -- "$RUNNER_TEMP")"[0m
+2026-11-03T22:18:23.0998393Z [36;1mconfig="$(mktemp -d "$runner_temp/hexalith-ci-registry.XXXXXX")"[0m
+2026-11-03T22:18:23.0998708Z [36;1mtrap 'status=$?; if [ "$status" -ne 0 ]; then rm -rf -- "$config"; fi; exit "$status"' EXIT[0m
+2026-11-03T22:18:23.0998965Z [36;1mchmod 700 "$config"[0m
+2026-11-03T22:18:23.0999123Z [36;1mexport DOCKER_CONFIG="$config"[0m
+2026-11-03T22:18:23.0999431Z [36;1mprintf '%s\n' "DOCKER_CONFIG=$config" "HEXALITH_CI_REGISTRY_CONFIG=$config" >> "$GITHUB_ENV"[0m
+2026-11-03T22:18:23.1000077Z [36;1mprintf '%s' "$REGISTRY_PULL_PASSWORD" | docker login registry.hexalith.com --username="$REGISTRY_PULL_USERNAME" --password-stdin[0m
+2026-11-03T22:18:23.1026354Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:23.1026561Z env:
+2026-11-03T22:18:23.1026688Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:23.1027087Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:23.1027502Z   Configuration: Release
+2026-11-03T22:18:23.1027880Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:23.1028506Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:23.1029115Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:23.1029770Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:23.1030449Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:23.1030730Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:23.1030887Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:23.1031041Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:23.1031246Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:23.1031777Z   REGISTRY_PULL_USERNAME: ***
+2026-11-03T22:18:23.1032051Z   REGISTRY_PULL_PASSWORD: ***
+2026-11-03T22:18:23.1032203Z ##[endgroup]
+2026-11-03T22:18:24.2780412Z 
+2026-11-03T22:18:24.2780982Z Login Succeeded
+2026-11-03T22:18:24.2781765Z WARNING! Your credentials are stored unencrypted in '/home/runner/work/_temp/hexalith-ci-registry.653eGc/config.json'.
+2026-11-03T22:18:24.2782350Z Configure a credential helper to remove this warning. See
+2026-11-03T22:18:24.2782733Z https://docs.docker.com/go/credential-store/
+2026-11-03T22:18:24.2782928Z 
+2026-11-03T22:18:24.2834324Z ##[group]Run python3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py run --manifest "$MODULE_MANIFEST" --profiles "$INTEGRATION_PROFILES" --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration
+2026-11-03T22:18:24.2835318Z [36;1mpython3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py run --manifest "$MODULE_MANIFEST" --profiles "$INTEGRATION_PROFILES" --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration[0m
+2026-11-03T22:18:24.2861408Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:24.2861606Z env:
+2026-11-03T22:18:24.2861737Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:24.2862139Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:24.2862669Z   Configuration: Release
+2026-11-03T22:18:24.2863075Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:24.2863691Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:24.2864298Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:24.2864935Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:24.2865458Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:24.2865736Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:24.2865891Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:24.2866047Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:24.2866244Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:24.2866498Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:24.2866790Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:24.2867064Z   MODULE_MANIFEST: module/hexalith.module-manifest.v2.json
+2026-11-03T22:18:24.2867276Z   INTEGRATION_PROFILES: platform-package
+2026-11-03T22:18:24.2867442Z ##[endgroup]
+2026-11-03T22:18:42.3641395Z ##[error]Process completed with exit code 3.
+2026-11-03T22:18:42.3683786Z ##[group]Run python3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"
+2026-11-03T22:18:42.3684687Z [36;1mpython3 .hexalith/builds-execution/Github/run-module-integration/run_module_integration.py finalize --receipt "$RUNNER_TEMP/hexalith-ci-owner.json" --evidence TestResults/module-integration --job-status "$CI_JOB_STATUS"[0m
+2026-11-03T22:18:42.3749741Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:42.3750067Z env:
+2026-11-03T22:18:42.3750198Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:42.3750608Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:42.3751014Z   Configuration: Release
+2026-11-03T22:18:42.3751422Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:42.3752039Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:42.3752633Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:42.3753285Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:42.3753842Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:42.3754115Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:42.3754262Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:42.3754420Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:42.3754618Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:42.3754877Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:42.3755163Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:42.3755398Z   CI_JOB_STATUS: failure
+2026-11-03T22:18:42.3755539Z ##[endgroup]
+2026-11-03T22:18:43.0996284Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:43.0996490Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:43.0996662Z [36;1mconfig="${HEXALITH_CI_REGISTRY_CONFIG:-}"[0m
+2026-11-03T22:18:43.0996868Z [36;1mif [[ -z "$config" ]]; then exit 0; fi[0m
+2026-11-03T22:18:43.0997073Z [36;1mrunner_temp="$(realpath -e -- "$RUNNER_TEMP")"[0m
+2026-11-03T22:18:43.0997413Z [36;1mif [[ "$(dirname -- "$config")" != "$runner_temp" || "$(basename -- "$config")" != hexalith-ci-registry.* || -L "$config" ]]; then[0m
+2026-11-03T22:18:43.0997796Z [36;1m  echo '::error::Refusing to remove a foreign registry credential directory.'[0m
+2026-11-03T22:18:43.0998032Z [36;1m  exit 1[0m
+2026-11-03T22:18:43.0998156Z [36;1mfi[0m
+2026-11-03T22:18:43.0998283Z [36;1mrm -rf -- "$config"[0m
+2026-11-03T22:18:43.0998441Z [36;1m[[ ! -e "$config" && ! -L "$config" ]][0m
+2026-11-03T22:18:43.1023599Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:43.1023793Z env:
+2026-11-03T22:18:43.1023949Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:43.1024361Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:43.1024767Z   Configuration: Release
+2026-11-03T22:18:43.1025146Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:43.1025759Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:43.1026368Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:43.1027007Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:43.1027546Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:43.1027819Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:43.1027969Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:43.1028130Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:43.1028328Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:43.1028589Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:43.1028880Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:43.1029116Z ##[endgroup]
+2026-11-03T22:18:43.1204609Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-11-03T22:18:43.1204847Z with:
+2026-11-03T22:18:43.1204993Z   name: module-integration-diagnostics
+2026-11-03T22:18:43.1205172Z   path: TestResults/module-integration
+2026-11-03T22:18:43.1205338Z   retention-days: 7
+2026-11-03T22:18:43.1205476Z   if-no-files-found: warn
+2026-11-03T22:18:43.1205636Z   compression-level: 6
+2026-11-03T22:18:43.1205775Z   overwrite: false
+2026-11-03T22:18:43.1205911Z   include-hidden-files: false
+2026-11-03T22:18:43.1206058Z   archive: true
+2026-11-03T22:18:43.1206187Z env:
+2026-11-03T22:18:43.1206315Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:43.1206721Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:43.1207140Z   Configuration: Release
+2026-11-03T22:18:43.1207545Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:43.1208175Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:43.1208794Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:43.1209571Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:43.1210313Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:43.1210586Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:43.1210739Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:43.1210899Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:43.1211097Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:43.1211362Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:43.1211651Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:43.1211887Z ##[endgroup]
+2026-11-03T22:18:43.2221431Z With the provided path, there will be 4 files uploaded
+2026-11-03T22:18:43.2225086Z Artifact name is valid!
+2026-11-03T22:18:43.2225380Z Root directory input is valid!
+2026-11-03T22:18:43.5136364Z Uploading artifact: module-integration-diagnostics.zip
+2026-11-03T22:18:43.5161325Z Beginning upload of artifact content to blob storage
+2026-11-03T22:18:43.6930352Z Uploaded bytes 2728
+2026-11-03T22:18:43.7357429Z Finished uploading artifact content to blob storage!
+2026-11-03T22:18:43.7358346Z SHA256 digest of uploaded artifact is 8a90997d3fd73e55f4177a1d6c1c054033a3093decad3a99d1cd094ca76d40ed
+2026-11-03T22:18:43.7359009Z Finalizing artifact upload
+2026-11-03T22:18:44.2593116Z Artifact module-integration-diagnostics successfully finalized. Artifact ID 13274494105
+2026-11-03T22:18:44.2593905Z Artifact module-integration-diagnostics has been successfully uploaded! Final size is 2728 bytes. Artifact ID is 13274494105
+2026-11-03T22:18:44.2601277Z Artifact download URL: https://github.com/Hexalith/Hexalith.Parties/actions/runs/41718277171/artifacts/13274494105
+2026-11-03T22:18:44.2823823Z ##[group]Run set -euo pipefail
+2026-11-03T22:18:44.2824047Z [36;1mset -euo pipefail[0m
+2026-11-03T22:18:44.2824221Z [36;1mif [ "$TEST_PLATFORM" = "vstest" ]; then[0m
+2026-11-03T22:18:44.2824480Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_VSTEST_FAILURE_COUNT" ]; then[0m
+2026-11-03T22:18:44.2824820Z [36;1m    echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'[0m
+2026-11-03T22:18:44.2825089Z [36;1m    exit 1[0m
+2026-11-03T22:18:44.2825224Z [36;1m  fi[0m
+2026-11-03T22:18:44.2825415Z [36;1melif [ "$TEST_PLATFORM" = "microsoft-testing-platform" ]; then[0m
+2026-11-03T22:18:44.2825694Z [36;1m  if [ -n "$UNIT_TEST_PROJECTS" ] && [ -z "$UNIT_MTP_FAILURE_COUNT" ]; then[0m
+2026-11-03T22:18:44.2826063Z [36;1m    echo '::error title=Missing test shard output::Tier 1 Microsoft.Testing.Platform did not report a failure count.'[0m
+2026-11-03T22:18:44.2826368Z [36;1m    exit 1[0m
+2026-11-03T22:18:44.2826521Z [36;1m  fi[0m
+2026-11-03T22:18:44.2826645Z [36;1mfi[0m
+2026-11-03T22:18:44.2826769Z [36;1m[0m
+2026-11-03T22:18:44.2826895Z [36;1mtotal_failures=0[0m
+2026-11-03T22:18:44.2827052Z [36;1mfor failure_count in \[0m
+2026-11-03T22:18:44.2827215Z [36;1m  "$UNIT_VSTEST_FAILURE_COUNT" \[0m
+2026-11-03T22:18:44.2827395Z [36;1m  "$UNIT_MTP_FAILURE_COUNT"; do[0m
+2026-11-03T22:18:44.2827573Z [36;1m  [ -z "$failure_count" ] && continue[0m
+2026-11-03T22:18:44.2827769Z [36;1m  if [[ ! "$failure_count" =~ ^[0-9]+$ ]]; then[0m
+2026-11-03T22:18:44.2828091Z [36;1m    printf '::error title=Invalid test shard output::Expected a numeric failure count, received %s.\n' "$failure_count"[0m
+2026-11-03T22:18:44.2828395Z [36;1m    exit 1[0m
+2026-11-03T22:18:44.2828526Z [36;1m  fi[0m
+2026-11-03T22:18:44.2828698Z [36;1m  total_failures=$((total_failures + 10#$failure_count))[0m
+2026-11-03T22:18:44.2828890Z [36;1mdone[0m
+2026-11-03T22:18:44.2829015Z [36;1m[0m
+2026-11-03T22:18:44.2829152Z [36;1mif [ "$total_failures" -ne 0 ]; then[0m
+2026-11-03T22:18:44.2829474Z [36;1m  printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\n' "$total_failures"[0m
+2026-11-03T22:18:44.2830066Z [36;1m  exit 1[0m
+2026-11-03T22:18:44.2830191Z [36;1mfi[0m
+2026-11-03T22:18:44.2856240Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T22:18:44.2856438Z env:
+2026-11-03T22:18:44.2856575Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:44.2856974Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:44.2857378Z   Configuration: Release
+2026-11-03T22:18:44.2857761Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:44.2858384Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:44.2858985Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:44.2859636Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:44.2860334Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:44.2860612Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:44.2860768Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:44.2860932Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:44.2861131Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:44.2861391Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:44.2861677Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:44.2862083Z   TEST_PLATFORM: microsoft-testing-platform
+2026-11-03T22:18:44.2863314Z   UNIT_TEST_PROJECTS: tests/Hexalith.Parties.Aspire.Tests
+tests/Hexalith.Parties.Contracts.Tests
+tests/Hexalith.Parties.Authentication.Tests
+tests/Hexalith.Parties.Client.Tests
+tests/Hexalith.Parties.Server.Tests
+tests/Hexalith.Parties.Projections.Tests
+tests/Hexalith.Parties.Security.Tests
+tests/Hexalith.Parties.AdminPortal.Tests
+tests/Hexalith.Parties.ConsumerPortal.Tests
+tests/Hexalith.Parties.UI.Tests
+tests/Hexalith.Parties.Picker.Tests
+tests/Hexalith.Parties.Mcp.Tests
+tests/Hexalith.Parties.Tests
+tests/Hexalith.Parties.Sample.Tests
+tests/Hexalith.Parties.Ci.Tests
+
+2026-11-03T22:18:44.2864520Z   UNIT_VSTEST_FAILURE_COUNT: 
+2026-11-03T22:18:44.2864680Z   UNIT_MTP_FAILURE_COUNT: 0
+2026-11-03T22:18:44.2864827Z ##[endgroup]
+2026-11-03T22:18:44.2943870Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-11-03T22:18:44.2944111Z with:
+2026-11-03T22:18:44.2944249Z   name: blocking-test-results
+2026-11-03T22:18:44.2944464Z   path: TestResults/**/*.trx
+TestResults/**/coverage.cobertura.xml
+
+2026-11-03T22:18:44.2944689Z   retention-days: 7
+2026-11-03T22:18:44.2944836Z   if-no-files-found: warn
+2026-11-03T22:18:44.2944987Z   compression-level: 6
+2026-11-03T22:18:44.2945128Z   overwrite: false
+2026-11-03T22:18:44.2945265Z   include-hidden-files: false
+2026-11-03T22:18:44.2945421Z   archive: true
+2026-11-03T22:18:44.2945547Z env:
+2026-11-03T22:18:44.2945678Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T22:18:44.2946079Z   AfterMicrosoftNETSdkTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.final.targets
+2026-11-03T22:18:44.2946484Z   Configuration: Release
+2026-11-03T22:18:44.2946885Z   CustomAfterDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.late.props
+2026-11-03T22:18:44.2947509Z   CustomAfterMicrosoftCommonProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.props
+2026-11-03T22:18:44.2948267Z   CustomBeforeDirectoryBuildProps: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.targets
+2026-11-03T22:18:44.2948907Z   CustomBeforeDirectoryBuildTargets: /home/runner/work/_temp/hexalith-module-build-fe280b63bb4c4cc3b038bf27d7ee4fcb/source-mapping/SourceMapping.before-targets.props
+2026-11-03T22:18:44.2949431Z   HEXALITH_SOURCE_MAPPING_HASH: ab462d77a7f58b0fb532306a1b9dcc72fb1c250b539cef055964f0739adb5504
+2026-11-03T22:18:44.2949715Z   CI_ASPIRE_VERSION: 13.6.4
+2026-11-03T22:18:44.2950052Z   CI_DAPR_CLI_VERSION: 1.18.2
+2026-11-03T22:18:44.2950286Z   CI_DAPR_RUNTIME_VERSION: 1.18.7
+2026-11-03T22:18:44.2950588Z   HEXALITH_DAPR_HOME: /home/runner/work/_temp/hexalith-ci-dapr
+2026-11-03T22:18:44.2950853Z   DOCKER_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:44.2951138Z   HEXALITH_CI_REGISTRY_CONFIG: /home/runner/work/_temp/hexalith-ci-registry.653eGc
+2026-11-03T22:18:44.2951383Z ##[endgroup]
+2026-11-03T22:18:44.4067532Z With the provided path, there will be 15 files uploaded
+2026-11-03T22:18:44.4080353Z Artifact name is valid!
+2026-11-03T22:18:44.4080882Z Root directory input is valid!
+2026-11-03T22:18:44.6789290Z Uploading artifact: blocking-test-results.zip
+2026-11-03T22:18:44.6817256Z Beginning upload of artifact content to blob storage
+2026-11-03T22:18:45.1585168Z Uploaded bytes 923032
+2026-11-03T22:18:45.2015025Z Finished uploading artifact content to blob storage!
+2026-11-03T22:18:45.2015726Z SHA256 digest of uploaded artifact is a9d69511924942734dbeb28cc8eef2e36a0a1f56731e7d8bd6ea2a86add5409d
+2026-11-03T22:18:45.2016286Z Finalizing artifact upload
+2026-11-03T22:18:45.7757308Z Artifact blocking-test-results successfully finalized. Artifact ID 13275997714
+2026-11-03T22:18:45.7758027Z Artifact blocking-test-results has been successfully uploaded! Final size is 923032 bytes. Artifact ID is 13275997714
+2026-11-03T22:18:45.7760589Z Artifact download URL: https://github.com/Hexalith/Hexalith.Parties/actions/runs/41718277171/artifacts/13275997714
+2026-11-03T22:18:45.7929992Z Post job cleanup.
+2026-11-03T22:18:45.8540890Z [command]/usr/bin/git version
+2026-11-03T22:18:45.8582468Z git version 2.56.0
+2026-11-03T22:18:45.8608436Z Temporarily overriding HOME='/home/runner/work/_temp/5a30ef49-953f-44f3-ab34-2ca400c4b6c2' before making global git config changes
+2026-11-03T22:18:45.8609171Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T22:18:45.8612716Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties/.hexalith/builds-execution
+2026-11-03T22:18:45.8651907Z Removing SSH command configuration
+2026-11-03T22:18:45.8660203Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T22:18:45.8687129Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T22:18:45.8950561Z Removing HTTP extra header
+2026-11-03T22:18:45.8951194Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T22:18:45.8988299Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T22:18:45.9244640Z Removing includeIf entries pointing to credentials config files
+2026-11-03T22:18:45.9245088Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:45.9275653Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T22:18:45.9619420Z Post job cleanup.
+2026-11-03T22:18:46.0265558Z [command]/usr/bin/git version
+2026-11-03T22:18:46.0337077Z git version 2.56.0
+2026-11-03T22:18:46.0363260Z Temporarily overriding HOME='/home/runner/work/_temp/733f906b-172d-4ee0-949f-368bf4875502' before making global git config changes
+2026-11-03T22:18:46.0364371Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T22:18:46.0368304Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T22:18:46.0403111Z Removing SSH command configuration
+2026-11-03T22:18:46.0407907Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T22:18:46.0441597Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T22:18:46.0705787Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T22:18:46.0748914Z Entering 'references/Hexalith.Builds'
+2026-11-03T22:18:46.0792493Z Entering 'references/Hexalith.Commons'
+2026-11-03T22:18:46.0831645Z Entering 'references/Hexalith.EventStore'
+2026-11-03T22:18:46.0883711Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T22:18:46.0929365Z Entering 'references/Hexalith.McpCli'
+2026-11-03T22:18:46.0986793Z Entering 'references/Hexalith.Memories'
+2026-11-03T22:18:46.1032648Z Entering 'references/Hexalith.Platform'
+2026-11-03T22:18:46.1093877Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T22:18:46.1129953Z Entering 'references/Hexalith.Tenants'
+2026-11-03T22:18:46.1190966Z Removing HTTP extra header
+2026-11-03T22:18:46.1192346Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T22:18:46.1228478Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T22:18:46.1478569Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T22:18:46.1516777Z Entering 'references/Hexalith.Builds'
+2026-11-03T22:18:46.1558570Z Entering 'references/Hexalith.Commons'
+2026-11-03T22:18:46.1595905Z Entering 'references/Hexalith.EventStore'
+2026-11-03T22:18:46.1644736Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T22:18:46.1688574Z Entering 'references/Hexalith.McpCli'
+2026-11-03T22:18:46.1744627Z Entering 'references/Hexalith.Memories'
+2026-11-03T22:18:46.1788361Z Entering 'references/Hexalith.Platform'
+2026-11-03T22:18:46.1871519Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T22:18:46.1921099Z Entering 'references/Hexalith.Tenants'
+2026-11-03T22:18:46.1997269Z Removing includeIf entries pointing to credentials config files
+2026-11-03T22:18:46.2003916Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.2027644Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T22:18:46.2028206Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T22:18:46.2028676Z includeif.gitdir:/github/workspace/.git.path
+2026-11-03T22:18:46.2029050Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T22:18:46.2035020Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T22:18:46.2055409Z /home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T22:18:46.2064678Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-29625fc1\-445e\-43fe\-9ff5\-7540e1f76b25\.config
+2026-11-03T22:18:46.2101188Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T22:18:46.2120831Z /home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T22:18:46.2127977Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-29625fc1\-445e\-43fe\-9ff5\-7540e1f76b25\.config
+2026-11-03T22:18:46.2156021Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-03T22:18:46.2175511Z /github/runner_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T22:18:46.2181194Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-29625fc1\-445e\-43fe\-9ff5\-7540e1f76b25\.config
+2026-11-03T22:18:46.2208544Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T22:18:46.2227867Z /github/runner_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config
+2026-11-03T22:18:46.2233234Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-29625fc1\-445e\-43fe\-9ff5\-7540e1f76b25\.config
+2026-11-03T22:18:46.2261817Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T22:18:46.2481844Z Entering 'references/Hexalith.AI.Tools'
+2026-11-03T22:18:46.2497705Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.AI.Tools/config	remote.origin.url
+2026-11-03T22:18:46.2513682Z Entering 'references/Hexalith.Builds'
+2026-11-03T22:18:46.2529253Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config	remote.origin.url
+2026-11-03T22:18:46.2550140Z Entering 'references/Hexalith.Commons'
+2026-11-03T22:18:46.2565891Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config	remote.origin.url
+2026-11-03T22:18:46.2582373Z Entering 'references/Hexalith.EventStore'
+2026-11-03T22:18:46.2597933Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.EventStore/config	remote.origin.url
+2026-11-03T22:18:46.2626435Z Entering 'references/Hexalith.FrontComposer'
+2026-11-03T22:18:46.2642474Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.FrontComposer/config	remote.origin.url
+2026-11-03T22:18:46.2666692Z Entering 'references/Hexalith.McpCli'
+2026-11-03T22:18:46.2683445Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.McpCli/config	remote.origin.url
+2026-11-03T22:18:46.2719695Z Entering 'references/Hexalith.Memories'
+2026-11-03T22:18:46.2735622Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Memories/config	remote.origin.url
+2026-11-03T22:18:46.2760209Z Entering 'references/Hexalith.Platform'
+2026-11-03T22:18:46.2775538Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Platform/config	remote.origin.url
+2026-11-03T22:18:46.2819045Z Entering 'references/Hexalith.PolymorphicSerializations'
+2026-11-03T22:18:46.2835185Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.PolymorphicSerializations/config	remote.origin.url
+2026-11-03T22:18:46.2851712Z Entering 'references/Hexalith.Tenants'
+2026-11-03T22:18:46.2867487Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Tenants/config	remote.origin.url
+2026-11-03T22:18:46.2904552Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.AI.Tools/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.2937672Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.2965372Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.2990454Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.EventStore/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3015720Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.FrontComposer/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3041162Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.McpCli/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3067126Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Memories/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3092056Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Platform/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3117767Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.PolymorphicSerializations/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3147138Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Tenants/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T22:18:46.3169991Z Removing credentials config '/home/runner/work/_temp/git-credentials-29625fc1-445e-43fe-9ff5-7540e1f76b25.config'
+2026-11-03T22:18:46.3305610Z Evaluate and set job outputs
+2026-11-03T22:18:46.3310683Z Cleaning up orphan processes
+2026-11-03T22:18:46.3594440Z Terminate orphan process: pid (3738) (dotnet)
+2026-11-03T22:18:46.3619390Z Terminate orphan process: pid (3739) (dotnet)
+2026-11-03T22:18:46.3644220Z Terminate orphan process: pid (3740) (dotnet)
+2026-11-03T22:18:46.3673590Z Terminate orphan process: pid (4645) (VBCSCompiler)
+

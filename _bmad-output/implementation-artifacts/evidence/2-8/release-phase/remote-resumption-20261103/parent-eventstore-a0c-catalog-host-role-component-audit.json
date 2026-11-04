@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-04T06:10:30.844828+00:00",
+  "actualSource": "728baa7c0f006d86e71d6c9b29527dabc8e16e49",
+  "callerSource": "a0c65bec419138e79d763557c73573f894217f24",
+  "negativeComponent": "parent-eventstore-a0c-catalog-build-component-first.json",
+  "positiveBuild": "parent-eventstore-a0c-catalog-host-role-component-first.json",
+  "command": [
+    "dotnet",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/hexalith-module-build-98b2479c9f0f4f378e61816ad4c980e6/hosts/catalog-reader-parent-probe-20261104/output/Hexalith.Platform.CatalogBuilder.dll",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/qualified-reader-request.json"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "stderr": "",
+  "sourceMappingHash": "a35a81341477da18699ef567eebd149f9860d29f44dd5b66d6a2ac5e9924e133",
+  "actualPublicDllHashesVerified": {
+    "Hexalith.EventStore.Contracts.dll": "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+    "Hexalith.EventStore.ServiceDefaults.dll": "860b843eb81e5e1b1e6176b8865e79a116b62182c28cf5a39230f00bfac2115d",
+    "Hexalith.EventStore.Client.dll": "0bca680b2fc475720a113e05a73d328f01f7a7a37e98fb2babc94a35532e0e9c",
+    "Hexalith.EventStore.DomainService.dll": "f35786f3df58263d34e60ddfa83844cb43b2e7ac345420cb901f9ef49b7e3eb8",
+    "Hexalith.Tenants.Contracts.dll": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+    "Hexalith.Tenants.Server.dll": "4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93"
+  },
+  "catalogSha256": "0c1697964d1de9a8ac363a15d5cb5c05c76490d8c55ebcdddea2cb8ac946165b",
+  "routes": 23,
+  "intentPolicies": 12,
+  "qualifiedReaderName": "eventstore-4.0.4-tenants-7.0.0",
+  "authorityRegistered": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "limitation": "Hosted build.log was not retained; this component independently demonstrates HXW005 under the actual prepared consumer mapping and green existing hosts-role placement. No claim of recovering the exact hosted compiler log or actual backend execution."
+}

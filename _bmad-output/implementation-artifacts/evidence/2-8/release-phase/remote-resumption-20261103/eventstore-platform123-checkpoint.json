@@ -1,0 +1,467 @@
+{
+  "recordedAt": "2026-11-04T08:06:36.884413+00:00",
+  "status": "normal-existing-PR-updated; fresh mandatory hosted qualification active",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore",
+  "branch": "fix/adopt-platform-117",
+  "priorSource": "005c9cfb0f938214ba889e645f81e389d82476b6",
+  "source": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+  "observedMain": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "pullRequest": {
+    "at": "2026-11-04T08:05:41.994Z",
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+    "number": 392,
+    "state": "open",
+    "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "base_sha": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+    "merge_commit_sha": "e7f6502d7ba7e58e6260d401e744050a5f69b8ea",
+    "mergeable": true,
+    "title": "ci: qualify EventStore package integration with Platform 1.2.3",
+    "changed_files": 11,
+    "commits": 11,
+    "noMergeOrPublication": true
+  },
+  "changedPaths": [
+    "docs/ci.md",
+    "references/Hexalith.Platform"
+  ],
+  "fullProposalPaths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs"
+  ],
+  "patches": [
+    {
+      "path": "eventstore-platform123-correction.patch",
+      "base": "005c9cfb0f938214ba889e645f81e389d82476b6",
+      "head": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+      "sha256": "1418a2931c6fc6b2741eb8d344324edd335340ef133bfd30a3982642a26acb9c",
+      "bytes": 2496,
+      "changedPaths": [
+        "docs/ci.md",
+        "references/Hexalith.Platform"
+      ]
+    },
+    {
+      "path": "eventstore-platform123-current-main.patch",
+      "base": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+      "head": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+      "sha256": "3cff655d48abc03c6cd56e5b56fd7f5460f7508b31d083d094589ede82a948fe",
+      "bytes": 46679,
+      "changedPaths": [
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci.yml",
+        "docs/ci.md",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs"
+      ]
+    }
+  ],
+  "worktreeClean": true,
+  "tuple": {
+    "Platform": {
+      "version": "1.2.3",
+      "source": "991e2df97dc8493e41096006b0d3203a71730ae8",
+      "tag": "v1.2.3",
+      "releaseId": 433615812
+    },
+    "Builds": {
+      "version": "4.44.0",
+      "source": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "signedModuleArchiveSha256": "bd454ebae17256eb27d67d197a18295e0153bc11f01b6f73e22defe0c21e53a9"
+    },
+    "Tenants": {
+      "version": "7.0.0",
+      "source": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27"
+    },
+    "additionalOwners": [
+      "tenants"
+    ],
+    "profile": "platform-package"
+  },
+  "mappingHash": "549809eefd8279470dd9176be2d653d5de7f86f36354ae9e682127ad6cdc7c75",
+  "protectedInputs": {
+    "count": 44,
+    "allByteHashesUnchanged": true,
+    "inventory": "eventstore-platform123-static-controls.json"
+  },
+  "directOnlyModules": {
+    "Hexalith.Builds": {
+      "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "pin": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": "",
+      "nestedGitMarkers": []
+    },
+    "Hexalith.Platform": {
+      "head": "991e2df97dc8493e41096006b0d3203a71730ae8",
+      "pin": "991e2df97dc8493e41096006b0d3203a71730ae8",
+      "status": "",
+      "nestedGitMarkers": []
+    },
+    "Hexalith.Tenants": {
+      "head": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "pin": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "status": "",
+      "nestedGitMarkers": []
+    }
+  },
+  "unchangedPlatformDraft": {
+    "head": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "status": ""
+  },
+  "validation": {
+    "actualContractsReleasePackageBuild": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "record": "eventstore-platform123-contracts-build.json"
+    },
+    "actualFiveCallerHarnessTests": {
+      "total": "5",
+      "executed": "5",
+      "passed": "5",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "report": "eventstore-platform123-contracts.trx",
+    "releasedOwnerSelectionControls": {
+      "executed": 3,
+      "passed": 3
+    },
+    "actualExecutingModuleVersion": "4.44.0+6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+    "manifestValidation": "validated/Success",
+    "officialArchiveHashAndOfflineNuGetSignature": "passed; no online revocation claim",
+    "actionlintAndWhitespace": "passed",
+    "exactFullCommitAndAuthoredPRTitleLockedCommitlint": "21.2.4 passed"
+  },
+  "retainedPrior005cFailure": {
+    "runId": 41787766444,
+    "attempt": 1,
+    "conclusion": "failure",
+    "all20Isolated": {
+      "executedPassed": 16160,
+      "failed": 0,
+      "notExecuted": 49
+    },
+    "all5IndependentPassed": true,
+    "requiredNative": "HXR021 startup timeout at unchanged600seconds; native Facts never ran",
+    "detailedApiExitTextRetained": false,
+    "firstTerminalTimeUtc": "2026-11-04T07:31:59.0856842Z",
+    "exactCleanup10OwnedNamesEmptyInventoriesNoUncertainty": true,
+    "records": [
+      "parent-eventstore-005c-terminal-artifact-audit.json",
+      "parent-eventstore-005c-independent-artifact-audit.json"
+    ],
+    "notRelabelledOrRetriedUnchanged": true
+  },
+  "initialHosted": {
+    "observedAt": "2026-11-04T08:06:36.347Z",
+    "head": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "observations": [
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs?head_sha=b63dc2fe15e41621741d0e49e088f10046ec7bed&per_page=30",
+        "runs": [
+          {
+            "id": 41796821960,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Commitlint",
+            "status": "pending",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796821960"
+          },
+          {
+            "id": 41796758997,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Commitlint",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796758997"
+          },
+          {
+            "id": 41796739211,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Commitlint",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796739211"
+          },
+          {
+            "id": 41796717649,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "CI",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649"
+          },
+          {
+            "id": 41796717923,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Dependency Review",
+            "status": "completed",
+            "conclusion": "success",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717923"
+          },
+          {
+            "id": 41796717796,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Commitlint",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717796"
+          },
+          {
+            "id": 41796717188,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Payload Protection Lifecycle",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717188"
+          },
+          {
+            "id": 41796717014,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Advisory Tests",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717014"
+          },
+          {
+            "id": 41796717603,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "CodeQL",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717603"
+          },
+          {
+            "id": 41796717424,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Payload Protection Azure",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717424"
+          },
+          {
+            "id": 41796716904,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Payload Protection",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796716904"
+          },
+          {
+            "id": 41796716873,
+            "head_sha": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+            "event": "pull_request",
+            "name": "Integration Tests",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_attempt": 1,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796716873"
+          }
+        ]
+      },
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/b63dc2fe15e41621741d0e49e088f10046ec7bed/check-runs?per_page=100",
+        "checks": [
+          {
+            "id": 126462711298,
+            "name": "commitlint / commitlint",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796758997/job/126462711298"
+          },
+          {
+            "id": 126462485956,
+            "name": "Cursor Bugbot",
+            "status": "completed",
+            "conclusion": "neutral",
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/runs/126462485956"
+          },
+          {
+            "id": 126462440845,
+            "name": "ci / semantic-release-governance",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462440845"
+          },
+          {
+            "id": 126462440827,
+            "name": "commitlint / commitlint",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717796/job/126462440827"
+          },
+          {
+            "id": 126462440782,
+            "name": "dependency-review / dependency-review",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717923/job/126462440782"
+          },
+          {
+            "id": 126462440292,
+            "name": "ci / checkpointed process packages",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462440292"
+          },
+          {
+            "id": 126462440227,
+            "name": "ci / contracts",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462440227"
+          },
+          {
+            "id": 126462440226,
+            "name": "ci / tenants-source-mode",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462440226"
+          },
+          {
+            "id": 126462440216,
+            "name": "ci / build-and-test",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462440216"
+          },
+          {
+            "id": 126462439830,
+            "name": "ci / folded-snapshot-compatibility",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717649/job/126462439830"
+          },
+          {
+            "id": 126462439652,
+            "name": "payload-protection-lifecycle",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717188/job/126462439652"
+          },
+          {
+            "id": 126462439648,
+            "name": "adapter-unit",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717424/job/126462439648"
+          },
+          {
+            "id": 126462439496,
+            "name": "codeql / analyze",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717603/job/126462439496"
+          },
+          {
+            "id": 126462438824,
+            "name": "advisory",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796717014/job/126462438824"
+          },
+          {
+            "id": 126462438329,
+            "name": "published-compatibility",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796716873/job/126462438329"
+          },
+          {
+            "id": 126462437984,
+            "name": "live-sidecar",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796716873/job/126462437984"
+          },
+          {
+            "id": 126462437772,
+            "name": "payload-protection",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41796716904/job/126462437772"
+          },
+          {
+            "id": 126462424318,
+            "name": "Cursor Approval Agent: Pull Request Router",
+            "status": "completed",
+            "conclusion": "neutral",
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/runs/126462424318"
+          },
+          {
+            "id": 126462424316,
+            "name": "Cursor Security Agent: Security Reviewer",
+            "status": "completed",
+            "conclusion": "neutral",
+            "html_url": "https://github.com/Hexalith/Hexalith.EventStore/runs/126462424316"
+          }
+        ]
+      }
+    ],
+    "sameHeadCommitlintSupersessionsAreNormalAutomaticEvents": true,
+    "noManualDispatchRetryCancel": true,
+    "noHostedSuccessAssumed": true
+  },
+  "nextParentGates": [
+    "Observe actual CI41796717649 attempt1 at exact b63dc head/PRmerge e7f6502d; complete all20isolated reports and5independent gates.",
+    "Execute both actual gateway/persisted Redis end-state and anonymous401 native Facts; retain exact context/outcomes/cleanup artifacts. No passing native credit yet.",
+    "Separate old4.44.0helper lifecycle-body retention gap remains until corrected genuine Builds publication/content/tuple and coherent later adoption.",
+    "Parent review/normal final gates and merge; genuine later Builds/Platform/full-Parties and manual cancellation/lifecycle requirements remain incomplete."
+  ],
+  "noMergeTagReleaseManualDispatchCancellation": true,
+  "noOtherEOrPSourceEdit": true,
+  "noPlatformOrBuildsSourceEdit": true,
+  "noRootAcceptedPinChange": true,
+  "noRegistryOrProviderOperation": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

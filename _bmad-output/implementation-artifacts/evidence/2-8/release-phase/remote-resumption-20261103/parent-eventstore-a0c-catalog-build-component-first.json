@@ -1,0 +1,28 @@
+{
+  "startedAt": "2026-11-04T06:05:36.839968+00:00",
+  "completedAt": "2026-11-04T06:05:37.251622+00:00",
+  "command": [
+    "dotnet",
+    "build",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/Hexalith.Platform.CatalogBuilder.csproj",
+    "-c",
+    "Release",
+    "--output",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/output",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:CentralPackageVersionsFileImported=true",
+    "-p:PlatformCatalogBindings=/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/bindings.props",
+    "--nologo"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/references/Hexalith.Platform",
+  "exitCode": 1,
+  "log": "/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/build-first.log",
+  "logSha256": "045e086908e5c419db3ef4dde8fe0ad35868dd8bd23de020aa3dd345d182a9b3",
+  "preparedMappingHash": "a35a81341477da18699ef567eebd149f9860d29f44dd5b66d6a2ac5e9924e133",
+  "scope": "Component replica of unchanged PlatformRoutingCatalog.Generate project/imports/command under actual CLI4.44 prepared source-mapping environment; no service, run/owner proof or GitHub identity fabricated.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

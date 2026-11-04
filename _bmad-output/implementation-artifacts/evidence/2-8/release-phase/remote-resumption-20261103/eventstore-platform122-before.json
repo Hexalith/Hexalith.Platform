@@ -1,0 +1,36 @@
+{
+  "recordedAt": "2026-11-04T06:40:56.655781+00:00",
+  "head": "a0c65bec419138e79d763557c73573f894217f24",
+  "observedMain": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "branch": "fix/adopt-platform-117",
+  "platformBefore": "728baa7c0f006d86e71d6c9b29527dabc8e16e49",
+  "platformAfter": "bd0d370d5b2b59f6a9f2f01aa67a34b115055006",
+  "authenticatedTag": "v1.2.2",
+  "platformBuildsGitlink": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "preservedFiles": {
+    ".github/workflows/ci.yml": "5c789dd6939736c75ad1cf76c6a6a33b9a7ea8f549698a07bb468a1d9f738a28",
+    ".config/dotnet-tools.json": "33edbbec21c4daf94d0bdce72c99ae7392587980f4898f4e5794d12b51e29d54",
+    "module/hexalith.module-manifest.v2.json": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs": "f40026d6a0c3e8e22727fe28357a918735a68f3f0fa0119c966d2af9000ee451",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj": "1663d5f9ecc438086f5af33fc41596d51521909807df8373b37dd74a3411871b",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "cf7955af2cbfa944b83abfede234eb91afd1abb45cef49ab46c9b092d9251491",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs": "99818ad66dfcfb19dbdd920846f064eee9539ea7b5123ad1552549bf805e0270",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "fbc3c899d5af43eef2241fe9f6ff7940269b17e22cea757f64f0995859eefdfd",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "b6ea613f1367a3dc3ed603cb112413dc072e94d45bca862cd84c7a7fde71714c",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "32523367d73c9bf439df5f9cf64cb41509a3c85fd6a437a9e9c60af2c545f901"
+  },
+  "directBefore": {
+    "Hexalith.Builds": {
+      "head": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": ""
+    },
+    "Hexalith.Platform": {
+      "head": "728baa7c0f006d86e71d6c9b29527dabc8e16e49",
+      "status": ""
+    },
+    "Hexalith.Tenants": {
+      "head": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "status": ""
+    }
+  }
+}

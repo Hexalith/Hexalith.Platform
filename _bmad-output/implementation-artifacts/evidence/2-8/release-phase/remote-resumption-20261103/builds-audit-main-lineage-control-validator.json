@@ -1,0 +1,18 @@
+{
+  "startedAt": "2026-11-04T07:12:22.154562+00:00",
+  "observedTerminalAt": "2026-11-04T07:23:14.026190+00:00",
+  "argv": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "Tools/test-package-version-audit-validator.ps1"
+  ],
+  "wrapperTimeoutSeconds": 600,
+  "wrapperExitCode": 1,
+  "normalScriptExitCode": null,
+  "status": "incomplete-local-wrapper-timeout",
+  "exception": "subprocess.TimeoutExpired: command timed out after600seconds",
+  "productFailureClaim": false,
+  "partialStdoutRetained": false,
+  "note": "Initial wrapper used subprocess.run capture_output with600second timeout; it exited before writing a normal receipt/log. Exact terminal tool exception is retained separately. No local unchanged retry, rule/source change or passing regression-suite credit."
+}

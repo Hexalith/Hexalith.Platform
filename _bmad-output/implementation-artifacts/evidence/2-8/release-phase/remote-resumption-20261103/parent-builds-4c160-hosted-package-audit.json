@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-04T06:59:28.672817+00:00",
+  "sourceHead": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+  "actualPrMerge": "04c41d4abee4eba6747145f2d6b3cfcde97ca9fd",
+  "identicalTree": "089420da4a64faf27b37b013a97b263d1b3185e1",
+  "runId": 41786512669,
+  "attempt": 1,
+  "artifactId": 13301599861,
+  "artifactSha256": "fcebd609d7555c0ec68710695d3c82254bf7788d84f6b580b2fa59308a83bfe8",
+  "inventorySha256": "92dd5e500937fcae4f5f39dbda8e5bab9e2acf9805ada4e98b2cdf8bfb140307",
+  "actualEvidenceMembersRehashed": 55,
+  "immutableHeadFixtureBytesVerifiedWithOwningLineEndings": 296,
+  "actualQualification": {
+    "packageBuild": {
+      "mode": "official",
+      "result": "passed"
+    },
+    "sourceValidation": {
+      "mode": "skipped",
+      "result": "not-run"
+    },
+    "controls": {
+      "mode": "executed",
+      "result": "passed"
+    },
+    "sourceTree": {
+      "clean": true,
+      "revision": "04c41d4abee4eba6747145f2d6b3cfcde97ca9fd"
+    },
+    "releaseEligible": false,
+    "ineligibilityReasons": [
+      "source validation was skipped (-SkipSourceValidation)."
+    ]
+  },
+  "firstAuditError": {
+    "exitCode": 1,
+    "error": "KeyError: GITHUB_SHA in producer-run.json carrier",
+    "correction": "Use actual sourceRevision and GITHUB_WORKFLOW_SHA carrier fields; producer-attempt.json uses GITHUB_SHA. No producer rerun or evidence mutation."
+  },
+  "limits": [
+    "CI standard package contract intentionally skips duplicate source validation and is release-ineligible; separate exact-head hosted .NET suite passed and is independently retained.",
+    "CI package bodies are not retained in this artifact. This is package-consumer control evidence, not a public publication or native acceptance.",
+    "Normal protected publisher must perform its full required actual-version qualification and public artifact verification."
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

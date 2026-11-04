@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-04T08:16:07.813643+00:00",
+  "source": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+  "runId": 41795651910,
+  "attempt": 1,
+  "artifactId": 13305994214,
+  "artifactSha256": "b3f06858b7b42624dbce4f7835aa8d3fa1028de75e1e40716a8525e3d5a69712",
+  "inventorySha256": "34b20c6160ed31170eeda114ed1992caf4838994533a76337fca09127fdf7ad7",
+  "actualEvidenceMembersRehashed": 55,
+  "immutableSourceFixtureBytesVerifiedWithOwningLineEndings": 296,
+  "actualQualification": {
+    "packageBuild": {
+      "mode": "official",
+      "result": "passed"
+    },
+    "sourceValidation": {
+      "mode": "skipped",
+      "result": "not-run"
+    },
+    "controls": {
+      "mode": "executed",
+      "result": "passed"
+    },
+    "sourceTree": {
+      "clean": true,
+      "revision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f"
+    },
+    "releaseEligible": false,
+    "ineligibilityReasons": [
+      "source validation was skipped (-SkipSourceValidation)."
+    ]
+  },
+  "scope": "CI package carrier is intentionally release-ineligible; separate exact-source full hosted .NET job passed. Normal protected publisher and actual public artifact verification remain required.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

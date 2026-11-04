@@ -1,0 +1,101 @@
+{
+  "recordedAt": "2026-11-04T12:42:16.008687+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "branch": "fix/adopt-platform-117",
+  "head": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173",
+  "parents": [
+    "434b8ac0efb9f798b6f8d29fd851fff490b97732"
+  ],
+  "tree": "ce8e8df1f44b875feb910ac8f5a2c49abf755ef5",
+  "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "remoteTrackingHead": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "cleanWithGeneratedCheckoutPresent": true,
+  "unpushed": true,
+  "patches": {
+    "correction": {
+      "file": "parties-generated-builds-checkout-correction.patch",
+      "sha256": "fc25bf316bde3b33f100cdb83cf2210aaaba3d60f56193e4a64672af23eefbb2",
+      "bytes": 5321,
+      "paths": [
+        ".gitignore",
+        "tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs"
+      ]
+    },
+    "full-proposal": {
+      "file": "parties-generated-builds-checkout-full-proposal.patch",
+      "sha256": "1084b1118445c786b1f7e4b12a2f468aa6021837ebb24544277843354cb8ca01",
+      "bytes": 111436,
+      "paths": [
+        ".config/dotnet-tools.json",
+        ".github/workflows/ci-lifecycle-qualification.yml",
+        ".github/workflows/ci.yml",
+        ".gitignore",
+        ".gitlink-signoff.tsv",
+        "Directory.Build.targets",
+        "README.md",
+        "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+        "docs/architecture.md",
+        "docs/ci-lifecycle-qualification.md",
+        "docs/ci.md",
+        "docs/getting-started.md",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Platform",
+        "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+        "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+        "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+        "tests/e2e/helpers/frontcomposer-assets.ts"
+      ]
+    }
+  },
+  "protected": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "953d2727c23948ad1f01129bf83aa42fe6558bf48bc126a1e1e5308383a7e00f",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "sha256": "aaa9656e8e9c66430ac21c9b34e2a4e1da2630723f4cc8db1d1ba148ae8742c5",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": ".config/dotnet-tools.json",
+      "sha256": "4ae72830cb4e5f6e8e66296813495e8d3bc576c65ec4ba402a2e59bfda0f6835",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": ".gitlink-signoff.tsv",
+      "sha256": "0d474958b1f7ff522cc505991ee5693b40325240d7c9d5a19a40f557cdfa1718",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+      "sha256": "42d02383cca7f7169ab594aa62662461b48b9fcd9daa7069ed8a0b30a5bfff7f",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": "module/hexalith.module-manifest.v2.json",
+      "sha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": "scripts/qualify-disposable-ci.py",
+      "sha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+      "byteIdenticalTo434b": true
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+      "sha256": "362622666298627c2763f6ed3e3bed90dd7d63260e25dfecd2f8bfac25591a45",
+      "byteIdenticalTo434b": true
+    }
+  ],
+  "signedToolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+  "candidateAcceptance": false
+}

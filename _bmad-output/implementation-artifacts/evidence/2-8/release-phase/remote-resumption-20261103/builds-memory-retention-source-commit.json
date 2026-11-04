@@ -1,0 +1,31 @@
+[
+  {
+    "argv": [
+      "git",
+      "add",
+      "--",
+      ".github/workflows/domain-ci-v2.md",
+      "Github/run-module-integration/run_module_integration.py",
+      "Github/run-module-integration/tests/test_run_module_integration.py",
+      "Props/Directory.Packages.props",
+      "README.md",
+      "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+      "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+      "test/fixtures/module/platform/memories-3.0.23.json"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "commit",
+      "--file",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/builds-memory-retention-source-commit-message.txt"
+    ],
+    "exitCode": 0,
+    "stdout": "[fix/retain-declared-ci-diagnostics 2bc5fff6] fix(ci): retain declared diagnostics and adopt Memories 3.0.23\n 8 files changed, 1297 insertions(+), 13 deletions(-)\n create mode 100644 test/fixtures/module/platform/memories-3.0.23.json\n",
+    "stderr": ""
+  }
+]

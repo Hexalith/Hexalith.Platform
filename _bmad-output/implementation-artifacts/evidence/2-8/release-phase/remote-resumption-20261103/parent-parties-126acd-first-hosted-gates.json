@@ -1,0 +1,34 @@
+{
+  "observedAtUtc": "2026-11-03T20:44:28.950941+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "runId": 41714178534,
+  "attempt": 1,
+  "head": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "base": "6795536e3fe5fd4cf44eb5f4c67e69f3374532b4",
+  "actualCheckedOutPrMerge": "b1f400ec068d589ea2c52d59d13b6e64b01736a2",
+  "actualCommitParents": [
+    "6795536e3fe5fd4cf44eb5f4c67e69f3374532b4",
+    "126acd2d7ab08ad614ede09b0cb931573b053a03"
+  ],
+  "actualMergeTree": "73948b589bf969e13d2ad66b4f01d77790de2c17",
+  "mergeTreeEqualsReviewedHeadTree": true,
+  "completedJobs": [
+    {
+      "jobId": 126189731819,
+      "label": "memories-protocol",
+      "log": "parent-parties-126acd-memories-protocol-job.txt",
+      "sha256": "9edbd9cdf9b310b3408375b7815725dfea1fed08f3d9d24584cf12f669e63ec8",
+      "verified": "52executed/passed0failed/skipped; focused real publishedM18offlineprotocol controls, not realnative qualification"
+    },
+    {
+      "jobId": 126189732318,
+      "label": "bmad-configuration",
+      "log": "parent-parties-126acd-bmad-configuration-job.txt",
+      "sha256": "b516104b59922170736d072b53b56f6c26df7ee1210e9895aa15a99a8178fdba",
+      "verified": "20PythonBMADconfiguration controls passed"
+    }
+  ],
+  "remaining": "required whole15project build/native/cleanup plus other4independent sourcejobs and appgates still queued",
+  "realNativeAcceptance": false,
+  "candidateAcceptance": false
+}

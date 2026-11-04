@@ -1,0 +1,727 @@
+﻿2026-11-03T20:43:39.1266218Z Current runner version: '2.338.2'
+2026-11-03T20:43:39.1284537Z ##[group]Runner Image Provisioner
+2026-11-03T20:43:39.1285142Z Hosted Compute Agent
+2026-11-03T20:43:39.1285610Z Version: 20261028.624
+2026-11-03T20:43:39.1286004Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-03T20:43:39.1286476Z Build Date: 2026-10-28T21:51:42Z
+2026-11-03T20:43:39.1286909Z Worker ID: {38fc425a-2548-40ad-803b-9652eed6a16f}
+2026-11-03T20:43:39.1287377Z Region: centralus
+2026-11-03T20:43:39.1287766Z Cloud: Azure
+2026-11-03T20:43:39.1288109Z ##[endgroup]
+2026-11-03T20:43:39.1289132Z ##[group]Operating System
+2026-11-03T20:43:39.1289643Z Ubuntu
+2026-11-03T20:43:39.1289975Z 24.04.5
+2026-11-03T20:43:39.1290337Z LTS
+2026-11-03T20:43:39.1290670Z ##[endgroup]
+2026-11-03T20:43:39.1291005Z ##[group]Runner Image
+2026-11-03T20:43:39.1291440Z Image: ubuntu-24.04
+2026-11-03T20:43:39.1291832Z Version: 20261101.360.1
+2026-11-03T20:43:39.1292670Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-03T20:43:39.1293569Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-03T20:43:39.1294225Z ##[endgroup]
+2026-11-03T20:43:39.1294909Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T20:43:39.1296157Z Contents: read
+2026-11-03T20:43:39.1296521Z Metadata: read
+2026-11-03T20:43:39.1296914Z ##[endgroup]
+2026-11-03T20:43:39.1298248Z Secret source: Actions
+2026-11-03T20:43:39.1299023Z Cache mode: write
+2026-11-03T20:43:39.1299480Z Prepare workflow directory
+2026-11-03T20:43:39.1609519Z Prepare all required actions
+2026-11-03T20:43:39.1641234Z Getting action download info
+2026-11-03T20:43:39.4007159Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-03T20:43:39.4756623Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-03T20:43:40.0666336Z Download action repository 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+2026-11-03T20:43:40.2173919Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-11-03T20:43:40.3659559Z Complete job name: UI accessibility
+2026-11-03T20:43:40.4200081Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T20:43:40.4200801Z with:
+2026-11-03T20:43:40.4201154Z   submodules: false
+2026-11-03T20:43:40.4201543Z   repository: Hexalith/Hexalith.Parties
+2026-11-03T20:43:40.4203826Z   token: ***
+2026-11-03T20:43:40.4204137Z   ssh-strict: true
+2026-11-03T20:43:40.4204539Z   ssh-user: git
+2026-11-03T20:43:40.4204880Z   persist-credentials: true
+2026-11-03T20:43:40.4205302Z   clean: true
+2026-11-03T20:43:40.4205631Z   sparse-checkout-cone-mode: true
+2026-11-03T20:43:40.4206023Z   fetch-depth: 1
+2026-11-03T20:43:40.4206392Z   fetch-tags: false
+2026-11-03T20:43:40.4206747Z   show-progress: true
+2026-11-03T20:43:40.4207098Z   lfs: false
+2026-11-03T20:43:40.4207432Z   set-safe-directory: true
+2026-11-03T20:43:40.4207830Z   allow-unsafe-pr-checkout: false
+2026-11-03T20:43:40.4208301Z env:
+2026-11-03T20:43:40.4208817Z   CI: true
+2026-11-03T20:43:40.4209340Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:43:40.4209783Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:43:40.4210227Z ##[endgroup]
+2026-11-03T20:43:40.6664095Z Syncing repository: Hexalith/Hexalith.Parties
+2026-11-03T20:43:40.6666331Z ##[group]Getting Git version info
+2026-11-03T20:43:40.6666989Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T20:43:40.6726400Z [command]/usr/bin/git version
+2026-11-03T20:43:40.6744274Z git version 2.56.0
+2026-11-03T20:43:40.6761021Z ##[endgroup]
+2026-11-03T20:43:40.6773856Z Temporarily overriding HOME='/home/runner/work/_temp/116b4efb-eafc-482a-b857-cf22878809fd' before making global git config changes
+2026-11-03T20:43:40.6775294Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:43:40.6780616Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:43:40.6837568Z Deleting the contents of '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T20:43:40.6841033Z ##[group]Determining repository object format
+2026-11-03T20:43:40.6842131Z ##[endgroup]
+2026-11-03T20:43:40.6842803Z ##[group]Initializing the repository
+2026-11-03T20:43:40.6845251Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:43:40.6961437Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T20:43:40.6962617Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T20:43:40.6963630Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T20:43:40.6964465Z hint: call:
+2026-11-03T20:43:40.6964906Z hint:
+2026-11-03T20:43:40.6965494Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T20:43:40.6966170Z hint:
+2026-11-03T20:43:40.6966801Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T20:43:40.6967812Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T20:43:40.6968704Z hint:
+2026-11-03T20:43:40.6969225Z hint: 	git branch -m <name>
+2026-11-03T20:43:40.6972365Z hint:
+2026-11-03T20:43:40.6972996Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T20:43:40.6974135Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/
+2026-11-03T20:43:40.6981001Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T20:43:40.7026260Z ##[endgroup]
+2026-11-03T20:43:40.7027078Z ##[group]Disabling automatic garbage collection
+2026-11-03T20:43:40.7029264Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T20:43:40.7060216Z ##[endgroup]
+2026-11-03T20:43:40.7061619Z ##[group]Setting up auth
+2026-11-03T20:43:40.7062297Z Removing SSH command configuration
+2026-11-03T20:43:40.7074033Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:43:40.7110064Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:43:40.7444577Z Removing HTTP extra header
+2026-11-03T20:43:40.7450493Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:43:40.7491473Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:43:40.7683150Z Removing includeIf entries pointing to credentials config files
+2026-11-03T20:43:40.7687724Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:43:40.7726805Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T20:43:40.7925384Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T20:43:40.7969391Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path /home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:43:40.8009066Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:43:40.8049293Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:43:40.8087776Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:43:40.8125001Z ##[endgroup]
+2026-11-03T20:43:40.8125500Z ##[group]Fetching the repository
+2026-11-03T20:43:40.8130087Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b1f400ec068d589ea2c52d59d13b6e64b01736a2:refs/remotes/pull/61/merge
+2026-11-03T20:44:17.7280081Z From https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T20:44:17.7281029Z  * [new ref]         b1f400ec068d589ea2c52d59d13b6e64b01736a2 -> pull/61/merge
+2026-11-03T20:44:17.7284120Z ##[endgroup]
+2026-11-03T20:44:17.7284738Z ##[group]Determining the checkout info
+2026-11-03T20:44:17.7288372Z ##[endgroup]
+2026-11-03T20:44:17.7288873Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T20:44:17.7348950Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T20:44:17.7387390Z ##[group]Checking out the ref
+2026-11-03T20:44:17.7390240Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/61/merge
+2026-11-03T20:44:18.2720584Z Note: switching to 'refs/remotes/pull/61/merge'.
+2026-11-03T20:44:18.2721031Z 
+2026-11-03T20:44:18.2721354Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T20:44:18.2721805Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T20:44:18.2722224Z state without impacting any branches by switching back to a branch.
+2026-11-03T20:44:18.2722492Z 
+2026-11-03T20:44:18.2722690Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T20:44:18.2723084Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T20:44:18.2723305Z 
+2026-11-03T20:44:18.2723456Z   git switch -c <new-branch-name>
+2026-11-03T20:44:18.2723612Z 
+2026-11-03T20:44:18.2723743Z Or undo this operation with:
+2026-11-03T20:44:18.2723884Z 
+2026-11-03T20:44:18.2723965Z   git switch -
+2026-11-03T20:44:18.2724083Z 
+2026-11-03T20:44:18.2724279Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T20:44:18.2724536Z 
+2026-11-03T20:44:18.2725211Z HEAD is now at b1f400e Merge 126acd2d7ab08ad614ede09b0cb931573b053a03 into 6795536e3fe5fd4cf44eb5f4c67e69f3374532b4
+2026-11-03T20:44:18.2763470Z ##[endgroup]
+2026-11-03T20:44:18.2817664Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T20:44:18.2853343Z b1f400ec068d589ea2c52d59d13b6e64b01736a2
+2026-11-03T20:44:18.3040668Z ##[group]Run git -c submodule.recurse=false submodule update --init references/Hexalith.Builds references/Hexalith.Commons
+2026-11-03T20:44:18.3042006Z [36;1mgit -c submodule.recurse=false submodule update --init references/Hexalith.Builds references/Hexalith.Commons[0m
+2026-11-03T20:44:18.3062176Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:44:18.3062339Z env:
+2026-11-03T20:44:18.3062473Z   CI: true
+2026-11-03T20:44:18.3062605Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:44:18.3062777Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:44:18.3062944Z ##[endgroup]
+2026-11-03T20:44:18.3301604Z Submodule 'Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+2026-11-03T20:44:18.3307268Z Submodule 'Hexalith.Commons' (https://github.com/Hexalith/Hexalith.Commons.git) registered for path 'references/Hexalith.Commons'
+2026-11-03T20:44:18.3329606Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds'...
+2026-11-03T20:45:06.5603997Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Commons'...
+2026-11-03T20:45:14.4955282Z Submodule path 'references/Hexalith.Builds': checked out '725754075e1d6369430a3adf94d46fb71e6eaf9e'
+2026-11-03T20:45:14.5119625Z Submodule path 'references/Hexalith.Commons': checked out '11555ace9efcae2928a00122dcba91243e5a8a1a'
+2026-11-03T20:45:14.5182876Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+2026-11-03T20:45:14.5183092Z with:
+2026-11-03T20:45:14.5183218Z   global-json-file: global.json
+2026-11-03T20:45:14.5183363Z   cache: false
+2026-11-03T20:45:14.5183479Z env:
+2026-11-03T20:45:14.5183581Z   CI: true
+2026-11-03T20:45:14.5183713Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:14.5183867Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:14.5184009Z ##[endgroup]
+2026-11-03T20:45:14.6116046Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-03T20:45:15.1378337Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-03T20:45:15.1402474Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-03T20:45:15.6442480Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-03T20:45:15.6602027Z ##[group]Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+2026-11-03T20:45:15.6602246Z with:
+2026-11-03T20:45:15.6602367Z   node-version: 24.22.1
+2026-11-03T20:45:15.6602495Z   cache: npm
+2026-11-03T20:45:15.6602637Z   cache-dependency-path: tests/e2e/package-lock.json
+2026-11-03T20:45:15.6602815Z   check-latest: false
+2026-11-03T20:45:15.6604220Z   token: ***
+2026-11-03T20:45:15.6604341Z   package-manager-cache: true
+2026-11-03T20:45:15.6604478Z env:
+2026-11-03T20:45:15.6604580Z   CI: true
+2026-11-03T20:45:15.6604703Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:15.6604854Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:15.6604995Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:15.6605128Z ##[endgroup]
+2026-11-03T20:45:15.7438105Z Attempting to download 24.22.1...
+2026-11-03T20:45:16.5669463Z Acquiring 24.22.1 - x64 from https://github.com/actions/node-versions/releases/download/24.22.1-39619001896/node-24.22.1-linux-x64.tar.gz
+2026-11-03T20:45:17.0468732Z Extracting ...
+2026-11-03T20:45:17.0574675Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/ce7fd49b-5080-4055-b314-309c822382b1 -f /home/runner/work/_temp/856c3640-4cc3-4786-adb4-5b614eb4b957
+2026-11-03T20:45:18.0354381Z Adding to the cache ...
+2026-11-03T20:45:19.7078063Z ##[group]Environment details
+2026-11-03T20:45:19.8605971Z node: v24.22.1
+2026-11-03T20:45:19.8606232Z npm: 11.19.1
+2026-11-03T20:45:19.8606354Z yarn: 1.22.22
+2026-11-03T20:45:19.8606773Z ##[endgroup]
+2026-11-03T20:45:19.8617398Z [command]/opt/hostedtoolcache/node/24.22.1/x64/bin/npm config get cache
+2026-11-03T20:45:19.9285441Z /home/runner/.npm
+2026-11-03T20:45:20.0812393Z Cache hit for: node-cache-Linux-x64-npm-3299807d9adde97c86bdedae81ddf9873a15a071c8b37c25eb435d1476fef2e7
+2026-11-03T20:45:20.7954286Z Received 15348196 of 15348196 (100.0%), 26.0 MBs/sec
+2026-11-03T20:45:20.7954719Z Cache Size: ~15 MB (15348196 B)
+2026-11-03T20:45:20.7970397Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2c9faca2-f039-4fe6-8f4b-788d2679758d/cache.tzst -P -C /home/runner/work/Hexalith.Parties/Hexalith.Parties --use-compress-program unzstd
+2026-11-03T20:45:20.8207378Z Cache restored successfully
+2026-11-03T20:45:20.8218043Z Cache restored from key: node-cache-Linux-x64-npm-3299807d9adde97c86bdedae81ddf9873a15a071c8b37c25eb435d1476fef2e7
+2026-11-03T20:45:20.8408913Z ##[group]Run npm ci
+2026-11-03T20:45:20.8409075Z [36;1mnpm ci[0m
+2026-11-03T20:45:20.8426084Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:45:20.8426229Z env:
+2026-11-03T20:45:20.8426354Z   CI: true
+2026-11-03T20:45:20.8426483Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:20.8426643Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:20.8426793Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:20.8426937Z ##[endgroup]
+2026-11-03T20:45:21.3834706Z 
+2026-11-03T20:45:21.3839370Z added 9 packages, and audited 10 packages in 504ms
+2026-11-03T20:45:21.3841020Z 
+2026-11-03T20:45:21.3841504Z found 0 vulnerabilities
+2026-11-03T20:45:21.4206119Z ##[group]Run npm run test:config
+2026-11-03T20:45:21.4206312Z [36;1mnpm run test:config[0m
+2026-11-03T20:45:21.4223214Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:45:21.4223360Z env:
+2026-11-03T20:45:21.4223475Z   CI: true
+2026-11-03T20:45:21.4223608Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:21.4223767Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:21.4223914Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:21.4224078Z ##[endgroup]
+2026-11-03T20:45:21.4875391Z 
+2026-11-03T20:45:21.4876338Z > hexalith-parties-e2e@0.0.0 test:config
+2026-11-03T20:45:21.4877089Z > node --experimental-strip-types --test config-tests/server-ownership.test.mjs
+2026-11-03T20:45:21.4877488Z 
+2026-11-03T20:45:21.8422674Z ✔ managed server: CI=false, parent=Test (280.483033ms)
+2026-11-03T20:45:22.1095957Z ✔ managed server: CI=false, parent=Development (267.617685ms)
+2026-11-03T20:45:22.3702078Z ✔ explicit external server: CI=false (260.641524ms)
+2026-11-03T20:45:22.6391961Z ✔ managed server: CI=true, parent=Test (267.981725ms)
+2026-11-03T20:45:22.9052865Z ✔ managed server: CI=true, parent=Development (267.055031ms)
+2026-11-03T20:45:23.1728386Z ✔ explicit external server: CI=true (268.290942ms)
+2026-11-03T20:45:23.6137956Z ✔ Playwright rejects an unrelated listener (441.67434ms)
+2026-11-03T20:45:24.4431510Z ✔ Playwright starts and cleans up its managed fixture (829.27092ms)
+2026-11-03T20:45:24.4514075Z ℹ tests 8
+2026-11-03T20:45:24.4514891Z ℹ suites 0
+2026-11-03T20:45:24.4515126Z ℹ pass 8
+2026-11-03T20:45:24.4515320Z ℹ fail 0
+2026-11-03T20:45:24.4515522Z ℹ cancelled 0
+2026-11-03T20:45:24.4515741Z ℹ skipped 0
+2026-11-03T20:45:24.4515937Z ℹ todo 0
+2026-11-03T20:45:24.4516213Z ℹ duration_ms 2940.198721
+2026-11-03T20:45:24.4627021Z ##[group]Run npm run typecheck
+2026-11-03T20:45:24.4627232Z [36;1mnpm run typecheck[0m
+2026-11-03T20:45:24.4644524Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:45:24.4644682Z env:
+2026-11-03T20:45:24.4644795Z   CI: true
+2026-11-03T20:45:24.4644948Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:24.4645105Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:24.4645252Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:24.4645398Z ##[endgroup]
+2026-11-03T20:45:24.5296460Z 
+2026-11-03T20:45:24.5297257Z > hexalith-parties-e2e@0.0.0 typecheck
+2026-11-03T20:45:24.5297515Z > tsc --noEmit
+2026-11-03T20:45:24.5297593Z 
+2026-11-03T20:45:24.7009499Z ##[group]Run python3 ../Hexalith.Parties.UI.Tests/verify-restored-assets.py
+2026-11-03T20:45:24.7009836Z [36;1mpython3 ../Hexalith.Parties.UI.Tests/verify-restored-assets.py[0m
+2026-11-03T20:45:24.7026133Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:45:24.7026273Z env:
+2026-11-03T20:45:24.7026386Z   CI: true
+2026-11-03T20:45:24.7026516Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:24.7026671Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:24.7026817Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:24.7026958Z ##[endgroup]
+2026-11-03T20:45:51.4673590Z PASS configuration: compiled metadata and actual stylesheet lookup match the restored package
+2026-11-03T20:45:51.4674398Z PASS restore-property: compiled metadata and actual stylesheet lookup match the restored package
+2026-11-03T20:45:51.4675063Z PASS environment: compiled metadata and actual stylesheet lookup match the restored package
+2026-11-03T20:45:51.4675777Z PASS empty-environment: compiled metadata and actual stylesheet lookup match the restored package
+2026-11-03T20:45:51.4676472Z PASS fallback: compiled metadata and actual stylesheet lookup match the restored package
+2026-11-03T20:45:51.4757607Z ##[group]Run npm run install:browsers
+2026-11-03T20:45:51.4757801Z [36;1mnpm run install:browsers[0m
+2026-11-03T20:45:51.4774080Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:45:51.4774224Z env:
+2026-11-03T20:45:51.4774332Z   CI: true
+2026-11-03T20:45:51.4774457Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:45:51.4774617Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:45:51.4774764Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:45:51.4774903Z ##[endgroup]
+2026-11-03T20:45:51.5461809Z 
+2026-11-03T20:45:51.5462818Z > hexalith-parties-e2e@0.0.0 install:browsers
+2026-11-03T20:45:51.5463311Z > playwright install chromium --with-deps
+2026-11-03T20:45:51.5463506Z 
+2026-11-03T20:45:51.8763546Z Installing dependencies...
+2026-11-03T20:45:51.8833107Z Switching to root user to install dependencies...
+2026-11-03T20:45:51.9757569Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-03T20:45:52.0225549Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-11-03T20:45:52.0304918Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-11-03T20:45:52.0336583Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-11-03T20:45:52.0366893Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-11-03T20:45:52.0370041Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-11-03T20:45:52.1420464Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1408 kB]
+2026-11-03T20:45:52.1781602Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1707 kB]
+2026-11-03T20:45:52.2429766Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [617 kB]
+2026-11-03T20:45:52.2921083Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1155 kB]
+2026-11-03T20:45:52.3270977Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [233 kB]
+2026-11-03T20:45:52.3274232Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1224 kB]
+2026-11-03T20:45:52.3319436Z Get:17 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [685 kB]
+2026-11-03T20:45:52.3822672Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [247 kB]
+2026-11-03T20:45:52.4030045Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1721 kB]
+2026-11-03T20:45:52.4105519Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [394 kB]
+2026-11-03T20:45:52.4308027Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse Translation-en [12.4 kB]
+2026-11-03T20:45:55.4622498Z Fetched 9786 kB in 1s (11.6 MB/s)
+2026-11-03T20:45:56.1302038Z Reading package lists...
+2026-11-03T20:45:56.1574361Z Reading package lists...
+2026-11-03T20:45:56.3360529Z Building dependency tree...
+2026-11-03T20:45:56.3365989Z Reading state information...
+2026-11-03T20:45:56.4574991Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-11-03T20:45:56.4575310Z libasound2t64 set to manually installed.
+2026-11-03T20:45:56.4575597Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-11-03T20:45:56.4576079Z libatk-bridge2.0-0t64 set to manually installed.
+2026-11-03T20:45:56.4576476Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-11-03T20:45:56.4576824Z libatk1.0-0t64 set to manually installed.
+2026-11-03T20:45:56.4577233Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-11-03T20:45:56.4577599Z libatspi2.0-0t64 set to manually installed.
+2026-11-03T20:45:56.4577971Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-11-03T20:45:56.4578303Z libcairo2 set to manually installed.
+2026-11-03T20:45:56.4578931Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-11-03T20:45:56.4579291Z libcups2t64 set to manually installed.
+2026-11-03T20:45:56.4580281Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-11-03T20:45:56.4580664Z libdbus-1-3 set to manually installed.
+2026-11-03T20:45:56.4581076Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-11-03T20:45:56.4581456Z libdrm2 set to manually installed.
+2026-11-03T20:45:56.4581847Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-11-03T20:45:56.4582207Z libgbm1 set to manually installed.
+2026-11-03T20:45:56.4582614Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.10).
+2026-11-03T20:45:56.4583379Z libglib2.0-0t64 set to manually installed.
+2026-11-03T20:45:56.4583797Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-11-03T20:45:56.4584159Z libnspr4 set to manually installed.
+2026-11-03T20:45:56.4584542Z libnss3 is already the newest version (2:3.98-1ubuntu0.3).
+2026-11-03T20:45:56.4584903Z libnss3 set to manually installed.
+2026-11-03T20:45:56.4585316Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-11-03T20:45:56.4585721Z libpango-1.0-0 set to manually installed.
+2026-11-03T20:45:56.4586143Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-11-03T20:45:56.4586506Z libx11-6 set to manually installed.
+2026-11-03T20:45:56.4586867Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-11-03T20:45:56.4587217Z libxcb1 set to manually installed.
+2026-11-03T20:45:56.4587626Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-11-03T20:45:56.4588025Z libxcomposite1 set to manually installed.
+2026-11-03T20:45:56.4588448Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-11-03T20:45:56.4589002Z libxdamage1 set to manually installed.
+2026-11-03T20:45:56.4589664Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-11-03T20:45:56.4601682Z libxext6 set to manually installed.
+2026-11-03T20:45:56.4602717Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-11-03T20:45:56.4603265Z libxfixes3 set to manually installed.
+2026-11-03T20:45:56.4603817Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-11-03T20:45:56.4604344Z libxkbcommon0 set to manually installed.
+2026-11-03T20:45:56.4604930Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-11-03T20:45:56.4605431Z libxrandr2 set to manually installed.
+2026-11-03T20:45:56.4605965Z xvfb is already the newest version (2:21.1.12-1ubuntu1.9).
+2026-11-03T20:45:56.4606467Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-11-03T20:45:56.4606916Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-11-03T20:45:56.4607276Z libfontconfig1 set to manually installed.
+2026-11-03T20:45:56.4607651Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-11-03T20:45:56.4608007Z libfreetype6 set to manually installed.
+2026-11-03T20:45:56.4608376Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-11-03T20:45:56.4608987Z fonts-liberation set to manually installed.
+2026-11-03T20:45:56.4609435Z The following additional packages will be installed:
+2026-11-03T20:45:56.4609773Z   xfonts-encodings xfonts-utils
+2026-11-03T20:45:56.4610026Z Recommended packages:
+2026-11-03T20:45:56.4610298Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-11-03T20:45:56.4782549Z The following NEW packages will be installed:
+2026-11-03T20:45:56.4783055Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-11-03T20:45:56.4786346Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-11-03T20:45:56.4786694Z   xfonts-utils
+2026-11-03T20:45:56.4956443Z 0 upgraded, 9 newly installed, 0 to remove and 11 not upgraded.
+2026-11-03T20:45:56.4956849Z Need to get 21.1 MB of archives.
+2026-11-03T20:45:56.4957115Z After this operation, 79.5 MB of additional disk space will be used.
+2026-11-03T20:45:56.4957407Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-03T20:45:56.5729924Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-11-03T20:45:56.6462331Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-11-03T20:45:56.7490767Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-11-03T20:45:56.7833511Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-11-03T20:45:56.8465465Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-11-03T20:45:56.9580045Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-11-03T20:45:56.9913614Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-11-03T20:45:57.0199938Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-11-03T20:45:57.0490540Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-11-03T20:45:57.2570183Z Fetched 21.1 MB in 1s (37.2 MB/s)
+2026-11-03T20:45:57.2765282Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-11-03T20:45:57.3016761Z (Reading database ... 
+2026-11-03T20:45:57.3017130Z (Reading database ... 5%
+2026-11-03T20:45:57.3017386Z (Reading database ... 10%
+2026-11-03T20:45:57.3017637Z (Reading database ... 15%
+2026-11-03T20:45:57.3017870Z (Reading database ... 20%
+2026-11-03T20:45:57.3018097Z (Reading database ... 25%
+2026-11-03T20:45:57.3018243Z (Reading database ... 30%
+2026-11-03T20:45:57.3018410Z (Reading database ... 35%
+2026-11-03T20:45:57.3018762Z (Reading database ... 40%
+2026-11-03T20:45:57.3018999Z (Reading database ... 45%
+2026-11-03T20:45:57.3019232Z (Reading database ... 50%
+2026-11-03T20:45:57.3057986Z (Reading database ... 55%
+2026-11-03T20:45:57.4725394Z (Reading database ... 60%
+2026-11-03T20:45:57.6580413Z (Reading database ... 65%
+2026-11-03T20:45:57.8660334Z (Reading database ... 70%
+2026-11-03T20:45:58.0348892Z (Reading database ... 75%
+2026-11-03T20:45:58.2221343Z (Reading database ... 80%
+2026-11-03T20:45:58.4128459Z (Reading database ... 85%
+2026-11-03T20:45:58.6223341Z (Reading database ... 90%
+2026-11-03T20:45:58.7713604Z (Reading database ... 95%
+2026-11-03T20:45:58.7714089Z (Reading database ... 100%
+2026-11-03T20:45:58.7714658Z (Reading database ... 215960 files and directories currently installed.)
+2026-11-03T20:45:58.7757726Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-11-03T20:45:58.7839625Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-11-03T20:45:59.0080514Z Selecting previously unselected package fonts-freefont-ttf.
+2026-11-03T20:45:59.0188679Z Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-11-03T20:45:59.0307965Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-11-03T20:45:59.1257905Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-11-03T20:45:59.1365385Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-11-03T20:45:59.1372362Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-11-03T20:45:59.1577529Z Selecting previously unselected package fonts-unifont.
+2026-11-03T20:45:59.1684248Z Preparing to unpack .../3-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-11-03T20:45:59.1691153Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-11-03T20:45:59.3589436Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-11-03T20:45:59.3699418Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-11-03T20:45:59.3792474Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-11-03T20:45:59.8078101Z Selecting previously unselected package xfonts-encodings.
+2026-11-03T20:45:59.8184908Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-11-03T20:45:59.8190227Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-11-03T20:45:59.8426303Z Selecting previously unselected package xfonts-utils.
+2026-11-03T20:45:59.8530663Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-11-03T20:45:59.8536698Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-11-03T20:45:59.8834786Z Selecting previously unselected package xfonts-cyrillic.
+2026-11-03T20:45:59.8936004Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-11-03T20:45:59.8942883Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-11-03T20:45:59.9204664Z Selecting previously unselected package xfonts-scalable.
+2026-11-03T20:45:59.9303646Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-11-03T20:45:59.9310174Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-11-03T20:45:59.9661997Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-11-03T20:45:59.9757868Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-11-03T20:45:59.9774676Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-11-03T20:45:59.9790737Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-11-03T20:45:59.9807090Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-11-03T20:45:59.9856477Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-11-03T20:45:59.9870339Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-11-03T20:45:59.9887429Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-11-03T20:45:59.9922304Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-11-03T20:46:00.0152262Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-11-03T20:46:00.0368329Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-11-03T20:46:00.0387163Z Not building database; man-db/auto-update is not 'true'.
+2026-11-03T20:46:00.0396964Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-11-03T20:46:00.5774982Z 
+2026-11-03T20:46:00.5775623Z Running kernel seems to be up-to-date.
+2026-11-03T20:46:00.5775847Z 
+2026-11-03T20:46:00.5775949Z No services need to be restarted.
+2026-11-03T20:46:00.5776098Z 
+2026-11-03T20:46:00.5776192Z No containers need to be restarted.
+2026-11-03T20:46:00.5776300Z 
+2026-11-03T20:46:00.5776410Z No user sessions are running outdated binaries.
+2026-11-03T20:46:00.5776536Z 
+2026-11-03T20:46:00.5776710Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-11-03T20:46:01.3139843Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+2026-11-03T20:46:01.6691220Z |                                                                                |   0% of 191.1 MiB
+2026-11-03T20:46:02.0412388Z |■■■■■■■■                                                                        |  10% of 191.1 MiB
+2026-11-03T20:46:02.2988268Z |■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+2026-11-03T20:46:02.4470878Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+2026-11-03T20:46:02.6686580Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+2026-11-03T20:46:02.8580958Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+2026-11-03T20:46:03.0786212Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+2026-11-03T20:46:03.2377016Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+2026-11-03T20:46:03.3875587Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+2026-11-03T20:46:03.5389416Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+2026-11-03T20:46:03.7916015Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+2026-11-03T20:46:05.8767702Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+2026-11-03T20:46:05.8771057Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+2026-11-03T20:46:06.1756496Z |                                                                                |   0% of 2.2 MiB
+2026-11-03T20:46:06.2076545Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+2026-11-03T20:46:06.2204220Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+2026-11-03T20:46:06.2304903Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+2026-11-03T20:46:06.2334278Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+2026-11-03T20:46:06.2367006Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+2026-11-03T20:46:06.2426616Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+2026-11-03T20:46:06.2450909Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+2026-11-03T20:46:06.2472075Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+2026-11-03T20:46:06.2486256Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+2026-11-03T20:46:06.2503455Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+2026-11-03T20:46:06.2871983Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+2026-11-03T20:46:06.2873506Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+2026-11-03T20:46:06.6479513Z |                                                                                |   0% of 120 MiB
+2026-11-03T20:46:06.9694231Z |■■■■■■■■                                                                        |  10% of 120 MiB
+2026-11-03T20:46:07.0109882Z |■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+2026-11-03T20:46:07.0393016Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+2026-11-03T20:46:07.0824453Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+2026-11-03T20:46:07.1006777Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+2026-11-03T20:46:07.1363861Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+2026-11-03T20:46:07.1754273Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+2026-11-03T20:46:07.2004857Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+2026-11-03T20:46:07.2283393Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+2026-11-03T20:46:07.2649162Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+2026-11-03T20:46:08.7557444Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+2026-11-03T20:46:08.7830900Z ##[group]Run dotnet build ../../src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+2026-11-03T20:46:08.7831532Z [36;1mdotnet build ../../src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true[0m
+2026-11-03T20:46:08.7847991Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:46:08.7848131Z env:
+2026-11-03T20:46:08.7848240Z   CI: true
+2026-11-03T20:46:08.7848371Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:46:08.7848523Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:46:08.7848899Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:46:08.7849035Z ##[endgroup]
+2026-11-03T20:46:09.4569510Z   Determining projects to restore...
+2026-11-03T20:46:11.4982814Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj (in 940 ms).
+2026-11-03T20:46:11.5081056Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj (in 957 ms).
+2026-11-03T20:46:11.8194010Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Client/Hexalith.Parties.Client.csproj (in 314 ms).
+2026-11-03T20:46:11.8230472Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Picker/Hexalith.Parties.Picker.csproj (in 309 ms).
+2026-11-03T20:46:11.8467982Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.ConsumerPortal/Hexalith.Parties.ConsumerPortal.csproj (in 1.3 sec).
+2026-11-03T20:46:12.3224137Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AdminPortal/Hexalith.Parties.AdminPortal.csproj (in 497 ms).
+2026-11-03T20:46:12.3609435Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj (in 1.81 sec).
+2026-11-03T20:46:14.1560410Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T20:46:16.4710522Z   Hexalith.Parties.Authentication -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/bin/Release/net10.0/Hexalith.Parties.Authentication.dll
+2026-11-03T20:46:16.7067593Z   Hexalith.Parties.Client -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Client/bin/Release/net10.0/Hexalith.Parties.Client.dll
+2026-11-03T20:46:20.1580496Z   Hexalith.Parties.AdminPortal -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.AdminPortal/bin/Release/net10.0/Hexalith.Parties.AdminPortal.dll
+2026-11-03T20:46:20.1729377Z   Hexalith.Parties.ConsumerPortal -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.ConsumerPortal/bin/Release/net10.0/Hexalith.Parties.ConsumerPortal.dll
+2026-11-03T20:46:20.2114388Z   Hexalith.Parties.Picker -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Picker/bin/Release/net10.0/Hexalith.Parties.Picker.dll
+2026-11-03T20:46:21.5671893Z   Hexalith.Parties.UI -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.UI/bin/Release/net10.0/Hexalith.Parties.UI.dll
+2026-11-03T20:46:21.5972762Z 
+2026-11-03T20:46:21.5973645Z Build succeeded.
+2026-11-03T20:46:21.5975697Z     0 Warning(s)
+2026-11-03T20:46:21.5976061Z     0 Error(s)
+2026-11-03T20:46:21.5976286Z 
+2026-11-03T20:46:21.5976584Z Time Elapsed 00:00:12.65
+2026-11-03T20:46:21.6347175Z ##[group]Run npm run test:ui
+2026-11-03T20:46:21.6347363Z [36;1mnpm run test:ui[0m
+2026-11-03T20:46:21.6363756Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:46:21.6363899Z env:
+2026-11-03T20:46:21.6364009Z   CI: true
+2026-11-03T20:46:21.6364141Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:46:21.6364301Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:46:21.6364449Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:46:21.6364596Z ##[endgroup]
+2026-11-03T20:46:21.7093026Z 
+2026-11-03T20:46:21.7093793Z > hexalith-parties-e2e@0.0.0 test:ui
+2026-11-03T20:46:21.7094853Z > playwright test specs/parties-accessibility.spec.ts specs/admin-parties-list.spec.ts specs/consumer-portal-routes.spec.ts specs/party-picker.spec.ts --project=chromium
+2026-11-03T20:46:21.7095480Z 
+2026-11-03T20:46:25.2637546Z GitCommitInfo: timeout of 3000ms exceeded while running "git fetch origin 6795536e3fe5fd4cf44eb5f4c67e69f3374532b4 --no-auto-maintenance --no-auto-gc --no-tags --no-recurse-submodules --depth=1"
+2026-11-03T20:46:29.8881747Z 
+2026-11-03T20:46:29.8882525Z Running 68 tests using 1 worker
+2026-11-03T20:46:29.8882819Z 
+2026-11-03T20:46:32.5555980Z   ✓   1 [chromium] › specs/admin-parties-list.spec.ts:27:3 › Admin parties list › debounced display-name search combines with type and active filters (2.1s)
+2026-11-03T20:46:33.7731047Z   ✓   2 [chromium] › specs/admin-parties-list.spec.ts:45:3 › Admin parties list › normalized display-name search matches diacritics and keeps local fallback status polite (1.2s)
+2026-11-03T20:46:34.7094487Z   ✓   3 [chromium] › specs/admin-parties-list.spec.ts:68:3 › Admin parties list › normalized display-name search keeps deterministic row ordering (927ms)
+2026-11-03T20:46:35.9192645Z   ✓   4 [chromium] › specs/admin-parties-list.spec.ts:87:3 › Admin parties list › next page preserves the current search criteria (1.2s)
+2026-11-03T20:46:36.8775666Z   ✓   5 [chromium] › specs/admin-parties-list.spec.ts:111:3 › Admin parties list › degraded search preserves last-known rows and announces stale data (949ms)
+2026-11-03T20:46:37.9063512Z   ✓   6 [chromium] › specs/admin-parties-list.spec.ts:121:3 › Admin parties list › empty search has a clear-filters recovery path (1.0s)
+2026-11-03T20:46:39.0914332Z   ✓   7 [chromium] › specs/admin-parties-list.spec.ts:133:3 › Admin parties list › keyboard navigation opens a row and type-ahead focuses search (1.2s)
+2026-11-03T20:46:39.8960558Z   ✓   8 [chromium] › specs/admin-parties-list.spec.ts:152:5 › Admin parties list › GDPR operation focus rings clear nested accordion edges with forced colors none (794ms)
+2026-11-03T20:46:40.5931133Z   ✓   9 [chromium] › specs/admin-parties-list.spec.ts:152:5 › Admin parties list › GDPR operation focus rings clear nested accordion edges with forced colors active (688ms)
+2026-11-03T20:46:43.6336624Z   ✓  10 [chromium] › specs/admin-parties-list.spec.ts:163:3 › Admin parties list › desktop row click and direct route render the existing party detail surface (3.0s)
+2026-11-03T20:46:46.7554612Z   ✓  11 [chromium] › specs/admin-parties-list.spec.ts:185:3 › Admin parties list › direct GDPR route opens operations destination without browser-visible command/query calls or overflow (3.1s)
+2026-11-03T20:46:47.3993452Z   ✓  12 [chromium] › specs/admin-parties-list.spec.ts:368:3 › Admin parties list › direct GDPR route for a missing party renders bounded state with no mutation controls (633ms)
+2026-11-03T20:46:48.9120581Z   ✓  13 [chromium] › specs/admin-parties-list.spec.ts:379:3 › Admin parties list › direct GDPR route for an erased party keeps export and records available without PII (1.5s)
+2026-11-03T20:46:49.5065511Z   ✓  14 [chromium] › specs/admin-parties-list.spec.ts:495:3 › Admin parties list › direct GDPR route rejects unsafe scoped ids before fetching party data (585ms)
+2026-11-03T20:46:52.4553616Z   ✓  15 [chromium] › specs/admin-parties-list.spec.ts:505:3 › Admin parties list › detail GDPR action navigates to the party-scoped operations route (2.9s)
+2026-11-03T20:46:53.3642358Z   ✓  16 [chromium] › specs/admin-parties-list.spec.ts:541:3 › Admin parties list › create form submits and navigates with optimistic status (899ms)
+2026-11-03T20:46:54.1960676Z   ✓  17 [chromium] › specs/admin-parties-list.spec.ts:565:3 › Admin parties list › edit form uses detail edit action and submits route-authoritative update (825ms)
+2026-11-03T20:46:54.6881809Z   ✓  18 [chromium] › specs/admin-parties-list.spec.ts:585:3 › Admin parties list › validation alert is assertive and preserves entered values (485ms)
+2026-11-03T20:46:55.2070183Z   ✓  19 [chromium] › specs/admin-parties-list.spec.ts:596:3 › Admin parties list › gateway validation rejection is announced without losing entered values (512ms)
+2026-11-03T20:46:55.5715263Z   ✓  20 [chromium] › specs/admin-parties-list.spec.ts:612:3 › Admin parties list › phone and zoom form layout avoids horizontal overflow (358ms)
+2026-11-03T20:46:56.2603032Z   ✓  21 [chromium] › specs/admin-parties-list.spec.ts:627:3 › Admin parties list › phone detail behaves as a full-screen sheet and restores row focus on close (681ms)
+2026-11-03T20:46:56.8544088Z   ✓  22 [chromium] › specs/admin-parties-list.spec.ts:650:3 › Admin parties list › phone detail remains readable under zoom-equivalent narrow emulation (588ms)
+2026-11-03T20:46:57.3849188Z   ✓  23 [chromium] › specs/admin-parties-list.spec.ts:670:3 › Admin parties list › phone direct route opens detail without an originating row and closes to search focus (524ms)
+2026-11-03T20:46:58.7445661Z   ✓  24 [chromium] › specs/consumer-portal-routes.spec.ts:36:5 › Consumer portal route shells › section accordions preserve primary content and keyboard focus at narrow width with forced colors none (1.3s)
+2026-11-03T20:47:00.1362469Z   ✓  25 [chromium] › specs/consumer-portal-routes.spec.ts:36:5 › Consumer portal route shells › section accordions preserve primary content and keyboard focus at narrow width with forced colors active (1.4s)
+2026-11-03T20:47:01.2236170Z   ✓  26 [chromium] › specs/consumer-portal-routes.spec.ts:70:5 › Consumer portal route shells › bound Consumer can open /me without browser-visible gateway calls (1.1s)
+2026-11-03T20:47:02.3523121Z   ✓  27 [chromium] › specs/consumer-portal-routes.spec.ts:70:5 › Consumer portal route shells › bound Consumer can open /me/edit without browser-visible gateway calls (1.1s)
+2026-11-03T20:47:03.3234316Z   ✓  28 [chromium] › specs/consumer-portal-routes.spec.ts:70:5 › Consumer portal route shells › bound Consumer can open /me/consent without browser-visible gateway calls (964ms)
+2026-11-03T20:47:04.3020185Z   ✓  29 [chromium] › specs/consumer-portal-routes.spec.ts:70:5 › Consumer portal route shells › bound Consumer can open /me/privacy without browser-visible gateway calls (972ms)
+2026-11-03T20:47:04.4576332Z   ✓  30 [chromium] › specs/consumer-portal-routes.spec.ts:109:5 › Consumer portal route shells › unauthenticated /me challenges sign-in with the return URL preserved (148ms)
+2026-11-03T20:47:04.6064401Z   ✓  31 [chromium] › specs/consumer-portal-routes.spec.ts:109:5 › Consumer portal route shells › unauthenticated /me/edit challenges sign-in with the return URL preserved (141ms)
+2026-11-03T20:47:04.7543032Z   ✓  32 [chromium] › specs/consumer-portal-routes.spec.ts:109:5 › Consumer portal route shells › unauthenticated /me/consent challenges sign-in with the return URL preserved (141ms)
+2026-11-03T20:47:04.9033250Z   ✓  33 [chromium] › specs/consumer-portal-routes.spec.ts:109:5 › Consumer portal route shells › unauthenticated /me/privacy challenges sign-in with the return URL preserved (135ms)
+2026-11-03T20:47:05.1815510Z   ✓  34 [chromium] › specs/consumer-portal-routes.spec.ts:125:3 › Consumer portal route shells › Admin-only user cannot open /me/consent or see Consumer consent data (272ms)
+2026-11-03T20:47:05.5121134Z   ✓  35 [chromium] › specs/consumer-portal-routes.spec.ts:140:3 › Consumer portal route shells › Admin-only user cannot open /me/privacy or see Consumer export data (322ms)
+2026-11-03T20:47:05.9749764Z   ✓  36 [chromium] › specs/consumer-portal-routes.spec.ts:157:3 › Consumer portal route shells › bound Consumer saves editable profile details through the self-scoped command path (449ms)
+2026-11-03T20:47:06.4668239Z   ✓  37 [chromium] › specs/consumer-portal-routes.spec.ts:178:3 › Consumer portal route shells › bound Consumer validation preserves typed values and does not issue a command (485ms)
+2026-11-03T20:47:06.8717520Z   ✓  38 [chromium] › specs/consumer-portal-routes.spec.ts:198:3 › Consumer portal route shells › bound Consumer consent surface exposes semantic switches and honest lawful-basis split (397ms)
+2026-11-03T20:47:07.3737583Z   ✓  39 [chromium] › specs/consumer-portal-routes.spec.ts:224:3 › Consumer portal route shells › bound Consumer grants and withdraws consent through the self-scoped command path (495ms)
+2026-11-03T20:47:07.9647343Z   ✓  40 [chromium] › specs/consumer-portal-routes.spec.ts:257:3 › Consumer portal route shells › bound Consumer exports own data through the self-scoped path (579ms)
+2026-11-03T20:47:08.6471140Z   ✓  41 [chromium] › specs/consumer-portal-routes.spec.ts:314:3 › Consumer portal route shells › bound Consumer navigation cancels an active shared download without late feedback or browser resources (672ms)
+2026-11-03T20:47:09.1258421Z   ✓  42 [chromium] › specs/consumer-portal-routes.spec.ts:320:3 › Consumer portal route shells › bound Consumer sees processing summary through the self-scoped path (469ms)
+2026-11-03T20:47:09.5131369Z   ✓  43 [chromium] › specs/consumer-portal-routes.spec.ts:344:3 › Consumer portal route shells › bound Consumer sees bounded empty processing state with privacy actions still usable (380ms)
+2026-11-03T20:47:09.9085494Z   ✓  44 [chromium] › specs/consumer-portal-routes.spec.ts:366:3 › Consumer portal route shells › bound Consumer sees bounded processing retry guidance after transient load failure (389ms)
+2026-11-03T20:47:10.4269830Z   ✓  45 [chromium] › specs/consumer-portal-routes.spec.ts:390:3 › Consumer portal route shells › bound Consumer requests and cancels erasure through the self-scoped path (512ms)
+2026-11-03T20:47:10.7998465Z   ✓  46 [chromium] › specs/consumer-portal-routes.spec.ts:422:3 › Consumer portal route shells › bound Consumer cannot cancel erasure once deletion has begun (363ms)
+2026-11-03T20:47:11.1763357Z   ✓  47 [chromium] › specs/consumer-portal-routes.spec.ts:451:3 › Consumer portal route shells › bound Consumer sees permanent erasure copy without a cancel action after deletion completes (368ms)
+2026-11-03T20:47:11.6633241Z   ✓  48 [chromium] › specs/consumer-portal-routes.spec.ts:477:3 › Consumer portal route shells › bound Consumer sees retry guidance when the JSON download helper fails (481ms)
+2026-11-03T20:47:13.5667070Z   ✓  49 [chromium] › specs/parties-accessibility.spec.ts:23:3 › Parties UI accessibility specimen › specimen is nonblank and passes the blocking axe gate (1.9s)
+2026-11-03T20:47:14.5599325Z   ✓  50 [chromium] › specs/parties-accessibility.spec.ts:65:5 › Parties UI accessibility specimen › blocking axe gate rejects an inaccessible navigation outside main content (987ms)
+2026-11-03T20:47:15.5674444Z   ✓  51 [chromium] › specs/parties-accessibility.spec.ts:65:5 › Parties UI accessibility specimen › blocking axe gate rejects an inaccessible skip link outside main content (1.0s)
+2026-11-03T20:47:16.1730422Z   ✓  52 [chromium] › specs/parties-accessibility.spec.ts:92:3 › Parties UI accessibility specimen › skip links are the first two focusable elements in the shell and focus their targets (598ms)
+2026-11-03T20:47:17.3871759Z   ✓  53 [chromium] › specs/parties-accessibility.spec.ts:110:3 › Parties UI accessibility specimen › compact and resized layouts expose only mounted skip targets and preserve keyboard content access (1.2s)
+2026-11-03T20:47:18.0671376Z   ✓  54 [chromium] › specs/parties-accessibility.spec.ts:161:3 › Parties UI accessibility specimen › route-heading announcement leaves skip links forward reachable and focuses their targets (673ms)
+2026-11-03T20:47:18.6165724Z   ✓  55 [chromium] › specs/parties-accessibility.spec.ts:184:3 › Parties UI accessibility specimen › client-side route focus restores forward skip access (542ms)
+2026-11-03T20:47:19.1999777Z   ✓  56 [chromium] › specs/parties-accessibility.spec.ts:226:3 › Parties UI accessibility specimen › keyboard flow reaches representative controls without trapping focus (577ms)
+2026-11-03T20:47:19.6838147Z   ✓  57 [chromium] › specs/parties-accessibility.spec.ts:235:3 › Parties UI accessibility specimen › accordion focus check rejects suppressed actual focus paint (477ms)
+2026-11-03T20:47:20.1673655Z   ✓  58 [chromium] › specs/parties-accessibility.spec.ts:258:3 › Parties UI accessibility specimen › accordion focus check rejects an intermediate clipping wrapper (475ms)
+2026-11-03T20:47:20.8394814Z   ✓  59 [chromium] › specs/parties-accessibility.spec.ts:270:3 › Parties UI accessibility specimen › disabled irreversible confirmation retains the Fluent disabled appearance (663ms)
+2026-11-03T20:47:21.5211036Z   ✓  60 [chromium] › specs/parties-accessibility.spec.ts:299:5 › Parties UI accessibility specimen › content controls have visible keyboard focus with forced colors none (675ms)
+2026-11-03T20:47:22.2871353Z   ✘  61 [chromium] › specs/parties-accessibility.spec.ts:299:5 › Parties UI accessibility specimen › content controls have visible keyboard focus with forced colors active (688ms)
+2026-11-03T20:47:23.5021964Z   ✓  62 [chromium] › specs/parties-accessibility.spec.ts:299:5 › Parties UI accessibility specimen › content controls have visible keyboard focus with forced colors active (retry #1) (717ms)
+2026-11-03T20:47:23.9957236Z   ✓  63 [chromium] › specs/parties-accessibility.spec.ts:418:3 › Parties UI accessibility specimen › content reduced-motion rules suppress nonzero animation and transition settings (485ms)
+2026-11-03T20:47:24.3371776Z   ✓  64 [chromium] › specs/parties-accessibility.spec.ts:458:3 › Parties UI accessibility specimen › filled primary button does not compute to raw teal (330ms)
+2026-11-03T20:47:24.7917069Z   ✓  65 [chromium] › specs/parties-accessibility.spec.ts:468:3 › Parties UI accessibility specimen › semantic visual baseline for deterministic shell specimen (446ms)
+2026-11-03T20:47:25.3206069Z   ✓  66 [chromium] › specs/parties-accessibility.spec.ts:474:3 › Parties UI accessibility specimen › visual baseline for deterministic shell specimen (522ms)
+2026-11-03T20:47:25.7500734Z   ✓  67 [chromium] › specs/party-picker.spec.ts:20:3 › Party picker combobox › keyboard selection keeps focus on the input and emits a bounded event (416ms)
+2026-11-03T20:47:26.1927940Z   ✓  68 [chromium] › specs/party-picker.spec.ts:60:3 › Party picker combobox › escape closes degraded results without changing durable selection (436ms)
+2026-11-03T20:47:26.6342658Z   ✓  69 [chromium] › specs/party-picker.spec.ts:83:3 › Party picker combobox › admin form bridge receives the bounded party-selected event (436ms)
+2026-11-03T20:47:26.7247500Z 
+2026-11-03T20:47:26.7251552Z 
+2026-11-03T20:47:26.7259965Z   1) [chromium] › specs/parties-accessibility.spec.ts:299:5 › Parties UI accessibility specimen › content controls have visible keyboard focus with forced colors active 
+2026-11-03T20:47:26.7260386Z 
+2026-11-03T20:47:26.7260549Z     Error: expect(received).toBe(expected) // Object.is equality
+2026-11-03T20:47:26.7260790Z 
+2026-11-03T20:47:26.7260947Z     Expected: "rgb(255, 255, 255)"
+2026-11-03T20:47:26.7261247Z     Received: "rgba(255, 255, 255, 0.8)"
+2026-11-03T20:47:26.7261421Z 
+2026-11-03T20:47:26.7261883Z       409 |         expect(focus.outlineContrast, `${focus.testId} outline contrast against its surrounding surface`).toBeGreaterThanOrEqual(3);
+2026-11-03T20:47:26.7262398Z       410 |         if (forcedColors === 'active') {
+2026-11-03T20:47:26.7262840Z     > 411 |           expect(focus.backgroundColor).toBe(focus.expectedBackground);
+2026-11-03T20:47:26.7263264Z           |                                         ^
+2026-11-03T20:47:26.7263635Z       412 |           expect(focus.color).toBe(focus.expectedText);
+2026-11-03T20:47:26.7263951Z       413 |         }
+2026-11-03T20:47:26.7264145Z       414 |       }
+2026-11-03T20:47:26.7265067Z         at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/parties-accessibility.spec.ts:411:41
+2026-11-03T20:47:26.7265464Z 
+2026-11-03T20:47:26.7265973Z     attachment #1: content-focus.json (application/json) ───────────────────────────────────────────
+2026-11-03T20:47:26.7266975Z     test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/attachments/content-focus-json-36ecf2fda83a50b2f981ba07d4d6044b0dc1e135.json
+2026-11-03T20:47:26.7267968Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7268232Z 
+2026-11-03T20:47:26.7268807Z     attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7269518Z     test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/test-failed-1.png
+2026-11-03T20:47:26.7270279Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7270521Z 
+2026-11-03T20:47:26.7270931Z     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7271601Z     test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/video.webm
+2026-11-03T20:47:26.7272286Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7272441Z 
+2026-11-03T20:47:26.7272728Z     Error Context: test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/error-context.md
+2026-11-03T20:47:26.7273200Z 
+2026-11-03T20:47:26.7273446Z     attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7273863Z     test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/trace.zip
+2026-11-03T20:47:26.7274150Z     Usage:
+2026-11-03T20:47:26.7274218Z 
+2026-11-03T20:47:26.7274537Z         npx playwright show-trace test-results/parties-accessibility-Part-2a690-s-with-forced-colors-active-chromium/trace.zip
+2026-11-03T20:47:26.7274916Z 
+2026-11-03T20:47:26.7275275Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+2026-11-03T20:47:26.7275519Z 
+2026-11-03T20:47:26.7275596Z   1 flaky
+2026-11-03T20:47:26.7276190Z     [chromium] › specs/parties-accessibility.spec.ts:299:5 › Parties UI accessibility specimen › content controls have visible keyboard focus with forced colors active 
+2026-11-03T20:47:26.7276595Z   67 passed (1.1m)
+2026-11-03T20:47:26.8476910Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-11-03T20:47:26.8477149Z with:
+2026-11-03T20:47:26.8477268Z   name: ui-a11y-results
+2026-11-03T20:47:26.8477444Z   path: tests/e2e/playwright-report
+tests/e2e/test-results
+
+2026-11-03T20:47:26.8477636Z   retention-days: 14
+2026-11-03T20:47:26.8477765Z   if-no-files-found: warn
+2026-11-03T20:47:26.8477899Z   compression-level: 6
+2026-11-03T20:47:26.8478106Z   overwrite: false
+2026-11-03T20:47:26.8478236Z   include-hidden-files: false
+2026-11-03T20:47:26.8478372Z   archive: true
+2026-11-03T20:47:26.8478487Z env:
+2026-11-03T20:47:26.8478766Z   CI: true
+2026-11-03T20:47:26.8478900Z   BASE_URL: http://127.0.0.1:5072
+2026-11-03T20:47:26.8479054Z   PLAYWRIGHT_SKIP_WEBSERVER: 
+2026-11-03T20:47:26.8479200Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:47:26.8479339Z ##[endgroup]
+2026-11-03T20:47:26.9631924Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-03T20:47:26.9633623Z The least common ancestor is /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e. This will be the root directory of the artifact
+2026-11-03T20:47:26.9634331Z With the provided path, there will be 55 files uploaded
+2026-11-03T20:47:26.9636927Z Artifact name is valid!
+2026-11-03T20:47:26.9637370Z Root directory input is valid!
+2026-11-03T20:47:27.2491517Z Uploading artifact: ui-a11y-results.zip
+2026-11-03T20:47:27.2514553Z Beginning upload of artifact content to blob storage
+2026-11-03T20:47:27.7947463Z Uploaded bytes 2303544
+2026-11-03T20:47:27.8366128Z Finished uploading artifact content to blob storage!
+2026-11-03T20:47:27.8366825Z SHA256 digest of uploaded artifact is 7c5f1313269ace34c5ff0e223337b63401cb7235bd767439923bc80a89da190a
+2026-11-03T20:47:27.8367309Z Finalizing artifact upload
+2026-11-03T20:47:28.4331693Z Artifact ui-a11y-results successfully finalized. Artifact ID 13268879291
+2026-11-03T20:47:28.4332506Z Artifact ui-a11y-results has been successfully uploaded! Final size is 2303544 bytes. Artifact ID is 13268879291
+2026-11-03T20:47:28.4335285Z Artifact download URL: https://github.com/Hexalith/Hexalith.Parties/actions/runs/41714178534/artifacts/13268879291
+2026-11-03T20:47:28.4489972Z Post job cleanup.
+2026-11-03T20:47:28.5253370Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-3299807d9adde97c86bdedae81ddf9873a15a071c8b37c25eb435d1476fef2e7, not saving cache.
+2026-11-03T20:47:28.5347431Z Post job cleanup.
+2026-11-03T20:47:28.6304996Z Post job cleanup.
+2026-11-03T20:47:28.6926445Z [command]/usr/bin/git version
+2026-11-03T20:47:28.6964474Z git version 2.56.0
+2026-11-03T20:47:28.6989403Z Temporarily overriding HOME='/home/runner/work/_temp/e8825848-3dd4-43d1-af3f-8ee382bc01da' before making global git config changes
+2026-11-03T20:47:28.6990222Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:47:28.6993471Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:47:28.7030159Z Removing SSH command configuration
+2026-11-03T20:47:28.7037976Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:47:28.7069552Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:47:28.7288916Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:47:28.7335850Z Entering 'references/Hexalith.Commons'
+2026-11-03T20:47:28.7396909Z Removing HTTP extra header
+2026-11-03T20:47:28.7402794Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:47:28.7448229Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:47:28.7702228Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:47:28.7746450Z Entering 'references/Hexalith.Commons'
+2026-11-03T20:47:28.7794063Z Removing includeIf entries pointing to credentials config files
+2026-11-03T20:47:28.7802316Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:47:28.7843157Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T20:47:28.7843888Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T20:47:28.7844405Z includeif.gitdir:/github/workspace/.git.path
+2026-11-03T20:47:28.7844815Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T20:47:28.7849709Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T20:47:28.7892648Z /home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:47:28.7901311Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-b8ed7803\-0f68\-4558\-8687\-1a90507cd217\.config
+2026-11-03T20:47:28.7948843Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T20:47:28.7982741Z /home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:47:28.7990379Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-b8ed7803\-0f68\-4558\-8687\-1a90507cd217\.config
+2026-11-03T20:47:28.8032656Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-03T20:47:28.8067577Z /github/runner_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:47:28.8074536Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-b8ed7803\-0f68\-4558\-8687\-1a90507cd217\.config
+2026-11-03T20:47:28.8121391Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T20:47:28.8156002Z /github/runner_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config
+2026-11-03T20:47:28.8162844Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-b8ed7803\-0f68\-4558\-8687\-1a90507cd217\.config
+2026-11-03T20:47:28.8206330Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T20:47:28.8403364Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:47:28.8422352Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config	remote.origin.url
+2026-11-03T20:47:28.8442779Z Entering 'references/Hexalith.Commons'
+2026-11-03T20:47:28.8459007Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config	remote.origin.url
+2026-11-03T20:47:28.8487360Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:47:28.8524087Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Commons/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:47:28.8556811Z Removing credentials config '/home/runner/work/_temp/git-credentials-b8ed7803-0f68-4558-8687-1a90507cd217.config'
+2026-11-03T20:47:28.8691020Z Cleaning up orphan processes
+2026-11-03T20:47:28.8954169Z Terminate orphan process: pid (2662) (VBCSCompiler)
+2026-11-03T20:47:28.8973773Z Terminate orphan process: pid (3616) (dotnet)
+2026-11-03T20:47:28.8987045Z Terminate orphan process: pid (3617) (dotnet)
+2026-11-03T20:47:28.9000177Z Terminate orphan process: pid (3618) (dotnet)
+

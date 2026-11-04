@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index df3bc85099c5a4d27d28b18437caad36647a9ba4..4b67f492e3d7d01fd41490d15fe707973952a8f0 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -242,7 +242,7 @@ jobs:
+         with:
+           global-json-file: global.json
+       - name: Initialize direct declaration owners
+-        run: git -c submodule.recurse=false submodule update --init references/Hexalith.EventStore references/Hexalith.Tenants references/Hexalith.Memories
++        run: git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.EventStore references/Hexalith.Tenants references/Hexalith.Memories
+       - name: Restore the pinned module tool
+         run: dotnet tool restore
+       - name: Validate Parties with its reference declarations

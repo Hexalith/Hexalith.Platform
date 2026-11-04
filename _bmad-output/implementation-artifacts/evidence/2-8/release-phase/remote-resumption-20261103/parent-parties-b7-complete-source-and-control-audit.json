@@ -1,0 +1,82 @@
+{
+  "at": "2026-11-04T11:40:47.848133+00:00",
+  "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "head": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "completePatchSha256": "48282d190a5cf99e684d75f177300cead6237f1349318228fc85d408a0b7e27f",
+  "patchBytes": 92144,
+  "paths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci-lifecycle-qualification.yml",
+    ".github/workflows/ci.yml",
+    ".gitlink-signoff.tsv",
+    "README.md",
+    "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+    "docs/architecture.md",
+    "docs/ci-lifecycle-qualification.md",
+    "docs/ci.md",
+    "docs/getting-started.md",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+    "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+  ],
+  "parentRead": "Complete unified19path proposal read in sequential chunks through final hunk, including native diagnostic binding/retention and preservation of dated historical bookkeeping. Fourteen-path adoption draft previously read before commit.",
+  "firstAuditAssumption": "Initial git diff inherited submodule display config; explicit --submodule=short reproduced the retained patch byte-for-byte. No source change.",
+  "evidenceIndexRehash": "parent-parties-b7-evidence-rehash.json",
+  "actualHosted": {
+    "run": 41821031463,
+    "attempt": 1,
+    "testedSource": "dcd5d1311e12b57a8884eb1295e296d4e5f36541",
+    "isolatedReports": 15,
+    "counters": {
+      "total": 6296,
+      "executed": 6282,
+      "passed": 6281,
+      "failed": 1,
+      "notExecuted": 14
+    },
+    "nativeProvisioning": "Refused after unconditional isolated capability failure; actual artifact cleanupstatusnot-allocated.",
+    "ui": {
+      "stats": {
+        "total": 68,
+        "expected": 61,
+        "unexpected": 7,
+        "flaky": 0,
+        "skipped": 0,
+        "ok": false
+      },
+      "embeddedErrors": 21,
+      "messages": [
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/admin-parties-list.spec.ts:392:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/consumer-portal-routes.spec.ts:315:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/parties-accessibility.spec.ts:111:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/admin-parties-list.spec.ts:302:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/parties-accessibility.spec.ts:185:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/parties-accessibility.spec.ts:162:5",
+        "Error: This adoption authorizes exactly the selected 4.7.5 package capabilities.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"4.7.\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"4.7.\u001b[7m6\u001b[27m\"\u001b[39m\n\n   at ../helpers/frontcomposer-assets.ts:20\n\n  18 |     expect(path.isAbsolute(root)).toBe(true);\n  19 |   } else {\n> 20 |     expect(version, 'This adoption authorizes exactly the selected 4.7.5 package capabilities.').toBe('4.7.5');\n     |                                                                                                  ^\n  21 |     expect(folders.length, 'Read the restored package folders from the current build.').toBeGreaterThan(0);\n  22 |   }\n  23 |   const assets = [];\n    at qualifyFrontComposerAssets (/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/helpers/frontcomposer-assets.ts:20:98)\n    at /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/e2e/specs/consumer-portal-routes.spec.ts:258:5"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "UI-FC-EXACT-GUARD",
+      "source": "tests/e2e/helpers/frontcomposer-assets.ts:20",
+      "observed": "Expected4.7.5/actualselected4.7.6;61pass7fail before asset assertions.",
+      "disposition": "Bounded local correction assigned; no behavior/assertion relaxation."
+    },
+    {
+      "id": "MEMORIES-REFRESH-SELECTOR",
+      "source": "Directory.Build.targets:52",
+      "observed": "Finite qualified package selector omits selected3.0.23. Unconditional compiled-capability test fails; new conditional safety cases omitted.",
+      "disposition": "Bounded exactversion activation and actual newlyenabled safety controls assigned; unconditionaltest retained."
+    }
+  ],
+  "nativeAccepted": false,
+  "storyComplete": false,
+  "candidateAcceptance": false
+}

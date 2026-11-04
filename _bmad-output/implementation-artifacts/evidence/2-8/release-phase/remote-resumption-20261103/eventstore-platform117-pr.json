@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-11-03T19:55:20.671Z",
+  "number": 392,
+  "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+  "base": "50a5b81a08a35bd231e2139d8977cc6a713daaa9",
+  "head": "107679d27313c6083472b7ce6c05f155028df53c",
+  "branch": "fix/adopt-platform-117",
+  "author": {
+    "login": "jpiquot",
+    "id": 6775094
+  },
+  "changedFiles": 6,
+  "title": "ci: bind package integration to Platform 1.1.7",
+  "body": "Align the required package integration caller with genuine Platform v1.1.7 at `ed1560a57f4d4cb55b6b03f485cbfa01316837a7` and published Builds/tool 4.43.6 at `725754075e1d6369430a3adf94d46fb71e6eaf9e`. Current main already contains those exact tool/gitlink pins; this change updates the stale v2 workflow ref, its two exact owner assertions and the directly affected adoption documentation. All 20 whole isolated projects, dedicated pull-only secrets and independent owner jobs are preserved.\n\nThe real gateway/persistence test additionally measures SDK assemblies already loaded in its own process. Bounded identities/version/source metadata/SHA-256 go to TRX output and a private CreateNew JSON file in the existing classified integration artifact directory before teardown. No artificial assembly load, functional-observation schema change or production API is introduced. Two actual local I/O controls preserve first bytes/0600 and refuse overwrites/linked directories; their results supply no native credit.\n\nValidation: supported released 4.43.6 package preparation with genuine v1.1.7 and the official private Tenants7 cache; focused Contracts and native-fixture Release/package builds; 3 caller/permissions/independent-gate tests passed; 2 I/O controls passed; absent descriptor correctly fails both real gateway tests with HXT106 and zero skips; actionlint/whitespace/locked commitlint 21.2.4 passed. Incoming main advanced to `50a5b81a08a35bd231e2139d8977cc6a713daaa9` with an identical tree and was merged normally; final proposal tree is unchanged. Full hosted isolated/native/cleanup execution and actual loaded SDK artifact qualification remain pending. No candidate acceptance.",
+  "state": "open",
+  "draft": false
+}

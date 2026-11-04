@@ -1,0 +1,26 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-class",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests",
+    "--minimum-expected-tests",
+    "69",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-shallow-caller-controls",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "caller.trx"
+  ],
+  "exitCode": 0,
+  "completedAt": "2026-11-03T21:00:16.794953+00:00",
+  "mode": "existing Release/package owning assembly; reads current workflow source",
+  "candidateAcceptance": false
+}

@@ -1,0 +1,272 @@
+{
+  "observedAt": "2026-11-04T12:02:24.032908+00:00",
+  "job": {
+    "id": 126557222365,
+    "run_id": 41824961081,
+    "workflow_name": "CI",
+    "head_branch": "fix/adopt-platform-117",
+    "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/runs/41824961081",
+    "run_attempt": 1,
+    "node_id": "CR_kwDORb3i1M8AAAAdd2X13Q",
+    "head_sha": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/jobs/126557222365",
+    "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41824961081/job/126557222365",
+    "status": "in_progress",
+    "conclusion": null,
+    "created_at": "2026-11-04T11:56:07Z",
+    "started_at": "2026-11-04T11:56:10Z",
+    "completed_at": null,
+    "name": "ci / build-and-test",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-04T11:56:11Z",
+        "completed_at": "2026-11-04T11:56:14Z"
+      },
+      {
+        "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-04T11:56:14Z",
+        "completed_at": "2026-11-04T11:56:18Z"
+      },
+      {
+        "name": "Validate governed CI contract",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 3,
+        "started_at": "2026-11-04T11:56:18Z",
+        "completed_at": "2026-11-04T11:56:18Z"
+      },
+      {
+        "name": "Checkout approved Builds actions",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 4,
+        "started_at": "2026-11-04T11:56:18Z",
+        "completed_at": "2026-11-04T11:56:18Z"
+      },
+      {
+        "name": "Evaluate governed workflow provenance",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 5,
+        "started_at": "2026-11-04T11:56:18Z",
+        "completed_at": "2026-11-04T11:56:18Z"
+      },
+      {
+        "name": "Initialize root-declared submodules (governed)",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 6,
+        "started_at": "2026-11-04T11:56:18Z",
+        "completed_at": "2026-11-04T11:56:18Z"
+      },
+      {
+        "name": "Initialize root-declared submodules",
+        "status": "in_progress",
+        "conclusion": null,
+        "number": 7,
+        "started_at": "2026-11-04T11:56:18Z",
+        "completed_at": null
+      },
+      {
+        "name": "Initialize .NET",
+        "status": "pending",
+        "conclusion": null,
+        "number": 8,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Checkout workflow-owned Builds preparation",
+        "status": "pending",
+        "conclusion": null,
+        "number": 9,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Prepare module build",
+        "status": "pending",
+        "conclusion": null,
+        "number": 10,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Cache NuGet packages",
+        "status": "pending",
+        "conclusion": null,
+        "number": 11,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Validate test platform input",
+        "status": "pending",
+        "conclusion": null,
+        "number": 12,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Prepare package dependencies",
+        "status": "pending",
+        "conclusion": null,
+        "number": 13,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Restore",
+        "status": "pending",
+        "conclusion": null,
+        "number": 14,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Build",
+        "status": "pending",
+        "conclusion": null,
+        "number": 15,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Validate package consumer references",
+        "status": "pending",
+        "conclusion": null,
+        "number": 16,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Unit tests (Tier 1, VSTest)",
+        "status": "pending",
+        "conclusion": null,
+        "number": 17,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+        "status": "pending",
+        "conclusion": null,
+        "number": 18,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Require isolated success before integration",
+        "status": "pending",
+        "conclusion": null,
+        "number": 19,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Install integration toolchain without starting services",
+        "status": "pending",
+        "conclusion": null,
+        "number": 20,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Prepare integration binaries",
+        "status": "pending",
+        "conclusion": null,
+        "number": 21,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Authenticate pull-only integration registry",
+        "status": "pending",
+        "conclusion": null,
+        "number": 22,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Runner-owned package integration",
+        "status": "pending",
+        "conclusion": null,
+        "number": 23,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Finalize exact CI owner",
+        "status": "pending",
+        "conclusion": null,
+        "number": 24,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Remove integration registry credentials",
+        "status": "pending",
+        "conclusion": null,
+        "number": 25,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Upload classified integration diagnostics",
+        "status": "pending",
+        "conclusion": null,
+        "number": 26,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Validate coverage gates",
+        "status": "pending",
+        "conclusion": null,
+        "number": 27,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Fail on blocking test failures",
+        "status": "pending",
+        "conclusion": null,
+        "number": 28,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Upload test and coverage evidence",
+        "status": "pending",
+        "conclusion": null,
+        "number": 29,
+        "started_at": null,
+        "completed_at": null
+      },
+      {
+        "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "status": "pending",
+        "conclusion": null,
+        "number": 58,
+        "started_at": null,
+        "completed_at": null
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/check-runs/126557222365",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000072557,
+    "runner_name": "GitHub Actions 1000072557",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  "primaryFetchLimitation": "Specific actions/jobs endpoint rejected by connector allowlist; normal authenticated read-only ghAPI fallback."
+}

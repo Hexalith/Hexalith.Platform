@@ -1,0 +1,40 @@
+{
+  "head": "fabf7ab40c7e646dba057f599127271d2c38105d",
+  "sourceClean": true,
+  "commands": [
+    {
+      "name": "final-source-preparation",
+      "command": [
+        "python3",
+        "-B",
+        "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T19:53:15.150253+00:00",
+      "completedAt": "2026-11-03T19:53:17.166090+00:00"
+    },
+    {
+      "name": "final-source-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "--configuration",
+        "Release",
+        "-warnaserror",
+        "-m:1",
+        "-p:UseHexalithProjectReferences=false"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T19:53:17.168570+00:00",
+      "completedAt": "2026-11-03T19:53:32.527991+00:00"
+    }
+  ],
+  "mode": "Release/package",
+  "signatureRevocationMode": "offline",
+  "environmentFile": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/prepared-build-release.env",
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

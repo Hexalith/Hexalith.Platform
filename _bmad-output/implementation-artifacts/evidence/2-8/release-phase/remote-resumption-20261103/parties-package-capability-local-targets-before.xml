@@ -1,0 +1,205 @@
+<Project>
+  <!-- Catalog API availability does not select native source hosts. Qualify exact package cohorts. -->
+  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'">
+    <DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4'">
+    <HexalithEventStoreCatalogApiSupported>true</HexalithEventStoreCatalogApiSupported>
+    <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_API</DefineConstants>
+  </PropertyGroup>
+  <!-- Complete private hosted topology requires APIs first published in 3.130.0. -->
+  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4'">
+    <HexalithEventStoreCatalogHostsSupported>true</HexalithEventStoreCatalogHostsSupported>
+    <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_HOSTS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(HexalithSourceMappingMode)' == 'source' and $(MSBuildProjectName.EndsWith('.Tests'))">
+    <!-- Test utilities consume the same exact roots selected by prepare-build. -->
+    <AssemblyMetadata Include="HexalithTestRepositoryRoot" Value="$(MSBuildThisFileDirectory)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.AI.Tools" Value="$(HexalithAIToolsRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.Platform" Value="$(HexalithSourceMappingRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.PolymorphicSerializations" Value="$(HexalithPolymorphicSerializationsRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.Builds" Value="$(HexalithBuildsRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.Commons" Value="$(HexalithCommonsRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.EventStore" Value="$(HexalithEventStoreRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.FrontComposer" Value="$(HexalithFrontComposerRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.McpCli" Value="$(HexalithMcpCliRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.Memories" Value="$(HexalithMemoriesRoot)" />
+    <AssemblyMetadata Include="HexalithTestRoot:Hexalith.Tenants" Value="$(HexalithTenantsRoot)" />
+  </ItemGroup>
+  <!-- Shared registration remains opt-in. Qualify exact package API cohorts. -->
+  <Target Name="ConfigureFrontComposerFeedbackCandidate" BeforeTargets="PrepareForBuild;CoreCompile">
+    <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '4.0.4'">
+      <DefineConstants>$(DefineConstants);HES_CANCELLABLE_PROJECTIONS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.1' or '$(HexalithFrontComposerVersion)' == '4.7.3' or '$(HexalithFrontComposerVersion)' == '4.7.4' or '$(HexalithFrontComposerVersion)' == '4.7.5'">
+      <DefineConstants>$(DefineConstants);HFC_SHARED_UI</DefineConstants>
+    </PropertyGroup>
+    <!-- 4.7.5 publishes readiness, operation witnesses, retry clocks and recovery generations.
+         Older or unknown packages retain local reconciliation. -->
+    <PropertyGroup Condition="'$(HexalithFrontComposerFromSource)' == 'true' or '$(HexalithFrontComposerVersion)' == '4.7.5'">
+      <DefineConstants>$(DefineConstants);HFC_SHARED_RECONCILE_READINESS</DefineConstants>
+    </PropertyGroup>
+  </Target>
+  <Target Name="ConfigureMemoriesSourceCompilation" BeforeTargets="PrepareForBuild;GetAssemblyAttributes;GenerateCompileDependencyCache;CoreCompile"
+          Condition="'$(MSBuildProjectName)' == 'Hexalith.Parties' or '$(MSBuildProjectName)' == 'Hexalith.Parties.Tests'">
+    <!-- Evaluate after the generated final source imports, before compile inputs and assembly metadata are captured. -->
+    <PropertyGroup>
+      <MemoriesSourceRefreshSupported>false</MemoriesSourceRefreshSupported>
+    </PropertyGroup>
+    <!-- The qualified 3.0.3, 3.0.10 through 3.0.13 and 3.0.18 packages expose the same explicit revision/refresh protocol.
+         Qualify exact package selections; future or older packages remain fail closed. -->
+    <PropertyGroup Condition="'$(HexalithMemoriesFromSource)' == 'true' or '$(HexalithMemoriesVersion)' == '3.0.3' or '$(HexalithMemoriesVersion)' == '3.0.10' or '$(HexalithMemoriesVersion)' == '3.0.11' or '$(HexalithMemoriesVersion)' == '3.0.12' or '$(HexalithMemoriesVersion)' == '3.0.13' or '$(HexalithMemoriesVersion)' == '3.0.18'">
+      <DefineConstants>$(DefineConstants);HEXALITH_MEMORIES_SOURCE_REFRESH</DefineConstants>
+      <MemoriesSourceRefreshSupported>true</MemoriesSourceRefreshSupported>
+    </PropertyGroup>
+    <ItemGroup>
+      <AssemblyMetadata Include="HexalithMemoriesSourceRefresh" Value="$(MemoriesSourceRefreshSupported)" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Hexalith.Parties.Tests'">
+    <AssemblyMetadata Include="HexalithSourceMappingMode" Value="$(HexalithSourceMappingMode)" />
+  </ItemGroup>
+  <Target Name="ResolveMemoryRuntimeChildTargetPath" BeforeTargets="ConfigureMemoryRuntimeIdentity"
+          DependsOnTargets="PrepareProjectReferences" Condition="'$(MSBuildProjectName)' == 'Hexalith.Parties.IntegrationTests'">
+    <ItemGroup>
+      <_MemoryRuntimeChildReference Include="@(_MSBuildProjectReferenceExistent)"
+          Condition="'%(_MSBuildProjectReferenceExistent.Filename)' == 'Hexalith.Parties.Tests'" />
+    </ItemGroup>
+    <!-- Ask the actual referenced project, preserving SDK artifact/output/RID settings and reference metadata. -->
+    <MSBuild Projects="@(_MemoryRuntimeChildReference)" Targets="GetTargetPath" BuildInParallel="false"
+        Properties="%(_MemoryRuntimeChildReference.SetConfiguration);%(_MemoryRuntimeChildReference.SetPlatform);%(_MemoryRuntimeChildReference.SetTargetFramework);%(_MemoryRuntimeChildReference.AdditionalProperties)"
+        RemoveProperties="%(_MemoryRuntimeChildReference.GlobalPropertiesToRemove);$(_GlobalPropertiesToRemoveFromProjectReferences)">
+      <Output TaskParameter="TargetOutputs" ItemName="_MemoryRuntimeChildTargetPath" />
+    </MSBuild>
+    <Error Condition="'@(_MemoryRuntimeChildTargetPath->Count())' != '1'" Text="Exactly one evaluated runtime child TargetPath is required." />
+    <PropertyGroup>
+      <_MemoryRuntimeChildPath>@(_MemoryRuntimeChildTargetPath->'%(FullPath)')</_MemoryRuntimeChildPath>
+    </PropertyGroup>
+  </Target>
+  <Target Name="ConfigureMemoryRuntimeIdentity" BeforeTargets="GetAssemblyAttributes"
+          Condition="'$(MSBuildProjectName)' == 'Hexalith.Parties.Tests' or '$(MSBuildProjectName)' == 'Hexalith.Parties.IntegrationTests'">
+    <ItemGroup>
+      <AssemblyMetadata Include="HexalithRuntimeConfiguration" Value="$(Configuration)" />
+      <AssemblyMetadata Include="HexalithRuntimeTargetFramework" Value="$(TargetFramework)" />
+      <AssemblyMetadata Include="HexalithRuntimeMappingMode" Value="$(HexalithSourceMappingMode)" />
+      <AssemblyMetadata Include="HexalithRuntimeMappingHash" Value="$(HexalithSourceMappingHash)" />
+      <AssemblyMetadata Include="HexalithRuntimeEventStoreVersion" Value="$(HexalithEventStoreVersion)" />
+      <AssemblyMetadata Include="HexalithRuntimeMemoriesVersion" Value="$(HexalithMemoriesVersion)" />
+      <AssemblyMetadata Include="HexalithRuntimeFrontComposerVersion" Value="$(HexalithFrontComposerVersion)" />
+      <AssemblyMetadata Include="HexalithRuntimeRuntimeIdentifier" Value="$(RuntimeIdentifier)" />
+      <AssemblyMetadata Include="HexalithRuntimeChildPath" Value="$(_MemoryRuntimeChildPath)" Condition="'$(MSBuildProjectName)' == 'Hexalith.Parties.IntegrationTests'" />
+    </ItemGroup>
+  </Target>
+  <!-- Published EventStore 3.128.0 supplies recovery and generation APIs in both dependency modes. -->
+  <PropertyGroup Condition="('$(MSBuildProjectName)' == 'Hexalith.Parties.Projections' or '$(MSBuildProjectName)' == 'Hexalith.Parties.Projections.Tests' or '$(MSBuildProjectName)' == 'Hexalith.Parties.Tests')">
+    <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Hexalith.FrontComposer.Shell'">
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS9113;CS0162</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Hexalith.FrontComposer.Contracts'">
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS1591;CS1574</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!--
+    Container image defaults (.NET SDK container support).
+    Opt-in per project with:
+      <EnableContainer>true</EnableContainer>
+      <ContainerRepository>image-name</ContainerRepository>
+    CI/CD may override ContainerRegistry via env or -p:. The image tag is not free:
+    it must equal ContainerProvenanceReleaseVersion, and defaults to it when unset.
+    Loaded as .targets (post-project) so EnableContainer set in the project is visible.
+  -->
+  <PropertyGroup Condition="'$(EnableContainer)' == 'true'">
+    <IsPackable>false</IsPackable>
+    <IsPublishable>true</IsPublishable>
+    <ContainerBaseImage Condition="'$(ContainerBaseImage)' == ''">mcr.microsoft.com/dotnet/aspnet:10.0-alpine</ContainerBaseImage>
+    <ContainerFamily Condition="'$(ContainerFamily)' == ''">alpine</ContainerFamily>
+    <ContainerRegistry Condition="'$(ContainerRegistry)' == ''">registry.hexalith.com</ContainerRegistry>
+    <ContainerImageTag Condition="'$(ContainerImageTags)' == '' and '$(ContainerImageTag)' == ''">$(ContainerProvenanceReleaseVersion)</ContainerImageTag>
+    <ContainerUser>app</ContainerUser>
+    <!--
+      The .NET SDK 10.0.x multi-RID target serializes labels as key:value and
+      reconstructs them with String.Split(':')[1] (observed on 10.0.302 and
+      10.0.303). Every value containing a colon is truncated at the first one:
+      URLs collapse to "https" and RFC 3339 timestamps to their date-and-hour
+      prefix. These publisher-owned inputs are rebound after the SDK parse
+      target below so both child configs retain the exact release identity.
+    -->
+    <ContainerGenerateLabelsImageSource>false</ContainerGenerateLabelsImageSource>
+    <ContainerGenerateLabelsImageUrl>false</ContainerGenerateLabelsImageUrl>
+    <ContainerGenerateLabelsImageDocumentation>false</ContainerGenerateLabelsImageDocumentation>
+    <ContainerGenerateLabelsImageRevision>false</ContainerGenerateLabelsImageRevision>
+    <ContainerGenerateLabelsImageVersion>false</ContainerGenerateLabelsImageVersion>
+    <ContainerGenerateLabelsImageCreated>false</ContainerGenerateLabelsImageCreated>
+    <!--
+      These three URLs default from each other so a caller need only override the
+      repository. ContainerProvenanceCreated deliberately has no default: it must be
+      one publisher-owned instant shared by both child configs, and an MSBuild-local
+      fallback is re-evaluated independently by the SDK's inner RID builds, so the
+      children would disagree. The validation target below fails closed when it is
+      absent; the pinned publisher supplies it.
+    -->
+    <ContainerProvenanceRepositoryUrl Condition="'$(ContainerProvenanceRepositoryUrl)' == ''">https://github.com/Hexalith/Hexalith.Parties</ContainerProvenanceRepositoryUrl>
+    <ContainerProvenanceReleaseUrl Condition="'$(ContainerProvenanceReleaseUrl)' == ''">$(ContainerProvenanceRepositoryUrl)/releases/tag/v$(ContainerProvenanceReleaseVersion)</ContainerProvenanceReleaseUrl>
+    <ContainerProvenanceDocumentationUrl Condition="'$(ContainerProvenanceDocumentationUrl)' == ''">$(ContainerProvenanceRepositoryUrl)/blob/$(ContainerProvenanceSourceSha)/README.md</ContainerProvenanceDocumentationUrl>
+    <!-- Shared by every ContainerProvenance*Url validation below so the three checks cannot drift. -->
+    <_ContainerProvenanceHttpsUrlPattern>\Ahttps://[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#][^\s]*)?\z</_ContainerProvenanceHttpsUrlPattern>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableContainer)' == 'true'">
+    <ContainerPort Include="8080" Type="tcp" />
+    <ContainerLabel Include="org.opencontainers.image.source" Value="$(ContainerProvenanceRepositoryUrl)" />
+    <ContainerLabel Include="org.opencontainers.image.url" Value="$(ContainerProvenanceReleaseUrl)" />
+    <ContainerLabel Include="org.opencontainers.image.documentation" Value="$(ContainerProvenanceDocumentationUrl)" />
+    <ContainerLabel Include="org.opencontainers.image.revision" Value="$(ContainerProvenanceSourceSha)" />
+    <ContainerLabel Include="org.opencontainers.image.version" Value="$(ContainerProvenanceReleaseVersion)" />
+    <ContainerLabel Include="org.opencontainers.image.created" Value="$(ContainerProvenanceCreated)" />
+    <ContainerLabel Include="org.opencontainers.artifact.created" Value="$(ContainerProvenanceCreated)" />
+    <ContainerLabel Include="org.opencontainers.image.licenses" Value="MIT" />
+    <ContainerLabel Include="org.opencontainers.image.vendor" Value="Hexalith" />
+  </ItemGroup>
+
+  <Target Name="ValidateContainerProvenanceInputs"
+          BeforeTargets="_PublishMultiArchContainers;_PublishSingleContainer"
+          Condition="'$(EnableContainer)' == 'true'">
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceSourceSha)', '^[0-9a-f]{40}$')) != 'true'"
+           Text="ContainerProvenanceSourceSha must be an exact lowercase 40-character commit SHA." />
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceReleaseVersion)', '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*)|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(\.((0|[1-9][0-9]*)|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?$')) != 'true'"
+           Text="ContainerProvenanceReleaseVersion must be SemVer without build metadata or leading-zero numeric identifiers." />
+    <Error Condition="'$(ContainerImageTag)' != '' and '$(ContainerImageTag)' != '$(ContainerProvenanceReleaseVersion)'"
+           Text="ContainerImageTag must equal ContainerProvenanceReleaseVersion." />
+    <Error Condition="'$(ContainerImageTags)' != '' and '$(ContainerImageTags)' != '$(ContainerProvenanceReleaseVersion)'"
+           Text="ContainerImageTags must be exactly ContainerProvenanceReleaseVersion and nothing else." />
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceCreated)', '\A(?!0000)[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z\z')) != 'true'"
+           Text="ContainerProvenanceCreated must be an exact UTC RFC 3339 second." />
+    <PropertyGroup>
+      <_ContainerProvenanceDaysInMonth>$([System.DateTime]::DaysInMonth($([System.Int32]::Parse($(ContainerProvenanceCreated.Substring(0, 4)))), $([System.Int32]::Parse($(ContainerProvenanceCreated.Substring(5, 2))))))</_ContainerProvenanceDaysInMonth>
+    </PropertyGroup>
+    <Error Condition="$([System.Int32]::Parse($(ContainerProvenanceCreated.Substring(8, 2)))) &gt; $(_ContainerProvenanceDaysInMonth)"
+           Text="ContainerProvenanceCreated must contain a real calendar date." />
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceRepositoryUrl)', '$(_ContainerProvenanceHttpsUrlPattern)')) != 'true'"
+           Text="ContainerProvenanceRepositoryUrl must be a well-formed https URL." />
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceReleaseUrl)', '$(_ContainerProvenanceHttpsUrlPattern)')) != 'true'"
+           Text="ContainerProvenanceReleaseUrl must be a well-formed https URL." />
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(ContainerProvenanceDocumentationUrl)', '$(_ContainerProvenanceHttpsUrlPattern)')) != 'true'"
+           Text="ContainerProvenanceDocumentationUrl must be a well-formed https URL." />
+  </Target>
+
+  <!-- Correct the SDK multi-RID key:value reconstruction before the child image is created. -->
+  <Target Name="RebindContainerProvenanceLabels"
+          AfterTargets="_ParseItemsForPublishingSingleContainer"
+          Condition="'$(EnableContainer)' == 'true' and '$(_IsSingleRIDBuild)' == 'true'">
+    <ItemGroup>
+      <ContainerLabel Remove="org.opencontainers.image.source;org.opencontainers.image.url;org.opencontainers.image.documentation;org.opencontainers.image.revision;org.opencontainers.image.version;org.opencontainers.image.created;org.opencontainers.artifact.created" />
+      <ContainerLabel Include="org.opencontainers.image.source" Value="$(ContainerProvenanceRepositoryUrl)" />
+      <ContainerLabel Include="org.opencontainers.image.url" Value="$(ContainerProvenanceReleaseUrl)" />
+      <ContainerLabel Include="org.opencontainers.image.documentation" Value="$(ContainerProvenanceDocumentationUrl)" />
+      <ContainerLabel Include="org.opencontainers.image.revision" Value="$(ContainerProvenanceSourceSha)" />
+      <ContainerLabel Include="org.opencontainers.image.version" Value="$(ContainerProvenanceReleaseVersion)" />
+      <ContainerLabel Include="org.opencontainers.image.created" Value="$(ContainerProvenanceCreated)" />
+      <ContainerLabel Include="org.opencontainers.artifact.created" Value="$(ContainerProvenanceCreated)" />
+    </ItemGroup>
+  </Target>
+</Project>

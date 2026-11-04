@@ -1,0 +1,86 @@
+{
+  "observedAtUtc": "2026-11-03T20:31:22.773689+00:00",
+  "base": "6795536e3fe5fd4cf44eb5f4c67e69f3374532b4",
+  "head": "cb795d71e4ad4dda62236141c9b0693ed741f472",
+  "phase": "initial committed coherent adoption before remaining diagnostic extension",
+  "full11PathPatchRead": true,
+  "paths": [
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "mode": "100644",
+      "objectId": "d831870ca255751a5b878bcd375d586f59fb445a",
+      "sha256": "ab5c0da55319d78b5aeb0e27c0eef4372b2a7c14741c7e58029089c16f0c2e10"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "objectId": "38592cefb6103e886ef92da0e0b73b863bf509be",
+      "sha256": "e9377f13c66e9dc008646baab939d07125243af6ff1e5a539edc26889e446e08"
+    },
+    {
+      "path": ".gitlink-signoff.tsv",
+      "mode": "100644",
+      "objectId": "c6dc4c513d06a122cf5622db2ab38a093df39423",
+      "sha256": "f685fbf152ddd368c6896b35aea22bd66da931bd0a101cf99e1cc7640568f112"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+      "mode": "100644",
+      "objectId": "a10613e025b9f3a42a7bc0218a2b0aaa042c326f",
+      "sha256": "6c55361e1b3678ee349ad952ec79113084bbb9f4af9193c1861b29a57c003871"
+    },
+    {
+      "path": "docs/architecture.md",
+      "mode": "100644",
+      "objectId": "f0400d100f081869a3df6180e2ae749a741c9774",
+      "sha256": "33606b0bf6e4b3bfefa82762ed2b621ced22c525d3aeeaafccac4759ac93acec"
+    },
+    {
+      "path": "docs/ci-lifecycle-qualification.md",
+      "mode": "100644",
+      "objectId": "a40d29daa5e5ce143a8adcd56ae1ac49045ffbad",
+      "sha256": "9a6c7c540ca80571661cd15b115b8702aa5752fae6e6b10ab9241eb8136b337a"
+    },
+    {
+      "path": "docs/ci.md",
+      "mode": "100644",
+      "objectId": "96d5601cc53e1471f9fb85e007e4008605607794",
+      "sha256": "0f338a947bb94039a2219d7c3520ca9ae5aba552ebaeffacb701ceeb24b47244"
+    },
+    {
+      "path": "references/Hexalith.Builds",
+      "mode": "160000",
+      "objectId": "725754075e1d6369430a3adf94d46fb71e6eaf9e"
+    },
+    {
+      "path": "references/Hexalith.Platform",
+      "mode": "160000",
+      "objectId": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+      "mode": "100644",
+      "objectId": "02020aa25672070394028ad9b89073e7a75fba89",
+      "sha256": "5c521f0fb3afe8b52bf66a2d301d931e1763e37a0d4984a4205defcf88eb7f28"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+      "mode": "100644",
+      "objectId": "04a52a8af6bf97d2809ecbce3e0ad2c2a3f11f69",
+      "sha256": "33ef09b054f4fee3f2cd500b8589f9104e1ff9910c7f67ea83ec54dcbdb4a591"
+    }
+  ],
+  "preservation": {
+    "bothWorkflowBytesOnlyApprovedRefChanged": true,
+    "historicalLedgerExactPrefix": {
+      "bytes": 48457,
+      "sha256": "feaaaba0a8abfd1bd4cd6158af0537cff4f61b70eef8fdfe9f2adc68462d7393"
+    },
+    "allOtherIncomingPathsAndGitlinksPreserved": true,
+    "matrixRowsMentioningJpiquotPreservedVerbatim": 23
+  },
+  "verifierCorrection": "First verifier tried git-show on a gitlink and exited128; final verifier reads gitlink object identity using ls-tree. No source/test failure or mutation.",
+  "realNativeAcceptance": false,
+  "candidateAcceptance": false,
+  "remaining": "new native diagnostic extension, actual source preparation/build/affected controls, normal fresh PR and exact-head hosted/native lifecycle acceptance"
+}

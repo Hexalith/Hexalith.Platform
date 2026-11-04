@@ -1,0 +1,42 @@
+[
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-authoritative-package-catalog.ps1"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-catalog-0.txt"
+  },
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/validate-package-version-audit.ps1"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-catalog-1.txt"
+  },
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/validate-platform-version-catalog.ps1"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-catalog-2.txt"
+  },
+  {
+    "argv": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/test-platform-version-catalog.ps1"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-catalog-3.txt"
+  }
+]

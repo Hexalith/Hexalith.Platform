@@ -1,0 +1,3 @@
+Initial checkpoint verifier used re.findall(r'^  ([A-Za-z][A-Za-z0-9_-]+):$', ci, re.M) across the entire YAML.
+AssertionError: ['push', 'pull_request', 'schedule', 'repository_dispatch', 'ci', 'eventstore-404-package-cohort', 'memories-3018-package-protocol', 'owner-publish', 'ui-a11y', 'bmad-config', 'platform-declaration']
+The corrected verifier scopes the same exact pattern to text following the actual jobs: heading. No source was changed for this receipt correction.

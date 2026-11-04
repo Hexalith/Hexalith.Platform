@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-04T10:29:30Z",
+  "source": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+  "remoteRef": {
+    "ref": "refs/heads/feat/qualify-full-parties-package",
+    "node_id": "REF_kwDOTzCqitoALHJlZnMvaGVhZHMvZmVhdC9xdWFsaWZ5LWZ1bGwtcGFydGllcy1wYWNrYWdl",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/refs/heads/feat/qualify-full-parties-package",
+    "object": {
+      "sha": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/4bef0fa38ce99b3f0b177a8853685a1509ad4ce9"
+    }
+  },
+  "existingTupleRuns": {
+    "total_count": 0,
+    "workflow_runs": []
+  },
+  "initialSdkRuns": {
+    "total_count": 1,
+    "workflow_runs": [
+      {
+        "conclusion": null,
+        "event": "pull_request",
+        "head_branch": "feat/qualify-full-parties-package",
+        "head_sha": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739",
+        "id": 41814447739,
+        "path": ".github/workflows/catalog-builder.yml",
+        "run_attempt": 1,
+        "status": "in_progress"
+      }
+    ]
+  },
+  "localGates": {
+    "requiredCases": 271,
+    "finiteEvaluations": 208,
+    "sdkConsumerCases": 60,
+    "scope": "Agent-executed local component/audit evidence; parent source/artifact audit in progress."
+  },
+  "reviewGate": "Required single code owner is also PR author. No merge/policy change/bypass."
+}

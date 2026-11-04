@@ -1,0 +1,101 @@
+{
+  "recordedAt": "2026-11-04T11:19:45.648770+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+  "head": "26658feb2aea894ac4cc76b0a0259efa09a62735",
+  "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+  "remoteBranch": "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+  "sourceClean": true,
+  "protected": {
+    ".github/workflows/ci.yml": {
+      "sha256": "6e86aa55403dcbec621dabefafbb56c413d5f54ffefb127072ecd23bdc4ea8fa",
+      "bytes": 11646
+    },
+    ".github/workflows/ci-lifecycle-qualification.yml": {
+      "sha256": "ab5c0da55319d78b5aeb0e27c0eef4372b2a7c14741c7e58029089c16f0c2e10",
+      "bytes": 8840
+    },
+    ".config/dotnet-tools.json": {
+      "sha256": "ccc25a645b9a1ba03a9ba1c71155f59b8ba062711c50556b22bd662279d44c9f",
+      "bytes": 332
+    },
+    "module/hexalith.module-manifest.v2.json": {
+      "sha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+      "bytes": 13861
+    },
+    "scripts/qualify-disposable-ci.py": {
+      "sha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+      "bytes": 49047
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs": {
+      "sha256": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+      "bytes": 2900
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs": {
+      "sha256": "68c354f7c14dd041626b62116bed8bfc223cb00f684c1f822114cae5cf5f5fc3",
+      "bytes": 4538
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj": {
+      "sha256": "b8ef49466ad1fa875024431088086f284c25b281bf4e2b4af2e3f7b5cd197ac2",
+      "bytes": 1241
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/MemoriesTenantObservationTests.cs": {
+      "sha256": "1201add559c92ae10942f80c8bb5edffba48820f242a7409ac9bb190c1d5bba5",
+      "bytes": 1274
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": {
+      "sha256": "ae7334b135f8034eaa3451d430e74a312192ae081ca05a8b07c06ae423b91b08",
+      "bytes": 4597
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs": {
+      "sha256": "28bfbbecb5eaab901a443d793e321cba2703fd6d2f578339a2ec8e3cb2a922f5",
+      "bytes": 6679
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs": {
+      "sha256": "eef5d9ed94494ccf2ee112a647ccaf6e301051c10d24d97b0dfa8d84d406f470",
+      "bytes": 15594
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": {
+      "sha256": "34177df39ed33b18b8cb7d6d344b08c55db1bb1c725506b9ed67423c6738c299",
+      "bytes": 7744
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": {
+      "sha256": "4e3dc80f179beab58389e1237bdfb4d8b80a37ee4a31a980248b361878dcd530",
+      "bytes": 10952
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs": {
+      "sha256": "6c17fdb4893ab30b44487ff0c34f879cd01ed31d234a0dc4027492e7142a9128",
+      "bytes": 725
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": {
+      "sha256": "74e8d3440ccdfc0e9042b847d88168adccfe27853da2b6afd22a17e4d7fc722a",
+      "bytes": 1984
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": {
+      "sha256": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "bytes": 660
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": {
+      "sha256": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff",
+      "bytes": 3720
+    },
+    "tests/ci-lifecycle/test_cancellation_phase.py": {
+      "sha256": "411021d2329e0fd959631fc48fc57095f8ee41bd6e287870e4d9e0aace50a9f4",
+      "bytes": 8090
+    },
+    "tests/ci-lifecycle/test_launch_recovery.py": {
+      "sha256": "ccceadd88b9b69175051ab21fd8338e9197d77d93b329059471137d8653255ae",
+      "bytes": 15257
+    },
+    "tests/ci-lifecycle/test_qualification_controller.py": {
+      "sha256": "92d91468db5302c6168951d3bfe3a8a4669fc500a3c7b3e20378a31e4990651c",
+      "bytes": 18316
+    },
+    "tests/ci-lifecycle/test_workflow_boundaries.py": {
+      "sha256": "9d04ed8034b89199c8a72854b62af140ecf2bff3869cea808ece1a1e72bab3c1",
+      "bytes": 4156
+    }
+  },
+  "protectedCount": 22,
+  "tree": "d77ad01cba32261f3ea3c181e7383f77b361fd9a",
+  "gitlinks": "040000 tree 022438432ada2b48e3bfbf6d71302a0863da0644\treferences"
+}

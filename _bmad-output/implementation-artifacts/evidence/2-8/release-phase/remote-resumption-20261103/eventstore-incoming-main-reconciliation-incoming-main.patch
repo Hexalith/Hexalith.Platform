@@ -1,0 +1,1425 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index fc6cadbfe5957046bc2acabb7854dcefe1a644ed..e5605ace110cfed592a7abf425754200ac000945 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -17,7 +17,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.43.6",
++      "version": "4.44.0",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9ac8f4c68ac83e0963f51cec754f75854760627f..97fbb771cfbb055f8bbee3fcde600c77bf33cb39 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -60,11 +60,12 @@ jobs:
+         run: python3 scripts/verify-process-packages.py
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f
+     with:
+       solution: Hexalith.EventStore.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+       integration-test-profiles: platform-package
++      integration-test-reference-owners: tenants
+       build-timeout-minutes: 180
+       test-platform: microsoft-testing-platform
+       run-consumer-validation: true
+diff --git a/_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md b/_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md
+index 77047c4824892c80c88985708ffe6f6dd07c3e57..018e2ab91a3a85f1f4a09332c282cabcd767a050 100644
+--- a/_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md
++++ b/_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md
+@@ -68,6 +68,7 @@ The [investigation](investigations/story-2-14-code-map.md) gives paths/tests. Re
+ 
+ ## Implementation Notes
+ 
++- **Gateway/storage follow-up (2026-11-04):** Public command, query and stream submissions reject an additional tenant header alongside body scope before dispatch or authorization. Queries and stream reads reject malformed or normalized-duplicate grants before custom validators; query rate-limit/error context receives the canonical public tenant. Manual snapshots and snapshot-policy set/delete canonicalize the explicit body tenant before tenant/RBAC authorization and state access, and reject reserved tenants, additional scope headers and malformed/duplicate grants locally. Existing operation permissions, workload resource bindings, trusted platform adapters and historical storage identities remain unchanged. The existing CI Server suite includes these backend-free regressions; hosted execution and separate closure gates remain open.
+ - **Admin forwarding follow-up (2026-11-03):** Admin UI list requests now send the declared `platform:eventstore-admin` scope for the explicit all-tenant selection and canonicalize non-null tenant filters before HTTP. The stream-list caller targets the existing compiled `GetRecentlyActiveStreams` route. The Admin server carries only filter-validated scope through its auth context; cross-tenant command lists forward that scope and the human bearer to the independently admitted gateway action. Both list service methods reject missing, mixed or unknown scope before HTTP/state access. Global health metrics use those same reads, so the exact `GetSystemHealth` action and its UI caller now require the same explicit catalog scope and `admin:read` permission; existing `AdminReadOnly` role policy remains enforced. The gateway rejects extra tenant/platform headers on ordinary tenant Admin requests and admits the platform namespace only on its declared command-list action. Story 5.13 still owns runtime activation; no catalog authority or identity-derived bypass is introduced.
+ - **NFR12 classification:** The explicit request-scope transition is SemVer-major. `RestTenantSource.System` no longer authorizes a public generated request; claim-only REST selection, implicit Admin fallback, status grant enumeration, and public `system` requests change behavior. Tenants API/UI/bootstrap callers must send a cataloged platform scope for platform operations, while single-tenant reads use the canonical route tenant. Durable `system` actor IDs, event keys, topics, and distinct tenant/global audit ownership remain historical storage identities. This classification authorizes no rollout or data mutation.
+ - **Deployed inventory:** The 2026-11-02 `jpiquot@local` check in the Deployed Inventory section found no managed `system` tenant in that installation. Every rollout destination still needs its own authenticated inventory; any active managed `system` use requires owner reconciliation before deployment.
+@@ -91,6 +92,7 @@ The [investigation](investigations/story-2-14-code-map.md) gives paths/tests. Re
+ 
+ ## Spec Change Log
+ 
++- 2026-11-04: Closed remaining local command/query/stream header-conflict and snapshot-administration propagation gaps. Added 37 regressions, with 35 failures reproduced before the production fix. The nine focused Server classes pass 418/418. A guarded full Server run completed with two environment/artifact failures; their targeted reruns pass without changing fixtures, package pins or user caches. CI execution, package qualification and G-HIGH-RISK remain open; story status stays in progress.
+ - 2026-11-03: Aligned the standalone Admin UI E2E backend with the compiled streams-list route. Added real-client path/scope capture regressions for all-tenant and canonical tenant reads, plus explicit refusal of the stale route. The backend-free transport suite passed 10/10; no browser or live-backend qualification is claimed.
+ - 2026-11-03: Completed the remaining Admin scope propagation path from UI to Admin server to gateway command lists, including the global health metrics that call those lists. Added exact gateway/health declarations under the existing Admin read namespace and permission, retained role authorization, and rejected duplicate/mixed tenant sources before downstream work. Added canonical forwarding, no-call denial, human-bearer forwarding and HTTP health admission coverage. Local builds and focused tests passed; hosted/package/G-HIGH-RISK closure gates remain open.
+ - 2026-11-03: Closed the remaining local preflight propagation gap: command and query validation now canonicalize the explicit body tenant before either validator and before rate-limit context, and reject malformed/reserved tenants, additional tenant/platform scope headers, and malformed or normalized-duplicate grants without downstream validation. Authoritative actor membership decisions remain unchanged. Added 30 preflight and 11 actor-boundary regression cases; clarified the retained REST tenant-source metadata documentation. The focused local suites pass, while package, hosted CI and G-HIGH-RISK closure gates remain open.
+@@ -106,6 +108,38 @@ The [investigation](investigations/story-2-14-code-map.md) gives paths/tests. Re
+ 
+ ## Verification
+ 
++2026-11-04 gateway/storage follow-up: the source-mode Server.Tests build passed with zero warnings/errors, including the linked Gateway compilation. The first no-restore build reported `CS0234` for `Microsoft.AspNetCore.SignalR.Client` from stale transitive assets; the following local-cache-only restore resolved it without dependency declaration changes:
++
++```bash
++dotnet restore tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj -p:Configuration=Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:HexalithCommonsFromSource=true -p:NuGetAudit=false --source /home/administrator/.nuget/packages -v:minimal
++dotnet build tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:HexalithCommonsFromSource=true --no-restore -m:1 -v:minimal
++dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -method '*AdditionalTenantHeader*' -method '*MalformedOrDuplicateGrant*' -method '*MixedCaseScope_Canonicalizes*' -method '*StorageMutation*' -noLogo
++DAPR_HTTP_ENDPOINT=http://127.0.0.1:1 DAPR_GRPC_ENDPOINT=http://127.0.0.1:1 dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -noLogo
++```
++
++The new regression selection first failed 35/37 against unchanged production and then passed 37/37. The complete `CommandsControllerTenantTests`, `QueriesControllerTests`, `StreamsControllerTests`, `AdminStorageCommandControllerTests`, `ActorTenantValidatorTests`, `ClaimsTenantValidatorTests`, `AdminTenantAuthorizationFilterTests`, `CommandValidationControllerTests` and `QueryValidationControllerTests` classes passed 418/418 without skips. The guarded full run completed 7,682 cases in 514.778 seconds: 7,655 passed, two failed, and 25 existing ATDD/platform cases were skipped. No clean full-suite or CI pass is claimed. Logs are `/tmp/story-2-14-boundary-red.log`, `/tmp/story-2-14-boundary-green.log`, `/tmp/story-2-14-focused-classes.log`, `/tmp/story-2-14-final-server-build.log` and `/tmp/story-2-14-server-full.log`.
++
++The full-run failures were retained and resolved in targeted checks without changing test expectations. `PublishedTenantQuerySelectorAbiTests.AuthenticPublicTenantSevenConstructsOriginalDeclarationsAgainstExtendedContracts` rejected `/home/administrator/.nuget/packages/hexalith.tenants.contracts/7.0.0/hexalith.tenants.contracts.7.0.0.nupkg`: its SHA-256 was `81a33bb7562507004d4dfb8da2365cdea1fb874ff53798787bff110c0d9573ef`, rather than the immutable public-package pin `e21f5ac7b5f332f1921f70a249ab2032b9978d56ffdd6641a0a4b94d04850bdc`. An existing complete cache at `/tmp/story12-2-tenant-maintenance-20261103-updu69yz/official-fixture-cache/` matched the pin, held a 12,983-byte signature, and contained DLL bytes identical to its archive. A first alternative cache had the archive but no extracted DLL and failed fixture materialization with `MSB3030`; its partial disposable-output test run is excluded. The existing fixture-copy target then succeeded against the complete authentic cache:
++
++```bash
++dotnet msbuild tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj -t:CopyPublishedTenantQuerySelectorFixture -m:1 -nodeReuse:false -v:q -p:Configuration=Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:NuGetPackageRoot=/tmp/story12-2-tenant-maintenance-20261103-updu69yz/official-fixture-cache/ -p:OutDir=/home/administrator/projects/hexalith/eventstore/tests/Hexalith.EventStore.Server.Tests/bin/story-2-14-authentic-abi-PIsK7a/
++DAPR_HTTP_ENDPOINT=http://127.0.0.1:1 DAPR_GRPC_ENDPOINT=http://127.0.0.1:1 dotnet tests/Hexalith.EventStore.Server.Tests/bin/story-2-14-authentic-abi-PIsK7a/Hexalith.EventStore.Server.Tests.dll -class Hexalith.EventStore.Server.Tests.Routing.PublishedTenantQuerySelectorAbiTests -noLogo
++env -u DAPR_HTTP_ENDPOINT -u DAPR_GRPC_ENDPOINT dotnet tests/Hexalith.EventStore.Server.Tests/bin/Debug/net10.0/Hexalith.EventStore.Server.Tests.dll -method Hexalith.EventStore.Server.Tests.Queries.DomainQueryResilienceTests.FailedTargetCircuitDoesNotBlockAnotherNativeQueryTarget -noLogo
++```
++
++The authentic copied-output ABI class passed 3/3. The resilience method had failed only because its captured mock asserts `localhost:3500` while the protective environment selected port 1; its isolated rerun passed 1/1 after removing those overrides. Its invocation transport is the captured mock, so this rerun did not access a Dapr backend. Logs are `/tmp/story-2-14-authentic-abi-materialize-final.log`, `/tmp/story-2-14-authentic-abi-tests-final.log` and `/tmp/story-2-14-resilience-isolated.log`. The original user-cache archive hash was rechecked unchanged; neither the immutable pin nor package caches were modified.
++
++Compatibility checks used the same local-cache-only restore and source-mode Debug build flags for Contracts.Tests and RestApi.Generators.Tests; both builds passed with zero warnings/errors. Contracts canonicalization and durable identity/key/topic coverage passed 89/89, and compiled generated-controller error-semantics coverage passed 62/62, without skips:
++
++```bash
++dotnet tests/Hexalith.EventStore.Contracts.Tests/bin/Debug/net10.0/Hexalith.EventStore.Contracts.Tests.dll -class Hexalith.EventStore.Contracts.Tests.Identity.TenantCanonicalizerTests -class Hexalith.EventStore.Contracts.Tests.Identity.AggregateIdentityTests -noLogo
++dotnet tests/Hexalith.EventStore.RestApi.Generators.Tests/bin/Debug/net10.0/Hexalith.EventStore.RestApi.Generators.Tests.dll -class Hexalith.EventStore.RestApi.Generators.Tests.RestApiGeneratedControllerErrorSemanticsTests -noLogo
++```
++
++Logs are `/tmp/story-2-14-contracts-build.log`, `/tmp/story-2-14-contracts-tests.log`, `/tmp/story-2-14-generator-build.log` and `/tmp/story-2-14-generator-tests.log`.
++
++Aspire preflight used the repository-local lifecycle skill. `aspire describe --apphost src/Hexalith.EventStore.AppHost/Hexalith.EventStore.AppHost.csproj --non-interactive --format Json` reported no running AppHost. Startup was withheld because the tracked state component fixes Redis at `localhost:6379` with `keyPrefix: none`, and the AppHost only copies it; Aspire isolation does not replace that retained backend. The spec authorizes no data mutation. Local tests used substitutes, in-memory/captured transports or the unavailable port-1 Dapr endpoints; no retained-backend write, remote operation, deployment, data migration, staging, commit or push was performed. Hosted matrix execution, full published-package qualification and G-HIGH-RISK assurance remain open, so the execution checkbox and story status remain unchanged.
++
+ 2026-11-03 broader Admin regression audit: the full `dotnet tests/Hexalith.EventStore.Admin.UI.Tests/bin/Debug/net10.0/Hexalith.EventStore.Admin.UI.Tests.dll -noLogo` run passed 1,137/1,137 without skips. The initial full Admin.Server run exposed the security inventory's stale classification of `AdminHealthController.GetSystemHealth`; the inventory now requires the explicit scope filter for that global aggregate read, preserving its ReadOnly role policy and body classification. A subsequent no-restore rebuild encountered `CS1704` from mixed Commons package/source assets. Adding explicit source flags made compilation pass but left runtime `FileNotFoundException` failures for `Hexalith.Commons.UniqueIds, Version=2.30.10.0`. The following local-cache restore and rebuild resolved that artifact mismatch without changing dependency declarations:
+ 
+ ```bash
+diff --git a/docs/ci.md b/docs/ci.md
+index 73598651265933ca64bfb33ac56106023c2d9abd..d628d691af7232138e4635bec31ebf3443620e58 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -8,7 +8,7 @@ Hexalith CI/CD standards and reusable workflow guidance live in
+ 
+ | Workflow | File | Triggers | Purpose |
+ |----------|------|----------|---------|
+-| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
++| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
+ | **Advisory Tests** | `.github/workflows/advisory-tests.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Visible non-release-blocking browser and governance suites. It installs Chromium before Playwright E2E tests, runs with `continue-on-error`, and release does not listen to this workflow. |
+ | **Integration Tests** | `.github/workflows/integration.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Dedicated DAPR lane for `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`. It is intentionally separate from the release trigger. |
+ | **Payload Protection Lifecycle** | `.github/workflows/payload-protection-lifecycle.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Isolated Dapr 1.18.7/PostgreSQL v2 capability, catalog, lease, drain, recovery, rotation, generation and restore tests. Requires at least thirty-one executed tests with zero skips, including cumulative transport limits, writer capacity, conditional restore decisions and authority races. Local qualification and its limits are recorded in the Story 8.5 spec; a CI run is separate evidence. |
+@@ -76,7 +76,7 @@ Reusable CI/CD logic belongs in `Hexalith.Builds`:
+ EventStore keeps only module-specific wiring here:
+ 
+ - `Hexalith.EventStore.slnx`.
+-- The isolated test project list passed to `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb`.
++- The isolated test project list passed to `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f`.
+ - The advisory test project list and Playwright browser install needed by the
+   Admin UI E2E suite.
+ - Manifest-backed package validation scripts under `scripts/`.
+@@ -117,12 +117,12 @@ place for run output.
+ 
+ | Lane | Projects | Workflow behavior |
+ |------|----------|-------------------|
+-| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
++| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
+ | Semantic-release governance | `tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs`, `tools/tests/test_release_publication_authority.py` | Blocking EventStore-owned CI job. It provisions Node 24, installs exactly `package-lock.json` with `npm ci`, and exercises both release-history cases against an Undici-guarded loopback-only fake GitHub boundary. It also runs the publication-authority regressions against the exact approved Builds publication engine. |
+ | Live-sidecar DAPR lane | `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`, plus `scripts/check-committed-files.sh`, `tools/tests/test_check_committed_files.py` and `tools/tests/test_dapr_broker_qualification.py` | Dedicated `Integration Tests` workflow after `dapr init`; its required `live-sidecar` job first runs the committed-file guard and the two Python suites. This lane is visible but not part of the semantic-release gate. It is not a `dotnet test` of `Server.Tests`. |
+ | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |
+ | Advisory browser/governance suites | `tests/Hexalith.EventStore.Admin.UI.E2E`, `tests/Hexalith.EventStore.DeferredWorkGovernance.Tests` | Separate `Advisory Tests` workflow. It installs Playwright Chromium for the browser suite and runs with `continue-on-error`, preserving push/PR signal without making semantic-release depend on these suites. |
+-| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.43.6 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
++| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.44.0 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
+ | Full Aspire E2E | `tests/Hexalith.EventStore.IntegrationTests` | Deferred until a reliable Aspire-in-CI topology exists. |
+ | Isolated synthetic sharding | `tests/Hexalith.EventStore.Sharding.Tests` | Deferred CI automation; the operator opt-in Debug lane and its owned `Sharding.TestHost` fixture are documented in `tests/Hexalith.EventStore.Sharding.Tests/README.md`. Synthetic observations do not qualify a production provider profile or release gate. |
+ 
+@@ -132,26 +132,58 @@ accepts no inherited secrets, caller Dapr overrides or direct integration/AppHos
+ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ 
+ The package-profile bootstrap records Builds
+-`89f62052c932d054bda2b435bdfef60d96e77612` and released Platform `v1.1.6`
+-(`8ea8fe092f8abb5c932a61830aae16051d442463`). Platform records the same Builds
+-catalog, which selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+-Azure.Security.KeyVault.Keys 4.10.2. These recorded source identities remain
+-unchanged by the tool update.
+-
+-The executing module CLI is genuine public 4.43.6, released from Builds
+-`725754075e1d6369430a3adf94d46fb71e6eaf9e` by successful normal release
+-[41666723123](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41666723123).
+-Its source differs from the recorded catalog source. Platform's supported tool
+-range `[4.43.5,5.0.0-0)` admits that CLI; both sources contain the same catalog
+-blob `ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`. The newer tool resolves a cold
+-direct-only module from its verified direct Builds checkout, without requiring
+-Platform's nested dependency checkouts. Matching catalog bytes do not replace
+-the separately verified source identities or the supported-range check.
+-
+-The catalog's EventStore 4.0.4 selection remains the package-profile bootstrap
+-input. A new EventStore producer and subsequent catalog/cohort adoption need
+-normal publication and fresh qualification. This tooling adoption does not
+-claim hosted acceptance for the current SDK revision.
++`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` and released Platform `v1.2.3`
++(`991e2df97dc8493e41096006b0d3203a71730ae8`). That recorded Builds source
++supplies the genuine public module CLI 4.44.0, published by successful normal release
++[41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
++Platform records that exact Builds source and requires tool range
++`[4.44.0, 5.0.0-0)`. Its recorded catalog blob
++`ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b` still selects public EventStore
++4.0.4, Azure.Core 1.64.0 and Azure.Security.KeyVault.Keys 4.10.2. Equal catalog
++bytes with earlier releases do not substitute for these actual publication and
++source identities. No Platform nested dependency checkout is required.
++
++The shared CI executor is independently pinned to Builds
++`ae68c59bd2f4145a23ccf68c3711f98eaf62195f`. It retains only the receipt-bound
++result's declared, redacted lifecycle, native-report and functional-observation
++diagnostics after exact owned cleanup. Each bounded private regular file must
++match its content-addressed reference and digest; links, foreign owners and
++changed bytes refuse. Complete snapshots publish atomically without replacing
++existing evidence. This closes the missing native TRX upload while preserving
++the CLI 4.44.0, recorded catalog, package cohort and approved release publisher.
++
++The literal `integration-test-reference-owners: tenants` adds the real declared
++Tenants reference-owner closure to a fresh package qualification. The SDK's
++production module manifest remains gateway-only and its two native integration
++facts remain unchanged. The runner preserves every declared transitive
++dependency and authenticates the expanded owner request before composition;
++expanded requests do not support candidate reuse or attachments. Platform admits
++only the independently qualified public EventStore 4.0.4/Tenants 7.0.0 artifact
++cohort and pinned Tenants images. Platform 1.2.3 probes both immutable owner
++images using canonical repository-at-digest references. Its private Package-mode
++routing reader builds from the verified run-materialized catalog in a scrubbed
++child environment, with effective package/version and restored-asset checks.
++Both Tenants receivers bind their declared app-channel input to `APP_API_TOKEN`;
++the API retains its separate sidecar API credential in `DAPR_API_TOKEN`.
++Source-mode selection and ordinary mixed-source guards remain enforced. This
++input grants no Memories admission or future SDK cohort support.
++
++[Platform v1.2.3](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.3)
++was published after its exact source passed
++[201 tuple cases](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41790026906)
++and the
++[four-SDK catalog matrix](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41789946328),
++including 60 executable cases and 208 finite-gate evaluations. That proof covers
++the published prerequisite's supported inputs. This SDK caller adoption still
++requires its own exact-source hosted checks and actual runner-owned package
++integration. The catalog's EventStore 4.0.4 is the bootstrap runtime, distinct
++from the SDK source supplying the owned integration harness; it does not qualify
++the current SDK as a new public producer.
++
++The separately approved publication execution engine remains Builds
++`30ea43a56330a9828ed0bb2e837289231d8630d1` in `release.yml` and its governance
++regression checkout. Adopting a newer CI workflow, CLI and catalog does not change
++that publication authority.
+ 
+ Standalone package probes and synthetic MSBuild fixtures select independent
+ child build environments before applying their deliberate test mapping inputs.
+@@ -248,7 +280,7 @@ dedicated LiveSidecar lane; they are not a reason to add the project to
+ 
+ ## Package Validation
+ 
+-Shared `domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb` calls these EventStore entry points when
++Shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` calls these EventStore entry points when
+ `run-consumer-validation: true`:
+ 
+ ```bash
+Submodule references/Hexalith.Builds 725754075..6249a8c0a:
+  > build: merge authenticated qualification owners (#158)
+  > fix(ci): pin Dapr port guard in shared CI
+  > fix(ci): wait for scheduler port before Dapr init
+  > build: merge refs/remotes/origin/main into main via /pushall
+  > build(deps): select the canonical EventStore McpCli and Tenants cohort
+Submodule references/Hexalith.Platform ed1560a57..991e2df97:
+  > fix(composition): bind the Tenants API app-channel token (#21)
+  > fix(composition): isolate published catalog reader builds (#20)
+  > fix(composition): probe canonical immutable image references (#19)
+  > feat(runtime): qualify the released SDK catalog cohort (#18)
+  > fix(composition): allow qualified package catalog graphs
+diff --git a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs
+index 8ead6f0432855cf1d89f07b526ec37d98d4dbf4b..771420c4327d6d5450ee8759d29b40e366ba076d 100644
+--- a/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs
++++ b/src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs
+@@ -164,27 +164,93 @@ public sealed class RouteCatalogAuthority(IRouteCatalogStateStore store, IRouteC
+         RequireLocalIdentity();
+         RouteCatalogActivation? captured = null;
+         long epoch = 0;
++        string? capturedAppId = null;
++        RouteCatalogStateCoordinates? capturedCoordinates = null;
+         string leaseId = Hexalith.Commons.UniqueIds.UniqueIdHelper.GenerateSortableUniqueStringId();
+-        await UpdateAsync(async state =>
++        for (int attempt = 0; attempt < MaximumUpdateAttempts; attempt++)
+         {
+-            if (state.Leases.Any(l => l.LeaseId == leaseId) && state.Committed is { } retained)
++            (RouteCatalogActivationState state, _) = await ReadAdmissionStateAsync(cancellationToken, diagnostics).ConfigureAwait(false);
++            bool retainedLease = state.Leases.Any(fence => fence.LeaseId == leaseId);
++            if ((!retainedLease && state.Pending is not null) || state.Committed is null)
++                throw new RouteCatalogUnavailableException("No complete catalog generation is serving.");
++            // Own the complete candidate before awaited observations. A store/observer alias must
++            // never allow a later authority change to inherit validation of the original bytes.
++            RouteCatalogActivation candidate = Freeze(state.Committed);
++            RouteCatalogHostIdentity identity = options.Value.Identity!;
++            string profile = options.Value.Profile;
++            RouteCatalogStateCoordinates? coordinates = store.Coordinates;
++            RouteCatalogActivation observed = Freeze(candidate);
++            await ValidateAsync(observed, cancellationToken, diagnostics).ConfigureAwait(false);
++            if (!SameAdmissionActivation(candidate, observed))
++                throw new RouteCatalogUnavailableException("The observed catalog activation changed during admission.");
++            RequireLocalIdentity();
++            if (options.Value.Identity != identity || options.Value.Profile != profile || store.Coordinates != coordinates)
++                throw new RouteCatalogUnavailableException("The local catalog authority changed during admission.");
++            if (retainedLease)
+             {
+-                await ValidateAsync(retained, cancellationToken, diagnostics).ConfigureAwait(false);
+-                captured = retained;
++                RequireAdmissionFence(state, leaseId, identity, candidate);
++                captured = candidate;
+                 epoch = state.Epoch;
+-                return state;
++                capturedAppId = identity.AppId;
++                capturedCoordinates = coordinates;
++                break;
+             }
+-            if (state.Pending is not null || state.Committed is null)
++            // Lease-only writers may have advanced the inventory while the expensive fresh owner
++            // capture ran. Rebase only onto an independently read, exactly unchanged authority.
++            (RouteCatalogActivationState fresh, string etag) = await ReadAdmissionStateAsync(cancellationToken, diagnostics).ConfigureAwait(false);
++            cancellationToken.ThrowIfCancellationRequested();
++            if (options.Value.Identity != identity || options.Value.Profile != profile || store.Coordinates != coordinates)
++                throw new RouteCatalogUnavailableException("The local catalog authority changed during admission.");
++            bool sameAuthority = fresh.Epoch == state.Epoch && fresh.Committed is { } committed
++                && SameAdmissionActivation(candidate, Freeze(committed));
++            if (sameAuthority && fresh.Leases.Any(fence => fence.LeaseId == leaseId))
++            {
++                // Recover an already durable admission even if a successor began draining it.
++                // This creates no fence and retains the original response-loss cleanup path.
++                RequireAdmissionFence(fresh, leaseId, identity, candidate);
++                captured = candidate;
++                epoch = fresh.Epoch;
++                capturedAppId = identity.AppId;
++                capturedCoordinates = coordinates;
++                break;
++            }
++            if (fresh.Pending is not null)
+                 throw new RouteCatalogUnavailableException("No complete catalog generation is serving.");
+-            await ValidateAsync(state.Committed, cancellationToken, diagnostics).ConfigureAwait(false);
+-            captured = state.Committed;
+-            epoch = state.Epoch;
+-            long sequence = checked(state.LastLease + 1);
+-            if (state.Leases.Count >= 4096) throw new RouteCatalogUnavailableException("The durable dispatch lease inventory requires draining.");
+-            return state with { LastLease = sequence, Leases = [.. state.Leases, new RouteCatalogDispatchFence(sequence, leaseId, options.Value.Identity!.HostId, state.Committed.RootDigest, state.Epoch)] };
+-        }, cancellationToken, diagnostics).ConfigureAwait(false);
++            if (sameAuthority)
++            {
++                long sequence = checked(fresh.LastLease + 1);
++                if (fresh.Leases.Count >= 4096)
++                    throw new RouteCatalogUnavailableException("The durable dispatch lease inventory requires draining.");
++                cancellationToken.ThrowIfCancellationRequested();
++                if (options.Value.Identity != identity || options.Value.Profile != profile || store.Coordinates != coordinates)
++                    throw new RouteCatalogUnavailableException("The local catalog authority changed during admission.");
++                RouteCatalogActivationState next = fresh with
++                {
++                    LastLease = sequence,
++                    Leases = [.. fresh.Leases, new RouteCatalogDispatchFence(sequence, leaseId, identity.HostId, candidate.RootDigest, fresh.Epoch)],
++                };
++                bool exchanged;
++                using (var stage = diagnostics?.Start(DispatchStageName.CatalogCompareExchange))
++                {
++                    exchanged = await store.CompareExchangeAsync(next, etag, cancellationToken).ConfigureAwait(false);
++                    stage?.Complete();
++                }
++                if (exchanged)
++                {
++                    captured = candidate;
++                    epoch = fresh.Epoch;
++                    capturedAppId = identity.AppId;
++                    capturedCoordinates = coordinates;
++                    break;
++                }
++            }
++            if (attempt < MaximumUpdateAttempts - 1)
++                await Task.Delay(Random.Shared.Next(1, Math.Min((attempt + 1) * 4, 50) + 1), cancellationToken).ConfigureAwait(false);
++        }
++        if (captured is null)
++            throw new RouteCatalogUnavailableException("Concurrent catalog authority updates could not be serialized.");
+         using var snapshotStage = diagnostics?.Start(DispatchStageName.CatalogSnapshot);
+-        var lease = new RouteCatalogDispatchLease(new(captured!, epoch, options.Value.Identity!.AppId, store.Coordinates), () => ReleaseAsync(leaseId))
++        var lease = new RouteCatalogDispatchLease(new(captured!, epoch, capturedAppId, capturedCoordinates), () => ReleaseAsync(leaseId))
+         {
+             Activation = captured,
+         };
+@@ -192,6 +258,28 @@ public sealed class RouteCatalogAuthority(IRouteCatalogStateStore store, IRouteC
+         return lease;
+     }
+ 
++    private async Task<(RouteCatalogActivationState State, string ETag)> ReadAdmissionStateAsync(CancellationToken cancellationToken, DispatchDiagnostics? diagnostics)
++    {
++        using var stage = diagnostics?.Start(DispatchStageName.CatalogStateRead);
++        var result = await store.ReadAsync(cancellationToken).ConfigureAwait(false);
++        stage?.Complete();
++        return result;
++    }
++
++    private static bool SameAdmissionActivation(RouteCatalogActivation validated, RouteCatalogActivation current)
++        => validated.RootDigest == current.RootDigest
++            && string.Equals(validated.TrustProof, current.TrustProof, StringComparison.Ordinal)
++            && validated.CanonicalCatalog.AsSpan().SequenceEqual(current.CanonicalCatalog)
++            && RouteCatalogActivationBinding.ComputeDigest(validated) == RouteCatalogActivationBinding.ComputeDigest(current);
++
++    private static void RequireAdmissionFence(RouteCatalogActivationState state, string leaseId, RouteCatalogHostIdentity identity, RouteCatalogActivation activation)
++    {
++        RouteCatalogDispatchFence[] own = [.. state.Leases.Where(fence => fence.LeaseId == leaseId)];
++        if (own.Length != 1 || own[0].HostId != identity.HostId || own[0].RootDigest != activation.RootDigest
++            || own[0].Epoch != state.Epoch || own[0].Sequence > state.LastLease)
++            throw new RouteCatalogUnavailableException("The retained dispatch fence differs from the validated authority.");
++    }
++
+     /// <summary>Rechecks independently observed local facts for a native read under its existing durable lease.</summary>
+     internal async Task ValidateNativeReadLeaseAsync(RouteCatalogDispatchLease lease, CancellationToken cancellationToken)
+     {
+diff --git a/src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs b/src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs
+index c9d00f8f5e413dd1390860e54b7a61ef671dc5b9..4c00cba9e9ee755cff243be0891413b2baa1dcb7 100644
+--- a/src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs
++++ b/src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs
+@@ -71,6 +71,13 @@ public sealed class AdminStorageCommandController(
+             return Ok(validationResult);
+         }
+ 
++        if (!TenantCanonicalizer.TryCanonicalize(request.TenantId, out string canonicalTenant))
++        {
++            return Ok(new AdminOperationResult(false, "snapshot-policy-set-request-invalid",
++                "Tenant is invalid or reserved.", "RejectedValidation"));
++        }
++        request = request with { TenantId = canonicalTenant };
++
+         AdminOperationResult? authResult = await AuthorizePolicyMutationAsync(
+             request.TenantId,
+             request.Domain,
+@@ -110,6 +117,13 @@ public sealed class AdminStorageCommandController(
+             return Ok(validationResult);
+         }
+ 
++        if (!TenantCanonicalizer.TryCanonicalize(request.TenantId, out string canonicalTenant))
++        {
++            return Ok(new AdminOperationResult(false, "snapshot-policy-delete-request-invalid",
++                "Tenant is invalid or reserved.", "RejectedValidation"));
++        }
++        request = request with { TenantId = canonicalTenant };
++
+         AdminOperationResult? authResult = await AuthorizePolicyMutationAsync(
+             request.TenantId,
+             request.Domain,
+@@ -153,6 +167,19 @@ public sealed class AdminStorageCommandController(
+                 "RejectedValidation"));
+         }
+ 
++        if (!TenantCanonicalizer.TryCanonicalize(request.TenantId, out string canonicalTenant))
++        {
++            return Ok(new AdminOperationResult(false, requestOperationId,
++                "Tenant is invalid or reserved.", "RejectedValidation"));
++        }
++        if (!HasUnambiguousTenantScope())
++        {
++            return Ok(new AdminOperationResult(false, requestOperationId,
++                "Tenant scope or grants are invalid or ambiguous.", "RejectedUnauthorized"));
++        }
++        request = request with { TenantId = canonicalTenant };
++        requestOperationId = CreateRequestOperationId(request);
++
+         TenantValidationResult tenantResult = await tenantValidator
+             .ValidateAsync(User, request.TenantId, ct, request.AggregateId)
+             .ConfigureAwait(false);
+@@ -314,6 +341,11 @@ public sealed class AdminStorageCommandController(
+         || user.HasClaim("eventstore:admin-role", "Admin")
+         || user.HasClaim("eventstore:permission", "command:replay");
+ 
++    private bool HasUnambiguousTenantScope()
++        => !Request.Headers.ContainsKey("X-Hexalith-Tenant")
++        && !Request.Headers.ContainsKey("X-Hexalith-Scope")
++        && TenantCanonicalizer.TryCanonicalizeGrants(User.FindAll("eventstore:tenant").Select(claim => claim.Value), out _);
++
+     private async Task<AdminOperationResult?> AuthorizePolicyMutationAsync(
+         string? tenantId,
+         string? domain,
+@@ -325,6 +357,12 @@ public sealed class AdminStorageCommandController(
+         string safeAggregateType = aggregateType ?? string.Empty;
+         string operationId = $"{operationPrefix}-{Hash($"{safeTenantId}|{safeDomain}|{safeAggregateType}")}";
+ 
++        if (!HasUnambiguousTenantScope())
++        {
++            return new AdminOperationResult(false, operationId,
++                "Tenant scope or grants are invalid or ambiguous.", "RejectedUnauthorized");
++        }
++
+         TenantValidationResult tenantResult = await tenantValidator
+             .ValidateAsync(User, safeTenantId, ct, safeAggregateType)
+             .ConfigureAwait(false);
+diff --git a/src/Hexalith.EventStore/Controllers/CommandsController.cs b/src/Hexalith.EventStore/Controllers/CommandsController.cs
+index d3df276dd3318e68d282f88b5892d8bd441a4e62..07798930a6198baa3ddc438c598668e376ed822a 100644
+--- a/src/Hexalith.EventStore/Controllers/CommandsController.cs
++++ b/src/Hexalith.EventStore/Controllers/CommandsController.cs
+@@ -135,7 +135,7 @@ public class CommandsController(
+         bool platformScope = TenantCanonicalizer.IsPlatformScope(request.Tenant);
+         if (Request.Headers.ContainsKey("X-Hexalith-Scope") && (!platformScope
+                 || !string.Equals(Request.Headers["X-Hexalith-Scope"].ToString(), request.Tenant, StringComparison.Ordinal))
+-            || Request.Headers.ContainsKey("X-Hexalith-Tenant") && platformScope)
++            || Request.Headers.ContainsKey("X-Hexalith-Tenant") && (!workloadOnly || platformScope))
+             return BadRequest("Mixed or conflicting request scopes are not allowed.");
+         if (!platformScope)
+         {
+diff --git a/src/Hexalith.EventStore/Controllers/QueriesController.cs b/src/Hexalith.EventStore/Controllers/QueriesController.cs
+index ad52866acfd9003e9e9cb68c3f150ed140ec39d6..74f5d0b223dbcfd920a5ab0f08eb9e3bc3424cb0 100644
+--- a/src/Hexalith.EventStore/Controllers/QueriesController.cs
++++ b/src/Hexalith.EventStore/Controllers/QueriesController.cs
+@@ -228,11 +228,6 @@ public partial class QueriesController : ControllerBase {
+         string correlationId = HttpContext.Items[CorrelationIdMiddleware.HttpContextKey]?.ToString()
+             ?? Guid.NewGuid().ToString();
+ 
+-        // Store tenant in HttpContext for error handlers and rate limiter OnRejected callback
+-        if (!string.IsNullOrEmpty(request.Tenant)) {
+-            HttpContext.Items["RequestTenantId"] = request.Tenant;
+-        }
+-
+         // Extract UserId from JWT -- use 'sub' claim ONLY (F-RT2: 'name' may be user-controllable)
+         string? userId = User.FindFirst("sub")?.Value;
+         if (string.IsNullOrWhiteSpace(userId) || User.FindAll("sub").Count() != 1) {
+@@ -248,12 +243,16 @@ public partial class QueriesController : ControllerBase {
+         bool legacyTenantRead = LegacyTenantStorageScopeAdapter.IsSingleTenantRead(request.Domain, request.QueryType);
+         if (Request.Headers.ContainsKey("X-Hexalith-Scope") && (!platformScope
+                 || !string.Equals(Request.Headers["X-Hexalith-Scope"].ToString(), explicitScope, StringComparison.Ordinal))
+-            || Request.Headers.ContainsKey("X-Hexalith-Tenant") && platformScope)
++            || Request.Headers.ContainsKey("X-Hexalith-Tenant"))
+             return BadRequest("Mixed or conflicting request scopes are not allowed.");
+         if (!platformScope)
+         {
+             if (!TenantCanonicalizer.TryCanonicalize(explicitScope, out string canonicalTenant))
+                 return Forbid();
++            if (!TenantCanonicalizer.TryCanonicalizeGrants(User.FindAll("eventstore:tenant").Select(claim => claim.Value), out _))
++            {
++                return Forbid();
++            }
+             if (legacyTenantRead)
+             {
+                 if (!TenantCanonicalizer.TryCanonicalize(request.AggregateId, out string canonicalAggregate)
+@@ -262,9 +261,14 @@ public partial class QueriesController : ControllerBase {
+                 request = request with { AggregateId = canonicalAggregate };
+             }
+             request = request with { Tenant = canonicalTenant };
++            HttpContext.Items["RequestTenantId"] = canonicalTenant;
+             await ValidateAuthorizationBeforeLookupAsync(request, userId, correlationId, cancellationToken)
+                 .ConfigureAwait(false);
+         }
++        else
++        {
++            HttpContext.Items["RequestTenantId"] = explicitScope;
++        }
+ 
+         if ((platformScope || legacyTenantRead) && catalogAuthority is null)
+             return StatusCode(StatusCodes.Status503ServiceUnavailable);
+diff --git a/src/Hexalith.EventStore/Controllers/StreamsController.cs b/src/Hexalith.EventStore/Controllers/StreamsController.cs
+index 3ea7667a36e6b56fe088077352755637c6e19e7b..2dfa98e94d41f329cf630c61200a3d0b1534d436 100644
+--- a/src/Hexalith.EventStore/Controllers/StreamsController.cs
++++ b/src/Hexalith.EventStore/Controllers/StreamsController.cs
+@@ -127,6 +127,11 @@ public sealed partial class StreamsController(
+             if (!TenantCanonicalizer.TryCanonicalize(request.Tenant, out string canonicalTenant))
+                 return ProblemWithReason(StatusCodes.Status400BadRequest, ProblemTypeUris.BadRequest,
+                     "Bad Request", "Tenant scope is invalid or reserved.", StreamReplayReasonCodes.InvalidAggregateIdentity);
++            if (Request.Headers.ContainsKey("X-Hexalith-Tenant")
++                || !TenantCanonicalizer.TryCanonicalizeGrants(User.FindAll("eventstore:tenant").Select(claim => claim.Value), out _))
++            {
++                return Forbid();
++            }
+             request = request with { Tenant = canonicalTenant };
+         }
+ 
+diff --git a/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs b/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs
+index 6ff56b3e037f4964bee3e8f263fba00adb3e81f7..9ee650a0e353bfb15f1a00e96187ff2ff3b1f20f 100644
+--- a/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs
++++ b/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs
+@@ -8,6 +8,7 @@ using Hexalith.EventStore.Admin.Abstractions.Models.Common;
+ using Hexalith.EventStore.Admin.Abstractions.Models.Dapr;
+ using Hexalith.EventStore.Admin.Abstractions.Models.Health;
+ using Hexalith.EventStore.Admin.Abstractions.Models.Storage;
++using Hexalith.EventStore.Admin.Abstractions.Models.Streams;
+ 
+ using Microsoft.Extensions.Configuration;
+ using Microsoft.IdentityModel.Tokens;
+@@ -63,7 +64,8 @@ internal sealed class E2EAdminApiHandler(IConfiguration configuration) : HttpMes
+         {
+             "/api/v1/admin/health" => new SystemHealthReport(HealthStatus.Healthy, 0, 0, 0, [], new(null, null, null)),
+             "/api/v1/admin/health/dapr/history" => new DaprComponentHealthTimeline([], false, HistoryStatus: SystemHealthMetricStatus.Available),
+-            "/api/v1/admin/streams/GetRecentlyActiveStreams" or "/api/v1/admin/streams/commands" or "/api/v1/admin/dead-letters" => new PagedResult<object>([], 0, null),
++            "/api/v1/admin/streams/GetRecentlyActiveStreams" => new PagedResult<StreamSummary>([], 0, null),
++            "/api/v1/admin/streams/commands" or "/api/v1/admin/dead-letters" => new PagedResult<object>([], 0, null),
+             "/api/v1/admin/dead-letters/count" => 0,
+             "/api/v1/admin/storage/overview" => new StorageOverview(0, null, [], 0, StorageIndexStatus.Empty),
+             "/api/v1/admin/dapr/sidecar" => Sidecar(),
+diff --git a/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs b/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs
+index 9044e09441919d977f9423a99cdeac78a67ea43f..b6f585d9317ae0ff4d1cc7a6f90dc376063e37af 100644
+--- a/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs
++++ b/tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs
+@@ -3,7 +3,9 @@ using System.Net.Http.Headers;
+ using System.Net.Http.Json;
+ using System.Security.Cryptography;
+ 
++using Hexalith.EventStore.Admin.Abstractions.Models.Common;
+ using Hexalith.EventStore.Admin.Abstractions.Models.Health;
++using Hexalith.EventStore.Admin.Abstractions.Models.Streams;
+ using Hexalith.EventStore.Admin.UI;
+ using Hexalith.EventStore.Admin.UI.Services;
+ using Hexalith.EventStore.Contracts.Routing;
+@@ -32,6 +34,12 @@ public class E2EAdminApiTransportTests
+ 
+         report.ShouldNotBeNull();
+         report.TotalEventCount.ShouldBe(0);
++        using IServiceScope scope = app.Services.CreateScope();
++        PagedResult<StreamSummary> streams = await scope.ServiceProvider.GetRequiredService<AdminStreamApiClient>()
++            .GetRecentlyActiveStreamsAsync(null, null, 100, TestContext.Current.CancellationToken);
++        streams.Items.ShouldBeEmpty();
++        streams.TotalCount.ShouldBe(0);
++        streams.ContinuationToken.ShouldBeNull();
+         backend.VerifyNoRejectedRequests();
+     }
+ 
+@@ -60,6 +68,7 @@ public class E2EAdminApiTransportTests
+     [Theory]
+     [InlineData("method", HttpStatusCode.MethodNotAllowed)]
+     [InlineData("route", HttpStatusCode.NotFound)]
++    [InlineData("route-prefix", HttpStatusCode.NotFound)]
+     [InlineData("legacy-stream-list", HttpStatusCode.NotFound)]
+     [InlineData("endpoint", HttpStatusCode.Forbidden)]
+     [InlineData("target", HttpStatusCode.Forbidden)]
+@@ -84,6 +93,7 @@ public class E2EAdminApiTransportTests
+         {
+             case "method": request.Method = HttpMethod.Post; break;
+             case "route": request.RequestUri = new Uri(E2EAdminApiHandler.Endpoint + "/undeclared"); break;
++            case "route-prefix": request.RequestUri = new Uri(E2EAdminApiHandler.Endpoint + "/api/v1/admin/streams/GetRecentlyActiveStreams/undeclared"); break;
+             case "legacy-stream-list": request.RequestUri = new Uri(E2EAdminApiHandler.Endpoint + "/api/v1/admin/streams"); break;
+             case "endpoint": request.RequestUri = new Uri("http://127.0.0.1:3500/api/v1/admin/health"); break;
+             case "target": request.Headers.Remove("dapr-app-id"); request.Headers.Add("dapr-app-id", "foreign-app"); break;
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+index 17200fdca66c292b1f174eca14e41ace4ebab2db..88e2e482845b23e18473fa30d07f6c64b20c8185 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+@@ -559,7 +559,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(workflow, "ci");
+         string tenantsSourceModeJob = ExtractTopLevelWorkflowJobBlock(workflow, "tenants-source-mode");
+ 
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f");
+         ciJob.ShouldContain("build-timeout-minutes: 180");
+         ciJob.ShouldContain("test-platform: microsoft-testing-platform");
+         ciJob.ShouldContain("run-consumer-validation: true");
+@@ -583,6 +583,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(File.ReadAllText(Path.Combine(root, ".github", "workflows", "ci.yml")), "ci");
+         ciJob.ShouldContain("module-manifest: module/hexalith.module-manifest.v2.json");
+         ciJob.ShouldContain("integration-test-profiles: platform-package");
++        AssertPlatformPackageReferenceOwnerSelection(ciJob);
+         ciJob.ShouldContain("registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}");
+         ciJob.ShouldContain("registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}");
+         foreach (string retired in new[] { "integration-test-projects:", "aspire-test-project:", "dapr-version:", "dapr-runtime-version:", "secrets: inherit" })
+@@ -592,7 +593,7 @@ public sealed class ReleasePackageManifestTests
+ 
+         using JsonDocument tools = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config", "dotnet-tools.json")));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("4.43.6");
++        tool.GetProperty("version").GetString().ShouldBe("4.44.0");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "module", "hexalith.module-manifest.v2.json")));
+         JsonElement suite = manifest.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray()
+@@ -602,6 +603,27 @@ public sealed class ReleasePackageManifestTests
+         suite.GetProperty("entry").GetString().ShouldBe("tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj");
+     }
+ 
++    /// <summary>The qualification caller accepts only one literal reviewed reference owner.</summary>
++    /// <param name="replacement">An unqualified replacement for the required owner input.</param>
++    [Theory]
++    [InlineData("")]
++    [InlineData("      integration-test-reference-owners:")]
++    [InlineData("      integration-test-reference-owners: memories")]
++    [InlineData("      integration-test-reference-owners: tenants,memories")]
++    [InlineData("      integration-test-reference-owners: tenants,tenants")]
++    [InlineData("      integration-test-reference-owners: ${{ inputs.owner }}")]
++    [InlineData("      integration-test-reference-owners: tenants\n      integration-test-reference-owners: tenants")]
++    public void SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(string replacement)
++    {
++        const string OwnerInput = "      integration-test-reference-owners: tenants";
++        string valid = $"  ci:\n    with:\n{OwnerInput}\n";
++        AssertPlatformPackageReferenceOwnerSelection(valid);
++
++        string changed = valid.Replace(OwnerInput, replacement, StringComparison.Ordinal);
++
++        _ = Should.Throw<Shouldly.ShouldAssertException>(() => AssertPlatformPackageReferenceOwnerSelection(changed));
++    }
++
+     /// <summary>SDK-owned test support remains source while external Release dependencies remain packages.</summary>
+     /// <param name="configuration">The consuming build configuration.</param>
+     /// <param name="source">The external dependency mode selected by the caller.</param>
+@@ -644,6 +666,10 @@ public sealed class ReleasePackageManifestTests
+         AssertSemanticReleaseGovernanceJobIsBlocking(job);
+     }
+ 
++    [Fact]
++    public void SemanticReleaseGovernanceValidationAcceptsValidJob()
++        => AssertSemanticReleaseGovernanceJobIsBlocking(CreateValidSemanticReleaseGovernanceJobBlock());
++
+     [Theory]
+     [InlineData("job-skip")]
+     [InlineData("step-skip")]
+@@ -682,6 +708,20 @@ public sealed class ReleasePackageManifestTests
+             () => AssertSemanticReleaseGovernanceJobIsBlocking(mutatedJob));
+     }
+ 
++    [Theory]
++    [InlineData(10)]
++    [InlineData(60)]
++    public void SemanticReleaseGovernanceValidationRejectsChangedTimeout(int timeoutMinutes)
++    {
++        string job = CreateValidSemanticReleaseGovernanceJobBlock()
++            .Replace(
++                "    timeout-minutes: 45",
++                $"    timeout-minutes: {timeoutMinutes}",
++                StringComparison.Ordinal);
++
++        _ = Should.Throw<Shouldly.ShouldAssertException>(() => AssertSemanticReleaseGovernanceJobIsBlocking(job));
++    }
++
+     [Fact]
+     public void TenantsSourceModeJobValidationRejectsSkippedJob()
+     {
+@@ -779,7 +819,7 @@ public sealed class ReleasePackageManifestTests
+         liveSidecarJob.ShouldNotContain("set +e");
+ 
+         string ciJob = ExtractTopLevelWorkflowJobBlock(ci, "ci");
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@26991e8c542704be44cd8d9f58084d56fa627adb");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f");
+         ciJob.ShouldContain("unit-test-projects: |");
+         ciJob.ShouldNotContain("tests/Hexalith.EventStore.Contracts.Tests");
+         ciJob.ShouldNotContain("continue-on-error");
+@@ -2292,6 +2332,18 @@ public sealed class ReleasePackageManifestTests
+             "Tenants source-mode");
+     }
+ 
++    private static void AssertPlatformPackageReferenceOwnerSelection(string jobBlock)
++    {
++        string[] ownerInputs = jobBlock
++            .Replace("\r\n", "\n", StringComparison.Ordinal)
++            .Replace('\r', '\n')
++            .Split('\n')
++            .Where(static line => line.TrimStart().StartsWith("integration-test-reference-owners:", StringComparison.Ordinal))
++            .ToArray();
++
++        ownerInputs.ShouldBe(["      integration-test-reference-owners: tenants"]);
++    }
++
+     private static void AssertSemanticReleaseGovernanceJobIsBlocking(string jobBlock)
+     {
+         string normalizedJob = jobBlock
+@@ -2385,7 +2437,7 @@ public sealed class ReleasePackageManifestTests
+             [
+                 "  semantic-release-governance:",
+                 "    runs-on: ubuntu-latest",
+-                "    timeout-minutes: 10",
++                "    timeout-minutes: 45",
+                 "    steps:",
+                 $"      - uses: actions/checkout@{CheckoutActionSha} # v7.0.0",
+                 "        with:",
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs
+index 7a2041be807a7ef4a6baa0dfc61f14df523dc2d9..f09f1249f255736f4e15cb07c699064877a83dce 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs
+@@ -26,6 +26,117 @@ using EventStoreTenantValidator = Hexalith.EventStore.Authorization.ITenantValid
+ namespace Hexalith.EventStore.Server.Tests.Controllers;
+ 
+ public class AdminStorageCommandControllerTests {
++    /// <summary>Provides invalid tenant-scope scenarios for each storage mutation.</summary>
++    /// <returns>Each storage operation paired with one invalid scope scenario.</returns>
++    public static IEnumerable<object[]> InvalidScopes()
++    {
++        foreach (string operation in new[] { "snapshot", "set", "delete" })
++        {
++            foreach (string violation in new[] { "reserved", "malformed", "tenant-header", "platform-header", "invalid-grant", "duplicate-grant" })
++            {
++                yield return [operation, violation];
++            }
++        }
++    }
++
++    /// <summary>Verifies that invalid storage scopes are rejected before authorization or state access.</summary>
++    /// <param name="operation">The storage mutation to invoke.</param>
++    /// <param name="violation">The invalid scope or grant scenario.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [MemberData(nameof(InvalidScopes))]
++    public async Task StorageMutation_InvalidOrMixedScope_RejectsBeforeAuthorizationOrState(string operation, string violation)
++    {
++        List<Claim> claims = [new("eventstore:tenant", "tenant-a"), new("eventstore:admin-role", "Operator")];
++        if (violation == "invalid-grant")
++        {
++            claims.Add(new Claim("eventstore:tenant", "system"));
++        }
++        if (violation == "duplicate-grant")
++        {
++            claims.Add(new Claim("eventstore:tenant", "TENANT-A"));
++        }
++        (AdminStorageCommandController controller, IActorProxyFactory factory, EventStoreTenantValidator tenantValidator,
++            IRbacValidator rbacValidator, DaprClient dapr) = CreateController(CreatePrincipal([.. claims]));
++        string tenant = violation switch
++        {
++            "reserved" => "SYSTEM",
++            "malformed" => " tenant-a",
++            _ => "tenant-a",
++        };
++        if (violation == "tenant-header")
++        {
++            controller.Request.Headers["X-Hexalith-Tenant"] = tenant;
++        }
++        if (violation == "platform-header")
++        {
++            controller.Request.Headers["X-Hexalith-Scope"] = "platform:tenants";
++        }
++
++        AdminOperationResult result = ExtractOperation(await InvokeStorageMutation(controller, operation, tenant));
++
++        result.Success.ShouldBeFalse();
++        result.ErrorCode.ShouldBe(violation is "reserved" or "malformed" ? "RejectedValidation" : "RejectedUnauthorized");
++        tenantValidator.ReceivedCalls().ShouldBeEmpty();
++        rbacValidator.ReceivedCalls().ShouldBeEmpty();
++        factory.ReceivedCalls().ShouldBeEmpty();
++        dapr.ReceivedCalls().ShouldBeEmpty();
++    }
++
++    /// <summary>Verifies that storage authorization and persisted identities use the canonical tenant.</summary>
++    /// <param name="operation">The storage mutation to invoke.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("snapshot")]
++    [InlineData("set")]
++    [InlineData("delete")]
++    public async Task StorageMutation_MixedCaseTenant_CanonicalizesBeforeAuthorizationAndState(string operation)
++    {
++        (AdminStorageCommandController controller, IActorProxyFactory factory, EventStoreTenantValidator tenantValidator,
++            IRbacValidator rbacValidator, DaprClient dapr) = CreateController(CreatePrincipal(
++                new Claim("eventstore:tenant", "TENANT-A"), new Claim("eventstore:admin-role", "Operator")));
++        SetupPolicyIndex(dapr, operation == "delete"
++            ? [new SnapshotPolicy("tenant-a", "orders", "OrderAggregate", 100, DateTimeOffset.UtcNow)] : []);
++        _ = dapr.GetStateAndETagAsync<List<SnapshotPolicy>>("statestore", Arg.Any<string>(),
++                consistencyMode: Arg.Any<ConsistencyMode?>(), metadata: Arg.Any<IReadOnlyDictionary<string, string>>(),
++                cancellationToken: Arg.Any<CancellationToken>()).Returns(_ => (new List<SnapshotPolicy>(), "etag"));
++        _ = dapr.TrySaveStateAsync("statestore", Arg.Any<string>(), Arg.Any<List<SnapshotPolicy>>(), Arg.Any<string>(),
++                stateOptions: Arg.Any<StateOptions?>(), metadata: Arg.Any<IReadOnlyDictionary<string, string>>(),
++                cancellationToken: Arg.Any<CancellationToken>()).Returns(true);
++
++        _ = await InvokeStorageMutation(controller, operation, "Tenant-A");
++
++        _ = await tenantValidator.Received(1).ValidateAsync(Arg.Any<ClaimsPrincipal>(), "tenant-a", Arg.Any<CancellationToken>(),
++            operation == "snapshot" ? "order-1" : "OrderAggregate");
++        _ = await rbacValidator.Received(1).ValidateAsync(Arg.Any<ClaimsPrincipal>(), "tenant-a", "orders",
++            operation == "snapshot" ? "command:replay" : "snapshot:policy", operation == "snapshot" ? "command" : "admin",
++            Arg.Any<CancellationToken>(), operation == "snapshot" ? "order-1" : "OrderAggregate");
++        if (operation == "snapshot")
++        {
++            _ = factory.Received(1).CreateActorProxy<IAggregateActor>(new ActorId("tenant-a:orders:order-1"), "AggregateActor");
++            _ = await dapr.Received(1).TrySaveStateAsync("statestore", "admin:storage-snapshot-jobs:tenant-a",
++                Arg.Is<List<SnapshotJob>>(jobs => jobs.Count == 1 && jobs[0].TenantId == "tenant-a"), Arg.Any<string>(),
++                stateOptions: Arg.Any<StateOptions?>(), metadata: Arg.Any<IReadOnlyDictionary<string, string>>(),
++                cancellationToken: Arg.Any<CancellationToken>());
++        }
++        else
++        {
++            _ = await dapr.Received(1).TrySaveStateAsync("statestore", "admin:storage-snapshot-policies:tenant-a",
++                Arg.Is<List<SnapshotPolicy>>(policies => operation == "delete" ? policies.Count == 0
++                    : policies.Count == 1 && policies[0].TenantId == "tenant-a"), Arg.Any<string>(),
++                stateOptions: Arg.Any<StateOptions?>(), metadata: Arg.Any<IReadOnlyDictionary<string, string>>(),
++                cancellationToken: Arg.Any<CancellationToken>());
++        }
++    }
++
++    private static Task<ActionResult<AdminOperationResult>> InvokeStorageMutation(AdminStorageCommandController controller, string operation, string tenant)
++        => operation switch
++        {
++            "snapshot" => controller.CreateSnapshot(new ManualSnapshotRequest(tenant, "orders", "order-1")),
++            "set" => controller.SetSnapshotPolicy(new SnapshotPolicySetRequest(tenant, "orders", "OrderAggregate", 100)),
++            _ => controller.DeleteSnapshotPolicy(new SnapshotPolicyDeleteRequest(tenant, "orders", "OrderAggregate")),
++        };
++
+     [Fact]
+     public async Task CreateSnapshot_CommandSubmitOnly_DoesNotCreateActorProxy() {
+         (AdminStorageCommandController controller, IActorProxyFactory factory, _, _, _) = CreateController(
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs
+index dc3c2381f40fb17f85f0dd1f2a81f15249b94b28..eaf2b4807b17d316579e0f4a9014b8552d8f33bd 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs
+@@ -37,6 +37,23 @@ namespace Hexalith.EventStore.Server.Tests.Controllers;
+ /// Replaces the 7 characterization tests that tested inline tenant checks removed in 17-3.
+ /// </summary>
+ public class CommandsControllerTenantTests {
++    /// <summary>Verifies that an additional tenant header is rejected before command dispatch.</summary>
++    /// <param name="headerTenant">The additional header value alongside the body tenant.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("test-tenant")]
++    [InlineData("other-tenant")]
++    [InlineData("")]
++    public async Task Submit_AdditionalTenantHeader_RejectsBeforeDispatch(string headerTenant)
++    {
++        (CommandsController controller, IMediator mediator) = CreateControllerWithMediator(CreateAuthenticatedPrincipal("test-tenant"));
++        controller.Request.Headers["X-Hexalith-Tenant"] = headerTenant;
++
++        (await controller.Submit(CreateTestRequest(), CancellationToken.None)).ShouldBeOfType<BadRequestObjectResult>();
++
++        mediator.ReceivedCalls().ShouldBeEmpty();
++    }
++
+     [Fact]
+     public async Task Submit_GlobalAdministratorCommandCapturesAuthenticatedSubjectWithoutReceiptOrExtensionFallback()
+     {
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
+index 0564a7bf3f19b1b145c4ce274deb5127b586e3b4..25bd48bb04806471de42ab829a7a7e7ffd137287 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs
+@@ -26,6 +26,76 @@ using Shouldly;
+ namespace Hexalith.EventStore.Server.Tests.Controllers;
+ 
+ public partial class QueriesControllerTests {
++    /// <summary>Verifies that an additional tenant header is rejected before query authorization or lookup.</summary>
++    /// <param name="headerTenant">The additional header value alongside the body tenant.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("test-tenant")]
++    [InlineData("other-tenant")]
++    [InlineData("")]
++    public async Task Submit_AdditionalTenantHeader_RejectsBeforeAuthorizationOrLookup(string headerTenant)
++    {
++        IMediator mediator = Substitute.For<IMediator>();
++        IETagService etag = Substitute.For<IETagService>();
++        ITenantValidator tenantValidator = Substitute.For<ITenantValidator>();
++        IRbacValidator rbacValidator = Substitute.For<IRbacValidator>();
++        QueriesController controller = CreateController(mediator, etag, tenantValidator: tenantValidator, rbacValidator: rbacValidator);
++        controller.Request.Headers["X-Hexalith-Tenant"] = headerTenant;
++
++        (await controller.Submit(CreateTestRequest(), null, CancellationToken.None)).ShouldBeOfType<BadRequestObjectResult>();
++
++        tenantValidator.ReceivedCalls().ShouldBeEmpty();
++        rbacValidator.ReceivedCalls().ShouldBeEmpty();
++        etag.ReceivedCalls().ShouldBeEmpty();
++        mediator.ReceivedCalls().ShouldBeEmpty();
++    }
++
++    /// <summary>Verifies that malformed or duplicate grants are rejected before query authorization or lookup.</summary>
++    /// <param name="extraGrant">The malformed or normalized-duplicate grant.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("system")]
++    [InlineData(" tenant-a")]
++    [InlineData("TEST-TENANT")]
++    public async Task Submit_MalformedOrDuplicateGrant_RejectsBeforeAuthorizationOrLookup(string extraGrant)
++    {
++        IMediator mediator = Substitute.For<IMediator>();
++        IETagService etag = Substitute.For<IETagService>();
++        ITenantValidator tenantValidator = Substitute.For<ITenantValidator>();
++        IRbacValidator rbacValidator = Substitute.For<IRbacValidator>();
++        var principal = new ClaimsPrincipal(new ClaimsIdentity([
++            new Claim("sub", "test-user"), new Claim("eventstore:tenant", "test-tenant"), new Claim("eventstore:tenant", extraGrant),
++        ], "test"));
++        QueriesController controller = CreateController(mediator, etag, principal, tenantValidator, rbacValidator);
++
++        (await controller.Submit(CreateTestRequest(), null, CancellationToken.None)).ShouldBeOfType<ForbidResult>();
++
++        tenantValidator.ReceivedCalls().ShouldBeEmpty();
++        rbacValidator.ReceivedCalls().ShouldBeEmpty();
++        etag.ReceivedCalls().ShouldBeEmpty();
++        mediator.ReceivedCalls().ShouldBeEmpty();
++    }
++
++    /// <summary>Verifies that query authorization, dispatch and rate-limit context use the canonical tenant.</summary>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Fact]
++    public async Task Submit_MixedCaseScope_CanonicalizesBeforeAuthorizationAndRateLimitContext()
++    {
++        IMediator mediator = Substitute.For<IMediator>();
++        _ = mediator.Send(Arg.Any<SubmitQuery>(), Arg.Any<CancellationToken>()).Returns(CreateProjectionResult());
++        ITenantValidator tenantValidator = Substitute.For<ITenantValidator>();
++        _ = tenantValidator.ValidateAsync(Arg.Any<ClaimsPrincipal>(), "test-tenant", Arg.Any<CancellationToken>(), "order-1")
++            .Returns(TenantValidationResult.AllowedFor("test-tenant"));
++        QueriesController controller = CreateController(mediator, tenantValidator: tenantValidator);
++
++        (await controller.Submit(CreateTestRequest() with { Tenant = "Test-Tenant" }, null, CancellationToken.None))
++            .ShouldBeOfType<OkObjectResult>();
++
++        controller.HttpContext.Items["RequestTenantId"].ShouldBe("test-tenant");
++        _ = await tenantValidator.Received(1).ValidateAsync(Arg.Any<ClaimsPrincipal>(), "test-tenant", Arg.Any<CancellationToken>(), "order-1");
++        _ = await mediator.Received(1).Send(Arg.Is<SubmitQuery>(query => query.Tenant == "test-tenant"), Arg.Any<CancellationToken>());
++    }
++
+     /// <summary>
+     /// Generates a self-routing ETag for the "orders" projection type (matches CreateTestRequest).
+     /// </summary>
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs b/tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs
+index 52c458ff6952b8063662e3a6817a8a4c38bfb351..03973bf1f9a4be45fca38c17abdeb7a6e8042c81 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs
+@@ -55,6 +55,48 @@ public class StreamsControllerTests {
+     private const string Domain = "party";
+     private const string AggregateId = "party-1";
+ 
++    /// <summary>Verifies that an additional tenant header is rejected before stream authorization or actor access.</summary>
++    /// <param name="headerTenant">The additional header value alongside the body tenant.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("tenant-a")]
++    [InlineData("tenant-b")]
++    [InlineData("")]
++    public async Task HumanReadWithAdditionalTenantHeaderRejectsBeforeAuthorizationOrActorAccess(string headerTenant)
++    {
++        (StreamsController controller, IActorProxyFactory proxies, FakeTenantValidator tenantValidator, FakeRbacValidator rbacValidator)
++            = CreateController(Substitute.For<IAggregateActor>());
++        controller.Request.Headers["X-Hexalith-Tenant"] = headerTenant;
++
++        (await controller.ReadStreamAsync(new StreamReadRequest(Tenant, Domain, AggregateId))).ShouldBeOfType<ForbidResult>();
++
++        tenantValidator.ReceivedRequests.ShouldBeEmpty();
++        rbacValidator.ReceivedRequests.ShouldBeEmpty();
++        proxies.ReceivedCalls().ShouldBeEmpty();
++    }
++
++    /// <summary>Verifies that malformed or duplicate grants are rejected before stream authorization or actor access.</summary>
++    /// <param name="extraGrant">The malformed or normalized-duplicate grant.</param>
++    /// <returns>A task representing the asynchronous test.</returns>
++    [Theory]
++    [InlineData("system")]
++    [InlineData(" tenant-a")]
++    [InlineData("TENANT-A")]
++    public async Task HumanReadWithMalformedOrDuplicateGrantRejectsBeforeAuthorizationOrActorAccess(string extraGrant)
++    {
++        (StreamsController controller, IActorProxyFactory proxies, FakeTenantValidator tenantValidator, FakeRbacValidator rbacValidator)
++            = CreateController(Substitute.For<IAggregateActor>());
++        controller.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity([
++            new Claim("sub", "test-user"), new Claim("eventstore:tenant", Tenant), new Claim("eventstore:tenant", extraGrant),
++        ], "test"));
++
++        (await controller.ReadStreamAsync(new StreamReadRequest(Tenant, Domain, AggregateId))).ShouldBeOfType<ForbidResult>();
++
++        tenantValidator.ReceivedRequests.ShouldBeEmpty();
++        rbacValidator.ReceivedRequests.ShouldBeEmpty();
++        proxies.ReceivedCalls().ShouldBeEmpty();
++    }
++
+     [Fact]
+     public async Task WorkloadSourceReadMapsOnlyTheDeclaredTenantsPlatformScopeToHistoricalStorage()
+     {
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs
+index 1afe8f5c896192f928cf1bca57c6452481ac426d..0bb15ff8d6405fb8bfa42679ef2a4c97ab78abc7 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs
+@@ -36,8 +36,12 @@ public sealed class CatalogAcquisitionDiagnosticsTests
+         {
+             if (loggerResolutionThrows) log.Records.ShouldBeEmpty();
+             else
+-                foreach (string stage in new[] { "CatalogAdmissionWait", "CatalogStateRead", "CatalogActivationDigest", "CatalogHostCapture", "CatalogTrust", "CatalogCompareExchange", "CatalogSnapshot" })
++            {
++                log.Records.Where(record => Equals(record["Stage"], "CatalogStateRead")).Select(record => record["Status"])
++                    .ShouldBe(new object[] { "Started", "Completed", "Started", "Completed" });
++                foreach (string stage in new[] { "CatalogAdmissionWait", "CatalogActivationDigest", "CatalogHostCapture", "CatalogTrust", "CatalogCompareExchange", "CatalogSnapshot" })
+                     CommandDispatchDiagnosticsTests.AssertClosed(log, stage, "Completed");
++            }
+         }
+         (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
+         CommandDispatchDiagnosticsTests.AssertPrivate(log);
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..573c969c88a35def272c7ad06a271bfa530bb2ab
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs
+@@ -0,0 +1,43 @@
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Injects deterministic races around an actual serialized, ETag-checked authority store.</summary>
++internal sealed class CatalogAdmissionRebaseStore(IRouteCatalogStateStore inner) : IRouteCatalogStateStore
++{
++    /// <inheritdoc/>
++    public RouteCatalogStateCoordinates? Coordinates => inner.Coordinates;
++    /// <summary>Gets the observed read count.</summary>
++    internal int Reads { get; private set; }
++    /// <summary>Gets the attempted CAS count.</summary>
++    internal int Exchanges { get; private set; }
++    /// <summary>Gets the exact read concurrency tokens.</summary>
++    internal List<string> ReadETags { get; } = [];
++    /// <summary>Gets the exact attempted concurrency tokens.</summary>
++    internal List<string> ExchangeETags { get; } = [];
++    /// <summary>Gets or sets an action before the selected fresh read.</summary>
++    internal Func<int, CancellationToken, Task>? BeforeRead { get; set; }
++    /// <summary>Gets or sets a deliberately aliased read result.</summary>
++    internal Func<int, RouteCatalogActivationState, RouteCatalogActivationState>? TransformRead { get; set; }
++    /// <summary>Gets or sets an action that can model contention or response loss at CAS.</summary>
++    internal Func<int, RouteCatalogActivationState, string, CancellationToken, Task<bool?>>? Exchange { get; set; }
++    /// <inheritdoc/>
++    public async Task<(RouteCatalogActivationState State, string ETag)> ReadAsync(CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        int read = ++Reads;
++        if (BeforeRead is { } before) await before(read, cancellationToken);
++        var result = await inner.ReadAsync(cancellationToken);
++        ReadETags.Add(result.ETag);
++        return (TransformRead?.Invoke(read, result.State) ?? result.State, result.ETag);
++    }
++    /// <inheritdoc/>
++    public async Task<bool> CompareExchangeAsync(RouteCatalogActivationState state, string etag, CancellationToken cancellationToken)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        int exchange = ++Exchanges;
++        ExchangeETags.Add(etag);
++        if (Exchange is { } change && await change(exchange, state, etag, cancellationToken) is { } result) return result;
++        return await inner.CompareExchangeAsync(state, etag, cancellationToken);
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..bb20d9bfcb7fac27d7ced07362f783ebfabb9ad0
+--- /dev/null
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs
+@@ -0,0 +1,322 @@
++using Hexalith.EventStore.Contracts.Routing;
++using Hexalith.EventStore.ServiceDefaults.Routing;
++
++using Microsoft.Extensions.Hosting;
++using Microsoft.Extensions.Options;
++
++using NSubstitute;
++using Shouldly;
++
++namespace Hexalith.EventStore.Server.Tests.Routing;
++
++/// <summary>Fresh admission may rebase inventory only across the exact independently validated authority.</summary>
++public sealed class CatalogAdmissionRebaseTests
++{
++    [Fact]
++    public async Task EveryCaptureCanAdvanceForeignInventoryWithoutLosingPeersOrUsingItsOldETag()
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        int captures = 0;
++        var authority = Authority(fixture, store, async (_, token) =>
++        {
++            int capture = ++captures;
++            await ChangeAsync(fixture, state => state with
++            {
++                LastLease = state.LastLease + 1,
++                Leases = [.. state.Leases, new(state.LastLease + 1, "peer-" + capture, fixture.Hosts[1].HostId, state.Committed!.RootDigest, state.Epoch)],
++                Previous = state.Committed,
++            }, token);
++        });
++        store.Exchange = (attempt, _, _, _) => Task.FromResult<bool?>(attempt == 1 ? false : null);
++        await using (var lease = await authority.AcquireAsync(TestContext.Current.CancellationToken))
++        {
++            captures.ShouldBe(2); store.Reads.ShouldBe(4); store.Exchanges.ShouldBe(2);
++            store.ExchangeETags.ShouldBe([store.ReadETags[1], store.ReadETags[3]]);
++            store.ReadETags[0].ShouldNotBe(store.ReadETags[1]);
++            var state = (await fixture.Store.ReadAsync(default)).State;
++            state.LastLease.ShouldBe(3); state.Leases.Count.ShouldBe(3);
++            state.Leases.Where(fence => fence.LeaseId.StartsWith("peer-", StringComparison.Ordinal)).Count().ShouldBe(2);
++            state.Previous.ShouldNotBeNull();
++            state.Attempts.ShouldHaveSingleItem();
++            lease.Snapshot.Epoch.ShouldBe(state.Epoch);
++        }
++        (await fixture.Store.ReadAsync(default)).State.Leases.Select(fence => fence.LeaseId).ShouldBe(["peer-1", "peer-2"]);
++    }
++
++    [Theory]
++    [InlineData("pending")]
++    [InlineData("missing")]
++    [InlineData("epoch")]
++    [InlineData("committed")]
++    [InlineData("binding")]
++    [InlineData("proof")]
++    [InlineData("bytes")]
++    public async Task ChangedAuthorityCannotInheritThePriorObservationOrTrust(string change)
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        int captures = 0;
++        var authority = Authority(fixture, store, async (_, token) =>
++        {
++            if (++captures > 1) throw new InvalidOperationException("fresh observation required");
++            await ChangeAsync(fixture, state => change switch
++            {
++                "pending" => state with { Pending = fixture.Candidate(2, state.Committed!.RootDigest) },
++                "missing" => state with { Committed = null },
++                "epoch" => state with { Epoch = state.Epoch + 1 },
++                "committed" => state with { Committed = fixture.Candidate(2, state.Committed!.RootDigest) },
++                "binding" => state with { Committed = state.Committed! with { Owner = "different-owner" } },
++                "proof" => state with { Committed = state.Committed! with { TrustProof = state.Committed.TrustProof + "-changed" } },
++                _ => state with { Committed = state.Committed! with { CanonicalCatalog = [.. state.Committed.CanonicalCatalog, 32] } },
++            }, token);
++        });
++        await Should.ThrowAsync<Exception>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
++        store.Exchanges.ShouldBe(0);
++        captures.ShouldBe(change is "epoch" or "committed" or "binding" or "proof" ? 2 : 1);
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    [Theory]
++    [InlineData("bytes")]
++    [InlineData("hosts")]
++    public async Task MutableReadAliasesCannotRewriteThePrivatelyValidatedActivation(string field)
++    {
++        var fixture = await FixtureAsync();
++        var initial = (await fixture.Store.ReadAsync(default)).State;
++        byte[] bytes = initial.Committed!.CanonicalCatalog.ToArray();
++        RouteCatalogHostIdentity[] hosts = [.. initial.Committed.RequiredHosts];
++        var alias = initial.Committed with { CanonicalCatalog = bytes, RequiredHosts = hosts };
++        var store = new CatalogAdmissionRebaseStore(fixture.Store)
++        {
++            TransformRead = (read, state) => read == 1 ? state with { Committed = alias } : state,
++        };
++        int captures = 0;
++        var authority = Authority(fixture, store, async (observed, token) =>
++        {
++            if (++captures > 1) throw new InvalidOperationException("fresh observation required");
++            observed.CanonicalCatalog.ShouldNotBeSameAs(bytes);
++            observed.RequiredHosts.ShouldNotBeSameAs(hosts);
++            if (field == "bytes") bytes[0] ^= 1;
++            else hosts[0] = hosts[1];
++            // A concurrent backend change shares the changed original values, never the owned snapshot.
++            await ChangeAsync(fixture, state => state with { Committed = alias }, token);
++        });
++        await Should.ThrowAsync<Exception>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
++        store.Exchanges.ShouldBe(0);
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    [Theory]
++    [InlineData("cap")]
++    [InlineData("overflow")]
++    public async Task RefreshedInventoryLimitsRemainClosed(string limit)
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        var authority = Authority(fixture, store, (_, token) => ChangeAsync(fixture, state => state with
++        {
++            LastLease = limit == "overflow" ? long.MaxValue : 4096,
++            Leases = limit == "overflow" ? [] : [.. Enumerable.Range(1, 4096).Select(sequence =>
++                new RouteCatalogDispatchFence(sequence, "peer-" + sequence, fixture.Hosts[1].HostId, state.Committed!.RootDigest, state.Epoch))],
++        }, token));
++        if (limit == "overflow") await Should.ThrowAsync<OverflowException>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
++        else await Should.ThrowAsync<RouteCatalogUnavailableException>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
++        store.Exchanges.ShouldBe(0);
++        (await fixture.Store.ReadAsync(default)).State.Leases.Count.ShouldBe(limit == "cap" ? 4096 : 0);
++    }
++
++    [Theory]
++    [InlineData("cancel")]
++    [InlineData("failure")]
++    [InlineData("identity")]
++    [InlineData("profile")]
++    [InlineData("coordinates")]
++    public async Task RefreshFailureCancellationOrChangedLocalIdentityCannotCreateAFence(string scenario)
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        using var cancelled = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        var local = new RouteCatalogHostOptions { Identity = fixture.Hosts[0], Profile = "Development", DevelopmentFixture = true };
++        store.BeforeRead = (read, _) =>
++        {
++            if (read == 2)
++            {
++                if (scenario == "cancel") cancelled.Cancel();
++                else if (scenario == "failure") throw new IOException("refresh unavailable");
++                else if (scenario == "identity") local.Identity = fixture.Hosts[1];
++                else if (scenario == "profile") local.Profile = "Changed";
++                else fixture.Store.Coordinates = new("changed", "changed", "http://127.0.0.1:3501/");
++            }
++            return Task.CompletedTask;
++        };
++        await Should.ThrowAsync<Exception>(() => Authority(fixture, store, local: local).AcquireAsync(cancelled.Token));
++        store.Exchanges.ShouldBe(0);
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task PendingSuccessorDoesNotStrandAnAlreadyRecordedOwnFence(bool pendingOnRefresh)
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        RouteCatalogActivationState? written = null;
++        store.Exchange = async (attempt, state, etag, token) =>
++        {
++            if (attempt != 1) return null;
++            written = state;
++            if (!pendingOnRefresh)
++            {
++                (await fixture.Store.CompareExchangeAsync(state, etag, token)).ShouldBeTrue();
++                await ChangeAsync(fixture, current => current with { Pending = fixture.Candidate(2, current.Committed!.RootDigest) }, token);
++            }
++            return false;
++        };
++        int captures = 0;
++        Task Capture(RouteCatalogActivation _, CancellationToken token)
++        {
++            // An independent writer installs the exact previously proposed fence while capture
++            // awaits. Both reads remain actual strong snapshots with their original exact ETags.
++            return pendingOnRefresh && ++captures == 2
++                ? ChangeAsync(fixture, current => current with
++                {
++                    LastLease = written!.LastLease,
++                    Leases = written.Leases,
++                    Pending = fixture.Candidate(2, current.Committed!.RootDigest),
++                }, token)
++                : Task.CompletedTask;
++        }
++        await using (await Authority(fixture, store, Capture).AcquireAsync(TestContext.Current.CancellationToken))
++        {
++            written.ShouldNotBeNull(); store.Exchanges.ShouldBe(1);
++            var state = (await fixture.Store.ReadAsync(default)).State;
++            state.Leases.ShouldHaveSingleItem(); state.Pending.ShouldNotBeNull();
++        }
++        var final = (await fixture.Store.ReadAsync(default)).State;
++        final.Leases.ShouldBeEmpty(); final.Pending.ShouldNotBeNull();
++    }
++
++    [Fact]
++    public async Task LostSuccessfulCasResponseRetainsOneExactOwnFenceWithoutDuplicatingAdmission()
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        store.Exchange = async (attempt, state, etag, token) =>
++        {
++            if (attempt != 1) return null;
++            (await fixture.Store.CompareExchangeAsync(state, etag, token)).ShouldBeTrue();
++            return false;
++        };
++        int captures = 0;
++        await using (await Authority(fixture, store, (_, _) => { captures++; return Task.CompletedTask; }).AcquireAsync(TestContext.Current.CancellationToken))
++        {
++            captures.ShouldBe(2); store.Reads.ShouldBe(3); store.Exchanges.ShouldBe(1);
++            var state = (await fixture.Store.ReadAsync(default)).State;
++            state.Leases.ShouldHaveSingleItem(); state.LastLease.ShouldBe(1);
++        }
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    [Fact]
++    public async Task WinningFenceAndSnapshotKeepTheirValidatedLocalBindingUntilCleanup()
++    {
++        var fixture = await FixtureAsync();
++        var coordinates = fixture.Store.Coordinates;
++        var local = new RouteCatalogHostOptions { Identity = fixture.Hosts[0], Profile = "Development", DevelopmentFixture = true };
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        store.Exchange = async (_, state, etag, token) =>
++        {
++            bool applied = await fixture.Store.CompareExchangeAsync(state, etag, token);
++            local.Identity = fixture.Hosts[1];
++            fixture.Store.Coordinates = coordinates with { StateKey = "later-cell" };
++            return applied;
++        };
++        await using (var lease = await Authority(fixture, store, local: local).AcquireAsync(TestContext.Current.CancellationToken))
++        {
++            lease.Snapshot.LocalAppId.ShouldBe(fixture.Hosts[0].AppId);
++            lease.Snapshot.AuthorityCoordinates.ShouldBe(coordinates);
++            (await fixture.Store.ReadAsync(default)).State.Leases.Single().HostId.ShouldBe(fixture.Hosts[0].HostId);
++        }
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    [Theory]
++    [InlineData("host")]
++    [InlineData("root")]
++    [InlineData("epoch")]
++    [InlineData("sequence")]
++    [InlineData("duplicate")]
++    public async Task ResponseLossCannotReturnAMisboundOrDuplicateOwnFence(string field)
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        store.Exchange = async (_, state, etag, token) =>
++        {
++            var fence = state.Leases.Single();
++            var changed = field switch
++            {
++                "host" => fence with { HostId = fixture.Hosts[1].HostId },
++                "root" => fence with { RootDigest = "different-root" },
++                "epoch" => fence with { Epoch = state.Epoch + 1 },
++                "sequence" => fence with { Sequence = state.LastLease + 1 },
++                _ => fence,
++            };
++            (await fixture.Store.CompareExchangeAsync(state with { Leases = field == "duplicate" ? [changed, changed] : [changed] }, etag, token)).ShouldBeTrue();
++            return false;
++        };
++        await Should.ThrowAsync<RouteCatalogUnavailableException>(() => Authority(fixture, store).AcquireAsync(TestContext.Current.CancellationToken));
++        store.Exchanges.ShouldBe(1);
++        // A malformed durable record is retained for explicit owner recovery, never silently erased.
++        (await fixture.Store.ReadAsync(default)).State.Leases.Count.ShouldBe(field == "duplicate" ? 2 : 1);
++    }
++
++    [Fact]
++    public async Task CompletedValidatorCannotRewriteThePrivateComparisonSnapshotThroughItsActivationArgument()
++    {
++        var fixture = await FixtureAsync();
++        var store = new CatalogAdmissionRebaseStore(fixture.Store);
++        var authority = Authority(fixture, store, afterTrust: observed => observed.CanonicalCatalog[0] ^= 1);
++        await Should.ThrowAsync<RouteCatalogUnavailableException>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
++        store.Exchanges.ShouldBe(0);
++        (await fixture.Store.ReadAsync(default)).State.Leases.ShouldBeEmpty();
++    }
++
++    private static async Task<RouteCatalogTestFixture> FixtureAsync()
++    {
++        var fixture = new RouteCatalogTestFixture();
++        await fixture.ActivateAsync(fixture.Candidate());
++        return fixture;
++    }
++
++    private static async Task ChangeAsync(RouteCatalogTestFixture fixture, Func<RouteCatalogActivationState, RouteCatalogActivationState> change, CancellationToken token)
++    {
++        var (state, etag) = await fixture.Store.ReadAsync(token);
++        (await fixture.Store.CompareExchangeAsync(change(state), etag, token)).ShouldBeTrue();
++    }
++
++    private static RouteCatalogAuthority Authority(RouteCatalogTestFixture fixture, IRouteCatalogStateStore store,
++        Func<RouteCatalogActivation, CancellationToken, Task>? capture = null, RouteCatalogHostOptions? local = null, Action<RouteCatalogActivation>? afterTrust = null)
++    {
++        var options = Options.Create(local ?? new RouteCatalogHostOptions { Identity = fixture.Hosts[0], Profile = "Development", DevelopmentFixture = true });
++        var environment = Substitute.For<IHostEnvironment>(); environment.EnvironmentName.Returns("Development");
++        var observer = Substitute.For<IRouteCatalogHostObserver>();
++        observer.ObserveAsync(Arg.Any<RouteCatalogActivation>(), Arg.Any<RouteCatalogStateCoordinates>(), Arg.Any<CancellationToken>())
++            .Returns(async call =>
++            {
++                if (capture is not null) await capture(call.Arg<RouteCatalogActivation>(), call.Arg<CancellationToken>());
++                return fixture.Hosts[0];
++            });
++        IRouteCatalogTrustValidator actualTrust = new DevelopmentRouteCatalogTrustValidator(options, environment);
++        if (afterTrust is null) return new(store, actualTrust, options, observer);
++        var trust = Substitute.For<IRouteCatalogTrustValidator>();
++        trust.ValidateAsync(Arg.Any<RouteCatalogActivation>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(async call =>
++        {
++            var activation = call.Arg<RouteCatalogActivation>();
++            await actualTrust.ValidateAsync(activation, call.Arg<string>(), call.Arg<CancellationToken>());
++            afterTrust(activation);
++        });
++        return new(store, trust, options, observer);
++    }
++}
+diff --git a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs
+index 7df29fd782ee718125bd5623484786df5d502e12..20653317fd861da32f1e245c37fca7113c0a90f3 100644
+--- a/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs
++++ b/tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs
+@@ -56,7 +56,7 @@ public sealed class CatalogUpdateContentionTests
+         };
+         await Should.ThrowAsync<RouteCatalogUnavailableException>(() => authority.AcquireAsync(TestContext.Current.CancellationToken));
+         store.Attempts.ShouldBe(1);
+-        store.Reads.ShouldBe(2);
++        store.Reads.ShouldBe(3);
+         var state = (await fixture.Store.ReadAsync(default)).State;
+         state.Leases.ShouldBeEmpty(); state.Epoch.ShouldBe(1); state.Committed!.RootDigest.ShouldBe(first.RootDigest);
+         (state.Pending is not null).ShouldBe(mutation == "pending");
+@@ -71,7 +71,7 @@ public sealed class CatalogUpdateContentionTests
+         using var cancelled = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+         store.Conflict = (_, _) => { cancelled.Cancel(); return Task.CompletedTask; };
+         await Should.ThrowAsync<OperationCanceledException>(() => Authority(fixture, store).AcquireAsync(cancelled.Token));
+-        store.Reads.ShouldBe(1); store.Attempts.ShouldBe(1);
++        store.Reads.ShouldBe(2); store.Attempts.ShouldBe(1);
+         JsonSerializer.Serialize((await fixture.Store.ReadAsync(default)).State).ShouldBe(before);
+     }
+ 
+@@ -97,7 +97,7 @@ public sealed class CatalogUpdateContentionTests
+         string before = JsonSerializer.Serialize((await fixture.Store.ReadAsync(default)).State);
+         var store = new ControlledCatalogContentionStore(fixture.Store);
+         await Should.ThrowAsync<RouteCatalogUnavailableException>(() => Authority(fixture, store).AcquireAsync(TestContext.Current.CancellationToken));
+-        store.Reads.ShouldBe(96); store.Attempts.ShouldBe(96);
++        store.Reads.ShouldBe(192); store.Attempts.ShouldBe(96);
+         JsonSerializer.Serialize((await fixture.Store.ReadAsync(default)).State).ShouldBe(before);
+     }
+ 

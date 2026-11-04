@@ -1,0 +1,52 @@
+{
+  "directPins": {
+    "references/Hexalith.Builds": {
+      "index": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "actualCheckout": "725754075e1d6369430a3adf94d46fb71e6eaf9e"
+    },
+    "references/Hexalith.Platform": {
+      "index": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "actualCheckout": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7"
+    },
+    "references/Hexalith.EventStore": {
+      "index": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+      "actualCheckout": "f213e4115ec23cb736e8aa0113f61b9d4854480c"
+    }
+  },
+  "cliVersion": "4.43.6",
+  "ordinaryAndManualBuildsSource": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "isolatedProjects": [
+    "tests/Hexalith.Parties.Aspire.Tests",
+    "tests/Hexalith.Parties.Contracts.Tests",
+    "tests/Hexalith.Parties.Authentication.Tests",
+    "tests/Hexalith.Parties.Client.Tests",
+    "tests/Hexalith.Parties.Server.Tests",
+    "tests/Hexalith.Parties.Projections.Tests",
+    "tests/Hexalith.Parties.Security.Tests",
+    "tests/Hexalith.Parties.AdminPortal.Tests",
+    "tests/Hexalith.Parties.ConsumerPortal.Tests",
+    "tests/Hexalith.Parties.UI.Tests",
+    "tests/Hexalith.Parties.Picker.Tests",
+    "tests/Hexalith.Parties.Mcp.Tests",
+    "tests/Hexalith.Parties.Tests",
+    "tests/Hexalith.Parties.Sample.Tests",
+    "tests/Hexalith.Parties.Ci.Tests"
+  ],
+  "isolatedProjectCount": 15,
+  "jobs": [
+    "ci",
+    "eventstore-404-package-cohort",
+    "memories-3018-package-protocol",
+    "owner-publish",
+    "ui-a11y",
+    "bmad-config",
+    "platform-declaration"
+  ],
+  "independentJobs": 6,
+  "ownerBuildTimeoutMinutes": 120,
+  "declarationTimeoutMinutes": 10,
+  "declarationCheckoutDepth": 1,
+  "nestedInitialization": false,
+  "workflowsByteIdenticalToC10": true,
+  "candidateAcceptance": false
+}

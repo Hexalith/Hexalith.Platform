@@ -1,0 +1,226 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: "memories") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-090aa4cbb5804e8fac67dd999c829199/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(138,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(String owner)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: "eventstore") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-618ea0d2657240fca60c405c568c8928/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(138,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(String owner)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.ValidBoundRequestReachesImageProbeThroughComposeRun [FAIL]
+      Shouldly.ShouldAssertException : `Compose`
+          should throw
+      System.InvalidOperationException
+          but threw
+      System.IO.InvalidDataException
+      ---- System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-a02ac1792a91430facb62f620a6689fc/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogEntryPointTests.cs(39,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.ValidBoundRequestReachesImageProbeThroughComposeRun()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(127,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(110,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogEntryPointTests.cs(23,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.<>c__DisplayClass0_0.<ValidBoundRequestReachesImageProbeThroughComposeRun>g__Compose|0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-8369f66a901140dd9b7f23f1b0862850/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(23,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: False) [FAIL]
+      Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformAppModel.Compose(builder, options)).Message
+          should contain (case insensitive comparison)
+      "owner SDK"
+          but was actually
+      "Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-2c90b9756485416baf3cd11ffaadeab3..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(121,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(Boolean stripped)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: True) [FAIL]
+      Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformAppModel.Compose(builder, options)).Message
+          should contain (case insensitive comparison)
+      "owner SDK"
+          but was actually
+      "Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-65d5cf181c4848578900f81793281e51..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(121,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(Boolean stripped)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "no-proof") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-9d07af1de0694e6c8b7a9c86a9e091fb/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "missing-server") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-30ca210360444baeb6e254c29e4024d8/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "foreign-image") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-1fa32b60337842d59a77fe32df558586/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "owner-snapshot") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-9f7515b527c24a4eb85ffa126856ed9e/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "tenants-near-miss") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-55c4236913d04714acef1af31b818e03/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "sdk-near-miss") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-7e758cd4b8ed4653942f9542d2e58cf0/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "suite") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-4e8e487be4ee4d8c992f60a4a2b05482/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "extra-server") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-43202c38232d4e3fbf42d4a56ce1e23a/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "active-module") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-8cc783aa4d99458483e2e143fef71fd9/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "environment") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-2e1e460f12194164b1d6ae68fe014e9e/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "platform-root") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-c72ba28fd4a049df9ca0c49642a4425a/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "platform-source") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-f4a1d1b36ee242f1a3dced4584d01daa/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "mapping") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-340410600ff34cf89eaaf010425acbea/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "owners") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-e0b9fd0022e8458fb6b3e72f2089bdec/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "drop-request") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-d774c2f48ffc41aa9c689e515e2fafd2/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "declaration-path") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-26158c67025b44d8a359b769fc331336/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: "production") [FAIL]
+      System.IO.InvalidDataException : Hexalith.Memories: release snapshot '/tmp/platform-qualified-cohort-d8e35d7180eb4638b97a3990ff93c1b2/src/Hexalith.Platform.Composition/Declarations/memories.json': provenance version '3.0.23' at commit '82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f' does not match Builds catalog version '3.0.18', release commit '66822bc5bc4858c824f17b7d093f5f0f676b03ea', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs(70,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(String fault)
+           at InvokeStub_PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'a78e6acde87df9445da44fc652e3ad2b25a114e87e0e4fef8203108f2503da6a')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 28, Errors: 0, Failed: 23, Skipped: 0, Not Run: 0, Time: 0.672s

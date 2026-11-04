@@ -1,0 +1,742 @@
+{
+  "at": "2026-11-04T12:59:02.696104+00:00",
+  "source": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173",
+  "testedSource": "c0d49eb8c6e812a8014126876c4d85b7696415e0",
+  "run": 41831835601,
+  "attempt": 1,
+  "artifacts": [
+    {
+      "artifact": {
+        "id": 13324366531,
+        "name": "module-integration-diagnostics",
+        "size_in_bytes": 3104,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13324366531",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13324366531/zip",
+        "expired": false,
+        "created_at": "2026-11-04T12:57:43Z",
+        "expires_at": "2026-11-11T12:57:43Z",
+        "updated_at": "2026-11-04T12:57:43Z",
+        "digest": "sha256:2c34835f86b364b30bb487eaaa36534fc58d79bd2e308af7f791ccc8bc0fe576",
+        "workflow_run": {
+          "id": 41831835601,
+          "repository_id": 1170072276,
+          "head_repository_id": 1170072276,
+          "head_branch": "fix/adopt-platform-117",
+          "head_sha": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173"
+        }
+      },
+      "cache": "/home/administrator/.cache/hexalith/story-2-8/parties-c83-hosted-20261104/module-integration-diagnostics.zip",
+      "members": [
+        {
+          "path": "cleanup.json",
+          "bytes": 823,
+          "sha256": "6a0ade66d72587614555591831aed95c17489c50e2ab6113d65850bda5da2ad4"
+        },
+        {
+          "path": "invocation.json",
+          "bytes": 361,
+          "sha256": "6386c62104b8d4b3aab9314913c98ba6c7f24d8e734a556bf111f2da25190fac"
+        },
+        {
+          "path": "execution.json",
+          "bytes": 1128,
+          "sha256": "5d83ef474c46c0baeb7c71bb3ba7ece37cd3393650b2d8ca0ef6168f5da0dc26"
+        },
+        {
+          "path": "lifecycle-d83779aef6a82463b628de69484b7f180fbe5a2592bdbcd4d57ce61ff03368ee.json",
+          "bytes": 261,
+          "sha256": "d83779aef6a82463b628de69484b7f180fbe5a2592bdbcd4d57ce61ff03368ee"
+        },
+        {
+          "path": "test-result.json",
+          "bytes": 3427,
+          "sha256": "58e0a01f2737941f4365e80a963d14cec7323230e6ea312aed0d2fa66010e4ca"
+        }
+      ],
+      "documents": [
+        {
+          "path": "cleanup.json",
+          "body": {
+            "diagnostics": [
+              {
+                "category": "None",
+                "field": "down",
+                "hint": null,
+                "location": null,
+                "message": "Runner-owned invocation cleanup completed.",
+                "phase": "Cleanup",
+                "row": null,
+                "ruleId": "HXI001",
+                "source": null
+              }
+            ],
+            "outcome": {
+              "category": "None",
+              "exitCode": "Success",
+              "phase": "None",
+              "ruleId": null
+            },
+            "remainingResources": {
+              "claimIds": [],
+              "containerIds": [],
+              "discoveryFailures": [],
+              "isEmpty": true,
+              "processIds": [],
+              "resourceIds": [],
+              "unverified": false,
+              "workspaceIds": []
+            },
+            "runId": "ea492730f24db14eb3664c35655e024a",
+            "status": "completed",
+            "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/ea492730f24db14eb3664c35655e024a/test-result.json"
+          }
+        },
+        {
+          "path": "invocation.json",
+          "body": {
+            "classification": "baseline-only",
+            "executionContext": {
+              "disposable": true,
+              "jobId": "build-and-test",
+              "kind": "ci",
+              "operatingSystem": "Linux",
+              "repository": "Hexalith/Hexalith.Parties",
+              "runnerKind": "github-hosted",
+              "workflowAttempt": 1,
+              "workflowRunId": "41831835601"
+            },
+            "profiles": [
+              "platform-package"
+            ]
+          }
+        },
+        {
+          "path": "execution.json",
+          "body": {
+            "diagnostics": [
+              {
+                "category": "TopologyOrLifecycle",
+                "field": "platform",
+                "hint": "Supply the named owner input; no resources were started.",
+                "location": null,
+                "message": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/ea492730f24db14eb3664c35655e024a'.",
+                "phase": "Topology",
+                "row": null,
+                "ruleId": "HXP020",
+                "source": null
+              }
+            ],
+            "outcome": {
+              "category": "TopologyOrLifecycle",
+              "exitCode": "TopologyOrLifecycle",
+              "phase": "Topology",
+              "ruleId": "HXP020"
+            },
+            "remainingResources": {
+              "claimIds": [],
+              "containerIds": [],
+              "discoveryFailures": [],
+              "isEmpty": true,
+              "processIds": [],
+              "resourceIds": [],
+              "unverified": false,
+              "workspaceIds": []
+            },
+            "runId": "ea492730f24db14eb3664c35655e024a",
+            "status": "failed",
+            "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/ea492730f24db14eb3664c35655e024a/test-result.json"
+          }
+        },
+        {
+          "path": "lifecycle-d83779aef6a82463b628de69484b7f180fbe5a2592bdbcd4d57ce61ff03368ee.json",
+          "body": {
+            "runId": "ea492730f24db14eb3664c35655e024a",
+            "outcome": "failed",
+            "cause": "startup-failure",
+            "cleanup": "complete",
+            "discoveryUnverified": false,
+            "discoveryFailures": [],
+            "ruleIds": [
+              "HXP020"
+            ],
+            "terminalRuleIds": [
+              "HXP020"
+            ]
+          }
+        },
+        {
+          "path": "test-result.json",
+          "body": {
+            "bindings": {
+              "artifacts": {
+                "expected": {
+                  "state": "not-yet-populated"
+                },
+                "loaded": {
+                  "state": "not-yet-populated"
+                }
+              },
+              "attachments": {
+                "holds": [],
+                "state": "populated"
+              },
+              "candidate": {
+                "classification": "baseline-only",
+                "reason": "No authenticated candidate request was selected.",
+                "state": "populated"
+              },
+              "deadlines": {
+                "execution": {
+                  "state": "not-yet-populated"
+                },
+                "startup": {
+                  "effectiveSeconds": 600,
+                  "expiresAt": "2026-11-04T13:07:07.2298237Z",
+                  "origin": "environment-requested",
+                  "originAt": "2026-11-04T12:57:07.2298237Z",
+                  "override": {
+                    "state": "not-overridden"
+                  },
+                  "state": "populated"
+                }
+              },
+              "decision": {
+                "state": "not-yet-populated"
+              },
+              "environment": {
+                "catalog": {
+                  "state": "not-yet-populated"
+                },
+                "composition": {
+                  "state": "not-yet-populated"
+                },
+                "executionContext": {
+                  "disposable": true,
+                  "jobId": "build-and-test",
+                  "kind": "ci",
+                  "operatingSystem": "Linux",
+                  "repository": "Hexalith/Hexalith.Parties",
+                  "runnerKind": "github-hosted",
+                  "workflowAttempt": 1,
+                  "workflowRunId": "41831835601"
+                },
+                "isolation": {
+                  "state": "not-yet-populated"
+                },
+                "mode": "package",
+                "readiness": {
+                  "state": "not-yet-populated"
+                },
+                "resources": {
+                  "state": "not-yet-populated"
+                },
+                "startupTasks": {
+                  "state": "not-yet-populated"
+                }
+              },
+              "reuseLineage": {
+                "state": "not-yet-populated"
+              },
+              "run": {
+                "attemptId": "cb331b591fde9407aa0a7639c99e6203",
+                "attemptSequence": 1,
+                "environmentId": "da6fd8062d607c9cf2d03148698620ca",
+                "ownerRunId": "ea492730f24db14eb3664c35655e024a",
+                "role": "owner",
+                "runId": "ea492730f24db14eb3664c35655e024a"
+              },
+              "suite": {
+                "completion": {
+                  "state": "not-yet-populated"
+                },
+                "declared": {
+                  "state": "not-yet-populated"
+                }
+              },
+              "tool": {
+                "state": "not-yet-populated"
+              }
+            },
+            "cleanup": {
+              "attemptId": "8e883dc8514b571334f098c7d3e53fc9",
+              "diagnosticIds": [
+                "lifecycle"
+              ],
+              "disposition": "complete",
+              "failures": [],
+              "leftoverResourceIds": [],
+              "observedAt": "2026-11-04T12:57:43.0519657Z",
+              "ownedResourceIds": [],
+              "state": "populated"
+            },
+            "diagnostics": [
+              {
+                "classification": "internal",
+                "contentIdentity": "sha256:d83779aef6a82463b628de69484b7f180fbe5a2592bdbcd4d57ce61ff03368ee",
+                "id": "lifecycle",
+                "redacted": true,
+                "reference": "lifecycle-d83779aef6a82463b628de69484b7f180fbe5a2592bdbcd4d57ce61ff03368ee.json"
+              }
+            ],
+            "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+            "retention": {
+              "disposition": "not-retained",
+              "failureRunIds": [],
+              "reason": "local-failure-retention-not-established",
+              "recordedAt": "2026-11-04T12:57:43.0519657Z",
+              "retainedResourceIds": [],
+              "state": "populated"
+            },
+            "schema": "hexalith.test-result.v1",
+            "terminal": {
+              "cause": "startup-failure",
+              "diagnosticIds": [
+                "lifecycle"
+              ],
+              "outcome": "failed",
+              "recordedAt": "2026-11-04T12:57:40.5818346Z"
+            },
+            "termination": {
+              "state": "not-yet-populated"
+            }
+          }
+        }
+      ],
+      "reports": []
+    },
+    {
+      "artifact": {
+        "id": 13324001831,
+        "name": "blocking-test-results",
+        "size_in_bytes": 931305,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13324001831",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13324001831/zip",
+        "expired": false,
+        "created_at": "2026-11-04T12:57:45Z",
+        "expires_at": "2026-11-11T12:57:44Z",
+        "updated_at": "2026-11-04T12:57:45Z",
+        "digest": "sha256:13bc396a3178347b7a05029c3bc5699381992944652ae922d8c96aeff16fd722",
+        "workflow_run": {
+          "id": 41831835601,
+          "repository_id": 1170072276,
+          "head_repository_id": 1170072276,
+          "head_branch": "fix/adopt-platform-117",
+          "head_sha": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173"
+        }
+      },
+      "cache": "/home/administrator/.cache/hexalith/story-2-8/parties-c83-hosted-20261104/blocking-test-results.zip",
+      "members": [
+        {
+          "path": "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx",
+          "bytes": 14187,
+          "sha256": "01fa10001da73c19e01b7fdba5f3dbbd55a2de23abfcc5e64bc0a313afbc550e"
+        },
+        {
+          "path": "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx",
+          "bytes": 511951,
+          "sha256": "d357acf9a0ce121572ffe2c49994e41ecc1cd8b25e5c5b636a122ae32bd2313e"
+        },
+        {
+          "path": "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx",
+          "bytes": 19018,
+          "sha256": "e1f472fa5b5d05ef5a10cc4bf98b81e518bb62db20ca8101a2cceac585f32be7"
+        },
+        {
+          "path": "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx",
+          "bytes": 879038,
+          "sha256": "158cd1a847a03384c61468aa74b28c3aede3523f3fd427b3344fdff1e4d41017"
+        },
+        {
+          "path": "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx",
+          "bytes": 539517,
+          "sha256": "30c984087c4a463d1a6c29138a8dc239b0dde0352909db3702e6d8e3f292d245"
+        },
+        {
+          "path": "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx",
+          "bytes": 134143,
+          "sha256": "bc0cba72ba724e75fe876ff098612fbab7a7ebdabf51198243fe8e7aeae3d9c1"
+        },
+        {
+          "path": "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx",
+          "bytes": 350396,
+          "sha256": "6d97c48cf795713b8de813e70a58b9761cc0980bec3335909ae9d9e35854b4b0"
+        },
+        {
+          "path": "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx",
+          "bytes": 138900,
+          "sha256": "b8bf36b058592269a26fd6c8c2d6eaa9dc75a979572372c56319cc17315b5a28"
+        },
+        {
+          "path": "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx",
+          "bytes": 265679,
+          "sha256": "6d69fc97b8f4936b4ee0eefba1fe43790aaa3567ce9566448c1650246dd3480c"
+        },
+        {
+          "path": "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx",
+          "bytes": 746245,
+          "sha256": "b4dd6e799e930e2451b303a64813a67ac094f5cd85a0b46bf3855cef8959628f"
+        },
+        {
+          "path": "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx",
+          "bytes": 97314,
+          "sha256": "285c1699b9f29227a9840de237ebf23bd452ec77c8e03d949d773bc3ae641795"
+        },
+        {
+          "path": "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx",
+          "bytes": 502812,
+          "sha256": "5dd8c2f70210769e12363205486528e6cbb18321e2faae0f579f6378458b6229"
+        },
+        {
+          "path": "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx",
+          "bytes": 490006,
+          "sha256": "d79f55976ba119d0ef60e3d787ff1a2f2263934769b65a1f6aeebed10c15999b"
+        },
+        {
+          "path": "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx",
+          "bytes": 4488826,
+          "sha256": "48691d0cda71b3d15b288502c8680641601872f41f928e88ba5a95b1472c0e00"
+        },
+        {
+          "path": "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx",
+          "bytes": 682511,
+          "sha256": "1979c47c82d56760150024a8b63b6a9a09e4e7d3617464d829490d250e0669ca"
+        }
+      ],
+      "documents": [],
+      "reports": [
+        {
+          "path": "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx",
+          "counters": {
+            "total": "9",
+            "executed": "9",
+            "passed": "9",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx",
+          "counters": {
+            "total": "327",
+            "executed": "327",
+            "passed": "327",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx",
+          "counters": {
+            "total": "12",
+            "executed": "12",
+            "passed": "12",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx",
+          "counters": {
+            "total": "568",
+            "executed": "568",
+            "passed": "568",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx",
+          "counters": {
+            "total": "345",
+            "executed": "345",
+            "passed": "345",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx",
+          "counters": {
+            "total": "85",
+            "executed": "85",
+            "passed": "85",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx",
+          "counters": {
+            "total": "233",
+            "executed": "233",
+            "passed": "233",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx",
+          "counters": {
+            "total": "94",
+            "executed": "94",
+            "passed": "94",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx",
+          "counters": {
+            "total": "171",
+            "executed": "171",
+            "passed": "171",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx",
+          "counters": {
+            "total": "467",
+            "executed": "466",
+            "passed": "466",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "1",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx",
+          "counters": {
+            "total": "66",
+            "executed": "66",
+            "passed": "66",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx",
+          "counters": {
+            "total": "334",
+            "executed": "334",
+            "passed": "334",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx",
+          "counters": {
+            "total": "315",
+            "executed": "315",
+            "passed": "315",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx",
+          "counters": {
+            "total": "2856",
+            "executed": "2843",
+            "passed": "2843",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "13",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        },
+        {
+          "path": "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx",
+          "counters": {
+            "total": "463",
+            "executed": "463",
+            "passed": "463",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failed": []
+        }
+      ]
+    }
+  ],
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

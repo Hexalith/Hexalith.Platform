@@ -1,0 +1,358 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index 76c6baaf..6fd47e46 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -10,7 +10,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.43.6",
++      "version": "4.44.2",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+index d831870c..50354b17 100644
+--- a/.github/workflows/ci-lifecycle-qualification.yml
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -19,7 +19,7 @@ concurrency:
+ 
+ jobs:
+   baseline:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 4b67f492..900d19a7 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -19,7 +19,7 @@ permissions:
+ 
+ jobs:
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+diff --git a/.gitlink-signoff.tsv b/.gitlink-signoff.tsv
+index 84c8be71..63bca635 100644
+--- a/.gitlink-signoff.tsv
++++ b/.gitlink-signoff.tsv
+@@ -539,3 +539,11 @@ references/Hexalith.EventStore|f213e4115ec23cb736e8aa0113f61b9d4854480c|validate
+ #     NuGet packages were verified. Parties package integration remains a CI gate.
+ references/Hexalith.Platform|e2cc081e539942563ec0d6a243b308b4cab77898|validated-advance|v1.1.8|codex-agent|2026-11-04
+ references/Hexalith.Builds|725754075e1d6369430a3adf94d46fb71e6eaf9e|validated-advance|v4.43.6|codex-agent|2026-11-04
++
++# --- 2026-11-04 Story 2.8 genuine full Parties released tuple adoption.
++#     Source-selection only under explicit user delegation. Platform v1.3.0
++#     and signed Builds v4.44.2 passed their exact-source publication gates.
++#     Parties hosted/native/manual lifecycle and all historical parity remain
++#     unvalidated; no human ratification or candidate acceptance is inferred.
++references/Hexalith.Platform|338a6afc31850761f49c0de7d399266dd15cfe84|validated-advance|v1.3.0|codex-agent|2026-11-04
++references/Hexalith.Builds|ae68c59bd2f4145a23ccf68c3711f98eaf62195f|validated-advance|v4.44.2|codex-agent|2026-11-04
+diff --git a/README.md b/README.md
+index 713f795a..89bccf98 100644
+--- a/README.md
++++ b/README.md
+@@ -308,7 +308,7 @@ The suite observes real Tenants through its declared REST interface, reads the s
+ tenant through its declared REST interface, creates and queries a Party, and verifies persisted
+ aggregate metadata and every event envelope in the run-owned state store.
+ 
+-From the Platform checkout, use the exact published module CLI 4.43.6 restored from its local tool manifest:
++From the Platform checkout, use the exact published module CLI 4.44.2 restored from its local tool manifest:
+ 
+ ```bash
+ hexalith-module test --manifest references/Hexalith.Parties/module/hexalith.module-manifest.v2.json --profile platform-source --mode source
+diff --git a/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md b/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
+index 9b7dba5b..69ab341e 100644
+--- a/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
++++ b/_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md
+@@ -97,6 +97,42 @@ promote any other 8.3 row.
+ 
+ ### Current source observation — 2026-11-04
+ 
++The active user's explicit Story 2.8 delegation selects genuine Platform v1.3.0
++at `338a6afc31850761f49c0de7d399266dd15cfe84` and its exact published
++Builds v4.44.2 source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`.
++This adoption uses the actual published Platform release433814405 and signed
++Builds release433744499 after their exact-source package gates passed.
++Incoming main `3e4367622764118fc2ad710ad1040994ae4cfa49` and every earlier
++selection remain dated history below. Parties hosted/native and manual lifecycle
++qualification remain pending; no prior test result is promoted.
++This is codex-agent source-selection bookkeeping, not a new human approval.
++The published CLI, ordinary CI and registered manual baseline select that same
++Builds revision. The incoming subscription safety source selects EventStore
++`f213e4115ec23cb736e8aa0113f61b9d4854480c` (`v4.0.4-12-gf213e411`);
++all other incoming root selections remain unchanged.
++The graph selects EventStore package `4.0.4`, Commons `2.30.10`,
++PolymorphicSerializations `1.19.8`, FrontComposer `4.7.6`, Memories `3.0.23`,
++Tenants `7.0.0`, and McpCli `2.0.0`.
++Selection does not revalidate historical parity receipts or grant publication,
++deployment, custody, rollback deletion, runtime or candidate acceptance.
++Every prior human decision and historical observation body is preserved below;
++all six canonical parity receipts remain Unvalidated until actually rerun.
++
++| Root dependency | Current source identity | Release use |
++| --- | --- | --- |
++| AI.Tools | `1745b6663ad32bb1288167135ed0f979366c53a0` (`1745b666`) | Committed selection; qualification still requires its own executed proof. |
++| Builds | `ae68c59bd2f4145a23ccf68c3711f98eaf62195f` (`v4.44.2`) | Released catalog pinned by Platform v1.3.0; qualification still requires its own executed proof. |
++| Commons | `11555ace9efcae2928a00122dcba91243e5a8a1a` (`v2.30.10`) | Committed selection; qualification still requires its own executed proof. |
++| EventStore | `f213e4115ec23cb736e8aa0113f61b9d4854480c` (`v4.0.4-12-gf213e411`) | Delegated subscription safety source; published package stays 4.0.4 and qualification still requires its own executed proof. |
++| FrontComposer | `fbe01c913cb863abb0fd4a317d370d36fff593b3` (`v4.7.5-19-gfbe01c91`) | Owner-approved advance; qualification still requires its own executed proof. |
++| McpCli | `2e80701c31aafdf00abee05ac469a45ed76dfdf5` (`v2.0.0-26-g2e80701c`) | Owner-approved advance; qualification still requires its own executed proof. |
++| Memories | `d959bdae5af9c22f53573eda71c091cb5c0aae4c` (`v3.0.18-8-gd959bdae`) | Owner-approved advance; qualification still requires its own executed proof. |
++| Platform | `338a6afc31850761f49c0de7d399266dd15cfe84` (`v1.3.0`) | Released Platform tuple; qualification still requires its own executed proof. |
++| PolymorphicSerializations | `bce4eb9f45c6b131b960ab4fa39e50ff01e51960` (`v1.19.8-1-gbce4eb9f`) | Committed selection; qualification still requires its own executed proof. |
++| Tenants | `33835a03e92579a26400e7cb7cf68d666c715b3e` (`v7.0.0-18-g33835a03`) | Owner-approved advance; qualification still requires its own executed proof. |
++
++### Historical source observation — 2026-11-04 (retained incoming-main reconciliation)
++
+ The active user's explicit Story 2.8 delegation selects genuine Platform v1.1.7
+ at `ed1560a57f4d4cb55b6b03f485cbfa01316837a7` and its exact published
+ Builds v4.43.6 source `725754075e1d6369430a3adf94d46fb71e6eaf9e`.
+@@ -1196,6 +1232,7 @@ The original selection row transcribes the Round 6 reviewer-recorded decision in
+ | Earlier package catalog alignment (2026-11-04) | Parties direct Platform `e2cc081e539942563ec0d6a243b308b4cab77898` (v1.1.8) and Builds `725754075e1d6369430a3adf94d46fb71e6eaf9e` (v4.43.6) gitlinks; effective package graph unchanged. | codex-agent (explicit user delegation) | 2026-11-04 | **Source-selection and CI repair only.** The active request authorizes synchronizing direct submodules and fixing CI. Platform v1.1.8 and Builds v4.43.6 have public release and exact-source CI evidence; `.gitlink-signoff.tsv` records both advances. No historical parity, release, deployment or rollback authority follows. |
+ | Package catalog alignment (2026-11-04) | Parties direct Platform `8ea8fe092f8abb5c932a61830aae16051d442463` (v1.1.6) and Builds `89f62052c932d054bda2b435bdfef60d96e77612` (v4.43.5) gitlinks; effective package graph unchanged. | codex-agent (explicit user delegation) | 2026-11-04 | **Source-selection and CI repair only.** The user explicitly requested pushing the existing working-tree selections. This supersedes the earlier package catalog alignment for current-selection assertions and retains the existing release signoffs. Historical parity receipts and publication, deployment and rollback authority remain unchanged. |
+ | Subscription safety delegated source (2026-11-03) | EventStore `f213e4115ec23cb736e8aa0113f61b9d4854480c` (`v4.0.4-12-gf213e411`); published EventStore package `4.0.4`. Other root selections and the effective package graph remain as in the preceding owner decision. | codex-agent (explicit user delegation) | 2026-11-03 | **Source-selection and executed transport proof only. Package versions unchanged.** Authorized by the active request to implement five deferred items and push main, then approve and continue. The dated subscription receipt records the scoped tests. Selection does not revalidate historical parity receipts or grant release, deployment, custody, rollback deletion, native replay or full Memories acceptance. |
++| Story 2.8 full Parties released tuple (2026-11-04) | Builds `ae68c59bd2f4145a23ccf68c3711f98eaf62195f` (`v4.44.2`); Platform `338a6afc31850761f49c0de7d399266dd15cfe84` (`v1.3.0`); effective Release packages EventStore `4.0.4`, Commons `2.30.10`, PolymorphicSerializations `1.19.8`, FrontComposer `4.7.6`, Memories `3.0.23`, Tenants `7.0.0`, McpCli `2.0.0`. All other incoming source selections are unchanged. | codex-agent (explicit user delegation) | 2026-11-04 | **Source-selection only.** Every dated human approval and all six Unvalidated parity receipts remain unchanged. Actual Parties native/hosted and manual lifecycle qualification is pending; no new human ratification, package/runtime parity, publication, deployment, custody, rollback deletion or candidate acceptance is claimed. |
+ | I17 activation handover | Any second activation of an accepted closure deferral | Pending — named accountable owner | Pending | Pending; no approval inferred from routing, source presence, or compile. |
+ | I18 successor tests | Any baseline-test replacement | Pending — named accountable owner | Pending | Pending; no approval inferred from routing, source presence, or compile. |
+ | I19 store reclassification / class-(b) test set | Touched stores, semantics, and approved consistency tests | Pending — named accountable owner | Pending | Pending; no approval inferred from routing, source presence, or compile. |
+diff --git a/docs/architecture.md b/docs/architecture.md
+index f0400d10..9a4880b7 100644
+--- a/docs/architecture.md
++++ b/docs/architecture.md
+@@ -334,7 +334,7 @@ scripts/  # local test runner, package validation, and Parties container publish
+ ## 11. Testing & CI
+ 
+ - Exactly **17 runnable .NET test projects plus three support hosts and one contracts artifact** (`Hexalith.Parties.EventStoreGateway.TestHost`) and the Playwright e2e workspace, uniformly **xUnit v3** for runnable .NET tests (Shouldly + NSubstitute; bunit for Blazor). Lanes via `scripts/test.ps1 -Lane {unit|integration|topology|ci|all|coverage}`. `Hexalith.Parties.IntegrationTests` spins up the **full Aspire topology** (`Aspire.Hosting.Testing`), gracefully skipping when Docker/DAPR is absent; `Hexalith.Parties.Ci.Tests` validates static GitHub Actions publication contracts and executes the release source-gate shell against mocked GitHub API fixtures. Architectural fitness tests pin contract/dependency boundaries.
+-- **CI/CD:** `.github/workflows/ci.yml` delegates restore/build/package-consumer validation and test tiers to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e`; `.github/workflows/release.yml` is a manual caller that requires current `main` and successful exact-source push proof from `ci.yml` before protected approval. Shared preparation and the complete Parties-owned container publisher use one reviewed immutable Hexalith.Builds commit, with caller-owned NuGet trusted publishing. The publication wrapper enforces the same full-CI proof. Submodules are checked out as **root-repository submodules only, never recursive**. See [ci.md](ci.md), [build-gate.md](build-gate.md), [ci-secrets-checklist.md](ci-secrets-checklist.md).
++- **CI/CD:** `.github/workflows/ci.yml` delegates restore/build/package-consumer validation and test tiers to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f`; `.github/workflows/release.yml` is a manual caller that requires current `main` and successful exact-source push proof from `ci.yml` before protected approval. Shared preparation and the complete Parties-owned container publisher use one reviewed immutable Hexalith.Builds commit, with caller-owned NuGet trusted publishing. The publication wrapper enforces the same full-CI proof. Submodules are checked out as **root-repository submodules only, never recursive**. See [ci.md](ci.md), [build-gate.md](build-gate.md), [ci-secrets-checklist.md](ci-secrets-checklist.md).
+ - **Package API prerequisite:** resolved by published EventStore 3.117.0. The actual DomainService assembly exposes `RequireEventStoreSidecarChannel<TBuilder>`, and the default package-mode Release solution build passes with zero warnings and errors. Security/rebuild calls, package-mode dependencies, and mandatory exact-source full-CI release proof remain intact. The earlier 3.115.0 CS1061 and 3.88.0 rebuild CS0246 failures are historical. See [ci.md](ci.md#required-eventstore-publication) for publication provenance, consumer verification, and the remaining integrated-topology prerequisites.
+ 
+ ---
+diff --git a/docs/ci-lifecycle-qualification.md b/docs/ci-lifecycle-qualification.md
+index 63207307..25d4ca3d 100644
+--- a/docs/ci-lifecycle-qualification.md
++++ b/docs/ci-lifecycle-qualification.md
+@@ -3,8 +3,8 @@
+ This registered manual workflow remains a **baseline-only** diagnostic for
+ Story 2.8. It grants no candidate acceptance or loaded-backend identity credit.
+ The ordinary and manual baseline callers select the same reviewed Builds
+-`725754075e1d6369430a3adf94d46fb71e6eaf9e` with published tool 4.43.6 and
+-genuine Platform v1.1.7 (`ed1560a57f4d4cb55b6b03f485cbfa01316837a7`).
++`ae68c59bd2f4145a23ccf68c3711f98eaf62195f` with published tool 4.44.2 and
++genuine Platform v1.3.0 (`338a6afc31850761f49c0de7d399266dd15cfe84`).
+ The old 4.43.4 and 4.43.5 HXP020 refusals remain historical evidence.
+ Normal exact-source owner gates and real reference native qualification are still
+ required before dispatch. Preserve incoming root gitlinks; source preparation
+diff --git a/docs/ci.md b/docs/ci.md
+index 0a6b4ab1..18e9bf82 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -4,7 +4,7 @@ Hexalith.Parties uses GitHub Actions with shared Hexalith.Builds workflows and a
+ 
+ ## Workflows
+ 
+-- `.github/workflows/ci.yml` delegates to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e`.
++- `.github/workflows/ci.yml` delegates to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f`.
+ - `.github/workflows/release.yml` is a manual `workflow_dispatch` workflow with a protected, caller-owned release job. It uses `Hexalith/Hexalith.Builds/Github/prepare-domain-release@11a3a79cfac4bba9548c6364a17a01ee9b561370` and takes the nested publisher from that same immutable Builds checkout.
+ - `.github/workflows/commitlint.yml` delegates Conventional Commit validation to the retained immutable Builds revision `332b2c144defba546fe0a09626a4a72f2340e22f`, for pull requests and main pushes.
+ - `.github/workflows/dependency-review.yml` delegates dependency review for pull requests.
+@@ -23,17 +23,17 @@ transitive action used by Builds. Validate an update with:
+ 
+ ```bash
+ actionlint .github/workflows/ci.yml .github/workflows/codeql.yml
+-dotnet build tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false
+-dotnet tests/Hexalith.Parties.Ci.Tests/bin/Debug/net10.0/Hexalith.Parties.Ci.Tests.dll -class Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests
++dotnet build tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
++dotnet tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll -class Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests
+ ```
+ 
+ ## CI
+ 
+ CI runs on pushes and pull requests to `main`, scheduled nightly runs, and Pact Broker `repository_dispatch` events with type `contract_requiring_verification_published`.
+ 
+-The v2 workflow uses the exact published module CLI 4.43.6 and genuine Platform
+-v1.1.7 (`ed1560a57f4d4cb55b6b03f485cbfa01316837a7`) with the matching recorded
+-Builds catalog `725754075e1d6369430a3adf94d46fb71e6eaf9e`. Supported package-mode
++The v2 workflow uses the exact published module CLI 4.44.2 and genuine Platform
++v1.3.0 (`338a6afc31850761f49c0de7d399266dd15cfe84`) with the matching recorded
++Builds catalog `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`. Supported package-mode
+ preparation generates verified runtime-free Release imports before restore/build
+ of `Hexalith.Parties.Standalone.slnx` and package consumer validation.
+ 
+@@ -278,8 +278,8 @@ They use isolated temporary Git histories and loopback HTTP registries; they
+ never publish. Check executed and skipped counts when assessing local evidence.
+ 
+ ```bash
+-dotnet build tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false
+-dotnet tests/Hexalith.Parties.Ci.Tests/bin/Debug/net10.0/Hexalith.Parties.Ci.Tests.dll -class Hexalith.Parties.Ci.Tests.ReleasePublicationVerificationTests -class Hexalith.Parties.Ci.Tests.ReleaseArtifactVerificationTests -class Hexalith.Parties.Ci.Tests.GitlinkGateWorkflowTests
++dotnet build tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
++dotnet tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll -class Hexalith.Parties.Ci.Tests.ReleasePublicationVerificationTests -class Hexalith.Parties.Ci.Tests.ReleaseArtifactVerificationTests -class Hexalith.Parties.Ci.Tests.GitlinkGateWorkflowTests
+ ```
+ 
+ The release workflow does not apply runtime deployment manifests and does not publish EventStore, Tenants, Memories, Sample, Redis, or FalkorDB images. Runtime deployment orchestration is owned outside this repository and consumes immutable release tags from Zot.
+diff --git a/docs/getting-started.md b/docs/getting-started.md
+index 5ff1d743..13054981 100644
+--- a/docs/getting-started.md
++++ b/docs/getting-started.md
+@@ -20,7 +20,7 @@ authentication setup; those hosts are outside the reference environment.
+ | Git | Any recent version | [git-scm.com](https://git-scm.com) |
+ | `jq` | Latest, optional for Bash examples | [jqlang.org](https://jqlang.org) |
+ 
+-Install Aspire CLI **13.6.4** to match the catalog embedded in module tool **4.43.6**. The local tool manifest pins that module version; `dotnet tool restore` restores that exact version. The tool owns run-scoped infrastructure, readiness and diagnostics; its catalog requires Dapr CLI 1.18.2 and runtime 1.18.7. Set `HEXALITH_DAPR_HOME` to a prepared absolute isolated Dapr home using the [pinned Platform prerequisites](https://github.com/Hexalith/Hexalith.Platform/blob/e2cc081e539942563ec0d6a243b308b4cab77898/README.md#run-and-debug-a-technical-module); an unset or unprepared home is refused.
++Install Aspire CLI **13.6.4** to match the catalog embedded in module tool **4.44.2**. The local tool manifest pins that module version; `dotnet tool restore` restores that exact version. The tool owns run-scoped infrastructure, readiness and diagnostics; its catalog requires Dapr CLI 1.18.2 and runtime 1.18.7. Set `HEXALITH_DAPR_HOME` to a prepared absolute isolated Dapr home using the [pinned Platform prerequisites](https://github.com/Hexalith/Hexalith.Platform/blob/338a6afc31850761f49c0de7d399266dd15cfe84/README.md#run-and-debug-a-technical-module); an unset or unprepared home is refused.
+ 
+ Verify your setup:
+ 
+diff --git a/references/Hexalith.Builds b/references/Hexalith.Builds
+index 72575407..ae68c59b 160000
+--- a/references/Hexalith.Builds
++++ b/references/Hexalith.Builds
+@@ -1 +1 @@
+-Subproject commit 725754075e1d6369430a3adf94d46fb71e6eaf9e
++Subproject commit ae68c59bd2f4145a23ccf68c3711f98eaf62195f
+diff --git a/references/Hexalith.Platform b/references/Hexalith.Platform
+index ed1560a5..338a6afc 160000
+--- a/references/Hexalith.Platform
++++ b/references/Hexalith.Platform
+@@ -1 +1 @@
+-Subproject commit ed1560a57f4d4cb55b6b03f485cbfa01316837a7
++Subproject commit 338a6afc31850761f49c0de7d399266dd15cfe84
+diff --git a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+index 02020aa2..3b251f00 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+@@ -7,7 +7,7 @@ namespace Hexalith.Parties.Ci.Tests;
+ public sealed class PartiesContainerPublishWorkflowTests
+ {
+     private const int ExpectedPackageCount = 11;
+-    private const string BuildsCiSha = "725754075e1d6369430a3adf94d46fb71e6eaf9e";
++    private const string BuildsCiSha = "ae68c59bd2f4145a23ccf68c3711f98eaf62195f";
+     private const string BuildsValidationSha = "332b2c144defba546fe0a09626a4a72f2340e22f";
+     private const string BuildsExecutionSha = "11a3a79cfac4bba9548c6364a17a01ee9b561370";
+     private static readonly TimeSpan WorkflowReadTimeout = TimeSpan.FromSeconds(10);
+@@ -80,6 +80,8 @@ public sealed class PartiesContainerPublishWorkflowTests
+         string workflow = CiTestPaths.ReadRepoFile(".github/workflows/ci.yml");
+ 
+         workflow.ShouldContain($"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@{BuildsCiSha}");
++        string manual = CiTestPaths.ReadRepoFile(".github/workflows/ci-lifecycle-qualification.yml");
++        manual.ShouldContain($"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@{BuildsCiSha}");
+         workflow.ShouldContain("solution: Hexalith.Parties.Standalone.slnx");
+         workflow.ShouldContain("test-platform: microsoft-testing-platform");
+         workflow.ShouldContain("run-consumer-validation: true");
+@@ -111,7 +113,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+         }
+         using JsonDocument tools = JsonDocument.Parse(CiTestPaths.ReadRepoFile(".config/dotnet-tools.json"));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("4.43.6");
++        tool.GetProperty("version").GetString().ShouldBe("4.44.2");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         workflow.ShouldNotContain("submodules: recursive");
+ 
+diff --git a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+index f0f55ff8..94960b4a 100644
+--- a/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
++++ b/tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs
+@@ -67,13 +67,13 @@ public sealed class PlatformApiPrerequisitesTests
+     private static readonly IReadOnlyDictionary<string, string> CurrentSelectedGitlinks = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["references/Hexalith.AI.Tools"] = "1745b6663ad32bb1288167135ed0f979366c53a0",
+-        ["references/Hexalith.Builds"] = "725754075e1d6369430a3adf94d46fb71e6eaf9e",
++        ["references/Hexalith.Builds"] = "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+         ["references/Hexalith.Commons"] = "11555ace9efcae2928a00122dcba91243e5a8a1a",
+         ["references/Hexalith.EventStore"] = "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+         ["references/Hexalith.FrontComposer"] = "fbe01c913cb863abb0fd4a317d370d36fff593b3",
+         ["references/Hexalith.McpCli"] = "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+         ["references/Hexalith.Memories"] = "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+-        ["references/Hexalith.Platform"] = "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
++        ["references/Hexalith.Platform"] = "338a6afc31850761f49c0de7d399266dd15cfe84",
+         ["references/Hexalith.PolymorphicSerializations"] = "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+         ["references/Hexalith.Tenants"] = "33835a03e92579a26400e7cb7cf68d666c715b3e",
+     };
+@@ -81,13 +81,13 @@ public sealed class PlatformApiPrerequisitesTests
+     private static readonly IReadOnlyDictionary<string, string> CurrentSelectedSourceDescribes = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["references/Hexalith.AI.Tools"] = "1745b666",
+-        ["references/Hexalith.Builds"] = "v4.43.6",
++        ["references/Hexalith.Builds"] = "v4.44.2",
+         ["references/Hexalith.Commons"] = "v2.30.10",
+         ["references/Hexalith.EventStore"] = "v4.0.4-12-gf213e411",
+         ["references/Hexalith.FrontComposer"] = "v4.7.5-19-gfbe01c91",
+         ["references/Hexalith.McpCli"] = "v2.0.0-26-g2e80701c",
+         ["references/Hexalith.Memories"] = "v3.0.18-8-gd959bdae",
+-        ["references/Hexalith.Platform"] = "v1.1.7",
++        ["references/Hexalith.Platform"] = "v1.3.0",
+         ["references/Hexalith.PolymorphicSerializations"] = "v1.19.8-1-gbce4eb9f",
+         ["references/Hexalith.Tenants"] = "v7.0.0-18-g33835a03",
+     };
+@@ -827,6 +827,13 @@ public sealed class PlatformApiPrerequisitesTests
+         releasedContinuation.ShouldContain("Unvalidated");
+         releasedContinuation.ShouldContain("Builds `725754075e1d6369430a3adf94d46fb71e6eaf9e`");
+         releasedContinuation.ShouldContain("Platform `ed1560a57f4d4cb55b6b03f485cbfa01316837a7`");
++        string fullPartiesContinuation = matrix.Split('\n', StringSplitOptions.TrimEntries)
++            .Single(row => row.StartsWith("| Story 2.8 full Parties released tuple (2026-11-04) |", StringComparison.Ordinal));
++        fullPartiesContinuation.ShouldContain("codex-agent (explicit user delegation)");
++        fullPartiesContinuation.ShouldContain("Source-selection only");
++        fullPartiesContinuation.ShouldContain("Unvalidated");
++        fullPartiesContinuation.ShouldContain("Builds `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`");
++        fullPartiesContinuation.ShouldContain("Platform `338a6afc31850761f49c0de7d399266dd15cfe84`");
+         advanceRow.ShouldContain("EventStore `a9205f511b4f96b5daf94d65369d6dee63e0c623`");
+         string[] subscriptionRows = matrix.Split('\n', StringSplitOptions.TrimEntries)
+             .Where(static row => row.StartsWith("| Subscription safety delegated source (2026-11-03) |", StringComparison.Ordinal))
+@@ -859,7 +866,7 @@ public sealed class PlatformApiPrerequisitesTests
+             string selectionRow = path switch
+             {
+                 EventStoreRelativePath => subscriptionRow,
+-                "references/Hexalith.Builds" or "references/Hexalith.Platform" => releasedContinuation,
++                "references/Hexalith.Builds" or "references/Hexalith.Platform" => fullPartiesContinuation,
+                 _ => advanceRow,
+             };
+             selectionRow.ShouldContain($"{path["references/Hexalith.".Length..]} `{identity}`");
+@@ -884,9 +891,17 @@ public sealed class PlatformApiPrerequisitesTests
+             string version = effectivePackages[package];
+             Regex.IsMatch(graphSentence.Value, $@"\b{Regex.Escape(label)}(?: package)?\s+`{Regex.Escape(version)}`", RegexOptions.CultureInvariant)
+                 .ShouldBeTrue($"Current matrix selection must name the evaluated {package} version.");
+-            continuation.ShouldContain($"{label} `{version}`");
+-            advanceRow.ShouldContain($"{label} `{version}`");
+-            releasedContinuation.ShouldContain($"{label} `{version}`");
++            fullPartiesContinuation.ShouldContain($"{label} `{version}`");
++            // Dated decisions keep the package graph they actually selected.
++            string historicalVersion = label switch
++            {
++                "FrontComposer" => "4.7.5",
++                "Memories" => "3.0.18",
++                _ => version,
++            };
++            continuation.ShouldContain($"{label} `{historicalVersion}`");
++            advanceRow.ShouldContain($"{label} `{historicalVersion}`");
++            releasedContinuation.ShouldContain($"{label} `{historicalVersion}`");
+         }
+ 
+         RunGit(root, "-C", EventStoreRelativePath, "describe", "--tags", "--match", CurrentSelectedEventStoreTag, "--abbrev=8", CurrentSelectedEventStoreSha)
+@@ -929,17 +944,17 @@ public sealed class PlatformApiPrerequisitesTests
+             CurrentSelectedGitlinks["references/Hexalith.Builds"] + ":Props/Directory.Packages.props");
+         effectivePackages["Hexalith.EventStore.Contracts"].ShouldBe(currentEventStoreVersion);
+         effectivePackages["Hexalith.Commons"].ShouldBe("2.30.10");
+-        effectivePackages["Hexalith.FrontComposer.Shell"].ShouldBe("4.7.5");
++        effectivePackages["Hexalith.FrontComposer.Shell"].ShouldBe("4.7.6");
+         effectivePackages["Hexalith.McpCli.Abstractions"].ShouldBe("2.0.0");
+-        effectivePackages["Hexalith.Memories.Client.Rest"].ShouldBe("3.0.18");
++        effectivePackages["Hexalith.Memories.Client.Rest"].ShouldBe("3.0.23");
+         effectivePackages["Hexalith.PolymorphicSerializations"].ShouldBe("1.19.8");
+         effectivePackages["Hexalith.Tenants.Client"].ShouldBe("7.0.0");
+         catalog.ShouldContain("<PackageVersion Include=\"Hexalith.EventStore.Contracts\" Version=\"$(HexalithEventStoreVersion)\" Condition=\"'$(UseHexalithProjectReferences)' != 'true' or !$(MSBuildProjectName.StartsWith('Hexalith.Works'))\" />");
+         catalog.ShouldContain("<HexalithCommonsVersion Condition=\"'$(HexalithCommonsVersion)' == ''\">2.30.10</HexalithCommonsVersion>");
+         catalog.ShouldContain("<HexalithEventStoreVersion Condition=\"'$(HexalithEventStoreVersion)' == ''\">4.0.4</HexalithEventStoreVersion>");
+-        catalog.ShouldContain("<HexalithFrontComposerVersion Condition=\"'$(HexalithFrontComposerVersion)' == ''\">4.7.5</HexalithFrontComposerVersion>");
++        catalog.ShouldContain("<HexalithFrontComposerVersion Condition=\"'$(HexalithFrontComposerVersion)' == ''\">4.7.6</HexalithFrontComposerVersion>");
+         catalog.ShouldContain("<HexalithMcpCliVersion Condition=\"'$(HexalithMcpCliVersion)' == ''\">2.0.0</HexalithMcpCliVersion>");
+-        catalog.ShouldContain("<HexalithMemoriesVersion Condition=\"'$(HexalithMemoriesVersion)' == ''\">3.0.18</HexalithMemoriesVersion>");
++        catalog.ShouldContain("<HexalithMemoriesVersion Condition=\"'$(HexalithMemoriesVersion)' == ''\">3.0.23</HexalithMemoriesVersion>");
+         catalog.ShouldContain("<HexalithPolymorphicSerializationsVersion Condition=\"'$(HexalithPolymorphicSerializationsVersion)' == ''\">1.19.8</HexalithPolymorphicSerializationsVersion>");
+         catalog.ShouldContain("<HexalithTenantsVersion Condition=\"'$(HexalithTenantsVersion)' == ''\">7.0.0</HexalithTenantsVersion>");
+         catalog.ShouldContain("<HexalithPartiesVersion Condition=\"'$(HexalithPartiesVersion)' == ''\">3.0.0</HexalithPartiesVersion>");

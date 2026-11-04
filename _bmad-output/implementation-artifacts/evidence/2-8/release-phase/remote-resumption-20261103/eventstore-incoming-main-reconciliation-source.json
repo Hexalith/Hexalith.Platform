@@ -1,0 +1,153 @@
+{
+  "head": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+  "parents": [
+    "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "aeec5012fa3e1e07426a8fdd145709bce93f619a"
+  ],
+  "tree": "66ce877efa59fc7a06446a1a6e7e3bb70bc447dd",
+  "branch": "fix/adopt-platform-117",
+  "status": "",
+  "remoteRefsAfter": {
+    "refs/heads/fix/adopt-platform-117": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "refs/heads/main": "aeec5012fa3e1e07426a8fdd145709bce93f619a"
+  },
+  "mergeMessage": "build: reconcile incoming EventStore main locally\n\nMerge inspected main aeec5012fa3e1e07426a8fdd145709bce93f619a\ninto the existing adoption branch without rewriting either history.\n\nPreserve incoming tenant security, catalog admission and bootstrap work\nwith the owner-bound native harness and diagnostic source. Keep final\npublished tuple adoption and hosted runtime qualification pending.\n\n",
+  "oldAndIncomingHistoryRetained": true,
+  "changedAgainstIncomingMain": [
+    {
+      "path": "docs/ci.md",
+      "mode": "100644",
+      "object": "8d993c957c1005ddeaf0615bf08e3bc969af7f20",
+      "gitBlobSha256": "65953e50d64b5cbaa2d235197c922a7566cea8cfc2efe58b96dc14f9d0029759"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "mode": "100644",
+      "object": "ec254713a91405d1ca9802cf86d134894de20e9f",
+      "gitBlobSha256": "a00c312a9704957b545bf7554628f0d1e346706ae9f85f547fc43c773d95fd44"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+      "mode": "100644",
+      "object": "b08df233257343a1f86e29245ea382e2a67f4fdd",
+      "gitBlobSha256": "092139bed6e97a2226d3a8cf00a6d90aa1c05d6e37eebcc595b84a551f1d05b2"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "mode": "100644",
+      "object": "ba3eb8dfaefee7b5ba137186e700732aa7455e2d",
+      "gitBlobSha256": "1678c794acb5fd55e73bbed9a542ea7cdfbd56bca2dbe4b03b23e70b8fee44e5"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "mode": "100644",
+      "object": "84b33ec7e19cf1f433d9fc8a63857ced4412cf93",
+      "gitBlobSha256": "dd90659358775a4bdaaa0f6f525a51cc187add011ec8b8fdb984d57c3831a08a"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "mode": "100644",
+      "object": "a7fa573604deed9b1b181ae3c2c41d9b7b591ac0",
+      "gitBlobSha256": "9a86b44603f71af4d0b6cf8e88e5a928299a85e563c21ca314cdf309137f74d1"
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+      "mode": "100644",
+      "object": "e5c5d888a456506c7233af9aead8023083555c83",
+      "gitBlobSha256": "4e4b3d9462ea4346fec8f52288f04fd929584920986326c6e8c7868a2b7e1bcb"
+    }
+  ],
+  "local-merge-from-b63": {
+    "file": "eventstore-incoming-main-reconciliation-local-merge-from-b63.patch",
+    "sha256": "8c190d27eb2c9812e6f33b6989ee3d9bd4942ec6f7cb61bcd9579b2238303a3b",
+    "paths": [
+      ".github/workflows/ci.yml",
+      "_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md",
+      "docs/ci.md",
+      "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs",
+      "src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs",
+      "src/Hexalith.EventStore/Controllers/CommandsController.cs",
+      "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+      "src/Hexalith.EventStore/Controllers/StreamsController.cs",
+      "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs",
+      "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs",
+      "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs",
+      "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs"
+    ]
+  },
+  "full-proposal": {
+    "file": "eventstore-incoming-main-reconciliation-full-proposal.patch",
+    "sha256": "e659d550243aa0de9df56a863e4e3382666856a5c6a0733495fc8d6788072d1c",
+    "paths": [
+      "docs/ci.md",
+      "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+      "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs"
+    ]
+  },
+  "preparedMappingHash": "549809eefd8279470dd9176be2d653d5de7f86f36354ae9e682127ad6cdc7c75",
+  "preparedInputs": {
+    "Hexalith.Folders.Aspire.proj": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-Hexalith.Folders.Aspire.proj",
+      "sha256": "2418145fd4c670636dbc22c6e12dfbe76cb29793f605f7c02511f47dfbc0d540"
+    },
+    "SourceMapping.before-targets.props": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.before-targets.props",
+      "sha256": "3f2227ce3c4a4fdcb4a8bea652bf99e7d31050039587bb9bd8b5a3a1bc067fd9"
+    },
+    "SourceMapping.final.targets": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.final.targets",
+      "sha256": "32121f3f7033bbcb189aa6256cb7a28e2f0a5231d934d6135e8bd4195df9ab3f"
+    },
+    "SourceMapping.late.props": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.late.props",
+      "sha256": "27ec586d70926a7396a2de98929e57cd57a6c6e57412c8144a7ead50434e13b4"
+    },
+    "SourceMapping.model-common.props": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.model-common.props",
+      "sha256": "59f479358dba50fee8a2b69d118b1f5db117acfce4ad6d37edce265b6832750f"
+    },
+    "SourceMapping.props": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.props",
+      "sha256": "0363694f252736cdfd0bcf6a567bb077940df16cc966e410153718a552769e82"
+    },
+    "SourceMapping.targets": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.targets",
+      "sha256": "1e29aaa89041b65a40ac5ef235bfdd0075a91c4930b44343404e62fec0d1e8f5"
+    },
+    "SourceMapping.values.props": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.values.props",
+      "sha256": "3de1ecced029a46c0f9a4079e1b8a8da4ab24eb738b48357a764c09884c4176b"
+    },
+    "SourceMapping.values.targets": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-SourceMapping.values.targets",
+      "sha256": "bcdfc87f59cfd6b10d663eec546a4177553ef161524580541dd6bbcc3008989a"
+    },
+    "__HXW_DefaultCatalog__.proj": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-__HXW_DefaultCatalog__.proj",
+      "sha256": "2418145fd4c670636dbc22c6e12dfbe76cb29793f605f7c02511f47dfbc0d540"
+    },
+    "catalog-versions.json": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-catalog-versions.json",
+      "sha256": "9b80464b9acf6f64d12549ba427c59aba8d99d1a063e5f3a7c474b4b418d4459"
+    },
+    "catalog-versions.json.lock": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-catalog-versions.json.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mapping.json": {
+      "receipt": "eventstore-incoming-main-reconciliation-prepared-mapping.json",
+      "sha256": "bc874b79b2fc1e232b6132c2d46b43539cc414f0a3aace05cb05c9cf87ee9c7c"
+    }
+  }
+}

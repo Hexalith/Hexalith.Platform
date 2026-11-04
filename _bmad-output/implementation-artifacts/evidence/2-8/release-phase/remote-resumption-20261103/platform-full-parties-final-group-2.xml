@@ -1,0 +1,24 @@
+<assemblies schema-version="3" id="f26c3f5d-9160-4186-91ce-f564981c37d3" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-11-04T07:47:09.3649756+00:00" finish-rtf="2026-11-04T07:47:09.5241429+00:00" timestamp="11/04/2026 08:47:09"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]" id="a2a6092c-a7ba-4eac-b31f-88c191e9df03" name="/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-04" run-time="07:47:09" start-rtf="2026-11-04T07:47:09.3649756+00:00" test-framework="xUnit.net v3 4.0.2+0c7aa4991f" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="1" finish-rtf="2026-11-04T07:47:09.5241429+00:00" not-run="0" passed="1" skipped="0" time="0.159" time-rtf="00:00:00.1590000" total="2"><collection name="Test collection for Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests (id: 2c111c2c3a67fb6105fc8dfd1d6eb7760c75c3d747fd9c1ead0886d2046ca7ad)" id="b3857461-24c3-4f4f-8b34-9146f3421075" failed="1" not-run="0" passed="1" skipped="0" time="0.079" time-rtf="00:00:00.0790000" total="2"><test id="d355ce32-2648-4b3d-b91d-3045f05096eb" name="Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending" result="Pass" time="0.016" time-rtf="00:00:00.0160000" start-rtf="2026-11-04T07:47:09.4201965+00:00" finish-rtf="2026-11-04T07:47:09.4430326+00:00" type="Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests" method="InventoryAndHumanChecklistKeepUnobservedEvidencePending" source-file="/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs" source-line="22" /><test id="5ef7f000-62a9-4aa2-949e-e306cab140b7" name="Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync" result="Fail" time="0.063" time-rtf="00:00:00.0630000" start-rtf="2026-11-04T07:47:09.4472513+00:00" finish-rtf="2026-11-04T07:47:09.5156749+00:00" type="Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests" method="AcceptedToolPinEqualsSupportedRangeFloorAsync" source-file="/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs" source-line="45"><failure exception-type="Shouldly.ShouldAssertException"><message>Shouldly.ShouldAssertException : code
+    should be
+0
+    but was
+128
+
+Additional Info:
+    v4.44.0^{commit}
+fatal: ambiguous argument 'v4.44.0^{commit}': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git &lt;command&gt; [&lt;revision&gt;...] -- [&lt;file&gt;...]'
+</message><stack-trace>   at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.GitAsync(String directory, String[] arguments) in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs:line 172
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync() in /home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs:line 60
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)</stack-trace></failure></test></collection></assembly></assemblies>

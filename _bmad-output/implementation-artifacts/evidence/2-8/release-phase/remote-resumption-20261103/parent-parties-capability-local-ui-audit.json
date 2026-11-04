@@ -1,0 +1,67 @@
+{
+  "at": "2026-11-04T11:53:01.225183+00:00",
+  "base": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "scope": "Independent local source-dirty Release/package browser evidence, no hosted/native acceptance.",
+  "uiStats": {
+    "total": 68,
+    "expected": 68,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "actualSingleAttemptTests": 68,
+  "selectedAssets": [
+    {
+      "asset": "js/fc-focus.js",
+      "sha256": "cf0d25667667fab41a6a146a280d7777644b132ffac021f013072b2e01650aca",
+      "matchesOfficialSignedPayload": true
+    },
+    {
+      "asset": "js/fc-keyboard.js",
+      "sha256": "74b5126fed92305f9e9b265e6b3f6167d541e24c90fbfe26a6cae59c28bf6e41",
+      "matchesOfficialSignedPayload": true
+    },
+    {
+      "asset": "js/fc-download.js",
+      "sha256": "ce8a8f32468f1d1fd5a84fdc0667d7ba8f792f49c4be36880db5b8a8ac3a0181",
+      "matchesOfficialSignedPayload": true
+    },
+    {
+      "asset": "css/fc-shell.css",
+      "sha256": "dceb51b05c81b0b5f1a90b5318ede9366dfdb9c2d10b6b1d9f89f4389a35d3a3",
+      "matchesOfficialSignedPayload": true
+    }
+  ],
+  "servedAssetObservations": [
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    },
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    },
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    },
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    },
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    },
+    {
+      "bodySha256": "cd02aad78ad92baeb850f3e5c7a391332a4c89842153cf0e60386bd5ce6fc1f0",
+      "assetCount": 4
+    }
+  ],
+  "firstAuditAssumptions": [
+    "Compact embedded report omits attachment paths.",
+    "Actual small attachment bodies are in the detailed embedded JSON, not standalone tar members. Both initial read-only parser assumptions failed before the corrected actual-body audit; no test/source rerun."
+  ],
+  "candidateAcceptance": false
+}

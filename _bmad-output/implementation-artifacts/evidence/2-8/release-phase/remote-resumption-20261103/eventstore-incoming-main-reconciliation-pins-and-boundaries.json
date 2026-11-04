@@ -1,0 +1,59 @@
+{
+  "runtimeDirectPins": {
+    "Hexalith.Builds": {
+      "indexAndActualHead": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+      "status": ""
+    },
+    "Hexalith.Platform": {
+      "indexAndActualHead": "991e2df97dc8493e41096006b0d3203a71730ae8",
+      "status": ""
+    },
+    "Hexalith.Tenants": {
+      "indexAndActualHead": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+      "status": ""
+    }
+  },
+  "cliVersion": "4.44.0",
+  "cliSource": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "separateImmutableWorkflowExecutor": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+  "isolatedProjects": [
+    "tests/Hexalith.EventStore.Client.Tests",
+    "tests/Hexalith.EventStore.ServiceDefaults.Tests",
+    "tests/Hexalith.EventStore.Testing.Tests",
+    "tests/Hexalith.EventStore.SignalR.Tests",
+    "tests/Hexalith.EventStore.Admin.Abstractions.Tests",
+    "tests/Hexalith.EventStore.Admin.Cli.Tests",
+    "tests/Hexalith.EventStore.Admin.Mcp.Tests",
+    "tests/Hexalith.EventStore.Admin.Server.Tests",
+    "tests/Hexalith.EventStore.Operations.Tests",
+    "tests/Hexalith.EventStore.Admin.Server.Host.Tests",
+    "tests/Hexalith.EventStore.Admin.UI.Tests",
+    "tests/Hexalith.EventStore.DomainService.Tests",
+    "tests/Hexalith.EventStore.QueryRouting.Tests",
+    "tests/Hexalith.EventStore.RestApi.Generators.Tests",
+    "tests/Hexalith.EventStore.LoadTests.Tests",
+    "tests/Hexalith.EventStore.Sample.Tests",
+    "tests/Hexalith.EventStore.Testing.Integration.Tests",
+    "tests/Hexalith.EventStore.Server.Tests",
+    "tests/Hexalith.EventStore.ProviderVerification.Tests",
+    "tests/Hexalith.EventStore.AppHost.Tests"
+  ],
+  "isolatedProjectCount": 20,
+  "workflowJobs": [
+    "folded-snapshot-compatibility",
+    "process-packages",
+    "ci",
+    "contracts",
+    "semantic-release-governance",
+    "tenants-source-mode"
+  ],
+  "independentJobs": 5,
+  "ownerBuildTimeoutMinutes": 180,
+  "additionalOwners": [
+    "tenants"
+  ],
+  "manifestOriginalBytesPreserved": true,
+  "noNestedInitialization": true,
+  "releasePublisherUnchanged": "30ea43a56330a9828ed0bb2e837289231d8630d1",
+  "candidateAcceptance": false
+}

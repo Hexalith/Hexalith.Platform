@@ -1,0 +1,34 @@
+{
+  "base": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "fetch",
+        "--no-recurse-submodules",
+        "--no-tags",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/Hexalith/Hexalith.Builds\n * branch              main       -> FETCH_HEAD\n"
+    },
+    {
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "-b",
+        "fix/retain-declared-ci-diagnostics",
+        "/home/administrator/.cache/hexalith/story-2-8/builds-memories-retention-20261104/Hexalith.Builds",
+        "d39844a16ecf522c0d25efd0f53b31f7a3dfe423"
+      ],
+      "exitCode": 0,
+      "stdout": "HEAD is now at d39844a1 build(audit): record qualified Memories catalog snapshot\n",
+      "stderr": "Preparing worktree (new branch 'fix/retain-declared-ci-diagnostics')\n"
+    }
+  ],
+  "canonicalBuildsHeadUnchanged": true
+}

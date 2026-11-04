@@ -1,0 +1,55 @@
+{
+  "conditionalMethods": [
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemorySourceInventoryTests.cs",
+      "method": "AdmissionAuthorityUsesActualTypedClientAfterConfiguredEndpointChanges",
+      "actualExecutedCases": 1
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "ActualRestRecoveryAcceptsVariablePagesThroughFullInventoryCapacity",
+      "actualExecutedCases": 1
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "OriginalRefreshBindingSurvivesCanonicalSerializationAndChangedDeliveryContext",
+      "actualExecutedCases": 1
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "LegacyAcknowledgedOutputWithoutRefreshProofCannotClaimIndexing",
+      "actualExecutedCases": 2
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "SupersededRefreshRedeliveryRegistersAndPublishesStableSuccessor",
+      "actualExecutedCases": 1
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "MissingRevisionFailsBeforeReservationThenCanonicalRedeliverySucceeds",
+      "actualExecutedCases": 1
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "LostAcknowledgementRequiresExactExplicitRefreshAdmissionAcrossSerializedRestart",
+      "actualExecutedCases": 2
+    },
+    {
+      "file": "tests/Hexalith.Parties.Tests/Search/PartyMemoryRestClientRecoveryTests.cs",
+      "method": "OlderProducerIgnoringExplicitRefreshCannotPublishOrLoseItsUncertainAdmissionAcrossRestart",
+      "actualExecutedCases": 1
+    }
+  ],
+  "allConditionalPublicMethodsExecuted": true,
+  "actualClasses": [
+    "Hexalith.Parties.Tests.Search.PartyMemoryCleanupServiceTests",
+    "Hexalith.Parties.Tests.Search.PartyMemoryIndexEntrySearchIndexerTests",
+    "Hexalith.Parties.Tests.Search.PartyMemoryRecoveryTests",
+    "Hexalith.Parties.Tests.Search.PartyMemoryRestClientRecoveryTests",
+    "Hexalith.Parties.Tests.Search.PartyMemorySourceInventoryTests",
+    "Hexalith.Parties.Tests.Search.PartyMemoryUnitMapperTests"
+  ],
+  "note": "The original safety invocation additionally named a nonexistent PartyMemoryIngestionIntentStoreTests class; no case is attributed to that unmatched filter. Actual cases belong only to the listed real classes.",
+  "candidateAcceptance": false
+}

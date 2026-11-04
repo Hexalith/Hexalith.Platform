@@ -1,0 +1,174 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index fc6cadbfe..e5605ace1 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -17,7 +17,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.43.6",
++      "version": "4.44.0",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index c05583496..6d96712f7 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -60,11 +60,12 @@ jobs:
+         run: python3 scripts/verify-process-packages.py
+ 
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045
+     with:
+       solution: Hexalith.EventStore.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+       integration-test-profiles: platform-package
++      integration-test-reference-owners: tenants
+       build-timeout-minutes: 180
+       test-platform: microsoft-testing-platform
+       run-consumer-validation: true
+diff --git a/docs/ci.md b/docs/ci.md
+index 769ef4415..1ff18848f 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -8,7 +8,7 @@ Hexalith CI/CD standards and reusable workflow guidance live in
+ 
+ | Workflow | File | Triggers | Purpose |
+ |----------|------|----------|---------|
+-| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
++| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |
+ | **Advisory Tests** | `.github/workflows/advisory-tests.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Visible non-release-blocking browser and governance suites. It installs Chromium before Playwright E2E tests, runs with `continue-on-error`, and release does not listen to this workflow. |
+ | **Integration Tests** | `.github/workflows/integration.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Dedicated DAPR lane for `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`. It is intentionally separate from the release trigger. |
+ | **Payload Protection Lifecycle** | `.github/workflows/payload-protection-lifecycle.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Isolated Dapr 1.18.7/PostgreSQL v2 capability, catalog, lease, drain, recovery, rotation, generation and restore tests. Requires at least thirty-one executed tests with zero skips, including cumulative transport limits, writer capacity, conditional restore decisions and authority races. Local qualification and its limits are recorded in the Story 8.5 spec; a CI run is separate evidence. |
+@@ -76,7 +76,7 @@ Reusable CI/CD logic belongs in `Hexalith.Builds`:
+ EventStore keeps only module-specific wiring here:
+ 
+ - `Hexalith.EventStore.slnx`.
+-- The isolated test project list passed to `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e`.
++- The isolated test project list passed to `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`.
+ - The advisory test project list and Playwright browser install needed by the
+   Admin UI E2E suite.
+ - Manifest-backed package validation scripts under `scripts/`.
+@@ -117,12 +117,12 @@ place for run output.
+ 
+ | Lane | Projects | Workflow behavior |
+ |------|----------|-------------------|
+-| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
++| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |
+ | Semantic-release governance | `tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs`, `tools/tests/test_release_publication_authority.py` | Blocking EventStore-owned CI job. It provisions Node 24, installs exactly `package-lock.json` with `npm ci`, and exercises both release-history cases against an Undici-guarded loopback-only fake GitHub boundary. It also runs the publication-authority regressions against the exact approved Builds publication engine. |
+ | Live-sidecar DAPR lane | `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`, plus `scripts/check-committed-files.sh`, `tools/tests/test_check_committed_files.py` and `tools/tests/test_dapr_broker_qualification.py` | Dedicated `Integration Tests` workflow after `dapr init`; its required `live-sidecar` job first runs the committed-file guard and the two Python suites. This lane is visible but not part of the semantic-release gate. It is not a `dotnet test` of `Server.Tests`. |
+ | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |
+ | Advisory browser/governance suites | `tests/Hexalith.EventStore.Admin.UI.E2E`, `tests/Hexalith.EventStore.DeferredWorkGovernance.Tests` | Separate `Advisory Tests` workflow. It installs Playwright Chromium for the browser suite and runs with `continue-on-error`, preserving push/PR signal without making semantic-release depend on these suites. |
+-| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.43.6 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
++| Runner-owned package integration | `tests/Hexalith.EventStore.Platform.IntegrationTests` | The declared `platform-package` suite requires the real gateway and run-scoped Redis persistence after all twenty isolated projects pass. Published CLI 4.44.0 and the pinned v2 producer perform unconditional owned cleanup. Identity/catalog prerequisites remain blocking; the current SDK revision still requires exact-head hosted qualification. The separate Contracts gate remains blocking. |
+ | Full Aspire E2E | `tests/Hexalith.EventStore.IntegrationTests` | Deferred until a reliable Aspire-in-CI topology exists. |
+ | Isolated synthetic sharding | `tests/Hexalith.EventStore.Sharding.Tests` | Deferred CI automation; the operator opt-in Debug lane and its owned `Sharding.TestHost` fixture are documented in `tests/Hexalith.EventStore.Sharding.Tests/README.md`. Synthetic observations do not qualify a production provider profile or release gate. |
+ 
+@@ -132,17 +132,17 @@ accepts no inherited secrets, caller Dapr overrides or direct integration/AppHos
+ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ 
+ The package-profile bootstrap, v2 workflow and executing public module CLI
+-4.43.6 now select the same Builds source
+-`725754075e1d6369430a3adf94d46fb71e6eaf9e`, with genuine released Platform
+-[`v1.1.7`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.1.7)
+-(`ed1560a57f4d4cb55b6b03f485cbfa01316837a7`). Platform records that exact
+-Builds gitlink and tool floor `[4.43.6,5.0.0-0)`. The approved catalog still
++4.44.0 now select the same Builds source
++`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, with genuine released Platform
++[`v1.2.1`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.1)
++(`728baa7c0f006d86e71d6c9b29527dabc8e16e49`). Platform records that exact
++Builds gitlink and tool floor `[4.44.0,5.0.0-0)`. The approved catalog still
+ selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+ Azure.Security.KeyVault.Keys 4.10.2, with catalog blob
+ `ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`.
+ 
+ The CLI was published by successful normal Builds release
+-[41666723123](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41666723123).
++[41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+ It resolves a cold direct-only module from the verified direct Builds checkout,
+ without requiring Platform's nested dependency checkouts. Exact source, signed
+ package content and supported-range checks remain required. The real native
+@@ -154,10 +154,21 @@ source mapping to bind the actual context and caller Git revision. Its surviving
+ output is the original caller's existing `TestResults/module-integration`
+ directory; the native process keeps the published scrubbed environment.
+ 
++The caller selects `integration-test-reference-owners: tenants`. The released
++helper passes the additive `--with-owner=tenants` request to the fresh package
++test; Platform admits only its qualified Development Linux/x64 EventStore
++4.0.4/Tenants 7.0.0 cohort. The production declaration stays unchanged, and all
++declared dependencies remain required. The complete server closure includes
++the SDK gateway and the released Tenants domain and API, whose Linux/amd64
++images are pinned by Platform to their measured immutable digests. Expanded
++owner candidate reuse and attachments remain unsupported. Memories and other
++SDK/owner cohorts require separate qualification.
++
+ The catalog's EventStore 4.0.4 selection remains the package-profile bootstrap
+ input. A new EventStore producer and subsequent catalog/cohort adoption need
+-normal publication and fresh qualification. This tooling adoption does not
+-claim hosted acceptance for the current SDK revision.
++normal publication and fresh qualification. The real gateway/Redis assertions,
++actual loaded-SDK observations and exact-run cleanup must pass in fresh hosted
++CI; this tuple adoption alone does not claim native acceptance.
+ 
+ Standalone package probes and synthetic MSBuild fixtures select independent
+ child build environments before applying their deliberate test mapping inputs.
+@@ -254,7 +265,7 @@ dedicated LiveSidecar lane; they are not a reason to add the project to
+ 
+ ## Package Validation
+ 
+-Shared `domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e` calls these EventStore entry points when
++Shared `domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045` calls these EventStore entry points when
+ `run-consumer-validation: true`:
+ 
+ ```bash
+Submodule references/Hexalith.Builds 725754075..6249a8c0a:
+  > build: merge authenticated qualification owners (#158)
+  > fix(ci): pin Dapr port guard in shared CI
+  > fix(ci): wait for scheduler port before Dapr init
+  > build: merge refs/remotes/origin/main into main via /pushall
+  > build(deps): select the canonical EventStore McpCli and Tenants cohort
+Submodule references/Hexalith.Platform ed1560a57..728baa7c0:
+  > fix(composition): probe canonical immutable image references (#19)
+  > feat(runtime): qualify the released SDK catalog cohort (#18)
+  > fix(composition): allow qualified package catalog graphs
+diff --git a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+index dc6354471..0bed50641 100644
+--- a/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
++++ b/tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+@@ -559,7 +559,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(workflow, "ci");
+         string tenantsSourceModeJob = ExtractTopLevelWorkflowJobBlock(workflow, "tenants-source-mode");
+ 
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045");
+         ciJob.ShouldContain("build-timeout-minutes: 180");
+         ciJob.ShouldContain("test-platform: microsoft-testing-platform");
+         ciJob.ShouldContain("run-consumer-validation: true");
+@@ -583,6 +583,7 @@ public sealed class ReleasePackageManifestTests
+         string ciJob = ExtractTopLevelWorkflowJobBlock(File.ReadAllText(Path.Combine(root, ".github", "workflows", "ci.yml")), "ci");
+         ciJob.ShouldContain("module-manifest: module/hexalith.module-manifest.v2.json");
+         ciJob.ShouldContain("integration-test-profiles: platform-package");
++        ciJob.ShouldContain("integration-test-reference-owners: tenants");
+         ciJob.ShouldContain("registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}");
+         ciJob.ShouldContain("registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}");
+         foreach (string retired in new[] { "integration-test-projects:", "aspire-test-project:", "dapr-version:", "dapr-runtime-version:", "secrets: inherit" })
+@@ -592,7 +593,7 @@ public sealed class ReleasePackageManifestTests
+ 
+         using JsonDocument tools = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, ".config", "dotnet-tools.json")));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("4.43.6");
++        tool.GetProperty("version").GetString().ShouldBe("4.44.0");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "module", "hexalith.module-manifest.v2.json")));
+         JsonElement suite = manifest.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray()
+@@ -780,7 +781,7 @@ public sealed class ReleasePackageManifestTests
+         liveSidecarJob.ShouldNotContain("set +e");
+ 
+         string ciJob = ExtractTopLevelWorkflowJobBlock(ci, "ci");
+-        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@725754075e1d6369430a3adf94d46fb71e6eaf9e");
++        ciJob.ShouldContain("uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6249a8c0a0480a4b8a8ba04fc214c6104c3c9045");
+         ciJob.ShouldContain("unit-test-projects: |");
+         ciJob.ShouldNotContain("tests/Hexalith.EventStore.Contracts.Tests");
+         ciJob.ShouldNotContain("continue-on-error");

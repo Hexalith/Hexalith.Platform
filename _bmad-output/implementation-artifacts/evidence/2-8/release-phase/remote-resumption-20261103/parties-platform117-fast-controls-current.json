@@ -1,0 +1,70 @@
+{
+  "commands": [
+    {
+      "name": "lifecycle",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ci-lifecycle",
+        "-v"
+      ],
+      "exitCode": 0,
+      "completedAt": "2026-11-03T20:34:51.013804+00:00"
+    },
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "completedAt": "2026-11-03T20:34:51.953954+00:00"
+    },
+    {
+      "name": "generator",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "completedAt": "2026-11-03T20:34:51.987986+00:00"
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        ".github/workflows/ci.yml",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "exitCode": 0,
+      "completedAt": "2026-11-03T20:34:52.343022+00:00"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "completedAt": "2026-11-03T20:34:52.398726+00:00"
+    }
+  ],
+  "candidateAcceptance": false
+}

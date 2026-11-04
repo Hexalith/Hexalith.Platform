@@ -1,0 +1,76 @@
+{
+  "at": "2026-11-04T10:02:01.905969+00:00",
+  "source": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+  "runId": 41808430947,
+  "attempt": 1,
+  "reports": [
+    {
+      "name": "tenants-source-mode-test-results",
+      "artifactId": 13311391699,
+      "archiveSha256": "800b416171927940be64ca32d018483321ea4386c4e12148183465ea8a401b1c",
+      "trx": [
+        {
+          "file": "Hexalith.EventStore.AppHost.Tests.trx",
+          "sha256": "3c8123551fd21def76c9c5554fe56730877b332255b6be0f7bf8ddb7a9218af3",
+          "counters": {
+            "total": "7",
+            "executed": "7",
+            "passed": "7",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 7,
+          "notExecuted": []
+        }
+      ]
+    },
+    {
+      "name": "contracts-test-results",
+      "artifactId": 13310419596,
+      "archiveSha256": "1eac144998e3a1a38cec3f4c1c1703adbfd36c3b2b310756caf150d981f2faab",
+      "trx": [
+        {
+          "file": "Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.trx",
+          "sha256": "03db3a0c9cf580c7ed46393d60542974a8a963997820d12ab607c3eb2becb62d",
+          "counters": {
+            "total": "1530",
+            "executed": "1528",
+            "passed": "1528",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "2",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 1530,
+          "notExecuted": [
+            "Hexalith.EventStore.Contracts.Tests.Packaging.TrustedEffectPackageContractTests.NamedPackagesExposeTrustedEffectContracts",
+            "Hexalith.EventStore.Contracts.Tests.Packaging.PackagedReminderApiTests.PackagedReminderApiRunsWithoutWorksTypes"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Completed independent Contracts and Tenants source-mode jobs only. Main isolated/native qualification remains in progress.",
+  "storyComplete": false,
+  "candidateAcceptance": false
+}

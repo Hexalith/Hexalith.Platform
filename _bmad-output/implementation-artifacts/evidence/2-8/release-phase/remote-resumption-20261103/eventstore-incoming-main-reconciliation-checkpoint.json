@@ -1,0 +1,265 @@
+{
+  "recordedAt": "2026-11-04T09:27:42.417918+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore",
+  "branch": "fix/adopt-platform-117",
+  "pr": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+  "originalHead": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+  "specInitiallyObservedMain": "1a547e4c34dc50d42f9d30fd71a0631358cb657d",
+  "actualInspectedAndMergedMain": "aeec5012fa3e1e07426a8fdd145709bce93f619a",
+  "actualRemoteMainAfter": "aeec5012fa3e1e07426a8fdd145709bce93f619a",
+  "localMergeHead": "04d082abcf62c893c2bccf3c462ffbfbb7b46387",
+  "parents": [
+    "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "aeec5012fa3e1e07426a8fdd145709bce93f619a"
+  ],
+  "tree": "66ce877efa59fc7a06446a1a6e7e3bb70bc447dd",
+  "sourceClean": true,
+  "pushed": false,
+  "prMetadataUpdated": false,
+  "remoteHeadStill": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+  "apiBaseBefore": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "apiBaseAfter": "8a1aca637dad45d6c67806ae7c68508ef42b1206",
+  "incomingCommitCount": 3,
+  "incomingPathCount": 22,
+  "actualPreservedIncomingObjects": 20,
+  "incomingExceptions": [
+    "docs/ci.md",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+  ],
+  "actualPreservedOriginalB63Inputs": 42,
+  "original44ProtectedExceptions": [
+    ".github/workflows/ci.yml",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+  ],
+  "sourcePreservation": "eventstore-incoming-main-reconciliation-source-preservation-final.json",
+  "conflictResolution": "eventstore-incoming-main-reconciliation-conflict-resolutions.json",
+  "currentPinsAndIndependentExecutor": {
+    "runtimeDirectPins": {
+      "Hexalith.Builds": {
+        "indexAndActualHead": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+        "status": ""
+      },
+      "Hexalith.Platform": {
+        "indexAndActualHead": "991e2df97dc8493e41096006b0d3203a71730ae8",
+        "status": ""
+      },
+      "Hexalith.Tenants": {
+        "indexAndActualHead": "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+        "status": ""
+      }
+    },
+    "cliVersion": "4.44.0",
+    "cliSource": "6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+    "separateImmutableWorkflowExecutor": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "isolatedProjects": [
+      "tests/Hexalith.EventStore.Client.Tests",
+      "tests/Hexalith.EventStore.ServiceDefaults.Tests",
+      "tests/Hexalith.EventStore.Testing.Tests",
+      "tests/Hexalith.EventStore.SignalR.Tests",
+      "tests/Hexalith.EventStore.Admin.Abstractions.Tests",
+      "tests/Hexalith.EventStore.Admin.Cli.Tests",
+      "tests/Hexalith.EventStore.Admin.Mcp.Tests",
+      "tests/Hexalith.EventStore.Admin.Server.Tests",
+      "tests/Hexalith.EventStore.Operations.Tests",
+      "tests/Hexalith.EventStore.Admin.Server.Host.Tests",
+      "tests/Hexalith.EventStore.Admin.UI.Tests",
+      "tests/Hexalith.EventStore.DomainService.Tests",
+      "tests/Hexalith.EventStore.QueryRouting.Tests",
+      "tests/Hexalith.EventStore.RestApi.Generators.Tests",
+      "tests/Hexalith.EventStore.LoadTests.Tests",
+      "tests/Hexalith.EventStore.Sample.Tests",
+      "tests/Hexalith.EventStore.Testing.Integration.Tests",
+      "tests/Hexalith.EventStore.Server.Tests",
+      "tests/Hexalith.EventStore.ProviderVerification.Tests",
+      "tests/Hexalith.EventStore.AppHost.Tests"
+    ],
+    "isolatedProjectCount": 20,
+    "workflowJobs": [
+      "folded-snapshot-compatibility",
+      "process-packages",
+      "ci",
+      "contracts",
+      "semantic-release-governance",
+      "tenants-source-mode"
+    ],
+    "independentJobs": 5,
+    "ownerBuildTimeoutMinutes": 180,
+    "additionalOwners": [
+      "tenants"
+    ],
+    "manifestOriginalBytesPreserved": true,
+    "noNestedInitialization": true,
+    "releasePublisherUnchanged": "30ea43a56330a9828ed0bb2e837289231d8630d1",
+    "candidateAcceptance": false
+  },
+  "actualExecutingModuleVersion": "4.44.0+6249a8c0a0480a4b8a8ba04fc214c6104c3c9045",
+  "preparedMappingHash": "549809eefd8279470dd9176be2d653d5de7f86f36354ae9e682127ad6cdc7c75",
+  "actualControlCounts": {
+    "server-controls": {
+      "total": "331",
+      "executed": "331",
+      "passed": "331",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "e2e-transport": {
+      "total": "11",
+      "executed": "11",
+      "passed": "11",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "contracts": {
+      "total": "21",
+      "executed": "21",
+      "passed": "21",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    }
+  },
+  "actualNetTotalPassed": 363,
+  "actualPythonReleasedOwnerControls": 3,
+  "releasePackageBuilds": {
+    "server": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "receipt": "eventstore-incoming-main-reconciliation-server-build-first.json"
+    },
+    "e2e-transport": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "receipt": "eventstore-incoming-main-reconciliation-e2e-transport-build-first.json"
+    },
+    "contracts": {
+      "exitCode": 0,
+      "warnings": 0,
+      "errors": 0,
+      "receipt": "eventstore-incoming-main-reconciliation-contracts-build-first.json"
+    }
+  },
+  "strictManifest": "validated/Success",
+  "actionlint": true,
+  "whitespace": true,
+  "exactCompleteOwningCommitlint": "21.2.4 passed before merge and exact same message used for commit",
+  "nugetCache": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103",
+  "signatureRevocationMode": "offline",
+  "compiledAndTestedBeforeMergeCommit": "Resolved source bytes were unchanged when committed; these local builds are not candidate Release artifacts.",
+  "patches": {
+    "local-merge-from-b63": {
+      "file": "eventstore-incoming-main-reconciliation-local-merge-from-b63.patch",
+      "sha256": "8c190d27eb2c9812e6f33b6989ee3d9bd4942ec6f7cb61bcd9579b2238303a3b",
+      "paths": [
+        ".github/workflows/ci.yml",
+        "_bmad-output/implementation-artifacts/spec-2-14-canonical-tenant-boundary.md",
+        "docs/ci.md",
+        "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogAuthority.cs",
+        "src/Hexalith.EventStore/Controllers/AdminStorageCommandController.cs",
+        "src/Hexalith.EventStore/Controllers/CommandsController.cs",
+        "src/Hexalith.EventStore/Controllers/QueriesController.cs",
+        "src/Hexalith.EventStore/Controllers/StreamsController.cs",
+        "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiHandler.cs",
+        "tests/Hexalith.EventStore.Admin.UI.E2E/E2EAdminApiTransportTests.cs",
+        "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Controllers/AdminStorageCommandControllerTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Controllers/CommandsControllerTenantTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Controllers/QueriesControllerTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Controllers/StreamsControllerTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAcquisitionDiagnosticsTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseStore.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogAdmissionRebaseTests.cs",
+        "tests/Hexalith.EventStore.Server.Tests/Routing/CatalogUpdateContentionTests.cs"
+      ]
+    },
+    "full-proposal": {
+      "file": "eventstore-incoming-main-reconciliation-full-proposal.patch",
+      "sha256": "e659d550243aa0de9df56a863e4e3382666856a5c6a0733495fc8d6788072d1c",
+      "paths": [
+        "docs/ci.md",
+        "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs"
+      ]
+    }
+  },
+  "firstOutcomesPreserved": [
+    "eventstore-incoming-main-reconciliation-merge-first.json",
+    "eventstore-incoming-main-reconciliation-merge-first.txt",
+    "eventstore-incoming-main-reconciliation-source-verifier-first-failure.txt",
+    "eventstore-incoming-main-reconciliation-source-verifier-second-failure.txt",
+    "eventstore-incoming-main-reconciliation-boundary-verifier-first-failure.txt"
+  ],
+  "previousHostedSourceEvidence": {
+    "head": "b63dc2fe15e41621741d0e49e088f10046ec7bed",
+    "run": 41796717649,
+    "isolatedTotal": 16209,
+    "isolatedPassed": 16160,
+    "notExecuted": 49,
+    "independentJobsPassed": 5,
+    "owner": "440a075645c5fbb7a1b0f64a2c94a26e",
+    "readyOwnedResources": 10,
+    "cliOutcome": "Success",
+    "cleanup": "complete exact10ownedresources and empty inventories",
+    "limit": "Oldhelper omitted actual referenced nativeTRX/lifecycle bodies; no new-source acceptance",
+    "rerun": false
+  },
+  "notRun": [
+    "full20project isolated suite",
+    "fullContracts or fullServer assemblies",
+    "browser/UI suite",
+    "native gateway/Redis persistence/anonymous401runtime",
+    "manual lifecycle matrix/startup/execution cancellation",
+    "live image/registry/provider operations",
+    "new hosted pipeline"
+  ],
+  "remaining": [
+    "Parent review and actual corrected published tuple adoption before any push",
+    "Fresh exact-source complete hosted isolated/independent/native gates",
+    "Actual native case/diagnostic/lifecycle retained-body recount and exact-cleanup audit with corrected executor",
+    "Coherent fullPartiesPlatform/newtuple and later real manual lifecycle qualification",
+    "OriginalStorytasks/AC/finalbaselineaudit/step04 remain incomplete"
+  ],
+  "candidateAcceptance": false,
+  "nativeAcceptance": false,
+  "newTupleAccepted": false,
+  "otherOwnerSourceChanged": false,
+  "rootAcceptedPinsChanged": false,
+  "evidenceIndex": "eventstore-incoming-main-reconciliation-evidence-index.json"
+}

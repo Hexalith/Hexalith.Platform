@@ -1,0 +1,700 @@
+{
+  "attempt": "3d76572aa59d4bd6af269edfbb8bf221",
+  "startedUtc": "2026-11-04T10:20:42.960118+00:00",
+  "status": "passed",
+  "candidateAcceptance": true,
+  "sdk": "3.130.0",
+  "toolSourceSha256": "2285ca4543f8d56567899db35324d19565d473677c02016dedf3db219a88884c",
+  "toolSourceClosureSha256": {
+    "Hexalith.Platform.CatalogBuilder.csproj": "f929db17a331ba04cf6cf9846a000254f93db2be3cdf4b35d8afb4bd78163e81",
+    "Program.cs": "2285ca4543f8d56567899db35324d19565d473677c02016dedf3db219a88884c",
+    "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+  },
+  "genuineOwnerAssemblies": [
+    "Hexalith.Tenants.Contracts",
+    "Hexalith.Platform.CatalogBuilder.SampleFixture"
+  ],
+  "cases": [
+    {
+      "case": "baseline-0",
+      "activationRefused": true,
+      "routesRemainEnrolled": true,
+      "consumers": [
+        "eventstore"
+      ]
+    },
+    {
+      "case": "actual-1",
+      "activationBindingAccepted": true,
+      "authorityRegistered": false,
+      "policies": 17,
+      "projectionQueries": 1,
+      "domainServiceQueries": 8,
+      "sampleRoutes": 7,
+      "consumer": "eventstore-binding-check",
+      "rootDigest": "63b878bf1140f56d05f162791aaccc78b4eb79d2cec0c91bd8646919c5a45ef2"
+    },
+    {
+      "case": "actual-2",
+      "activationBindingAccepted": true,
+      "authorityRegistered": false,
+      "policies": 17,
+      "projectionQueries": 1,
+      "domainServiceQueries": 8,
+      "sampleRoutes": 7,
+      "consumer": "eventstore-second-check",
+      "rootDigest": "9852995491af7cf634569836574789496d8fa28b290a1a007be788f360607dbb"
+    },
+    {
+      "case": "default-consumer-3",
+      "activationRefused": true,
+      "routesRemainEnrolled": true,
+      "consumers": [
+        "eventstore"
+      ]
+    },
+    {
+      "case": "foreign-consumer-4",
+      "activationRefused": true,
+      "routesRemainEnrolled": true,
+      "consumers": [
+        "eventstore-foreign"
+      ]
+    },
+    {
+      "case": "invalid-adapter-0",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-adapter-1",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-0",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-1",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-2",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-3",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-4",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "invalid-5",
+      "refusedBeforeOutput": true
+    },
+    {
+      "case": "legacy129-explicit-eventstore",
+      "activationBindingAccepted": true,
+      "authorityRegistered": false,
+      "policies": 12,
+      "projectionQueries": 0,
+      "domainServiceQueries": 8,
+      "sampleRoutes": 0,
+      "consumer": "eventstore",
+      "rootDigest": "e9e86c3acf3290f5f38497f5239c4111bab2c3a950c3617e529ce57c7ef9b7c2"
+    },
+    {
+      "case": "legacy129-scoped",
+      "refusedBeforeOutput": true
+    }
+  ],
+  "baseline": "68b785b6a929050771e70d78f83ff10fea3daabc",
+  "allDeclarationsBindingsAndOperationsUnchanged": true,
+  "policyFieldsExceptConsumerAndDigestUnchanged": true,
+  "executedArtifacts": {
+    "sample": {
+      "publishedSource": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
+      "sourceFiles": {
+        "Hexalith.EventStore.Sample.Contracts/Counter/Commands/IncrementCounter.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/IncrementCounter.cs",
+          "sha256": "6e376a70de9f6fddab0c43ca2cd9edef6e9f1863f9ce15478bdb36a7e849934f"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/Commands/DecrementCounter.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/DecrementCounter.cs",
+          "sha256": "cbc3fa33efa7eaa9fb8e9f34dc075b820fb013f03532c00e8c546c22da1f8147"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/Commands/ResetCounter.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/ResetCounter.cs",
+          "sha256": "b882c54525fee543e6e749d256dce1b85f404ebb6ca03436209440f5363f1891"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/Commands/CloseCounter.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Commands/CloseCounter.cs",
+          "sha256": "d826fd07905b56391e3081ee6613f589c010f0d08ff03f7a64e06ac651e7a9f2"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/CounterCatalogDeclarations.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/CounterCatalogDeclarations.cs",
+          "sha256": "9723f56f2746b4806248e8be0b6b6bd5e39812cc1e75fe1533c6187c2cb8a143"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/Queries/GetCounterStatusQuery.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/GetCounterStatusQuery.cs",
+          "sha256": "39f5a51fc3af5ef26cae8576795af7fbfaef9e80941d43a09f7f4a7d37ed0755"
+        },
+        "Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusPayload.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample.Contracts/Counter/Queries/CounterStatusPayload.cs",
+          "sha256": "154d3bf2b5190002fe06db06dc18a5183ad6dfe7f742e367b769d86a0140abba"
+        },
+        "Hexalith.EventStore.Sample/Counter/SampleCatalog.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/SampleCatalog.cs",
+          "sha256": "a8ebbf26baabe8e2d80c593faf18c5ebbe9751bb927bcbf67de6ba26b4d487c7"
+        },
+        "Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/SampleCatalogAdapters.cs",
+          "sha256": "0abdb88a73f260365105e7d4b6d9de6449ff483dd637f8ee541fb86df3b6db3d"
+        },
+        "Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Greeting/GreetingCatalogDeclarations.cs",
+          "sha256": "7f65dd55e2165451e53b8088e9028a745b61a6ebc9bb167043643c558d450891"
+        },
+        "Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Greeting/Commands/SendGreeting.cs",
+          "sha256": "5241c316deb78642ef0f5fd09487eb09ad4c01d7b96eb4d9bc64175c78677f17"
+        },
+        "Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjection.cs",
+          "sha256": "9c9f07b0501991875c5e2d83b605fc4654b6753af7069455c99debc9ff255898"
+        },
+        "Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Projections/CounterProjectionHandler.cs",
+          "sha256": "16001a9db8f3ab8cd507d9adf58ac78c55d91847c1b7a8f59c65cfb0687b7a64"
+        },
+        "Hexalith.EventStore.Sample/Counter/State/CounterState.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/State/CounterState.cs",
+          "sha256": "075b65b9c65fe0259a4b779dabc7a1153a7a3057170f15947f38cfd587bf644e"
+        },
+        "Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Events/CounterIncremented.cs",
+          "sha256": "3d9be7af5c4a63bd2b003eaf7879860b2310020f5a4ce0e30ab73e554b0a89ca"
+        },
+        "Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Events/CounterDecremented.cs",
+          "sha256": "173d7f98451b631949bbca7ad3dfa524f08a27538851a8598b9e4f2c93f8388f"
+        },
+        "Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Events/CounterReset.cs",
+          "sha256": "7461fe7ed810466f01a86cf2ab4699833be62d8113500d5d068aaa35a035b4d7"
+        },
+        "Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs": {
+          "source": "https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c/samples/Hexalith.EventStore.Sample/Counter/Events/CounterClosed.cs",
+          "sha256": "ac41379a560a3c90a4b2101e6935305d4cfb3424e2a91865f1e9f398cbe1da2f"
+        }
+      },
+      "publicContractsArchiveSha256": "be9181737e45ebeb757d29535576aa0e98907039208730912867f8df52e0680a",
+      "publicContractsDllSha256": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+      "contracts": {
+        "files": {
+          "Hexalith.EventStore.Sample.Contracts.deps.json": "d38fb39a75a1ab38e064562a822143511d8a901cb20a53fb1f143edcb58cc542",
+          "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48"
+        },
+        "projectAssetsSha256": "f327d905b352e50cb1bd67d4d3bfc9562647733a36818af43c34beda5ac0f939",
+        "resolvedSdkPackages": {
+          "Hexalith.EventStore.Contracts": "3.130.0"
+        },
+        "packageSources": [
+          "https://api.nuget.org/v3/index.json"
+        ],
+        "projectFileSha256": "83ada243bc9a22b126588727618ef3675390594003b6cde135b2a5ab40fda833",
+        "copiedCatalogSourceSha256": {}
+      },
+      "host": {
+        "files": {
+          "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48",
+          "Hexalith.Platform.CatalogBuilder.SampleFixture.deps.json": "9523a8e827003923243549cf30a2890d7f977ca5ad5d30da584f17c949bcc621",
+          "Hexalith.Platform.CatalogBuilder.SampleFixture.dll": "6e3d932add330812eba95f7676cebde505367ec2f6028e20209e877fef768512"
+        },
+        "projectAssetsSha256": "a37dd9925190a046e9dd11bd85ad44d8cb77cb55bc15fd037c7bded782c723d2",
+        "resolvedSdkPackages": {
+          "Hexalith.EventStore.Client": "3.130.0",
+          "Hexalith.EventStore.Contracts": "3.130.0",
+          "Hexalith.EventStore.DomainService": "3.130.0",
+          "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+        },
+        "packageSources": [
+          "https://api.nuget.org/v3/index.json"
+        ],
+        "projectFileSha256": "723a5cd428ac7cc7bba60f3e1a3c935b08151a40fc82b4b7ee1a1dd61a1002d4",
+        "copiedCatalogSourceSha256": {}
+      },
+      "fixtureOnlyNotPublished": true
+    },
+    "baseline": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "9d7547ce47bcb9c9c7ca46c23367b7faa39e071e8be5542e61d462f7ef8aa6fd",
+        "Hexalith.EventStore.Contracts.dll": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+        "Hexalith.EventStore.DomainService.dll": "f2854847ebab8e7557b585f568b61d749c7ab97352f7101817464c07cddfd63e",
+        "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48",
+        "Hexalith.EventStore.Server.dll": "9dfd6b7b5e871f9d169ed6a52ead20e9663aca7fc434519ba1cb646bc7d0035e",
+        "Hexalith.EventStore.ServiceDefaults.dll": "7f3825cd888bb964f68c4da1550e0d30f88f6d3e4b869f20634b8ba001aef5a9",
+        "Hexalith.McpCli.Abstractions.dll": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+        "Hexalith.Platform.CatalogBuilder.SampleFixture.dll": "6e3d932add330812eba95f7676cebde505367ec2f6028e20209e877fef768512",
+        "Hexalith.Platform.CatalogBuilder.deps.json": "dedb684806dfc54beebf63eba51673c0864bed6b60866ac2c9bd1b29f93bf2bf",
+        "Hexalith.Platform.CatalogBuilder.dll": "1a6f0744aa95977504e510c51aa28bfe3d7df3d916564b089147c4721e687abd",
+        "Hexalith.Platform.CatalogBuilder.runtimeconfig.json": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a",
+        "Hexalith.Tenants.Contracts.dll": "92b39d902276179fa5debb61e6abeeedee92d2af6316a57ac207a794aae9a03f",
+        "Hexalith.Tenants.Server.dll": "69ada47d44894f45d10416824c6b32aa42cf273d6632d61c2dd4359c69cd40ff",
+        "MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "MediatR.dll": "856b8a06d82033415ffef0edcac5f38256f1ef0336dbc372609f75b82a333d97",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "a8ca7c6d01b24d5d7ed885a388087688e1e50cd51423e7ab384bf78ffd823458",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.130.0",
+        "Hexalith.EventStore.Contracts": "3.130.0",
+        "Hexalith.EventStore.DomainService": "3.130.0",
+        "Hexalith.EventStore.Server": "3.130.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "a49e8b0518335394a86305eb2ae956ed4c4b869cc530a3eb8315534ebb8d0378",
+      "copiedCatalogSourceSha256": {
+        "Program.cs": "5c801c4ef2e1c794672dc6f1a6f111c4a32fb2b9fa4cf1fa984ae052ee4cedda",
+        "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+      }
+    },
+    "actual": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "9d7547ce47bcb9c9c7ca46c23367b7faa39e071e8be5542e61d462f7ef8aa6fd",
+        "Hexalith.EventStore.Contracts.dll": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+        "Hexalith.EventStore.DomainService.dll": "f2854847ebab8e7557b585f568b61d749c7ab97352f7101817464c07cddfd63e",
+        "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48",
+        "Hexalith.EventStore.Server.dll": "9dfd6b7b5e871f9d169ed6a52ead20e9663aca7fc434519ba1cb646bc7d0035e",
+        "Hexalith.EventStore.ServiceDefaults.dll": "7f3825cd888bb964f68c4da1550e0d30f88f6d3e4b869f20634b8ba001aef5a9",
+        "Hexalith.McpCli.Abstractions.dll": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+        "Hexalith.Platform.CatalogBuilder.SampleFixture.dll": "6e3d932add330812eba95f7676cebde505367ec2f6028e20209e877fef768512",
+        "Hexalith.Platform.CatalogBuilder.deps.json": "dedb684806dfc54beebf63eba51673c0864bed6b60866ac2c9bd1b29f93bf2bf",
+        "Hexalith.Platform.CatalogBuilder.dll": "0593a7bc60e807dbf74230147686e283828d9f9452c60aec051f59144038f45b",
+        "Hexalith.Platform.CatalogBuilder.runtimeconfig.json": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a",
+        "Hexalith.Tenants.Contracts.dll": "92b39d902276179fa5debb61e6abeeedee92d2af6316a57ac207a794aae9a03f",
+        "Hexalith.Tenants.Server.dll": "69ada47d44894f45d10416824c6b32aa42cf273d6632d61c2dd4359c69cd40ff",
+        "MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "MediatR.dll": "856b8a06d82033415ffef0edcac5f38256f1ef0336dbc372609f75b82a333d97",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "c02821174974fb4a1e22c6bfa83a4e65ca351884b3fdb0966fab059f68244f6d",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.130.0",
+        "Hexalith.EventStore.Contracts": "3.130.0",
+        "Hexalith.EventStore.DomainService": "3.130.0",
+        "Hexalith.EventStore.Server": "3.130.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "a49e8b0518335394a86305eb2ae956ed4c4b869cc530a3eb8315534ebb8d0378",
+      "copiedCatalogSourceSha256": {
+        "Program.cs": "c9bc417edd9385481ee82ccd80f6e6d35288d5c2d4649cf6851bd90fad81f419",
+        "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+      }
+    },
+    "default-consumer": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "9d7547ce47bcb9c9c7ca46c23367b7faa39e071e8be5542e61d462f7ef8aa6fd",
+        "Hexalith.EventStore.Contracts.dll": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+        "Hexalith.EventStore.DomainService.dll": "f2854847ebab8e7557b585f568b61d749c7ab97352f7101817464c07cddfd63e",
+        "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48",
+        "Hexalith.EventStore.Server.dll": "9dfd6b7b5e871f9d169ed6a52ead20e9663aca7fc434519ba1cb646bc7d0035e",
+        "Hexalith.EventStore.ServiceDefaults.dll": "7f3825cd888bb964f68c4da1550e0d30f88f6d3e4b869f20634b8ba001aef5a9",
+        "Hexalith.McpCli.Abstractions.dll": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+        "Hexalith.Platform.CatalogBuilder.SampleFixture.dll": "6e3d932add330812eba95f7676cebde505367ec2f6028e20209e877fef768512",
+        "Hexalith.Platform.CatalogBuilder.deps.json": "dedb684806dfc54beebf63eba51673c0864bed6b60866ac2c9bd1b29f93bf2bf",
+        "Hexalith.Platform.CatalogBuilder.dll": "c325820cc8ffbb5640c2706972d60beb40e46d91bc9f664811538722ce497aa0",
+        "Hexalith.Platform.CatalogBuilder.runtimeconfig.json": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a",
+        "Hexalith.Tenants.Contracts.dll": "92b39d902276179fa5debb61e6abeeedee92d2af6316a57ac207a794aae9a03f",
+        "Hexalith.Tenants.Server.dll": "69ada47d44894f45d10416824c6b32aa42cf273d6632d61c2dd4359c69cd40ff",
+        "MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "MediatR.dll": "856b8a06d82033415ffef0edcac5f38256f1ef0336dbc372609f75b82a333d97",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "e8c4046824b1638c9f3eba20edb4c4530a3819b19485dd5bab95f9f4bcaa9731",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.130.0",
+        "Hexalith.EventStore.Contracts": "3.130.0",
+        "Hexalith.EventStore.DomainService": "3.130.0",
+        "Hexalith.EventStore.Server": "3.130.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "a49e8b0518335394a86305eb2ae956ed4c4b869cc530a3eb8315534ebb8d0378",
+      "copiedCatalogSourceSha256": {
+        "Program.cs": "43b3fc7c119238a569a0aed005f7f4c78553b00b0a1ad4a4778e1444852af8c8",
+        "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+      }
+    },
+    "foreign-consumer": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "9d7547ce47bcb9c9c7ca46c23367b7faa39e071e8be5542e61d462f7ef8aa6fd",
+        "Hexalith.EventStore.Contracts.dll": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+        "Hexalith.EventStore.DomainService.dll": "f2854847ebab8e7557b585f568b61d749c7ab97352f7101817464c07cddfd63e",
+        "Hexalith.EventStore.Sample.Contracts.dll": "2b5f52192eb94b5d79c4667a057fca1053f14b5aa86594072a2d62d3220cdb48",
+        "Hexalith.EventStore.Server.dll": "9dfd6b7b5e871f9d169ed6a52ead20e9663aca7fc434519ba1cb646bc7d0035e",
+        "Hexalith.EventStore.ServiceDefaults.dll": "7f3825cd888bb964f68c4da1550e0d30f88f6d3e4b869f20634b8ba001aef5a9",
+        "Hexalith.McpCli.Abstractions.dll": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+        "Hexalith.Platform.CatalogBuilder.SampleFixture.dll": "6e3d932add330812eba95f7676cebde505367ec2f6028e20209e877fef768512",
+        "Hexalith.Platform.CatalogBuilder.deps.json": "dedb684806dfc54beebf63eba51673c0864bed6b60866ac2c9bd1b29f93bf2bf",
+        "Hexalith.Platform.CatalogBuilder.dll": "9768a9ebee2552e4a95c7ef1090dbff0a6a05720fa4e41227fab751c9375dda7",
+        "Hexalith.Platform.CatalogBuilder.runtimeconfig.json": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a",
+        "Hexalith.Tenants.Contracts.dll": "92b39d902276179fa5debb61e6abeeedee92d2af6316a57ac207a794aae9a03f",
+        "Hexalith.Tenants.Server.dll": "69ada47d44894f45d10416824c6b32aa42cf273d6632d61c2dd4359c69cd40ff",
+        "MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "MediatR.dll": "856b8a06d82033415ffef0edcac5f38256f1ef0336dbc372609f75b82a333d97",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "832758fdefbbe17364c96c439abd1b60fb43553e6505ead565f3cfd2bd8f2036",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.130.0",
+        "Hexalith.EventStore.Contracts": "3.130.0",
+        "Hexalith.EventStore.DomainService": "3.130.0",
+        "Hexalith.EventStore.Server": "3.130.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "a49e8b0518335394a86305eb2ae956ed4c4b869cc530a3eb8315534ebb8d0378",
+      "copiedCatalogSourceSha256": {
+        "Program.cs": "d667499642998596122f8b8ee7acd87158b476deafae857503a45e75de8969d7",
+        "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+      }
+    },
+    "probe": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "CatalogActivationProbe.deps.json": "35e2accfc0b1548640ee72367ce1f7fd988db20dd5d5c73f9ef06a2a1b9011b6",
+        "CatalogActivationProbe.dll": "511211ffbe0515757d4acda75a9ee8c5201cb4187f4d43c98ac5c64e2bcf694f",
+        "CatalogActivationProbe.runtimeconfig.json": "f8bd1713a3691d58eb332a71675f129385b91e852b66e7b6761cae1f34d4efd2",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "9d7547ce47bcb9c9c7ca46c23367b7faa39e071e8be5542e61d462f7ef8aa6fd",
+        "Hexalith.EventStore.Contracts.dll": "626eb22e366815d653a30aab35a0a2579d9c63555cf7ab0d0cc8ff025bfc01e4",
+        "Hexalith.EventStore.ServiceDefaults.dll": "7f3825cd888bb964f68c4da1550e0d30f88f6d3e4b869f20634b8ba001aef5a9",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "398886e8dabd2a19e0ce9938c9d937abe95975477e2b4830755f8eaa64473254",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.130.0",
+        "Hexalith.EventStore.Contracts": "3.130.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.130.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "823dfe6bd2535f038d395d194004a20d522e3e958d7091ebb7ac0c73a4cfe462",
+      "copiedCatalogSourceSha256": {}
+    },
+    "legacy129": {
+      "files": {
+        "ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "Hexalith.EventStore.Client.dll": "980c71ebd29341417e98074e78e3e1de7643f5d96863e6ac6fd99e6b99bf39a9",
+        "Hexalith.EventStore.Contracts.dll": "f6fabeba9600e44b6a3d5be56b8a7707438943e2b74bf6a496151e9bb4ee3942",
+        "Hexalith.EventStore.DomainService.dll": "2de2763aa337bb2a9d4dd2b54a739a2373d114d162a89f3e437457e327c1a583",
+        "Hexalith.EventStore.Server.dll": "3033cc1b18330adc09034ec2d0a48933427aa65802195b5455dbe5aee41ce2b1",
+        "Hexalith.EventStore.ServiceDefaults.dll": "27eaf7c72322b13d33b98aa726535e1a392e95a67c99788e76c468fa2e16f124",
+        "Hexalith.McpCli.Abstractions.dll": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+        "Hexalith.Platform.CatalogBuilder.deps.json": "91a18e86b595b84d3370cbe6d9856d039083f05be212226ac537d6683e2faeff",
+        "Hexalith.Platform.CatalogBuilder.dll": "7081ba2d849d30dc94a849ce32ab9d51feae25447f198360e6f4508650c6d98d",
+        "Hexalith.Platform.CatalogBuilder.runtimeconfig.json": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a",
+        "Hexalith.Tenants.Contracts.dll": "92b39d902276179fa5debb61e6abeeedee92d2af6316a57ac207a794aae9a03f",
+        "Hexalith.Tenants.Server.dll": "69ada47d44894f45d10416824c6b32aa42cf273d6632d61c2dd4359c69cd40ff",
+        "MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "MediatR.dll": "856b8a06d82033415ffef0edcac5f38256f1ef0336dbc372609f75b82a333d97",
+        "Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "OpenTelemetry.Instrumentation.AspNetCore.dll": "369897ccfe1a4483ab92c09aa1846d562c1353afd93ee103ada4e638bcdfbce5",
+        "OpenTelemetry.Instrumentation.Http.dll": "bdd562d21bc152308cd5935394038551137adef50068eb41ab2ca7a820987287",
+        "OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf"
+      },
+      "projectAssetsSha256": "3aca94b7e8dbdd88b4320900b6ce41ebec2da8c04e70b17a4b69b85d2431f752",
+      "resolvedSdkPackages": {
+        "Hexalith.EventStore.Client": "3.129.0",
+        "Hexalith.EventStore.Contracts": "3.129.0",
+        "Hexalith.EventStore.DomainService": "3.129.0",
+        "Hexalith.EventStore.Server": "3.129.0",
+        "Hexalith.EventStore.ServiceDefaults": "3.129.0"
+      },
+      "packageSources": [
+        "https://api.nuget.org/v3/index.json"
+      ],
+      "projectFileSha256": "a49e8b0518335394a86305eb2ae956ed4c4b869cc530a3eb8315534ebb8d0378",
+      "copiedCatalogSourceSha256": {
+        "Program.cs": "c9bc417edd9385481ee82ccd80f6e6d35288d5c2d4649cf6851bd90fad81f419",
+        "PublishedCatalogArtifactCohort.cs": "ed1504ae104c721e26c86c3217ecc51121a82cfd6108f49e1bde0bb1e7478d26"
+      }
+    }
+  },
+  "authorityRegistered": false,
+  "originalProducerWrites": false,
+  "completedUtc": "2026-11-04T10:21:04.629451+00:00"
+}

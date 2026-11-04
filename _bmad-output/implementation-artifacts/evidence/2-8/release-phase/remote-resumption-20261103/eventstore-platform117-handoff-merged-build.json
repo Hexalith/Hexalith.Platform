@@ -1,0 +1,18 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+    "--configuration",
+    "Release",
+    "-warnaserror",
+    "-m:1",
+    "-p:UseHexalithProjectReferences=false"
+  ],
+  "exitCode": 0,
+  "observedAt": "2026-11-03T20:20:44.180938+00:00",
+  "head": "5df9d07df44dca400ff09468a91c34e9685c3dd1",
+  "sourceClean": true,
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

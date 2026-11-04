@@ -1,0 +1,192 @@
+{
+  "observedAtUtc": "2026-11-03T20:38:02.781230+00:00",
+  "base": "6795536e3fe5fd4cf44eb5f4c67e69f3374532b4",
+  "head": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/61",
+  "sourceRead": "initial complete11path patch and complete7path diagnostic extension in individual reads; final exact binding hunk and theory guard re-read after null-guard correction",
+  "paths": [
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "mode": "100644",
+      "objectId": "d831870ca255751a5b878bcd375d586f59fb445a",
+      "sha256": "ab5c0da55319d78b5aeb0e27c0eef4372b2a7c14741c7e58029089c16f0c2e10"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "objectId": "38592cefb6103e886ef92da0e0b73b863bf509be",
+      "sha256": "e9377f13c66e9dc008646baab939d07125243af6ff1e5a539edc26889e446e08"
+    },
+    {
+      "path": ".gitlink-signoff.tsv",
+      "mode": "100644",
+      "objectId": "c6dc4c513d06a122cf5622db2ab38a093df39423",
+      "sha256": "f685fbf152ddd368c6896b35aea22bd66da931bd0a101cf99e1cc7640568f112"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+      "mode": "100644",
+      "objectId": "a10613e025b9f3a42a7bc0218a2b0aaa042c326f",
+      "sha256": "6c55361e1b3678ee349ad952ec79113084bbb9f4af9193c1861b29a57c003871"
+    },
+    {
+      "path": "docs/architecture.md",
+      "mode": "100644",
+      "objectId": "f0400d100f081869a3df6180e2ae749a741c9774",
+      "sha256": "33606b0bf6e4b3bfefa82762ed2b621ced22c525d3aeeaafccac4759ac93acec"
+    },
+    {
+      "path": "docs/ci-lifecycle-qualification.md",
+      "mode": "100644",
+      "objectId": "63207307737551432f67b28fd0402d07ac2ea890",
+      "sha256": "9b33fd50f8d5bbe61b26673dd14db82cafbcf2e8c6c88d548c789a4c23d9c0a2"
+    },
+    {
+      "path": "docs/ci.md",
+      "mode": "100644",
+      "objectId": "0a6b4ab1f6dd06d284365cb68b626769823d7d06",
+      "sha256": "da15c100cd46f046b7d02b5c807c3b73dbc64202ed0c4f8f3f3de58fa46d8722"
+    },
+    {
+      "path": "references/Hexalith.Builds",
+      "mode": "160000",
+      "objectId": "725754075e1d6369430a3adf94d46fb71e6eaf9e"
+    },
+    {
+      "path": "references/Hexalith.Platform",
+      "mode": "160000",
+      "objectId": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+      "mode": "100644",
+      "objectId": "02020aa25672070394028ad9b89073e7a75fba89",
+      "sha256": "5c521f0fb3afe8b52bf66a2d301d931e1763e37a0d4984a4205defcf88eb7f28"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+      "mode": "100644",
+      "objectId": "6e76ca7759f6d6a0cfd155e2fe5244246365397b",
+      "sha256": "ae7334b135f8034eaa3451d430e74a312192ae081ca05a8b07c06ae423b91b08"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+      "mode": "100644",
+      "objectId": "b7292193dbcf66359ab451dab59ab4bb205e8987",
+      "sha256": "28bfbbecb5eaab901a443d793e321cba2703fd6d2f578339a2ec8e3cb2a922f5"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+      "mode": "100644",
+      "objectId": "604358895b5338ebfd5f3c425473100f8df4372d",
+      "sha256": "eef5d9ed94494ccf2ee112a647ccaf6e301051c10d24d97b0dfa8d84d406f470"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+      "mode": "100644",
+      "objectId": "29d879cab7ad5f21cc1047f643f1452961fe13b9",
+      "sha256": "34177df39ed33b18b8cb7d6d344b08c55db1bb1c725506b9ed67423c6738c299"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+      "mode": "100644",
+      "objectId": "ff0ed3e61694f7ccb432bf93d08aff3458fb5d27",
+      "sha256": "4e3dc80f179beab58389e1237bdfb4d8b80a37ee4a31a980248b361878dcd530"
+    },
+    {
+      "path": "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+      "mode": "100644",
+      "objectId": "04a52a8af6bf97d2809ecbce3e0ad2c2a3f11f69",
+      "sha256": "33ef09b054f4fee3f2cd500b8589f9104e1ff9910c7f67ea83ec54dcbdb4a591"
+    }
+  ],
+  "preservation": {
+    "bothWorkflowOnlyApprovedRefChanged": true,
+    "controllerLifecycleFixtureManifestAndExistingControlsUnchanged": true,
+    "allRealPartyAssertionsAndCanonicalObservationBytesUnchangedExceptOneConditionalDiagnosticCall": true,
+    "historicalLedgerExactPrefixPreserved": true,
+    "priorAudit": "parent-parties-cb795-adoption-source-audit.json"
+  },
+  "diagnosticSourceChecks": [
+    "actual725 PlatformManifestCommand builds exact plan-bound hosts/platform-model/Hexalith.Platform.Composition.dll with CopyLocalLockFileAssemblies=true",
+    "existing lifecycle controller source binds journal.source to actualGitHEAD/GITHUB_SHA and mapping; appends exact role/receipt before launch, atomic journal saves",
+    "ordinary invocation context/profile and lifecycle journal/source/mapping/unique issued receipt route",
+    "separate already-loaded native-test-process and copied-native-composition-output scopes; no artificial assembly load",
+    "single-write private600/nonlinked64KiB and64assemblies per scope; canonical observations unchanged"
+  ],
+  "independentlyInspectedLocalReports": [
+    {
+      "path": "parties-platform117-scrubbed-handoff-results.trx",
+      "sha256": "45f5268a1a45affc41555d77937718b97a4981611d7f37195bcd4a5e10104ee4",
+      "counters": {
+        "total": "13",
+        "executed": "13",
+        "passed": "13",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "path": "parties-platform117-caller-controls-results.trx",
+      "sha256": "b6ede388a3ed6740ee9078906735d12368a43beadbd022dfbb9e7c0e58540272",
+      "counters": {
+        "total": "69",
+        "executed": "69",
+        "passed": "69",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "path": "parties-platform117-selection-controls-results.trx",
+      "sha256": "a77f066843f19e676d5f0e90d380069c28fffff9d5658f518466a402f2a1a0dc",
+      "counters": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "hostedCi": 41714178534,
+  "hostedStatusAtObservation": "queued",
+  "nativeAcceptance": false,
+  "cleanupAcceptance": false,
+  "manualWorkflowDispatched": false,
+  "candidateAcceptance": false,
+  "remaining": "all15whole isolated project TRX and independent gates, named real Party persistence Fact, measured official SDK comparison and receipt-bound verified cleanup; later actual lifecycle matrix/cancellations"
+}

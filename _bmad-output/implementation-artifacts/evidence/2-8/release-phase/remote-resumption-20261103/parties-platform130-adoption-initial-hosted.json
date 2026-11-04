@@ -1,0 +1,243 @@
+{
+  "observedAt": "2026-11-04T11:28:28.950511+00:00",
+  "source": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+  "runs": [
+    {
+      "id": 41821096562,
+      "run_number": 493,
+      "run_attempt": 1,
+      "name": "Commitlint",
+      "path": ".github/workflows/commitlint.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821096562",
+      "created_at": "2026-11-04T11:28:05Z",
+      "updated_at": "2026-11-04T11:28:23Z",
+      "jobs": [
+        {
+          "id": 126544262788,
+          "name": "commitlint / commitlint",
+          "status": "queued",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:28:23Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821096562/job/126544262788"
+        }
+      ]
+    },
+    {
+      "id": 41821076274,
+      "run_number": 492,
+      "run_attempt": 1,
+      "name": "Commitlint",
+      "path": ".github/workflows/commitlint.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821076274",
+      "created_at": "2026-11-04T11:27:56Z",
+      "updated_at": "2026-11-04T11:28:23Z",
+      "jobs": [
+        {
+          "id": 126544065402,
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-11-04T11:28:00Z",
+          "completed_at": "2026-11-04T11:28:22Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821076274/job/126544065402"
+        }
+      ]
+    },
+    {
+      "id": 41821030827,
+      "run_number": 212,
+      "run_attempt": 1,
+      "name": "Release Candidate Gate",
+      "path": ".github/workflows/rc-gate.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821030827",
+      "created_at": "2026-11-04T11:27:35Z",
+      "updated_at": "2026-11-04T11:27:36Z",
+      "jobs": [
+        {
+          "id": 126543910862,
+          "name": "Root gitlink RC gate",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-11-04T11:27:36Z",
+          "completed_at": "2026-11-04T11:27:36Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821030827/job/126543910862"
+        }
+      ]
+    },
+    {
+      "id": 41821031346,
+      "run_number": 525,
+      "run_attempt": 1,
+      "name": "CodeQL",
+      "path": ".github/workflows/codeql.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031346",
+      "created_at": "2026-11-04T11:27:35Z",
+      "updated_at": "2026-11-04T11:27:39Z",
+      "jobs": [
+        {
+          "id": 126543909783,
+          "name": "codeql / analyze",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031346/job/126543909783"
+        }
+      ]
+    },
+    {
+      "id": 41821031463,
+      "run_number": 626,
+      "run_attempt": 1,
+      "name": "CI",
+      "path": ".github/workflows/ci.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463",
+      "created_at": "2026-11-04T11:27:35Z",
+      "updated_at": "2026-11-04T11:27:40Z",
+      "jobs": [
+        {
+          "id": 126543910932,
+          "name": "Memories 3.0.18 package protocol",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543910932"
+        },
+        {
+          "id": 126543911194,
+          "name": "Owner publisher qualification",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911194"
+        },
+        {
+          "id": 126543911420,
+          "name": "BMAD configuration tests",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": "2026-11-04T11:27:45Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911420"
+        },
+        {
+          "id": 126543911421,
+          "name": "UI accessibility",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911421"
+        },
+        {
+          "id": 126543911520,
+          "name": "Parties Platform declaration",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": "2026-11-04T11:28:10Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911520"
+        },
+        {
+          "id": 126543911562,
+          "name": "EventStore 4.0.4 package cohort (offline)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911562"
+        },
+        {
+          "id": 126543911783,
+          "name": "ci / build-and-test",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": null,
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031463/job/126543911783"
+        }
+      ]
+    },
+    {
+      "id": 41821031229,
+      "run_number": 29,
+      "run_attempt": 1,
+      "name": "Dependency Review",
+      "path": ".github/workflows/dependency-review.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031229",
+      "created_at": "2026-11-04T11:27:35Z",
+      "updated_at": "2026-11-04T11:27:48Z",
+      "jobs": [
+        {
+          "id": 126543909803,
+          "name": "dependency-review / dependency-review",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-04T11:27:39Z",
+          "completed_at": "2026-11-04T11:27:47Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031229/job/126543909803"
+        }
+      ]
+    },
+    {
+      "id": 41821031435,
+      "run_number": 491,
+      "run_attempt": 1,
+      "name": "Commitlint",
+      "path": ".github/workflows/commitlint.yml",
+      "event": "pull_request",
+      "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+      "head_branch": "fix/adopt-platform-117",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031435",
+      "created_at": "2026-11-04T11:27:35Z",
+      "updated_at": "2026-11-04T11:27:56Z",
+      "jobs": [
+        {
+          "id": 126543910323,
+          "name": "commitlint / commitlint",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-04T11:27:38Z",
+          "completed_at": "2026-11-04T11:27:55Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/41821031435/job/126543910323"
+        }
+      ]
+    }
+  ],
+  "passedAssumed": false
+}

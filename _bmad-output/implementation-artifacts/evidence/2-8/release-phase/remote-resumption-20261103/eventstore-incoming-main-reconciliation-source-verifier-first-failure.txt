@@ -1,0 +1,3 @@
+Initial preservation verifier asserted that all44prior protected paths except ci.yml remained unchanged.
+AssertionError: tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs
+That path is the explicitly reviewed third merge conflict and must be recorded as an allowed exception alongside ci.yml. The corrected receipt preserves all42other original inputs and enumerates both reviewed changes; no source was changed for this verifier correction.

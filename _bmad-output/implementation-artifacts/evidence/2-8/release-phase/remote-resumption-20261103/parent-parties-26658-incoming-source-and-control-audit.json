@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-04T08:52:13.141880+00:00",
+  "head": "26658feb2aea894ac4cc76b0a0259efa09a62735",
+  "parents": [
+    "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+    "3e4367622764118fc2ad710ad1040994ae4cfa49"
+  ],
+  "evidenceFilesVerified": 61,
+  "actualIncomingObjectsPreserved": 243,
+  "actualProtectedC10InputsPreserved": 22,
+  "matrixRowSetsBytePreservedInOrder": {
+    "original": 387,
+    "c10": 400,
+    "incoming": 390
+  },
+  "originalLedger48457AndFullC10Ledger49146PrefixesPreserved": true,
+  "actualTrx": [
+    {
+      "role": "caller",
+      "sha256": "53a0656f8e00d8e9b9675b278a7d2c52c07f440a4eb1511fb1522e75f50dabc2",
+      "counters": {
+        "total": "69",
+        "executed": "69",
+        "passed": "69",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "role": "selection",
+      "sha256": "8029bf1f2c6cb2379f8e1e468332baf60f205e1c1ee18df2bc1028f9decae693",
+      "counters": {
+        "total": "21",
+        "executed": "21",
+        "passed": "21",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "review": "Parent read actual four conflict resolutions and current-versus-historical source bookkeeping. All243automatic incoming tree objects/22original workflow/native/controller inputs independently matched real Git trees and worktree hashes; current selected interim released tuple retained, dated incoming history remains explicit. Complete inherited16pathproposal remains reviewable; no remote action.",
+  "pushed": false,
+  "newTupleAccepted": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

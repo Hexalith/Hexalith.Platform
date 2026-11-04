@@ -1,0 +1,95 @@
+PASS: current authoritative catalog with real selected package metadata
+PASS: current-pair
+PASS: cold metadata restore ignores caller response files
+PASS: caller-response-package-version-is-not-authority
+PASS: caller-response-runtime-version-is-not-authority
+PASS: historical-3-109-beta-767
+PASS: historical-preview-too-old
+PASS: eventstore-pin-changes-required-range
+PASS: toolkit-pin-outside-selected-range
+PASS: both-hosting-pins-compatible
+PASS: nuget-beta-numeric-ordering
+PASS: nuget-metadata-is-ignored
+PASS: missing-Hexalith.EventStore.Aspire
+PASS: duplicate-Hexalith.EventStore.Aspire
+PASS: missing-Hexalith.FrontComposer.Shell
+PASS: duplicate-Hexalith.FrontComposer.Shell
+PASS: missing-Dapr.Client
+PASS: duplicate-Dapr.Client
+PASS: missing-Aspire.Hosting
+PASS: duplicate-Aspire.Hosting
+PASS: missing-CommunityToolkit.Aspire.Hosting.Dapr
+PASS: duplicate-CommunityToolkit.Aspire.Hosting.Dapr
+PASS: missing-HexalithAspireAppHostSdkVersion
+PASS: missing-HexalithDaprRuntimeVersion
+PASS: missing-HexalithDaprCliVersion
+PASS: missing-HexalithRedisImage
+PASS: missing-HexalithRedisImageTag
+PASS: missing-HexalithRedisImageDigest
+PASS: missing-eventstore-property-names-package
+PASS: duplicate-property-HexalithAspireAppHostSdkVersion
+PASS: duplicate-property-HexalithDaprRuntimeVersion
+PASS: duplicate-property-HexalithDaprCliVersion
+PASS: duplicate-property-HexalithRedisImage
+PASS: duplicate-property-HexalithRedisImageTag
+PASS: duplicate-property-HexalithRedisImageDigest
+PASS: duplicate-property-HexalithEventStoreVersion
+PASS: duplicate-property-HexalithFrontComposerVersion
+PASS: duplicate-property-HexalithAspireHostingDaprVersion
+PASS: duplicate-self-default-HexalithEventStoreVersion
+PASS: default-then-unconditional-HexalithEventStoreVersion
+PASS: duplicate-self-default-HexalithFrontComposerVersion
+PASS: default-then-unconditional-HexalithFrontComposerVersion
+PASS: intentional-conditional-property
+PASS: invalid-image-43
+PASS: invalid-image-44
+PASS: invalid-image-45
+PASS: invalid-image-46
+PASS: invalid-image-47
+PASS: invalid-image-48
+PASS: invalid-image-49
+PASS: invalid-image-50
+PASS: valid-image-51
+PASS: valid-image-52
+PASS: valid-image-53
+PASS: valid-image-54
+PASS: valid-redis-tag
+PASS: valid-redis-digest
+PASS: wildcard-range
+PASS: short-range-bounds
+PASS: inverted-range
+PASS: nonnumeric-range-bound
+PASS: numeric-prerelease-leading-zero
+PASS: misplaced-dependency
+PASS: different-valid-framework-ranges
+PASS: net8-selects-incompatible-net8-range
+PASS: net8-selects-compatible-net8-range
+PASS: net8-has-no-compatible-group
+PASS: invalid-supplied-framework
+PASS: nearest-compatible-framework
+PASS: effective-framework-missing-dependency
+PASS: invalid-framework-group
+PASS: malformed-sdk
+PASS: malformed-package
+PASS: missing-dependency-metadata
+PASS: invalid-dependency-range
+PASS: wrong-metadata-identity
+PASS: missing-metadata-element
+PASS: duplicate-metadata-elements
+PASS: missing-metadata-id
+PASS: duplicate-metadata-ids
+PASS: missing-metadata-version
+PASS: duplicate-metadata-versions
+PASS: release validation wrapper propagates metadata failure
+PASS: environment-override-rejected
+PASS: matching-environment-selection
+PASS: matching-environment-with-caller-response
+PASS: overwritten-environment-property-is-not-effective-drift
+PASS: conditional-release-context
+PASS: evaluated-item-update
+PASS: alternate production catalog with matching override cannot replace the owning authority
+PASS: relative and absolute intermediate paths, including incremental resources
+PASS: controlled overrides reject divergence and permit matching selections
+PASS: all successful generated snapshots load with offline NuGet semantics
+PASS: isolated catalog mutation and incremental rebuild
+Platform version catalog tests passed: 101 scenarios. No Platform acceptance granted.

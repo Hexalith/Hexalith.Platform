@@ -1,0 +1,73 @@
+{
+  "source": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+  "run": 41824961081,
+  "attempt": 1,
+  "jobs": [
+    {
+      "name": "publisher",
+      "job": 126557221961,
+      "isError": false,
+      "bytes": 22648,
+      "evidence": "parent-parties-434b-publisher-job.log",
+      "matches": [
+        "2026-11-04T11:59:07.1447982Z Ran 11 tests in 139.912s",
+        "2026-11-04T11:59:07.1448367Z OK"
+      ]
+    },
+    {
+      "name": "bmad",
+      "job": 126557222312,
+      "isError": false,
+      "bytes": 18824,
+      "evidence": "parent-parties-434b-bmad-job.log",
+      "matches": [
+        "2026-11-04T11:56:15.7570401Z Ran 20 tests in 0.351s",
+        "2026-11-04T11:56:15.7570626Z OK"
+      ]
+    },
+    {
+      "name": "declaration",
+      "job": 126557222419,
+      "isError": false,
+      "bytes": 24513,
+      "evidence": "parent-parties-434b-declaration-job.log",
+      "matches": [
+        "2026-11-04T11:56:37.1818436Z Ran 7 tests in 1.336s",
+        "2026-11-04T11:56:37.1818895Z OK"
+      ]
+    },
+    {
+      "name": "memories18-protocol",
+      "job": 126557222427,
+      "isError": false,
+      "bytes": 25600,
+      "evidence": "parent-parties-434b-memories18-protocol-job.log",
+      "matches": [
+        "2026-11-04T11:57:29.8787390Z \u001b[m  total: 52",
+        "2026-11-04T11:57:29.8787850Z   failed: 0",
+        "2026-11-04T11:57:29.8788345Z \u001b[32m  succeeded: 52",
+        "2026-11-04T11:57:29.8788826Z \u001b[m  skipped: 0"
+      ]
+    },
+    {
+      "name": "eventstore4-offline",
+      "job": 126557222545,
+      "isError": false,
+      "bytes": 27766,
+      "evidence": "parent-parties-434b-eventstore4-offline-job.log",
+      "matches": [
+        "2026-11-04T11:57:01.6233840Z \u001b[m  total: 3",
+        "2026-11-04T11:57:01.6234355Z   failed: 0",
+        "2026-11-04T11:57:01.6234901Z \u001b[32m  succeeded: 3",
+        "2026-11-04T11:57:01.6235245Z \u001b[m  skipped: 0",
+        "2026-11-04T11:57:13.3310247Z \u001b[m  total: 22",
+        "2026-11-04T11:57:13.3310646Z   failed: 0",
+        "2026-11-04T11:57:13.3311143Z \u001b[32m  succeeded: 22",
+        "2026-11-04T11:57:13.3311533Z \u001b[m  skipped: 0"
+      ]
+    }
+  ],
+  "scope": "Actual five independent completed jobs; UI separate artifact audit. Historical Memories18 gate is not relabelled M23 native qualification.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,36 @@
+Running tests from /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/tests/Hexalith.EventStore.Platform.IntegrationTests/bin/Release/net10.0/Hexalith.EventStore.Platform.IntegrationTests.dll (net10.0|x64)
+failed Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/tests/Hexalith.EventStore.Platform.IntegrationTests/bin/Release/net10.0/Hexalith.EventStore.Platform.IntegrationTests.dll (net10.0|x64)
+  Xunit.MicrosoftTestingPlatform.XunitException: Class fixture type 'Hexalith.EventStore.Platform.IntegrationTests.PlatformEnvironmentFixture' threw in InitializeAsync
+  ---- Hexalith.EventStore.Testing.TestEnvironmentDescriptorException : HXT106: Supply an absolute readable local descriptor path. Source: hexalith.test-environment.v1; field: $.
+    
+    ----- Inner Stack Trace -----
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Refuse(String rule, String version, String field, String message) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:464
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Read(String path, String version, JsonSchema schema, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:79
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadDescriptor(String path, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:37
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadFromEnvironment() in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:44
+    at Hexalith.EventStore.Testing.Integration.AspireTopologyFixtureBase.InitializeAsync() in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs:51
+failed Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync (0ms)
+  from /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/tests/Hexalith.EventStore.Platform.IntegrationTests/bin/Release/net10.0/Hexalith.EventStore.Platform.IntegrationTests.dll (net10.0|x64)
+  Xunit.MicrosoftTestingPlatform.XunitException: Class fixture type 'Hexalith.EventStore.Platform.IntegrationTests.PlatformEnvironmentFixture' threw in InitializeAsync
+  ---- Hexalith.EventStore.Testing.TestEnvironmentDescriptorException : HXT106: Supply an absolute readable local descriptor path. Source: hexalith.test-environment.v1; field: $.
+    
+    ----- Inner Stack Trace -----
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Refuse(String rule, String version, String field, String message) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:464
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.Read(String path, String version, JsonSchema schema, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:79
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadDescriptor(String path, CancellationToken cancellationToken) in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:37
+    at Hexalith.EventStore.Testing.TestEnvironmentDescriptorReader.ReadFromEnvironment() in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing/TestEnvironmentDescriptorReader.cs:44
+    at Hexalith.EventStore.Testing.Integration.AspireTopologyFixtureBase.InitializeAsync() in /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/src/Hexalith.EventStore.Testing.Integration/AspireTopologyFixtureBase.cs:51
+/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/tests/Hexalith.EventStore.Platform.IntegrationTests/bin/Release/net10.0/Hexalith.EventStore.Platform.IntegrationTests.dll (net10.0|x64) failed with 2 error(s) (549ms)
+Exit code: 2
+
+  In process file artifacts produced:
+    - /home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/missing-descriptor-results/missing-descriptor.trx
+
+Test run summary: Failed!
+  total: 2
+  failed: 2
+  succeeded: 0
+  skipped: 0
+  duration: 722ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

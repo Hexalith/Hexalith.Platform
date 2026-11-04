@@ -1,0 +1,29 @@
+{
+  "startedAt": "2026-11-04T06:06:43.488975+00:00",
+  "completedAt": "2026-11-04T06:06:46.372978+00:00",
+  "command": [
+    "dotnet",
+    "build",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/hexalith-module-build-98b2479c9f0f4f378e61816ad4c980e6/hosts/catalog-reader-parent-probe-20261104/Hexalith.Platform.CatalogBuilder.csproj",
+    "-c",
+    "Release",
+    "--output",
+    "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/hexalith-module-build-98b2479c9f0f4f378e61816ad4c980e6/hosts/catalog-reader-parent-probe-20261104/output",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:CentralPackageVersionsFileImported=true",
+    "-p:PlatformCatalogBindings=/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/platform121-validation/hexalith-module-build-98b2479c9f0f4f378e61816ad4c980e6/hosts/catalog-reader-parent-probe-20261104/bindings.props",
+    "--nologo"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore/references/Hexalith.Platform",
+  "exitCode": 0,
+  "log": "/home/administrator/.cache/hexalith/story-2-8/eventstore-a0c-runtime-catalog-component-20261104/host-role-build-first.log",
+  "logSha256": "be7bb9b1c0f804596427f4985ea39fef8cf277f6c7e7422381097e453e996298",
+  "preparedMappingHash": "a35a81341477da18699ef567eebd149f9860d29f44dd5b66d6a2ac5e9924e133",
+  "differenceFromNegative": "Only generated-reader placement now uses existing materialized workspace/hosts role; same released source, imports, catalog, bindings and all seven mapping environment hooks remain.",
+  "scope": "File/build component only, not production source or guard change; no services or authenticated owner proof/CI identity.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

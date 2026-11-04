@@ -1,0 +1,2051 @@
+diff --git a/.github/workflows/domain-ci-v2.md b/.github/workflows/domain-ci-v2.md
+index e263c629..aaacffc4 100644
+--- a/.github/workflows/domain-ci-v2.md
++++ b/.github/workflows/domain-ci-v2.md
+@@ -96,6 +96,13 @@ An `always()` artifact upload preserves only classified redacted result and
+ attachment documents from durable diagnostics. Endpoint credentials, bearer tokens
+ and raw resource logs are excluded. This evidence remains available after workspace
+ deletion and records cleanup uncertainty independently of the first test outcome.
++The helper also retains the exact published redacted `lifecycle`, `native-report`
++and `functional-observations` references from that receipt-bound owner's result.
++It checks their content-addressed names, SHA-256, private non-link file custody and
++bounded count/size (native reports at most 4 MiB; JSON diagnostics at most 1 MiB).
++Bytes remain unchanged and identical retries do not overwrite them. Missing,
++changed or unsafe declared diagnostics fail collection after exact cleanup; the
++original native outcome/time and the actual cleanup result remain separate.
+ 
+ ## Permissions and publication boundary
+ 
+diff --git a/Github/run-module-integration/run_module_integration.py b/Github/run-module-integration/run_module_integration.py
+index 491e60e0..107084c7 100644
+--- a/Github/run-module-integration/run_module_integration.py
++++ b/Github/run-module-integration/run_module_integration.py
+@@ -3,6 +3,9 @@
+ from __future__ import annotations
+ 
+ import argparse
++import ctypes
++import errno
++import hashlib
+ import importlib.util
+ import json
+ import os
+@@ -29,6 +32,13 @@ TOOL = ["dotnet", "tool", "run", "hexalith-module", "--"]
+ ARTIFACTS = ("test-result.json", "attachments.json", "attachment-withdrawals.json")
+ CLEANUP_FILE = "cleanup.json"
+ EVIDENCE_FILES = frozenset((*ARTIFACTS, "invocation.json", "execution.json", CLEANUP_FILE))
++FIXED_METADATA_BYTES = 4 * 1024 * 1024
++JSON_DIAGNOSTIC_BYTES = 1024 * 1024
++DIAGNOSTICS = {
++    "lifecycle": ("lifecycle", ".json", JSON_DIAGNOSTIC_BYTES),
++    "native-report": ("native", ".trx", 4 * 1024 * 1024),
++    "functional-observations": ("functional-observations", ".json", JSON_DIAGNOSTIC_BYTES),
++}
+ 
+ 
+ def ci_context() -> dict:
+@@ -94,16 +104,17 @@ def checked_paths(root: Path, receipt: Path, evidence: Path) -> tuple[Path, Path
+     return root, receipt, evidence
+ 
+ 
+-def open_directory(anchor: Path, directory: Path) -> int:
++def open_directory(anchor: Path, directory: Path, *, create: bool = True) -> int:
+     """Create/open each component relative to a held root without following links."""
+     flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+     held = os.open(anchor, flags)
+     try:
+         for part in directory.relative_to(anchor).parts:
+-            try:
+-                os.mkdir(part, mode=0o700, dir_fd=held)
+-            except FileExistsError:
+-                pass
++            if create:
++                try:
++                    os.mkdir(part, mode=0o700, dir_fd=held)
++                except FileExistsError:
++                    pass
+             child = os.open(part, flags, dir_fd=held)
+             os.close(held)
+             held = child
+@@ -204,12 +215,160 @@ def write_evidence(directory: Path, filename: str, value: dict) -> None:
+         os.close(held)
+ 
+ 
++def read_private_artifact(directory: int, filename: str, maximum: int) -> bytes:
++    """Read a bounded private regular file relative to an already held owner directory."""
++    descriptor = os.open(filename, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
++    with os.fdopen(descriptor, "rb") as stream:
++        before = os.fstat(stream.fileno())
++        if (
++            not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != os.geteuid()
++            or before.st_mode & 0o077 or not 0 < before.st_size <= maximum
++        ):
++            raise ValueError("declared diagnostic is not a bounded private regular file")
++        body = stream.read(maximum + 1)
++        after = os.fstat(stream.fileno())
++        if len(body) != before.st_size or any(
++            getattr(before, key) != getattr(after, key)
++            for key in ("st_dev", "st_ino", "st_mode", "st_nlink", "st_uid", "st_size", "st_mtime_ns", "st_ctime_ns")
++        ):
++            raise ValueError("declared diagnostic changed during collection")
++        return body
++
++
++def promote_diagnostic(directory: int, temporary: str, filename: str) -> None:
++    """Atomically move complete bytes without replacement or a two-hard-link interruption window."""
++    if sys.platform != "linux":
++        raise OSError(errno.ENOSYS, "atomic diagnostic publication requires the supported Linux runner")
++    try:
++        rename = ctypes.CDLL(None, use_errno=True).renameat2
++    except AttributeError:
++        raise OSError(errno.ENOSYS, "atomic diagnostic publication is unavailable") from None
++    rename.argtypes = (ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint)
++    rename.restype = ctypes.c_int
++    # Linux RENAME_NOREPLACE=1: https://man7.org/linux/man-pages/man2/rename.2.html
++    if rename(directory, temporary.encode("ascii"), directory, filename.encode("ascii"), 1) != 0:
++        raise OSError(ctypes.get_errno(), "atomic diagnostic publication refused")
++
++
++def write_diagnostic(evidence: Path, filename: str, body: bytes, maximum: int) -> None:
++    """Publish immutable sanitized bytes; an existing identical private file is a retry."""
++    if not any(re.fullmatch(prefix + r"-[a-f0-9]{64}" + re.escape(suffix), filename, re.ASCII)
++               for prefix, suffix, _ in DIAGNOSTICS.values()):
++        raise ValueError("diagnostic filename is not a published content-addressed form")
++    workspace = job_root("GITHUB_WORKSPACE")
++    evidence = bounded_path(evidence, workspace)
++    if not evidence.is_relative_to(workspace / "TestResults"):
++        raise ValueError("integration evidence must stay under workspace/TestResults")
++    held = open_directory(workspace, evidence)
++    temporary = ".diagnostic-" + uuid.uuid4().hex + ".tmp"
++    created = False
++    try:
++        try:
++            existing = read_private_artifact(held, filename, maximum)
++        except FileNotFoundError:
++            pass
++        else:
++            if existing != body:
++                raise ValueError("retained diagnostic differs from its immutable content")
++            return
++        descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_NONBLOCK,
++                             mode=0o600, dir_fd=held)
++        created = True
++        with os.fdopen(descriptor, "wb") as output:
++            observed = os.fstat(output.fileno())
++            if not stat.S_ISREG(observed.st_mode) or observed.st_nlink != 1 or observed.st_mode & 0o077:
++                raise ValueError("retained diagnostic is not a private regular file")
++            if output.write(body) != len(body):
++                raise ValueError("diagnostic write was incomplete")
++            output.flush()
++            os.fsync(output.fileno())
++        try:
++            promote_diagnostic(held, temporary, filename)
++        except FileExistsError:
++            if read_private_artifact(held, filename, maximum) != body:
++                raise ValueError("concurrent diagnostic publication differs from its immutable content")
++    finally:
++        try:
++            try:
++                if created:
++                    os.unlink(temporary, dir_fd=held)
++            except FileNotFoundError:
++                pass
++        finally:
++            os.close(held)
++
++
++def declared_diagnostics(result: dict, owner: dict) -> list[tuple[str, str, int, str]]:
++    """Accept only the published redacted diagnostic IDs bound to this receipt's owner."""
++    references = result.get("diagnostics", [])
++    if not isinstance(references, list) or len(references) > len(DIAGNOSTICS):
++        raise ValueError("declared diagnostic count is invalid")
++    if not references:
++        return []
++    bindings = result.get("bindings", {})
++    if not isinstance(bindings, dict) or any(not isinstance(bindings.get(key), dict) for key in ("run", "environment")):
++        raise ValueError("declared diagnostic bindings are unavailable")
++    if (
++        result.get("schema") != "hexalith.test-result.v1"
++        or result.get("policyId") != "hexalith.platform.candidate-and-attachment-policy.v1"
++        or any(bindings.get("run", {}).get(key) != owner[key] for key in ("runId", "attemptId", "environmentId"))
++        or bindings["run"].get("ownerRunId") != owner["runId"] or bindings["run"].get("role") != "owner"
++        or bindings["environment"].get("mode") != "package"
++        or bindings.get("environment", {}).get("executionContext") != owner["executionContext"]
++    ):
++        raise ValueError("declared diagnostics belong to a foreign result")
++    selected = []
++    identities = set()
++    filenames = set()
++    for reference in references:
++        if not isinstance(reference, dict) or set(reference) != {"id", "classification", "redacted", "reference", "contentIdentity"}:
++            raise ValueError("declared diagnostic does not match the published fields")
++        identity = reference["id"]
++        if not isinstance(identity, str) or identity not in DIAGNOSTICS or identity in identities:
++            raise ValueError("declared diagnostic identity is unsupported or duplicated")
++        prefix, suffix, maximum = DIAGNOSTICS[identity]
++        filename = reference["reference"]
++        match = re.fullmatch(prefix + r"-([a-f0-9]{64})" + re.escape(suffix), filename, re.ASCII) if isinstance(filename, str) else None
++        if (
++            reference["classification"] != "internal" or reference["redacted"] is not True
++            or match is None or reference["contentIdentity"] != "sha256:" + match[1] or filename in filenames
++        ):
++            raise ValueError("declared diagnostic classification, filename or digest is invalid")
++        identities.add(identity)
++        filenames.add(filename)
++        selected.append((identity, filename, maximum, match[1]))
++    return selected
++
++
+ def retain_artifacts(owner: dict, evidence: Path) -> None:
+     directory = Path(owner["stateDirectory"]) / "diagnostics" / owner["runId"]
+-    for filename in ARTIFACTS:
+-        path = directory / filename
+-        if path.exists():
+-            write_evidence(evidence, filename, read_json(real_path(path).read_text(encoding="utf-8")))
++    try:
++        held = open_directory(Path(directory.anchor), directory, create=False)
++    except FileNotFoundError:
++        return
++    try:
++        result = None
++        for filename in ARTIFACTS:
++            try:
++                body = read_private_artifact(held, filename, FIXED_METADATA_BYTES)
++            except FileNotFoundError:
++                continue
++            value = read_json(body.decode("utf-8"))
++            write_evidence(evidence, filename, value)
++            if filename == "test-result.json":
++                result = value
++        retained = []
++        for identity, filename, maximum, digest in declared_diagnostics(result or {}, owner):
++            body = read_private_artifact(held, filename, maximum)
++            if hashlib.sha256(body).hexdigest() != digest:
++                raise ValueError("declared diagnostic bytes differ from their content identity")
++            if identity != "native-report" and read_json(body.decode("utf-8")).get("runId") != owner["runId"]:
++                raise ValueError("declared diagnostic bytes belong to another owner")
++            retained.append((filename, body, maximum))
++        for filename, body, maximum in retained:
++            write_diagnostic(evidence, filename, body, maximum)
++    finally:
++        os.close(held)
+ 
+ 
+ def cleanup_verified(completed: subprocess.CompletedProcess, result: dict, owner: dict) -> bool:
+@@ -254,7 +413,12 @@ def finalize(root: Path, receipt: Path, evidence: Path, timeout: int = 150, job_
+     )
+     result = read_json(completed.stdout)
+     write_evidence(evidence, CLEANUP_FILE, result)
+-    retain_artifacts(owner, evidence)
++    try:
++        retain_artifacts(owner, evidence)
++    except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
++        print("run-module-integration: declared diagnostic retention refused after exact cleanup ("
++              + type(error).__name__ + ")", file=sys.stderr)
++        return 1
+     return 0 if cleanup_verified(completed, result, owner) else 1
+ 
+ 
+diff --git a/Github/run-module-integration/tests/test_run_module_integration.py b/Github/run-module-integration/tests/test_run_module_integration.py
+index 4d0ec21f..6df0a419 100644
+--- a/Github/run-module-integration/tests/test_run_module_integration.py
++++ b/Github/run-module-integration/tests/test_run_module_integration.py
+@@ -1,6 +1,8 @@
+ """Executable controls for exact ownership, blocking integration and finalization."""
+ 
+ import importlib.util
++import hashlib
++import copy
+ import json
+ import os
+ from pathlib import Path
+@@ -61,6 +63,324 @@ class IntegrationTests(unittest.TestCase):
+     def write_receipt(self):
+         self.receipt.write_text(json.dumps(self.owner))
+ 
++    def published_diagnostics(self):
++        directory = self.state / "diagnostics" / self.owner["runId"]
++        directory.mkdir(parents=True, exist_ok=True)
++        bodies = {
++            "lifecycle": ("lifecycle", ".json", json.dumps({
++                "runId": self.owner["runId"], "outcome": "failed", "cause": "test-failure",
++                "cleanup": "complete", "discoveryUnverified": False, "discoveryFailures": [],
++                "ruleIds": ["HXT001"], "terminalRuleIds": ["HXT001"],
++            }, indent=2).encode() + b"\n"),
++            "native-report": ("native", ".trx", b'<?xml version="1.0"?><TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010"><Results><UnitTestResult testName="RequiredNativeFact" outcome="Passed" /></Results></TestRun>\n'),
++            "functional-observations": ("functional-observations", ".json", json.dumps({
++                "runId": self.owner["runId"], "status": "functional-observations-passed",
++                "qualificationCredit": False, "observations": {"persisted": True},
++            }, indent=2).encode() + b"\n"),
++        }
++        references = []
++        files = {}
++        for identity, (prefix, suffix, body) in bodies.items():
++            digest = hashlib.sha256(body).hexdigest()
++            filename = prefix + "-" + digest + suffix
++            path = directory / filename
++            path.write_bytes(body)
++            path.chmod(0o600)
++            references.append({"id": identity, "classification": "internal", "redacted": True,
++                               "reference": filename, "contentIdentity": "sha256:" + digest})
++            files[filename] = body
++        fixture = Path(__file__).resolve().parents[3] / "test/fixtures/module/test-environment-v1/result.json"
++        result = json.loads(fixture.read_text())
++        result["bindings"]["run"].update({key: self.owner[key] for key in ("runId", "attemptId", "environmentId")})
++        result["bindings"]["run"]["ownerRunId"] = self.owner["runId"]
++        result["bindings"]["environment"].update(mode="package", executionContext=self.owner["executionContext"])
++        result["terminal"] = {"outcome": "failed", "recordedAt": "2026-11-04T05:28:06Z", "cause": "test-failure", "diagnosticIds": ["lifecycle"]}
++        result["diagnostics"] = references
++        self.publish_result(directory, result)
++        return directory, result, files
++
++    def publish_result(self, directory, result):
++        path = directory / "test-result.json"
++        path.write_text(json.dumps(result, indent=2))
++        path.chmod(0o600)
++
++    def test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry(self):
++        self.write_receipt()
++        _, result, files = self.published_diagnostics()
++        with patch.object(helper, "verify_tool"), patch.object(
++            helper.subprocess, "run", return_value=self.down_result()
++        ):
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++            for filename, body in files.items():
++                with self.subTest(reference=filename):
++                    self.assertTrue((self.evidence / filename).is_file(), "Published diagnostic must survive owned cleanup.")
++                    self.assertEqual((self.evidence / filename).read_bytes(), body)
++            before = {name: (self.evidence / name).stat().st_mtime_ns for name in files if (self.evidence / name).exists()}
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++        self.assertEqual(before, {name: (self.evidence / name).stat().st_mtime_ns for name in before})
++        self.assertEqual(json.loads((self.evidence / "test-result.json").read_text())["terminal"], result["terminal"])
++
++    def test_unclassified_unsafe_or_foreign_diagnostic_references_refuse_after_exact_cleanup(self):
++        self.write_receipt()
++        directory, baseline, _ = self.published_diagnostics()
++        for fault in ("id", "name", "hash", "digest-case", "redacted", "classification", "duplicate", "count",
++                      "traversal", "absolute", "suffix", "foreign-run", "foreign-attempt", "foreign-environment",
++                      "foreign-context", "bindings", "policy", "fields"):
++            result = copy.deepcopy(baseline)
++            reference = result["diagnostics"][0]
++            if fault == "id": reference["id"] = "native-endpoint-credentials"
++            elif fault == "name": reference["reference"] = "native-endpoint-credentials.json"
++            elif fault == "hash": reference["contentIdentity"] = "sha256:" + "0" * 64
++            elif fault == "digest-case": reference["reference"] = reference["reference"].upper()
++            elif fault == "redacted": reference["redacted"] = "true"
++            elif fault == "classification": reference["classification"] = "secret"
++            elif fault == "duplicate": result["diagnostics"] = [reference, reference]
++            elif fault == "count": result["diagnostics"] = [reference] * 4
++            elif fault == "traversal": reference["reference"] = "../" + reference["reference"]
++            elif fault == "absolute": reference["reference"] = str(directory / reference["reference"])
++            elif fault == "suffix": reference["reference"] += ".json"
++            elif fault.startswith("foreign-") and fault != "foreign-context":
++                key = {"foreign-run": "runId", "foreign-attempt": "attemptId", "foreign-environment": "environmentId"}[fault]
++                result["bindings"]["run"][key] = "f" * 32
++            elif fault == "foreign-context": result["bindings"]["environment"]["executionContext"] = {"kind": "local"}
++            elif fault == "bindings": result["bindings"] = []
++            elif fault == "policy": result["policyId"] = "foreign"
++            elif fault == "fields": reference["path"] = "owner.json"
++            self.publish_result(directory, result)
++            with self.subTest(fault=fault), patch.object(helper, "verify_tool"), patch.object(
++                helper.subprocess, "run", return_value=self.down_result()
++            ) as cleanup:
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++                cleanup.assert_called_once()
++                self.assertIn("--run-id=" + self.owner["runId"], cleanup.call_args.args[0])
++                self.assertEqual(json.loads((self.evidence / "cleanup.json").read_text())["outcome"]["exitCode"], "Success")
++                self.assertEqual(json.loads((self.evidence / "test-result.json").read_text())["terminal"], baseline["terminal"])
++
++    def test_missing_changed_foreign_oversized_or_nonprivate_diagnostic_bytes_refuse(self):
++        self.write_receipt()
++        directory, result, files = self.published_diagnostics()
++        reference = result["diagnostics"][0]
++        original = files[reference["reference"]]
++        for fault in ("missing", "changed", "foreign", "size", "symlink", "hardlink", "permissions", "fifo"):
++            path = directory / reference["reference"]
++            if path.exists() or path.is_symlink(): path.unlink()
++            body = original
++            if fault == "changed": body += b" "
++            if fault == "foreign": body = original.replace(self.owner["runId"].encode(), b"f" * 32)
++            if fault == "size": body = original + b" " * (1024 * 1024)
++            if fault == "symlink": path.symlink_to(directory / result["diagnostics"][1]["reference"])
++            elif fault == "hardlink": os.link(directory / result["diagnostics"][1]["reference"], path)
++            elif fault == "fifo": os.mkfifo(path, 0o600)
++            elif fault != "missing":
++                path.write_bytes(body)
++                path.chmod(0o644 if fault == "permissions" else 0o600)
++            updated = copy.deepcopy(result)
++            if fault in ("foreign", "size"):
++                digest = hashlib.sha256(body).hexdigest()
++                target = directory / ("lifecycle-" + digest + ".json")
++                path.rename(target)
++                updated["diagnostics"][0].update(reference=target.name, contentIdentity="sha256:" + digest)
++            self.publish_result(directory, updated)
++            with self.subTest(fault=fault), patch.object(helper, "verify_tool"), patch.object(
++                helper.subprocess, "run", return_value=self.down_result()
++            ) as cleanup:
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++                cleanup.assert_called_once()
++                self.assertEqual(json.loads((self.evidence / "cleanup.json").read_text())["outcome"]["exitCode"], "Success")
++
++    def test_native_and_functional_report_size_bounds_follow_the_actual_writers(self):
++        self.write_receipt()
++        directory, baseline, _ = self.published_diagnostics()
++        for identity, limit in (("native-report", 4 * 1024 * 1024), ("functional-observations", 1024 * 1024)):
++            for overflow in (False, True):
++                result = copy.deepcopy(baseline)
++                reference = next(item for item in result["diagnostics"] if item["id"] == identity)
++                original = (directory / reference["reference"]).read_bytes()
++                body = original + b" " * (limit - len(original) + int(overflow))
++                digest = hashlib.sha256(body).hexdigest()
++                prefix, suffix = ("native", ".trx") if identity == "native-report" else ("functional-observations", ".json")
++                path = directory / (prefix + "-" + digest + suffix)
++                path.write_bytes(body)
++                path.chmod(0o600)
++                reference.update(reference=path.name, contentIdentity="sha256:" + digest)
++                self.publish_result(directory, result)
++                with self.subTest(identity=identity, overflow=overflow), patch.object(helper, "verify_tool"), patch.object(
++                    helper.subprocess, "run", return_value=self.down_result()
++                ):
++                    self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), int(overflow))
++
++    def test_diagnostic_destination_is_private_immutable_and_never_follows_links(self):
++        self.write_receipt()
++        _, _, files = self.published_diagnostics()
++        self.evidence.mkdir(parents=True)
++        filename, body = next(iter(files.items()))
++        sentinel = self.root / "sentinel"
++        sentinel.write_bytes(b"sentinel unchanged")
++        sentinel.chmod(0o600)
++        target = self.evidence / filename
++        for fault in ("changed", "symlink", "hardlink", "permissions"):
++            if target.exists() or target.is_symlink(): target.unlink()
++            if fault == "symlink": target.symlink_to(sentinel)
++            elif fault == "hardlink": os.link(sentinel, target)
++            else:
++                target.write_bytes(b"changed" if fault == "changed" else body)
++                target.chmod(0o644 if fault == "permissions" else 0o600)
++            with self.subTest(fault=fault), patch.object(helper, "verify_tool"), patch.object(
++                helper.subprocess, "run", return_value=self.down_result()
++            ):
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++                self.assertEqual(sentinel.read_bytes(), b"sentinel unchanged")
++        target.unlink()
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()):
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++        self.assertEqual(target.read_bytes(), body)
++        self.assertEqual(target.stat().st_mode & 0o777, 0o600)
++
++    def test_collection_refusal_preserves_native_failure_and_still_finishes_exact_cleanup(self):
++        self.write_receipt()
++        directory, result, _ = self.published_diagnostics()
++        (directory / result["diagnostics"][0]["reference"]).unlink()
++        class Child:
++            returncode = 17
++            def communicate(child, timeout):
++                return '{"outcome":{"exitCode":"TestFailure"}}', None
++        with patch.object(helper.subprocess, "Popen", return_value=Child()), patch.object(
++            helper, "verify_tool"
++        ), patch.object(helper.subprocess, "run", return_value=self.down_result()) as cleanup:
++            self.assertEqual(helper.execute_integration(helper.TOOL + ["test"], self.root, self.receipt, self.evidence, 1), 17)
++            cleanup.assert_called_once()
++        self.assertEqual(json.loads((self.evidence / "test-result.json").read_text())["terminal"], result["terminal"])
++        self.assertEqual(json.loads((self.evidence / "cleanup.json").read_text())["outcome"]["exitCode"], "Success")
++
++    def test_diagnostic_directory_symlinks_and_unrelated_metadata_never_escape_the_artifact_boundary(self):
++        self.write_receipt()
++        directory, _, files = self.published_diagnostics()
++        for name in ("plan.json", "source-mapping.json", "native-endpoint-credentials.json", "apphost.log"):
++            (directory / name).write_text("private-endpoint-sentinel")
++        (directory / "owner.json").write_text(json.dumps(self.owner))
++        held = directory.with_name("held-owner")
++        def replace_after_owner_validation(*args, **kwargs):
++            directory.rename(held)
++            directory.symlink_to(held, target_is_directory=True)
++            return self.down_result()
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", side_effect=replace_after_owner_validation) as cleanup:
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++            cleanup.assert_called_once()
++        directory.unlink()
++        held.rename(directory)
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()):
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++        self.assertEqual(set(path.name for path in self.evidence.iterdir()), {"cleanup.json", "test-result.json", *files})
++        self.assertNotIn("private-endpoint-sentinel", b"".join(path.read_bytes() for path in self.evidence.iterdir()).decode())
++
++    def assert_collection_failure_can_retry(self, fault):
++        self.write_receipt()
++        _, result, files = self.published_diagnostics()
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()):
++            with fault:
++                self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++            self.assertFalse(any((self.evidence / name).exists() for name in files), "Incomplete publication must not occupy an immutable final name.")
++            self.assertEqual(set(p.name for p in self.evidence.iterdir()), {"cleanup.json", "test-result.json"})
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++        self.assertEqual({name: (self.evidence / name).read_bytes() for name in files}, files)
++        self.assertEqual(json.loads((self.evidence / "test-result.json").read_text())["terminal"], result["terminal"])
++        self.assertEqual(json.loads((self.evidence / "cleanup.json").read_text())["outcome"]["exitCode"], "Success")
++
++    def test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds(self):
++        real_open = os.fdopen
++        class InterruptedWrite:
++            def __init__(self, stream): self.stream = stream
++            def __enter__(self): return self
++            def __exit__(self, *args): self.stream.close()
++            def fileno(self): return self.stream.fileno()
++            def write(self, body):
++                self.stream.write(body[:11])
++                self.stream.flush()
++                raise OSError("simulated interrupted diagnostic write")
++        def interrupted_open(descriptor, mode, *args, **kwargs):
++            stream = real_open(descriptor, mode, *args, **kwargs)
++            return InterruptedWrite(stream) if mode == "wb" else stream
++        self.assert_collection_failure_can_retry(patch.object(helper.os, "fdopen", side_effect=interrupted_open))
++
++    def test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds(self):
++        self.assert_collection_failure_can_retry(patch.object(helper.os, "fsync", side_effect=OSError("simulated durable flush failure")))
++
++    def test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry(self):
++        body = b'{"runId":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","outcome":"failed"}\n'
++        filename = "lifecycle-" + hashlib.sha256(body).hexdigest() + ".json"
++        # Exercise the real publication syscall; the fallback preserves this regression's old-helper red control.
++        boundary_owner = helper if hasattr(helper, "promote_diagnostic") else helper.os
++        boundary_name = "promote_diagnostic" if boundary_owner is helper else "link"
++        real_publication = getattr(boundary_owner, boundary_name)
++        child = os.fork()
++        if child == 0:
++            def killed_after_publication(*args, **kwargs):
++                real_publication(*args, **kwargs)
++                os.kill(os.getpid(), signal.SIGKILL)
++            with patch.object(boundary_owner, boundary_name, side_effect=killed_after_publication):
++                helper.write_diagnostic(self.evidence, filename, body, 1024 * 1024)
++            os._exit(99)
++        waited, status = os.waitpid(child, 0)
++        self.assertEqual(waited, child)
++        self.assertTrue(os.WIFSIGNALED(status))
++        self.assertEqual(os.WTERMSIG(status), signal.SIGKILL)
++        target = self.evidence / filename
++        self.assertEqual(target.read_bytes(), body)
++        self.assertEqual(target.stat().st_nlink, 1)
++        helper.write_diagnostic(self.evidence, filename, body, 1024 * 1024)
++        self.assertEqual(target.read_bytes(), body)
++        self.assertFalse(list(self.evidence.glob(".diagnostic-*.tmp")))
++
++    def test_failed_atomic_publication_cleans_temporary_bytes_and_identical_retry_succeeds(self):
++        self.assert_collection_failure_can_retry(patch.object(helper, "promote_diagnostic", side_effect=OSError("simulated publication failure")))
++
++    def test_concurrent_different_publication_is_never_overwritten(self):
++        self.write_receipt()
++        _, result, files = self.published_diagnostics()
++        real_publication = helper.promote_diagnostic
++        def concurrent_publication(directory, source, destination):
++            descriptor = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600, dir_fd=directory)
++            with os.fdopen(descriptor, "wb") as stream: stream.write(b"concurrent immutable bytes")
++            real_publication(directory, source, destination)
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()), patch.object(
++            helper, "promote_diagnostic", side_effect=concurrent_publication
++        ):
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++        self.assertEqual((self.evidence / next(iter(files))).read_bytes(), b"concurrent immutable bytes")
++        self.assertFalse(list(self.evidence.glob(".diagnostic-*.tmp")))
++        self.assertEqual(json.loads((self.evidence / "test-result.json").read_text())["terminal"], result["terminal"])
++
++    def test_uncreated_temporary_name_is_never_removed(self):
++        self.evidence.mkdir(parents=True)
++        body = b'{"runId":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}\n'
++        filename = "lifecycle-" + hashlib.sha256(body).hexdigest() + ".json"
++        nonce = helper.uuid.UUID(hex="0" * 32)
++        sentinel = self.evidence / (".diagnostic-" + nonce.hex + ".tmp")
++        sentinel.write_bytes(b"preexisting private bytes")
++        sentinel.chmod(0o600)
++        with patch.object(helper.uuid, "uuid4", return_value=nonce), self.assertRaises(FileExistsError):
++            helper.write_diagnostic(self.evidence, filename, body, 1024 * 1024)
++        self.assertEqual(sentinel.read_bytes(), b"preexisting private bytes")
++        self.assertFalse((self.evidence / filename).exists())
++
++    def test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound(self):
++        self.write_receipt()
++        directory, _, _ = self.published_diagnostics()
++        large = {"attachments": [], "padding": "x" * (1024 * 1024 + 17)}
++        for name in ("attachments.json", "attachment-withdrawals.json"):
++            path = directory / name
++            path.write_text(json.dumps(large))
++            path.chmod(0o600)
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()):
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 0)
++        for name in ("attachments.json", "attachment-withdrawals.json"):
++            self.assertEqual(json.loads((self.evidence / name).read_text()), large)
++        path = directory / "attachments.json"
++        path.write_bytes(b" " * (4 * 1024 * 1024 + 1))
++        with patch.object(helper, "verify_tool"), patch.object(helper.subprocess, "run", return_value=self.down_result()) as cleanup:
++            self.assertEqual(helper.finalize(self.root, self.receipt, self.evidence), 1)
++            cleanup.assert_called_once()
++
+     def down_result(self, remaining=None, exit_code=0):
+         resources = {
+             key: [] for key in ("containerIds", "processIds", "workspaceIds", "claimIds", "discoveryFailures")
+@@ -150,6 +470,7 @@ class IntegrationTests(unittest.TestCase):
+         directory = self.state / "diagnostics" / self.owner["runId"]
+         directory.mkdir(parents=True)
+         (directory / "test-result.json").write_text('{"classification":"baseline-only"}')
++        (directory / "test-result.json").chmod(0o600)
+         (directory / "native-endpoint-credentials.json").write_text("private-key-sentinel")
+         with patch.object(helper, "verify_tool"), patch.object(
+             helper.subprocess, "run", return_value=self.down_result()
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index 05a96cfc..e3f7df3b 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -18,7 +18,7 @@
+     <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">1.3.3</HexalithFoldersVersion>
+     <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == ''">2.0.0</HexalithMcpCliVersion>
+     <!-- Keep the released v2 declaration and source provenance aligned with this catalog pin. -->
+-    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == ''">3.0.18</HexalithMemoriesVersion>
++    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == ''">3.0.23</HexalithMemoriesVersion>
+     <HexalithTenantsVersion Condition="'$(HexalithTenantsVersion)' == ''">7.0.0</HexalithTenantsVersion>
+     <HexalithPartiesVersion Condition="'$(HexalithPartiesVersion)' == ''">3.0.0</HexalithPartiesVersion>
+     <HexalithPartiesAspireVersion Condition="'$(HexalithPartiesAspireVersion)' == ''">3.0.0</HexalithPartiesAspireVersion>
+diff --git a/README.md b/README.md
+index 174821f9..9cbdd9ef 100644
+--- a/README.md
++++ b/README.md
+@@ -588,7 +588,11 @@ attachments are refused for this opt-in until they have a matching scope contrac
+ The shared v2 workflow exposes the same request as the optional
+ `integration-test-reference-owners` input. Selection grants no package capability:
+ Platform must independently admit the exact published cohort. In particular,
+-Memories package catalog runtime remains unqualified. The package EventStore seed
++Memories package catalog runtime remains unqualified. The catalog now selects the
++published Memories 3.0.23/source `82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f`
++with its unchanged released declaration snapshot. This selection does not extend
++Platform's finite package admission or prove full Parties runtime compatibility.
++The package EventStore seed
+ enables its technical catalog receiver only for the actual resolved public Gateway
+ 4.0.4 assembly; unknown and near-miss versions retain the existing finite receiver.
+ 
+diff --git a/Tools/package-version-audit.json b/Tools/package-version-audit.json
+index 027663d0..ec57e805 100644
+--- a/Tools/package-version-audit.json
++++ b/Tools/package-version-audit.json
+@@ -1,13 +1,16 @@
+ {
+   "schemaVersion": 2,
+-  "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++  "generatedFromRevision": "2bc5fff679e37318f6e18fc6b25047653faf3261",
+   "catalogPath": "Props/Directory.Packages.props",
+-  "catalogSha256": "726e1e7669dd95650861fb19604c4b85451dd3df8175764a96f01f79e492ae22",
+-  "catalogRawSha256": "e3f80e09f234da26baeb3a1a88687a98502f421a4971acbccf4ad8c8df0566e6",
++  "catalogSha256": "5990d7a68d93ed7266711dc3af58526a829ae546f16394b2aaa94a9e65cf34d7",
++  "catalogRawSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
+   "snapshot": {
+-    "mode": "complete",
+-    "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++    "mode": "incremental",
++    "auditedAtUtc": "2026-11-04T05:49:15.9134458+00:00",
+     "refreshedFamilies": [
++      "hexalith-memories"
++    ],
++    "preservedFamilies": [
+       "aspire",
+       "bunit-html",
+       "dapr",
+@@ -25,7 +28,6 @@
+       "hexalith-identitystores",
+       "hexalith-keyvaluestorages",
+       "hexalith-mcpcli",
+-      "hexalith-memories",
+       "hexalith-netaspire",
+       "hexalith-parties",
+       "hexalith-polymorphicserializations",
+@@ -164,8 +166,7 @@
+       "roslyn",
+       "verify",
+       "xunit"
+-    ],
+-    "preservedFamilies": []
++    ]
+   },
+   "sources": [
+     {
+@@ -180,7 +181,7 @@
+     "fixture": null,
+     "fixtureSha256": null,
+     "fixtureMode": null,
+-    "repositoryRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++    "repositoryRevision": "2bc5fff679e37318f6e18fc6b25047653faf3261",
+     "sha256": "6b258eb8c65590fb053bd5450ba6fbecd132329e04e99823866fdeb4230426f8",
+     "entries": [
+       {
+@@ -12748,11 +12749,11 @@
+       "removalTrigger": "Accept only after current family compatibility, consumer evidence, and owner review pass against this exact audit provenance.",
+       "representativeConsumers": [],
+       "origin": {
+-        "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
+-        "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
+-        "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++        "auditedAtUtc": "2026-11-04T05:49:15.9134458+00:00",
++        "generatedFromRevision": "2bc5fff679e37318f6e18fc6b25047653faf3261",
++        "familySelectionSha256": "2355b6addbd02711e969d37f7f9d118d2db5e94df2a3adae574fa28a1e79392a",
+         "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
+-        "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++        "packageMetadataSha256": "26802617e770f0ed148176b345661c3febbd329a73148fa1306b84701fcc96d0",
+         "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+       },
+       "historicalContext": [
+@@ -13803,6 +13804,35 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-family-history.v2",
++          "label": "Historical prior family observation; not current metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "packageIds": [
++            "Hexalith.Memories.Aspire",
++            "Hexalith.Memories.Client.Rest",
++            "Hexalith.Memories.Contracts",
++            "Hexalith.Memories.EventStore",
++            "Hexalith.Memories.EventStoreExtensions"
++          ],
++          "rationale": "Retain the current audited family until current metadata and owned direct consumers complete compatibility acceptance.",
++          "compatibilityEvidence": "Current NuGet metadata and owned direct-consumer discovery are recorded; historical claims are not current acceptance evidence.",
++          "removalTrigger": "Accept only after current family compatibility, consumer evidence, and owner review pass against this exact audit provenance.",
++          "representativeConsumers": [],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+@@ -161099,22 +161129,22 @@
+     },
+     {
+       "id": "Hexalith.Memories.Aspire",
+-      "auditedVersion": "3.0.18",
+-      "selectedVersion": "3.0.18",
+-      "latestStable": "3.0.21",
++      "auditedVersion": "3.0.23",
++      "selectedVersion": "3.0.23",
++      "latestStable": "3.0.23",
+       "latestPrerelease": null,
+       "listingState": "listed",
+       "family": "hexalith-memories",
+       "disposition": "retained",
+       "rollbackGroup": "hexalith-memories",
+-      "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
+-      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++      "rationale": "Current pin is the latest listed stable release on the configured sources.",
++      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.23, prerelease=",
+       "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
+       "sourceResults": [
+         {
+           "source": "https://api.nuget.org/v3/index.json",
+           "listingState": "listed",
+-          "latestStable": "3.0.21",
++          "latestStable": "3.0.23",
+           "latestPrerelease": null,
+           "diagnostic": "Registration metadata resolved."
+         }
+@@ -162359,27 +162389,63 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-package-history.v2",
++          "label": "Historical prior package observation; not current package metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "id": "Hexalith.Memories.Aspire",
++          "auditedVersion": "3.0.18",
++          "selectedVersion": "3.0.18",
++          "latestStable": "3.0.21",
++          "latestPrerelease": null,
++          "listingState": "listed",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
++          "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++          "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
++          "sourceResults": [
++            {
++              "source": "https://api.nuget.org/v3/index.json",
++              "listingState": "listed",
++              "latestStable": "3.0.21",
++              "latestPrerelease": null,
++              "diagnostic": "Registration metadata resolved."
++            }
++          ],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+     {
+       "id": "Hexalith.Memories.Client.Rest",
+-      "auditedVersion": "3.0.18",
+-      "selectedVersion": "3.0.18",
+-      "latestStable": "3.0.21",
++      "auditedVersion": "3.0.23",
++      "selectedVersion": "3.0.23",
++      "latestStable": "3.0.23",
+       "latestPrerelease": null,
+       "listingState": "listed",
+       "family": "hexalith-memories",
+       "disposition": "retained",
+       "rollbackGroup": "hexalith-memories",
+-      "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
+-      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++      "rationale": "Current pin is the latest listed stable release on the configured sources.",
++      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.23, prerelease=",
+       "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
+       "sourceResults": [
+         {
+           "source": "https://api.nuget.org/v3/index.json",
+           "listingState": "listed",
+-          "latestStable": "3.0.21",
++          "latestStable": "3.0.23",
+           "latestPrerelease": null,
+           "diagnostic": "Registration metadata resolved."
+         }
+@@ -163624,27 +163690,63 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-package-history.v2",
++          "label": "Historical prior package observation; not current package metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "id": "Hexalith.Memories.Client.Rest",
++          "auditedVersion": "3.0.18",
++          "selectedVersion": "3.0.18",
++          "latestStable": "3.0.21",
++          "latestPrerelease": null,
++          "listingState": "listed",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
++          "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++          "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
++          "sourceResults": [
++            {
++              "source": "https://api.nuget.org/v3/index.json",
++              "listingState": "listed",
++              "latestStable": "3.0.21",
++              "latestPrerelease": null,
++              "diagnostic": "Registration metadata resolved."
++            }
++          ],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+     {
+       "id": "Hexalith.Memories.Contracts",
+-      "auditedVersion": "3.0.18",
+-      "selectedVersion": "3.0.18",
+-      "latestStable": "3.0.21",
++      "auditedVersion": "3.0.23",
++      "selectedVersion": "3.0.23",
++      "latestStable": "3.0.23",
+       "latestPrerelease": null,
+       "listingState": "listed",
+       "family": "hexalith-memories",
+       "disposition": "retained",
+       "rollbackGroup": "hexalith-memories",
+-      "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
+-      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++      "rationale": "Current pin is the latest listed stable release on the configured sources.",
++      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.23, prerelease=",
+       "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
+       "sourceResults": [
+         {
+           "source": "https://api.nuget.org/v3/index.json",
+           "listingState": "listed",
+-          "latestStable": "3.0.21",
++          "latestStable": "3.0.23",
+           "latestPrerelease": null,
+           "diagnostic": "Registration metadata resolved."
+         }
+@@ -164889,27 +164991,63 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-package-history.v2",
++          "label": "Historical prior package observation; not current package metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "id": "Hexalith.Memories.Contracts",
++          "auditedVersion": "3.0.18",
++          "selectedVersion": "3.0.18",
++          "latestStable": "3.0.21",
++          "latestPrerelease": null,
++          "listingState": "listed",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
++          "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++          "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
++          "sourceResults": [
++            {
++              "source": "https://api.nuget.org/v3/index.json",
++              "listingState": "listed",
++              "latestStable": "3.0.21",
++              "latestPrerelease": null,
++              "diagnostic": "Registration metadata resolved."
++            }
++          ],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+     {
+       "id": "Hexalith.Memories.EventStore",
+-      "auditedVersion": "3.0.18",
+-      "selectedVersion": "3.0.18",
+-      "latestStable": "3.0.21",
++      "auditedVersion": "3.0.23",
++      "selectedVersion": "3.0.23",
++      "latestStable": "3.0.23",
+       "latestPrerelease": null,
+       "listingState": "listed",
+       "family": "hexalith-memories",
+       "disposition": "retained",
+       "rollbackGroup": "hexalith-memories",
+-      "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
+-      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++      "rationale": "Current pin is the latest listed stable release on the configured sources.",
++      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.23, prerelease=",
+       "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
+       "sourceResults": [
+         {
+           "source": "https://api.nuget.org/v3/index.json",
+           "listingState": "listed",
+-          "latestStable": "3.0.21",
++          "latestStable": "3.0.23",
+           "latestPrerelease": null,
+           "diagnostic": "Registration metadata resolved."
+         }
+@@ -165166,27 +165304,63 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-package-history.v2",
++          "label": "Historical prior package observation; not current package metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "id": "Hexalith.Memories.EventStore",
++          "auditedVersion": "3.0.18",
++          "selectedVersion": "3.0.18",
++          "latestStable": "3.0.21",
++          "latestPrerelease": null,
++          "listingState": "listed",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
++          "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++          "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
++          "sourceResults": [
++            {
++              "source": "https://api.nuget.org/v3/index.json",
++              "listingState": "listed",
++              "latestStable": "3.0.21",
++              "latestPrerelease": null,
++              "diagnostic": "Registration metadata resolved."
++            }
++          ],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+     {
+       "id": "Hexalith.Memories.EventStoreExtensions",
+-      "auditedVersion": "3.0.18",
+-      "selectedVersion": "3.0.18",
+-      "latestStable": "3.0.21",
++      "auditedVersion": "3.0.23",
++      "selectedVersion": "3.0.23",
++      "latestStable": "3.0.23",
+       "latestPrerelease": null,
+       "listingState": "listed",
+       "family": "hexalith-memories",
+       "disposition": "retained",
+       "rollbackGroup": "hexalith-memories",
+-      "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
+-      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++      "rationale": "Current pin is the latest listed stable release on the configured sources.",
++      "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.23, prerelease=",
+       "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
+       "sourceResults": [
+         {
+           "source": "https://api.nuget.org/v3/index.json",
+           "listingState": "listed",
+-          "latestStable": "3.0.21",
++          "latestStable": "3.0.23",
+           "latestPrerelease": null,
+           "diagnostic": "Registration metadata resolved."
+         }
+@@ -165443,6 +165617,42 @@
+             "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+           },
+           "supersededBecause": "Family-local catalog selection or observation evidence changed."
++        },
++        {
++          "schema": "hexalith.package-audit-package-history.v2",
++          "label": "Historical prior package observation; not current package metadata or acceptance evidence.",
++          "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++          "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++          "id": "Hexalith.Memories.EventStoreExtensions",
++          "auditedVersion": "3.0.18",
++          "selectedVersion": "3.0.18",
++          "latestStable": "3.0.21",
++          "latestPrerelease": null,
++          "listingState": "listed",
++          "family": "hexalith-memories",
++          "disposition": "retained",
++          "rollbackGroup": "hexalith-memories",
++          "rationale": "Retain 3.0.18 pending compatibility validation of listed stable candidate 3.0.21.",
++          "evidence": "https://api.nuget.org/v3/index.json: state=listed, stable=3.0.21, prerelease=",
++          "removalTrigger": "Re-run the live audit and accept a source-resolved candidate only after the family and representative consumers pass compatibility validation.",
++          "sourceResults": [
++            {
++              "source": "https://api.nuget.org/v3/index.json",
++              "listingState": "listed",
++              "latestStable": "3.0.21",
++              "latestPrerelease": null,
++              "diagnostic": "Registration metadata resolved."
++            }
++          ],
++          "origin": {
++            "auditedAtUtc": "2026-11-04T01:44:34.7585425+00:00",
++            "generatedFromRevision": "3c5b9bf19f2aa6ae5b41062af9d06144fe55a84f",
++            "familySelectionSha256": "c43c9c3ffbbb32b8ae17f2f2017a07524af2d823861afd32447d27924ec730a8",
++            "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
++            "packageMetadataSha256": "e8b950b554e03560250556c47cdc8be2910e2258cb97df230abbdc75a78d79f8",
++            "consumerEvidenceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
++          },
++          "supersededBecause": "Family-local catalog selection or observation evidence changed."
+         }
+       ]
+     },
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
+index 7e8b1d98..355d868c 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs
+@@ -29,6 +29,7 @@ public sealed record CompositionDeclarationOptions(SourceMapping Mapping, IReadO
+         ["tenants/6.0.0"] = "9e5a991d0ba304bac7b1a5809cd71797b47d78ed",
+         ["tenants/7.0.0"] = "1b2c71b0e3cc5b16745f87aa7f1bc2c0ac8ffc27",
+         ["memories/3.0.18"] = "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
++        ["memories/3.0.23"] = "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+     }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
+     /// <summary>Gets the shared released declaration hashes; absent entries have no released v2 declaration.</summary>
+@@ -40,6 +41,7 @@ public sealed record CompositionDeclarationOptions(SourceMapping Mapping, IReadO
+         ["tenants/6.0.0"] = "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522",
+         ["tenants/7.0.0"] = "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522",
+         ["memories/3.0.18"] = "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
++        ["memories/3.0.23"] = "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
+     }.ToFrozenDictionary(StringComparer.Ordinal);
+ 
+     /// <summary>Gets the selected Platform checkout.</summary>
+diff --git a/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs b/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs
+index b6e27118..da8e1e6d 100644
+--- a/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs
+@@ -140,7 +140,7 @@ public sealed class DirectCatalogDeclarationTests
+         string declarations = Path.Combine(platform, "src", "Hexalith.Platform.Composition", "Declarations");
+         _ = Directory.CreateDirectory(declarations);
+         JsonObject provenance = [];
+-        foreach ((string owner, string version) in new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.18") })
++        foreach ((string owner, string version) in new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23") })
+         {
+             byte[] bytes = await File.ReadAllBytesAsync(Path.Combine(PlatformManifestTestWorkspace.RepositoryRoot, "test", "fixtures", "module", "platform", owner + "-" + version + ".json"), TestContext.Current.CancellationToken).ConfigureAwait(true);
+             string key = owner + "/" + version;
+diff --git a/test/fixtures/module/platform/memories-3.0.23.json b/test/fixtures/module/platform/memories-3.0.23.json
+new file mode 100644
+index 00000000..82032cbe
+--- /dev/null
++++ b/test/fixtures/module/platform/memories-3.0.23.json
+@@ -0,0 +1,931 @@
++{
++  "schema": "hexalith.module-manifest.v2",
++  "modules": [
++    {
++      "identity": {
++        "moduleId": "memories",
++        "servers": [
++          {
++            "id": "server",
++            "appId": "memories",
++            "resourceId": "memories",
++            "enabled": true,
++            "required": true
++          },
++          {
++            "id": "clock",
++            "appId": "memories-access-telemetry-clock",
++            "resourceId": "memories-access-telemetry-clock",
++            "enabled": true,
++            "required": true
++          },
++          {
++            "id": "telemetry",
++            "appId": "memories-access-telemetry",
++            "resourceId": "memories-access-telemetry",
++            "enabled": true,
++            "required": true
++          },
++          {
++            "id": "domain",
++            "appId": "memories-domain-service",
++            "resourceId": "memories-domain-service",
++            "enabled": true,
++            "required": true
++          }
++        ],
++        "dependencies": [
++          "eventstore"
++        ]
++      },
++      "runtime": {
++        "dapr": [
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStoreIntegration:StateStore:StateStoreName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "Ingestion:WorkflowPayloadStore:StateStoreName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "events",
++            "capability": "pubsub",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "EventStoreIntegration:Routing:PubSubName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "secrets",
++            "capability": "secret",
++            "recoveryClass": "live-authority-only",
++            "configurationKey": "Memories:SecretStoreName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "telemetry-state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "AccessTelemetryLifecycle:StateStoreName",
++            "servers": [
++              "telemetry"
++            ]
++          },
++          {
++            "role": "telemetry-secrets",
++            "capability": "secret",
++            "recoveryClass": "live-authority-only",
++            "configurationKey": "AccessTelemetryLifecycle:SecretStoreName",
++            "servers": [
++              "server",
++              "telemetry"
++            ]
++          },
++          {
++            "role": "telemetry-secrets",
++            "capability": "secret",
++            "recoveryClass": "live-authority-only",
++            "configurationKey": "Clock:SecretStoreName",
++            "servers": [
++              "clock"
++            ]
++          },
++          {
++            "role": "telemetry-configuration",
++            "capability": "configuration",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "AccessTelemetryLifecycle:ConfigurationStoreName",
++            "servers": [
++              "server",
++              "telemetry"
++            ]
++          },
++          {
++            "role": "conversation",
++            "capability": "conversation",
++            "recoveryClass": "rebuild-only",
++            "configurationKey": "NaturalLanguage:DaprComponentName",
++            "servers": [
++              "server"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:ReadModelStore:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          },
++          {
++            "role": "state",
++            "capability": "state",
++            "recoveryClass": "authoritative-restore",
++            "configurationKey": "EventStore:StateStoreName",
++            "servers": [
++              "domain"
++            ]
++          }
++        ],
++        "extensions": [
++          {
++            "packageId": "Hexalith.Memories.Aspire",
++            "configurationInputs": [
++              {
++                "key": "Memories:LlmComponentPath",
++                "source": "configuration",
++                "reference": "llmcomponentpath"
++              },
++              {
++                "key": "ConnectionStrings:redis",
++                "source": "configuration",
++                "reference": "redis"
++              },
++              {
++                "key": "ConnectionStrings:falkordb",
++                "source": "configuration",
++                "reference": "falkordb"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:StateStoreComponentPath",
++                "source": "configuration",
++                "reference": "statestorecomponentpath"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:ConfigurationStoreComponentPath",
++                "source": "configuration",
++                "reference": "configurationstorecomponentpath"
++              },
++              {
++                "key": "Clock:SecretStoreName",
++                "source": "configuration",
++                "reference": "secretstorename"
++              },
++              {
++                "key": "Clock:SigningKeySecretName",
++                "source": "configuration",
++                "reference": "signingkeysecretname"
++              },
++              {
++                "key": "Clock:Sources",
++                "source": "configuration",
++                "reference": "sources"
++              },
++              {
++                "key": "Clock:AllowDevelopmentSources",
++                "source": "configuration",
++                "reference": "allowdevelopmentsources"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:MarkerKeyReference",
++                "source": "configuration",
++                "reference": "markerkeyreference"
++              },
++              {
++                "key": "NaturalLanguage:RetryWorkerEnabled",
++                "source": "configuration",
++                "reference": "retryworkerenabled"
++              },
++              {
++                "key": "Embedding:CredentialNamespace",
++                "source": "configuration",
++                "reference": "credentialnamespace"
++              },
++              {
++                "key": "OrphanSemanticIndex:Enabled",
++                "source": "configuration",
++                "reference": "orphan-semantic-index-reconciliation"
++              },
++              {
++                "key": "IsStubBackfill:Enabled",
++                "source": "configuration",
++                "reference": "is-stub-backfill"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:DeploymentId",
++                "source": "configuration",
++                "reference": "deploymentid"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:ConfigurationEpoch",
++                "source": "configuration",
++                "reference": "configurationepoch"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:ComponentProfileHash",
++                "source": "configuration",
++                "reference": "componentprofilehash"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:AttestationVerificationKey",
++                "source": "configuration",
++                "reference": "attestationverificationkey"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:MarkerKeyGeneration",
++                "source": "configuration",
++                "reference": "markerkeygeneration"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:CapacityEvidenceId",
++                "source": "configuration",
++                "reference": "capacityevidenceid"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:PhysicalReclamationEvidenceId",
++                "source": "configuration",
++                "reference": "physicalreclamationevidenceid"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:PhysicalReclamationReporterImageDigest",
++                "source": "configuration",
++                "reference": "physicalreclamationreporterimagedigest"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:RetentionSource",
++                "source": "configuration",
++                "reference": "retentionsource"
++              },
++              {
++                "key": "retentionSeconds",
++                "source": "configuration",
++                "reference": "access-telemetry-config"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:Enabled",
++                "source": "configuration",
++                "reference": "accesstelemetrylifecycle-enabled"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:CapabilityEvidence",
++                "source": "configuration",
++                "reference": "capabilityevidence"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:CapabilityEvidence:ExactVersionPinned",
++                "source": "configuration",
++                "reference": "exactversionpinned"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:CapabilityEvidence:ValidUntilUtc",
++                "source": "configuration",
++                "reference": "validuntilutc"
++              },
++              {
++                "key": "WorkflowReplaySafety:Enabled",
++                "source": "configuration",
++                "reference": "workflowreplaysafety-enabled"
++              },
++              {
++                "key": "AccessTelemetryLifecycle:ClockSignerKeyEpoch",
++                "source": "configuration",
++                "reference": "clocksignerkeyepoch"
++              },
++              {
++                "key": "Clock:SignerKeyEpoch",
++                "source": "configuration",
++                "reference": "signerkeyepoch"
++              },
++              {
++                "key": "TenantEventRouting:AutoProvisionRoutedTenants",
++                "source": "configuration",
++                "reference": "autoprovisionroutedtenants"
++              },
++              {
++                "key": "Clock:SourceAuthenticationTokens",
++                "source": "dynamic-secret",
++                "reference": "clock-source-authentication-tokens"
++              },
++              {
++                "key": "Conversation:ProviderApiKey",
++                "source": "secret",
++                "reference": "conversation-provider-api-key"
++              },
++              {
++                "key": "Authentication:JwtBearer:Authority",
++                "source": "configuration",
++                "reference": "authority"
++              },
++              {
++                "key": "Authentication:JwtBearer:Issuer",
++                "source": "configuration",
++                "reference": "issuer"
++              },
++              {
++                "key": "Authentication:JwtBearer:Audience",
++                "source": "configuration",
++                "reference": "audience"
++              },
++              {
++                "key": "Authentication:JwtBearer:RequireHttpsMetadata",
++                "source": "configuration",
++                "reference": "requirehttpsmetadata"
++              },
++              {
++                "key": "Authentication:JwtBearer:TenantClaimName",
++                "source": "configuration",
++                "reference": "tenantclaimname"
++              },
++              {
++                "key": "Authentication:JwtBearer:ValidAlgorithms",
++                "source": "configuration",
++                "reference": "validalgorithms"
++              },
++              {
++                "key": "Authentication:JwtBearer:SigningKey",
++                "source": "secret",
++                "reference": "server-jwt-signing-key"
++              },
++              {
++                "key": "Memories:AppChannelToken",
++                "source": "secret",
++                "reference": "app-channel-token"
++              },
++              {
++                "key": "Memories:DaprApiToken",
++                "source": "secret",
++                "reference": "dapr-api-token"
++              },
++              {
++                "key": "EmbeddingProviders:Google:ApiBaseUrl",
++                "source": "configuration",
++                "reference": "apibaseurl"
++              },
++              {
++                "key": "EmbeddingProviders:Ollama:BaseUrl",
++                "source": "configuration",
++                "reference": "baseurl"
++              },
++              {
++                "key": "EmbeddingProviders:Ollama:OidcTokenEndpoint",
++                "source": "configuration",
++                "reference": "oidctokenendpoint"
++              },
++              {
++                "key": "EmbeddingProviders:Ollama:OidcClientId",
++                "source": "configuration",
++                "reference": "oidcclientid"
++              },
++              {
++                "key": "EmbeddingProviders:Ollama:OidcScope",
++                "source": "configuration",
++                "reference": "oidcscope"
++              }
++            ]
++          }
++        ],
++        "resources": [
++          {
++            "server": "server",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          },
++          {
++            "server": "domain",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          },
++          {
++            "server": "clock",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          },
++          {
++            "server": "telemetry",
++            "requests": {},
++            "limits": {},
++            "volumes": []
++          }
++        ],
++        "providerExceptions": [
++          {
++            "name": "memories-falkordb-graph",
++            "capability": "Graph indexing through the FalkorDB provider SDK",
++            "owner": "memories",
++            "surface": "memories-api",
++            "transitional": false
++          },
++          {
++            "name": "memories-redis-search-vector",
++            "capability": "Redis search and vector indexing through StackExchange.Redis",
++            "owner": "memories",
++            "surface": "memories-api",
++            "transitional": false
++          },
++          {
++            "name": "memories-set-nx-preflight-dedup",
++            "capability": "Redis SET NX preflight deduplication",
++            "owner": "memories",
++            "surface": "memories-api",
++            "transitional": false
++          },
++          {
++            "name": "memories-redis-coordination",
++            "capability": "Direct Redis queue and coordination state during migration",
++            "owner": "memories",
++            "surface": "memories-api",
++            "transitional": true
++          }
++        ]
++      },
++      "surfaces": {
++        "interfaces": [
++          {
++            "name": "memories-api",
++            "server": "server",
++            "protocol": "http",
++            "routePrefix": "/api/v1",
++            "exposure": "public",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [],
++            "operations": [
++              {
++                "name": "ingest",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "search",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "cases",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "tenant",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              }
++            ]
++          },
++          {
++            "name": "clock-attestation",
++            "server": "clock",
++            "protocol": "http",
++            "routePrefix": "/v1/time/attest",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "memories",
++              "memories-access-telemetry"
++            ],
++            "operations": [
++              {
++                "name": "attest",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories",
++                "path": "/v1/time/attest",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories-access-telemetry",
++                "path": "/v1/time/attest",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          },
++          {
++            "name": "telemetry-lifecycle",
++            "server": "telemetry",
++            "protocol": "http",
++            "routePrefix": "/v1/access-telemetry",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "memories"
++            ],
++            "operations": [
++              {
++                "name": "write",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "heartbeat",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "validate",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/write",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/heartbeat",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "memories",
++                "path": "/v1/access-telemetry/validate",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          },
++          {
++            "name": "telemetry-inspection",
++            "server": "telemetry",
++            "protocol": "http",
++            "routePrefix": "/v1/access-telemetry/inspect",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "memories-access-telemetry-inspector"
++            ],
++            "operations": [
++              {
++                "name": "inspect",
++                "kind": "query",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "memories-access-telemetry-inspector",
++                "path": "/v1/access-telemetry/inspect",
++                "verbs": [
++                  "GET"
++                ]
++              }
++            ]
++          },
++          {
++            "name": "telemetry-reclamation-evidence",
++            "server": "telemetry",
++            "protocol": "http",
++            "routePrefix": "/v1/access-telemetry/physical-reclamation-evidence",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "access-telemetry-adapter"
++            ],
++            "operations": [
++              {
++                "name": "physical-reclamation-evidence",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "access-telemetry-adapter",
++                "path": "/v1/access-telemetry/physical-reclamation-evidence",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          },
++          {
++            "name": "memories-domain",
++            "server": "domain",
++            "protocol": "http",
++            "routePrefix": "/",
++            "exposure": "internal-only",
++            "surfaceClass": "service",
++            "authorization": {
++              "policy": "authenticated",
++              "permissions": []
++            },
++            "callers": [
++              "eventstore"
++            ],
++            "operations": [
++              {
++                "name": "process",
++                "kind": "command",
++                "authorizationPolicy": "authenticated"
++              },
++              {
++                "name": "admin-operational-index-metadata",
++                "kind": "administration",
++                "authorizationPolicy": "authenticated"
++              }
++            ],
++            "invocationRules": [
++              {
++                "caller": "eventstore",
++                "path": "/process",
++                "verbs": [
++                  "POST"
++                ]
++              },
++              {
++                "caller": "eventstore",
++                "path": "/admin/operational-index-metadata",
++                "verbs": [
++                  "POST"
++                ]
++              }
++            ]
++          }
++        ]
++      },
++      "integration": {
++        "topics": [
++          {
++            "name": "memories-events",
++            "role": "events",
++            "deadLetter": {
++              "strategy": "none"
++            },
++            "subscription": {
++              "server": "server",
++              "route": "/events/ingest"
++            }
++          }
++        ],
++        "secrets": [
++          {
++            "name": "clock-signing-key",
++            "configurationKey": "Clock:SigningKeySecretName"
++          },
++          {
++            "name": "telemetry-marker-key",
++            "configurationKey": "AccessTelemetryLifecycle:MarkerKeyReference"
++          },
++          {
++            "name": "conversation-provider-api-key",
++            "configurationKey": "Conversation:ProviderApiKey"
++          },
++          {
++            "name": "server-jwt-signing-key",
++            "configurationKey": "Authentication:JwtBearer:SigningKey"
++          },
++          {
++            "name": "app-channel-token",
++            "configurationKey": "Memories:AppChannelToken"
++          },
++          {
++            "name": "dapr-api-token",
++            "configurationKey": "Memories:DaprApiToken"
++          }
++        ],
++        "dynamicSecretNamespaces": [
++          {
++            "name": "embedding-credentials",
++            "owner": "memories",
++            "configurationKey": "Embedding:CredentialNamespace"
++          },
++          {
++            "name": "clock-source-authentication-tokens",
++            "owner": "memories",
++            "configurationKey": "Clock:SourceAuthenticationTokens"
++          }
++        ],
++        "identityNeeds": [],
++        "egress": [
++          {
++            "name": "authenticated-utc",
++            "protocol": "https",
++            "destination": "Clock:Sources:<index>:Endpoint"
++          },
++          {
++            "name": "server-oidc-metadata",
++            "protocol": "https",
++            "destination": "Authentication:JwtBearer:Authority/.well-known/openid-configuration"
++          },
++          {
++            "name": "server-oidc-jwks",
++            "protocol": "https",
++            "destination": "Authentication:JwtBearer:Authority -> metadata.jwks_uri"
++          },
++          {
++            "name": "conversation-provider",
++            "protocol": "https",
++            "destination": "Memories:LlmComponentPath -> conversation.openai provider endpoint"
++          },
++          {
++            "name": "embedding-google-provider",
++            "protocol": "tcp",
++            "destination": "EmbeddingProviders:Google:ApiBaseUrl"
++          },
++          {
++            "name": "embedding-ollama-provider",
++            "protocol": "tcp",
++            "destination": "EmbeddingProviders:Ollama:BaseUrl"
++          },
++          {
++            "name": "embedding-ollama-oidc-token",
++            "protocol": "https",
++            "destination": "EmbeddingProviders:Ollama:OidcTokenEndpoint (OIDC client-credential mode only)"
++          }
++        ],
++        "providers": [
++          {
++            "name": "redis-search",
++            "capability": "search and vector storage",
++            "tenancy": {
++              "mode": "per-environment",
++              "configurationKey": "ConnectionStrings:redis"
++            }
++          },
++          {
++            "name": "falkordb",
++            "capability": "graph storage",
++            "tenancy": {
++              "mode": "per-environment",
++              "configurationKey": "ConnectionStrings:falkordb"
++            }
++          }
++        ],
++        "workers": [
++          {
++            "name": "embedding-retry",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "NaturalLanguage:RetryWorkerEnabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "telemetry-delivery",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "AccessTelemetryLifecycle:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "telemetry-heartbeat",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "AccessTelemetryLifecycle:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "telemetry-retention",
++            "kind": "destructive-retention",
++            "disableControl": {
++              "configurationKey": "AccessTelemetryLifecycle:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "telemetry-capability-probe",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "AccessTelemetryLifecycle:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "workflow-replay-safety",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "WorkflowReplaySafety:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "routed-tenant-provisioning",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "TenantEventRouting:AutoProvisionRoutedTenants",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "orphan-semantic-index-reconciliation",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "OrphanSemanticIndex:Enabled",
++              "disabledValue": false
++            }
++          },
++          {
++            "name": "is-stub-backfill",
++            "kind": "external-effect",
++            "disableControl": {
++              "configurationKey": "IsStubBackfill:Enabled",
++              "disabledValue": false
++            }
++          }
++        ]
++      },
++      "lifecycle": {
++        "readiness": [
++          {
++            "server": "server",
++            "kind": "http",
++            "endpoint": "/ready"
++          },
++          {
++            "server": "domain",
++            "kind": "http",
++            "endpoint": "/ready"
++          },
++          {
++            "server": "clock",
++            "kind": "http",
++            "endpoint": "/ready"
++          },
++          {
++            "server": "telemetry",
++            "kind": "http",
++            "endpoint": "/ready"
++          }
++        ],
++        "tasks": [],
++        "recoveryHooks": [],
++        "fenceHooks": [],
++        "replay": {
++          "reopenBeforeReplay": false
++        },
++        "startup": {},
++        "criticalFlows": [
++          {
++            "name": "ingest-and-search",
++            "surface": "memories-api",
++            "operations": [
++              "ingest",
++              "search"
++            ]
++          }
++        ],
++        "smokeSurfaces": [],
++        "classification": {
++          "changeClass": "additive",
++          "reason": "Declare Memories core and access telemetry services with explicit provider exceptions."
++        },
++        "recoveryInventory": []
++      },
++      "tests": [
++        {
++          "name": "functional-retention",
++          "executor": "python3",
++          "entry": "tools/verify-access-telemetry-lifecycle.py",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 14400,
++          "stopTimeoutSeconds": 900,
++          "mode": "source",
++          "daprRuntimeVersion": "1.18.1"
++        }
++      ]
++    }
++  ]
++}

@@ -1,0 +1,384 @@
+{
+  "routeKinds": {
+    "command": 46,
+    "query": 20,
+    "projection": 4
+  },
+  "actualTargetAppIds": {
+    "tenants": 23,
+    "memories-domain-service": 6,
+    "parties": 41
+  },
+  "intentPolicyCount": 46,
+  "canonicalRoot": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+  "policies": [
+    {
+      "adapterId": "hexalith:global-administrators:bootstrap-global-admin:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "809afac424064ed60b07a08346d5647d5f843f0e2e48c1d551b57751a8cc5985",
+      "operationId": "global-administrators:bootstrap-global-admin",
+      "retentionTier": "mutation",
+      "routeId": "global-administrators-bootstrap-global-admin"
+    },
+    {
+      "adapterId": "hexalith:global-administrators:remove-global-administrator:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "85d0cd220d5315e6946a5ea748dd3910c97f1ce6ae87b906321f5826c0aa3780",
+      "operationId": "global-administrators:remove-global-administrator",
+      "retentionTier": "mutation",
+      "routeId": "global-administrators-remove-global-administrator"
+    },
+    {
+      "adapterId": "hexalith:global-administrators:set-global-administrator:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "45513f9bfacfd7fcb38f10fb1ddde68f4692748526d7562f9dcabb96df0c85e1",
+      "operationId": "global-administrators:set-global-administrator",
+      "retentionTier": "mutation",
+      "routeId": "global-administrators-set-global-administrator"
+    },
+    {
+      "adapterId": "hexalith:memories-cases:create-case:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "01912e1b8e0e7369cda4a7017a035e76adb12393612d2a1db103bfeec901c68c",
+      "operationId": "memories-cases:create-case",
+      "retentionTier": "mutation",
+      "routeId": "memories-cases-create-case"
+    },
+    {
+      "adapterId": "hexalith:memories-cases:delete-case:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "4462c67c9dd64f2de503c3df722c09224d5aa1b13c456509b7f3bc659676a8a1",
+      "operationId": "memories-cases:delete-case",
+      "retentionTier": "mutation",
+      "routeId": "memories-cases-delete-case"
+    },
+    {
+      "adapterId": "hexalith:memories-memory-units:delete-memory-unit:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "571cb54b2d720aecc947073d865bdf7947eb792f229a141a18d4a4f6a0e01fa6",
+      "operationId": "memories-memory-units:delete-memory-unit",
+      "retentionTier": "mutation",
+      "routeId": "memories-memory-units-delete-memory-unit"
+    },
+    {
+      "adapterId": "hexalith:memories-memory-units:request-annotation:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "6e715cb8cc14f7fbffcb8031170593d22548ddbf77bc44210a50e8a689c0607d",
+      "operationId": "memories-memory-units:request-annotation",
+      "retentionTier": "mutation",
+      "routeId": "memories-memory-units-request-annotation"
+    },
+    {
+      "adapterId": "hexalith:memories-tenants:register-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "c7ab91959e76c4db8355d11a86de1150d76b2a097da4abbb39adf527501d0f5c",
+      "operationId": "memories-tenants:register-tenant",
+      "retentionTier": "mutation",
+      "routeId": "memories-tenants-register-tenant"
+    },
+    {
+      "adapterId": "hexalith:memories-tenants:update-tenant-lifecycle-status:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "94b97caaa94cc2134935918f173b023fe66dbc4e07cc04130bb592ce20339483",
+      "operationId": "memories-tenants:update-tenant-lifecycle-status",
+      "retentionTier": "mutation",
+      "routeId": "memories-tenants-update-tenant-lifecycle-status"
+    },
+    {
+      "adapterId": "hexalith:party:add-contact-channel:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "8c2f1b9cbf122817f0267b00d50e3d0ef42cfdca508457610da3a713623b4e8c",
+      "operationId": "party:add-contact-channel",
+      "retentionTier": "mutation",
+      "routeId": "party-add-contact-channel"
+    },
+    {
+      "adapterId": "hexalith:party:add-identifier:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "b98208856b47cba7cb8b3387a2fe41f23f7ad2e5ab671fc1ec3c69ec825f512d",
+      "operationId": "party:add-identifier",
+      "retentionTier": "mutation",
+      "routeId": "party-add-identifier"
+    },
+    {
+      "adapterId": "hexalith:party:cancel-party-erasure:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "ae8b8c6636c57ebb71e6424f9ea7d34d59963b2b321380aaf1429a4971aaf464",
+      "operationId": "party:cancel-party-erasure",
+      "retentionTier": "mutation",
+      "routeId": "party-cancel-party-erasure"
+    },
+    {
+      "adapterId": "hexalith:party:complete-party-erasure:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "ca875ea17c7e735bb79d3a47e3976583b61021018c82c999e21efbbdc566cbc8",
+      "operationId": "party:complete-party-erasure",
+      "retentionTier": "mutation",
+      "routeId": "party-complete-party-erasure"
+    },
+    {
+      "adapterId": "hexalith:party:create-party:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "67daaf6f8e12a6568404bd6ee508495246978dda2a627e05b99c9dbe33004ed0",
+      "operationId": "party:create-party",
+      "retentionTier": "mutation",
+      "routeId": "party-create-party"
+    },
+    {
+      "adapterId": "hexalith:party:create-party-composite:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "4a60abc92bf8e7355a4802c2535eff2251c00682b5051122fc8bd344106a875c",
+      "operationId": "party:create-party-composite",
+      "retentionTier": "mutation",
+      "routeId": "party-create-party-composite"
+    },
+    {
+      "adapterId": "hexalith:party:deactivate-party:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "857363ac1e87459ba66d53c953ab4b29b892a13091bcb1985d85025082850e62",
+      "operationId": "party:deactivate-party",
+      "retentionTier": "mutation",
+      "routeId": "party-deactivate-party"
+    },
+    {
+      "adapterId": "hexalith:party:erase-party:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "523d24b5e3858a5824a56cb5731bb1ef49d200b640400bd25a14a88bbaa01e92",
+      "operationId": "party:erase-party",
+      "retentionTier": "mutation",
+      "routeId": "party-erase-party"
+    },
+    {
+      "adapterId": "hexalith:party:establish-human-actor-binding:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "7d5632fbac546470422d66111a5b42f33476007b96248ca99727a31c70103de9",
+      "operationId": "party:establish-human-actor-binding",
+      "retentionTier": "mutation",
+      "routeId": "party-establish-human-actor-binding"
+    },
+    {
+      "adapterId": "hexalith:party:lift-restriction:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "a590f099a0f5da1dc2603c6ba55930c769c8fbcadc1cfd356805165933775550",
+      "operationId": "party:lift-restriction",
+      "retentionTier": "mutation",
+      "routeId": "party-lift-restriction"
+    },
+    {
+      "adapterId": "hexalith:party:mark-erasure-verified:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "2bdd25d6ac17aaa15a736edd13e1c0f7af2818b398f1acca92ddd285e415cd1d",
+      "operationId": "party:mark-erasure-verified",
+      "retentionTier": "mutation",
+      "routeId": "party-mark-erasure-verified"
+    },
+    {
+      "adapterId": "hexalith:party:mark-party-encryption-key-deleted:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "8293dee4bf0605914da23640c6cd23249e00833b22e2d435dae7998642cc8d06",
+      "operationId": "party:mark-party-encryption-key-deleted",
+      "retentionTier": "mutation",
+      "routeId": "party-mark-party-encryption-key-deleted"
+    },
+    {
+      "adapterId": "hexalith:party:provision-agent-party:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "15862a639afb92f0cb09f67a440d0512aceace613a103b3a3e62167a15ef1f60",
+      "operationId": "party:provision-agent-party",
+      "retentionTier": "mutation",
+      "routeId": "party-provision-agent-party"
+    },
+    {
+      "adapterId": "hexalith:party:reactivate-party:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "794866dff068408cc92242c9a5899dbf489a5e6d6565a0d5158ae20c5bbc620e",
+      "operationId": "party:reactivate-party",
+      "retentionTier": "mutation",
+      "routeId": "party-reactivate-party"
+    },
+    {
+      "adapterId": "hexalith:party:rebind-human-actor-binding:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "3b24e9fb2a6a35b2970f408792251f3c7698ed096565dd024a3c531a8c73897b",
+      "operationId": "party:rebind-human-actor-binding",
+      "retentionTier": "mutation",
+      "routeId": "party-rebind-human-actor-binding"
+    },
+    {
+      "adapterId": "hexalith:party:record-consent:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "d04398accf013aee2e6cfc99c82a008d22dbeaa68bd542f8f7ae54ded7d62771",
+      "operationId": "party:record-consent",
+      "retentionTier": "mutation",
+      "routeId": "party-record-consent"
+    },
+    {
+      "adapterId": "hexalith:party:remove-contact-channel:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "056076fa398330deb242c0b34e5cf032730de819e6a9adf738bab5297e5706fd",
+      "operationId": "party:remove-contact-channel",
+      "retentionTier": "mutation",
+      "routeId": "party-remove-contact-channel"
+    },
+    {
+      "adapterId": "hexalith:party:remove-identifier:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "4b31cffc67d840a841f33df2e3ef8b275ddfe0c4e164ce36b54b9819a0c6e4e0",
+      "operationId": "party:remove-identifier",
+      "retentionTier": "mutation",
+      "routeId": "party-remove-identifier"
+    },
+    {
+      "adapterId": "hexalith:party:restrict-processing:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "0235560f44e8d9218ceef60d5b1b308f91ffc63df1e4f5db8523969559c3476c",
+      "operationId": "party:restrict-processing",
+      "retentionTier": "mutation",
+      "routeId": "party-restrict-processing"
+    },
+    {
+      "adapterId": "hexalith:party:retry-erasure-verification:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "82e33ca96290872707dfccca2439be826b3306539ded564e573b8adaf0ca392f",
+      "operationId": "party:retry-erasure-verification",
+      "retentionTier": "mutation",
+      "routeId": "party-retry-erasure-verification"
+    },
+    {
+      "adapterId": "hexalith:party:revoke-consent:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "046a7a24e43b6dea77d97516d4d5e1beb00f9e343ea05246f6d4323e945f44dc",
+      "operationId": "party:revoke-consent",
+      "retentionTier": "mutation",
+      "routeId": "party-revoke-consent"
+    },
+    {
+      "adapterId": "hexalith:party:revoke-human-actor-binding:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "74c4bdd4d96de9db4e371d99365d892e5fc015edabef88d066a7d57cbc79a26e",
+      "operationId": "party:revoke-human-actor-binding",
+      "retentionTier": "mutation",
+      "routeId": "party-revoke-human-actor-binding"
+    },
+    {
+      "adapterId": "hexalith:party:rotate-party-key:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "b91a1ea2433e00aea908561a8c35f0e3fb4e98e582e0f7b660f1674741984063",
+      "operationId": "party:rotate-party-key",
+      "retentionTier": "mutation",
+      "routeId": "party-rotate-party-key"
+    },
+    {
+      "adapterId": "hexalith:party:set-is-natural-person:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "fbfe780afc23d92cb4f2e171c71a2f6289a4d3559b0f8fac27291d96dc5e3250",
+      "operationId": "party:set-is-natural-person",
+      "retentionTier": "mutation",
+      "routeId": "party-set-is-natural-person"
+    },
+    {
+      "adapterId": "hexalith:party:update-contact-channel:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "be2c28195ce7ac9153a98792f3c49f1548b1b3b09c5269d4de2c712fac81a446",
+      "operationId": "party:update-contact-channel",
+      "retentionTier": "mutation",
+      "routeId": "party-update-contact-channel"
+    },
+    {
+      "adapterId": "hexalith:party:update-organization-details:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "07d828744a96faada34f9c8c168fd0f1ecb06ea4da60e85c4c724b42bbc9e397",
+      "operationId": "party:update-organization-details",
+      "retentionTier": "mutation",
+      "routeId": "party-update-organization-details"
+    },
+    {
+      "adapterId": "hexalith:party:update-party-composite:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "16c94730ef744b4c7a8fe30eccd0be453a6047738c8ffc08de07f2004a502333",
+      "operationId": "party:update-party-composite",
+      "retentionTier": "mutation",
+      "routeId": "party-update-party-composite"
+    },
+    {
+      "adapterId": "hexalith:party:update-person-details:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "a9cc886e125ea6cf282ba14a7eecda98dc342b3d00cf6132a85909d47d2d457e",
+      "operationId": "party:update-person-details",
+      "retentionTier": "mutation",
+      "routeId": "party-update-person-details"
+    },
+    {
+      "adapterId": "hexalith:tenants:add-user-to-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "d9b230310bc562e19ca6e41339a400187120bc19264256a86c0c7ce572250667",
+      "operationId": "tenants:add-user-to-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-add-user-to-tenant"
+    },
+    {
+      "adapterId": "hexalith:tenants:change-user-role:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "8f4366d4f8ce33a97d25a1c701d20f4abc4d26fa6cd1db2413b98be61ec8fe71",
+      "operationId": "tenants:change-user-role",
+      "retentionTier": "mutation",
+      "routeId": "tenants-change-user-role"
+    },
+    {
+      "adapterId": "hexalith:tenants:create-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "7cf6a42c34a812b004513703a87844a24576e21358d50ead7037a708f17c42ae",
+      "operationId": "tenants:create-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-create-tenant"
+    },
+    {
+      "adapterId": "hexalith:tenants:disable-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "f5121d9147258e61db61864ad8927766c0ffadc5268c01fe07cc7f17543a6b05",
+      "operationId": "tenants:disable-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-disable-tenant"
+    },
+    {
+      "adapterId": "hexalith:tenants:enable-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "99b0bd2abddb07a319603e505d28549e7d0a73fcd1181779c85675b1529f4704",
+      "operationId": "tenants:enable-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-enable-tenant"
+    },
+    {
+      "adapterId": "hexalith:tenants:remove-tenant-configuration:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "9454d03e52e03319966bed233c2909b2924cd0c0d500655bf5818ffcc4f365fc",
+      "operationId": "tenants:remove-tenant-configuration",
+      "retentionTier": "mutation",
+      "routeId": "tenants-remove-tenant-configuration"
+    },
+    {
+      "adapterId": "hexalith:tenants:remove-user-from-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "f6d432c6f97dc5a0c0536580ca7875e913d0ede14aa320736b4ec8d0e9063fc5",
+      "operationId": "tenants:remove-user-from-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-remove-user-from-tenant"
+    },
+    {
+      "adapterId": "hexalith:tenants:set-tenant-configuration:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "d59dc513bc6a3de0344fa7c2fb8b8d9f481e2ce8c9f875cf9320ed927e4207fc",
+      "operationId": "tenants:set-tenant-configuration",
+      "retentionTier": "mutation",
+      "routeId": "tenants-set-tenant-configuration"
+    },
+    {
+      "adapterId": "hexalith:tenants:update-tenant:intent-v1",
+      "consumerAppId": "eventstore-component",
+      "contentDigest": "e0958b861395832eb648f1ff16bacf3c22927b34ccd9544173bdac3dd4a7fffd",
+      "operationId": "tenants:update-tenant",
+      "retentionTier": "mutation",
+      "routeId": "tenants-update-tenant"
+    }
+  ]
+}

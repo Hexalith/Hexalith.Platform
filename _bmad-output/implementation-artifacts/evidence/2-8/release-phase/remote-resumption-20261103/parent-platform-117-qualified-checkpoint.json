@@ -1,0 +1,100 @@
+{
+  "recordedAt": "2026-11-03T19:40:28.371888+00:00",
+  "releaseId": 433135247,
+  "version": "1.1.7",
+  "tag": "v1.1.7",
+  "source": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+  "publishedAt": "2026-11-03T19:36:58Z",
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.1.7",
+  "buildsVersion": "4.43.6",
+  "buildsSource": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "tupleBinding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b",
+        "sha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce"
+      }
+    },
+    "publication": {
+      "version": "4.43.6",
+      "sourceRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+      "releaseTag": "v4.43.6",
+      "catalogSha256": "6013c6fc168131c36ab5473ddeb47951f8c926df23bc6a1bea24de9c8ef420ce",
+      "archiveSha256": "56bb8ec20f02e964dd9f44b7125bf05ada3cafee3c2ac7048f41d36bc8f1c6fe",
+      "toolingSha256": "1f98729def5105818eaf464e46d1c12b1bcd0607c3752c6e3842b2f201630cb1",
+      "inventorySha256": "9d2db16901373717b70ba53880a356c1b587b4d495b33ed87724edf02cf1fe8e",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.43.6/g4-tool-package-inventory.json"
+    }
+  },
+  "toolManifestVersion": "4.43.6",
+  "toolRange": "[4.43.6, 5.0.0-0)",
+  "gates": [
+    {
+      "id": 41692654232,
+      "name": "Platform tuple CI preflight",
+      "head_sha": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41692477575,
+      "name": "Catalog builder consumer binding",
+      "head_sha": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "actualRequiredTuplePassed": 160,
+  "failed": 0,
+  "skipped": 0,
+  "catalogSdkProofs": [
+    {
+      "sdk": "3.130.0",
+      "cases": 15,
+      "artifactId": 13263767022,
+      "artifactSha256": "100d9e51582ff2c401631b38fc2fd46cab140f526ce881e3dba5e887db131acc",
+      "receipt": "parent-platform-ed156-sdk-3_130_0-audit.json",
+      "receiptSha256": "a2f3a8bc4bd73e19fa3ef8497ed1d3fe1239e55d656d9b61c02371f875376ff9"
+    },
+    {
+      "sdk": "3.130.1",
+      "cases": 15,
+      "artifactId": 13264917915,
+      "artifactSha256": "52b799fbb6abecd67ad7a881f6fd1fb75070affb5a2ede339bac8219a9c93fd0",
+      "receipt": "parent-platform-ed156-sdk-3_130_1-audit.json",
+      "receiptSha256": "3a00ce0a35150ffa72e76271f44708c067379f5598d5dad4fb2f9774f8ddb300"
+    },
+    {
+      "sdk": "3.130.2",
+      "cases": 15,
+      "artifactId": 13263437819,
+      "artifactSha256": "2b698618974fef59e186886429b9394245a54b0f98c1414ac2b261adc189a2ba",
+      "receipt": "parent-platform-ed156-sdk-3_130_2-audit.json",
+      "receiptSha256": "3c181db1796b190244a269c79b15631b89f8022b4fb8260ab047784ebba673e5"
+    },
+    {
+      "sdk": "3.132.1",
+      "cases": 15,
+      "artifactId": 13259166197,
+      "artifactSha256": "4653daf5d342ac04fee1de63b6e4b6c49f9e7c10abe23049bfe7b37e9b2a8c1b",
+      "receipt": "parent-platform-ed156-sdk-3_132_1-audit.json",
+      "receiptSha256": "df662fb8ed53910a17fbf683554ff930b8f678e9c4d16ef6642416a45340afde"
+    }
+  ],
+  "finiteCapabilityCases": 208,
+  "parentPublishedOrBypassed": false,
+  "duplicateCreateAvoided": true,
+  "originalImmutableReleasesPreserved": true,
+  "actualCopiedLoadedSdkProofStillRequiredForReferences": true,
+  "referenceAdoptionPending": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "hostedLifecycleAcceptance": false
+}

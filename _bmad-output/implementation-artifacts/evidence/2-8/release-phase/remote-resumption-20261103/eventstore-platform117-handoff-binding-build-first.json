@@ -1,0 +1,17 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+    "--configuration",
+    "Release",
+    "-warnaserror",
+    "-m:1",
+    "-p:UseHexalithProjectReferences=false"
+  ],
+  "exitCode": 0,
+  "observedAt": "2026-11-03T20:14:06.427265+00:00",
+  "scope": "test-only native handoff dataflow correction; Release/package compile",
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

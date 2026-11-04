@@ -1,0 +1,388 @@
+{
+  "recordedAt": "2026-11-04T11:30:53.356099+00:00",
+  "pr": {
+    "url": "https://github.com/Hexalith/Hexalith.Parties/pull/61",
+    "number": 61,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": false,
+    "title": "build(ci): adopt the qualified full Parties tuple",
+    "base": "main",
+    "base_sha": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+    "head": "fix/adopt-platform-117",
+    "head_sha": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+    "merge_commit_sha": "dcd5d1311e12b57a8884eb1295e296d4e5f36541",
+    "updated_at": "2026-11-04T11:28:01Z",
+    "commits": 6,
+    "changed_files": 19,
+    "additions": 779,
+    "deletions": 41
+  },
+  "source": {
+    "recordedAt": "2026-11-04T11:30:10.735878+00:00",
+    "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+    "branch": "fix/adopt-platform-117",
+    "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+    "head": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+    "parents": [
+      "26658feb2aea894ac4cc76b0a0259efa09a62735"
+    ],
+    "tree": "06f1c9e8f4595b5199a84d5675b82f04ba89b16e",
+    "preservedMerge": {
+      "head": "26658feb2aea894ac4cc76b0a0259efa09a62735",
+      "parents": [
+        "c10ce7e8f323ded3a69711160c5b814fb95f5904",
+        "3e4367622764118fc2ad710ad1040994ae4cfa49"
+      ]
+    },
+    "clean": true,
+    "gitlinks": {
+      "references/Hexalith.EventStore": {
+        "index": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+        "actualCheckout": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+        "clean": true
+      },
+      "references/Hexalith.Memories": {
+        "index": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+        "actualCheckout": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+        "clean": true
+      },
+      "references/Hexalith.FrontComposer": {
+        "index": "fbe01c913cb863abb0fd4a317d370d36fff593b3",
+        "actualCheckout": "fbe01c913cb863abb0fd4a317d370d36fff593b3",
+        "clean": true
+      },
+      "references/Hexalith.Tenants": {
+        "index": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+        "actualCheckout": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+        "clean": true
+      },
+      "references/Hexalith.AI.Tools": {
+        "index": "1745b6663ad32bb1288167135ed0f979366c53a0",
+        "actualCheckout": "1745b6663ad32bb1288167135ed0f979366c53a0",
+        "clean": true
+      },
+      "references/Hexalith.Commons": {
+        "index": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+        "actualCheckout": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+        "clean": true
+      },
+      "references/Hexalith.Builds": {
+        "index": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+        "actualCheckout": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+        "clean": true
+      },
+      "references/Hexalith.PolymorphicSerializations": {
+        "index": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+        "actualCheckout": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+        "clean": true
+      },
+      "references/Hexalith.McpCli": {
+        "index": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+        "actualCheckout": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+        "clean": true
+      },
+      "references/Hexalith.Platform": {
+        "index": "338a6afc31850761f49c0de7d399266dd15cfe84",
+        "actualCheckout": "338a6afc31850761f49c0de7d399266dd15cfe84",
+        "clean": true
+      }
+    },
+    "activeDeclarationSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+    "patches": {
+      "adoption": {
+        "file": "parties-platform130-adoption-adoption.patch",
+        "sha256": "45d48d0991eae6779c882139692d00c6d1593e8c8c1e37494a45f7c479fe692b",
+        "bytes": 32277,
+        "paths": [
+          ".config/dotnet-tools.json",
+          ".github/workflows/ci-lifecycle-qualification.yml",
+          ".github/workflows/ci.yml",
+          ".gitlink-signoff.tsv",
+          "README.md",
+          "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+          "docs/architecture.md",
+          "docs/ci-lifecycle-qualification.md",
+          "docs/ci.md",
+          "docs/getting-started.md",
+          "references/Hexalith.Builds",
+          "references/Hexalith.Platform",
+          "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+          "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+        ]
+      },
+      "full-proposal": {
+        "file": "parties-platform130-adoption-full-proposal.patch",
+        "sha256": "48282d190a5cf99e684d75f177300cead6237f1349318228fc85d408a0b7e27f",
+        "bytes": 92144,
+        "paths": [
+          ".config/dotnet-tools.json",
+          ".github/workflows/ci-lifecycle-qualification.yml",
+          ".github/workflows/ci.yml",
+          ".gitlink-signoff.tsv",
+          "README.md",
+          "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+          "docs/architecture.md",
+          "docs/ci-lifecycle-qualification.md",
+          "docs/ci.md",
+          "docs/getting-started.md",
+          "references/Hexalith.Builds",
+          "references/Hexalith.Platform",
+          "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+          "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs"
+        ]
+      }
+    },
+    "candidateAcceptance": false
+  },
+  "pushedNormally": true,
+  "pushReceipt": "parties-platform130-adoption-push-first.json",
+  "sourcePreservation": "parties-platform130-adoption-source-preservation.json",
+  "preservedIncomingObjects": 242,
+  "incomingGuidanceDelta": "Only docs/getting-started.md tool version/current Platform link; independently byte-compared.",
+  "priorMatrixRowsOrdered": 427,
+  "ledgerPrefixBytes": 49840,
+  "unchangedProtectedInputs": 19,
+  "authorizedChangedProtectedInputs": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/ci-lifecycle-qualification.yml",
+    ".config/dotnet-tools.json"
+  ],
+  "genuineBindings": "parties-platform130-adoption-genuine-bindings.json",
+  "actualPreparation": {
+    "status": "prepared",
+    "toolVersion": "4.44.2+ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "mappingHash": "e6d08356ee6faa9c54294c2b40d48f69de7c46abc0a94ea16cd573e103dd6454",
+    "sourceFallback": false,
+    "injectedGitHubContext": false
+  },
+  "releasePackageBuilds": [
+    {
+      "name": "caller",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--disable-build-servers",
+        "-m:1",
+        "-warnaserror",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-04T11:23:52.107834+00:00",
+      "completedAt": "2026-11-04T11:23:54.942031+00:00",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "native",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+        "--configuration",
+        "Release",
+        "--disable-build-servers",
+        "-m:1",
+        "-warnaserror",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-04T11:23:54.942271+00:00",
+      "completedAt": "2026-11-04T11:23:59.179888+00:00",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "lifecycle",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+        "--configuration",
+        "Release",
+        "--disable-build-servers",
+        "-m:1",
+        "-warnaserror",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-04T11:23:59.180103+00:00",
+      "completedAt": "2026-11-04T11:24:02.041860+00:00",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "selection",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+        "--configuration",
+        "Release",
+        "--disable-build-servers",
+        "-m:1",
+        "-warnaserror",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-04T11:24:02.042041+00:00",
+      "completedAt": "2026-11-04T11:24:22.322711+00:00",
+      "warnings": 0,
+      "errors": 0
+    }
+  ],
+  "actualTrx": {
+    "caller": {
+      "file": "parties-platform130-adoption-caller.trx",
+      "sha256": "f7bb4c08201982de6c508c43e31e42c926a06a1644cfb40a948da081b119e1d1",
+      "counts": {
+        "total": "69",
+        "executed": "69",
+        "passed": "69",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "selection": {
+      "file": "parties-platform130-adoption-selection.trx",
+      "sha256": "aaf2c0fc13c6263f69f64b51efe606434ad4f05bbb2a08c5baacccad1d5da572",
+      "counts": {
+        "total": "21",
+        "executed": "21",
+        "passed": "21",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "harness": {
+      "file": "parties-platform130-adoption-harness.trx",
+      "sha256": "b18436803bb5835397254ddeff0d714851c27b780064c3a367ec82f8e08362d4",
+      "counts": {
+        "total": "19",
+        "executed": "19",
+        "passed": "19",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "catalog-host-contract": {
+      "file": "parties-platform130-adoption-catalog-host-contract.trx",
+      "sha256": "eb8e43b60e133ac343302817ba3d373551619fe44ec1a37bdd4689c9f1ea54bd",
+      "counts": {
+        "total": "22",
+        "executed": "22",
+        "passed": "22",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  },
+  "actualExecutedTotal": 131,
+  "actualPassedTotal": 131,
+  "actualFailedTotal": 0,
+  "actualSkippedTotal": 0,
+  "pythonControls": {
+    "lifecycle": 32,
+    "strictDeclaration": 7
+  },
+  "otherPassed": [
+    "four-manifest validation",
+    "generated-declaration check",
+    "actionlint",
+    "whitespace with owning CRLF policy",
+    "root worktree and diff gitlink gates",
+    "exact full message/title/full3e..HEAD commitlint21.2.4"
+  ],
+  "firstOutcomes": [
+    {
+      "file": "parties-platform130-adoption-affected-tests-first.json",
+      "result": "Harness command used a nonexistent Platform.Integration.Tests project; no tests executed. Explicit correct Platform.IntegrationTests command passed19/19 without source changes."
+    },
+    {
+      "file": "parties-platform130-adoption-source-preservation.json",
+      "result": "Two read-only audit assumptions corrected against real history/object data; source unaffected."
+    }
+  ],
+  "hostedObservation": {
+    "file": "parties-platform130-adoption-initial-hosted.json",
+    "observedAt": "2026-11-04T11:28:28.950511+00:00",
+    "ciRun": 41821031463,
+    "attempt": 1,
+    "mainJob": 126543911783,
+    "status": "in_progress",
+    "passedAssumed": false
+  },
+  "remaining": [
+    "Parent independent full proposal/evidence review",
+    "Actual complete15 isolated+6 independent+UI gates on new source",
+    "Actual all-owner native readiness/bootstrap/wire/persistence/anonymous401, retained native/functional/lifecycle content and exact cleanup",
+    "Three real sequential manual lifecycle scenarios",
+    "Normal merge and fresh-main evidence, then whole-story final diff/review gate"
+  ],
+  "otherRepoMutation": false,
+  "manualWorkflowDispatch": false,
+  "nativeOrHostedAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

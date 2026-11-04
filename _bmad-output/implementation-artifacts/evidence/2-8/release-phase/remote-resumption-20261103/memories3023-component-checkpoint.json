@@ -1,0 +1,213 @@
+{
+  "observedAt": "2026-11-04T04:59:26.431922+00:00",
+  "version": "3.0.23",
+  "source": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+  "releaseId": 433463293,
+  "tag": "v3.0.23",
+  "releaseTargetCommitish": "main (mutable text); actual Git tag independently resolves exact82c0 commit",
+  "normalProducer": {
+    "runId": 41762624725,
+    "attempt": 1,
+    "conclusion": "success",
+    "exactSourceCI": 41760685661,
+    "buildsExecutionSource": "81c88b34d09d34260b92d7f0928dbbc1c7446baa",
+    "setSha256": "b559cf12b2263f8d9a47852789eb6aa5882efd7531cbc342d7c412ba90e36ea1",
+    "allSevenActualHelperHashesMatch": true
+  },
+  "carrier": {
+    "assetId": 708018915,
+    "archive": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-release-20261104/hexalith-memories-release-evidence.tar.gz",
+    "sha256": "b58e599aaf2c61a19256a6f97293b096ff832fe53d3a08c19e114e1ddc8768b8",
+    "verifiedManifestFiles": 123,
+    "setHashIndependentlyRecomputed": true
+  },
+  "nuget": {
+    "packageCount": 10,
+    "memberCount": 136,
+    "repositorySignaturesPassed": 10,
+    "revocationMode": "offline; no fresh online revocation claim",
+    "signedPublicVsUnsignedGithubAllMemberComparisonsPassed": 10,
+    "signatureContentHashNotRawSignedZipHash": true,
+    "inventory": "memories3023-public-nuget-identity.json",
+    "members": "memories3023-nuget-member-inventory.json"
+  },
+  "registry": {
+    "principal": "ci-reader",
+    "mutation": false,
+    "images": 5,
+    "bothArchitecturesManifestsAndConfigsVerified": true,
+    "amd64UniqueLayers": 11,
+    "compressedBytes": 116907602,
+    "allFiveAmd64RootfsDiffIdChainsVerified": true,
+    "arm64LayerBytesNotFetched": true,
+    "staticFinalOverlayFiles": 44,
+    "uniqueManagedAssemblies": 16,
+    "healthEvidence": "retained producer Development smoke/cleanup only, not rerun here",
+    "sourceProvenanceGap": "closed for these measured3.0.23 images only; no retroactive3.0.18 claim"
+  },
+  "declaration": {
+    "sourcePath": "module/hexalith.module-manifest.v2.json",
+    "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
+    "byteIdenticalToCurrentPlatformSnapshot": true,
+    "currentProvenance": {
+      "repository": "Hexalith.Memories",
+      "version": "3.0.18",
+      "commit": "66822bc5bc4858c824f17b7d093f5f0f676b03ea",
+      "source": "module/hexalith.module-manifest.v2.json",
+      "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+    },
+    "normalMetadataAdoptionPossible": true,
+    "sourceVersionUpdateRequiresNormalAuthenticatedCatalogAndPlatformChange": true
+  },
+  "concreteRuntimeBlockers": [
+    {
+      "ownerPath": "src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+      "finding": "EventStoreExtensions package is admitted only in explicit non-publishing hosted-test profile; actual ordinary published domain output and deps omit it",
+      "actualDomainManifest": "sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
+      "domainDllSha256": "f23ea4b45ee8279d4011b64e9de94eb7828d78c0d1b33f04892de8081b02f7ea",
+      "publicAdapter": "Hexalith.Memories.EventStoreExtensions3.0.23 exists with RouteCatalogAdapterSource, Create factory and verified NuGet bytes"
+    },
+    {
+      "ownerPath": "ordinary published server/domain SDK dependencies",
+      "finding": "Actual four SDK DLLs are3.132.2+7c93a123 with different hashes from current Platform4.0.4 finite cohort; version/hash admission cannot be assumed",
+      "sdkFiles": [
+        {
+          "assembly": "Hexalith.EventStore.Client",
+          "version": "3.132.2.0",
+          "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+          "sha256": "b858c8fa9b412f8c0f609a4d45d02b181bf8f251032f92ea86dcfa25a593c3a2"
+        },
+        {
+          "assembly": "Hexalith.EventStore.Contracts",
+          "version": "3.132.2.0",
+          "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+          "sha256": "197f57905405864ebf23692eb7003d820df5bd7338d5462a06f6026a62b4ec81"
+        },
+        {
+          "assembly": "Hexalith.EventStore.DomainService",
+          "version": "3.132.2.0",
+          "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+          "sha256": "069b0433a75b7964447ccef2e9008bda50d81bf5ed8d4bd45372f51e1ca6010a"
+        },
+        {
+          "assembly": "Hexalith.EventStore.ServiceDefaults",
+          "version": "3.132.2.0",
+          "informationalVersion": "3.132.2+7c93a1234d14c66f5ee85ed48caaee1d30a671f3",
+          "sha256": "a6ba3a8dfeef535d1bf20fe5f7dd649f93d1c74c5f273071e6f6f5f4da0d87ba"
+        }
+      ]
+    }
+  ],
+  "actualCompiledSurface": {
+    "domainMainCatalogRegistrationCallPresent": true,
+    "actualSdkFiniteReceiverCallPresent": true,
+    "methodMetadataAndIlOnly": true,
+    "noArtificialBackendLoading": true
+  },
+  "minimumNormalPrerequisites": [
+    "Memories owner must qualify and normally publish a corrected ordinary backend cohort that includes its real intent adapter artifact, preserves catalog/receiver admission and uses a coherent authenticated SDK cohort; do not enable a test-only/source profile for production bytes",
+    "Adopt only the actually qualified released owner source/version/images in Builds catalog and truthful Platform provenance; existing declaration bytes already match, so fabricate no snapshot delta",
+    "Extend finite authenticated Platform package admission/catalog readers to the exact measured full Parties closure, preserving required Memories server/domain/clock/telemetry services, Tenants and Party owner, startup/cutover guards and compatible same-job CI attachment semantics",
+    "Run fresh published-artifact component/catalog equivalence and actual E/P package-native suites/SDK measurements/verified cleanup; then normal matrix and readiness-proven startup/execution cancellation"
+  ],
+  "sourceOrPinEdits": false,
+  "EandPProposalsAndWorktreesUnchanged": true,
+  "servicesStarted": false,
+  "manualLifecycleDispatch": false,
+  "fullCohortQualified": false,
+  "nativeAcceptance": false,
+  "parityAcceptance": false,
+  "candidateAcceptance": false,
+  "privateCache": "/home/administrator/.cache/hexalith/story-2-8/memories-3023-component-20261104",
+  "commands": "memories3023-command-results-index.json",
+  "evidence": [
+    {
+      "path": "memories3023-carrier-file-inventory.json",
+      "sha256": "1e52d1d200f14997b3a45edde107b1a07ce5520f0795810931c470de00615f33",
+      "size": 29852
+    },
+    {
+      "path": "memories3023-carrier-health-declaration-binding.json",
+      "sha256": "ecf557c61822e71f1e9123df824bf331c20ca1bdaadd143e118c60cfa6209818",
+      "size": 4307
+    },
+    {
+      "path": "memories3023-command-results-index.json",
+      "sha256": "880ae4905fd8e60e890838ef8e825b4f15035dc0d40953c0d07570ff993a5e45",
+      "size": 28807
+    },
+    {
+      "path": "memories3023-github-public-nuget-comparison-first.json",
+      "sha256": "6859434dc622187615e1608a538fda372391318fcc7dbbfab3440379da40853e",
+      "size": 3308
+    },
+    {
+      "path": "memories3023-image-application-file-inventory.json",
+      "sha256": "ac839d33673bc1a86c623beb383c994da26a6143cba3e48d00d67ccca0c881b1",
+      "size": 22433
+    },
+    {
+      "path": "memories3023-image-assembly-metadata.json",
+      "sha256": "5bd3413b11030393ff7c512bc2b5a0efd4664d5bc481b9b7eeb0281fee440a1c",
+      "size": 124715
+    },
+    {
+      "path": "memories3023-image-rootfs-linkage.json",
+      "sha256": "db8be83756f6c2106f3dc8adf3b8e40cb781740d8020fc1a94d44b8739ce77e2",
+      "size": 2891
+    },
+    {
+      "path": "memories3023-nuget-member-inventory.json",
+      "sha256": "f81f4d09d249478af639e92efb5a9bc36d4e4e0c00e790eb3aa239a27f5689a8",
+      "size": 28402
+    },
+    {
+      "path": "memories3023-official-publication-identity.json",
+      "sha256": "9170dc8a5eab243edbf61b8f609644cbdf47240c8a10e4d375e8ec740f5c51a8",
+      "size": 34758
+    },
+    {
+      "path": "memories3023-package-image-assembly-comparison.json",
+      "sha256": "69144527ab5bfc0cf85ee86b05605154c1972b0ce5bc815b40809e15e786649e",
+      "size": 2773
+    },
+    {
+      "path": "memories3023-producer-helper-hashes-first.json",
+      "sha256": "9e12719e3f28ac90276534c9f06dba51194c532775fc74f6c33d3816272c860e",
+      "size": 2000
+    },
+    {
+      "path": "memories3023-public-nuget-download-first.json",
+      "sha256": "423831ef93c2768c4ec025f83d52f0e638edb602fe09609e0a862e8bbf22cc5e",
+      "size": 5444
+    },
+    {
+      "path": "memories3023-public-nuget-identity.json",
+      "sha256": "cd9f5ffe95b0d0ac2ba5f8b3bf3ce18c3f48aa67733be7bc01875d8b464ddf5c",
+      "size": 11394
+    },
+    {
+      "path": "memories3023-registry-layers-first.json",
+      "sha256": "c0f57514ef8aec8d8492bf87fbd787949f31a6c5194220bb8d7ecf270a9dc6af",
+      "size": 5698
+    },
+    {
+      "path": "memories3023-registry-manifest-config-first.json",
+      "sha256": "3ee2dd6e8929da914d78d490a400a6a8f8b8d109505e45072f84e62b9c987579",
+      "size": 22237
+    },
+    {
+      "path": "memories3023-signature-verification-first.json",
+      "sha256": "e62abd10d230b12f9e8ba25bc2fe964fcc4eb8cd2cbd8b370ed12250b9fb6d2f",
+      "size": 12524
+    }
+  ],
+  "limitations": [
+    "No real backend run or full Parties acceptance",
+    "Image and NuGet owner DLLs differ despite same source/version labels; static differences are retained and not silently substituted",
+    "PDB source/compilation sections unavailable to dotnet-inspect; metadata and explicit IL inspection succeeded",
+    "arm64 manifest/config verified, layers and static application inspection limited to actual Linux/amd64 target",
+    "Exact per-child HTTP status codes were not persisted; bytes/digest relationships verified",
+    "Package/admission source changes and any new release require normal owner prerequisites; none performed here"
+  ]
+}

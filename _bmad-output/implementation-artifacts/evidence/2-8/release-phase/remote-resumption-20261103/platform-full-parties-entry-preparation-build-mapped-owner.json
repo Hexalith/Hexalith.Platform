@@ -1,0 +1,25 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "-p:HexalithBuildsPublishedToolRoot=/home/administrator/.cache/hexalith/story-2-8/builds-4440-official-20261104/hexalith.builds.module.cli-extracted/tools/net10.0/any",
+    "-warnaserror",
+    "-p:HexalithTenantsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+    "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+    "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli",
+    "-p:HexalithPolymorphicSerializationsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.PolymorphicSerializations"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "startedAt": "2026-11-04T08:22:10.018813+00:00",
+  "finishedAt": "2026-11-04T08:22:16.912724+00:00",
+  "exitCode": 0,
+  "configuration": "Release/package; unchanged accepted genuine4.44.0 tuple"
+}

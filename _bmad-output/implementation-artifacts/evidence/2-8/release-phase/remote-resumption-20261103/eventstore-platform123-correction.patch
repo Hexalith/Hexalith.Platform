@@ -1,0 +1,39 @@
+diff --git a/docs/ci.md b/docs/ci.md
+index fbcde219f..880fb53bc 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -134,13 +134,30 @@ execution inputs. Existing independent jobs and consumer/coverage gates remain.
+ The package-profile bootstrap, v2 workflow and executing public module CLI
+ 4.44.0 now select the same Builds source
+ `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, with genuine released Platform
+-[`v1.2.2`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.2)
+-(`bd0d370d5b2b59f6a9f2f01aa67a34b115055006`). Platform records that exact
++[`v1.2.3`](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.3)
++(`991e2df97dc8493e41096006b0d3203a71730ae8`). Platform records that exact
+ Builds gitlink and tool floor `[4.44.0,5.0.0-0)`. The approved catalog still
+ selects public EventStore 4.0.4, Azure.Core 1.64.0 and
+ Azure.Security.KeyVault.Keys 4.10.2, with catalog blob
+ `ab01a410d9e3d5b626ae7feb8da6ec3c1a0af27b`.
+ 
++Platform 1.2.3 forwards each declared Tenants domain/API app-channel credential
++to `APP_API_TOKEN` on the application and its own sidecar. The API's separate
++`Tenants:ApiDaprToken` still supplies `DAPR_API_TOKEN`. Its source-bound
++[tuple run 41790026906](https://github.com/Hexalith/Hexalith.Platform/actions/runs/41790026906)
++passed all 201 required cases, including the actual unstarted model callbacks
++and SDK missing, wrong and duplicate-token controls. This is component evidence;
++it does not establish a reference native pass.
++
++The prior EventStore revision `005c9cfb0f938214ba889e645f81e389d82476b6`
++[hosted run 41787766444](https://github.com/Hexalith/Hexalith.EventStore/actions/runs/41787766444)
++passed all twenty isolated projects and five independent jobs, then exhausted the
++unchanged 600-second startup bound with `HXR021`. Native facts never ran. Exact
++cleanup verified no remaining owned resources; detailed API exit text was not
++retained. The published 4.44.0 helper's separate lifecycle-diagnostic retention
++gap remains pending a coherent producer adoption. Fresh hosted gateway/persistence
++facts and cleanup remain mandatory after this dependency correction.
++
+ The CLI was published by successful normal Builds release
+ [41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+ It resolves a cold direct-only module from the verified direct Builds checkout,
+Submodule references/Hexalith.Platform bd0d370d5..991e2df97:
+  > fix(composition): bind the Tenants API app-channel token (#21)

@@ -1,0 +1,29 @@
+Running tests from /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+failed Hexalith.Parties.Ci.Tests.GeneratedBuildsCheckoutTests.WorkflowCheckoutPreservesStrictSourceCleanliness (1s 045ms)
+  from /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : Status(root)
+      should be empty but was
+  "?? .hexalith/"
+  
+  Additional Info:
+      The exact generated helper checkout must not make the trusted caller dirty.
+    at Hexalith.Parties.Ci.Tests.GeneratedBuildsCheckoutTests.WorkflowCheckoutPreservesStrictSourceCleanliness() in /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/GeneratedBuildsCheckoutTests.cs:39
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Standard output
+    Actual local workflow checkout: Builds=ae68c59bd2f4145a23ccf68c3711f98eaf62195f; GitStatus=?? .hexalith/
+    
+  Error output
+/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64) failed with 1 error(s) (1s 564ms)
+Exit code: 2
+
+  In process file artifacts produced:
+    - /home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/generated-builds-checkout/before/before.trx
+
+Test run summary: Failed!
+  total: 1
+  failed: 1
+  succeeded: 0
+  skipped: 0
+  duration: 1s 717ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

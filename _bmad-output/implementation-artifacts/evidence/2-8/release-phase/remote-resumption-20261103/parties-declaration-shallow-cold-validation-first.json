@@ -1,0 +1,91 @@
+{
+  "coldRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/declaration-cold-shallow-20261103",
+  "commands": [
+    {
+      "name": "tool-restore",
+      "command": [
+        "dotnet",
+        "tool",
+        "restore"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T21:01:52.822212+00:00",
+      "completedAt": "2026-11-03T21:01:53.010953+00:00",
+      "durationSeconds": 0.189
+    },
+    {
+      "name": "tool-version",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "--version"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T21:01:53.011103+00:00",
+      "completedAt": "2026-11-03T21:01:53.217838+00:00",
+      "durationSeconds": 0.207
+    },
+    {
+      "name": "four-manifest",
+      "command": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "validate",
+        "--manifest",
+        "module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json",
+        "--manifest",
+        "references/Hexalith.Memories/module/hexalith.module-manifest.v2.json"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T21:01:53.218016+00:00",
+      "completedAt": "2026-11-03T21:01:53.578284+00:00",
+      "durationSeconds": 0.36
+    },
+    {
+      "name": "generator",
+      "command": [
+        "python3",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T21:01:53.578464+00:00",
+      "completedAt": "2026-11-03T21:01:53.605890+00:00",
+      "durationSeconds": 0.027
+    },
+    {
+      "name": "declaration",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_platform_declaration.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "startedAt": "2026-11-03T21:01:53.606061+00:00",
+      "completedAt": "2026-11-03T21:01:54.452931+00:00",
+      "durationSeconds": 0.847
+    }
+  ],
+  "signatureRevocationMode": "offline",
+  "packageCache": "task private official cache; tool cache reused and independently hash-verified",
+  "localOnly": true,
+  "nativeExecution": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "name": "ui-corrected",
+    "command": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:48:30.323738+00:00",
+    "completedAt": "2026-11-04T11:48:43.543808+00:00"
+  },
+  {
+    "name": "ui-controls",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:48:43.544152+00:00",
+    "completedAt": "2026-11-04T11:48:49.097067+00:00"
+  },
+  {
+    "name": "admin-controls",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:48:49.097373+00:00",
+    "completedAt": "2026-11-04T11:48:53.081439+00:00"
+  },
+  {
+    "name": "consumer-controls",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:48:53.081750+00:00",
+    "completedAt": "2026-11-04T11:48:56.390748+00:00"
+  },
+  {
+    "name": "fc-policy",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:48:56.391062+00:00",
+    "completedAt": "2026-11-04T11:48:58.590389+00:00"
+  }
+]

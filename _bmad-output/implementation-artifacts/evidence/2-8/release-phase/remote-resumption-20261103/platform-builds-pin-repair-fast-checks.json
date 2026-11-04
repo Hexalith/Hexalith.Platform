@@ -1,0 +1,27 @@
+{
+  "commitlintVersion": "21.2.4",
+  "results": [
+    {
+      "command": [
+        "/home/administrator/.nvm/versions/node/v24.22.1/bin/node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-commit-message.txt",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "output": "\u29d7   --- input ---\nfix(build): restore the verified Builds gitlink\n\u2714   found 0 problems, 0 warnings\n"
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=cr-at-eol",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": ""
+    }
+  ]
+}

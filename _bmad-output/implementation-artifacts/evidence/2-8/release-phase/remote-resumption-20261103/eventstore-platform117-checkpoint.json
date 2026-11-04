@@ -1,0 +1,152 @@
+{
+  "observedAt": "2026-11-03T19:56:03.861502+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "base": "50a5b81a08a35bd231e2139d8977cc6a713daaa9",
+  "head": "107679d27313c6083472b7ce6c05f155028df53c",
+  "branch": "fix/adopt-platform-117",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/eventstore-platform117-adoption-20261103/Hexalith.EventStore",
+  "sourceClean": true,
+  "pr": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+  "changedPaths": [
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs"
+  ],
+  "tuple": {
+    "platformVersion": "1.1.7",
+    "platformTag": "v1.1.7",
+    "platformSource": "ed1560a57f4d4cb55b6b03f485cbfa01316837a7",
+    "buildsSourceAndWorkflow": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "moduleTool": "4.43.6",
+    "existingExactToolAndGitlinksUnchanged": true
+  },
+  "sourceHistory": {
+    "originalBase": "6c8aa5bbe77745d951cb70fc7cfcc98cff422d25",
+    "commits": [
+      "4316feabaf4fbfe24dbe1172d2c9bcf30d4a3533",
+      "fabf7ab40c7e646dba057f599127271d2c38105d",
+      "107679d27313c6083472b7ce6c05f155028df53c"
+    ],
+    "incomingNetTreeChange": false,
+    "normalMergeReceipt": "eventstore-platform117-incoming-main-merge.json",
+    "firstPrePushDrift": "eventstore-platform117-pre-push-main-drift.json",
+    "finalTreeEqualsValidatedFab": true
+  },
+  "preservation": {
+    "isolatedProjects": 20,
+    "wholeUnfilteredProjectListUnchanged": true,
+    "independentJobsAndOnlyReaderTwoSecretsUnchanged": true,
+    "moduleManifestAndProfilesUnchanged": true,
+    "humanApprovalAndLedgerFiles": "unchanged",
+    "allOtherIncomingSourceAndGitlinks": "unchanged",
+    "PR60AndWorktrees": "untouched",
+    "proof": "eventstore-platform117-source-preservation.json"
+  },
+  "localResults": {
+    "actualTrx": {
+      "caller": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-caller.trx",
+        "sha256": "7d4f115577e861ef164a885eed225065701117509e2ab7b86dcdcf6133d98e75",
+        "counters": {
+          "total": "3",
+          "executed": "3",
+          "passed": "3",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      },
+      "retentionIo": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-retentionIo.trx",
+        "sha256": "c289ad34b40b8f0c75918e86123aeba8ede44c9c517a6075a9bd3069e84636e1",
+        "counters": {
+          "total": "2",
+          "executed": "2",
+          "passed": "2",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      },
+      "missingDescriptor": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-missingDescriptor.trx",
+        "sha256": "fd810ebf3e9a2082a4f5b66c3e9d8dc27721cf01dc972db4ad3d956e5f6127c5",
+        "counters": {
+          "total": "2",
+          "executed": "2",
+          "passed": "0",
+          "failed": "2",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      }
+    },
+    "releasePackageBuilds": "Contracts and native fixture passed0warnings/errors; final same-tree fixture passed",
+    "cleanReleasedPreparation": "eventstore-platform117-current-main-preparation.json",
+    "earlierExactFabSourcePrepAndBuild": "eventstore-platform117-final-source-validation.json",
+    "actionlintWhitespaceLocked21_2_4": "passed; eventstore-platform117-fast-checks.json and retention-fast-checks.json",
+    "actualExecutingSignedToolContent": "eventstore-platform117-executing-tool-content.json"
+  },
+  "nativeDiagnostics": {
+    "source": "NativeAssemblyObservations.Write only after actual real gateway/Redis end-state assertions",
+    "scope": "assemblies actually already loaded in real native test process; no artificial load or claim about other processes",
+    "retention": "bounded64KiB JSON, private0600/CreateNew/non-linked TestResults/module-integration/loaded-assemblies-<actualOwner>.json and TRX stdout",
+    "actualRunBindings": [
+      "repository",
+      "revision",
+      "workflowRunId",
+      "workflowAttempt",
+      "jobId",
+      "ownerRunId"
+    ],
+    "functionalObservationSchemaOrProductionApiChange": false,
+    "officialT7CacheDllSha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+    "realLoadedMeasurement": "pending actual hosted native execution, never inferred from cache/manifest/local I/O"
+  },
+  "hostedInitial": "eventstore-platform117-hosted-initial.json",
+  "requiredNativeTests": [
+    "GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync",
+    "GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync"
+  ],
+  "ioControlsCannotSubstituteForRealNativeTests": true,
+  "remaining": [
+    "actual hosted20 isolated projects and independent gates",
+    "actual real native gateway/persistence tests plus retained loaded SDK measurement and official comparison",
+    "receipt-bound verified cleanup; unknown/failure/not-allocated remains non-success",
+    "parent normal gate/merge coordination; no merge/tag/release/approval/run manipulation by agent"
+  ],
+  "candidateAcceptance": false
+}

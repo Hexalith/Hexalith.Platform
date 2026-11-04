@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-11-03T18:06:31.846Z",
+  "number": 17,
+  "url": "https://github.com/Hexalith/Hexalith.Platform/pull/17",
+  "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+  "base": "ddf49bec88fd26d44ecd1b60238330989298cfbd",
+  "author": {
+    "login": "jpiquot",
+    "id": 6775094
+  },
+  "branch": "fix/restore-builds-4436-gitlink",
+  "title": "fix(build): restore the verified Builds gitlink",
+  "body": "Incoming main `ddf49bec88fd26d44ecd1b60238330989298cfbd` moved the Builds gitlink back to `89f6205` while the approved 4.43.6 tuple/tool/floor still require `725754075e1d6369430a3adf94d46fb71e6eaf9e`. Clean recorded preparation correctly refuses that mismatch before allocation. Restore only the gitlink to the already published and reviewed revision.\n\nAll 208 incoming Story 2.8 artifact/spec/index blobs and modes are preserved. The entire non-story Git tree at `91b49bc9b966a060233ca5fedfb2b656e81dab55` matches reviewed `942472bc875f08d600cbef5b74e45b3cae175587`; no tuple values, declarations or other pointers change.\n\nValidation: 19/19 tuple and 15/15 resolution controls; supported clean-recorded official signed 4.43.6 preparation (offline signature revocation); supported 30-project Release/package graph audit; whitespace and locked commitlint 21.2.4. Fresh exact-head tuple preflight and automatic four-SDK catalog checks remain pending until their actual results are observed. Normal code-owner review/release gates remain required; no native/lifecycle/candidate acceptance.",
+  "changedFiles": 1,
+  "state": "open",
+  "draft": false
+}

@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-04T05:59:48.363241+00:00",
+  "helperSourceSha256": "f2fce45ac998336e7e83f1836f5c499a395a71c1c70820ec2951ee2a10dc4572",
+  "scope": "Actual fork/file/SIGKILL collection IO regression only; no services, no GitHub job identity fabricated, no native acceptance.",
+  "interruption": "SIGKILL child immediately after actual atomic os.link publication, before temporary unlink/finally",
+  "childSignal": "SIGKILL",
+  "publishedBytesCompleteAndHashCorrect": true,
+  "publishedLinkCount": 2,
+  "privateTemporaryLinksRemaining": [
+    ".diagnostic-573861b2c23445f181d7f218c59d4e8d.tmp"
+  ],
+  "identicalRetry": {
+    "accepted": false,
+    "exception": "ValueError",
+    "message": "declared diagnostic is not a bounded private regular file"
+  },
+  "cause": "Published final file and orphan temp are hard links; strict one-link check permanently rejects otherwise valid identical retry.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

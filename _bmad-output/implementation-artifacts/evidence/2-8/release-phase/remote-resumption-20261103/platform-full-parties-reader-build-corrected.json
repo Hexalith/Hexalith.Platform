@@ -1,0 +1,31 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-component-20261104/reader/Hexalith.Platform.CatalogBuilder.csproj",
+    "-c",
+    "Release",
+    "--output",
+    "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-component-20261104/reader/output",
+    "-m:1",
+    "-nr:false",
+    "--disable-build-servers",
+    "-warnaserror",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:CentralPackageVersionsFileImported=true",
+    "-p:HexalithBuildsRoot=/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/references/Hexalith.Builds",
+    "-p:HexalithEventStoreVersion=4.0.4",
+    "-p:HexalithTenantsVersion=7.0.0",
+    "-p:HexalithMemoriesVersion=3.0.23",
+    "-p:HexalithPartiesVersion=3.0.0",
+    "-p:RestoreAdditionalProjectSources=/home/administrator/.cache/hexalith/story-2-8/full-owner-component-20261104/feed",
+    "-p:RestoreSources=https://api.nuget.org/v3/index.json"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "started": "2026-11-04T07:38:34.291623+00:00",
+  "finished": "2026-11-04T07:38:36.453199+00:00",
+  "exitCode": 0,
+  "componentOnly": true,
+  "acceptedTupleChanged": false
+}

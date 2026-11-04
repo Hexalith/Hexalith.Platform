@@ -1,0 +1,307 @@
+﻿2026-11-03T20:49:37.7150269Z Current runner version: '2.338.2'
+2026-11-03T20:49:37.7178459Z ##[group]Runner Image Provisioner
+2026-11-03T20:49:37.7179487Z Hosted Compute Agent
+2026-11-03T20:49:37.7180130Z Version: 20261021.618
+2026-11-03T20:49:37.7180801Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-03T20:49:37.7181549Z Build Date: 2026-10-21T00:45:21Z
+2026-11-03T20:49:37.7182226Z Worker ID: {b26ae24b-281e-4df1-991d-5e88628c1d40}
+2026-11-03T20:49:37.7182971Z Region: westus
+2026-11-03T20:49:37.7183544Z Cloud: Azure
+2026-11-03T20:49:37.7184057Z ##[endgroup]
+2026-11-03T20:49:37.7186437Z ##[group]Operating System
+2026-11-03T20:49:37.7187091Z Ubuntu
+2026-11-03T20:49:37.7187768Z 24.04.5
+2026-11-03T20:49:37.7188325Z LTS
+2026-11-03T20:49:37.7188819Z ##[endgroup]
+2026-11-03T20:49:37.7189433Z ##[group]Runner Image
+2026-11-03T20:49:37.7190036Z Image: ubuntu-24.04
+2026-11-03T20:49:37.7190625Z Version: 20261025.353.1
+2026-11-03T20:49:37.7191979Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-03T20:49:37.7193603Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-03T20:49:37.7194825Z ##[endgroup]
+2026-11-03T20:49:37.7196067Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T20:49:37.7198021Z Contents: read
+2026-11-03T20:49:37.7198709Z Metadata: read
+2026-11-03T20:49:37.7199336Z ##[endgroup]
+2026-11-03T20:49:37.7201474Z Secret source: Actions
+2026-11-03T20:49:37.7202567Z Cache mode: write
+2026-11-03T20:49:37.7203275Z Prepare workflow directory
+2026-11-03T20:49:37.7615070Z Prepare all required actions
+2026-11-03T20:49:37.7671251Z Getting action download info
+2026-11-03T20:49:38.1497934Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-03T20:49:38.2742438Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-03T20:49:38.7915095Z Complete job name: EventStore 4.0.4 package cohort (offline)
+2026-11-03T20:49:38.8815661Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-03T20:49:38.8817370Z with:
+2026-11-03T20:49:38.8817836Z   submodules: false
+2026-11-03T20:49:38.8818301Z   fetch-depth: 1
+2026-11-03T20:49:38.8818811Z   repository: Hexalith/Hexalith.Parties
+2026-11-03T20:49:38.8822527Z   token: ***
+2026-11-03T20:49:38.8822974Z   ssh-strict: true
+2026-11-03T20:49:38.8823429Z   ssh-user: git
+2026-11-03T20:49:38.8823884Z   persist-credentials: true
+2026-11-03T20:49:38.8824730Z   clean: true
+2026-11-03T20:49:38.8825202Z   sparse-checkout-cone-mode: true
+2026-11-03T20:49:38.8825743Z   fetch-tags: false
+2026-11-03T20:49:38.8826200Z   show-progress: true
+2026-11-03T20:49:38.8826663Z   lfs: false
+2026-11-03T20:49:38.8827108Z   set-safe-directory: true
+2026-11-03T20:49:38.8827621Z   allow-unsafe-pr-checkout: false
+2026-11-03T20:49:38.8828488Z ##[endgroup]
+2026-11-03T20:49:39.1936004Z Syncing repository: Hexalith/Hexalith.Parties
+2026-11-03T20:49:39.1939302Z ##[group]Getting Git version info
+2026-11-03T20:49:39.1940872Z Working directory is '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T20:49:39.1943064Z [command]/usr/bin/git version
+2026-11-03T20:49:39.2038185Z git version 2.56.0
+2026-11-03T20:49:39.2061027Z ##[endgroup]
+2026-11-03T20:49:39.2073146Z Temporarily overriding HOME='/home/runner/work/_temp/5d0241ed-20c8-4b3c-84f2-b9a9c7bc30b4' before making global git config changes
+2026-11-03T20:49:39.2076626Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:49:39.2081339Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:49:39.2153670Z Deleting the contents of '/home/runner/work/Hexalith.Parties/Hexalith.Parties'
+2026-11-03T20:49:39.2158003Z ##[group]Determining repository object format
+2026-11-03T20:49:39.2159630Z ##[endgroup]
+2026-11-03T20:49:39.2161335Z ##[group]Initializing the repository
+2026-11-03T20:49:39.2165118Z [command]/usr/bin/git init /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:49:39.2299203Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T20:49:39.2301396Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T20:49:39.2303144Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T20:49:39.2304969Z hint: call:
+2026-11-03T20:49:39.2306089Z hint:
+2026-11-03T20:49:39.2307535Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T20:49:39.2308336Z hint:
+2026-11-03T20:49:39.2308984Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T20:49:39.2310649Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T20:49:39.2312077Z hint:
+2026-11-03T20:49:39.2312883Z hint: 	git branch -m <name>
+2026-11-03T20:49:39.2313750Z hint:
+2026-11-03T20:49:39.2315274Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T20:49:39.2317649Z Initialized empty Git repository in /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/
+2026-11-03T20:49:39.2327310Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T20:49:39.2381296Z ##[endgroup]
+2026-11-03T20:49:39.2382927Z ##[group]Disabling automatic garbage collection
+2026-11-03T20:49:39.2385339Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T20:49:39.2425084Z ##[endgroup]
+2026-11-03T20:49:39.2427467Z ##[group]Setting up auth
+2026-11-03T20:49:39.2428627Z Removing SSH command configuration
+2026-11-03T20:49:39.2432447Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:49:39.2920383Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:49:39.2924673Z Removing HTTP extra header
+2026-11-03T20:49:39.2928404Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:49:39.2975178Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:49:39.3222442Z Removing includeIf entries pointing to credentials config files
+2026-11-03T20:49:39.3228148Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:49:39.3273822Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T20:49:39.3516727Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T20:49:39.3566750Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path /home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:49:39.3611250Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:49:39.3654011Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:49:39.3700613Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:49:39.3741657Z ##[endgroup]
+2026-11-03T20:49:39.3742473Z ##[group]Fetching the repository
+2026-11-03T20:49:39.3750318Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b1f400ec068d589ea2c52d59d13b6e64b01736a2:refs/remotes/pull/61/merge
+2026-11-03T20:49:41.4543592Z From https://github.com/Hexalith/Hexalith.Parties
+2026-11-03T20:49:41.4545867Z  * [new ref]         b1f400ec068d589ea2c52d59d13b6e64b01736a2 -> pull/61/merge
+2026-11-03T20:49:41.4549221Z ##[endgroup]
+2026-11-03T20:49:41.4550716Z ##[group]Determining the checkout info
+2026-11-03T20:49:41.4551432Z ##[endgroup]
+2026-11-03T20:49:41.4556126Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T20:49:41.4625694Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T20:49:41.4670376Z ##[group]Checking out the ref
+2026-11-03T20:49:41.4675215Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/61/merge
+2026-11-03T20:49:42.1958979Z Note: switching to 'refs/remotes/pull/61/merge'.
+2026-11-03T20:49:42.1959680Z 
+2026-11-03T20:49:42.1960168Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T20:49:42.1961574Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T20:49:42.1962962Z state without impacting any branches by switching back to a branch.
+2026-11-03T20:49:42.1963889Z 
+2026-11-03T20:49:42.1964720Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T20:49:42.1965761Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T20:49:42.1966336Z 
+2026-11-03T20:49:42.1966638Z   git switch -c <new-branch-name>
+2026-11-03T20:49:42.1967100Z 
+2026-11-03T20:49:42.1967456Z Or undo this operation with:
+2026-11-03T20:49:42.1967975Z 
+2026-11-03T20:49:42.1968243Z   git switch -
+2026-11-03T20:49:42.1968678Z 
+2026-11-03T20:49:42.1969339Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T20:49:42.1970365Z 
+2026-11-03T20:49:42.1971459Z HEAD is now at b1f400e Merge 126acd2d7ab08ad614ede09b0cb931573b053a03 into 6795536e3fe5fd4cf44eb5f4c67e69f3374532b4
+2026-11-03T20:49:42.2000735Z ##[endgroup]
+2026-11-03T20:49:42.2068580Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T20:49:42.2111398Z b1f400ec068d589ea2c52d59d13b6e64b01736a2
+2026-11-03T20:49:42.2465604Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+2026-11-03T20:49:42.2466391Z with:
+2026-11-03T20:49:42.2466775Z   global-json-file: global.json
+2026-11-03T20:49:42.2467203Z   cache: false
+2026-11-03T20:49:42.2467544Z ##[endgroup]
+2026-11-03T20:49:42.3942220Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-03T20:49:42.6551988Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-03T20:49:42.6578497Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-03T20:49:42.8421777Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-03T20:49:42.8599808Z ##[group]Run git -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.Builds
+2026-11-03T20:49:42.8600742Z [36;1mgit -c submodule.recurse=false submodule update --init --depth 1 --checkout -- references/Hexalith.Builds[0m
+2026-11-03T20:49:42.8601367Z [36;1mgit submodule status -- references/Hexalith.Builds[0m
+2026-11-03T20:49:42.8627877Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:49:42.8628139Z env:
+2026-11-03T20:49:42.8628358Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:49:42.8628619Z ##[endgroup]
+2026-11-03T20:49:42.8945453Z Submodule 'Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+2026-11-03T20:49:42.8972711Z Cloning into '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds'...
+2026-11-03T20:49:45.1248178Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-03T20:49:45.1249318Z  * branch            725754075e1d6369430a3adf94d46fb71e6eaf9e -> FETCH_HEAD
+2026-11-03T20:49:45.4065963Z Submodule path 'references/Hexalith.Builds': checked out '725754075e1d6369430a3adf94d46fb71e6eaf9e'
+2026-11-03T20:49:45.4429160Z  725754075e1d6369430a3adf94d46fb71e6eaf9e references/Hexalith.Builds (7257540)
+2026-11-03T20:49:45.4477536Z ##[group]Run package_properties=(
+2026-11-03T20:49:45.4477924Z [36;1mpackage_properties=([0m
+2026-11-03T20:49:45.4478222Z [36;1m  -p:HexalithEventStoreVersion=4.0.4[0m
+2026-11-03T20:49:45.4478559Z [36;1m  -p:HexalithTenantsVersion=5.11.2[0m
+2026-11-03T20:49:45.4478872Z [36;1m  -p:HexalithMemoriesVersion=3.0.11[0m
+2026-11-03T20:49:45.4479227Z [36;1m  -p:UseHexalithProjectReferences=false[0m
+2026-11-03T20:49:45.4479531Z [36;1m  -p:UseNuGetDeps=true[0m
+2026-11-03T20:49:45.4479792Z [36;1m  -p:EventStoreFromSource=false[0m
+2026-11-03T20:49:45.4480115Z [36;1m  -p:HexalithEventStoreFromSource=false[0m
+2026-11-03T20:49:45.4480430Z [36;1m  -p:HexalithTenantsFromSource=false[0m
+2026-11-03T20:49:45.4480745Z [36;1m  -p:HexalithMemoriesFromSource=false[0m
+2026-11-03T20:49:45.4481081Z [36;1m  -p:HexalithCommonsFromSource=false[0m
+2026-11-03T20:49:45.4481408Z [36;1m  -p:HexalithCommonsHttpFromSource=false[0m
+2026-11-03T20:49:45.4481758Z [36;1m  -p:HexalithMcpCliFromSource=false[0m
+2026-11-03T20:49:45.4482139Z [36;1m  -p:RestoreSources=https://api.nuget.org/v3/index.json[0m
+2026-11-03T20:49:45.4482475Z [36;1m)[0m
+2026-11-03T20:49:45.4482822Z [36;1m# Compile the actual owners; this job never starts a private runtime or topology.[0m
+2026-11-03T20:49:45.4483245Z [36;1mfor project in \[0m
+2026-11-03T20:49:45.4483614Z [36;1m  src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj \[0m
+2026-11-03T20:49:45.4484559Z [36;1m  src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj \[0m
+2026-11-03T20:49:45.4485153Z [36;1m  src/Hexalith.Parties/Hexalith.Parties.csproj \[0m
+2026-11-03T20:49:45.4485774Z [36;1m  tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj \[0m
+2026-11-03T20:49:45.4486365Z [36;1m  tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj; do[0m
+2026-11-03T20:49:45.4487076Z [36;1m  dotnet build "$project" --configuration Release --disable-build-servers -m:1 -warnaserror "${package_properties[@]}"[0m
+2026-11-03T20:49:45.4487642Z [36;1mdone[0m
+2026-11-03T20:49:45.4488092Z [36;1mdotnet test --project tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj \[0m
+2026-11-03T20:49:45.4488748Z [36;1m  --no-build --no-restore --configuration Release "${package_properties[@]}" \[0m
+2026-11-03T20:49:45.4489309Z [36;1m  --filter-class Hexalith.Parties.Contracts.Tests.PartiesCatalogTests \[0m
+2026-11-03T20:49:45.4489899Z [36;1m  --filter-class Hexalith.Parties.Contracts.Tests.PartiesCatalogAdapterTests \[0m
+2026-11-03T20:49:45.4490394Z [36;1m  --minimum-expected-tests 3 --fail-skips on[0m
+2026-11-03T20:49:45.4490896Z [36;1mdotnet test --project tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj \[0m
+2026-11-03T20:49:45.4491508Z [36;1m  --no-build --no-restore --configuration Release "${package_properties[@]}" \[0m
+2026-11-03T20:49:45.4492316Z [36;1m  --filter-method Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts \[0m
+2026-11-03T20:49:45.4493044Z [36;1m  --minimum-expected-tests 22 --fail-skips on[0m
+2026-11-03T20:49:45.4516476Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-03T20:49:45.4516828Z env:
+2026-11-03T20:49:45.4517034Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-03T20:49:45.4517284Z ##[endgroup]
+2026-11-03T20:49:51.3457308Z   Determining projects to restore...
+2026-11-03T20:49:52.9111163Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/Hexalith.Parties.Contracts.csproj (in 843 ms).
+2026-11-03T20:49:59.2713242Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T20:49:59.2966961Z 
+2026-11-03T20:49:59.2974514Z Build succeeded.
+2026-11-03T20:49:59.2975628Z     0 Warning(s)
+2026-11-03T20:49:59.2975987Z     0 Error(s)
+2026-11-03T20:49:59.2976713Z 
+2026-11-03T20:49:59.2977357Z Time Elapsed 00:00:09.72
+2026-11-03T20:49:59.9865603Z   Determining projects to restore...
+2026-11-03T20:50:02.0595500Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/Hexalith.Parties.EventStoreExtensions.csproj (in 1.62 sec).
+2026-11-03T20:50:02.0637431Z   1 of 2 projects are up-to-date for restore.
+2026-11-03T20:50:02.5778055Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T20:50:05.4082381Z   Hexalith.Parties.EventStoreExtensions -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/bin/Release/net10.0/Hexalith.Parties.EventStoreExtensions.dll
+2026-11-03T20:50:05.4180203Z 
+2026-11-03T20:50:05.4186633Z Build succeeded.
+2026-11-03T20:50:05.4187752Z     0 Warning(s)
+2026-11-03T20:50:05.4188125Z     0 Error(s)
+2026-11-03T20:50:05.4188889Z 
+2026-11-03T20:50:05.4189385Z Time Elapsed 00:00:05.83
+2026-11-03T20:50:06.3312303Z   Determining projects to restore...
+2026-11-03T20:50:07.3099571Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/Hexalith.Parties.Authentication.csproj (in 312 ms).
+2026-11-03T20:50:07.3258400Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Projections/Hexalith.Parties.Projections.csproj (in 338 ms).
+2026-11-03T20:50:07.6396274Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Security/Hexalith.Parties.Security.csproj (in 576 ms).
+2026-11-03T20:50:08.1642241Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties/Hexalith.Parties.csproj (in 1.18 sec).
+2026-11-03T20:50:08.1677579Z   1 of 5 projects are up-to-date for restore.
+2026-11-03T20:50:08.8545907Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T20:50:10.9366520Z   Hexalith.Parties.Authentication -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Authentication/bin/Release/net10.0/Hexalith.Parties.Authentication.dll
+2026-11-03T20:50:15.1530703Z   Hexalith.Parties.Projections -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Projections/bin/Release/net10.0/Hexalith.Parties.Projections.dll
+2026-11-03T20:50:18.6168045Z   Hexalith.Parties.Security -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Security/bin/Release/net10.0/Hexalith.Parties.Security.dll
+2026-11-03T20:50:24.9149544Z   Hexalith.Parties -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties/bin/Release/net10.0/Hexalith.Parties.dll
+2026-11-03T20:50:24.9214832Z 
+2026-11-03T20:50:24.9221103Z Build succeeded.
+2026-11-03T20:50:24.9221848Z     0 Warning(s)
+2026-11-03T20:50:24.9222194Z     0 Error(s)
+2026-11-03T20:50:24.9223387Z 
+2026-11-03T20:50:24.9223650Z Time Elapsed 00:00:19.21
+2026-11-03T20:50:25.5830216Z   Determining projects to restore...
+2026-11-03T20:50:27.2182381Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/Hexalith.Parties.Catalog.Tests.csproj (in 1.12 sec).
+2026-11-03T20:50:27.2219334Z   2 of 3 projects are up-to-date for restore.
+2026-11-03T20:50:27.8011315Z   Hexalith.Parties.Contracts -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.Contracts/bin/Release/net10.0/Hexalith.Parties.Contracts.dll
+2026-11-03T20:50:27.9494063Z   Hexalith.Parties.EventStoreExtensions -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/src/Hexalith.Parties.EventStoreExtensions/bin/Release/net10.0/Hexalith.Parties.EventStoreExtensions.dll
+2026-11-03T20:50:30.1853514Z   Hexalith.Parties.Catalog.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/bin/Release/net10.0/Hexalith.Parties.Catalog.Tests.dll
+2026-11-03T20:50:30.2076374Z 
+2026-11-03T20:50:30.2082214Z Build succeeded.
+2026-11-03T20:50:30.2083221Z     0 Warning(s)
+2026-11-03T20:50:30.2083575Z     0 Error(s)
+2026-11-03T20:50:30.2084429Z 
+2026-11-03T20:50:30.2085005Z Time Elapsed 00:00:05.01
+2026-11-03T20:50:30.8803316Z   Determining projects to restore...
+2026-11-03T20:50:31.8293944Z   Restored /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj (in 582 ms).
+2026-11-03T20:50:36.2625461Z   Hexalith.Parties.Ci.Tests -> /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll
+2026-11-03T20:50:36.2779758Z 
+2026-11-03T20:50:36.2786774Z Build succeeded.
+2026-11-03T20:50:36.2787276Z     0 Warning(s)
+2026-11-03T20:50:36.2787630Z     0 Error(s)
+2026-11-03T20:50:36.2789154Z 
+2026-11-03T20:50:36.2789468Z Time Elapsed 00:00:05.79
+2026-11-03T20:50:37.1709961Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/bin/Release/net10.0/Hexalith.Parties.Catalog.Tests.dll (net10.0|x64)
+2026-11-03T20:50:38.1295895Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Catalog.Tests/bin/Release/net10.0/Hexalith.Parties.Catalog.Tests.dll (net10.0|x64) [32mpassed[m [90m(960ms)[m
+2026-11-03T20:50:38.1374485Z 
+2026-11-03T20:50:38.1377011Z [32mTest run summary: Passed!
+2026-11-03T20:50:38.1382572Z [m  total: 3
+2026-11-03T20:50:38.1382958Z   failed: 0
+2026-11-03T20:50:38.1383463Z [32m  succeeded: 3
+2026-11-03T20:50:38.1383914Z [m  skipped: 0
+2026-11-03T20:50:38.1384690Z   duration: 1s 240ms
+2026-11-03T20:50:38.9932671Z Running tests from /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64)
+2026-11-03T20:50:51.4830595Z [m/home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/bin/Release/net10.0/Hexalith.Parties.Ci.Tests.dll (net10.0|x64) [32mpassed[m [90m(12s 491ms)[m
+2026-11-03T20:50:51.4911524Z 
+2026-11-03T20:50:51.4913762Z [32mTest run summary: Passed!
+2026-11-03T20:50:51.4918882Z [m  total: 22
+2026-11-03T20:50:51.4919239Z   failed: 0
+2026-11-03T20:50:51.4919646Z [32m  succeeded: 22
+2026-11-03T20:50:51.4920045Z [m  skipped: 0
+2026-11-03T20:50:51.4920359Z   duration: 12s 760ms
+2026-11-03T20:50:51.5179352Z Post job cleanup.
+2026-11-03T20:50:51.6573648Z Post job cleanup.
+2026-11-03T20:50:51.7534287Z [command]/usr/bin/git version
+2026-11-03T20:50:51.7588747Z git version 2.56.0
+2026-11-03T20:50:51.7630235Z Temporarily overriding HOME='/home/runner/work/_temp/ca8858dc-15cf-4601-9146-925ad9b230bd' before making global git config changes
+2026-11-03T20:50:51.7631902Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:50:51.7637821Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Parties/Hexalith.Parties
+2026-11-03T20:50:51.7710219Z Removing SSH command configuration
+2026-11-03T20:50:51.7711363Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:50:51.7748533Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:50:51.8035412Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:50:51.8119725Z Removing HTTP extra header
+2026-11-03T20:50:51.8120913Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:50:51.8201723Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:50:51.8574749Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:50:51.8661792Z Removing includeIf entries pointing to credentials config files
+2026-11-03T20:50:51.8673525Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:50:51.8725641Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T20:50:51.8726999Z includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T20:50:51.8728053Z includeif.gitdir:/github/workspace/.git.path
+2026-11-03T20:50:51.8728948Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T20:50:51.8739240Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path
+2026-11-03T20:50:51.8783468Z /home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:50:51.8796403Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-834c53a4\-8be0\-4691\-98e3\-8d7c3d0e8199\.config
+2026-11-03T20:50:51.8852690Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path
+2026-11-03T20:50:51.8904395Z /home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:50:51.8913476Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-834c53a4\-8be0\-4691\-98e3\-8d7c3d0e8199\.config
+2026-11-03T20:50:51.8964064Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-03T20:50:51.9003587Z /github/runner_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:50:51.9013240Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-834c53a4\-8be0\-4691\-98e3\-8d7c3d0e8199\.config
+2026-11-03T20:50:51.9063888Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-03T20:50:51.9102447Z /github/runner_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config
+2026-11-03T20:50:51.9127586Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-834c53a4\-8be0\-4691\-98e3\-8d7c3d0e8199\.config
+2026-11-03T20:50:51.9165634Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T20:50:51.9424796Z Entering 'references/Hexalith.Builds'
+2026-11-03T20:50:51.9449798Z file:/home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config	remote.origin.url
+2026-11-03T20:50:51.9491885Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Parties/Hexalith.Parties/.git/modules/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T20:50:51.9536197Z Removing credentials config '/home/runner/work/_temp/git-credentials-834c53a4-8be0-4691-98e3-8d7c3d0e8199.config'
+2026-11-03T20:50:51.9702589Z Cleaning up orphan processes
+

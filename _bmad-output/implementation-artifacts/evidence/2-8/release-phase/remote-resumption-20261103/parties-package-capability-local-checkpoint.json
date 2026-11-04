@@ -1,0 +1,298 @@
+{
+  "recordedAt": "2026-11-04T11:54:20.670490+00:00",
+  "source": {
+    "recordedAt": "2026-11-04T11:54:20.657636+00:00",
+    "worktree": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+    "branch": "fix/adopt-platform-117",
+    "head": "434b8ac0efb9f798b6f8d29fd851fff490b97732",
+    "parents": [
+      "b7dcd84e5ebdc79f975c3a645727ddf89f199d76"
+    ],
+    "tree": "ac32ce49067657b8f3c862d1f4a759c76f35443a",
+    "base": "3e4367622764118fc2ad710ad1040994ae4cfa49",
+    "remoteTrackingHead": "b7dcd84e5ebdc79f975c3a645727ddf89f199d76",
+    "clean": true,
+    "unpushed": true,
+    "remoteOperationsDuringTask": false,
+    "patches": {
+      "correction": {
+        "file": "parties-package-capability-local-correction.patch",
+        "sha256": "0e970ebcc51682a6fe8da0711f9c1fbd65b308595f74cd5352c38af0b4324093",
+        "bytes": 14325,
+        "paths": [
+          "Directory.Build.targets",
+          "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+          "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+          "tests/e2e/helpers/frontcomposer-assets.ts"
+        ]
+      },
+      "full-proposal": {
+        "file": "parties-package-capability-local-full-proposal.patch",
+        "sha256": "d59a6c822a9ec1d767def2ea0eba4355cbabb42574bd2eb97d6af34700f73a43",
+        "bytes": 106115,
+        "paths": [
+          ".config/dotnet-tools.json",
+          ".github/workflows/ci-lifecycle-qualification.yml",
+          ".github/workflows/ci.yml",
+          ".gitlink-signoff.tsv",
+          "Directory.Build.targets",
+          "README.md",
+          "_bmad-output/implementation-artifacts/story-8-3-platform-api-prerequisite-matrix.md",
+          "docs/architecture.md",
+          "docs/ci-lifecycle-qualification.md",
+          "docs/ci.md",
+          "docs/getting-started.md",
+          "references/Hexalith.Builds",
+          "references/Hexalith.Platform",
+          "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs",
+          "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs",
+          "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs",
+          "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs",
+          "tests/Hexalith.Parties.Tests/FitnessTests/PlatformApiPrerequisitesTests.cs",
+          "tests/e2e/helpers/frontcomposer-assets.ts"
+        ]
+      }
+    },
+    "changedSourceHashes": {
+      "Directory.Build.targets": "34060a7353cb7b6ddca367bbccd43253c0203c907e4a3917571a24e263e48889",
+      "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs": "0ab1efe42721b846dd549f85d53dfc648234b5d1db02d6e99641d87ecf0404a3",
+      "tests/Hexalith.Parties.Ci.Tests/MemoriesRefreshCompilationTests.cs": "e517da0c093d18370530f825ac33430b43d2245c96e930893d0700faf43d8a97",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": "362622666298627c2763f6ed3e3bed90dd7d63260e25dfecd2f8bfac25591a45",
+      "tests/e2e/helpers/frontcomposer-assets.ts": "da14073c3fa3dcef72487472b9d3dd63affa6d17753a184b27a132258f11145b"
+    },
+    "actualLocalTestsRanOnContentBeforeNormalCommit": true,
+    "metadataCommitDoesNotGrantHostedEvidence": true,
+    "candidateAcceptance": false
+  },
+  "scope": "Bounded local correction under sole-spec continuation; no remote/pin/publication/provider/registry actions.",
+  "changes": [
+    "Exact3.0.23 Memories refresh selection with unchanged known/source/unknown branches",
+    "Exact4.7.6 FrontComposer UI+readiness selection with unchanged prior/source/fallback boundaries",
+    "Strict4.7.6 browser asset guard; all four hash comparisons preserved",
+    "Actual evaluated policy controls:16Memorycases/48evaluations and14FCcases",
+    "One anonymous gateway401 native fact using issued descriptor/separate credential-free client and original30sbound"
+  ],
+  "actualTrx": {
+    "memory-rest-after": {
+      "file": "parties-package-capability-local-memory-rest-after.trx",
+      "sha256": "08a659105b3d0e21318eaa648bdfbb932188a2896e4b23f6ae18b368ba2bebd3",
+      "counts": {
+        "total": "27",
+        "executed": "27",
+        "passed": "27",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "memory-safety": {
+      "file": "parties-package-capability-local-memory-safety.trx",
+      "sha256": "aa5bd21e9fe0c1b36eef6fa494d88559663bfe6ad2b9ac0bae55079bb02b5638",
+      "counts": {
+        "total": "111",
+        "executed": "111",
+        "passed": "111",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "combined-policy": {
+      "file": "parties-package-capability-local-combined-policy.trx",
+      "sha256": "92eb264f3e055a13d7a108a6fcce26e52dba4851a20ccfd2e2065bbd5addc6a7",
+      "counts": {
+        "total": "16",
+        "executed": "16",
+        "passed": "16",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "fc-policy": {
+      "file": "parties-package-capability-local-fc-policy.trx",
+      "sha256": "b6eb51ed934ebf3ae95ab9f553a9cc5eedb8ef855b1b409ac8f861d8cbf03dee",
+      "counts": {
+        "total": "14",
+        "executed": "14",
+        "passed": "14",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "ui-components": {
+      "file": "parties-package-capability-local-ui-components.trx",
+      "sha256": "746182b10da4a4253250875cffe618f5ff099869087e161008be23d50cad2cfd",
+      "counts": {
+        "total": "120",
+        "executed": "120",
+        "passed": "120",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "admin-components": {
+      "file": "parties-package-capability-local-admin-components.trx",
+      "sha256": "1ffff9d4a0f570dd3d699964e97199fce18b8a484de243d3d02b37179e3600df",
+      "counts": {
+        "total": "124",
+        "executed": "124",
+        "passed": "124",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    "consumer-components": {
+      "file": "parties-package-capability-local-consumer-components.trx",
+      "sha256": "a033bafd9f07b0b6f1f4c8240baed579acd8025dddd8eb13fb00fff5a25eaabd",
+      "counts": {
+        "total": "37",
+        "executed": "37",
+        "passed": "37",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  },
+  "uniqueFocusedDotNetCases": 449,
+  "failed": 0,
+  "skipped": 0,
+  "browser": {
+    "actualCases": 68,
+    "singleAttemptPasses": 68,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "servedAssetAttachments": 6,
+    "authenticatedHashesEach": 4,
+    "reportArchive": "parties-package-capability-local-browser-corrected-reports.tar.gz",
+    "firstReportArchive": "parties-package-capability-local-browser-first-reports.tar.gz",
+    "os": "Ubuntu26.04; hosted lane remains Ubuntu24.04",
+    "scope": "Actual local Release/package Test fixture; CI=true chooses existing browser configuration only, no GitHub identity."
+  },
+  "otherControls": {
+    "typeScript": true,
+    "serverOwnershipConfigCases": 8,
+    "restoredAssetCases": 5,
+    "strictDeclarationPythonCases": 7,
+    "warningsAsErrorsBuildsPassed": true,
+    "lockedCommitlint": "21.2.4",
+    "whitespace": "passed with owning CRLF policy"
+  },
+  "publicInputs": {
+    "memories": "M23Client.Rest/Contracts actual package+copied bodies match authenticated signed public payloads",
+    "frontComposer": "FC4.7.6Shell/Contracts.UI binaries and all4actualservedstaticassets match authenticated public payloads",
+    "builds": "Existing verified signed4.44.2 package mapping; no source-built Tooling"
+  },
+  "firstOutcomes": [
+    {
+      "receipt": "parties-package-capability-local-memory-before.json",
+      "actual": "18executed,17pass/1fail; unconditional compiled capability false under originalb7"
+    },
+    {
+      "receipt": "parties-package-capability-local-browser-first.json",
+      "actual": "65pass/3fail,0flaky/skip; original retries retained. Guard passed; finiteFCselectors omitted shared behavior."
+    },
+    {
+      "receipt": "parties-package-capability-local-conditional-memory-coverage.json",
+      "actual": "The safety invocation had one unmatched extra nonexistent class filter; no case is attributed to it. All8newconditionalpublic methods were actually executed."
+    }
+  ],
+  "native401": {
+    "build": "passed0warnings/errors",
+    "actualExecution": "pending genuine hosted full Parties environment",
+    "fakeEnvironmentUsed": false,
+    "originalPositivePersistenceFact": "byte-intact"
+  },
+  "preservation": "parties-package-capability-local-preservation.json",
+  "remaining": [
+    "Parent independent review and authorized normal push",
+    "Fresh complete changed-source hosted15isolated/6independent/UI/native suite and exact cleanup",
+    "Actual new anonymous401 and originalpositivepersistence execution on full closure",
+    "Three real manual lifecycle scenarios, normalmerge/freshmain and whole-story finaldiff/review"
+  ],
+  "pushed": false,
+  "prUpdated": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

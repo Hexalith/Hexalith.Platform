@@ -1,0 +1,30 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "Github/governed-provenance/tests",
+      "-v"
+    ],
+    "exitCode": 0,
+    "log": "builds-memory-retention-rename-control-0.txt"
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "Github/prepare-module-build/tests",
+      "-v"
+    ],
+    "exitCode": 1,
+    "log": "builds-memory-retention-rename-control-1.txt"
+  }
+]

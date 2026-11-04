@@ -1,0 +1,26 @@
+{
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "--no-build",
+    "--no-restore",
+    "--configuration",
+    "Release",
+    "--filter-class",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests",
+    "--minimum-expected-tests",
+    "29",
+    "--fail-skips",
+    "on",
+    "--results-directory",
+    "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/caller-controls",
+    "--report-xunit-trx",
+    "--report-xunit-trx-filename",
+    "caller.trx"
+  ],
+  "exitCode": 0,
+  "completedAt": "2026-11-03T20:34:33.547388+00:00",
+  "mode": "Release/package",
+  "candidateAcceptance": false
+}

@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-04T06:33:29.612024+00:00",
+  "procedures": [
+    {
+      "path": "parent-eventstore-a0c-catalog-component-procedure.py",
+      "sha256": "f6b926f87fae3f1716c8bfbd3adf0c4f4ef48ecb02b2066a73fe07944f6dbf5b",
+      "bytes": 3698
+    },
+    {
+      "path": "parent-eventstore-a0c-catalog-host-role-procedure.py",
+      "sha256": "af21e68d8b57780ea21c1a8443bd6cb86daa2af81db2cb929059ddc9f59b4c6f",
+      "bytes": 2958
+    },
+    {
+      "path": "parent-eventstore-a0c-catalog-reader-exec-procedure.py",
+      "sha256": "247cae465b41ab8dc4700cc9417729b6830feb832c695607abafca499a3acd17",
+      "bytes": 3520
+    },
+    {
+      "path": "parent-platform-122-sdk-audit-procedure.py",
+      "sha256": "05a609711ffd262cfd856872db76a1eb2fb6479543b6190173e18fd362fe28a4",
+      "bytes": 6470
+    },
+    {
+      "path": "parent-platform-122-tuple-audit-procedure.py",
+      "sha256": "5df2814f1114cbe56d4f128c4332058e93a984cef66e15c95a566763dba8842d",
+      "bytes": 7385
+    }
+  ],
+  "scope": "Preserved exact read-only audit/component procedures. No secrets or source authority. Actual private caches/logs stay private; receipts retain hashes.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

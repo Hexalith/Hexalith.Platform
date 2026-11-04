@@ -1,0 +1,193 @@
+{
+  "observedAt": "2026-11-03T18:07:26.495841+00:00",
+  "repository": "Hexalith/Hexalith.Platform",
+  "base": "ddf49bec88fd26d44ecd1b60238330989298cfbd",
+  "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+  "branch": "fix/restore-builds-4436-gitlink",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/Hexalith.Platform",
+  "sourceClean": true,
+  "changedPaths": [
+    "references/Hexalith.Builds"
+  ],
+  "oldGitlink": "89f62052c932d054bda2b435bdfef60d96e77612",
+  "newGitlink": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+  "version": "4.43.6",
+  "pr": {
+    "number": 17,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/17",
+    "state": "open",
+    "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+    "base": "ddf49bec88fd26d44ecd1b60238330989298cfbd",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094
+    },
+    "mergeResult": "84a36ac3b5bfbfc376efc77feb511b8e90e6de81",
+    "mergeable": true,
+    "mergeableState": "blocked"
+  },
+  "preservation": {
+    "incomingStoryPaths": 208,
+    "allBlobsAndModesUnchanged": true,
+    "nonStoryGitTreeEqualsReviewed942": true,
+    "nonStoryTreeSha256": "db2768c3f9c17c3b09c8652698faf7e9bd8c6d5abe966716b659d560e187ecc6",
+    "proof": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-source-equivalence.json",
+      "sha256": "af992ebd9683009932a98db5cfb790096d2b6c14757d054879b3a04bcda507bc"
+    },
+    "original942WorktreeAndReceipts": "untouched",
+    "PartiesPr60AndPreservedWorktrees": "untouched",
+    "canonicalCheckout": "untouched"
+  },
+  "firstRefusals": {
+    "parentOriginal": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-ddf-incoming-regression.json",
+      "sha256": "d098e566521e016a3f49154e4c5e705626c6d993b82982e08b76dded680d28dd"
+    },
+    "cleanDdfReproduction": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-base-first-refusal.json",
+      "sha256": "8e29923861a36cec80d6badf7736296a597ca8f4405dc10a5197e0d09cea19e1"
+    },
+    "result": "expected exit1 before allocation; exact recorded pin mismatch"
+  },
+  "controls": {
+    "tuple": {
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "log": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-tuple-controls.txt",
+        "sha256": "d4d1f3a68539ba3dfa1cdd8789cce98c274e9e9026be447284ec8209b6fd7df2"
+      }
+    },
+    "resolution": {
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_host_builds_resolution.py"
+      ],
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "log": {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-resolution-controls.txt",
+        "sha256": "484abbb8849bab28017607e9c1f6c55a67e3df0d6140ab2ad85122b583477dbb"
+      }
+    },
+    "whitespace": "passed",
+    "exactMessageAndPrTitle": "fix(build): restore the verified Builds gitlink",
+    "lockedCommitlintVersion": "21.2.4",
+    "fastChecks": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-fast-checks.json",
+      "sha256": "b1be3eba3c5d21c493ee0ac24e6193dadaaf8773742e41b1c625a849478f929c"
+    }
+  },
+  "supportedPreparation": {
+    "command": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-prepare-command.json",
+      "sha256": "3e5022b4a52add895b76a4dba7672701ba130e742f49ae97481f9ee634f80f7d"
+    },
+    "artifactIdentity": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/prepared-artifacts/artifact-identity.json",
+      "sha256": "2366cf0f3c545ad071b0a4355f432de350a7463fdea2d8d1bb57f9007e5c76cb"
+    },
+    "signatureStdout": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/prepared-artifacts/signature.stdout",
+      "sha256": "4f82b779d1f88e27268b621d7e2ad772c7f36432ddd5605be6fedfa8b205f39a"
+    },
+    "signatureStderr": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/prepared-artifacts/signature.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "signatureRevocationMode": "offline",
+    "freshOnlineRevocation": false,
+    "signedArchiveSha256": "56bb8ec20f02e964dd9f44b7125bf05ada3cafee3c2ac7048f41d36bc8f1c6fe",
+    "tooling": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/prepared-artifacts/published/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+      "sha256": "1f98729def5105818eaf464e46d1c12b1bcd0607c3752c6e3842b2f201630cb1"
+    },
+    "candidateAcceptance": false
+  },
+  "supportedGraph": {
+    "command": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-graph-command.json",
+      "sha256": "af045db453a3dca2a428507ef4dde48ea0139d2d4239629db54a4302f16b5300"
+    },
+    "result": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-builds-pin-repair-20261103/graph-audit/tuple-ci-result.json",
+      "sha256": "34a0d46447e616285ce077e6db5d85b808513387a423da4eee63a6daf03f24e6"
+    },
+    "projects": 30,
+    "status": "graph-verified",
+    "nativeExecution": false
+  },
+  "selectedTenants": {
+    "officialCacheDll": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/tenants7-official-nuget-20261103/hexalith.tenants.contracts/7.0.0/lib/net10.0/Hexalith.Tenants.Contracts.dll",
+      "sha256": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40"
+    },
+    "localCommandCacheSelected": true,
+    "graphRestoresOrLoadsDll": false,
+    "actualHostedConsumedByteProof": "pending actual hosted output",
+    "wrongSourceSharedCache": "untouched"
+  },
+  "remoteMutationReceipts": {
+    "push": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-push.json",
+      "sha256": "80c89073ebc2793ae1e4819628e9143b2d4930caff6de7a656083eac1414ceea"
+    },
+    "pr": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-pr.json",
+      "sha256": "45674a90a56d48a8f7c0330fd0cc6f1836e0b82ec884f96e292cd2097d83f858"
+    },
+    "tupleDispatchRequest": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-tuple-dispatch-request.json",
+      "sha256": "7f7f1d30d9f74651f588b167de685d204f7b80a85a2241d9a9948275cf4ad804"
+    },
+    "tupleDispatchResponse": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-tuple-dispatch-response.json",
+      "sha256": "709db88ec76ad0560f6656c6e4082d9a5e3b14b4776c2021271eb4a8016530f7"
+    }
+  },
+  "freshHosted": {
+    "receipt": {
+      "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair-hosted-initial.json",
+      "sha256": "d0732d6a6a075208eaa3bf1c7c7a5045c78d880147b0b2a7a06e28a63ea8dad5"
+    },
+    "tuple": 41690639544,
+    "catalog": 41690622130,
+    "attempt": 1,
+    "allFiveJobs": "queued",
+    "actualHead": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+    "noHostedPassClaim": true
+  },
+  "normalGate": {
+    "ruleset": 24657106,
+    "enforcement": "active",
+    "requiredApprovals": 1,
+    "codeOwnerReviewRequired": true,
+    "recordedReviews": 0,
+    "authorAndAuthenticatedAccount": "jpiquot/id6775094",
+    "selfApprovalAttempted": false,
+    "bypassUsed": false,
+    "mergeTagReleaseAttempted": false
+  },
+  "diff": {
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-builds-pin-repair.patch",
+    "sha256": "eb5977d95c58e984d94f18f5b31c35cd0bada6aa52cd002ed1536bd5c69082c9"
+  },
+  "remaining": [
+    "fresh exact-head tuple160 and four SDK actual results",
+    "actual consumed selected dependency output proof where applicable",
+    "normal code-owner review/parent gate coordination",
+    "coherent Platform genuine release and fresh E/P adoption",
+    "both original reference tasks and actual native/hosted lifecycle acceptance",
+    "full original-baseline step03 audit and step04"
+  ],
+  "candidateAcceptance": false
+}

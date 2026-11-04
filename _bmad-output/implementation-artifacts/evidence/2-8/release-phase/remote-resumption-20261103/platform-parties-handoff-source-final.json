@@ -1,0 +1,76 @@
+{
+  "base": "338a6afc31850761f49c0de7d399266dd15cfe84",
+  "head": "580625cf1d910a33481adeb05d1343aa359964a2",
+  "tree": "6e6dea3bab8f24edbc060758aacb01dbce973d55",
+  "branch": "fix/parties-validation-handoff",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform",
+  "origin": "https://github.com/Hexalith/Hexalith.Platform.git",
+  "status": "",
+  "localCommits": [
+    "580625cf1d910a33481adeb05d1343aa359964a2 fix(composition): recognize published validation plan projection",
+    "a80a70a8ef19c0ec248dcaa8dd55e0f957c9a303 test(composition): reproduce published Parties validation handoff"
+  ],
+  "changedPaths": [
+    "eng/tuple-ci-suites.json",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs"
+  ],
+  "patchSha256": "a92b2298ac3ab91c60e25073bad0f48fd44363a02a76daecc972704ab18f4ae2",
+  "changedFileSha256": {
+    "eng/tuple-ci-suites.json": "bc96a3cc00b4d2109ecccddcd5c30d6207d23f566586901c06dfee58a4425d20",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs": "2c04f772e621f648755ee32fb4d21d74bb114efff7650439d38719abe280544c",
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs": "be4ed33f94517b16bc265074867c7d8619dc248c970065e6f818cfb3236fc81d",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs": "bc8017d9abdbff657b006266dad70044f271836b4c1f1b92691db176959e6a96",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs": "ed628da815df539923d70776c591df318c5524c195c2aebb81b86e72b4f620ec"
+  },
+  "protectedInputs": {
+    "eng/builds-tuple.json": {
+      "unchangedFrom338": true,
+      "sha256": "2a4e1af3205533e40ab392a6dc3a87ef4f9d220f9fc76ee6f993b5f51edaf6fa"
+    },
+    "hexalith-platform.json": {
+      "unchangedFrom338": true,
+      "sha256": "b7529e08f6fe7f8097c4293e9e682586bb47d389d6605f99a71a7f7b9f47e158"
+    },
+    ".gitmodules": {
+      "unchangedFrom338": true,
+      "sha256": "6da4f5297d79bfa54afcb8daacda70670af11868ba1738cc185f584db8eb6ab7"
+    },
+    "Directory.Build.props": {
+      "unchangedFrom338": true,
+      "sha256": "708aea4abc3138a3f152ee4daabc3bfe49448073c242e40c9841eac1d59a39ca"
+    },
+    "src/Hexalith.Platform.Composition/Declarations/eventstore.json": {
+      "unchangedFrom338": true,
+      "sha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+    },
+    "src/Hexalith.Platform.Composition/Declarations/local-profile.json": {
+      "unchangedFrom338": true,
+      "sha256": "6cf2cc9bcda7c7e158a595b4a6839b864381d88cfb541a382ec8c45597b6bd50"
+    },
+    "src/Hexalith.Platform.Composition/Declarations/memories.json": {
+      "unchangedFrom338": true,
+      "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+    },
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json": {
+      "unchangedFrom338": true,
+      "sha256": "af0883f10b1cc3bfcb27a9dc3494f30610405827929a1663cbeda313670548f9"
+    },
+    "src/Hexalith.Platform.Composition/Declarations/tenants.json": {
+      "unchangedFrom338": true,
+      "sha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+    }
+  },
+  "untouchedCaller": {
+    "head": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173",
+    "status": "",
+    "platformHead": "338a6afc31850761f49c0de7d399266dd15cfe84",
+    "platformStatus": "",
+    "buildsHead": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "buildsStatus": ""
+  },
+  "actualSourceDiffBoundary": "Only owning Platform proof/context, existing fixture, new required tests and suite registration. All other tracked files/gitlinks unchanged; no callers, workflows, accepted tuples or public artifacts changed.",
+  "qualifiedToolingCopySha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61"
+}

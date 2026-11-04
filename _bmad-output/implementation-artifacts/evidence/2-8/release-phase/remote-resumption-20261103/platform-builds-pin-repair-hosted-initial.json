@@ -1,0 +1,120 @@
+{
+  "observedAt": "2026-11-03T18:07:02.826Z",
+  "pr": {
+    "number": 17,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/17",
+    "state": "open",
+    "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+    "base": "ddf49bec88fd26d44ecd1b60238330989298cfbd",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094
+    },
+    "mergeResult": "84a36ac3b5bfbfc376efc77feb511b8e90e6de81",
+    "mergeable": true,
+    "mergeableState": "blocked"
+  },
+  "runs": [
+    {
+      "id": 41690639544,
+      "event": "workflow_dispatch",
+      "name": "Platform tuple CI preflight",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41690639544",
+      "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+      "attempt": 1,
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 41690622130,
+      "event": "pull_request",
+      "name": "Catalog builder consumer binding",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41690622130",
+      "head": "91b49bc9b966a060233ca5fedfb2b656e81dab55",
+      "attempt": 1,
+      "status": "queued",
+      "conclusion": null
+    }
+  ],
+  "tupleJobs": [
+    {
+      "id": 126107983854,
+      "name": "tuple",
+      "status": "queued",
+      "conclusion": null,
+      "run_id": 41690639544,
+      "logs_url": null,
+      "steps": null
+    }
+  ],
+  "catalogJobs": [
+    {
+      "id": 126107913624,
+      "name": "consumer-binding (3.130.2)",
+      "status": "queued",
+      "conclusion": null,
+      "run_id": 41690622130,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 126107914195,
+      "name": "consumer-binding (3.130.0)",
+      "status": "queued",
+      "conclusion": null,
+      "run_id": 41690622130,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 126107914253,
+      "name": "consumer-binding (3.132.1)",
+      "status": "queued",
+      "conclusion": null,
+      "run_id": 41690622130,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 126107914364,
+      "name": "consumer-binding (3.130.1)",
+      "status": "queued",
+      "conclusion": null,
+      "run_id": 41690622130,
+      "logs_url": null,
+      "steps": null
+    }
+  ],
+  "reviews": [],
+  "authenticated": {
+    "login": "jpiquot",
+    "id": "6775094"
+  },
+  "rules": {
+    "id": 24657106,
+    "enforcement": "active",
+    "pullRequestRule": {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": true,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "merge",
+          "squash",
+          "rebase"
+        ]
+      }
+    },
+    "bypassUsed": false
+  },
+  "candidateAcceptance": false
+}

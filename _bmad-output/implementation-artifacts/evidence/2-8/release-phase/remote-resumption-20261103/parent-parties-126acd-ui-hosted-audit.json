@@ -1,0 +1,73 @@
+{
+  "observedAtUtc": "2026-11-03T20:51:42.442090+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "runId": 41714178534,
+  "jobId": 126189732356,
+  "sourceHead": "126acd2d7ab08ad614ede09b0cb931573b053a03",
+  "actualCheckedOutPrMerge": "b1f400ec068d589ea2c52d59d13b6e64b01736a2",
+  "jobConclusion": "success",
+  "artifactId": 13268879291,
+  "artifactSha256": "7c5f1313269ace34c5ff0e223337b63401cb7235bd767439923bc80a89da190a",
+  "members": 55,
+  "cache": "/home/administrator/.cache/hexalith/story-2-8/parties-126acd-ui-hosted-20261103",
+  "actualPlaywrightStats": {
+    "total": 68,
+    "expected": 67,
+    "unexpected": 0,
+    "flaky": 1,
+    "skipped": 0,
+    "ok": false
+  },
+  "actualFlakyTest": {
+    "name": "content controls have visible keyboard focus with forced colors active",
+    "location": {
+      "file": "parties-accessibility.spec.ts",
+      "line": 299,
+      "column": 5
+    },
+    "attempts": 2,
+    "firstPrimaryBackground": "rgba(255, 255, 255, 0.8)",
+    "retryPrimaryBackground": "rgb(255, 255, 255)",
+    "expectedBackground": "rgb(255, 255, 255)",
+    "firstFailureScreenshotAndContextRetained": true
+  },
+  "reportFileHashes": [
+    {
+      "member": "1f1b2285ceaad2c8e432.json",
+      "sha256": "c596093c670b9daba9872d2e127cc2162d79a58e1b40ef25e7829bb70e63a56c"
+    },
+    {
+      "member": "47a4edf0907112663e9c.json",
+      "sha256": "ce641229e7e98f3b7bd8e98cd99b62ca6e60b98b1b05c124b9f3df13451107f1"
+    },
+    {
+      "member": "29a86d8654111cbc1944.json",
+      "sha256": "dd3c7ade18c3ee534bb8c291365ff94ea0047e082f0257b29fbb42dd5b7b1fa5"
+    },
+    {
+      "member": "9395236186d605108c24.json",
+      "sha256": "3eabd7b44540f7501c49c138b55c256e2f5ee39033018b683605bdd086299569"
+    }
+  ],
+  "unchangedUiTestsAndConfiguredRetries": [
+    {
+      "path": "tests/e2e/playwright.config.ts",
+      "sha256": "0a771b90594af5ae7074b93ba65ad1e39b5d71538671d70ce021ae636d166f9e"
+    },
+    {
+      "path": "tests/e2e/specs/parties-accessibility.spec.ts",
+      "sha256": "31d546605b54dd6f08685113194601f7bd42f4a3e8e26dec9ac3c44aba2adbd4"
+    },
+    {
+      "path": "tests/e2e/package.json",
+      "sha256": "bed5ec89c93a13f6cebcd8012bdd6a7d01a505ae2081a8faa86f9fadf0de5f98"
+    },
+    {
+      "path": "tests/e2e/package-lock.json",
+      "sha256": "b048f949b5afa1c5fb40bb0528f076388c354eb20864616907954193d487858f"
+    }
+  ],
+  "interpretation": "67clean passes and1flaky on configured retry; no claim of clean68/0retry. Cause unestablished; no source alteration or rerun performed for this observation. First failure and retry remain separate evidence.",
+  "realNativeAcceptance": false,
+  "candidateAcceptance": false
+}

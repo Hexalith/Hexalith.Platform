@@ -1,0 +1,120 @@
+{
+  "observedAt": "2026-11-03T20:23:52.013719+00:00",
+  "pr": "https://github.com/Hexalith/Hexalith.EventStore/pull/392",
+  "branch": "fix/adopt-platform-117",
+  "base": "d836aaf2f2ad299f398c8f8d1b7ff6ec47604cf8",
+  "head": "8d95170b5babd0aa3552f4b087528b6ab6987fa8",
+  "sourceClean": true,
+  "correctionCommit": "ec9da406bdb9e0909fe82536fc4ed2be45b2abe3",
+  "normalIncomingMainMergeCommits": [
+    "5df9d07df44dca400ff09468a91c34e9685c3dd1",
+    "8d95170b5babd0aa3552f4b087528b6ab6987fa8"
+  ],
+  "changedPathsAgainstCurrentMain": [
+    ".github/workflows/ci.yml",
+    "docs/ci.md",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/GatewayPersistenceTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservationTests.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeAssemblyObservations.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBinding.cs",
+    "tests/Hexalith.EventStore.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs"
+  ],
+  "incrementalCorrection": {
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-handoff-correction.patch",
+    "sha256": "c80696c652eb317f4ee718a12e85bce3c338de7622c23d5a06743e02eb26509f"
+  },
+  "cumulativeProposal": {
+    "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-handoff-current-main.patch",
+    "sha256": "002d04b100e710938b0c939f690f9681506ecba6f24ec9da3558bd4e95a61e75"
+  },
+  "existingTuple": {
+    "tool": "4.43.6",
+    "workflowAndBuilds": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "genuinePlatform": "1.1.7/ed1560a57f4d4cb55b6b03f485cbfa01316837a7"
+  },
+  "dataflow": {
+    "inheritedFields": "published HEXALITH_G4 run/descriptor/plan/report/source-mapping paths plus mapping hash only",
+    "mapping": "actual published PascalCase mapping; exact default serialization content hash recomputed",
+    "planAndState": "existing Web-cased plan/state; actual run/attempt/environment/workspace and executionContext cross-checked",
+    "caller": "verified mapping Root is original Git checkout, not disposable workspace; actual Git HEAD measured",
+    "retention": "original Root/TestResults/module-integration/invocation.json must match actual context and selected profile;64KiB/64loaded assemblies/0600/CreateNew/no links/no overwrite retained",
+    "githubEnvironmentUsedOrForwarded": false,
+    "producerAllowlistOrSchemaApiBudgetChange": false,
+    "functionalObservationChange": false
+  },
+  "scrubbedProcessControls": {
+    "reports": [
+      {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-scrubbed-handoff-results.trx",
+        "sha256": "2a5f61540babc2b4055ccd0de727750ba9cde398973aaf5e55c915f27966e242",
+        "counters": {
+          "total": "7",
+          "executed": "7",
+          "passed": "7",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      },
+      {
+        "path": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/eventstore-platform117-scrubbed-handoff-invocation-results.trx",
+        "sha256": "e67bb3634532bc1ef4c4f4a34fbb4234247ffcb01b9807ee83a80a4d181c74c5",
+        "counters": {
+          "total": "7",
+          "executed": "7",
+          "passed": "7",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      }
+    ],
+    "environmentReceipt": "eventstore-platform117-scrubbed-handoff-first.json",
+    "finalInvocationSourceControls": "eventstore-platform117-scrubbed-handoff-invocation.json",
+    "producerRevision": "725754075e1d6369430a3adf94d46fb71e6eaf9e",
+    "producerGitBlobSha256": "3aab0e93f4d63e44aec5de7de259c8ecaa9cd35bdc86d02097b851079b0167df",
+    "context": "actual published inherited allowlist plus7real mapping keys; fixtures explicitly local, no successful CI owner simulated",
+    "survival": "local file at caller root survived removal of its disposable workspace",
+    "nativeOrHostedAcceptance": false
+  },
+  "releasePackageCompile": "0warnings/errors; eventstore-platform117-handoff-merged-build.json and handoff-invocation-build.txt",
+  "messageTitleWhitespaceActionlint": "passed locked21.2.4; handoff-fast-checks.json, handoff-main-merge-message-validation.json",
+  "preservedResults": [
+    "original3caller passes",
+    "original2private-I/O passes",
+    "originalHXT106missing-descriptor2failures/0skip",
+    "all earlier true outcomes and pre-push source advancements"
+  ],
+  "allIncomingAdminAzurePaths": "preserved through normal merges; absent from current proposal diff",
+  "hostedInitial": "eventstore-platform117-handoff-hosted-initial.json",
+  "remaining": [
+    "actual fresh hosted20whole isolated projects/independent owner gates",
+    "both named real gateway tests must pass;7local controls cannot substitute",
+    "actual retained SDK output hashes/source/version and official comparison",
+    "actual receipt-bound zero-leftover cleanup; no not-allocated or missing proof credit",
+    "Parties preserved adoption draft still needs preparation/source/runtime checks/normalPR"
+  ],
+  "forceAmendMergeApproveTagPublishOrRunManipulation": "none; only normal feature-branch merge/push/PRmetadata update",
+  "candidateAcceptance": false
+}

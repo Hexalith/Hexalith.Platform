@@ -1,0 +1,10 @@
+{
+  "recordedAt": "2026-11-03T18:06:42.759924+00:00",
+  "error": "KeyError: archive has no catalog-builder-evidence/executed/actual/ByteAether.Ulid.dll",
+  "kind": "Independent verifier assumed identity manifest retains all listed output DLL bytes",
+  "resolutionRequired": "Compare only actual retained members, record absent SDK output bytes as a limitation. Do not infer actual retained DLL proof from a hash manifest alone.",
+  "sourceOrContentMismatchObserved": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "secondProcedureAssumption": "A retained sample-owner identity does not contain the CatalogBuilder executable; only actual/baseline/consumer execution roles require it. Assertion was too broad and stopped verification before writing a passing audit."
+}

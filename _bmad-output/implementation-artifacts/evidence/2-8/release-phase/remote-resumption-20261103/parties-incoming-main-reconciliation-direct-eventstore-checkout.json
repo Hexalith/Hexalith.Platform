@@ -1,0 +1,19 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.commitGraph=false",
+    "-c",
+    "submodule.recurse=false",
+    "submodule",
+    "update",
+    "--init",
+    "--checkout",
+    "--",
+    "references/Hexalith.EventStore"
+  ],
+  "exitCode": 0,
+  "oldHead": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+  "newHead": "f213e4115ec23cb736e8aa0113f61b9d4854480c",
+  "nestedInitialization": false
+}

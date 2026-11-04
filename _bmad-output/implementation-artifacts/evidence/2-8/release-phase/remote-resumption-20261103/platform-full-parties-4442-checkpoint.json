@@ -1,0 +1,372 @@
+{
+  "recordedAt": "2026-11-04T10:34:40.281754+00:00",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "branch": "feat/qualify-full-parties-package",
+  "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+  "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+  "tree": "882c030ee4e16b43ae9d07ae0fdde4795459223b",
+  "clean": true,
+  "existingDraftPR": {
+    "observedAt": "2026-11-04T10:31:03.628Z",
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/22",
+    "number": 22,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": true,
+    "title": "feat(composition): qualify the full Parties package cohort",
+    "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+    "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+    "merge": "8833f5e7bf1e737f9112bf45f5d923714fac97c6",
+    "changedFiles": 31,
+    "additions": 1802,
+    "deletions": 81
+  },
+  "pushed": true,
+  "push": {
+    "command": [
+      "git",
+      "-c",
+      "core.commitGraph=false",
+      "-c",
+      "push.recurseSubmodules=no",
+      "push",
+      "origin",
+      "feat/qualify-full-parties-package"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T10:28:26.892634+00:00",
+    "completedAt": "2026-11-04T10:28:38.254826+00:00",
+    "reason": "One normal retry after actual unchanged remote refs confirmed GitHub commit_refs failure; no CI retry or force.",
+    "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+    "force": false
+  },
+  "firstPushFailurePreserved": "platform-full-parties-4442-push-first.json",
+  "fullProposal": {
+    "path": "platform-full-parties-4442-full-proposal.patch",
+    "sha256": "5b49ea8db365eb9c787d17072a8f37d97f38616ef4a835d1e4f654c30436df07",
+    "paths": [
+      ".config/dotnet-tools.json",
+      ".gitattributes",
+      "README.md",
+      "docs/current-tuple-preparation.md",
+      "docs/domain-module-enrollment.md",
+      "docs/package-catalog-qualification.md",
+      "eng/builds-tuple.json",
+      "eng/tuple-ci-suites.json",
+      "hexalith-platform.json",
+      "references/Hexalith.Builds",
+      "references/Hexalith.Parties",
+      "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+      "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+      "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+      "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+      "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+      "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+      "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+      "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+      "tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs"
+    ],
+    "pathCount": 31
+  },
+  "correctionFrom5ac": {
+    "path": "platform-full-parties-4442-correction.patch",
+    "sha256": "70ffdd3877416c60ce61b9cf3700fb48d7a414861c1c211c54d47ae6addffa49"
+  },
+  "genuineTuple": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "e3f7df3b1172c359cc58f16845b621b62df950c8",
+        "sha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13"
+      }
+    },
+    "publication": {
+      "version": "4.44.2",
+      "sourceRevision": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "releaseTag": "v4.44.2",
+      "catalogSha256": "d3b521fc6a8f8d17c8a07bc14dff6b9338c8a4fae35d26facb7a8618f4d8bd13",
+      "archiveSha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
+      "toolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+      "inventorySha256": "5922e0ada052d0c7c74a875dccb42070672b3d34e8bba2a3fa1e64c5b7c782ff",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.2/g4-tool-package-inventory.json"
+    }
+  },
+  "publicRelease": {
+    "version": "4.44.2",
+    "source": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+    "releaseId": 433744499,
+    "producerRun": 41798378661,
+    "bindingReceipt": "parent-builds-4442-qualified-tuple-binding.json"
+  },
+  "activePartiesTestSource": {
+    "head": "f1f33f8de655d9aa9307bafba128b0c7ea5c2570",
+    "manifestSha256": "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b",
+    "productionSourceChanged": false
+  },
+  "releasedPartiesArtifactRole": {
+    "version": "3.0.0",
+    "source": "639d6e98b496429eb0490d1f8feeec97bd1a3280",
+    "manifestSha256": "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504",
+    "relabeled": false
+  },
+  "exactEAndTProvenanceUnchanged": true,
+  "original238GroupsUnchanged": true,
+  "validation": {
+    "mode": "local signed-tool package component and audit-only; no simulated GitHub identity",
+    "source": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+    "packageBuild": {
+      "warnings": 0,
+      "errors": 0,
+      "exitCode": 0
+    },
+    "requiredCases": {
+      "passed": 271,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "index": "platform-full-parties-4442-required-case-index.json"
+    },
+    "actualOutputBodiesBeforeAfterUnchanged": true,
+    "compositionOutputHashes": {
+      "Hexalith.Platform.Composition.Tests": "8ce4fba3d8c00bbbbf4755064d310fff8d89c94562f857674e17c3a5b2ed68bd",
+      "Hexalith.Builds.Tooling": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+      "Hexalith.Builds.Module.EventStoreHost": "ecde7c35d761338e5383e86c1a6ca3d23d1eb3a97c8fa6e90fe1aec5410d62cc",
+      "Hexalith.EventStore.Contracts": "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+      "Hexalith.EventStore.ServiceDefaults": "860b843eb81e5e1b1e6176b8865e79a116b62182c28cf5a39230f00bfac2115d",
+      "Hexalith.EventStore.Client": "0bca680b2fc475720a113e05a73d328f01f7a7a37e98fb2babc94a35532e0e9c",
+      "Hexalith.EventStore.DomainService": "f35786f3df58263d34e60ddfa83844cb43b2e7ac345420cb901f9ef49b7e3eb8",
+      "Hexalith.Tenants.Contracts": "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40",
+      "Hexalith.Memories.Contracts": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+      "Hexalith.Parties.Contracts": "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9",
+      "Hexalith.McpCli.Abstractions": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06"
+    },
+    "fullReaderPublicBodiesAndMapping": "platform-full-parties-4442-actual-full-reader-observations.json",
+    "sdkConsumerMatrix": {
+      "versions": [
+        "3.130.0",
+        "3.130.1",
+        "3.130.2",
+        "3.132.1"
+      ],
+      "cases": 60,
+      "each": 15,
+      "passed": true,
+      "scope": "SDK component result flags confer no Platform gated-decision or native acceptance"
+    },
+    "finiteSdkGates": 208,
+    "python": {
+      "binding": 19,
+      "outputIdentity": 6,
+      "hostResolution": 15,
+      "failed": 0
+    },
+    "pinAlignment": true,
+    "actionlint": true,
+    "whitespace": true,
+    "owningMessagesTitlesAndCommitRange": "locked commitlint21.2.4 passed",
+    "auditOnly": {
+      "status": "graph-verified",
+      "ownedProjects": 30,
+      "sourceInputHashCount": 19425,
+      "sourceInputDigest": "144f4d6fdb36bcbb919989a014bbf7dd0afbd8ce557b1a99eb71e47616b52ea8",
+      "receipt": "platform-full-parties-4442-graph-audit/tuple-ci-result.json"
+    },
+    "offlineSignature": "passed; no online revocation claim"
+  },
+  "directRootDependencies": [
+    {
+      "path": "references/Hexalith.Builds",
+      "recordedAndActualHead": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Parties",
+      "recordedAndActualHead": "f1f33f8de655d9aa9307bafba128b0c7ea5c2570",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.EventStore",
+      "recordedAndActualHead": "a9205f511b4f96b5daf94d65369d6dee63e0c623",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "recordedAndActualHead": "33835a03e92579a26400e7cb7cf68d666c715b3e",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "recordedAndActualHead": "d959bdae5af9c22f53573eda71c091cb5c0aae4c",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.Commons",
+      "recordedAndActualHead": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.McpCli",
+      "recordedAndActualHead": "2e80701c31aafdf00abee05ac469a45ed76dfdf5",
+      "status": ""
+    },
+    {
+      "path": "references/Hexalith.PolymorphicSerializations",
+      "recordedAndActualHead": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "status": ""
+    }
+  ],
+  "nestedDependenciesInitialized": false,
+  "firstOutcomesPreserved": {
+    "prepublication5ac": "platform-full-parties-entry-preparation-checkpoint.json",
+    "firstBuild": "platform-full-parties-4442-composition-build-first.json",
+    "firstFullCases": "platform-full-parties-4442-full-cases-first.json",
+    "guardDiagnosis": "platform-full-parties-4442-reader-guard-diagnostics.json",
+    "firstFullRequired": "platform-full-parties-4442-required-components.json",
+    "sourceMetadataTagRefusal": "platform-full-parties-4442-builds-tag-first-refusal.txt",
+    "firstTransportPushFailure": "platform-full-parties-4442-push-first.json"
+  },
+  "initialHosted": {
+    "observedAt": "2026-11-04T10:31:05.744261+00:00",
+    "command": [
+      "gh",
+      "api",
+      "repos/Hexalith/Hexalith.Platform/actions/runs?head_sha=4bef0fa38ce99b3f0b177a8853685a1509ad4ce9&per_page=50"
+    ],
+    "head": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+    "filteredEndpointFallback": "Connected connector does not support filtered workflow-run query; read-only gh API used.",
+    "runs": [
+      {
+        "id": 41814595492,
+        "name": "Platform tuple CI preflight",
+        "path": ".github/workflows/tuple-ci.yml",
+        "head_sha": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+        "event": "workflow_dispatch",
+        "run_attempt": 1,
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-04T10:30:07Z",
+        "updated_at": "2026-11-04T10:30:13Z",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492",
+        "jobs": [
+          {
+            "id": 126522069980,
+            "name": "tuple",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-11-04T10:30:12Z",
+            "completed_at": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492/job/126522069980"
+          }
+        ]
+      },
+      {
+        "id": 41814447739,
+        "name": "Catalog builder consumer binding",
+        "path": ".github/workflows/catalog-builder.yml",
+        "head_sha": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+        "event": "pull_request",
+        "run_attempt": 1,
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-04T10:28:44Z",
+        "updated_at": "2026-11-04T10:28:57Z",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739",
+        "jobs": [
+          {
+            "id": 126521548673,
+            "name": "consumer-binding (3.130.2)",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-04T10:28:48Z",
+            "completed_at": "2026-11-04T10:29:51Z",
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521548673"
+          },
+          {
+            "id": 126521548829,
+            "name": "consumer-binding (3.130.1)",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-04T10:28:48Z",
+            "completed_at": "2026-11-04T10:29:52Z",
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521548829"
+          },
+          {
+            "id": 126521549222,
+            "name": "consumer-binding (3.130.0)",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-04T10:28:48Z",
+            "completed_at": "2026-11-04T10:29:53Z",
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521549222"
+          },
+          {
+            "id": 126521550452,
+            "name": "consumer-binding (3.132.1)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-11-04T10:28:48Z",
+            "completed_at": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814447739/job/126521550452"
+          }
+        ]
+      }
+    ],
+    "manualTupleDispatchedByAgent": false,
+    "acceptance": "initial actual run/job identities only; final gates parent-owned"
+  },
+  "manualTupleDispatchedByThisAgent": false,
+  "parentOwnedTupleRunObserved": {
+    "id": 41814595492,
+    "name": "Platform tuple CI preflight",
+    "path": ".github/workflows/tuple-ci.yml",
+    "head_sha": "4bef0fa38ce99b3f0b177a8853685a1509ad4ce9",
+    "event": "workflow_dispatch",
+    "run_attempt": 1,
+    "status": "in_progress",
+    "conclusion": null,
+    "created_at": "2026-11-04T10:30:07Z",
+    "updated_at": "2026-11-04T10:30:13Z",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492",
+    "jobs": [
+      {
+        "id": 126522069980,
+        "name": "tuple",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-11-04T10:30:12Z",
+        "completed_at": null,
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41814595492/job/126522069980"
+      }
+    ]
+  },
+  "remaining": [
+    "Parent audit of actual exact-HEAD full hosted tuple/SDK/required analysis outcomes and retained bodies",
+    "Normal reviewed merge/new-main gates and genuine Platform publication",
+    "Later genuine Parties caller tuple adoption and all15isolated/independent/native SDK/wire/bootstrap/businesspersistence/anonymous401/cleanup gates",
+    "Real same-job attachment and registered lifecycle matrix/startup/execution cancellation qualification",
+    "OriginalStorytasks/AC/finalbaselineaudit/step04 remain incomplete"
+  ],
+  "runtimeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false,
+  "canonicalAcceptedPinsChangedByThisAgent": false,
+  "otherEPartiesBuildsSourceOrRemoteGatesChangedByThisAgent": false,
+  "evidenceIndex": "platform-full-parties-4442-evidence-index.json"
+}

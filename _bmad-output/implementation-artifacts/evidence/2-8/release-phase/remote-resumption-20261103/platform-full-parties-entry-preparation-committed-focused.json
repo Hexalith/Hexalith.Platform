@@ -1,0 +1,42 @@
+{
+  "command": [
+    "dotnet",
+    "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests",
+    "-result-xml",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/platform-full-parties-entry-preparation-committed-focused.xml"
+  ],
+  "cwd": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "startedAt": "2026-11-04T08:28:37.884365+00:00",
+  "finishedAt": "2026-11-04T08:28:56.544612+00:00",
+  "exitCode": 0,
+  "counts": {
+    "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+    "id": "aeb749c4-7778-4883-a53d-b5053e1daccc",
+    "name": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "run-date": "2026-11-04",
+    "run-time": "08:28:38",
+    "start-rtf": "2026-11-04T08:28:38.0607990+00:00",
+    "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+    "target-framework": ".NETCoreApp,Version=v10.0",
+    "errors": "0",
+    "failed": "0",
+    "finish-rtf": "2026-11-04T08:28:56.5062479+00:00",
+    "not-run": "0",
+    "passed": "77",
+    "skipped": "0",
+    "time": "18.447",
+    "time-rtf": "00:00:18.4470000",
+    "total": "77"
+  },
+  "configuration": "Release/package; accepted M18 output intentionally retained"
+}

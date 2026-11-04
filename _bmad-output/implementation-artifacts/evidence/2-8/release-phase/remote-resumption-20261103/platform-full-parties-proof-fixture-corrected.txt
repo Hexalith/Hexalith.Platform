@@ -1,0 +1,130 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "run") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(75,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "attempt") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(75,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "environment") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "source") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "mapping") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "platform-root") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "owner") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "selected-test") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "declaration") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "model") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "expanded-owner") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: "expansion-binding") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(67,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(82,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(String fault)
+           at InvokeStub_PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: "declaration") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(70,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(115,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(String file)
+           at InvokeStub_PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: "test") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(103,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.ValidateTests(CompositionRunPlan plan, String declaration, SourceMapping mapping)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(76,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(115,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(String file)
+           at InvokeStub_PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: "identity") [FAIL]
+      System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(83,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Validate(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs(39,0): at Hexalith.Platform.Composition.PlatformPartiesRunProof.Matches(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs(115,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(String file)
+           at InvokeStub_PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'a78e6acde87df9445da44fc652e3ad2b25a114e87e0e4fef8203108f2503da6a')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 36, Errors: 0, Failed: 15, Skipped: 0, Not Run: 0, Time: 1.755s

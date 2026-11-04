@@ -1,0 +1,201 @@
+{
+  "recordedAt": "2026-11-04T07:51:38.831572+00:00",
+  "status": "reviewable-draft-source-proposal; genuine tuple and full-parent/runtime qualification incomplete",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-full-parties-20261104/Hexalith.Platform",
+  "branch": "feat/qualify-full-parties-package",
+  "base": "991e2df97dc8493e41096006b0d3203a71730ae8",
+  "head": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+  "sourceCommit": "7ebb9c2e",
+  "normalIncomingMergeCommit": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+  "pullRequest": {
+    "at": "2026-11-04T07:50:08.343Z",
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/22",
+    "number": 22,
+    "state": "open",
+    "merged": false,
+    "draft": true,
+    "mergeable": false,
+    "title": "feat(composition): prepare the finite ordinary Parties package cohort",
+    "base": "main",
+    "base_sha": "991e2df97dc8493e41096006b0d3203a71730ae8",
+    "head": "feat/qualify-full-parties-package",
+    "head_sha": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "merge_commit_sha": null,
+    "commits": 2,
+    "changed_files": 17,
+    "additions": 1122,
+    "deletions": 22,
+    "created_at": "2026-11-04T07:49:38Z"
+  },
+  "changedPaths": [
+    ".gitattributes",
+    "README.md",
+    "docs/package-catalog-qualification.md",
+    "eng/tuple-ci-suites.json",
+    "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+    "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+    "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs",
+    "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+    "tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.json",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesRunProofTests.cs"
+  ],
+  "fullPatch": {
+    "path": "platform-full-parties-proposal.patch",
+    "sha256": "d3d03f8cfd3664d21309dff3d105844c65f290fa44bbf37de72ea7f42b7a4a22",
+    "bytes": 77820
+  },
+  "acceptedBindingsUnchanged": {
+    "eng/builds-tuple.json": true,
+    "hexalith-platform.json": true,
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json": true,
+    "Builds gitlink": true
+  },
+  "worktreeClean": true,
+  "executed": {
+    "build": "Release/package individual project build against actual signed Builds4.44.0 Tooling;0warnings/errors",
+    "requiredControls": {
+      "required": 238,
+      "executed": 238,
+      "passed": 238,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "incomingCasesRetained": 201,
+    "newProofControls": 37,
+    "actualNineGroupReports": "platform-full-parties-final-control-summary.json",
+    "actualFullReaderComponent": {
+      "source": "current Program.cs and PublishedCatalogArtifactCohort.cs",
+      "buildExitCode": 0,
+      "actualSignedPublicBodies": 12,
+      "cohort": "parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memories-3.0.23",
+      "routes": 70,
+      "operations": 70,
+      "declarations": 70,
+      "intentPolicies": 46,
+      "catalogSha256": "21318e9e875b9083da81d747dea7780ab718d1ad59bbc104bec846bcdc7cbf19",
+      "equalToPriorMeasuredUnadmittedCatalog": true,
+      "actualActiveSourceMappingReceipt": "platform-full-parties-reader-actual-active-mapping.json",
+      "actualPreparedMappingHash": "3b380557c98a3a7b07ca2e412e1e0d51db27ecdd7feab1b35583b421b1148d70",
+      "mappingRemainsLegacy725EdAndNotCoherentNewTuple": true,
+      "unknownMissingForeignOwnerCases": 4,
+      "actualWrongPublicM18BodyRefusedBeforeOutput": true,
+      "notNativeOrFullParentAcceptance": true
+    },
+    "lockedCompleteMessagesAndTitle": "platform-full-parties-message-preflights.json",
+    "CRLF": "All10touched C#files normalized; per-command core.whitespace=cr-at-eol check passes."
+  },
+  "firstFailuresPreserved": [
+    "platform-full-parties-production-build-first.json: three inaccessible-API/nullable compile diagnostics from original draft",
+    "platform-full-parties-tests-build-first.json: missing root-declared EventStore embedded resource; existing selected owner path resolved it",
+    "platform-full-parties-proof-first.json:33of36failed at fixture module/port cardinality; corrected fixture only",
+    "platform-full-parties-proof-fixture-corrected.json:15of36exposed Matches not catching InvalidDataException; exact refusal catch corrected without assertion changes",
+    "platform-full-parties-reader-build-first.json: component central-version import setting missing; existing measured command corrected",
+    "platform-full-parties-reader-qualified-full.txt: component output directory not precreated; parent-owned directory setup corrected",
+    "platform-full-parties-reader-actual-active-mapping.json: first component request used declaration hash in mapping field; original retained separately and replaced by verified actual normal legacy mapping for a distinct component execution",
+    "platform-full-parties-final-group-2.json: genuine v4.44.0 tag missing locally; exact source checked/fetched normally without HEAD/pin changes"
+  ],
+  "hostedInitial": {
+    "observedAt": "2026-11-04T07:50:32.083Z",
+    "head": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+    "observations": [
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?head_sha=9f8d4402c8d0f17aca6290a3b93fe8ae660ab480&per_page=20",
+        "rawKeys": [
+          "content",
+          "title",
+          "modified_date",
+          "url",
+          "display_url",
+          "display_title",
+          "structuredContent"
+        ],
+        "runs": [
+          {
+            "id": 41794963136,
+            "head_sha": "9f8d4402c8d0f17aca6290a3b93fe8ae660ab480",
+            "name": "Catalog builder consumer binding",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41794963136",
+            "event": "pull_request",
+            "run_attempt": 1
+          }
+        ]
+      },
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits/9f8d4402c8d0f17aca6290a3b93fe8ae660ab480/check-runs?per_page=100",
+        "rawKeys": [
+          "content",
+          "title",
+          "modified_date",
+          "url",
+          "display_url",
+          "display_title",
+          "structuredContent"
+        ],
+        "checks": [
+          {
+            "id": 126456782358,
+            "name": "consumer-binding (3.132.1)",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41794963136/job/126456782358"
+          },
+          {
+            "id": 126456782298,
+            "name": "consumer-binding (3.130.2)",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41794963136/job/126456782298"
+          },
+          {
+            "id": 126456782272,
+            "name": "consumer-binding (3.130.0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41794963136/job/126456782272"
+          },
+          {
+            "id": 126456782029,
+            "name": "consumer-binding (3.130.1)",
+            "status": "in_progress",
+            "conclusion": null,
+            "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/41794963136/job/126456782029"
+          }
+        ]
+      }
+    ],
+    "noHostedCompletionClaim": true
+  },
+  "remainingRequired": [
+    "Authenticate actual corrected normal Builds publication/tool/catalog/archive/inventory; no public version is assumed. Parent owns PR160/current-main/release gates.",
+    "Adopt that genuine tuple/tool floor/direct Builds source and truthful Memories3.0.23/source82provenance coherently in this proposal; all remain unchanged now.",
+    "Execute unconditional positive full key-bearing parent admission through all seven exact immutable image probes; current tool default release authority/catalog still selectsM18, so this is not credited.",
+    "Complete actual altered full-profile declaration/catalog/package/body/topology/image/architecture/production/no-effects controls against that coherent positive fixture; proof-only and independent reader controls are separate evidence.",
+    "Execute real production-generated full reader under coherent active-Parties source mapping/catalog and complete current SDK/gate matrix; current full reader used explicit authentic public component inputs and legacy actual source mapping only.",
+    "Fresh normal genuine-tuple/source-bound qualification after adoption, parent review and normal hosted gates; source preparation cannot reuse old package acceptance.",
+    "Actual complete fleet cutover/receivers/health, persistent native Party operations and cross-version backend/client wire compatibility.",
+    "Only after coherent E/P native passes, real same-job/cross-job/completed admission and manual matrix/startup/execution cancellation/withdrawal/first-outcome/exact-cleanup qualification."
+  ],
+  "genuineNewTupleQualified": false,
+  "fullParentAdmissionQualified": false,
+  "servicesStarted": false,
+  "nativeAcceptance": false,
+  "lifecycleAcceptance": false,
+  "parityAcceptance": false,
+  "candidateAcceptance": false,
+  "storyComplete": false,
+  "BuildsPublicationOrMergeAction": false,
+  "EorPMutation": false,
+  "manualLifecycleDispatch": false,
+  "rootPinsChanged": false
+}

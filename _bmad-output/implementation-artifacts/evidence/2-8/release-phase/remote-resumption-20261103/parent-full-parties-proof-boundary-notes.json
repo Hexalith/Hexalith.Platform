@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-04T05:45:33.688705+00:00",
+  "scope": "Read-only planning observations for the later Platform full-Parties task; no extra implementation request to current Builds agent.",
+  "existingProof": "PlatformQualificationOwnerProof.Create requires CompositionQualificationOwners.Verify(...required:true), which rejects the ordinary empty additional-owner set. Current ComposeRun creates it only when QualificationOwners.Count>0.",
+  "currentParentDataflow": "CompositionEngine creates the private per-run signing key, binds additive owner HMAC, writes private plan, and supplies key through parent-only AppHost environment. RunPlanSource verifies run identity/expansion before consuming/removing that environment. RunTopology.VerifyPlatformDeclaration checks actual selected declaration/model binding before invoking Platform ComposeRun.",
+  "attachmentBoundary": "CompositionAttachAdmission refuses owners with QualificationOwners not null. Full Parties already declares E/T/M dependencies; do not add a redundant expansion merely to manufacture an E/T proof, because that would defeat the required compatible same-job attachment path.",
+  "laterDesignRequirement": "Assess the existing trusted ComposeRun/private key and source/plan/declaration/mapping verification before designing the full-Parties in-memory proof. Preserve ordinary serialized Compose refusal, exact scope/replay checks, real parent authority and attachment semantics. Do not assume a new generic signing feature or broaden current owner proof without evidence.",
+  "currentBuildsTaskUnchanged": true,
+  "productionEdits": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

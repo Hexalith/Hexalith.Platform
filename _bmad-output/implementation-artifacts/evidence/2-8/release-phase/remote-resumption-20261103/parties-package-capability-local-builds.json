@@ -1,0 +1,40 @@
+[
+  {
+    "name": "memory-after",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:42:45.767494+00:00",
+    "completedAt": "2026-11-04T11:43:05.186363+00:00"
+  },
+  {
+    "name": "policy",
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "--nologo",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-11-04T11:43:05.186725+00:00",
+    "completedAt": "2026-11-04T11:43:07.505463+00:00"
+  }
+]
