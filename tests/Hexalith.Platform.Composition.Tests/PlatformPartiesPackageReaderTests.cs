@@ -10,7 +10,8 @@ using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
 /// <summary>Runs the production-generated full reader only with the genuinely coherent owner fixture; no conditional positive or legacy mapping fallback.</summary>
-public sealed class PlatformPartiesPackageReaderTests
+/// <param name="diagnostics">Retains the actual generated-reader guard diagnostics.</param>
+public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnostics)
 {
     private static readonly string[] _publicNames = ["Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService",
         "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server", "Hexalith.Memories.Contracts", "Hexalith.Memories.EventStore", "Hexalith.Memories.EventStoreExtensions",
@@ -70,6 +71,7 @@ public sealed class PlatformPartiesPackageReaderTests
         File.WriteAllText(path, request.ToJsonString());
         var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", [Path.Combine(output, "Hexalith.Platform.CatalogBuilder.dll"), path], fixture.Reader, null),
             TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
+        diagnostics.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
         result.TimedOut.ShouldBeFalse();
         (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "exact signed public artifact bytes" : "not qualified");
@@ -89,6 +91,10 @@ public sealed class PlatformPartiesPackageReaderTests
         PlatformRoutingCatalog catalog = fixture.Generate();
         AssertFullReader(fixture, catalog);
         byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
+        using JsonDocument versions = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json")));
+        diagnostics.WriteLine(versions.RootElement.GetProperty("ProjectVersions").GetRawText());
+        versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
+            .GetProperty("Hexalith.Memories.Contracts").GetString().ShouldBe("3.0.23");
         string path = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
         XDocument project = XDocument.Load(path);
         string target;
@@ -114,6 +120,7 @@ public sealed class PlatformPartiesPackageReaderTests
             ["msbuild", path, "-target:" + target, "-nologo", "-m:1", "-nodeReuse:false", "-p:AlternateCommonProps=" + Path.Combine(fixture.Reader, "reader-common.props"),
              "-p:CentralPackageVersionsFileImported=true", "-p:ImportDirectoryPackagesProps=false", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
              "-p:PlatformCatalogBindings=" + Path.Combine(fixture.Reader, "bindings.props")], fixture.Options.PlatformRoot, null), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
+        diagnostics.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
         (result.Output + result.ErrorOutput).ShouldContain("requires 3.0.23");
         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
@@ -131,6 +138,7 @@ public sealed class PlatformPartiesPackageReaderTests
             + "\"/><ItemGroup><PackageReference Include=\"Hexalith.Parties.Contracts\"/></ItemGroup></Project>");
         var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["build", path, "-c", "Release", "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:CentralPackageVersionsFileImported=true", "--nologo"],
             fixture.Options.PlatformRoot, SourceMappingMaterializer.Environment(fixture.Options.Mapping, fixture.Workspace)), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
+        diagnostics.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
         (result.Output + result.ErrorOutput).ShouldContain("HXW005");
         Directory.GetFiles(fixture.Workspace, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
