@@ -21,6 +21,11 @@ public sealed record PlatformCompositionOptions
     public IReadOnlyList<string> DeclarationPaths { get; init; } = [];
     /// <summary>Gets the active v2 module, or null for the reference composition.</summary>
     public string? ActiveModule { get; init; }
+    /// <summary>Gets the explicit additive reference owners requested for a fresh qualification run.</summary>
+    public IReadOnlyList<string> QualificationOwners { get; init; } = [];
+    /// <summary>Gets the nonserialized entry-point proof; ordinary Compose callers cannot supply one.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    internal PlatformQualificationOwnerProof? QualificationOwnerProof { get; init; }
     /// <summary>Gets the explicitly selected module class. Known reference technical owners need no override.</summary>
     public bool? DomainModule { get; init; }
     /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>

@@ -39,16 +39,22 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
-    /// <summary>Checks package images before assigning container transports.</summary>
+    /// <summary>Unqualified Memories package graphs refuse before registry probes or container transports.</summary>
     [Fact]
-    public void PackageMemoriesContainerChecksImagesBeforeBindingTransport()
+    public void UnqualifiedPackageMemoriesRefusesBeforeBindingTransport()
     {
         IDistributedApplicationBuilder builder = Builder();
+        int probes = 0;
         PlatformCompositionOptions options = PackageGraphOptions() with
         {
-            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("package-image-probe-reached"),
+            ImageProbeRunner = (_, _, _) =>
+            {
+                probes++;
+                throw new InvalidOperationException("No image probe is permitted before qualification.");
+            },
         };
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldBe("package-image-probe-reached");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }
 

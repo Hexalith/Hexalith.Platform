@@ -15,6 +15,7 @@ public static class PlatformDeclarationSet
         {
             PlatformRoot = options.PlatformRoot,
             ActiveModule = options.ActiveModule,
+            QualificationOwners = options.QualificationOwners,
             DomainModule = options.DomainModule,
             TimesheetsEnabled = options.TimesheetsEnabled,
             Workspace = options.RunPlan?.Workspace,

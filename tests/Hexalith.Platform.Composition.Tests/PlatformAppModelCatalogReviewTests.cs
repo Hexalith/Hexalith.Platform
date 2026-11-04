@@ -27,13 +27,23 @@ public sealed partial class PlatformAppModelTests
     }
 
 
+    /// <summary>Unqualified package catalogs refuse before registry probes or reader preparation.</summary>
     [Fact]
-    public void PackageCatalogChecksImageAvailabilityBeforePreparingReaderFiles()
+    public void UnqualifiedPackageCatalogRefusesBeforePreparingReaderFiles()
     {
-        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("package-image-probe-reached") };
+        int probes = 0;
+        var options = PackageOptions() with
+        {
+            ImageProbeRunner = (_, _, _) =>
+            {
+                probes++;
+                throw new InvalidOperationException("No image probe is permitted before qualification.");
+            },
+        };
         var builder = Builder();
         builder.Environment.EnvironmentName = Environments.Development;
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldBe("package-image-probe-reached");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }
 

@@ -32,6 +32,47 @@ def validate_profile(profile):
     return sum(group["requiredCount"] for group in groups)
 
 
+COMPOSITION_TEST_DEPENDENCIES = (
+    "Hexalith.EventStore.Contracts.dll",
+    "Hexalith.EventStore.ServiceDefaults.dll",
+    "Hexalith.EventStore.Client.dll",
+    "Hexalith.EventStore.DomainService.dll",
+    "Hexalith.Tenants.Contracts.dll",
+)
+
+
+def snapshot_composition_test_outputs(assembly):
+    """Observe actual test/output files and host context without granting cohort admission."""
+    assembly = Path(assembly).resolve(strict=True)
+
+    def identity(path):
+        path = path.resolve(strict=True)
+        return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+    return {
+        "os": platform.system(),
+        "architecture": platform.machine(),
+        "testAssembly": identity(assembly),
+        "dependencies": {name: identity(assembly.parent / name) for name in COMPOSITION_TEST_DEPENDENCIES},
+    }
+
+
+def verify_composition_test_outputs_unchanged(record):
+    """Retain the final observation and refuse changed/missing outputs or host context."""
+    record["afterCapturedUtc"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    record["after"] = None
+    record["unchanged"] = False
+    record.pop("afterError", None)
+    try:
+        record["after"] = snapshot_composition_test_outputs(record["before"]["testAssembly"]["path"])
+    except Exception as error:
+        record["afterError"] = str(error)
+        raise
+    record["unchanged"] = record["before"] == record["after"]
+    if not record["unchanged"]:
+        raise ValueError("Composition test outputs or platform context changed during required tests.")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--evidence", type=Path, required=True)
@@ -139,6 +180,7 @@ def main():
             result["status"] = "graph-verified"
             return
         run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
+        run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(catalog)])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
@@ -156,20 +198,44 @@ def main():
             (assets / (str(number) + ".project.assets.json")).write_bytes(payload)
         run("build", ["dotnet", "build", "Hexalith.Platform.slnx", "--no-restore", "-c", "Release", "-m:1", *properties])
         result["requiredProfile"] = profile
-        for number, group in enumerate(profile["groups"]):
-            project = ROOT / group["project"]
-            if project not in projects:
-                raise ValueError("Required test project is absent from the owner solution.")
-            assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()
-            xml = evidence / ("required-" + str(number) + ".xml")
-            selectors = [argument for name in group["selectors"] for argument in [group["filter"], name]]
-            run("test-" + str(number), ["dotnet", assembly, *selectors, "-result-xml", str(xml)])
-            counts = ET.parse(xml).getroot().find("assembly").attrib
-            if int(counts["total"]) != group["requiredCount"] or int(counts["total"]) <= 0 or int(counts["passed"]) != int(counts["total"]) or any(int(counts.get(key, "0")) for key in ["failed", "errors", "skipped", "not-run"]):
-                raise ValueError("Incomplete/nonpassing required suite: " + project.stem)
-            result["tests"].append({"project": str(project.relative_to(ROOT)), "counts": counts})
-        if sum(int(group["counts"]["passed"]) for group in result["tests"]) != required_total:
-            raise ValueError("Declared required test total did not execute.")
+        composition_project = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
+        if composition_project not in projects:
+            raise ValueError("Composition test outputs are absent from the owner solution.")
+        composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()).resolve()
+        result["compositionTestOutputs"] = {
+            "beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "before": snapshot_composition_test_outputs(composition_assembly),
+        }
+        checkpoint()
+        test_failure = False
+        try:
+            for number, group in enumerate(profile["groups"]):
+                project = ROOT / group["project"]
+                if project not in projects:
+                    raise ValueError("Required test project is absent from the owner solution.")
+                assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()
+                if project == composition_project and Path(assembly).resolve() != composition_assembly:
+                    raise ValueError("Composition test invocation differs from the observed test assembly.")
+                xml = evidence / ("required-" + str(number) + ".xml")
+                selectors = [argument for name in group["selectors"] for argument in [group["filter"], name]]
+                run("test-" + str(number), ["dotnet", assembly, *selectors, "-result-xml", str(xml)])
+                counts = ET.parse(xml).getroot().find("assembly").attrib
+                if int(counts["total"]) != group["requiredCount"] or int(counts["total"]) <= 0 or int(counts["passed"]) != int(counts["total"]) or any(int(counts.get(key, "0")) for key in ["failed", "errors", "skipped", "not-run"]):
+                    raise ValueError("Incomplete/nonpassing required suite: " + project.stem)
+                result["tests"].append({"project": str(project.relative_to(ROOT)), "counts": counts})
+            if sum(int(group["counts"]["passed"]) for group in result["tests"]) != required_total:
+                raise ValueError("Declared required test total did not execute.")
+        except BaseException:
+            test_failure = True
+            raise
+        finally:
+            try:
+                verify_composition_test_outputs_unchanged(result["compositionTestOutputs"])
+            except Exception:
+                if not test_failure:
+                    raise
+            finally:
+                checkpoint()
         for filename, source in [("Hexalith.Builds.Tooling.dll", tool / "Hexalith.Builds.Tooling.dll"), ("Hexalith.Builds.Module.EventStoreHost.dll", tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:
             output = ROOT / "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0" / filename
             if hashlib.sha256(output.read_bytes()).digest() != hashlib.sha256(source.read_bytes()).digest():

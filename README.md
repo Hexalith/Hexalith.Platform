@@ -36,14 +36,16 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.43.6`,
-with range `[4.43.6, 5.0.0-0)` in `hexalith-platform.json`. The Builds gitlink
-records the exact [v4.43.6 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.43.6)
-source `725754075e1d6369430a3adf94d46fb71e6eaf9e`. The catalog and signed
-package identities are recorded in [`eng/builds-tuple.json`](eng/builds-tuple.json).
-The [tuple preflight](#exact-tuple-ci-preflight) verifies those published bytes
-against this Platform revision. Runtime and deployment qualification require
-their own integration evidence.
+The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.0`,
+with range `[4.44.0, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
+exact [v4.44.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
+source `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, published by successful normal
+[release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+The catalog and observed signed package identities are recorded in
+[`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
+gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
+qualification against this recorded Platform revision remains required;
+publication alone does not establish runtime or deployment acceptance.
 
 The configured range permits later 4.x versions, including prereleases, and excludes
 5.0 prereleases. Each accepted tool carries its own catalog; matching the range
@@ -110,7 +112,15 @@ Local Debug defaults retain source references. For owner CI,
 verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
-suite counts. The manual `Platform tuple CI preflight` workflow accepts a full
+suite counts. The required profile preserves the prior 160 cases and adds 23
+finite-cohort controls plus five actual `ComposeRun` controls, for 188 cases.
+Every group must execute its exact count with no errors, failures, skips or unrun
+cases. Before and after those tests, the result records the actual test assembly,
+five SDK/Tenants dependency hashes and operating-system/architecture
+context; changed outputs fail the preflight. Those observations still require
+comparison with the qualified public cohort.
+
+The manual `Platform tuple CI preflight` workflow accepts a full
 recorded candidate SHA and initializes only this standalone owner's direct
 dependencies. Artifacts include terminal failures. Do not initialize this umbrella
 checkout's nested dependencies.
@@ -278,6 +288,13 @@ own-repository fixtures are outside Platform integration evidence; descriptor
 migration is Story 2.9. Works remains an opt-in development preview with its existing
 qualification scope. See [concurrency verification](docs/platform-apphost-form.md)
 for the gated two-session proof and its current evidence limits.
+
+Fresh SDK package tests may explicitly add the genuine Tenants owner through
+Builds `test --with-owner tenants`. Platform's
+[finite package catalog profile](docs/package-catalog-qualification.md) requires
+published EventStore 4.0.4 and Tenants 7.0.0 artifacts and an authenticated fresh owner
+request. Default/domain closure is unchanged, Memories remains unqualified, and
+component preparation supplies no package runtime or Works acceptance.
 
 McpCli is a short-lived CLI, not a server. For the McpCli manifest, `run` and
 `debug` also build `references/Hexalith.McpCli/src/Hexalith.McpCli`

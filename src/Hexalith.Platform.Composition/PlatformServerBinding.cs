@@ -13,4 +13,9 @@ public sealed record PlatformServerBinding(
     string? Image,
     string ReadinessEndpoint,
     IReadOnlyDictionary<string, string> Environment,
-    IReadOnlyList<JsonElement> Tasks);
+    IReadOnlyList<JsonElement> Tasks)
+{
+    /// <summary>Gets the independently qualified immutable image digest, absent for unchanged default/source bindings.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? ImageDigest { get; init; }
+}

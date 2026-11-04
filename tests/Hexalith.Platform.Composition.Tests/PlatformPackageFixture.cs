@@ -20,7 +20,7 @@ internal sealed class PlatformPackageFixture : IDisposable
             File.Copy(Path.Combine(platformRoot, file), Path.Combine(Root, file));
         string reader = Path.Combine(Root, "src", "Hexalith.Platform.CatalogBuilder");
         Directory.CreateDirectory(reader);
-        foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs" })
+        foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs" })
             File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.CatalogBuilder", file), Path.Combine(reader, file));
         Versions = new Dictionary<string, string> { ["eventstore"] = "3.120.0", ["tenants"] = "5.8.0", ["memories"] = "2.27.1" };
         File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion><HexalithTenantsVersion>5.8.0</HexalithTenantsVersion><HexalithMemoriesVersion>2.27.1</HexalithMemoriesVersion></PropertyGroup></Project>");
