@@ -131,15 +131,22 @@ public sealed partial class PlatformAppModelTests : IDisposable
     }
 
 
+    /// <summary>Unauthenticated package graphs refuse before image probes, containers or sidecars.</summary>
     [Fact]
-    public void PackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
+    public void UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded()
     {
+        int probes = 0;
         var options = PackageGraphOptions() with
         {
-            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Unreleased catalog packages must refuse before image probes."),
+            ImageProbeRunner = (_, _, _) =>
+            {
+                probes++;
+                throw new InvalidOperationException("No image probe is permitted before qualification.");
+            },
         };
         var builder = Builder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }
 

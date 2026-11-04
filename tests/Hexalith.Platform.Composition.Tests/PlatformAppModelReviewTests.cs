@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
+using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using Aspire.Hosting;
@@ -7,6 +8,7 @@ using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
+using Hexalith.Platform.CatalogArtifacts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
@@ -417,8 +419,9 @@ public sealed partial class PlatformAppModelTests
         typeof(PlatformServerBinding).GetProperty("ReadinessEndpoint")!.PropertyType.ShouldBe(typeof(string));
     }
 
+    /// <summary>Unqualified package plans refuse before readers while mapping drift remains independently rejected.</summary>
     [Fact]
-    public async Task SignedPackageCatalogRefusesSdkAndStillChecksMappingDriftAsync()
+    public async Task UnqualifiedPackagePlanRefusesBeforeReaderAndChecksMappingDriftAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "platform-package-plan-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
@@ -444,40 +447,65 @@ public sealed partial class PlatformAppModelTests
                 CatalogVersionSnapshot.ComputeHash(hash, "test-pin", "test-catalog", new Dictionary<string, string>(), versions, new Dictionary<string, IReadOnlyDictionary<string, string>>()));
             string catalogPath = Path.Combine(workspace, "source-mapping", "catalog-versions.json");
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot(mapping.ContentHash)));
+            int probes = 0;
             PlatformCompositionOptions Configure(PlatformCompositionOptions options) => options with
             {
                 ReleaseCommits = release.ReleaseCommits,
                 ReleaseSnapshotHashes = release.ReleaseSnapshotHashes,
                 ComponentsDirectory = release.ComponentsDirectory,
-                ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
+                ImageProbeRunner = (_, _, _) =>
+                {
+                    probes++;
+                    throw new InvalidOperationException("No image probe is permitted before qualification.");
+                },
             };
             string readerProject = Path.Combine(release.PlatformRoot, "src", "Hexalith.Platform.CatalogBuilder", "Hexalith.Platform.CatalogBuilder.csproj");
             File.Delete(readerProject);
             IDistributedApplicationBuilder builder = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
                 .Message.ShouldContain("owner SDK");
+            probes.ShouldBe(0);
             builder.Resources.ShouldBeEmpty();
+            Directory.Exists(Path.Combine(workspace, "platform-components")).ShouldBeFalse();
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(Snapshot("wrong-mapping")));
             IDistributedApplicationBuilder refused = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(refused, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
                 .Message.ShouldContain("catalog snapshot differs from the selected mapping");
+            probes.ShouldBe(0);
             refused.Resources.ShouldBeEmpty();
+            Directory.Exists(Path.Combine(workspace, "platform-components")).ShouldBeFalse();
         }
         finally { Directory.Delete(workspace, true); }
     }
 
+    /// <summary>Qualified package admission still refuses unavailable or timed-out images before resource effects.</summary>
+    /// <param name="exit">The immutable image probe exit status.</param>
+    /// <param name="timedOut">Whether the bounded image probe timed out.</param>
     [Theory]
     [InlineData(1, false)]
     [InlineData(0, true)]
-    public void UnavailableCatalogSdkRefusesBeforeRegistryProbes(int exit, bool timedOut)
+    public void QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources(int exit, bool timedOut)
     {
-        bool inspected = false;
-        var options = PackageOptions() with { ImageProbeRunner = (_, _, _) =>
-        { inspected = true; return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut)); } };
+        using PlatformQualificationPackageFixture fixture = new();
+        string key = CompositionSigningKey.Create();
+        CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
+        int probes = 0;
         var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
-        inspected.ShouldBeFalse();
+        builder.Environment.EnvironmentName = Environments.Development;
+        bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
+            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts");
+        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
+        {
+            ImageProbeRunner = (_, _, _) =>
+            {
+                probes++;
+                return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut));
+            },
+        }));
+        failure.Message.ShouldContain(qualified ? "unavailable from its released registry" : "owner SDK");
+        probes.ShouldBe(qualified ? 1 : 0);
         builder.Resources.ShouldBeEmpty();
+        Directory.Exists(plan.Workspace).ShouldBeFalse();
     }
 
     [Fact]

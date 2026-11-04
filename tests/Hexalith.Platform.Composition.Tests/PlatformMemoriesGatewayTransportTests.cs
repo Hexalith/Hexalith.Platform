@@ -39,16 +39,22 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
-    /// <summary>Refuses the unqualified package receiver graph before assigning container transports or probing registries.</summary>
+    /// <summary>Unqualified Memories package graphs refuse before registry probes or container transports.</summary>
     [Fact]
-    public void PackageMemoriesContainerRequiresAQualifiedCatalogSdkBeforeBindingTransport()
+    public void UnqualifiedPackageMemoriesRefusesBeforeBindingTransport()
     {
         IDistributedApplicationBuilder builder = Builder();
+        int probes = 0;
         PlatformCompositionOptions options = PackageGraphOptions() with
         {
-            ImageProbeRunner = (_, _, _) => throw new InvalidOperationException("Package catalog qualification must precede registry probes."),
+            ImageProbeRunner = (_, _, _) =>
+            {
+                probes++;
+                throw new InvalidOperationException("No image probe is permitted before qualification.");
+            },
         };
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }
 
