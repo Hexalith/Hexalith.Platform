@@ -50,7 +50,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
     /// <summary>Materializes the genuine catalog before capturing the actual authenticated entry path, matching normal runner ordering.</summary>
     internal async Task MaterializeAsync()
     {
-        await SourceMappingMaterializer.WriteAsync(Plan.SourceMapping!, Plan.Workspace, TestContext.Current.CancellationToken);
+        await SourceMappingMaterializer.WriteAsync(Plan.SourceMapping!, Plan.Workspace, TestContext.Current.CancellationToken).ConfigureAwait(false);
         var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
             Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
@@ -67,6 +67,10 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
         Directory.Exists(Path.Combine(Plan.Workspace, "platform-components")).ShouldBeFalse();
         Options = captured!;
     }
+
+    /// <summary>Calls the real authenticated model entry with this fixture's private proof key, without exposing that key.</summary>
+    internal void ComposeRun(Aspire.Hosting.IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure)
+        => PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, configure);
 
     /// <summary>Gets the actual authenticated private options with explicitly synthetic active-SDK entry files.</summary>
     internal PlatformCompositionOptions Options { get; private set; } = null!;

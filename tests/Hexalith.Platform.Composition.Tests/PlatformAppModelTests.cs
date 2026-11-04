@@ -475,23 +475,29 @@ public sealed partial class PlatformAppModelTests : IDisposable
     [Fact]
     public void ConfigurationUsesFullKeysAndServerScopedTokenMappings()
     {
+        string domainToken = CreateChannelToken();
+        string apiChannelToken = CreateChannelToken();
+        string apiDaprToken = CreateChannelToken();
         PlatformCompositionOptions options = Options(active: "tenants") with
         {
             Configuration = new Dictionary<string, string>
             {
                 ["tenants/api/EventStore:Authentication:Authority"] = "https://delegated.example",
                 ["tenants/api/Authentication:JwtBearer:Authority"] = "https://validation.example",
-                ["tenants/domain/Tenants:AppChannelToken"] = "domain-token",
-                ["tenants/api/Tenants:ApiDaprToken"] = "api-token",
+                ["tenants/domain/Tenants:AppChannelToken"] = domainToken,
+                ["tenants/api/Tenants:AppChannelToken"] = apiChannelToken,
+                ["tenants/api/Tenants:ApiDaprToken"] = apiDaprToken,
             },
         };
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
         PlatformServerBinding api = servers.Single(s => s.ResourceId == "tenants-api");
         api.Environment["EventStore__Authentication__Authority"].ShouldBe("https://delegated.example");
         api.Environment["Authentication__JwtBearer__Authority"].ShouldBe("https://validation.example");
-        api.Environment["DAPR_API_TOKEN"].ShouldBe("api-token");
-        api.Environment.ShouldNotContainKey("APP_API_TOKEN");
-        servers.Single(s => s.ResourceId == "tenants").Environment["APP_API_TOKEN"].ShouldBe("domain-token");
+        api.Environment["DAPR_API_TOKEN"].ShouldBe(apiDaprToken);
+        api.Environment["APP_API_TOKEN"].ShouldBe(apiChannelToken);
+        api.Environment["APP_API_TOKEN"].ShouldNotBe(domainToken);
+        api.Environment["APP_API_TOKEN"].ShouldNotBe(apiDaprToken);
+        servers.Single(s => s.ResourceId == "tenants").Environment["APP_API_TOKEN"].ShouldBe(domainToken);
     }
 
     [Fact]
