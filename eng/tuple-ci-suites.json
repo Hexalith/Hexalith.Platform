@@ -86,6 +86,30 @@
         "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
       ],
       "requiredCount": 37
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
+      ],
+      "requiredCount": 3
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
+      ],
+      "requiredCount": 21
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
+      ],
+      "requiredCount": 9
     }
   ]
 }

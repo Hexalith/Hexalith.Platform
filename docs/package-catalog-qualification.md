@@ -47,7 +47,7 @@ DLLs. A bounded compiled-reader comparison produced identical canonical catalogs
 for those two owner inputs; that observation is compatibility evidence, not a
 claim that their binaries are identical or that every runtime request is proven.
 
-Memories `3.0.18` remains outside the finite admitted profile. Its measured domain
+The earlier Memories `3.0.18` output did not qualify the full Parties profile. Its measured domain
 image omits EventStoreExtensions. That omission alone does not demonstrate a
 missing runtime dependency: the actual domain capture uses compiled owner
 contracts, installed receivers and empty intent admission; the public adapter
@@ -55,23 +55,24 @@ factories run in the catalog reader and gateway. The independently authenticated
 `3.0.23` image/source measurements preserve this distinction. They establish no
 real wire, bootstrap or health qualification.
 
-Published [Builds 4.44.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
-contains the owner-selection and seed receiver changes. Its exact source is
-`6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, released through successful normal
-[run 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
-The released seed compiles its technical receiver against the resolved public Gateway
-`4.0.4` package. The [Platform tuple](../eng/builds-tuple.json) records the observed
-signed archive, embedded Tooling and inventory identities. Its catalog still
-selects SDK `4.0.4` from producer
-`326bfef884543cdbcaf96de7f4c4ad378dbad6d7`; this tooling adoption introduces no new
-SDK or owner cohort.
+This proposal adopts published [Builds 4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
+at exact source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, produced by normal
+[release run 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
+The [recorded tuple](../eng/builds-tuple.json) binds the actual signed archive,
+embedded Tooling, inventory and catalog; the local tool and supported floor are
+both `4.44.2`. This catalog genuinely selects Memories `3.0.23` and FrontComposer
+`4.7.6`, while SDK `4.0.4`, Tenants `7.0.0` and Parties `3.0.0` retain their
+existing released provenance. Published package bodies remain separate from
+image bodies and active test source.
 
-Fresh recorded Platform qualification must use those published artifacts and
-execute all 201 existing required cases, including the 28 finite admission/entry-point
-controls, plus the catalog compatibility matrix. The before/after test-output
-receipt binds the actual test assembly and five SDK/Tenants DLLs to its OS and
-architecture. Local source assemblies and prior component receipts do not replace
-that fresh evidence or the subsequent real package run.
+The required source profile contains 271 cases: the existing 201 E/T, token,
+source and analyzer cases, 37 Parties proof cases, three real mapped-owner cases,
+and 30 full entry/reader cases. The latter 33 additions actually executed without
+skips after coherent tuple adoption. Each full negative first proves its genuine
+positive baseline. Fresh exact-committed-source execution of the complete profile,
+the four-SDK matrix and real runtime qualification remain separate gates.
+The test-output receipt binds actual output bytes to the executing OS and
+architecture; local component results never replace hosted tuple qualification.
 
 Component tests, signature checks, compiled-owner comparisons and reader refusal
 controls are supporting evidence. Accepted package execution still requires the
@@ -82,11 +83,9 @@ guards and exact-run cleanup remain mandatory. No package runtime or Works Story
 
 
 The finite ordinary Parties source proposal adds a separate full-cohort boundary.
-It remains pending coherent adoption and qualification of a genuine new Builds
-publication selecting Memories `3.0.23`. The accepted tuple, tool floor and M18
-provenance remain unchanged during source preparation. The new 37 required proof
-controls supplement the 201 existing cases (including the incoming five channel controls); their execution cannot replace the
-remaining positive full-entry and genuine-tuple qualification.
+It now adopts the genuine Builds `4.44.2` publication and exact Memories `3.0.23`
+provenance. Its source/component controls preserve the existing E/T and token
+boundary; source proof and probe doubles do not establish live compatibility.
 
 The profile selects Development Linux/x64, a fresh ordinary Parties package test,
 and only its actual `platform-package` or `lifecycle-package` suite. Parties
@@ -157,13 +156,18 @@ no invented consumer release tag or synthetic/legacy mapping fallback. The fixtu
 no service. Its probe responses are deterministic component doubles; they do not
 claim fresh registry/image inspection.
 
-These prepared cases are not yet part of `eng/tuple-ci-suites.json`: the existing
-238 required cases remain intact. The accepted M18 output currently fails the
-explicit M23 prerequisite. New full-entry/negative/reader cases and their counts
-must be executed after genuine tuple adoption and coherent fixture preparation
-before they enter the required profile. Compilation alone supplies no full
-admission, reader, attachment or runtime qualification. The first real prerequisite
-failure and all unexecuted cases remain explicit in the evidence checkpoint.
+These cases are now registered in `eng/tuple-ci-suites.json` with their actual
+observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
+all 238 previous cases. The original M18 prerequisite failures and the first
+three reader-fixture failures remain historical evidence. Version/assets refusal
+now mutates the reader's actual direct Memories.EventStore reference; all twelve
+public bodies, including transitive Memories.Contracts, remain independently
+verified. The ordinary duplicate control reintroduces a genuine Parties package
+after normal source reconciliation and requires the unchanged HXW005 guard to
+refuse it before unrelated active-source restore. No assertion or guard is waived.
+Reader output retains the actual public-body, catalog and mapping identities.
+The full required source profile still needs exact-head hosted execution; native,
+attachment, lifecycle and wire compatibility remain unqualified by these controls.
 
 The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
 selects the released backend declaration `86002eeb...`. This isolated draft now
@@ -173,5 +177,6 @@ selects the already reviewed and merged lifecycle test source
 manifest fields are unchanged; only the lifecycle suite and its source are added.
 This source prerequisite does not relabel the published P3.0.0/backend639
 artifacts or their released `86002eeb...` declaration. Canonical accepted pins and
-the Parties caller proposal are untouched. The genuine M23 Builds publication,
-coherent tuple/provenance adoption and real full qualification remain pending.
+the Parties caller proposal are untouched. The genuine M23 Builds publication
+and this isolated tuple/provenance adoption are recorded; exact-head hosted gates,
+normal Platform publication and real reference/lifecycle qualification remain pending.

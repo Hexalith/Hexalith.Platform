@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Runtime.Loader;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml.Linq;
@@ -154,7 +155,7 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         Directory.GetFiles(fixture.Workspace, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
     }
 
-    private static void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
+    private void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
     {
         using JsonDocument generated = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
         generated.RootElement.GetProperty("routes").GetArrayLength().ShouldBe(70);
@@ -164,6 +165,8 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "command").ShouldBe(46);
         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "query").ShouldBe(20);
         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "projection").ShouldBe(4);
+        diagnostics.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
+            + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=70 policies=46");
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
         request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.FullPartiesName);
         request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
@@ -177,6 +180,7 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
             {
                 string body = Path.Combine(fixture.Reader, "output", name + ".dll");
                 PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), PublishedCatalogArtifactCohort.FullPartiesName).ShouldBe(body);
+                diagnostics.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))));
             }
         }
         finally { context.Unload(); }
