@@ -132,7 +132,12 @@ public static class PlatformAppModel
         }
         foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
         {
-            string imageReference = server.Image + (server.ImageDigest is null ? string.Empty : "@sha256:" + server.ImageDigest);
+            string imageReference = server.Image!;
+            if (server.ImageDigest is not null)
+            {
+                // Resolve appends the tag, so the final colon preserves any registry port.
+                imageReference = imageReference[..imageReference.LastIndexOf(':')] + "@sha256:" + server.ImageDigest;
+            }
             IEnumerable<string> arguments = ["manifest", "inspect", imageReference];
 #if HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION
             arguments = PlatformLoopbackRegistryProbe.Arguments(imageReference, options.Mapping.Mode, builder.Environment.IsDevelopment());
