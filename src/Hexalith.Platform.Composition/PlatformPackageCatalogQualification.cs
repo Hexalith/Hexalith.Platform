@@ -16,6 +16,8 @@ internal static class PlatformPackageCatalogQualification
     /// <summary>Checks all finite inputs before image probes, filesystem rendering or resource allocation.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
     {
+        if (options.ActiveModule == "parties")
+            return PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
         CompositionRunPlan? plan = options.RunPlan;
         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
             || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true

@@ -418,3 +418,7 @@ rollback composition until that gate passes.
 ## Owner
 
 Platform Maintainer (Hexalith).
+
+The [package catalog qualification boundary](docs/package-catalog-qualification.md)
+documents the separate finite ordinary Parties source proposal, measured public
+and image roles, and pending genuine tuple/native qualification.
