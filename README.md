@@ -113,12 +113,20 @@ verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
 suite counts. The required profile preserves the prior 160 cases and adds 23
-finite-cohort controls plus five actual `ComposeRun` controls, for 188 cases.
+finite-cohort controls, five actual `ComposeRun` controls and eight private
+package-reader controls, for 196 cases.
 Every group must execute its exact count with no errors, failures, skips or unrun
 cases. Before and after those tests, the result records the actual test assembly,
 five SDK/Tenants dependency hashes and operating-system/architecture
 context; changed outputs fail the preflight. Those observations still require
 comparison with the qualified public cohort.
+
+The private package catalog reader uses the run's exact materialized Builds
+catalog with effective-reference and restored-asset validation. Its child build
+does not inherit the active SDK source mapping; ordinary source/package guards
+remain enforced for consumer projects, and source-mode reader builds retain
+their selected mapping. Catalog validation and compilation share the existing
+five-minute reader budget and the run's startup deadline.
 
 The manual `Platform tuple CI preflight` workflow accepts a full
 recorded candidate SHA and initializes only this standalone owner's direct

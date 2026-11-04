@@ -36,8 +36,18 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         if (!File.Exists(templateProject))
             throw new InvalidDataException("The required Platform routing catalog reader project is unavailable: " + templateProject);
         var xml = XDocument.Load(templateProject);
-        xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Packages.props"))));
-        xml.Root.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
+        string mappingWorkspace = options.RunPlan?.Workspace ?? workspace;
+        DateTimeOffset? packageReaderDeadline = null;
+        IReadOnlyList<string> packageArguments = [];
+        if (options.Mapping.Mode == WorkspaceMode.Package)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            packageReaderDeadline = now + ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, now);
+            packageArguments = PlatformPackageCatalogReader.Prepare(xml, options, mappingWorkspace, build, packageReaderDeadline.Value);
+        }
+        else
+            xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Packages.props"))));
+        xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
         xml.Save(project);
         File.Copy(Path.Combine(template, "Program.cs"), Path.Combine(build, "Program.cs"), true);
         File.Copy(Path.Combine(template, "PublishedCatalogArtifactCohort.cs"), Path.Combine(build, "PublishedCatalogArtifactCohort.cs"), true);
@@ -52,11 +62,11 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         }
         string props = Path.Combine(build, "bindings.props");
         new XDocument(new XElement("Project", references)).Save(props);
-        string mappingWorkspace = options.RunPlan?.Workspace ?? workspace;
         string output = Path.Combine(build, "output");
         var start = CompositionProcess.CreateStartInfo("dotnet", ["build", project, "-c", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release",
-            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo"], options.PlatformRoot, SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace));
-        var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
+            "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo", .. packageArguments], options.PlatformRoot,
+            options.Mapping.Mode == WorkspaceMode.Source ? SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace) : null);
+        var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), packageReaderDeadline ?? options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
         string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
