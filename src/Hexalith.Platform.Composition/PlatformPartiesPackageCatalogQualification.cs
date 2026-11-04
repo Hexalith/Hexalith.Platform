@@ -28,8 +28,13 @@ internal static class PlatformPartiesPackageCatalogQualification
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
+        => Bind(options, declarations, servers, developmentRun, OperatingSystem.IsLinux(), RuntimeInformation.ProcessArchitecture);
+
+    /// <summary>Exercises the same complete guard with an explicit runtime scope; the production entry always supplies the actual OS and architecture.</summary>
+    internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
+        IReadOnlyList<PlatformServerBinding> servers, bool developmentRun, bool linux, Architecture architecture)
     {
-        if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+        if (!developmentRun || !linux || architecture != Architecture.X64
             || options.PartiesRunProof?.Matches(options) != true
             || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal)
                 .SequenceEqual(["eventstore", "memories", "parties", "tenants"], StringComparer.Ordinal)

@@ -16,7 +16,7 @@ internal sealed class PlatformPartiesRunProof
     private PlatformPartiesRunProof(PlatformCompositionOptions options)
     {
         _optionsDigest = Digest(options);
-        _activeRevision = Git(options.Mapping.Root, "rev-parse", "HEAD");
+        _activeRevision = Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD");
         _files = Inputs(options).Distinct(StringComparer.Ordinal).ToDictionary(path => path, Hash, StringComparer.Ordinal);
     }
 
@@ -37,7 +37,7 @@ internal sealed class PlatformPartiesRunProof
         try
         {
             Validate(options);
-            return Digest(options) == _optionsDigest && Git(options.Mapping.Root, "rev-parse", "HEAD") == _activeRevision
+            return Digest(options) == _optionsDigest && Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD") == _activeRevision
                 && _files.All(pair => Hash(pair.Key) == pair.Value);
         }
         catch (Exception exception) when (exception is IOException or InvalidDataException or UnauthorizedAccessException or JsonException or InvalidOperationException or KeyNotFoundException)
@@ -65,7 +65,8 @@ internal sealed class PlatformPartiesRunProof
             || plan.PlatformDeclarationPaths.Count != 1 || plan.SelectedTest is null || plan.SelectedTests.Count is < 1 or > 2
             || plan.SelectedTests[0] != plan.SelectedTest || plan.SelectedTests.Select(test => test.Name).Distinct(StringComparer.Ordinal).Count() != plan.SelectedTests.Count)
             throw Refusal();
-        string declaration = Path.Combine(mapping.Root, "module", "hexalith.module-manifest.v2.json");
+        string activeRoot = ActiveRoot(mapping);
+        string declaration = Path.Combine(activeRoot, "module", "hexalith.module-manifest.v2.json");
         if (plan.PlatformDeclarationPaths[0] != declaration || !Hash(declaration).Equals(plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase))
             throw Refusal();
         SourceMapping persisted = SourceMapping.LoadVerified(Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), mapping.ContentHash);
@@ -76,10 +77,20 @@ internal sealed class PlatformPartiesRunProof
         ValidateTests(plan, declaration, mapping);
         SourceMappingEntry active = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties");
         SourceMappingEntry builds = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds");
-        if (active.Origin != "source" || active.Path != mapping.Root || builds.Origin != "source" || builds.Path is null
+        string buildsRoot = builds.Origin switch
+        {
+            "package" when builds.Path is null => Path.Combine(mapping.Root, "references", "Hexalith.Builds"),
+            "source" when builds.Path is not null => builds.Path,
+            _ => throw Refusal(),
+        };
+        if (active.Origin != "source" || Git(activeRoot, "rev-parse", "--show-toplevel") != activeRoot
+            || activeRoot != mapping.Root && (activeRoot != Path.Combine(mapping.Root, "references", "Hexalith.Parties")
+                || Git(mapping.Root, "rev-parse", "HEAD:references/Hexalith.Parties") != Git(activeRoot, "rev-parse", "HEAD"))
             || Git(identity.PlatformPath, "rev-parse", "HEAD") != identity.CheckoutCommit
-            || Git(builds.Path, "rev-parse", "HEAD") != identity.CatalogCommit
-            || new[] { mapping.Root, identity.PlatformPath, builds.Path }.Any(root => Git(root, "status", "--porcelain", "--untracked-files=normal").Length != 0))
+            || Git(buildsRoot, "rev-parse", "--show-toplevel") != buildsRoot
+            || Git(buildsRoot, "rev-parse", "HEAD") != identity.CatalogCommit
+            || builds.Origin == "package" && Git(mapping.Root, "rev-parse", "HEAD:references/Hexalith.Builds") != identity.CatalogCommit
+            || new[] { activeRoot, mapping.Root, identity.PlatformPath, buildsRoot }.Distinct(StringComparer.Ordinal).Any(root => Git(root, "status", "--porcelain", "--untracked-files=normal").Length != 0))
             throw Refusal();
     }
 
@@ -94,10 +105,10 @@ internal sealed class PlatformPartiesRunProof
         };
         foreach (ModuleTestSelection selected in plan.SelectedTests)
         {
-            string entry = Path.GetFullPath(Path.Combine(mapping.Root, selected.Entry));
+            string entry = Path.GetFullPath(Path.Combine(ActiveRoot(mapping), selected.Entry));
             if (selected.ModuleId != "parties" || selected.Mode != "package" || selected.Name is not ("platform-package" or "lifecycle-package")
                 || Path.IsPathRooted(selected.Entry) || !owner.ContainsProject(entry)
-                || Git(Path.GetDirectoryName(entry)!, "rev-parse", "--show-toplevel") != mapping.Root
+                || Git(Path.GetDirectoryName(entry)!, "rev-parse", "--show-toplevel") != ActiveRoot(mapping)
                 || selected.Entry.StartsWith("references/", StringComparison.OrdinalIgnoreCase)
                 || !Hash(entry).Equals(selected.EntryHash, StringComparison.OrdinalIgnoreCase)
                 || !Hash(declaration).Equals(selected.ManifestHash, StringComparison.OrdinalIgnoreCase)) throw Refusal();
@@ -112,13 +123,15 @@ internal sealed class PlatformPartiesRunProof
     private static IEnumerable<string> Inputs(PlatformCompositionOptions options)
     {
         CompositionRunPlan plan = options.RunPlan!;
-        return options.DeclarationPaths.Concat(plan.SelectedTests.Select(test => Path.Combine(options.Mapping.Root, test.Entry)))
+        return options.DeclarationPaths.Concat(plan.SelectedTests.Select(test => Path.Combine(ActiveRoot(options.Mapping), test.Entry)))
             .Concat([Path.Combine(plan.Workspace, "plan.json"), Path.Combine(plan.Workspace, "source-mapping", "mapping.json"),
                 Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"),
                 Path.Combine(plan.Workspace, "source-mapping", "pinned-tree", "Props", "Directory.Packages.props"),
                 options.Mapping.PlatformIdentity!.RecordPath,
                 options.EventStoreSeedProject ?? throw Refusal(), plan.PlatformModelAssemblyPath ?? throw Refusal()]);
     }
+
+    private static string ActiveRoot(SourceMapping mapping) => mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path ?? throw Refusal();
 
     private static string Git(string root, params string[] arguments)
     {

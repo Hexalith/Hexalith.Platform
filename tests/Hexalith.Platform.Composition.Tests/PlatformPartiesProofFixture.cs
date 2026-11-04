@@ -10,12 +10,13 @@ using Shouldly;
 internal sealed class PlatformPartiesProofFixture : IDisposable
 {
     /// <summary>Creates clean local histories and private parent handoff files without invoking a service or granting cohort authority.</summary>
-    internal PlatformPartiesProofFixture()
+    /// <param name="platformOwned">Whether the actual owner is a direct Git child of the outer Platform root, with a package-mode Builds entry.</param>
+    internal PlatformPartiesProofFixture(bool platformOwned = false)
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-parties-proof-" + Guid.NewGuid().ToString("N"));
-        string active = Path.Combine(Root, "parties");
+        string active = platformOwned ? Path.Combine(Root, "platform", "references", "Hexalith.Parties") : Path.Combine(Root, "parties");
         string platform = Path.Combine(Root, "platform");
-        string builds = Path.Combine(Root, "builds");
+        string builds = platformOwned ? Path.Combine(platform, "references", "Hexalith.Builds") : Path.Combine(Root, "builds");
         string workspace = Path.Combine(Root, "run");
         foreach (string root in new[] { active, platform, builds }) Directory.CreateDirectory(root);
         string declaration = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
@@ -36,13 +37,13 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
         string catalog = Path.Combine(builds, "Props", "Directory.Packages.props");
         Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
         File.WriteAllText(catalog, "<Project />");
-        foreach (string root in new[] { active, platform, builds })
+        foreach (string root in new[] { active, builds, platform })
         {
             Git(root, "init", "-q");
             Commit(root);
         }
-        SourceMapping mapping = new(WorkspaceMode.Package, active, "Hexalith.Parties",
-            [new("Hexalith.Parties", "source", active), new("Hexalith.Builds", "source", builds)], true)
+        SourceMapping mapping = new(WorkspaceMode.Package, platformOwned ? platform : active, "Hexalith.Parties",
+            [new("Hexalith.Parties", "source", active), platformOwned ? new("Hexalith.Builds", "package", null) : new("Hexalith.Builds", "source", builds)], true)
         {
             PlatformIdentity = new PlatformIdentity(Git(platform, "rev-parse", "HEAD"), Git(platform, "rev-parse", "HEAD"),
                 Git(platform, "rev-parse", "HEAD"), platform, null, Git(builds, "rev-parse", "HEAD"), "[4.44.0,5.0.0-0)", record, true),

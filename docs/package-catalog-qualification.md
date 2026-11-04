@@ -143,3 +143,35 @@ actual Tenants API/domain, Memories server/domain/clock/telemetry, Parties and
 gateway cutover/receiver/health and persistent native operations must still pass.
 No service, native, lifecycle, parity, candidate or Story acceptance follows from
 source/component preparation.
+
+
+The remaining full-entry and production-generated reader controls are prepared in
+`PlatformPartiesPackageEntryTests` and `PlatformPartiesPackageReaderTests`. They
+are unconditional positive controls. Their fixture first requires the actual
+loaded public M23 Contracts body, then the collecting
+Platform repository with its actual clean root-declared Parties and Builds
+checkouts. Normal Platform-owned workspace resolution and catalog materialization
+produce the mapping and accepted published catalog. This binds the active Parties
+entry and committed gitlink separately from the outer Platform root; it requires
+no invented consumer release tag or synthetic/legacy mapping fallback. The fixture changes no source pin, creates no Git metadata and starts
+no service. Its probe responses are deterministic component doubles; they do not
+claim fresh registry/image inspection.
+
+These prepared cases are not yet part of `eng/tuple-ci-suites.json`: the existing
+238 required cases remain intact. The accepted M18 output currently fails the
+explicit M23 prerequisite. New full-entry/negative/reader cases and their counts
+must be executed after genuine tuple adoption and coherent fixture preparation
+before they enter the required profile. Compilation alone supplies no full
+admission, reader, attachment or runtime qualification. The first real prerequisite
+failure and all unexecuted cases remain explicit in the evidence checkpoint.
+
+The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
+selects the released backend declaration `86002eeb...`. This isolated draft now
+selects the already reviewed and merged lifecycle test source
+`f1f33f8de655d9aa9307bafba128b0c7ea5c2570`, whose actual declaration is
+`40cee6ce...`. Compared to the prior pin, production `src/` and all non-test
+manifest fields are unchanged; only the lifecycle suite and its source are added.
+This source prerequisite does not relabel the published P3.0.0/backend639
+artifacts or their released `86002eeb...` declaration. Canonical accepted pins and
+the Parties caller proposal are untouched. The genuine M23 Builds publication,
+coherent tuple/provenance adoption and real full qualification remain pending.
