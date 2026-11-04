@@ -9,7 +9,7 @@ using Shouldly;
 /// <summary>Exercises the actual key-bearing ComposeRun path without starting resources or a package fleet.</summary>
 public sealed class PlatformPackageCatalogEntryPointTests
 {
-    /// <summary>A genuine loaded cohort reaches only the first immutable image probe through entry-point proof creation.</summary>
+    /// <summary>A genuine loaded cohort probes both immutable owner images before adding resources.</summary>
     [Fact]
     public void ValidBoundRequestReachesImageProbeThroughComposeRun()
     {
@@ -22,17 +22,22 @@ public sealed class PlatformPackageCatalogEntryPointTests
             && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts");
         void Compose() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
-            ImageProbeRunner = (start, _, _) =>
+            ImageProbeRunner = (start, timeout, _) =>
             {
                 probes++;
-                start.ArgumentList.ShouldBe(["manifest", "inspect", "registry.hexalith.com/tenants:7.0.0@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"]);
+                start.FileName.ShouldBe("docker");
+                timeout.ShouldBe(TimeSpan.FromSeconds(20));
+                start.ArgumentList.ShouldBe(["manifest", "inspect", probes == 1
+                    ? "registry.hexalith.com/tenants@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"
+                    : "registry.hexalith.com/tenants-api@sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6"]);
+                if (probes == 1) return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
                 throw new InvalidOperationException("Expected immutable image-probe boundary reached.");
             },
         });
         if (qualified)
         {
             Should.Throw<InvalidOperationException>(Compose).Message.ShouldBe("Expected immutable image-probe boundary reached.");
-            probes.ShouldBe(1);
+            probes.ShouldBe(2);
         }
         else
         {
