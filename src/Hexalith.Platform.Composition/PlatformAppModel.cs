@@ -68,7 +68,7 @@ public static class PlatformAppModel
         Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
     }
 
-    /// <summary>Composes a v2 signed Builds plan, keeping its package-mode gateway seed.</summary>
+    /// <summary>Composes the key-bearing Builds runner handoff, keeping its package-mode gateway seed.</summary>
     public static void ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, string signingKey, string? seedProject)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -98,13 +98,16 @@ public static class PlatformAppModel
             configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
             configuration[server + "/Jwt:SigningKey"] = signingKey;
         }
-        Compose(builder, configureOptions(new PlatformCompositionOptions
+        PlatformCompositionOptions options = new()
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
             QualificationOwners = plan.QualificationOwners ?? [], QualificationOwnerProof = ownerProof,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
-        }));
+        };
+        if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
+            options = options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
+        Compose(builder, configureOptions(options));
     }
 
     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>

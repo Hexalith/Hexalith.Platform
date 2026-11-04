@@ -27,6 +27,10 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
+        string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
+            : options.PartiesRunProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.FullPartiesName
+            : options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name
+            : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
         CompositionWorkspace.CreatePrivateDirectory(build);
@@ -74,7 +78,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string request = Path.Combine(build, "request.json");
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
-            qualificationCohort = options.Mapping.Mode == WorkspaceMode.Package && options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name : null,
+            qualificationCohort,
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),

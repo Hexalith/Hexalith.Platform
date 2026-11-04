@@ -1,12 +1,14 @@
 # Enroll a domain module
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
-and the human demonstration are separate gates. The accepted published tool is
-`4.35.2`, including ordinary declaration validation and the read-only `--adoption`
-report. Copy the exact pin from the direct Platform checkout as described below.
-[Release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
-records owner approval, gated publication and fresh acceptance. Static PASS rows
-leave the owner's live SM-2 demonstration separately unverified.
+and the human demonstration are separate gates. This proposed Platform source
+pins the genuine published tool `4.44.2`, including ordinary declaration validation
+and the read-only `--adoption` report. Copy the exact pin from the selected direct
+Platform checkout as described below; the [tuple binding](../eng/builds-tuple.json)
+records its public package and source identities. The original
+[enrollment release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
+remains historical. Source/component checks and published tooling leave the
+owner's live SM-2 demonstration separately unverified.
 
 ## 1. Declare and initialize the minimum workspace
 

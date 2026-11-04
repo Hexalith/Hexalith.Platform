@@ -36,11 +36,11 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.0`,
-with range `[4.44.0, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
-exact [v4.44.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.0)
-source `6249a8c0a0480a4b8a8ba04fc214c6104c3c9045`, published by successful normal
-[release 41736408981](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41736408981).
+The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.2`,
+with range `[4.44.2, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
+exact [v4.44.2 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
+source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, published by successful normal
+[release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
 The catalog and observed signed package identities are recorded in
 [`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
 gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
@@ -112,9 +112,11 @@ Local Debug defaults retain source references. For owner CI,
 verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
-suite counts. The required profile preserves the prior 160 cases and adds 23
-finite-cohort controls, five actual `ComposeRun` controls, eight private
-package-reader controls and five declared-channel controls, for 201 cases.
+suite counts. The required profile preserves the prior 201 E/T, reader and
+channel cases, adds 37 Parties proof cases, three actual mapped-owner cases,
+21 full entry cases and nine full reader cases, for 271 required cases.
+Local signed-tool component results and audit-only graph checks remain distinct
+from the mandatory exact-HEAD hosted tuple and real native qualification.
 Every group must execute its exact count with no errors, failures, skips or unrun
 cases. Before and after those tests, the result records the actual test assembly,
 five SDK/Tenants dependency hashes and operating-system/architecture
@@ -179,7 +181,7 @@ Parties' owner-led enrollment; see the
 Use the [enrollment guide](docs/domain-module-enrollment.md) and
 [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
 direct-only initialization, source mapping, Dapr conventions, hosting inventory
-and human SM-2 evidence. The accepted `4.35.2` tool provides read-only
+and human SM-2 evidence. The pinned published `4.44.2` tool provides read-only
 `validate --adoption` reports in human and JSON formats. Static reports leave
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
@@ -427,3 +429,7 @@ rollback composition until that gate passes.
 ## Owner
 
 Platform Maintainer (Hexalith).
+
+The [package catalog qualification boundary](docs/package-catalog-qualification.md)
+documents the separate finite ordinary Parties source proposal, measured public
+and image roles, and pending genuine tuple/native qualification.

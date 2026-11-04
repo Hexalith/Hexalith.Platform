@@ -21,14 +21,21 @@ if (gatewayAppId != "eventstore")
 #endif
 List<string> qualifiedArtifacts = [];
 bool qualified = input.TryGetProperty("qualificationCohort", out var cohort) && cohort.ValueKind != JsonValueKind.Null;
+string? qualificationName = qualified && cohort.ValueKind == JsonValueKind.String ? cohort.GetString() : null;
 if (qualified)
 {
     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
-    if (cohort.ValueKind != JsonValueKind.String || cohort.GetString() != PublishedCatalogArtifactCohort.Name
-        || requestedOwners.Length != 1 || requestedOwners[0].GetProperty("assembly").GetString() != "Hexalith.Tenants.Contracts"
-        || requestedOwners[0].GetProperty("adapterAssembly").GetString() != "Hexalith.Tenants.Server")
+    string[] expected = qualificationName switch
+    {
+        PublishedCatalogArtifactCohort.Name => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.FullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
+    };
+    if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
+        .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
-    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.VerifySdk());
+    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.FullPartiesName
+        ? PublishedCatalogArtifactCohort.VerifyFullParties() : PublishedCatalogArtifactCohort.VerifySdk());
 }
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];
@@ -44,8 +51,8 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     adapters.Add(adapterAssembly.Location);
     if (qualified)
     {
-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly));
-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly));
+        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly, qualificationName!));
+        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly, qualificationName!));
     }
     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
     declarations.AddRange(routes);
