@@ -26,8 +26,11 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         string catalog = Path.Combine(Root, "references", "Hexalith.Builds", "Props");
         Directory.CreateDirectory(catalog);
         string memoriesVersion = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!["memories"]!["version"]!.GetValue<string>();
+        JsonNode provenance = JsonNode.Parse(File.ReadAllText(Path.Combine(declarations, "provenance.json")))!;
+        string sdkVersion = provenance["eventstore"]!["version"]!.GetValue<string>();
+        string tenantsVersion = provenance["tenants"]!["version"]!.GetValue<string>();
         // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>4.0.4</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.0</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup></Project>");
+        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup></Project>");
         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);

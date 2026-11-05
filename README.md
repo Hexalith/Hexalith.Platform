@@ -36,11 +36,11 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.2`,
-with range `[4.44.2, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
-exact [v4.44.2 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
-source `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, published by successful normal
-[release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661).
+The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.3`,
+with range `[4.44.3, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
+exact [v4.44.3 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
+source `fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
+[release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
 The catalog and observed signed package identities are recorded in
 [`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
 gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
@@ -181,7 +181,7 @@ Parties' owner-led enrollment; see the
 Use the [enrollment guide](docs/domain-module-enrollment.md) and
 [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
 direct-only initialization, source mapping, Dapr conventions, hosting inventory
-and human SM-2 evidence. The pinned published `4.44.2` tool provides read-only
+and human SM-2 evidence. The pinned published `4.44.3` tool provides read-only
 `validate --adoption` reports in human and JSON formats. Static reports leave
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).

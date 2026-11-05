@@ -27,15 +27,15 @@ if (qualified)
     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
     string[] expected = qualificationName switch
     {
-        PublishedCatalogArtifactCohort.Name => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
-        PublishedCatalogArtifactCohort.FullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
         _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
     };
     if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
         .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
-    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.FullPartiesName
-        ? PublishedCatalogArtifactCohort.VerifyFullParties() : PublishedCatalogArtifactCohort.VerifySdk());
+    qualifiedArtifacts.AddRange(qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName
+        ? PublishedCatalogArtifactCohort.VerifyFullParties(qualificationName) : PublishedCatalogArtifactCohort.VerifySdk(qualificationName!));
 }
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];

@@ -1,15 +1,17 @@
 # Current tuple preparation
 
-> Historical preparation record. Current proposed owner configuration selects
-> [Builds v4.44.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.2)
-> at `ae68c59bd2f4145a23ccf68c3711f98eaf62195f`, from successful normal
-> [release 41798378661](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41798378661),
-> with supported floor `4.44.2`. Actual signed archive, Tooling and inventory
+> Current owner configuration selects
+> [Builds v4.44.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
+> at `fc2122240a39f03628c04fa8433e5eece90b8b4c`, from successful normal
+> [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500),
+> with supported floor `4.44.3`. Actual signed archive, Tooling and inventory
 > identities are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
-> The required profile contains 271 cases. Local signed-tool component checks
-> and audit-only graph checks do not replace pending exact-HEAD hosted tuple,
-> catalog-matrix and real package-runtime qualification.
-> The procedure below preserves the earlier unqualified candidate and its
+> The selected SDK/Tenants pair is `4.1.0`/`7.0.2`; Memories `3.0.23`, Parties
+> `3.0.0` and Hexalith.McpCli `2.0.0` retain their own authenticated public bodies.
+> All 340 required controls must execute on this genuine tuple. Local signed-tool
+> components and audit-only graph checks do not replace exact-HEAD hosted tuple,
+> catalog-matrix or real package-runtime qualification.
+> The procedure below preserves earlier unqualified preparation and its
 > historical authorization context; it does not describe current acceptance.
 
 The source candidate is official Builds `6cc96b4ff23c40c77651e1e4f85ed3170c25c7a4`.

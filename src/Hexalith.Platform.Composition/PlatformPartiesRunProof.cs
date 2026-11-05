@@ -73,7 +73,9 @@ internal sealed class PlatformPartiesRunProof
         if (persisted.ContentHash != mapping.ContentHash) throw Refusal();
         CompositionRunPlan recorded = CompositionDocumentStore.TryReadAsync<CompositionRunPlan>(Path.Combine(plan.Workspace, "plan.json"), CancellationToken.None)
             .GetAwaiter().GetResult() ?? throw Refusal();
-        if (CompositionDocumentStore.Serialize(recorded) != CompositionDocumentStore.Serialize(plan)) throw Refusal();
+        if (CompositionDocumentStore.Serialize(recorded) != CompositionDocumentStore.Serialize(plan)
+            && !(PlatformPartiesValidationContext.IsCurrentPublishedValidation(plan)
+                && PlatformPartiesValidationContext.IsExactClaimProjection(recorded, plan))) throw Refusal();
         ValidateTests(plan, declaration, mapping);
         SourceMappingEntry active = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties");
         SourceMappingEntry builds = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds");

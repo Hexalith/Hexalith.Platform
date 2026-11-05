@@ -24,8 +24,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>The seven authenticated Linux/amd64 identities expected at the real image-preflight boundary.</summary>
     internal static IReadOnlySet<string> Images { get; } = new HashSet<string>(StringComparer.Ordinal)
     {
-        "registry.hexalith.com/tenants@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42",
-        "registry.hexalith.com/tenants-api@sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6",
+        "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed",
+        "registry.hexalith.com/tenants-api@sha256:2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4",
         "registry.hexalith.com/memories@sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b",
         "registry.hexalith.com/memories-domain-service@sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
         "registry.hexalith.com/memories-access-telemetry-clock@sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f",
@@ -36,7 +36,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Gets the independently owned private workspace; no source checkout is copied or edited.</summary>
     internal string Workspace { get; }
     /// <summary>Gets the actual selected declaration/test/mapping handoff persisted by the fixture.</summary>
-    internal CompositionRunPlan Plan { get; }
+    internal CompositionRunPlan Plan { get; private set; }
     /// <summary>Gets the verified published tool's package seed project.</summary>
     internal string Seed { get; }
     /// <summary>Gets the production-entry proof-bearing options captured after successful full admission.</summary>
@@ -47,11 +47,11 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Requires the real full public bodies before resolving an explicitly prepared coherent workspace; there is no legacy or synthetic fallback.</summary>
     internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
     {
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName)
             .ShouldBeTrue("Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts").ShouldBeTrue();
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.FullPartiesName).ShouldBeTrue();
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBeTrue();
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -93,7 +93,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", "7.0.2"), ("memories", "3.0.23"), ("parties", "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
@@ -110,6 +110,61 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             Directory.Delete(workspace, true);
             throw;
         }
+    }
+
+    /// <summary>Persists the original parent claim binding before the published host reads and projects it.</summary>
+    internal async Task PersistClaimStateAsync()
+    {
+        Plan = Plan with { ResourceClaimStateDirectory = Path.Combine(Workspace, "claim-state") };
+        await CompositionDocumentStore.WriteAsync(Path.Combine(Workspace, "plan.json"), Plan, TestContext.Current.CancellationToken);
+    }
+
+    /// <summary>Runs the actual signed host's validation-only transport, stopping at an effect-free image-probe executable.</summary>
+    internal async Task<CompositionProcessResult> RunPublishedValidationAsync()
+    {
+        string host = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "Hexalith.Builds.Module.AppHost.dll");
+        File.Exists(host).ShouldBeTrue("The genuine published AppHost is mandatory; there is no source fallback.");
+        string probes = Path.Combine(Workspace, "validation-probes");
+        Directory.CreateDirectory(probes);
+        string executable = Path.Combine(probes, "docker");
+        string log = Path.Combine(probes, "images.txt");
+        // Never contacts a registry. Fail on the seventh exact inspect, before rendering or model allocation.
+        string script = "#!/bin/sh\n[ \"$#\" = 3 ] && [ \"$1\" = manifest ] && [ \"$2\" = inspect ] || exit 90\n"
+            + "case \"$3\" in\n" + string.Join("|", Images.Order(StringComparer.Ordinal)) + ") ;;\n*) exit 91 ;;\nesac\n"
+            + "printf '%s\\n' \"$3\" >> '" + log + "'\n"
+            + "[ \"$(wc -l < '" + log + "')\" -lt 7 ] || exit 83\nprintf '{}\\n'\n";
+        await File.WriteAllTextAsync(executable, script, TestContext.Current.CancellationToken);
+        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(executable, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        var start = CompositionProcess.CreateStartInfo("dotnet", ["exec", host, "--validate-platform"], Workspace,
+            new Dictionary<string, string>
+            {
+                [CompositionEnvironment.PlanPath] = Path.Combine(Workspace, "plan.json"),
+                [CompositionEnvironment.SigningKey] = _key,
+                [CompositionEnvironment.RunId] = Plan.RunId,
+                [CompositionEnvironment.DaprRuntimePath] = Path.Combine(Plan.DaprHome, ".dapr", "bin"),
+                ["DOTNET_ENVIRONMENT"] = "Development",
+                ["PATH"] = probes + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"),
+            });
+        CompositionProcessResult result = await CompositionProcess.RunAsync(start, TimeSpan.FromSeconds(45), TestContext.Current.CancellationToken);
+        result.Output.ShouldNotContain(_key);
+        result.ErrorOutput.ShouldNotContain(_key);
+        result.TimedOut.ShouldBeFalse();
+        result.OutputTruncated.ShouldBeFalse();
+        // The output is nonsecret and deliberately retained by xUnit for the first causal refusal.
+        TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
+        return result;
+    }
+
+    /// <summary>Checks the real published transport reached every authenticated image identity without rendering or resource claims.</summary>
+    internal void AssertPublishedValidationBoundary(CompositionProcessResult result)
+    {
+        result.ExitCode.ShouldBe(3); // Deliberate final image refusal, not service or native acceptance.
+        result.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
+        result.ErrorOutput.ShouldContain("is unavailable from its released registry");
+        File.ReadAllLines(Path.Combine(Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
+            .ShouldBe(Images.Order(StringComparer.Ordinal));
+        Directory.Exists(Path.Combine(Workspace, "platform-components")).ShouldBeFalse();
+        if (Plan.ResourceClaimStateDirectory is not null) Directory.Exists(Plan.ResourceClaimStateDirectory).ShouldBeFalse();
     }
 
     /// <summary>Reaches all seven exact image-probe identities in the actual trusted entry, then stops before rendering or allocation.</summary>
@@ -143,8 +198,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     }
 
     /// <summary>Invokes the actual key-bearing entry without exposing or replacing its private key.</summary>
-    internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure)
-        => PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, configure);
+    internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure, CompositionRunPlan? suppliedPlan = null)
+        => PlatformAppModel.ComposeRun(builder, suppliedPlan ?? Plan, _key, Seed, configure);
 
     /// <summary>Requires zero model resources and no rendering from an entry-only control.</summary>
     internal void AssertNoEffects(IDistributedApplicationBuilder builder)

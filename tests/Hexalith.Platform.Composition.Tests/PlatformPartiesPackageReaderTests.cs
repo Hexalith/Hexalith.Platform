@@ -168,7 +168,7 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         diagnostics.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
             + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=70 policies=46");
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.FullPartiesName);
+        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.CurrentFullPartiesName);
         request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
         SourceMapping.LoadVerified(Path.Combine(fixture.Workspace, "source-mapping", "mapping.json"), fixture.Options.Mapping.ContentHash).ContentHash.ShouldBe(fixture.Options.Mapping.ContentHash);
         using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
@@ -179,7 +179,7 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
             foreach (string name in _publicNames)
             {
                 string body = Path.Combine(fixture.Reader, "output", name + ".dll");
-                PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), PublishedCatalogArtifactCohort.FullPartiesName).ShouldBe(body);
+                PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBe(body);
                 diagnostics.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))));
             }
         }
@@ -187,7 +187,7 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         JsonNode assets = JsonNode.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "obj", "project.assets.json")))!;
         foreach (string name in _publicNames)
         {
-            string version = name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) ? "4.0.4" : name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) ? "7.0.0"
+            string version = name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) ? "4.1.0" : name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) ? "7.0.2"
                 : name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) ? "3.0.23" : name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) ? "3.0.0" : "2.0.0";
             assets["libraries"]![name + "/" + version]!["type"]!.GetValue<string>().ShouldBe("package");
         }
