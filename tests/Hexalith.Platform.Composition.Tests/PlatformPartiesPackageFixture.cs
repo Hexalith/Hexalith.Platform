@@ -47,6 +47,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal string Workspace { get; }
     /// <summary>Gets the actual selected declaration/test/mapping handoff persisted by the fixture.</summary>
     internal CompositionRunPlan Plan { get; private set; }
+    /// <summary>Compares an opaque transport key to the original parent key without exposing either value.</summary>
+    /// <param name="key">The transport key under test.</param>
+    internal bool UsesSigningKey(string key) => string.Equals(_key, key, StringComparison.Ordinal);
     /// <summary>Gets the verified published tool's package seed project.</summary>
     internal string Seed { get; }
     /// <summary>Gets the production-entry proof-bearing options captured after successful full admission.</summary>
@@ -133,7 +136,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
 
     /// <summary>Runs the actual signed host's validation-only transport, stopping at an effect-free image-probe executable.</summary>
     /// <param name="completeCatalog">Whether the validation-only host proceeds through the real catalog using only the inert image probe.</param>
-    /// <param name="signingKey">An explicit malformed-key negative control; omission preserves the opaque real parent key.</param>
+    /// <param name="signingKey">An explicit transport-key control; omission preserves the opaque real parent key.</param>
     internal async Task<CompositionProcessResult> RunPublishedValidationAsync(bool completeCatalog = false, string? signingKey = null)
     {
         string host = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "Hexalith.Builds.Module.AppHost.dll");
@@ -163,6 +166,11 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         CompositionProcessResult result = await CompositionProcess.RunAsync(start, TimeSpan.FromSeconds(45), TestContext.Current.CancellationToken);
         result.Output.ShouldNotContain(_key);
         result.ErrorOutput.ShouldNotContain(_key);
+        if (signingKey is not null)
+        {
+            result.Output.Contains(signingKey, StringComparison.Ordinal).ShouldBeFalse();
+            result.ErrorOutput.Contains(signingKey, StringComparison.Ordinal).ShouldBeFalse();
+        }
         result.TimedOut.ShouldBeFalse();
         result.OutputTruncated.ShouldBeFalse();
         // The output is nonsecret and deliberately retained by xUnit for the first causal refusal.

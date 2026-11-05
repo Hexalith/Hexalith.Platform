@@ -92,6 +92,42 @@ public sealed class PlatformCurrentOwnerHandoffTests
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
     }
 
+    /// <summary>Distinguishes a genuine different transport key from malformed encoding without changing the persisted command.</summary>
+    [Fact]
+    public async Task PublishedCurrentValidationRefusesWellFormedDifferentKeyBeforeEffectsAsync()
+    {
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
+        await fixture.PersistClaimStateAsync();
+        string plan = Path.Combine(fixture.Workspace, "plan.json");
+        string mapping = Path.Combine(fixture.Workspace, "source-mapping");
+        string[] authority = [plan, .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
+        var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
+        string differentKey = CompositionSigningKey.Create();
+        Convert.FromBase64String(differentKey).Length.ShouldBe(48);
+        fixture.UsesSigningKey(differentKey).ShouldBeFalse();
+        var result = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: differentKey);
+        bool currentOwner = Directory.Exists(Path.Combine(fixture.Workspace, "current-owner"));
+        bool catalog = Directory.Exists(Path.Combine(fixture.Workspace, "platform-components"));
+        bool images = File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "images.txt"));
+        bool claim = Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!);
+        bool credentials = File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName));
+        bool unchanged = original.All(input => Hash(input.Key) == input.Value);
+        TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
+        {
+            phase = "genuine-signed-well-formed-different-key", qualificationCredit = false,
+            keyWellFormed = true, keyDiffersFromParent = true, result.ExitCode, result.TimedOut,
+            currentOwner, catalog, images, claim, credentials, authorityUnchanged = unchanged,
+        }));
+        result.Started.ShouldBeTrue();
+        result.ExitCode.ShouldBe(3);
+        currentOwner.ShouldBeFalse();
+        catalog.ShouldBeFalse();
+        images.ShouldBeFalse();
+        claim.ShouldBeFalse();
+        credentials.ShouldBeFalse();
+        unchanged.ShouldBeTrue();
+    }
+
     private static void AssertDerivedEnrichment(byte[] cold, byte[] warm)
     {
         const string consumer = "Hexalith.Platform.CatalogBuilder";
