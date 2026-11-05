@@ -1,6 +1,43 @@
 # Current tuple preparation
 
-> Current owner configuration selects
+The current model M prepares the explicit `platform-current-package` purpose:
+measured Release artifacts from the active Parties source, released SDK `4.1.0`,
+Tenants `7.0.4` and Memories `3.0.23`, and 253 primary cases. M selects genuine
+[Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, published by successful normal
+[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
+after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800),
+with exact tool pin and supported floor `4.44.4`. The committed tuple records
+catalog blob `5bd9ab8dd93358942eaa8d164c99ca2bd18f0204`, catalog SHA-256
+`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`,
+and the actual signed archive, Tooling and inventory identities. Its measured
+validation pair is recorded below; hosted exact-source/native acceptance remains
+separate and required.
+
+The separate same-code legacy lane L retains its genuine Builds `4.44.3`/fc212224
+and Tenants `7.0.2` tuple and all original 349 cases. The nine conditional old
+public-reader cases stay in L and are not counted as current reader execution.
+Current private-reader/reference and native observations require their own real
+source/run/attempt bindings. Both lanes execute actual committed revisions, with
+identical shared source and only eight bounded metadata differences; neither
+source equivalence nor counts imply binary, runtime or publication acceptance.
+The parent must create a new real L commit after shared changes before activating
+its exact descriptor in M. No nested checkout or dependency source fallback is
+permitted.
+
+The signed module archive SHA-256 is
+`d375583dba2800fcc76e4d013a102b59937470af87487f890fbd0926a37af294`.
+Its AppHost body is
+`e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10`;
+its root and adjacent g4-host Tooling bodies both are
+`57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2`.
+Admission requires this complete pair or the retained historical 4.44.3 pair;
+cross-pair mixtures and ordinary caller claim suppression remain refused.
+
+## Historical released tuple and earlier preparation
+
+
+> The historical released owner configuration selected
 > [Builds v4.44.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
 > at `fc2122240a39f03628c04fa8433e5eece90b8b4c`, from successful normal
 > [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500),

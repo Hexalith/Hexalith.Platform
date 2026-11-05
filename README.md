@@ -36,16 +36,35 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-The pinned bootstrap tool is published `hexalith.builds.module.cli` `4.44.3`,
-with range `[4.44.3, 5.0.0-0)` in `hexalith-platform.json`. The tuple selects the
-exact [v4.44.3 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
-source `fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
+Use the exact published tool pin, supported range and producer identities from
+this selected checkout's `.config/dotnet-tools.json`, `hexalith-platform.json`
+and [`eng/builds-tuple.json`](eng/builds-tuple.json). A main-branch head or a
+compatible version range alone supplies no publication or acceptance authority.
+
+The historical same-code lane L retains genuine Builds `4.44.3` at
+`fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
-The catalog and observed signed package identities are recorded in
-[`eng/builds-tuple.json`](eng/builds-tuple.json). The matching recorded Builds
-gitlink is required by the [tuple preflight](#exact-tuple-ci-preflight). Fresh
-qualification against this recorded Platform revision remains required;
-publication alone does not establish runtime or deployment acceptance.
+Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
+`3.0.0`. The current model M prepares a separate measured source-owned Parties
+purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.23` and
+253 primary cases. M selects genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, published by successful normal
+[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
+after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
+Its pin and supported floor are `4.44.4`; its catalog Git blob is
+`5bd9ab8dd93358942eaa8d164c99ca2bd18f0204`, SHA-256
+`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`.
+The tuple binds the observed signed archive, paired validation bodies and
+inventory; this publication does not establish current model/native acceptance.
+
+Both lanes must execute their actual committed source and tuple. Shared code,
+tests, helpers, workflows and documentation must match; only eight explicitly
+bounded metadata paths may differ. L is historical regression evidence, with no
+current qualification credit or binary-equivalence claim. The current private
+reader/reference cases, native execution and cleanup remain separate obligations
+from L's old public package/image qualification. Fresh exact-source hosted
+qualification is required; publication and positive counts alone establish no
+runtime or deployment acceptance.
 
 The configured range permits later 4.x versions, including prereleases, and excludes
 5.0 prereleases. Each accepted tool carries its own catalog; matching the range
@@ -181,7 +200,7 @@ Parties' owner-led enrollment; see the
 Use the [enrollment guide](docs/domain-module-enrollment.md) and
 [starter templates](templates/domain-module-enrollment/) for owner-led declaration,
 direct-only initialization, source mapping, Dapr conventions, hosting inventory
-and human SM-2 evidence. The pinned published `4.44.3` tool provides read-only
+and human SM-2 evidence. The exact published tool selected by the checkout provides read-only
 `validate --adoption` reports in human and JSON formats. Static reports leave
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).

@@ -44,7 +44,18 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.DeclarationHash).ShouldBeTrue();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(new string('0', 64)).ShouldBeFalse();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(null).ShouldBeFalse();
+        const string LegacyAppHost = "23fbcd1b7e495a85920a44b1d7fd690cee69548dadd9ae02768d8d29b355577b";
+        const string LegacyTooling = "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000";
+        const string CurrentAppHost = "e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10";
+        const string CurrentTooling = "57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2";
+        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, LegacyTooling).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, CurrentTooling).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, CurrentTooling).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, LegacyTooling).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, new string('0', 64)).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(null, CurrentTooling).ShouldBeFalse();
         using PlatformPartiesProofFixture fixture = new();
+        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Options.RunPlan!).ShouldBeFalse();
         PlatformCompositionOptions options = Updated(fixture, "platform-current-package");
         Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
     }

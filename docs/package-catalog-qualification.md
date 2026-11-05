@@ -1,5 +1,37 @@
 # Package catalog qualification
 
+The current private owner preparation uses `platform-current-package`, measured
+Release bodies from active Parties source, and authenticated released SDK `4.1.0`,
+Tenants `7.0.4` and Memories `3.0.23` references. Its exact Parties declaration is
+`d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
+No public Parties/7.0.4 cohort is admitted by this preparation. M selects genuine
+[Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, from successful normal
+[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
+and exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
+Its current tool pin/floor are `4.44.4`; catalog blob
+`5bd9ab8dd93358942eaa8d164c99ca2bd18f0204` and SHA-256
+`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`
+bind the released SDK4.1/T704 reference selection. Signed AppHost
+`e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10`
+is admitted only together with actual adjacent Tooling
+`57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2`;
+the historical pair remains separately admitted and cross-pair mixtures refuse.
+All public body/image authority maps remain finite and unchanged.
+
+The current primary profile requires 253 cases, including real private-reader,
+reference, declaration and running-owner refusal controls. The same-code legacy
+source separately requires all original 349 cases on the genuine old tuple;
+its nine historical public-reader cases do not earn current reader credit.
+Shared implementation and documentation must match across the actual committed
+sources, with only eight bounded metadata differences. Neither lane's counts,
+source equivalence nor old catalog/image receipts replace current native persisted
+effects, observed artifact identity or cleanup. Genuine new public Parties
+package/image qualification is a separate post-publication obligation.
+
+## Historical SDK 4.1 / Tenants 7.0.2 public qualification
+
+
 This proposal binds published [Builds 4.44.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
 at exact source `fc2122240a39f03628c04fa8433e5eece90b8b4c`, from successful
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).

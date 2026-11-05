@@ -1,5 +1,6 @@
 """Real private Git histories for bounded, truthful legacy/current source orchestration."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -18,19 +19,28 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.git("config", "user.name", "Legacy qualification fixture")
         self.git("config", "user.email", "fixture@invalid")
         self.profile = (Path(__file__).parent / "tuple-ci-legacy-suites.json").read_bytes()
-        for name in ("src/Owner.cs", "tests/Control.cs", "DaprSelfHostedMtls.cs", "Directory.Build.props", ".github/workflows/tuple-ci.yml"):
+        for name in ("src/Owner.cs", "tests/Control.cs", "DaprSelfHostedMtls.cs", "Directory.Build.props", ".github/workflows/tuple-ci.yml", "eng/other.json", "README.md", "docs/current-tuple-preparation.md"):
             self.write(name, b"unchanged committed source\n")
         self.write("eng/tuple-ci-suites.json", self.profile)
         self.write(".config/dotnet-tools.json", json.dumps({"tools": {"hexalith.builds.module.cli": {"version": "4.44.3", "rollForward": False}}}).encode())
         self.descriptor = dict(schema="hexalith.platform.legacy-tuple-source.v1", purpose="same-code-legacy-tuple-regression", sourceRevision=None,
             buildsSource=legacy.BUILDS, toolVersion="4.44.3", profileSha256=legacy.PROFILE_HASH, requiredCount=349, qualificationCredit=False)
         self.write_descriptor()
+        # Restore only the measured old fields when this test executes from M704;
+        # the fixed Git-body hash proves these are the authentic L702 bytes.
+        self.provenance = (legacy.ROOT / legacy.PROVENANCE).read_bytes().replace(b'"7.0.4"', b'"7.0.2"').replace(
+            legacy.TENANTS_CURRENT_SOURCE.encode(), b"143cec60a3f5bb1831fa57f35c510880ceb788d8")
+        self.assertEqual(hashlib.sha256(self.provenance).hexdigest(), legacy.LEGACY_PROVENANCE_HASH)
+        self.write(legacy.PROVENANCE, self.provenance)
         (self.root / "references/Hexalith.Builds").mkdir(parents=True)
         self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.BUILDS + ",references/Hexalith.Builds")
         self.old = self.commit()
         self.descriptor["sourceRevision"] = self.old
         self.write_descriptor()
         self.write("eng/tuple-ci-suites.json", b'{"groups": [{"current": true}]}\n')
+        self.current_provenance = self.provenance.replace(b'"7.0.2"', b'"7.0.4"').replace(
+            b"143cec60a3f5bb1831fa57f35c510880ceb788d8", legacy.TENANTS_CURRENT_SOURCE.encode())
+        self.write(legacy.PROVENANCE, self.current_provenance)
         self.current = self.commit()
 
     def git(self, *arguments):
@@ -80,12 +90,45 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.assertEqual(self.git("status", "--porcelain"), before)
         self.assertFalse((self.root / "references/Hexalith.Builds/.git").exists())
 
+    def test_only_exact_eighth_provenance_path_is_added_and_old_body_remains_bound(self):
+        self.assertEqual(len(legacy.ALLOWED), 8)
+        self.git("checkout", "-q", self.old)
+        result = legacy.verify(self.root, self.current, self.old)
+        self.assertIn(legacy.PROVENANCE, result["allowedMetadataDifferences"])
+        self.assertEqual(json.loads(self.current_provenance)["tenants"]["version"], "7.0.4")
+        self.assertEqual(json.loads(self.provenance)["tenants"]["version"], "7.0.2")
+        self.write(legacy.PROVENANCE, self.provenance + b" ")
+        altered = self.commit()
+        self.descriptor["sourceRevision"] = altered
+        self.write_descriptor()
+        changed = self.commit()
+        self.git("checkout", "-q", altered)
+        with self.assertRaisesRegex(ValueError, "historical Git body"):
+            legacy.verify(self.root, changed, altered)
+
+    def test_current_provenance_refuses_foreign_fields_or_partial_tenants_adoption(self):
+        mutations = (("eventstore", "version", "9.9.9"), ("memories", "commit", "f" * 40),
+            ("tenants", "sha256", "0" * 64), ("tenants", "source", "different.json"),
+            ("tenants", "repository", "Foreign.Owner"), ("tenants", "commit", "143cec60a3f5bb1831fa57f35c510880ceb788d8"),
+            ("tenants", "unknown", True), ("unknown", None, {}))
+        for owner, field, value in mutations:
+            with self.subTest(owner=owner, field=field):
+                self.git("checkout", "-q", self.current)
+                document = json.loads(self.current_provenance)
+                if field is None: document[owner] = value
+                else: document[owner][field] = value
+                self.write(legacy.PROVENANCE, json.dumps(document).encode())
+                altered = self.commit()
+                self.git("checkout", "-q", self.old)
+                with self.assertRaisesRegex(ValueError, "more than the authenticated"):
+                    legacy.verify(self.root, altered, self.old)
+
     def test_current_checkout_cannot_claim_the_legacy_source(self):
         with self.assertRaises(ValueError): legacy.verify(self.root, self.current, self.old)
         self.assertEqual(self.git("rev-parse", "HEAD"), self.current)
 
     def test_production_helpers_tests_build_instructions_and_workflow_changes_refuse(self):
-        for name in ("src/Owner.cs", "tests/Control.cs", "DaprSelfHostedMtls.cs", "Directory.Build.props", ".github/workflows/tuple-ci.yml"):
+        for name in ("src/Owner.cs", "tests/Control.cs", "DaprSelfHostedMtls.cs", "Directory.Build.props", ".github/workflows/tuple-ci.yml", "eng/other.json", "README.md", "docs/current-tuple-preparation.md"):
             with self.subTest(name=name):
                 self.git("checkout", "-q", self.current)
                 self.write(name, b"different source\n")

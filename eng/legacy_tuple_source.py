@@ -11,7 +11,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DESCRIPTOR = "eng/legacy-tuple-source.json"
 BUILDS = "fc2122240a39f03628c04fa8433e5eece90b8b4c"
 PROFILE_HASH = "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0"
-ALLOWED = {DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
+PROVENANCE = "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+LEGACY_PROVENANCE_HASH = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61"
+TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
+ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
            "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties"}
 
 
@@ -66,6 +69,16 @@ def verify(root: Path, current: str, legacy: str) -> dict:
     profile = git(root, "show", legacy + ":eng/tuple-ci-suites.json")
     if hashlib.sha256(profile).hexdigest() != PROFILE_HASH:
         raise ValueError("The original legacy controls or their positive counts changed.")
+    old_provenance = git(root, "show", legacy + ":" + PROVENANCE)
+    if hashlib.sha256(old_provenance).hexdigest() != LEGACY_PROVENANCE_HASH:
+        raise ValueError("Legacy provenance differs from the authenticated historical Git body.")
+    original = decode(old_provenance)
+    expected = decode(old_provenance)
+    expected["tenants"]["version"] = "7.0.4"
+    expected["tenants"]["commit"] = TENANTS_CURRENT_SOURCE
+    selected = decode(git(root, "show", current + ":" + PROVENANCE))
+    if selected != original and selected != expected:
+        raise ValueError("Current provenance changed more than the authenticated Tenants version and source.")
     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
         raise ValueError("Legacy source changed its exact published tool identity.")
