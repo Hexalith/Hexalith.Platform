@@ -14,53 +14,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
     [Fact]
     public async Task PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync()
     {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
-        await fixture.PersistClaimStateAsync();
-        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken);
-        string mapping = Path.Combine(fixture.Workspace, "source-mapping");
-        string snapshot = Path.Combine(mapping, "catalog-versions.json");
-        string[] authority = [Path.Combine(fixture.Workspace, "plan.json"), .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
-        var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
-        byte[] cold = File.ReadAllBytes(snapshot);
-        var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true);
-        validation.ExitCode.ShouldBe(0);
-        byte[] warm = File.ReadAllBytes(snapshot);
-        AssertDerivedEnrichment(cold, warm);
-        File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
-            .ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
-        string catalogPath = Path.Combine(fixture.Workspace, "platform-components", fixture.Plan.EnvironmentId + "-catalog", "catalog.json");
-        byte[] validatedCatalog = File.ReadAllBytes(catalogPath);
-        string originalReceiptPath = Path.Combine(Path.GetDirectoryName(catalogPath)!, "receipt.json");
-        byte[] originalReceipt = File.ReadAllBytes(originalReceiptPath);
-        Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
-        var builder = PlatformPartiesPackageFixture.Builder();
-        Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
-        {
-            PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
-            proof.Matches(options).ShouldBeTrue();
-            options.PartiesRunProof.ShouldBeNull();
-            options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
-            PlatformAppModel.MaterializeSourceMapping(options, fixture.Workspace);
-            File.ReadAllBytes(snapshot).ShouldBe(warm);
-            var catalog = PlatformRoutingCatalog.Generate(options, PlatformAppModel.Prepare(options), Path.Combine(fixture.Workspace, "platform-components"));
-            File.ReadAllBytes(catalog.CatalogPath).ShouldBe(validatedCatalog);
-            File.ReadAllBytes(originalReceiptPath).ShouldBe(originalReceipt, "Retain the initial catalog receipt separately from the fresh current execution receipt.");
-            using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
-            proof.VerifyReader(receipt.RootElement);
-            TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
-            {
-                phase = "genuine-signed-current-validation-and-fresh-ordinary-reader", proof.SourceRevision,
-                qualificationCredit = false, runtimeBodies = proof.Bodies, packageArchives = proof.PackageArchives,
-                loadedArtifacts = receipt.RootElement.GetProperty("loadedArtifacts"),
-            }));
-            proof.Matches(options).ShouldBeTrue();
-            foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
-            File.ReadAllBytes(snapshot).ShouldBe(warm);
-            throw new InvalidOperationException("Expected real signed current validation and ordinary catalog; stop before resources.");
-        })).Message.ShouldBe("Expected real signed current validation and ordinary catalog; stop before resources.");
-        builder.Resources.ShouldBeEmpty();
-        Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
-        File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
+        await AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync();
     }
 
     /// <summary>Wrong key encoding and mixed/stale command, entry-body or source bindings refuse through the actual public host.</summary>
@@ -92,40 +46,67 @@ public sealed class PlatformCurrentOwnerHandoffTests
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
     }
 
-    /// <summary>Distinguishes a genuine different transport key from malformed encoding without changing the persisted command.</summary>
+    /// <summary>An ordinary plan has no prior key anchor; a fresh well-formed initial key retains the complete measured handoff.</summary>
     [Fact]
-    public async Task PublishedCurrentValidationRefusesWellFormedDifferentKeyBeforeEffectsAsync()
+    public async Task PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync()
+    {
+        string initialSigningKey = CompositionSigningKey.Create();
+        Convert.FromBase64String(initialSigningKey).Length.ShouldBe(48);
+        await AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync(initialSigningKey);
+    }
+
+    private static async Task AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync(string? initialSigningKey = null)
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
+        if (initialSigningKey is not null) fixture.UsesSigningKey(initialSigningKey).ShouldBeFalse();
         await fixture.PersistClaimStateAsync();
-        string plan = Path.Combine(fixture.Workspace, "plan.json");
+        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken);
         string mapping = Path.Combine(fixture.Workspace, "source-mapping");
-        string[] authority = [plan, .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
+        string snapshot = Path.Combine(mapping, "catalog-versions.json");
+        string[] authority = [Path.Combine(fixture.Workspace, "plan.json"), .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
         var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
-        string differentKey = CompositionSigningKey.Create();
-        Convert.FromBase64String(differentKey).Length.ShouldBe(48);
-        fixture.UsesSigningKey(differentKey).ShouldBeFalse();
-        var result = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: differentKey);
-        bool currentOwner = Directory.Exists(Path.Combine(fixture.Workspace, "current-owner"));
-        bool catalog = Directory.Exists(Path.Combine(fixture.Workspace, "platform-components"));
-        bool images = File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "images.txt"));
-        bool claim = Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!);
-        bool credentials = File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName));
-        bool unchanged = original.All(input => Hash(input.Key) == input.Value);
-        TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
+        byte[] cold = File.ReadAllBytes(snapshot);
+        var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
+        validation.ExitCode.ShouldBe(0);
+        byte[] warm = File.ReadAllBytes(snapshot);
+        AssertDerivedEnrichment(cold, warm);
+        File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
+            .ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
+        string catalogPath = Path.Combine(fixture.Workspace, "platform-components", fixture.Plan.EnvironmentId + "-catalog", "catalog.json");
+        byte[] validatedCatalog = File.ReadAllBytes(catalogPath);
+        string originalReceiptPath = Path.Combine(Path.GetDirectoryName(catalogPath)!, "receipt.json");
+        byte[] originalReceipt = File.ReadAllBytes(originalReceiptPath);
+        Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
+        var builder = PlatformPartiesPackageFixture.Builder();
+        Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
         {
-            phase = "genuine-signed-well-formed-different-key", qualificationCredit = false,
-            keyWellFormed = true, keyDiffersFromParent = true, result.ExitCode, result.TimedOut,
-            currentOwner, catalog, images, claim, credentials, authorityUnchanged = unchanged,
-        }));
-        result.Started.ShouldBeTrue();
-        result.ExitCode.ShouldBe(3);
-        currentOwner.ShouldBeFalse();
-        catalog.ShouldBeFalse();
-        images.ShouldBeFalse();
-        claim.ShouldBeFalse();
-        credentials.ShouldBeFalse();
-        unchanged.ShouldBeTrue();
+            PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
+            proof.Matches(options).ShouldBeTrue();
+            options.PartiesRunProof.ShouldBeNull();
+            options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
+            PlatformAppModel.MaterializeSourceMapping(options, fixture.Workspace);
+            File.ReadAllBytes(snapshot).ShouldBe(warm);
+            var catalog = PlatformRoutingCatalog.Generate(options, PlatformAppModel.Prepare(options), Path.Combine(fixture.Workspace, "platform-components"));
+            File.ReadAllBytes(catalog.CatalogPath).ShouldBe(validatedCatalog);
+            File.ReadAllBytes(originalReceiptPath).ShouldBe(originalReceipt, "Retain the initial catalog receipt separately from the fresh current execution receipt.");
+            using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
+            proof.VerifyReader(receipt.RootElement);
+            TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
+            {
+                phase = "genuine-signed-current-validation-and-fresh-ordinary-reader", proof.SourceRevision,
+                initialKeySource = initialSigningKey is null ? "original-fixture-key" : "fresh-independent-key",
+                priorPlanKeyAnchor = false,
+                qualificationCredit = false, runtimeBodies = proof.Bodies, packageArchives = proof.PackageArchives,
+                loadedArtifacts = receipt.RootElement.GetProperty("loadedArtifacts"),
+            }));
+            proof.Matches(options).ShouldBeTrue();
+            foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
+            File.ReadAllBytes(snapshot).ShouldBe(warm);
+            throw new InvalidOperationException("Expected real signed current validation and ordinary catalog; stop before resources.");
+        }, signingKey: initialSigningKey)).Message.ShouldBe("Expected real signed current validation and ordinary catalog; stop before resources.");
+        builder.Resources.ShouldBeEmpty();
+        Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
+        File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
     }
 
     private static void AssertDerivedEnrichment(byte[] cold, byte[] warm)

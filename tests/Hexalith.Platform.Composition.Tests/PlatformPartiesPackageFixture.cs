@@ -220,9 +220,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         AssertNoEffects(builder);
     }
 
-    /// <summary>Invokes the actual key-bearing entry without exposing or replacing its private key.</summary>
-    internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure, CompositionRunPlan? suppliedPlan = null)
-        => PlatformAppModel.ComposeRun(builder, suppliedPlan ?? Plan, _key, Seed, configure);
+    /// <summary>Invokes the actual key-bearing entry with its opaque ordinary initial key.</summary>
+    internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure, CompositionRunPlan? suppliedPlan = null, string? signingKey = null)
+        => PlatformAppModel.ComposeRun(builder, suppliedPlan ?? Plan, signingKey ?? _key, Seed, configure);
 
     /// <summary>Captures genuine measured private artifacts at the normal entry callback, without composing or starting resources.</summary>
     internal PlatformCompositionOptions CaptureCurrent()
