@@ -30,7 +30,7 @@ is admitted only together with actual adjacent Tooling
 the historical pair remains separately admitted and cross-pair mixtures refuse.
 All public body/image authority maps remain finite and unchanged.
 
-The current primary profile requires 258 cases, including real private-reader,
+The current primary profile requires 270 cases, including real private-reader,
 reference, declaration and running-owner refusal controls. The same-code legacy
 source separately requires all original 349 cases on the genuine old tuple;
 its nine historical public-reader cases do not earn current reader credit.

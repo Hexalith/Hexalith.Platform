@@ -58,7 +58,7 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.24` and
-258 primary cases. M selects genuine [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
+270 primary cases. M selects genuine [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
 at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
 [release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
 after exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268).
@@ -142,9 +142,9 @@ Local Debug defaults retain source references. For owner CI,
 verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
-suite counts. The required profile preserves the prior 201 E/T, reader and
-channel cases, adds 37 Parties proof cases, three actual mapped-owner cases,
-21 full entry cases and nine full reader cases, for 271 required cases.
+suite counts. The earlier package preparation profile preserved the prior 201 E/T, reader and
+channel cases, added 37 Parties proof cases, three actual mapped-owner cases,
+21 full entry cases and nine full reader cases, for 271 historical required cases.
 Local signed-tool component results and audit-only graph checks remain distinct
 from the mandatory exact-HEAD hosted tuple and real native qualification.
 Every group must execute its exact count with no errors, failures, skips or unrun

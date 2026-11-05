@@ -149,6 +149,33 @@
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests"
+      ],
+      "requiredCount": 4,
+      "purpose": "current-owner-package"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests"
+      ],
+      "requiredCount": 7,
+      "purpose": "current-owner-package"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests"
+      ],
+      "requiredCount": 1,
+      "purpose": "current-owner-package"
     }
   ],
   "historicalPublicControls": {
