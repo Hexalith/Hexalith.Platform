@@ -33,7 +33,7 @@ Linux/amd64 manifests. The historical `7.0.0` map below is preserved.
 | Tenants API | `2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4` |
 
 All original 293 controls remain enrolled with 47 new public-body and predicate
-controls, for 340 required cases. The actual signed AppHost validation projection
+controls plus two existing current-cohort image-refusal cases, for 342 required cases. The actual signed AppHost validation projection
 suppresses only claim allocation; ordinary execution retains the full original
 plan and claim binding. Boolean byte predicates treat typed authority refusal as
 false; strict verification continues to throw before owner reflection/factories.

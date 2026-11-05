@@ -8,7 +8,7 @@
 > identities are in [`eng/builds-tuple.json`](../eng/builds-tuple.json).
 > The selected SDK/Tenants pair is `4.1.0`/`7.0.2`; Memories `3.0.23`, Parties
 > `3.0.0` and Hexalith.McpCli `2.0.0` retain their own authenticated public bodies.
-> All 340 required controls must execute on this genuine tuple. Local signed-tool
+> All 342 required controls must execute on this genuine tuple. Local signed-tool
 > components and audit-only graph checks do not replace exact-HEAD hosted tuple,
 > catalog-matrix or real package-runtime qualification.
 > The procedure below preserves earlier unqualified preparation and its
