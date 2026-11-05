@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sdk: ['3.130.0', '3.130.1', '3.130.2', '3.132.1']
+        sdk: ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0']
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -56,7 +56,16 @@ jobs:
           python3 tests/catalog-builder/verify_catalog_builder.py
           --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
           --sdk-version "${{ matrix.sdk }}"
+          --tenants-version "${{ matrix.sdk == '4.1.0' && '7.0.2' || '6.0.0' }}"
           --evidence "$RUNNER_TEMP/catalog-builder-evidence"
+      - name: Verify closed current public owner cohorts before any runner execution
+        if: matrix.sdk == '4.1.0'
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
+        run: >-
+          python3 tests/catalog-builder/verify_public_owner_cohorts.py
+          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
+          --evidence "$RUNNER_TEMP/catalog-public-owner-evidence"
       - name: Retain executable and refusal evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -65,4 +74,5 @@ jobs:
           path: |
             ${{ runner.temp }}/catalog-builder-evidence
             ${{ runner.temp }}/catalog-sdk-gates.json
+            ${{ runner.temp }}/catalog-public-owner-evidence
           if-no-files-found: error

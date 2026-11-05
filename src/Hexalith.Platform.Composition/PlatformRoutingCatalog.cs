@@ -28,9 +28,11 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
         string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
-            : options.PartiesRunProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.FullPartiesName
-            : options.QualificationOwnerProof?.Matches(options) == true ? PublishedCatalogArtifactCohort.Name
+            : options.PartiesRunProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)
+            : options.QualificationOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options)
             : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
+        if (options.Mapping.Mode == WorkspaceMode.Package && qualificationCohort is null)
+            throw new InvalidDataException("The private package reader requires a complete measured SDK/Tenants version pair.");
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
         CompositionWorkspace.CreatePrivateDirectory(build);

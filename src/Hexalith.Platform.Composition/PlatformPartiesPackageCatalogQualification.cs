@@ -25,6 +25,14 @@ internal static class PlatformPartiesPackageCatalogQualification
         ["parties/domain"] = ("registry.hexalith.com/parties:3.0.0", "25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b"),
     };
 
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentImages = _images
+        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
+        {
+            ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.2", "adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed"),
+            ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.2", "2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4"),
+        }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
@@ -34,6 +42,7 @@ internal static class PlatformPartiesPackageCatalogQualification
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun, bool linux, Architecture architecture)
     {
+        string? cohort = null;
         if (!developmentRun || !linux || architecture != Architecture.X64
             || options.PartiesRunProof?.Matches(options) != true
             || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal)
@@ -43,21 +52,23 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
             || !Snapshot(options, declarations, "parties", ActiveDeclarationHash)
-            || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes()
-            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts")
-            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
-            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.FullPartiesName)
+            || (cohort = PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
+            || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
+            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
+            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
             || !CompositionMatches(options, declarations)) throw Refusal();
+        IReadOnlyDictionary<string, (string Image, string Digest)> images = cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
         return servers.Select(server =>
         {
             if (Identity(server) == "eventstore/gateway")
                 return server.Image is null && server.ProjectPath == options.EventStoreSeedProject ? server : throw Refusal();
-            var expected = _images[Identity(server)];
+            var expected = images[Identity(server)];
             return server.Image == expected.Image && server.ImageDigest is null ? server with { ImageDigest = expected.Digest } : throw Refusal();
         }).ToArray();
     }
 
-    private static bool VersionsMatch(PlatformCompositionOptions options) => new[] { ("eventstore", "4.0.4"), ("tenants", "7.0.0"), ("memories", "3.0.23"), ("parties", "3.0.0") }
+    private static bool VersionsMatch(PlatformCompositionOptions options) => new[] { ("memories", "3.0.23"), ("parties", "3.0.0") }
         .All(item => PlatformServerBindings.Version(options, item.Item1, "full-Parties qualification") == item.Item2);
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

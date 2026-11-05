@@ -1,5 +1,52 @@
 # Package catalog qualification
 
+This proposal binds published [Builds 4.44.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3)
+at exact source `fc2122240a39f03628c04fa8433e5eece90b8b4c`, from successful
+[release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
+The signed archive, Tooling, catalog and inventory identities are recorded in
+[`eng/builds-tuple.json`](../eng/builds-tuple.json); the exact local pin and
+supported floor are `4.44.3`.
+
+The new closed public-reader variants are
+`eventstore-4.1.0-tenants-7.0.2` and
+`parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memories-3.0.23`.
+They require the actual signed SDK `4.1.0` and Tenants `7.0.2` bodies. Historical
+SDK `4.0.4`/Tenants `7.0.0` authorities remain separate; mixed version pairs,
+unknown authorities and changed bodies remain refused. M23, P3 and
+Hexalith.McpCli `2.0.0` keep their authenticated owner bodies. External
+ModelContextProtocol packages have separate identities and do not relabel that
+proprietary owner; absent supporting assemblies confer no execution evidence.
+
+Current release provenance binds EventStore source
+`dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a` and Tenants source
+`143cec60a3f5bb1831fa57f35c510880ceb788d8`, with unchanged authenticated
+owner declaration bytes. Current active Parties test source is
+`bb2783120c0eed620e3d4f52a2ebaf6aa510126f`, with declaration `40cee6ce...`;
+the released P3 backend and its `86002eeb...` declaration remain distinct.
+
+The new Tenant image variant uses released `7.0.2` tags and these exact
+Linux/amd64 manifests. The historical `7.0.0` map below is preserved.
+
+| Server | Immutable manifest SHA-256 |
+| --- | --- |
+| Tenants domain | `adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed` |
+| Tenants API | `2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4` |
+
+All original 293 controls remain enrolled with 47 new public-body and predicate
+controls plus two existing current-cohort image-refusal cases, for 342 required cases. The actual signed AppHost validation projection
+suppresses only claim allocation; ordinary execution retains the full original
+plan and claim binding. Boolean byte predicates treat typed authority refusal as
+false; strict verification continues to throw before owner reflection/factories.
+
+Source/component qualification, the exact-head hosted gates and real native,
+cleanup and manual lifecycle qualification remain separate. No candidate, native
+or whole-story acceptance follows from publication or preparation alone.
+
+## Historical 4.44.2 / SDK 4.0.4 / Tenants 7.0.0 component record
+
+The following records the previous qualified inputs and observations. Its older
+source pins, case counts and present-tense proposal wording are historical.
+
 A gateway-only SDK declaration has no compiled business owner. It cannot create a
 valid empty routing catalog. A fresh SDK package qualification may explicitly add
 the released Tenants owner with Builds `test --with-owner tenants`. The SDK's

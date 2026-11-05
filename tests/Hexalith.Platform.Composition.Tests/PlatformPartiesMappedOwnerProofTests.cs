@@ -14,8 +14,8 @@ public sealed class PlatformPartiesMappedOwnerProofTests
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
-        PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD:references/Hexalith.Parties").ShouldBe("f1f33f8de655d9aa9307bafba128b0c7ea5c2570");
-        PlatformPartiesProofFixture.Git(active, "rev-parse", "HEAD").ShouldBe("f1f33f8de655d9aa9307bafba128b0c7ea5c2570");
+        PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD:references/Hexalith.Parties").ShouldBe("bb2783120c0eed620e3d4f52a2ebaf6aa510126f");
+        PlatformPartiesProofFixture.Git(active, "rev-parse", "HEAD").ShouldBe("bb2783120c0eed620e3d4f52a2ebaf6aa510126f");
         Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(manifest))).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
         mapping.Root.ShouldBe(root);

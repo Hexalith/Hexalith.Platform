@@ -493,7 +493,7 @@ public sealed partial class PlatformAppModelTests
         var builder = Builder();
         builder.Environment.EnvironmentName = Environments.Development;
         bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
-            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts");
+            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName);
         InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
             ImageProbeRunner = (_, _, _) =>

@@ -23,15 +23,15 @@ public sealed class PlatformPackageCatalogQualificationTests
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);
-        bool actualPublicBytes = Hash(typeof(RouteCatalogEnvelope).Assembly) == "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53"
-            && Hash(Assembly.Load("Hexalith.EventStore.ServiceDefaults")) == "860b843eb81e5e1b1e6176b8865e79a116b62182c28cf5a39230f00bfac2115d";
+        bool actualPublicBytes = Hash(typeof(RouteCatalogEnvelope).Assembly) == "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739"
+            && Hash(Assembly.Load("Hexalith.EventStore.ServiceDefaults")) == "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d";
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBe(actualPublicBytes);
-        bool actualOwnerBytes = Hash(Assembly.Load("Hexalith.Tenants.Contracts")) == "5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40";
+        bool actualOwnerBytes = Hash(Assembly.Load("Hexalith.Tenants.Contracts")) == "4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9";
         if (actualPublicBytes && actualOwnerBytes && OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
         {
             IReadOnlyList<PlatformServerBinding> admitted = PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, developmentRun: true);
-            admitted.Single(server => server.ResourceId == "tenants").ImageDigest.ShouldBe("2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42");
-            admitted.Single(server => server.ResourceId == "tenants-api").ImageDigest.ShouldBe("2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6");
+            admitted.Single(server => server.ResourceId == "tenants").ImageDigest.ShouldBe("adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed");
+            admitted.Single(server => server.ResourceId == "tenants-api").ImageDigest.ShouldBe("2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4");
             admitted.Single(server => server.ResourceId == "eventstore").ImageDigest.ShouldBeNull();
             servers.ShouldAllBe(server => server.ImageDigest == null);
         }
@@ -81,8 +81,8 @@ public sealed class PlatformPackageCatalogQualificationTests
             case "declaration-path": options = options with { DeclarationPaths = [] }; break;
             case "active-module": options = options with { ActiveModule = "tenants" }; break;
             case "suite": options = options with { RunPlan = fixture.Plan with { SelectedTest = fixture.Plan.SelectedTest! with { Mode = "source" } } }; break;
-            case "sdk-near-miss": ChangeCatalog(fixture.Root, "<HexalithEventStoreVersion>4.0.4", "<HexalithEventStoreVersion>4.0.5"); break;
-            case "tenants-near-miss": ChangeCatalog(fixture.Root, "<HexalithTenantsVersion>7.0.0", "<HexalithTenantsVersion>7.0.1"); break;
+            case "sdk-near-miss": ChangeCatalog(fixture.Root, "<HexalithEventStoreVersion>4.1.0", "<HexalithEventStoreVersion>4.1.1"); break;
+            case "tenants-near-miss": ChangeCatalog(fixture.Root, "<HexalithTenantsVersion>7.0.2", "<HexalithTenantsVersion>7.0.3"); break;
             case "owner-snapshot":
                 JsonNode changed = JsonNode.Parse(declarations[0].Declaration.GetRawText())!;
                 changed["identity"]!["dependencies"] = new JsonArray("memories");
@@ -160,6 +160,8 @@ public sealed class PlatformPackageCatalogQualificationTests
     private static void ChangeCatalog(string root, string before, string after)
     {
         string path = Path.Combine(root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
-        File.WriteAllText(path, File.ReadAllText(path).Replace(before, after, StringComparison.Ordinal));
+        string original = File.ReadAllText(path);
+        original.ShouldContain(before);
+        File.WriteAllText(path, original.Replace(before, after, StringComparison.Ordinal));
     }
 }

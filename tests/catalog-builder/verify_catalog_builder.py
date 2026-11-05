@@ -23,14 +23,15 @@ SAMPLE_SOURCES = {"3.130.0": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
                   "3.130.1": "1de42b706f52af0da6513f0b7663002606d17156",
                   "3.130.2": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
                   "3.132.1": "0ace1545c433bf234f54cef3a57ac77d62b4175f",
-                  "3.133.0": "6b2ef99ac55a6e548f504a81d30289bb3deff89d"}
+                  "3.133.0": "6b2ef99ac55a6e548f504a81d30289bb3deff89d",
+                  "4.1.0": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"}
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def retain_execution(project, output, name, evidence, expected_sdk):
+def retain_execution(project, output, name, evidence, expected_sdk, expected_tenants=None):
     destination = evidence / "executed" / name
     destination.mkdir(parents=True)
     files = {}
@@ -47,9 +48,15 @@ def retain_execution(project, output, name, evidence, expected_sdk):
     versions = {key.split("/", 1)[0]: key.split("/", 1)[1] for key in data["libraries"]
                 if key.startswith("Hexalith.EventStore.")}
     assert versions and all(version == expected_sdk for version in versions.values()), versions
+    tenants = {key.split("/", 1)[0]: key.split("/", 1)[1] for key in data["libraries"]
+               if key.startswith("Hexalith.Tenants.")}
+    if expected_tenants is not None:
+        assert {"Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server"}.issubset(tenants), tenants
+        assert all(version == expected_tenants for version in tenants.values()), tenants
     record = {"files": files, "projectAssetsSha256": digest(assets), "resolvedSdkPackages": versions,
               "packageSources": list(data["project"]["restore"]["sources"]),
               "projectFileSha256": digest(project),
+              "resolvedTenantsPackages": tenants,
               "copiedCatalogSourceSha256": {name: digest(project.parent / name) for name in
                   ["Program.cs", "PublishedCatalogArtifactCohort.cs"] if (project.parent / name).is_file()}}
     assert record["packageSources"] == ["https://api.nuget.org/v3/index.json"]
@@ -105,7 +112,7 @@ def sample_fixture(work, args):
         ET.ElementTree(project).write(path, encoding="unicode")
         output = project_dir / "output"
         execute(["dotnet", "build", str(path), "-c", "Release", "--output", str(output), "-m:1", "-nr:false", "-warnaserror",
-                 *properties(args.builds_root, args.sdk_version)], args.evidence / f"genuine-sample-{kind}-build.log")
+                 *properties(args.builds_root, args.sdk_version, args.tenants_version)], args.evidence / f"genuine-sample-{kind}-build.log")
         artifacts[kind] = output
         artifacts[kind + "Identity"] = retain_execution(path, output, f"sample-{kind}", args.evidence, args.sdk_version)
     assets = json.loads((directory / "contracts/obj/project.assets.json").read_text())
@@ -133,9 +140,9 @@ def execute(command, evidence, expected=0):
     return result
 
 
-def properties(builds, sdk=SDK):
+def properties(builds, sdk=SDK, tenants=TENANTS):
     return [f"-p:HexalithBuildsRoot={builds}", f"-p:HexalithEventStoreVersion={sdk}",
-            f"-p:HexalithTenantsVersion={TENANTS}", "-p:UseHexalithProjectReferences=false",
+            f"-p:HexalithTenantsVersion={tenants}", "-p:UseHexalithProjectReferences=false",
             "-p:CentralPackageVersionsFileImported=true",
             "-p:RestoreSources=https://api.nuget.org/v3/index.json"]
 
@@ -221,9 +228,10 @@ def qualify(args):
             output = directory / "output"
             execute(["dotnet", "build", str(project), "-c", "Release", "--output", str(output), "-m:1", "-nr:false",
                      "--disable-build-servers", "-warnaserror", f"-p:PlatformCatalogBindings={binding_path}",
-                     *properties(args.builds_root, args.sdk_version)], args.evidence / f"{kind}-build.log")
+                     *properties(args.builds_root, args.sdk_version, args.tenants_version)], args.evidence / f"{kind}-build.log")
             outputs[kind] = output / "Hexalith.Platform.CatalogBuilder.dll"
-            executed[kind] = retain_execution(project, output, kind, args.evidence, args.sdk_version)
+            executed[kind] = retain_execution(project, output, kind, args.evidence, args.sdk_version,
+                                              args.tenants_version if not args.owners else None)
             if not args.owners:
                 assert executed[kind]["files"]["Hexalith.EventStore.Contracts.dll"] == sample_identity["publicContractsDllSha256"]
         probe_dir = work / "probe"
@@ -231,7 +239,7 @@ def qualify(args):
         probe_project = probe_dir / "CatalogActivationProbe.csproj"
         make_project(probe_project, probe=True)
         execute(["dotnet", "build", str(probe_project), "-c", "Release", "-m:1", "-nr:false", "-warnaserror",
-                 *properties(args.builds_root, args.sdk_version)], args.evidence / "probe-build.log")
+                 *properties(args.builds_root, args.sdk_version, args.tenants_version)], args.evidence / "probe-build.log")
         probe = probe_dir / "bin/Release/net10.0/CatalogActivationProbe.dll"
         executed["probe"] = retain_execution(probe_project, probe.parent, "probe", args.evidence, args.sdk_version)
         cases = []
@@ -319,7 +327,7 @@ def qualify(args):
         report = {"sdk": args.sdk_version, "toolSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
                   "toolSourceClosureSha256": {name: digest(source.parent / name) for name in
                       ["Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs"]},
-                  "genuineOwnerAssemblies": [owner["assembly"] for owner in owners], "cases": cases,
+                  "genuineOwnerAssemblies": [owner["assembly"] for owner in owners], "tenants": args.tenants_version, "cases": cases,
                   "baseline": BASELINE, "allDeclarationsBindingsAndOperationsUnchanged": True,
                   "policyFieldsExceptConsumerAndDigestUnchanged": True,
                   "executedArtifacts": executed,
@@ -332,7 +340,8 @@ def main():
     parser.add_argument("--builds-root", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--owners", type=Path, help="Optional copied genuine owner DLL closure manifest.")
-    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0"], default=SDK)
+    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0", "4.1.0"], default=SDK)
+    parser.add_argument("--tenants-version", choices=["6.0.0", "7.0.0", "7.0.2"], default=TENANTS)
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
     state = {"attempt": uuid.uuid4().hex, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -356,7 +365,7 @@ def main():
         result.write_text(json.dumps(state, indent=2) + "\n")
         raise
     state.update(report)
-    state.update(status="passed", candidateAcceptance=True,
+    state.update(status="passed", candidateAcceptance=False, consumerBindingVerified=True,
                  completedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat())
     result.write_text(json.dumps(state, indent=2) + "\n")
     print(json.dumps(state, indent=2))

@@ -2,7 +2,7 @@
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
 and the human demonstration are separate gates. This proposed Platform source
-pins the genuine published tool `4.44.2`, including ordinary declaration validation
+pins the genuine published tool `4.44.3`, including ordinary declaration validation
 and the read-only `--adoption` report. Copy the exact pin from the selected direct
 Platform checkout as described below; the [tuple binding](../eng/builds-tuple.json)
 records its public package and source identities. The original

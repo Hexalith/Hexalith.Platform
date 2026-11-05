@@ -37,18 +37,18 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
         {
             Assembly loaded = Assembly.Load(name);
             byte[] reader = File.ReadAllBytes(Path.Combine(directory, name + ".dll"));
-            reader.ShouldBe(File.ReadAllBytes(PublishedCatalogArtifactCohort.Verify(loaded)));
+            reader.ShouldBe(File.ReadAllBytes(PublishedCatalogArtifactCohort.Verify(loaded, PublishedCatalogArtifactCohort.CurrentName)));
             using var pe = new PEReader(new MemoryStream(reader));
             MetadataReader metadata = pe.GetMetadataReader();
             metadata.GetGuid(metadata.GetModuleDefinition().Mvid).ShouldBe(loaded.ManifestModule.ModuleVersionId);
             output.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(reader)) + " mvid=" + loaded.ManifestModule.ModuleVersionId);
         }
         string adapterHash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(directory, "Hexalith.Tenants.Server.dll"))));
-        adapterHash.ShouldBe("4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93");
+        adapterHash.ShouldBe("70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b");
         output.WriteLine("Hexalith.Tenants.Server sha256=" + adapterHash);
         JsonNode assets = JsonNode.Parse(File.ReadAllText(Path.Combine(fixture.Reader, "obj", "project.assets.json")))!;
         assets["libraries"]!.AsObject().Where(pair => pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
-            .ShouldAllBe(pair => pair.Key.EndsWith("/4.0.4", StringComparison.Ordinal) && pair.Value!["type"]!.GetValue<string>() == "package");
+            .ShouldAllBe(pair => pair.Key.EndsWith("/4.1.0", StringComparison.Ordinal) && pair.Value!["type"]!.GetValue<string>() == "package");
         WriteLogs(fixture);
     }
 
@@ -124,8 +124,8 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
             string assetsFile = Path.Combine(fixture.Reader, "obj", "project.assets.json");
             JsonNode assets = JsonNode.Parse(File.ReadAllText(assetsFile))!;
             JsonObject libraries = assets["targets"]!.AsObject().Single().Value!.AsObject();
-            JsonNode changed = libraries["Hexalith.EventStore.Client/4.0.4"]!.DeepClone();
-            libraries.Remove("Hexalith.EventStore.Client/4.0.4");
+            JsonNode changed = libraries["Hexalith.EventStore.Client/4.1.0"]!.DeepClone();
+            libraries.Remove("Hexalith.EventStore.Client/4.1.0");
             libraries["Hexalith.EventStore.Client/4.0.3"] = changed;
             File.WriteAllText(assetsFile, assets.ToJsonString());
             // Execute the production-generated task with its actual items/assets, independently of SDK asset-resolution errors.
@@ -139,7 +139,7 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
              "-p:CentralPackageVersionsFileImported=true", "-p:ImportDirectoryPackagesProps=false", "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
              "-p:PlatformCatalogBindings=" + Path.Combine(fixture.Reader, "bindings.props")], fixture.Options.PlatformRoot, null), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
         result.ExitCode.ShouldNotBe(0);
-        (result.Output + result.ErrorOutput).ShouldContain("requires 4.0.4");
+        (result.Output + result.ErrorOutput).ShouldContain("requires 4.1.0");
         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
         output.WriteLine(result.Output + result.ErrorOutput);
         WriteLogs(fixture);
@@ -166,8 +166,8 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
     [Fact]
     public async Task QualifiedTenantsModelForwardsDistinctReceiverTokensAsync()
     {
-        PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue("This positive case requires the genuine public SDK 4.0.4 cohort.");
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts").ShouldBeTrue();
+        PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue("This positive case requires the genuine public SDK 4.1.0 cohort.");
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
         using PlatformPackageCatalogReaderFixture fixture = new();
         await fixture.MaterializeAsync().ConfigureAwait(true);
         await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken).ConfigureAwait(true);
@@ -254,14 +254,14 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
         {
             Assembly loaded = Assembly.Load(name);
             byte[] reader = File.ReadAllBytes(Path.Combine(directory, name + ".dll"));
-            reader.ShouldBe(File.ReadAllBytes(PublishedCatalogArtifactCohort.Verify(loaded)));
+            reader.ShouldBe(File.ReadAllBytes(PublishedCatalogArtifactCohort.Verify(loaded, PublishedCatalogArtifactCohort.CurrentName)));
             using var pe = new PEReader(new MemoryStream(reader));
             MetadataReader metadata = pe.GetMetadataReader();
             metadata.GetGuid(metadata.GetModuleDefinition().Mvid).ShouldBe(loaded.ManifestModule.ModuleVersionId);
             output.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(reader)) + " mvid=" + loaded.ManifestModule.ModuleVersionId);
         }
         string adapterHash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(directory, "Hexalith.Tenants.Server.dll"))));
-        adapterHash.ShouldBe("4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93");
+        adapterHash.ShouldBe("70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b");
         output.WriteLine("Hexalith.Tenants.Server sha256=" + adapterHash);
         string receipt = Directory.GetFiles(Path.Combine(fixture.Plan.Workspace, "platform-components"), "receipt.json", SearchOption.AllDirectories).Single();
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(receipt));
@@ -274,7 +274,7 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
 
     private static bool RequirePublicContext()
     {
-        if (PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts")) return true;
+        if (PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName)) return true;
         using PlatformQualificationPackageFixture fixture = new();
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
