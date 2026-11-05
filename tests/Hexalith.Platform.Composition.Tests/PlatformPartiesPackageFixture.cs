@@ -120,7 +120,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     }
 
     /// <summary>Runs the actual signed host's validation-only transport, stopping at an effect-free image-probe executable.</summary>
-    internal async Task<CompositionProcessResult> RunPublishedValidationAsync()
+    /// <param name="completeCatalog">Whether the validation-only host proceeds through the real catalog using only the inert image probe.</param>
+    internal async Task<CompositionProcessResult> RunPublishedValidationAsync(bool completeCatalog = false)
     {
         string host = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "Hexalith.Builds.Module.AppHost.dll");
         File.Exists(host).ShouldBeTrue("The genuine published AppHost is mandatory; there is no source fallback.");
@@ -132,7 +133,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         string script = "#!/bin/sh\n[ \"$#\" = 3 ] && [ \"$1\" = manifest ] && [ \"$2\" = inspect ] || exit 90\n"
             + "case \"$3\" in\n" + string.Join("|", Images.Order(StringComparer.Ordinal)) + ") ;;\n*) exit 91 ;;\nesac\n"
             + "printf '%s\\n' \"$3\" >> '" + log + "'\n"
-            + "[ \"$(wc -l < '" + log + "')\" -lt 7 ] || exit 83\nprintf '{}\\n'\n";
+            + (completeCatalog ? string.Empty : "[ \"$(wc -l < '" + log + "')\" -lt 7 ] || exit 83\n")
+            + "printf '{}\\n'\n";
         await File.WriteAllTextAsync(executable, script, TestContext.Current.CancellationToken);
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(executable, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         var start = CompositionProcess.CreateStartInfo("dotnet", ["exec", host, "--validate-platform"], Workspace,
