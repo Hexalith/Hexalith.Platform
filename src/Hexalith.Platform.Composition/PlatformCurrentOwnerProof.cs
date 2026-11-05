@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
@@ -94,6 +95,7 @@ internal sealed class PlatformCurrentOwnerProof
         { ["NUGET_PACKAGES"] = cache };
         string version = PlatformServerBindings.Version(options, "parties", "current owner");
         string[] arguments = ["-c", "Release", "--artifacts-path", artifacts, "-p:GeneratePackageOnBuild=false",
+            "-p:HexalithPinnedModelCatalogBuild=true",
             "-p:HexalithPartiesPackageVersion=" + version, "-p:ContinuousIntegrationBuild=true", "-p:RepositoryCommit=" + revision, "-p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Parties", "-p:RestoreConfigFile=" + publicConfig,
             "-m:1", "-nodeReuse:false", "--disable-build-servers", "--nologo"];
         Run(["build", project, .. arguments], "runtime-build.log");
@@ -166,8 +168,27 @@ internal sealed class PlatformCurrentOwnerProof
             TimeSpan timeout = PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan.StartupDeadlineUtc, DateTimeOffset.UtcNow);
             CompositionProcessResult result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", command, active, environment), timeout, CancellationToken.None).GetAwaiter().GetResult();
             File.WriteAllText(Path.Combine(directory, log), result.Output + result.ErrorOutput);
-            if (result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw new InvalidDataException("Current owner Release preparation failed; see " + Path.Combine(directory, log));
+            if (result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw PreparationFailure(log, result);
         }
+    }
+
+    /// <summary>Retains only finite preparation phases, process status and bounded public diagnostic codes.</summary>
+    internal static InvalidDataException PreparationFailure(string log, CompositionProcessResult result)
+    {
+        string phase = log switch
+        {
+            "runtime-build.log" => "runtime-build",
+            "Hexalith.Parties.Contracts-build.log" => "contracts-build",
+            "Hexalith.Parties.Contracts-pack.log" => "contracts-pack",
+            "Hexalith.Parties.EventStoreExtensions-build.log" => "extensions-build",
+            "Hexalith.Parties.EventStoreExtensions-pack.log" => "extensions-pack",
+            _ => "unknown",
+        };
+        string[] codes = Regex.Matches(result.Output + "\n" + result.ErrorOutput,
+            @"\b(?:HXW[0-9]{3}|NU[0-9]{4}|CS[0-9]{4}|MSB[0-9]{4})\b", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking)
+            .Select(match => match.Value).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Take(8).ToArray();
+        return new InvalidDataException(FormattableString.Invariant(
+            $"Current owner Release preparation failed: phase={phase}; started={result.Started}; exit={result.ExitCode}; timedOut={result.TimedOut}; truncated={result.OutputTruncated}; codes={(codes.Length == 0 ? "none" : string.Join(',', codes))}."));
     }
 
     /// <summary>Requires the pinned revision after final real reader preparation, before any proof can be issued.</summary>

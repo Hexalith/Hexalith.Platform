@@ -10,6 +10,25 @@ using Xunit;
 /// <summary>Checks the separate private purpose without granting a synthetic fixture runtime or public artifact authority.</summary>
 public sealed class PlatformCurrentOwnerPurposeTests
 {
+    /// <summary>Synthetic process metadata proves redaction and bounded classification; it is not an observed preparation failure.</summary>
+    [Fact]
+    public void PreparationFailuresExposeOnlyFinitePhaseStatusAndDiagnosticCodes()
+    {
+        string sensitive = Guid.NewGuid().ToString("N");
+        var result = new CompositionProcessResult(true, 42, "HXW012 " + sensitive + " NU1100 HXW012", false)
+        { ErrorOutput = "CS0006 " + sensitive };
+        string message = PlatformCurrentOwnerProof.PreparationFailure("runtime-build.log", result).Message;
+        message.ShouldBe("Current owner Release preparation failed: phase=runtime-build; started=True; exit=42; timedOut=False; truncated=False; codes=CS0006,HXW012,NU1100.");
+        message.ShouldNotContain(sensitive);
+        result = new(false, -1, sensitive, true) { OutputTruncated = true, ErrorOutput = sensitive };
+        message = PlatformCurrentOwnerProof.PreparationFailure(sensitive, result).Message;
+        message.ShouldBe("Current owner Release preparation failed: phase=unknown; started=False; exit=-1; timedOut=True; truncated=True; codes=none.");
+        message.ShouldNotContain(sensitive);
+        result = new(true, 1, string.Join(' ', Enumerable.Range(0, 32).Select(value => "CS" + value.ToString("D4", System.Globalization.CultureInfo.InvariantCulture))), false);
+        message = PlatformCurrentOwnerProof.PreparationFailure("Hexalith.Parties.Contracts-build.log", result).Message;
+        message.ShouldBe("Current owner Release preparation failed: phase=contracts-build; started=True; exit=1; timedOut=False; truncated=False; codes=CS0000,CS0001,CS0002,CS0003,CS0004,CS0005,CS0006,CS0007.");
+    }
+
     [Fact]
     public void PublishedPurposeCannotAuthorizeCurrentProfile()
     {

@@ -13,7 +13,7 @@ measurement and source equivalence alone grant no current runtime qualification.
 
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.24`, and 258 primary cases. M selects genuine
+Tenants `7.0.4` and Memories `3.0.24`, and 259 primary cases. M selects genuine
 [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
 at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
 [release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
