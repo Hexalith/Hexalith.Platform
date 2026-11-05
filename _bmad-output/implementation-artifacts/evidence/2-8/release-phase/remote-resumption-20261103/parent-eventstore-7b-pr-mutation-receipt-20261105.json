@@ -1,0 +1,131 @@
+{
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "7b890438e50df663a2762ccc44c0bdd0a8214d7b\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:14.024339+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:14.049356+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "fetch",
+        "--no-recurse-submodules",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/Hexalith/Hexalith.EventStore\n * branch                main       -> FETCH_HEAD\n",
+      "utc": "2026-11-05T13:01:14.480689+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "stdout": "cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:14.482202+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "origin/main...HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "0\t1\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:14.490450+00:00"
+    },
+    {
+      "command": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-title-20261105.txt",
+        "--config",
+        "commitlint.config.mjs",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\ntest: align read privacy and secret fixtures\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:14.681463+00:00"
+    },
+    {
+      "command": [
+        "gh",
+        "pr",
+        "list",
+        "--repo",
+        "Hexalith/Hexalith.EventStore",
+        "--state",
+        "open",
+        "--head",
+        "fix/align-ci-privacy-controls",
+        "--json",
+        "number,headRefOid,title"
+      ],
+      "exitCode": 0,
+      "stdout": "[]\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:15.139939+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "HEAD:refs/heads/fix/align-ci-privacy-controls"
+      ],
+      "exitCode": 0,
+      "stdout": "branch 'fix/align-ci-privacy-controls' set up to track 'origin/fix/align-ci-privacy-controls'.\n",
+      "stderr": "remote: \nremote: Create a pull request for 'fix/align-ci-privacy-controls' on GitHub by visiting:        \nremote:      https://github.com/Hexalith/Hexalith.EventStore/pull/new/fix/align-ci-privacy-controls        \nremote: \nTo https://github.com/Hexalith/Hexalith.EventStore.git\n * [new branch]          HEAD -> fix/align-ci-privacy-controls\n",
+      "utc": "2026-11-05T13:01:17.615976+00:00"
+    },
+    {
+      "command": [
+        "gh",
+        "pr",
+        "create",
+        "--repo",
+        "Hexalith/Hexalith.EventStore",
+        "--base",
+        "main",
+        "--head",
+        "fix/align-ci-privacy-controls",
+        "--title",
+        "test: align read privacy and secret fixtures",
+        "--body-file",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-body-20261105.md"
+      ],
+      "exitCode": 0,
+      "stdout": "https://github.com/Hexalith/Hexalith.EventStore/pull/395\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:01:20.202223+00:00"
+    }
+  ]
+}

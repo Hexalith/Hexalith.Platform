@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-05T12:13:18.809760+00:00",
+  "source": "1e8fd617b39db0c839a68031968f7639f9206518",
+  "testedSource": "122c17a526975ce9bcc9296794d60c7812ef092d",
+  "runId": 42020261746,
+  "attempt": 1,
+  "jobId": 127220944932,
+  "rawLog": "/home/administrator/.cache/hexalith/story-2-8/eventstore-1e8-hosted-20261105/job127220944932-primary-first.log",
+  "rawLogSha256": "f9034d58465b1123ae2ebbdccfd63decc44a01ff98a4ddef1ccf7cb8d2c665b2",
+  "failureLines": [
+    "2026-11-05T11:47:11.7690237Z \u001b[31m  Shouldly.ShouldAssertException : string[] denials = [.. logs.Messages.Where(static message => message.Contains(",
+    "2026-11-05T11:52:53.1085494Z \u001b[m\u001b[m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.DomainService.Tests/bin/Release/net10.0/Hexalith.EventStore.DomainService.Tests.dll (net10.0|x64) \u001b[31mfailed with 1 error(s)\u001b[m \u001b[90m(6m 09s 478ms)\u001b[m",
+    "2026-11-05T11:52:53.6297007Z ##[error]tests/Hexalith.EventStore.DomainService.Tests exited with code 2.",
+    "2026-11-05T12:00:41.3976217Z \u001b[31m  Shouldly.ShouldAssertException : violations.Length",
+    "2026-11-05T12:04:23.2513548Z \u001b[m/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/bin/Release/net10.0/Hexalith.EventStore.Server.Tests.dll (net10.0|x64) \u001b[31mfailed with 1 error(s)\u001b[m \u001b[90m(10m 52s 377ms)\u001b[m",
+    "2026-11-05T12:04:23.9059404Z ##[error]tests/Hexalith.EventStore.Server.Tests exited with code 2.",
+    "2026-11-05T12:10:49.2827331Z ##[error]Process completed with exit code 1.",
+    "2026-11-05T12:10:50.9767726Z ##[error]2 test project(s) failed across the blocking tiers.",
+    "2026-11-05T12:10:50.9770244Z ##[error]Process completed with exit code 1."
+  ],
+  "nativeAcceptance": false
+}

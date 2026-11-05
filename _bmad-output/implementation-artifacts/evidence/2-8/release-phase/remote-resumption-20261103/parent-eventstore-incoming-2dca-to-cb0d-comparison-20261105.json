@@ -1,0 +1,584 @@
+{
+  "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/compare/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135...cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+  "html_url": "https://github.com/Hexalith/Hexalith.EventStore/compare/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135...cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+  "permalink_url": "https://github.com/Hexalith/Hexalith.EventStore/compare/Hexalith:2dca77c...Hexalith:cb0dbee",
+  "diff_url": "https://github.com/Hexalith/Hexalith.EventStore/compare/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135...cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3.diff",
+  "patch_url": "https://github.com/Hexalith/Hexalith.EventStore/compare/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135...cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3.patch",
+  "base_commit": {
+    "sha": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "node_id": "C_kwDORNpC79oAKDJkY2E3N2NjMmYyMmE5Yjg1ZTRmY2MzZjhlMThjYmNhYTUzMmIxMzU",
+    "commit": {
+      "author": {
+        "name": "Jerome",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T05:19:55Z"
+      },
+      "committer": {
+        "name": "Jerome",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T05:19:55Z"
+      },
+      "message": "fix(reads): preserve query privacy across native diagnostics",
+      "tree": {
+        "sha": "b64f5a200d05174063e972e139bc47a1b7066183",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/b64f5a200d05174063e972e139bc47a1b7066183"
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135/comments",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe974f485fa2c29d9ea055f5597b41ae38d072f1",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/fe974f485fa2c29d9ea055f5597b41ae38d072f1",
+        "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/fe974f485fa2c29d9ea055f5597b41ae38d072f1"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "node_id": "C_kwDORNpC79oAKDJkY2E3N2NjMmYyMmE5Yjg1ZTRmY2MzZjhlMThjYmNhYTUzMmIxMzU",
+    "commit": {
+      "author": {
+        "name": "Jerome",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T05:19:55Z"
+      },
+      "committer": {
+        "name": "Jerome",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T05:19:55Z"
+      },
+      "message": "fix(reads): preserve query privacy across native diagnostics",
+      "tree": {
+        "sha": "b64f5a200d05174063e972e139bc47a1b7066183",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/b64f5a200d05174063e972e139bc47a1b7066183"
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+    "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135/comments",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe974f485fa2c29d9ea055f5597b41ae38d072f1",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/fe974f485fa2c29d9ea055f5597b41ae38d072f1",
+        "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/fe974f485fa2c29d9ea055f5597b41ae38d072f1"
+      }
+    ]
+  },
+  "status": "ahead",
+  "ahead_by": 4,
+  "behind_by": 0,
+  "total_commits": 4,
+  "commits": [
+    {
+      "sha": "1e8fd617b39db0c839a68031968f7639f9206518",
+      "node_id": "C_kwDORNpC79oAKDFlOGZkNjE3YjM5ZGIwYzgzOWE2ODAzMTk2OGY3NjM5ZjkyMDY1MTg",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T11:21:20Z"
+        },
+        "committer": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T11:21:20Z"
+        },
+        "message": "build(ci): adopt the released Platform 1.4 tuple\n\nSelect published Platform 1.4.0 and Builds 4.44.3 for the current\nEventStore source, with the exact 4.44.3 module tool and assertion.\nPreserve the immutable v2 executor, approved publisher, all suites and\nexisting lifecycle budgets.",
+        "tree": {
+          "sha": "d20cb1478eb00182317159e8ff90ff7ce803931c",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/d20cb1478eb00182317159e8ff90ff7ce803931c"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/1e8fd617b39db0c839a68031968f7639f9206518",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/1e8fd617b39db0c839a68031968f7639f9206518",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/1e8fd617b39db0c839a68031968f7639f9206518",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/1e8fd617b39db0c839a68031968f7639f9206518/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135"
+        }
+      ]
+    },
+    {
+      "sha": "14efd60060e34512103b933e90dc71fb5b0e6f2f",
+      "node_id": "C_kwDORNpC79oAKDE0ZWZkNjAwNjBlMzQ1MTIxMDNiOTMzZTkwZGM3MWZiNWIwZTZmMmY",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T11:41:56Z"
+        },
+        "committer": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T11:41:56Z"
+        },
+        "message": "fix(ci): align the released Platform tuple\n\nSelect Platform 1.4.0 with its matching Builds 4.44.3 catalog and tool.\nUse the current published admin CLI and retain package-only CI gates.\nUpdate recorded dependency pointers without initializing nested checkouts.",
+        "tree": {
+          "sha": "cd30d2ae8945b973c196374f6c1ffd4ea09a913d",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/cd30d2ae8945b973c196374f6c1ffd4ea09a913d"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/14efd60060e34512103b933e90dc71fb5b0e6f2f",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/14efd60060e34512103b933e90dc71fb5b0e6f2f",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/14efd60060e34512103b933e90dc71fb5b0e6f2f",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/14efd60060e34512103b933e90dc71fb5b0e6f2f/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135"
+        }
+      ]
+    },
+    {
+      "sha": "68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+      "node_id": "C_kwDORNpC79oAKDY4ZTQ2MmRlY2YzNmMyZGIzYTQwMDRmNjJjNWFlZWY0NTI0YzZkOGY",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T12:06:46Z"
+        },
+        "committer": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T12:06:46Z"
+        },
+        "message": "fix: submodules",
+        "tree": {
+          "sha": "16f04360ac319110ac897b196dde79ba80b32770",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/16f04360ac319110ac897b196dde79ba80b32770"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/68e462decf36c2db3a4004f62c5aeef4524c6d8f/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "14efd60060e34512103b933e90dc71fb5b0e6f2f",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/14efd60060e34512103b933e90dc71fb5b0e6f2f",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/14efd60060e34512103b933e90dc71fb5b0e6f2f"
+        }
+      ]
+    },
+    {
+      "sha": "cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "node_id": "C_kwDORNpC79oAKGNiMGRiZWViMmZkMThlODQ0NzEwZmE5M2YxYWI4MzhkZTZkZGFmZDM",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T12:09:37Z"
+        },
+        "committer": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T12:09:37Z"
+        },
+        "message": "build: merge refs/remotes/origin/fix/adopt-platform-140 into main via /pushall",
+        "tree": {
+          "sha": "cd30d2ae8945b973c196374f6c1ffd4ea09a913d",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/trees/cd30d2ae8945b973c196374f6c1ffd4ea09a913d"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/git/commits/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/68e462decf36c2db3a4004f62c5aeef4524c6d8f",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/68e462decf36c2db3a4004f62c5aeef4524c6d8f"
+        },
+        {
+          "sha": "1e8fd617b39db0c839a68031968f7639f9206518",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/commits/1e8fd617b39db0c839a68031968f7639f9206518",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/commit/1e8fd617b39db0c839a68031968f7639f9206518"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "f62b954ae7f8705afff107cb3cba77dacaab093d",
+      "filename": ".config/dotnet-tools.json",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/Hexalith/Hexalith.EventStore/blob/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/.config%2Fdotnet-tools.json",
+      "raw_url": "https://github.com/Hexalith/Hexalith.EventStore/raw/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/.config%2Fdotnet-tools.json",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/.config%2Fdotnet-tools.json?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -10,14 +10,14 @@\n       \"rollForward\": false\n     },\n     \"hexalith.eventstore.admin.cli\": {\n-      \"version\": \"3.130.2\",\n+      \"version\": \"4.1.0\",\n       \"commands\": [\n         \"eventstore-admin\"\n       ],\n       \"rollForward\": false\n     },\n     \"hexalith.builds.module.cli\": {\n-      \"version\": \"4.44.0\",\n+      \"version\": \"4.44.3\",\n       \"commands\": [\n         \"hexalith-module\"\n       ],"
+    },
+    {
+      "sha": "5e125bd717349cb00ba5a1a86a6780a1cd8801f6",
+      "filename": ".github/workflows/ci.yml",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/Hexalith/Hexalith.EventStore/blob/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/.github%2Fworkflows%2Fci.yml",
+      "raw_url": "https://github.com/Hexalith/Hexalith.EventStore/raw/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/.github%2Fworkflows%2Fci.yml",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/.github%2Fworkflows%2Fci.yml?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -60,7 +60,7 @@ jobs:\n         run: python3 scripts/verify-process-packages.py\n \n   ci:\n-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f\n+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c\n     with:\n       solution: Hexalith.EventStore.slnx\n       module-manifest: module/hexalith.module-manifest.v2.json"
+    },
+    {
+      "sha": "16f4bea7bb83f71f0cbdf98f845696dd35102fd0",
+      "filename": "docs/ci.md",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 5,
+      "changes": 10,
+      "blob_url": "https://github.com/Hexalith/Hexalith.EventStore/blob/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/docs%2Fci.md",
+      "raw_url": "https://github.com/Hexalith/Hexalith.EventStore/raw/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/docs%2Fci.md",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/docs%2Fci.md?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -8,7 +8,7 @@ Hexalith CI/CD standards and reusable workflow guidance live in\n \n | Workflow | File | Triggers | Purpose |\n |----------|------|----------|---------|\n-| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |\n+| **CI** | `.github/workflows/ci.yml` | `push` and `pull_request` to `main` and `release/parties-sdk-3.130.2` | Runs the required shared `domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c` job for the solution and deterministic tests, plus the EventStore-owned governance and compatibility checks. |\n | **Advisory Tests** | `.github/workflows/advisory-tests.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Visible non-release-blocking browser and governance suites. It installs Chromium before Playwright E2E tests, runs with `continue-on-error`, and release does not listen to this workflow. |\n | **Integration Tests** | `.github/workflows/integration.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Dedicated DAPR lane for `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`. It is intentionally separate from the release trigger. |\n | **Payload Protection Lifecycle** | `.github/workflows/payload-protection-lifecycle.yml` | `push`, `pull_request` to `main` and `release/parties-sdk-3.130.2`, manual dispatch | Isolated Dapr 1.18.7/PostgreSQL v2 capability, catalog, lease, drain, recovery, rotation, generation and restore tests. Requires at least thirty-one executed tests with zero skips, including cumulative transport limits, writer capacity, conditional restore decisions and authority races. Local qualification and its limits are recorded in the Story 8.5 spec; a CI run is separate evidence. |\n@@ -76,7 +76,7 @@ Reusable CI/CD logic belongs in `Hexalith.Builds`:\n EventStore keeps only module-specific wiring here:\n \n - `Hexalith.EventStore.slnx`.\n-- The isolated test project list passed to `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f`.\n+- The isolated test project list passed to `domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c`.\n - The advisory test project list and Playwright browser install needed by the\n   Admin UI E2E suite.\n - Manifest-backed package validation scripts under `scripts/`.\n@@ -117,7 +117,7 @@ place for run output.\n \n | Lane | Projects | Workflow behavior |\n |------|----------|-------------------|\n-| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |\n+| Deterministic release gate | Contracts, Client, ServiceDefaults, Testing, SignalR, Admin, AppHost, DomainService, QueryRouting, Sample, Testing.Integration, RestApi.Generators, and `tests/Hexalith.EventStore.Server.Tests` | Blocking in the required shared `domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c` job through `unit-test-projects`. All nineteen previous unit projects and the self-contained AppHost model-test project execute before integration; no AppHost topology is started by these tests. The serial Server.Tests assembly remains unfiltered; the job has a 180-minute limit to complete the full suite. |\n | Semantic-release governance | `tests/Hexalith.EventStore.Contracts.Tests/Packaging/Fixtures/semantic-release-github-success.mjs`, `tools/tests/test_release_publication_authority.py` | Blocking EventStore-owned CI job. It provisions Node 24, installs exactly `package-lock.json` with `npm ci`, and exercises both release-history cases against an Undici-guarded loopback-only fake GitHub boundary. It also runs the publication-authority regressions against the exact approved Builds publication engine. |\n | Live-sidecar DAPR lane | `tests/Hexalith.EventStore.Server.LiveSidecar.Tests`, plus `scripts/check-committed-files.sh`, `tools/tests/test_check_committed_files.py` and `tools/tests/test_dapr_broker_qualification.py` | Dedicated `Integration Tests` workflow after `dapr init`; its required `live-sidecar` job first runs the committed-file guard and the two Python suites. This lane is visible but not part of the semantic-release gate. It is not a `dotnet test` of `Server.Tests`. |\n | Payload-protection lifecycle | `tests/Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests` | Dedicated `Payload Protection Lifecycle` workflow; isolated processes and digest-pinned PostgreSQL v2 state, persisted assertions and zero skips. The existing `Payload Protection` core workflow runs independently. |\n@@ -144,7 +144,7 @@ bytes with earlier releases do not substitute for these actual publication and\n source identities. No Platform nested dependency checkout is required.\n \n The shared CI executor is independently pinned to Builds\n-`ae68c59bd2f4145a23ccf68c3711f98eaf62195f`. It retains only the receipt-bound\n+`fc2122240a39f03628c04fa8433e5eece90b8b4c`. It retains only the receipt-bound\n result's declared, redacted lifecycle, native-report and functional-observation\n diagnostics after exact owned cleanup. Each bounded private regular file must\n match its content-addressed reference and digest; links, foreign owners and\n@@ -298,7 +298,7 @@ dedicated LiveSidecar lane; they are not a reason to add the project to\n \n ## Package Validation\n \n-Shared `domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f` calls these EventStore entry points when\n+Shared `domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c` calls these EventStore entry points when\n `run-consumer-validation: true`:\n \n ```bash"
+    },
+    {
+      "sha": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+      "filename": "references/Hexalith.Builds",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": null,
+      "raw_url": null,
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/references%2FHexalith.Builds?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -1 +1 @@\n-Subproject commit 06a51f55bfe2e03a06e1121d94a41e98f1e3e251\n+Subproject commit fc2122240a39f03628c04fa8433e5eece90b8b4c"
+    },
+    {
+      "sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+      "filename": "references/Hexalith.Platform",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": null,
+      "raw_url": null,
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/references%2FHexalith.Platform?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -1 +1 @@\n-Subproject commit aaa30aff1038688a921494a78c9fc53fc5eb8836\n+Subproject commit ae7516ee6961dd31a5e319be59ead76449ab04a0"
+    },
+    {
+      "sha": "07fdb282bad070f43881aa610bfb13ce6656bf2a",
+      "filename": "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "blob_url": "https://github.com/Hexalith/Hexalith.EventStore/blob/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/tests%2FHexalith.EventStore.Contracts.Tests%2FPackaging%2FReleasePackageManifestTests.cs",
+      "raw_url": "https://github.com/Hexalith/Hexalith.EventStore/raw/cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3/tests%2FHexalith.EventStore.Contracts.Tests%2FPackaging%2FReleasePackageManifestTests.cs",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/contents/tests%2FHexalith.EventStore.Contracts.Tests%2FPackaging%2FReleasePackageManifestTests.cs?ref=cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+      "patch": "@@ -559,7 +559,7 @@ public void Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests()\n         string ciJob = ExtractTopLevelWorkflowJobBlock(workflow, \"ci\");\n         string tenantsSourceModeJob = ExtractTopLevelWorkflowJobBlock(workflow, \"tenants-source-mode\");\n \n-        ciJob.ShouldContain(\"uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f\");\n+        ciJob.ShouldContain(\"uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c\");\n         ciJob.ShouldContain(\"build-timeout-minutes: 180\");\n         ciJob.ShouldContain(\"test-platform: microsoft-testing-platform\");\n         ciJob.ShouldContain(\"run-consumer-validation: true\");\n@@ -594,7 +594,7 @@ public void Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pul\n \n         using JsonDocument tools = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, \".config\", \"dotnet-tools.json\")));\n         JsonElement tool = tools.RootElement.GetProperty(\"tools\").GetProperty(\"hexalith.builds.module.cli\");\n-        tool.GetProperty(\"version\").GetString().ShouldBe(\"4.44.0\");\n+        tool.GetProperty(\"version\").GetString().ShouldBe(\"4.44.3\");\n         tool.GetProperty(\"rollForward\").GetBoolean().ShouldBeFalse();\n         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, \"module\", \"hexalith.module-manifest.v2.json\")));\n         JsonElement suite = manifest.RootElement.GetProperty(\"modules\")[0].GetProperty(\"tests\").EnumerateArray()\n@@ -821,7 +821,7 @@ public void Contracts_and_live_sidecar_workflow_jobs_remain_blocking()\n         liveSidecarJob.ShouldNotContain(\"set +e\");\n \n         string ciJob = ExtractTopLevelWorkflowJobBlock(ci, \"ci\");\n-        ciJob.ShouldContain(\"uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@ae68c59bd2f4145a23ccf68c3711f98eaf62195f\");\n+        ciJob.ShouldContain(\"uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@fc2122240a39f03628c04fa8433e5eece90b8b4c\");\n         ciJob.ShouldContain(\"unit-test-projects: |\");\n         ciJob.ShouldNotContain(\"tests/Hexalith.EventStore.Contracts.Tests\");\n         ciJob.ShouldNotContain(\"continue-on-error\");"
+    }
+  ]
+}

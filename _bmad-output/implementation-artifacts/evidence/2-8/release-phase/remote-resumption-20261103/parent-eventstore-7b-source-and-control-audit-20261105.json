@@ -1,0 +1,65 @@
+{
+  "utc": "2026-11-05T13:00:40.581391+00:00",
+  "base": "cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+  "head": "7b890438e50df663a2762ccc44c0bdd0a8214d7b",
+  "clean": true,
+  "parent": "cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+  "changedPaths": [
+    "tests/Hexalith.EventStore.DomainService.Tests/DomainServiceTrustBoundaryTests.cs",
+    "tests/Hexalith.EventStore.Server.Tests/Telemetry/ReadDiagnosticsPrivacyTests.cs",
+    "tests/Hexalith.EventStore.Testing.Tests/CatalogInvocationTests.cs"
+  ],
+  "completePatchBytes": 11850,
+  "completePatchSha256": "8a9627e128084cd2452a6cf065ae8a9dc47eb887d2b158561a48953f0a40b80d",
+  "unchangedOtherTrackedObjects": 10254,
+  "evidenceFilesRehashed": 84,
+  "evidenceBytesRehashed": 29844237,
+  "indexSha256": "9578c1068284972ce5ab75c8d554e942db50693f878c47f8afa1268a98b4f5dc",
+  "actualOutputDllsRehashedUnchanged": 1108,
+  "actualPassedExecutions": 124,
+  "distinctActualXunitIds": 124,
+  "distinctDisplayNames": 123,
+  "groups": [
+    {
+      "group": "domain-trust",
+      "actualPassed": 86,
+      "xmlSha256": "d8dd83018b52ab75542c00ef4cd248ed26307ae0dfce807ae54c0bedbb710793"
+    },
+    {
+      "group": "read-privacy",
+      "actualPassed": 16,
+      "xmlSha256": "4562e41a58b958fd001bd1d02cb72ad284950dd1204f49d0714b4ef469273352"
+    },
+    {
+      "group": "catalog-invocation",
+      "actualPassed": 17,
+      "xmlSha256": "e5124bd3c375691dd2ccbbee99685b4a264b793a181a4d230f48fbd83f69d25c"
+    },
+    {
+      "group": "strict-secret-controls",
+      "actualPassed": 5,
+      "xmlSha256": "37b1e6e452babc29b42484c1c536df4e5529ff8fb1729e23b5a07d96907704f6"
+    }
+  ],
+  "bothOriginalCausalRedCasesRetained": true,
+  "causalPrivacyObservation": {
+    "source": "cb0dbeeb2fd18e844710fa93f1ab838de6ddafd3",
+    "observation": "unchanged production pipeline; temporary test-only nonsecret observer",
+    "bothResponses503": true,
+    "verifierCalls": 2,
+    "processorCalls": 0,
+    "queryHandlerCalls": 0,
+    "processLoggerWarningEnabled": true,
+    "queryLoggerWarningEnabled": false,
+    "actualCapturedDenials": 1,
+    "originalTwoDenialAssertionPreservedDuringReproduction": true,
+    "cause": "exact intentional read-privacy classification of POST/query suppresses detailed logger output at real host options floor; not a fixture completion race",
+    "temporaryObserverRemovedFromSource": true,
+    "productionChanged": false
+  },
+  "exactFullMessageRevalidatedWithOwning21_2_4": true,
+  "commitlintOutput": "\u29d7   --- input ---\ntest: align read privacy and secret fixtures\n\nKeep both verifier failures at 503 and prove two attempts with no\ndomain execution. Check the process denial separately from protected\nquery diagnostics suppression.\n\nGenerate the privacy and invocation canaries at runtime while keeping\nthe reusable-secret scanner unchanged.\n\u2714   found 0 problems, 0 warnings\n",
+  "independentSourceAssessment": "Three test files reconcile the existing protected-query diagnostic policy and runtime fixture canaries. Both 503s, two verifier identities, zero domain execution, process bounded denial and query diagnostic absence are asserted separately. Production policy and strict scanner are unchanged.",
+  "nativeAcceptance": false,
+  "storyComplete": false
+}

@@ -1,0 +1,106 @@
+{
+  "utc": "2026-11-05T13:10:34.880376+00:00",
+  "release": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases/435214708",
+    "assets_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases/435214708/assets",
+    "upload_url": "https://uploads.github.com/repos/Hexalith/Hexalith.Platform/releases/435214708/assets{?name,label}",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.4.1",
+    "id": 435214708,
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "node_id": "RE_kwDOTzCqis4Z8Nl0",
+    "tag_name": "v1.4.1",
+    "target_commitish": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "name": "v1.4.1",
+    "draft": false,
+    "immutable": false,
+    "prerelease": false,
+    "created_at": "2026-11-05T12:51:26Z",
+    "updated_at": "2026-11-05T13:07:02Z",
+    "published_at": "2026-11-05T13:07:02Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/tarball/v1.4.1",
+    "zipball_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/zipball/v1.4.1",
+    "body": "Preserve the verified package mapping during ordinary Parties startup so the public catalog reader's dynamic project-version evaluations survive preflight. Missing or changed proof, altered inputs and another workspace still refuse before composition effects.\n\nSource: `4afa0421794f7e6f3fcbd5d84664eae206e9daa5`.\nBuilds source and published tool: `fc2122240a39f03628c04fa8433e5eece90b8b4c`, version `4.44.3`.\n\nThe [exact-source tuple preflight](https://github.com/Hexalith/Hexalith.Platform/actions/runs/42030769896) passed all 347 required cases. The [catalog builder consumer binding](https://github.com/Hexalith/Hexalith.Platform/actions/runs/42030770351) also passed.\n\nThis release supplies the genuine versioned Platform identity needed by downstream package preparation. Parties still requires its own uninstrumented exact-source runtime CI and publication checks; no production deployment is performed by this release.\n"
+  },
+  "tagRef": {
+    "ref": "refs/tags/v1.4.1",
+    "node_id": "REF_kwDOTzCqirByZWZzL3RhZ3MvdjEuNC4x",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/refs/tags/v1.4.1",
+    "object": {
+      "sha": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/4afa0421794f7e6f3fcbd5d84664eae206e9daa5"
+    }
+  },
+  "tagObject": null,
+  "sourceCommit": {
+    "sha": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "node_id": "C_kwDOTzCqitoAKDRhZmEwNDIxNzk0ZjdlNmYzZmNiZDVkODQ2NjRlYWUyMDZlOWRhYTU",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/commit/4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "author": {
+      "name": "J\u00e9r\u00f4me Piquot",
+      "email": "jpiquot@itaneo.com",
+      "date": "2026-11-05T12:51:26Z"
+    },
+    "committer": {
+      "name": "J\u00e9r\u00f4me Piquot",
+      "email": "jpiquot@itaneo.com",
+      "date": "2026-11-05T12:51:26Z"
+    },
+    "tree": {
+      "sha": "c1734c19431ec9e3e634f6c13678871c46fe0cc9",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/trees/c1734c19431ec9e3e634f6c13678871c46fe0cc9"
+    },
+    "message": "fix(composition): preserve verified runner snapshots\n\nReuse the sealed package mapping during Parties startup so reader\nproject evaluations survive preflight. Keep proof and file checks\nbefore reuse and retain materialization for other compositions.",
+    "parents": [
+      {
+        "sha": "db816425ff2b9e8e07af79257b01d3520782f46a",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/db816425ff2b9e8e07af79257b01d3520782f46a",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/commit/db816425ff2b9e8e07af79257b01d3520782f46a"
+      }
+    ],
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "source": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+  "tag": "v1.4.1",
+  "genuineConcurrentPublication": true,
+  "parentPublicationMutation": false,
+  "sourceTupleRun": 42030769896,
+  "sourceSdkRun": 42030770351,
+  "passedRequiredComponentCases": 347,
+  "sdkConsumerCases": 75,
+  "finiteCapabilities": 236,
+  "publicOwnerControls": 14,
+  "catalogCommit": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "toolVersion": "4.44.3",
+  "scope": "Published source/tag with audited exact-source source gates. Actual two-phase regression and Parties native/manual qualification remain independent.",
+  "candidateAcceptance": false,
+  "storyComplete": false
+}
