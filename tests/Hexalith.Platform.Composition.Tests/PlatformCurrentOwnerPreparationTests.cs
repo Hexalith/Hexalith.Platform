@@ -69,6 +69,8 @@ public sealed class PlatformCurrentOwnerPreparationTests
 
         // This positive is a component observation of inert mappings, not serving/catalog/native acceptance.
         PlatformRoutingCatalog catalog = fixture.Generate();
+        File.WriteAllBytes(Path.Combine(catalog.Directory, "native-scope.json"), JsonSerializer.SerializeToUtf8Bytes(
+            new CompositionNativeTestScope(fixture.Plan.RunId, "parties", catalog.RootDigest, ["party"], [fixture.Plan.TenantNamespace])));
         string implementation = Path.Combine(output, "Hexalith.Parties.dll");
         File.WriteAllBytes(Path.Combine(catalog.Directory, "parties.observation.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
@@ -86,6 +88,7 @@ public sealed class PlatformCurrentOwnerPreparationTests
         observation.RootElement.GetProperty("qualificationCredit").GetBoolean().ShouldBeFalse();
         observation.RootElement.GetProperty("runtimeBodies").EnumerateObject().Count().ShouldBe(5);
         observation.RootElement.GetProperty("sdkBodies").EnumerateObject().Count().ShouldBe(4);
+        TestContext.Current.TestOutputHelper!.WriteLine("inertComponentObservation=" + observation.RootElement.GetRawText());
         File.Exists(credentials).ShouldBeFalse();
     }
 

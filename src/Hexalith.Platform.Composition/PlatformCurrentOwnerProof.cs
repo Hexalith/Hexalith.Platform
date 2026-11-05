@@ -25,7 +25,7 @@ internal sealed class PlatformCurrentOwnerProof
         IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
     {
         _parent = PlatformPartiesRunProof.CreateCurrent(options, key);
-        source.RequireUnchanged(ActiveRoot(options), source.Revision);
+        source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
         _source = source;
         Directory = directory;
         Bodies = bodies;
@@ -154,12 +154,12 @@ internal sealed class PlatformCurrentOwnerProof
             files[asset] = Hash(asset);
         }
         foreach (string path in System.IO.Directory.GetFiles(ownerMapping, "*", SearchOption.AllDirectories)) files[path] = Hash(path);
-        source.RequireUnchanged(active, revision);
+        source.RequireUnchanged(active, revision, options.RunPlan.StartupDeadlineUtc);
         string readerPreflight = Path.Combine(directory, "reader-preflight");
         CompositionWorkspace.CreatePrivateDirectory(readerPreflight);
         _ = PlatformPackageCatalogReader.Prepare(new System.Xml.Linq.XDocument(new System.Xml.Linq.XElement("Project")), options,
             options.RunPlan.Workspace, readerPreflight, DateTimeOffset.UtcNow + PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan.StartupDeadlineUtc, DateTimeOffset.UtcNow));
-        VerifyPreparedRevision(active, revision, source);
+        VerifyPreparedRevision(active, revision, source, options.RunPlan.StartupDeadlineUtc);
         return new(options, key, directory, bodies, files, source);
 
         void Run(string[] command, string log)
@@ -175,11 +175,12 @@ internal sealed class PlatformCurrentOwnerProof
     /// <param name="root">The actual active owner root.</param>
     /// <param name="revision">The immutable revision whose inputs and bodies were measured.</param>
     /// <param name="source">The complete pre-build input state, or a fresh component-only boundary capture.</param>
-    internal static void VerifyPreparedRevision(string root, string revision, PlatformCurrentOwnerSourceState? source = null)
+    /// <param name="startupDeadlineUtc">The existing preparation deadline; it does not add expiry to the retained source identity.</param>
+    internal static void VerifyPreparedRevision(string root, string revision, PlatformCurrentOwnerSourceState? source = null, DateTimeOffset? startupDeadlineUtc = null)
     {
-        source ??= PlatformCurrentOwnerSourceState.Capture(root, revision, null);
+        source ??= PlatformCurrentOwnerSourceState.Capture(root, revision, startupDeadlineUtc);
         PreparedObserver.Value?.Invoke();
-        source.RequireUnchanged(root, revision);
+        source.RequireUnchanged(root, revision, startupDeadlineUtc);
     }
 
     internal void VerifyReader(JsonElement receipt)

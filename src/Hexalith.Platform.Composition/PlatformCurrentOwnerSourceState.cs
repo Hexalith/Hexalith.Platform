@@ -8,12 +8,10 @@ using Hexalith.Builds.Tooling.Runtime;
 internal sealed class PlatformCurrentOwnerSourceState
 {
     private readonly string _root;
-    private readonly DateTimeOffset? _deadline;
 
-    private PlatformCurrentOwnerSourceState(string root, string revision, DateTimeOffset? deadline, IReadOnlyDictionary<string, string> inputs)
+    private PlatformCurrentOwnerSourceState(string root, string revision, IReadOnlyDictionary<string, string> inputs)
     {
         _root = root;
-        _deadline = deadline;
         Revision = revision;
         Inputs = inputs.ToFrozenDictionary(StringComparer.Ordinal);
     }
@@ -28,19 +26,19 @@ internal sealed class PlatformCurrentOwnerSourceState
     internal static PlatformCurrentOwnerSourceState Capture(string root, string revision, DateTimeOffset? deadline)
     {
         var inputs = Eligible(root, revision, deadline).ToDictionary(path => path, Hash, StringComparer.Ordinal);
-        PlatformCurrentOwnerSourceState state = new(root, revision, deadline, inputs);
-        state.RequireUnchanged(root, revision);
+        PlatformCurrentOwnerSourceState state = new(root, revision, inputs);
+        state.RequireUnchanged(root, revision, deadline);
         return state;
     }
 
     /// <summary>Rechecks source revision, staged/working tracked inputs, complete eligible paths and every original body.</summary>
-    internal void RequireUnchanged(string root, string revision)
+    internal void RequireUnchanged(string root, string revision, DateTimeOffset? preparationDeadlineUtc = null)
     {
         if (root != _root || revision != Revision || Git(root, "rev-parse", "HEAD").Output.Trim() != Revision)
             throw Refusal();
         // A new staged path can leave HEAD and all previously selected bodies unchanged.
         _ = Git(root, "diff", "--quiet", "HEAD", "--");
-        string[] paths = Eligible(root, Revision, _deadline);
+        string[] paths = Eligible(root, Revision, preparationDeadlineUtc);
         if (!paths.SequenceEqual(Inputs.Keys.Order(StringComparer.Ordinal), StringComparer.Ordinal)
             || Inputs.Any(pair => Hash(pair.Key) != pair.Value)) throw Refusal();
         if (Git(root, "rev-parse", "HEAD").Output.Trim() != Revision) throw Refusal();

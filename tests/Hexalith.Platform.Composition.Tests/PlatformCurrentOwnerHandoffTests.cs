@@ -30,6 +30,8 @@ public sealed class PlatformCurrentOwnerHandoffTests
             .ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
         string catalogPath = Path.Combine(fixture.Workspace, "platform-components", fixture.Plan.EnvironmentId + "-catalog", "catalog.json");
         byte[] validatedCatalog = File.ReadAllBytes(catalogPath);
+        string originalReceiptPath = Path.Combine(Path.GetDirectoryName(catalogPath)!, "receipt.json");
+        byte[] originalReceipt = File.ReadAllBytes(originalReceiptPath);
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         var builder = PlatformPartiesPackageFixture.Builder();
         Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
@@ -42,8 +44,15 @@ public sealed class PlatformCurrentOwnerHandoffTests
             File.ReadAllBytes(snapshot).ShouldBe(warm);
             var catalog = PlatformRoutingCatalog.Generate(options, PlatformAppModel.Prepare(options), Path.Combine(fixture.Workspace, "platform-components"));
             File.ReadAllBytes(catalog.CatalogPath).ShouldBe(validatedCatalog);
+            File.ReadAllBytes(originalReceiptPath).ShouldBe(originalReceipt, "Retain the initial catalog receipt separately from the fresh current execution receipt.");
             using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
             proof.VerifyReader(receipt.RootElement);
+            TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
+            {
+                phase = "genuine-signed-current-validation-and-fresh-ordinary-reader", proof.SourceRevision,
+                qualificationCredit = false, runtimeBodies = proof.Bodies, packageArchives = proof.PackageArchives,
+                loadedArtifacts = receipt.RootElement.GetProperty("loadedArtifacts"),
+            }));
             proof.Matches(options).ShouldBeTrue();
             foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
             File.ReadAllBytes(snapshot).ShouldBe(warm);
