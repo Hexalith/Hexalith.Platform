@@ -110,6 +110,18 @@ public static class PlatformAppModel
         Compose(builder, configureOptions(options));
     }
 
+    /// <summary>Retains the exact verified ordinary Parties runner snapshot, including dynamically evaluated reader versions.</summary>
+    internal static void MaterializeSourceMapping(PlatformCompositionOptions options, string workspace)
+    {
+        if (options.Mapping.Mode == WorkspaceMode.Package && options.RunPlan?.PlatformActiveModule == "parties")
+        {
+            if (workspace != options.RunPlan.Workspace || options.PartiesRunProof?.Matches(options) != true)
+                throw new InvalidDataException("The ordinary Parties package snapshot requires its unchanged trusted parent proof.");
+            return;
+        }
+        SourceMappingMaterializer.WriteAsync(options.Mapping, workspace, CancellationToken.None).GetAwaiter().GetResult();
+    }
+
     /// <summary>Adds exactly the prepared environment, with owner readiness and lifecycle metadata.</summary>
     public static void Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
     {
@@ -178,7 +190,7 @@ public static class PlatformAppModel
                 : File.ReadAllText(options.RunPlan.DaprConfigPath);
             if (options.RetentionProfile is { } retentionDiscovery) discovery = retentionDiscovery.ConfigureDiscovery(discovery);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
-            SourceMappingMaterializer.WriteAsync(options.Mapping, mappingWorkspace, CancellationToken.None).GetAwaiter().GetResult();
+            MaterializeSourceMapping(options, mappingWorkspace);
             catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,

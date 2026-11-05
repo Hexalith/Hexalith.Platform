@@ -35,6 +35,28 @@ public sealed class PlatformPartiesRunProofTests
         Directory.Exists(Path.Combine(fixture.Options.RunPlan!.Workspace, "platform-components")).ShouldBeFalse();
     }
 
+    /// <summary>Snapshot reuse never repairs a missing or stale proof and never accepts another workspace.</summary>
+    /// <param name="fault">The missing authority, changed bytes or foreign workspace.</param>
+    [Theory]
+    [InlineData("missing-proof")]
+    [InlineData("changed-snapshot")]
+    [InlineData("foreign-workspace")]
+    public void RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(string fault)
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformCompositionOptions options = fixture.Options;
+        string workspace = options.RunPlan!.Workspace;
+        string path = Path.Combine(workspace, "source-mapping", "catalog-versions.json");
+        if (fault == "missing-proof") options = options with { PartiesRunProof = null };
+        if (fault == "changed-snapshot") File.AppendAllText(path, " ");
+        byte[] before = File.ReadAllBytes(path);
+        string destination = fault == "foreign-workspace" ? Path.Combine(workspace, "foreign") : workspace;
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.MaterializeSourceMapping(options, destination));
+        File.ReadAllBytes(path).ShouldBe(before);
+        Directory.Exists(Path.Combine(workspace, "foreign")).ShouldBeFalse();
+        Directory.Exists(Path.Combine(workspace, "platform-components")).ShouldBeFalse();
+    }
+
     /// <summary>The actual private parent files and clean local source retain the proof without creating additive owner authority.</summary>
     [Fact]
     public void OrdinaryProofBindsActualParentInputsWithoutAnExpansionMac()

@@ -28,6 +28,45 @@ public sealed class PlatformPartiesPackageReaderTests(ITestOutputHelper diagnost
         AssertFullReader(fixture, catalog);
     }
 
+    /// <summary>A real reader's evaluated project versions survive the next trusted runtime handoff, while exact-byte tampering refuses.</summary>
+    /// <param name="tamper">Whether the snapshot changes after the new runtime proof captures it.</param>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(bool tamper)
+    {
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
+        fixture.AssertPositiveEntry();
+        PlatformRoutingCatalog catalog = fixture.Generate();
+        string path = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
+        byte[] enriched = File.ReadAllBytes(path);
+        byte[] generatedCatalog = File.ReadAllBytes(catalog.CatalogPath);
+        using JsonDocument versions = JsonDocument.Parse(enriched);
+        versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
+            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe("3.0.23");
+        var builder = PlatformPartiesPackageFixture.Builder();
+        PlatformCompositionOptions? captured = null;
+        Exception refusal = Record.Exception(() => fixture.Compose(builder, options =>
+        {
+            captured = options;
+            options.PartiesRunProof!.Matches(options).ShouldBeTrue();
+            if (tamper) File.AppendAllText(path, " ");
+            PlatformAppModel.MaterializeSourceMapping(options, fixture.Workspace);
+            File.ReadAllBytes(path).ShouldBe(enriched);
+            options.PartiesRunProof.Matches(options).ShouldBeTrue();
+            throw new InvalidOperationException("Expected verified snapshot reuse; stop before composition effects.");
+        })).ShouldNotBeNull();
+        if (tamper)
+        {
+            refusal.ShouldBeOfType<InvalidDataException>();
+            File.ReadAllBytes(path).ShouldBe(enriched.Concat(new byte[] { (byte)' ' }).ToArray());
+            captured!.PartiesRunProof!.Matches(captured).ShouldBeFalse();
+        }
+        else refusal.Message.ShouldBe("Expected verified snapshot reuse; stop before composition effects.");
+        builder.Resources.ShouldBeEmpty();
+        File.ReadAllBytes(catalog.CatalogPath).ShouldBe(generatedCatalog);
+    }
+
     /// <summary>Each owner/cohort/body mutation follows a real successful full reader and preserves the previous catalog without publishing new output.</summary>
     /// <param name="fault">The altered private child input.</param>
     [Theory]
