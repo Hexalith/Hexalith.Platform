@@ -1,0 +1,34 @@
+{
+  "observedUtc": "2026-11-05T15:14:07.397505+00:00",
+  "source": "d4415715b2517927655c538e6d41e05d71d4207e",
+  "inputs": [
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "bytes": 8840,
+      "sha256": "7ef1975bf660b036ce1e60970425b8a66e7c2ca61251e8bace1d142788982705"
+    },
+    {
+      "path": "scripts/qualify-disposable-ci.py",
+      "bytes": 49047,
+      "sha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4"
+    },
+    {
+      "path": ".config/dotnet-tools.json",
+      "bytes": 332,
+      "sha256": "d36110279ef048ace3faa0407737b2adb3bdc1ce136c1232d0c57b3279b11a51"
+    }
+  ],
+  "actualManualDispatchesPerformed": 0,
+  "blockingPrerequisite": "ordinary Parties native21 pass on actual coherent public tuple remains unmet",
+  "staticObservation": "Current manual baseline does not pass package-prepare-script, whereas ordinary ci.yml passes scripts/prepare-ci-package-dependencies.sh. Check actual need before lifecycle dispatch; no causal failure or fix asserted.",
+  "budgetsPreserved": {
+    "baselineMinutes": 60,
+    "qualificationMinutes": 45,
+    "startupSeconds": 600,
+    "nativeSeconds": 300,
+    "stopSeconds": 90,
+    "holdSeconds": 240,
+    "waitBarrierSeconds": 120
+  },
+  "futureCancellationAudit": "Use actual raw GitHub run/jobs/artifact metadata plus downloaded lifecycle-cancellation-ready, require freshness<=20sec and actual current qualification wait step before exact normal cancel. No source/run IDs fabricated."
+}

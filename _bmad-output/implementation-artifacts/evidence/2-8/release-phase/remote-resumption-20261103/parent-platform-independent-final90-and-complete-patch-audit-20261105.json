@@ -1,0 +1,477 @@
+{
+  "utc": "2026-11-05T20:19:42.512181+00:00",
+  "head": "8d34b07e0493866e8b2a79dcf71c360ec159f0cc",
+  "tree": "746f9de13711acef6e0c3815df19405b60e17178",
+  "completePatch": "/home/administrator/.cache/hexalith/story-2-8/parent-platform-independent-patch-audit-20261105/complete-base-to-clean-head.patch",
+  "patchBytes": 59395,
+  "patchSHA256": "f918e3182c5dd8f18b5513185ac014cf1df638b7d0e36367b89d8087ba9e8074",
+  "parentReadAll840PatchLines": true,
+  "actualFinalCases": 90,
+  "actualCurrentPurposeCases": 35,
+  "xml": "/home/administrator/.cache/hexalith/story-2-8/platform-current-owner-repair-20261105/evidence/authenticated-final-focused-ninety-controls.xml",
+  "xmlSHA256": "731bb96455cc3b8a44127487faeb58d1dcf037d66828ae14696f4d750806bec9",
+  "cases": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.EndpointCredentialWriterProducesTheChannelTheBuildsReaderAcceptsAsync",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(mutation: \\\"parent-link\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(mutation: \\\"outside-root\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"activation-attempt\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"activation-binding\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"readback-attempt\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"readback-binding\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: False)",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: True)",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.ElapsedStartupDeadlineCancelsBeforeMintingCredentialsAsync",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FutureStartupDeadlineValidatesSourceBeforeRequiringApplicationModelAsync",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"foreign-run\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"foreign-module\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"global-administrators-domain\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"missing-synthetic-tenant\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests.LiteralNamesSurviveAndDirectoryLinksRefuse",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests.LargeTrackedInventoryPreservesEveryRequiredOwnerInput",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests.TruncatedOrOverDepthPartitionsRefuse",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests.FailedChildTreeRefusesAfterSuccessfulParentListing",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.ProducerUppercaseHashesRetainTheSameFiniteDeclaration",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"platform-package\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"lifecycle-package\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.OnlyTheTwoMeasuredDeclarationsAreCompatible",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests.PreparedStageRefusesChangedCompleteOwningInputs(change: \\\"changed-body\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests.PreparedStageRefusesChangedCompleteOwningInputs(change: \\\"new-tracked-input\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests.PreparedStageRefusesChangedCompleteOwningInputs(change: \\\"committed-new-input\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests.PreparedStagePreservesUnchangedOwningInputs",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.CleanActiveGitRevisionDriftInvalidatesTheOriginalProof",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.SerializedOrdinaryOptionsCannotAcquireAdmission",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.NestedSelectedTestRepositoryIsRefusedAtProofCreation",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"run\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"attempt\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"environment\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"source\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"mapping\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"platform-root\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"owner\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"selected-test\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"declaration\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"model\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"catalog-generation\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"configuration\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"images\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"projects\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"expanded-owner\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"expansion-binding\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"unknown\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ProofDoesNotReplaceFiniteCohortAndTopologyChecks(development: True)",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ProofDoesNotReplaceFiniteCohortAndTopologyChecks(development: False)",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"not-base64\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"AAAAAAAAAAAAAAAAAAAAAA==\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.TrustedComposeRunCreatesOrdinaryProofWithoutExpandedOwners",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"plan\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"mapping\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"catalog\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"pinned-catalog\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"declaration\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"test\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"seed\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"identity\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"missing-proof\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"changed-snapshot\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"foreign-workspace\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.OrdinaryProofBindsActualParentInputsWithoutAnExpansionMac",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests.MissingOrDifferentLiveOwnerMappingsRefuseBeforeObservationPublicationAsync(fault: \\\"absent-main\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests.MissingOrDifferentLiveOwnerMappingsRefuseBeforeObservationPublicationAsync(fault: \\\"absent-contracts\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests.MissingOrDifferentLiveOwnerMappingsRefuseBeforeObservationPublicationAsync(fault: \\\"different-main\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests.MissingOrDifferentLiveOwnerMappingsRefuseBeforeObservationPublicationAsync(fault: \\\"different-contracts\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests.PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync",
+      "result": "Pass",
+      "outputSHA256": "084df8073e570d5659fadab81a1f54936002cff15ec613f61a8a00c196156153"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.StandaloneCleanAdvanceDuringPreparedStageRefusesIssuance",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.OrdinarySourceDependencyFixtureCannotIssueMeasuredCurrentOwnerAuthority",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"mixed\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"dirty-source\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"entry\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"snapshot\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"key\\\")",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.PublishedPurposeCannotAuthorizeCurrentProfile",
+      "result": "Pass",
+      "outputSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"wrong-key-encoding\\\")",
+      "result": "Pass",
+      "outputSHA256": "04374580b607ac5e8d5765cfb6c47e1bc967d36bc74469b5c3edc8b316a3b170"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"mixed-plan\\\")",
+      "result": "Pass",
+      "outputSHA256": "04374580b607ac5e8d5765cfb6c47e1bc967d36bc74469b5c3edc8b316a3b170"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"stale-run\\\")",
+      "result": "Pass",
+      "outputSHA256": "a597234c3487d5ba39e6ebd0fcb3377658a4d19080835242b88a614bd69c894b"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"entry-body\\\")",
+      "result": "Pass",
+      "outputSHA256": "04374580b607ac5e8d5765cfb6c47e1bc967d36bc74469b5c3edc8b316a3b170"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"source-binding\\\")",
+      "result": "Pass",
+      "outputSHA256": "afae7f70cb8c511ae2af5ed02d1016b773df0df32eb1b3340aa05c4d6485efc4"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "result": "Pass",
+      "outputSHA256": "522fd5bc23607b5b7860ebbbe1eb40bf68bcfdeaac484723193ab1177c224758"
+    }
+  ],
+  "meaningfulCallerBypassMutation": {
+    "xml": "/home/administrator/.cache/hexalith/story-2-8/platform-current-owner-repair-20261105/evidence/authenticated-caller-bypass-expected-failure.xml",
+    "sha256": "80de988f8d697f3b949f0d7299d473a34d0bd85d5868a15e5f211dd2ce72b049",
+    "actualFailed": 1,
+    "actualException": "InvalidOperationException",
+    "sourceValidatedProgressPublished": true
+  },
+  "limits": [
+    "Independent component/source patch audit only; closed evidence index pending.",
+    "Distinct well-formed different signing-key current transport control remains required in final binding follow-up.",
+    "No whole current269/legacy349/five-SDK final-source hosted qualification or native/candidate/Story credit."
+  ]
+}

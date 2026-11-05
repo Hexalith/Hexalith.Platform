@@ -1,0 +1,39 @@
+{
+  "utc": "2026-11-05T16:36:13.793685+00:00",
+  "baseline": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "source": "f96cfd4186255d2bc187800648128cea1929f2ae",
+  "fullPatchBytes": 47684,
+  "fullPatchSha256": "5cab60931ff654c857887c3bf90d71571b55a32b6a5f1bdb1ea1e56f71239791",
+  "parentReadCompletePatchSegments": [
+    "1-379",
+    "380-700",
+    "701-1113"
+  ],
+  "selectedSourceFilesRawGitBodiesIndependentlyRehashed": 289,
+  "changedWithinSelectedInventory": [
+    "Tools/package-version-audit.json",
+    "Tools/test-authoritative-package-catalog.ps1",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs"
+  ],
+  "runtimeChanged": [
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs"
+  ],
+  "runtimeChangeIsExactlyTwoClosedTenants704MapRows": true,
+  "historicalFixturesIdentical": [
+    "test/fixtures/module/platform/eventstore-4.0.4.json",
+    "test/fixtures/module/platform/eventstore-4.1.0.json",
+    "test/fixtures/module/platform/memories-3.0.18.json",
+    "test/fixtures/module/platform/memories-3.0.23.json",
+    "test/fixtures/module/platform/tenants-7.0.0.json",
+    "test/fixtures/module/platform/tenants-7.0.2.json",
+    "test/fixtures/module/platform/valid.json"
+  ],
+  "catalogBlob": "5bd9ab8dd93358942eaa8d164c99ca2bd18f0204",
+  "auditGeneratedFromRevision": "dc1ea69e1613ded15c50c22c05c9e44533f16a93",
+  "generatedRevisionIsRetainedAncestor": true,
+  "firstAuditorFailure": "All raw body comparisons passed; initial parent assertion incorrectly treated the selected inventory as runtime-only. The actual inventory also includes two intentionally changed Tools audit/validator files. Corrected classification only; exact whole patch reviewed; no input/source mutation.",
+  "acceptedPinOrPublicToolChanged": false,
+  "newPublicArchiveVerified": false,
+  "nativeAcceptance": false,
+  "passed": true
+}

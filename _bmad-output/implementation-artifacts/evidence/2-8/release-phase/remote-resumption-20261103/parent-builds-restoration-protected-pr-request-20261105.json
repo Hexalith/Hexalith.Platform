@@ -1,0 +1,7 @@
+{
+  "title": "fix(release): retain reviewed source guards",
+  "body": "GitHub records an external force-push at18:41UTC that moved main from merged PR162 commitc58c3cb78de3cb6cc10ff2924c56e7f70f359997 back to ancestor5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef. The normal release correctly refused that stale source after qualification. A normal fast-forward restored the reviewed commit; GitHub reported an automatic account-level bypass for PR/Codacy rules on that restoration.\n\nIntegrate the original reviewed branch through the protected PR path before publication. Its source tree is e94444c7163d835012542a4a5231578bb36e09c5, identical to restored main. The implementation and helper naming were reviewed in PR162 and passed its complete CI, plus fresh main CI42082834472. This PR retains the original commits and requires normal checks for the branch integration. It adds no implementation change and grants no publication or native acceptance from the failed run. The first release failure and force-push activity remain retained.\n",
+  "head": "fix/retain-reviewed-release-guards",
+  "base": "main",
+  "draft": false
+}

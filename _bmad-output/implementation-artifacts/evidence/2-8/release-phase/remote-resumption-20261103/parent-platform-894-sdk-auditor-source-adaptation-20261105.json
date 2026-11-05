@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-05T19:44:51.554747+00:00",
+  "originalProcedure": "parent-platform-349-main-sdk-audit-procedure-20261105.py",
+  "originalSHA256": "d97c3d977af4e9536cda614448a2ed0333c0bb897aa2403c96989a071d8036e7",
+  "newProcedure": "parent-platform-894-sdk-audit-procedure-20261105.py",
+  "newSHA256": "98a31968b10fa5623dedfced459ad0815d60874c25e604e59107b310df049d30",
+  "changes": {
+    "/home/administrator/.cache/hexalith/story-2-8/platform-catalog-handoff-20261105/Hexalith.Platform": "/home/administrator/.cache/hexalith/story-2-8/platform-current-owner-repair-20261105/Hexalith.Platform",
+    "/home/administrator/.cache/hexalith/story-2-8/platform-349-main-hosted-20261105": "/home/administrator/.cache/hexalith/story-2-8/platform-894-sdk-hosted-20261105",
+    "15fe49ace008f4777d71c1462d581e9e4880d205": "8946209702a6c1c48239f206dd452ae7d729a307",
+    "parent-platform-349-main-sdk-artifact-list-20261105.json": "parent-platform-894-sdk-artifact-list-20261105.json",
+    "42041849619": "42091454274",
+    "parent-platform-349-main-sdk-catalog-audit-20261105.json": "parent-platform-894-sdk-catalog-hosted-audit-20261105.json",
+    "moduleSpec=importlib.util.spec_from_file_location('sdk_gate_expectations',scriptPath);m=importlib.util.module_from_spec(moduleSpec);moduleSpec.loader.exec_module(m)": "import types\nm=types.ModuleType('immutable_sdk_gate_expectations');m.__file__=str(scriptPath);exec(compile(git('tests/catalog-builder/verify_sdk_gates.py'),str(scriptPath),'exec'),m.__dict__)"
+  },
+  "controlsUnchanged": "Exact same75consumer/236finite/14publicowner checks, actual-source/path/run metadata substitution only; immutable source exec replaces import solely to avoid writing pycache in the active agent root."
+}

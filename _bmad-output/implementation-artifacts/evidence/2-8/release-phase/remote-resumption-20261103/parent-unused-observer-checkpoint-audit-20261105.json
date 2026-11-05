@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-05T15:50:14.884450+00:00",
+  "index": "/home/administrator/.cache/hexalith/story-2-8/parties-startup-observer-proposal-20261105/observer-implementation-evidence/unused-local-observer-evidence-index.json",
+  "sha256": "2749a786cf03007377e14e4c732d0185344647efe06ae53c6355bdc4a437d670",
+  "files": 31,
+  "bytes": 4156236,
+  "head": "7f35f2be6958a8dd5c220fbebf55d69a4d6fb60e",
+  "base": "d4415715b2517927655c538e6d41e05d71d4207e",
+  "clean": true,
+  "patchBytes": 65296,
+  "patchSha256": "47d9f5693aa501bad0fe621545a1dd18833df8efa0b6bcbaf7f785bc58aed676",
+  "actualRegisteredCases": [
+    "Hexalith.Parties.Ci.Tests.PartiesStartupObserverTests.TemporaryObserverPassesPureOwnershipAndPrivacyControls",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiWorkflowDelegatesToSharedDomainCiWithPartiesTestLanes",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests.CiDocsDescribeSharedCiReleaseAndZotApiKeyPublishContract"
+  ],
+  "pureControlsActualPassed": 37,
+  "status": "UNUSED, UNREVIEWED, UNDEPLOYED; no native/candidate qualification",
+  "knownIncomplete": [
+    {
+      "issue": "Incorrect unavailable-exception namespace",
+      "actualDraft": "Hexalith.EventStore.Contracts.Routing.RouteCatalogUnavailableException",
+      "publishedNamespaceRecordedByParent": "Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogUnavailableException",
+      "impact": "Actual Development trust refusal of this type would be dropped by the draft allowlist. No source correction performed after checkpoint-only supersession."
+    },
+    {
+      "issue": "Published protected bootstrap worker frame missing",
+      "missing": "DevelopmentRouteCatalogBootstrapWorker.ExecuteAsync and its authenticated basename/line bound",
+      "impact": "That worker stack frame is not projected. Complete finite Hexalith method/type authentication was not finished."
+    },
+    {
+      "issue": "Combined target stderr child fixture incomplete",
+      "actualCompleted": "Log-only stderr=STDOUT transport implemented and mock validates merge flag; pure real-child controls prove oversize stdout and nonzero-error non-egress.",
+      "notCompleted": "No real pure-child fatal-header-on-stderr fixture exercised combined-stream projection and combined aggregate cap as explicitly requested by later spec. No actual Docker transport ran."
+    },
+    {
+      "issue": "Publication order fixture partial",
+      "actualCompleted": "Receipt+state with missing owner.json waits without target commands and succeeds after owner publication; code handles FileNotFound for either state or owner.",
+      "notCompleted": "No dedicated receipt-only\u2192state\u2192owner full three-stage fixture was executed."
+    },
+    {
+      "issue": "Production launcher/lifetime remains unexercised",
+      "actualCompleted": "Pure mocked direct-posix-spawn tracking/PID-birth/duplicate lease/cancellation/terminal controls and local non-CI no-op passed.",
+      "notCompleted": "No actual CI watcher, runner cancellation, Docker removed/exited races, supplemental upload or first-cause observation was executed."
+    },
+    {
+      "issue": "Earlier bounded waiter availability",
+      "actualDraft": "Twenty-minute preallocation cap, then original actual owner startup deadline; normal job tracking retained.",
+      "limit": "A later successful integration start can be missed. This is only an unused diagnostic availability limit, never a change to ordinary120m/600/300/90 budgets."
+    }
+  ]
+}

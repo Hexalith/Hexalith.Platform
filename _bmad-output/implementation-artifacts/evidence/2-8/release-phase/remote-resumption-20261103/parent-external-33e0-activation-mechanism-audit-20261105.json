@@ -1,0 +1,80 @@
+{
+  "utc": "2026-11-05T15:34:08.669799+00:00",
+  "scope": "read-only independently correlated external LOCAL reproduction; no positive CI/native/candidate qualification",
+  "externalRunId": "33e0140c7255820e281417198c19097a",
+  "externalSourceClaim": "78238d5e; external local candidate, not d441 hosted source",
+  "retainedExternalClosedClassification": [
+    {
+      "externalPath": "/tmp/parties-release-20261105/runtime-33e0140c-parties-classification.json",
+      "retained": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/external-runtime-33e0140c-parties-classification.json",
+      "bytes": 2911,
+      "sha256": "84b0301b4588745b1dc9241ef3c6d3d4e1f3835e4223c1e7407a9fe4053d1ffb"
+    },
+    {
+      "externalPath": "/tmp/parties-release-20261105/runtime-33e0140c-diagnosis.md",
+      "retained": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/external-runtime-33e0140c-diagnosis.md",
+      "bytes": 4549,
+      "sha256": "78b7d800d628b9e240afc63a65be773da3d3d673dbbf0fd56d343996f6b64b82"
+    }
+  ],
+  "publicImageBodiesIndependentlyMatched": [
+    {
+      "publicImageBody": "Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "1c2f5800a3523621ff981f36b73a415682f02a0647c8c27ec0255a625ebca2ac"
+    },
+    {
+      "publicImageBody": "Hexalith.EventStore.Contracts.dll",
+      "sha256": "8b01258ef4928a570b4afaae451dbf2cec799407fe89195eb506bec3d3e12895"
+    },
+    {
+      "publicImageBody": "Hexalith.Parties.dll",
+      "sha256": "e8b2d64226bd2d701f328cc9872e1faa80345b61f1fba3f7f7bdb54d7cdf7965"
+    }
+  ],
+  "exactPublishedSdkSource": [
+    {
+      "revision": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs",
+      "sha256": "9124627201211e9e2dbf2264953958833bf3b28d3f723e0b9a00effaba244c6e",
+      "technicalMembershipInBinding": false,
+      "comparesTrustProofToComputedBinding": false
+    },
+    {
+      "revision": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogTrustValidator.cs",
+      "sha256": "ea902573c0ad685b5f6e807500a1ab93094036349acb23e26013d77c4b31c66d",
+      "technicalMembershipInBinding": false,
+      "comparesTrustProofToComputedBinding": true
+    },
+    {
+      "revision": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/RouteCatalogActivationBinding.cs",
+      "sha256": "7608b3ca8e113bfa17c7e3d0f3864536b42ed3f0d5d408dcba49b02471901118",
+      "technicalMembershipInBinding": true,
+      "comparesTrustProofToComputedBinding": false
+    },
+    {
+      "revision": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+      "path": "src/Hexalith.EventStore.ServiceDefaults/Routing/DevelopmentRouteCatalogTrustValidator.cs",
+      "sha256": "ea902573c0ad685b5f6e807500a1ab93094036349acb23e26013d77c4b31c66d",
+      "technicalMembershipInBinding": false,
+      "comparesTrustProofToComputedBinding": true
+    }
+  ],
+  "supportedMechanism": "The genuine old image SDK computes activation binding v1 without technical HTTP membership. The newer SDK uses v2 when membership exists. Both trust validators compare supplied proof to locally computed binding. External closed log classification reports this trust refusal and background-service-driven exit.",
+  "limits": [
+    "External local runtime observation was not performed by parent and lacks the exact current hosted d441 run/source/job binding.",
+    "No raw logs, private activation documents or environment values are copied or inspected; infrastructure inventory retained externally only.",
+    "No container/process/host operation or external probe execution/modification performed by parent.",
+    "Public decoding and declaration equality controls do not establish lifecycle binding equality.",
+    "A compatible public image still requires genuine production, publication, admission and fresh public native/lifecycle evidence."
+  ],
+  "incomingCurrentSource": "58cd1a234bd7293589399fb8ef9fd11c7b14ed04",
+  "incomingCurrentCi": 42054513238,
+  "externalPlatformDraftObservation": {
+    "root": "/home/administrator/projects/hexalith/parties/references/Hexalith.Platform",
+    "head": "15fe49ace008f4777d71c1462d581e9e4880d205",
+    "trackedDirtyPaths": 15,
+    "status": "uncommitted active-owner implementation observed read-only; not a public runtime or adopted source"
+  }
+}

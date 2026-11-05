@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-05T20:50:30.602882+00:00",
+  "error": "AttributeError: list has no attribute items while reading package bodies",
+  "completedBeforeError": {
+    "allClosedFilesRehashed": 18151,
+    "allClosedBytesRehashed": 2252589951,
+    "cleanHeadParentAndFullPatch": true,
+    "causalRedActualFailures": 3,
+    "omissionActualFailures": 3,
+    "finalActualPassed": 27
+  },
+  "correction": "Read actual package bodies as list entries with path/bytes/sha256. No product/expectation/source/test changes."
+}

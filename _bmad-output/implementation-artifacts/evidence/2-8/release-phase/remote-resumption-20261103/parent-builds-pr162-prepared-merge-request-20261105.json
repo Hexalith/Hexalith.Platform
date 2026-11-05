@@ -1,0 +1,6 @@
+{
+  "sha": "43adaa5d30437bec89f9485d414b1f92342b617c",
+  "merge_method": "squash",
+  "commit_title": "fix(release): verify final branch reference identity",
+  "commit_message": "Validate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis."
+}

@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-05T18:06:40.651518+00:00",
+  "version": "@commitlint/cli@21.2.4",
+  "exactFullMessage": "fix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.\n",
+  "exit": 0,
+  "stdout": "\u29d7   --- input ---\nfix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.\n\u2714   found 0 problems, 0 warnings\n",
+  "stderr": "",
+  "scope": "Prepared and validated only; all final-head checks still required before merge."
+}

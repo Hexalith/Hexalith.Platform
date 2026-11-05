@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-05T16:57:10.520617+00:00",
+  "files": 141,
+  "bytes": 1668236,
+  "indexSha256": "8bcc82f3780f47d46ae1f8b348f56c8e3fc205fab4c2fe08bd1e5766140e53c7",
+  "checkpointSha256": "11bf379fa658e85dbeaa91a038be9c071955d6679848b6e6946724484631f0ef",
+  "completeAuditReportRead": true,
+  "reportSha256": "d3ea31f3040447df172877505b2c019222a6dec7bc0bd4d32ccc25275bdf6d19",
+  "actualOwningSource": "15fe49ace008f4777d71c1462d581e9e4880d205",
+  "snapshots": [
+    {
+      "id": 1,
+      "files": 24,
+      "bytes": 263530,
+      "patchBytes": 116516,
+      "patchSha256": "d85e58a1a1f0c6d6369b26026b9d979e30adad0c3512c4fcfd387cff9e8593f7",
+      "stableCapture": true
+    },
+    {
+      "id": 2,
+      "files": 28,
+      "bytes": 296790,
+      "patchBytes": 145100,
+      "patchSha256": "c0a7ae93d524e4d2020a2de5e9806aab05bb9f1796adcfd2dff9cd9d18a4db82",
+      "stableCapture": true
+    }
+  ],
+  "sourceDriftRetained": true,
+  "findings": [
+    {
+      "id": "G1",
+      "classification": "required causal verification gap",
+      "title": "No genuine signed current-owner preflight-to-ordinary-generation control"
+    },
+    {
+      "id": "G2",
+      "classification": "concrete incomplete producer/source handoff",
+      "title": "Legacy descriptor is pending and current producer tuple still selects old releases"
+    },
+    {
+      "id": "D1",
+      "classification": "static source/provenance defect, not dynamically reproduced",
+      "title": "Preparation can seal a later owner HEAD than the package repository commit it built"
+    },
+    {
+      "id": "G3",
+      "classification": "callsite and effect-order verification gap",
+      "title": "New synchronous preparation relies on outer process cancellation and later runtime measurements"
+    },
+    {
+      "id": "G4",
+      "classification": "retained-evidence scope limit",
+      "title": "Private archive admission assertions are not externally re-auditable archive payload evidence after cleanup"
+    }
+  ],
+  "passed": "closed evidence integrity only",
+  "currentDraftOrNativeAcceptance": false
+}

@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-05T17:43:31.413086+00:00",
+  "sourceProcedure": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-builds-f96-official-audit-procedure-20261105.py",
+  "sourceProcedureSha256": "8437e45893eb148fd1bb7477ebcf72fc07e2d6ac77af9e564b2b81e3c30ddee4",
+  "newProcedure": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-builds-source-ci-official-audit-procedure-20261105.py",
+  "newProcedureSha256": "5272b162ca7646c3304da99b9c3af7a359a1696edda881ad4f411ef163321475",
+  "syntaxCheck": "Python compile passed; no top-level execution",
+  "scope": "Explicit CI-only read-only adapter; validates genuine public inventory CI proof against real authenticated run/attempt/jobs, normal successful release, public tag/source; all historical package/signature/body/fixture checks retained. Historical executed-only auditor unchanged.",
+  "execution": false,
+  "publicVersionOrNewTupleAccepted": false,
+  "prerequisite": "Actual successful final-source CI and normal genuine public release artifacts must exist before invocation."
+}

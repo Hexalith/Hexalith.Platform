@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-05T19:26:29.371266+00:00",
+  "procedureSHA256": "6506b3459676a9cc1ec1af342f8a7fa5e08325d16a141404f3f21dce460ea7bb",
+  "error": "FileNotFoundError: official top-level Tooling directory does not contain Hexalith.EventStore.Contracts.dll; actual signed payload lives in a nested host payload directory",
+  "reached": {
+    "actualCurrentPassed": 258,
+    "sourceInputHashesMatched": 21489,
+    "signedArchiveMembersMatched": 317,
+    "retainedExtractedMatched": 315
+  },
+  "correction": "Resolve matching dependency bodies within the exact already-authenticated signed4444 extracted payload and preserve actual relative paths; no source/tests rerun or relaxed body equality."
+}

@@ -1,0 +1,33 @@
+{
+  "utc": "2026-11-05T18:05:55.055995+00:00",
+  "sourceHead": "0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+  "actualWorkflowSource": "82e5919b713738c52fb894210297ddfd06e6f81f",
+  "run": 42077040992,
+  "artifact": 13440002583,
+  "archive": "/home/administrator/.cache/hexalith/story-2-8/builds-pr162-0e-superseded-20261105/qualification-attempt.zip",
+  "sha256": "ce7d2fbcc6f809f401b023916a07539553dae3ee0b1289a6f5a4c41573b7acac",
+  "bytes": 501,
+  "members": [
+    {
+      "path": "producer-attempt.json",
+      "bytes": 624,
+      "sha256": "4253ba843426b9360165b7ff9295e42342e3b4cd295a1a4306d51a0db2fccac2"
+    }
+  ],
+  "actualAttempt": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_SHA": "82e5919b713738c52fb894210297ddfd06e6f81f",
+    "GITHUB_RUN_ID": "42077040992",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "contracts",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/ci.yml@refs/pull/162/merge",
+    "GITHUB_WORKFLOW_SHA": "82e5919b713738c52fb894210297ddfd06e6f81f",
+    "GITHUB_EVENT_NAME": "pull_request",
+    "schema": "hexalith.g4-qualification-attempt.v1",
+    "kind": "ci",
+    "producerStepOutcome": "cancelled",
+    "qualificationCredit": false,
+    "purpose": "diagnostic identity; not completed qualification evidence"
+  },
+  "credit": "Superseded PR-source cancellation diagnostics only; no completed qualification/native/manual cancellation acceptance."
+}

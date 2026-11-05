@@ -1,0 +1,41 @@
+﻿2026-11-05T21:10:08.8678948Z Current runner version: '2.338.2'
+2026-11-05T21:10:08.8705929Z ##[group]Runner Image Provisioner
+2026-11-05T21:10:08.8706914Z Hosted Compute Agent
+2026-11-05T21:10:08.8707499Z Version: 20261028.624
+2026-11-05T21:10:08.8708231Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-05T21:10:08.8709006Z Build Date: 2026-10-28T21:51:42Z
+2026-11-05T21:10:08.8709695Z Worker ID: {9f649918-2914-4885-b51f-d34531c09514}
+2026-11-05T21:10:08.8710460Z Region: westus
+2026-11-05T21:10:08.8711008Z Cloud: Azure
+2026-11-05T21:10:08.8711579Z ##[endgroup]
+2026-11-05T21:10:08.8713101Z ##[group]Operating System
+2026-11-05T21:10:08.8713776Z Ubuntu
+2026-11-05T21:10:08.8714381Z 26.04.1
+2026-11-05T21:10:08.8715068Z LTS
+2026-11-05T21:10:08.8715668Z ##[endgroup]
+2026-11-05T21:10:08.8716270Z ##[group]Runner Image
+2026-11-05T21:10:08.8716865Z Image: ubuntu-26.04
+2026-11-05T21:10:08.8717482Z Version: 20261101.186.1
+2026-11-05T21:10:08.8718747Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-05T21:10:08.8720392Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+2026-11-05T21:10:08.8721359Z ##[endgroup]
+2026-11-05T21:10:08.8722510Z ##[group]GITHUB_TOKEN Permissions
+2026-11-05T21:10:08.8724451Z Contents: read
+2026-11-05T21:10:08.8725408Z Metadata: read
+2026-11-05T21:10:08.8726014Z ##[endgroup]
+2026-11-05T21:10:08.8728223Z Secret source: Actions
+2026-11-05T21:10:08.8729413Z Cache mode: write
+2026-11-05T21:10:08.8730106Z Prepare workflow directory
+2026-11-05T21:10:08.9112068Z Prepare all required actions
+2026-11-05T21:10:08.9254379Z Complete job name: Build and test
+2026-11-05T21:10:09.0498184Z ##[group]Run [[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" && "$PYTHON_RESULT" == "success" ]]
+2026-11-05T21:10:09.0500009Z [36;1m[[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" && "$PYTHON_RESULT" == "success" ]][0m
+2026-11-05T21:10:09.1312607Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-05T21:10:09.1313653Z env:
+2026-11-05T21:10:09.1314117Z   CATALOG_RESULT: cancelled
+2026-11-05T21:10:09.1314841Z   CONTRACTS_RESULT: cancelled
+2026-11-05T21:10:09.1315383Z   DOTNET_RESULT: cancelled
+2026-11-05T21:10:09.1315890Z   PYTHON_RESULT: success
+2026-11-05T21:10:09.1316376Z ##[endgroup]
+2026-11-05T21:10:09.1568811Z ##[error]Process completed with exit code 1.
+2026-11-05T21:10:09.1737474Z Cleaning up orphan processes

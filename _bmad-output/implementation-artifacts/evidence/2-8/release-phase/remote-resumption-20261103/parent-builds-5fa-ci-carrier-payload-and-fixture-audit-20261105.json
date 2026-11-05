@@ -1,0 +1,48 @@
+{
+  "utc": "2026-11-05T17:52:06.460383+00:00",
+  "source": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+  "run": 42073886800,
+  "artifact": 13438612376,
+  "archiveSha256": "ce008fd05f6d3b29f13c12828dc3e81c78472d3faa8cc5d0d27d81a9b00d0fb8",
+  "inventorySha256": "370802a4b82fd20d5910ad5452f8acd3a699b1bd653e2c84b0ddf8b7a43e7b1c",
+  "actualQualificationPayloadsVerified": 55,
+  "actualFixtureHashesVerified": 299,
+  "producer": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "42073886800",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "contracts",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/ci.yml@refs/heads/main",
+    "GITHUB_WORKFLOW_SHA": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+    "GITHUB_EVENT_NAME": "push",
+    "schema": "hexalith.g4-qualification-carrier.v1",
+    "kind": "ci",
+    "version": "0.0.0-ci.706",
+    "sourceRevision": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+    "inventorySha256": "370802a4b82fd20d5910ad5452f8acd3a699b1bd653e2c84b0ddf8b7a43e7b1c",
+    "qualificationEvidenceFiles": 55
+  },
+  "qualification": {
+    "packageBuild": {
+      "mode": "official",
+      "result": "passed"
+    },
+    "sourceValidation": {
+      "mode": "skipped",
+      "result": "not-run"
+    },
+    "controls": {
+      "mode": "executed",
+      "result": "passed"
+    },
+    "sourceTree": {
+      "clean": true,
+      "revision": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef"
+    },
+    "releaseEligible": false,
+    "ineligibilityReasons": [
+      "source validation was skipped (-SkipSourceValidation)."
+    ]
+  },
+  "credit": "Completed source CI and retained real carrier bodies only. Actual package controls passed, while skipped source validation makes this CI carrier release-ineligible. No public release authority or native acceptance."
+}

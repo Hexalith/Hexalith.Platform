@@ -1,0 +1,5 @@
+Ordinary DomainService publishing omits the owner intent adapter, and its catalog registration scans only the declarations assembly. Add the adapter to the normal owner project graph and pass its actual factory assembly to SDK catalog registration. The existing nonpublishing compatibility profile remains available.
+
+The preparation dependency selects genuine Builds 4.44.4 while preserving the current newer EventStore source dependency. Ordinary Release output consumes genuine public SDK 4.1.0 packages.
+
+Validation: the compiled discovery regression fails before the fix and passes afterward; all 13 DomainService cases and three existing catalog cases pass. The final ordinary filesystem publish includes the adapter and authentic SDK bodies. Public SDK package signatures, existing profile controls and the Builds preparation fixtures were checked locally. All owner CI and normal protected publication gates remain required. Local artifacts are private development evidence and grant no hosted native or candidate acceptance.

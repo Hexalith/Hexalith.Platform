@@ -1,0 +1,5 @@
+test(composition): materialize the normal preflight inputs
+
+Use the existing parent Dapr renderer before signed validation so the
+catalog regression reaches the real startup boundary without services.
+

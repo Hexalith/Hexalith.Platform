@@ -1,0 +1,158 @@
+{
+  "utc": "2026-11-05T19:54:00.978247+00:00",
+  "source": "5c11935f2241d46838a482939bc9a3ae06cda86f",
+  "run": 42095967132,
+  "conclusion": "failure",
+  "isolatedRows": [
+    {
+      "file": "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx",
+      "bytes": 511951,
+      "sha256": "471a629eb0e9d24ae014586cf81d9bb958582bacfb259a3b1fac9c026005bbb3",
+      "actualOutcomes": {
+        "Passed": 327
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx",
+      "bytes": 19018,
+      "sha256": "cfe2a0fa7be0bc5e685eb18efd6f29c21da75bbfdbada3b66dbe9fbc31655b29",
+      "actualOutcomes": {
+        "Passed": 12
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx",
+      "bytes": 14187,
+      "sha256": "ae28cc766d71b09ef9000d77b502cc63feb9d2363dcc613633897674951e7a23",
+      "actualOutcomes": {
+        "Passed": 9
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx",
+      "bytes": 898518,
+      "sha256": "5c076ebb120af8792aa87e052f62adb200a0e0a4e9b6c8f352a879218c643de4",
+      "actualOutcomes": {
+        "Passed": 579,
+        "Failed": 1
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx",
+      "bytes": 539517,
+      "sha256": "9af8b702ce90c26ab788fdf5df766dc049fbf15c4f4417205ffafb0148d5f9d9",
+      "actualOutcomes": {
+        "Passed": 345
+      }
+    },
+    {
+      "file": "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx",
+      "bytes": 134143,
+      "sha256": "43ca45b1284bbfd9d40d279702271d070dfab222ff761feea9aa9c19265c4473",
+      "actualOutcomes": {
+        "Passed": 85
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx",
+      "bytes": 361439,
+      "sha256": "5b5ff16ec4043e6b1150ab1045579052b8a3a4412f8c262b4d297bd508fdb02d",
+      "actualOutcomes": {
+        "Passed": 240
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx",
+      "bytes": 138900,
+      "sha256": "c63a38c2a19f5204bae97eba3e707dccd161361c799da6cc62479055b028cb6e",
+      "actualOutcomes": {
+        "Passed": 94
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx",
+      "bytes": 265679,
+      "sha256": "fa2f3a9fe720a3d02dd15c7bbd8a97fdf41be6f85b40ee979b692a1aa7cc9bc2",
+      "actualOutcomes": {
+        "Passed": 171
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx",
+      "bytes": 746245,
+      "sha256": "e2f05f7de97586ac30db5f9c1f41a25c15f0dd3233ca5d3fb4ac432f9586d986",
+      "actualOutcomes": {
+        "Passed": 466,
+        "NotExecuted": 1
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx",
+      "bytes": 97314,
+      "sha256": "e5ded8e5c939b035c0657a7d99730ac696475c859fb91269621f1ce04fbdf777",
+      "actualOutcomes": {
+        "Passed": 66
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx",
+      "bytes": 502812,
+      "sha256": "26148160209bdca2f4f9ec853f10b6bd00ffbd4ce8fcfe31e81f8732534f241f",
+      "actualOutcomes": {
+        "Passed": 334
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx",
+      "bytes": 490006,
+      "sha256": "525c4940bc6ecf1e9c68f755fb74189d6a6b40cfcf353077ef1d4d559a449ea7",
+      "actualOutcomes": {
+        "Passed": 315
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx",
+      "bytes": 4503439,
+      "sha256": "f310290cf3577d8bcb33e049205ba1de0165b105263643823c49c8024f24d6a3",
+      "actualOutcomes": {
+        "Passed": 2852,
+        "NotExecuted": 13
+      }
+    },
+    {
+      "file": "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx",
+      "bytes": 682511,
+      "sha256": "3c2675afd2b8f9d594c6e605c890c6baf9cea2053031c64ba6db7e7f52ea7eb5",
+      "actualOutcomes": {
+        "Passed": 463
+      }
+    }
+  ],
+  "isolatedActualTotals": {
+    "Passed": 6358,
+    "Failed": 1,
+    "NotExecuted": 14
+  },
+  "firstFailedCases": [
+    {
+      "name": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \"Live\")",
+      "message": "Preserved verifier fixture: /tmp/ext-parties-verifier-evidence-6aed1f1f4506448cb607975f928aea48",
+      "stack": "   at Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(String mode) in /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Ci.Tests/ExtPartiesVerifierEvidenceTests.cs:line 217\n--- End of stack trace from previous location ---"
+    }
+  ],
+  "integrationFinalizer": {
+    "executionContext": {
+      "disposable": true,
+      "jobId": "build-and-test",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42095967132"
+    },
+    "status": "not-allocated"
+  },
+  "nativeCasesExecuted": 0,
+  "interpretation": "Isolated CI concurrency barrier test timed out at unchanged10seconds. Workflow correctly blocked integration before provisioning; finalizer records not-allocated. Exact original child/native cause unproved; fixture bodies were not uploaded. No unchanged retry/waiver/native acceptance."
+}

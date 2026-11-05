@@ -1,0 +1,1453 @@
+{
+  "utc": "2026-11-05T21:15:18.359373+00:00",
+  "incoming_parent": {
+    "sha": "613ba7f30d74413516caf96119fd71652a2122a6",
+    "node_id": "C_kwDOOMzNRdoAKDYxM2JhN2YzMGQ3NDQxMzUxNmNhZjk2MTE5ZmQ3MTY1MmEyMTIyYTY",
+    "commit": {
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T21:14:02Z"
+      },
+      "committer": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-05T21:14:02Z"
+      },
+      "message": "build: merge refs/heads/fix/retain-main-audit-lineage into main via /pushall\n\n# Conflicts:\n#\tTools/package-version-audit.json",
+      "tree": {
+        "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/613ba7f30d74413516caf96119fd71652a2122a6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/613ba7f30d74413516caf96119fd71652a2122a6",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/613ba7f30d74413516caf96119fd71652a2122a6",
+    "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/613ba7f30d74413516caf96119fd71652a2122a6/comments",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c74d661c1d324a2059a1130acc257b4d6eebd1c6"
+      },
+      {
+        "sha": "adf782ef75b0e1453f861c486974237af4fac13f",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/adf782ef75b0e1453f861c486974237af4fac13f",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/adf782ef75b0e1453f861c486974237af4fac13f"
+      }
+    ],
+    "stats": {
+      "total": 0,
+      "additions": 0,
+      "deletions": 0
+    },
+    "files": []
+  },
+  "comparison": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/compare/c58c3cb78de3cb6cc10ff2924c56e7f70f359997...6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/compare/c58c3cb78de3cb6cc10ff2924c56e7f70f359997...6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+    "permalink_url": "https://github.com/Hexalith/Hexalith.Builds/compare/Hexalith:c58c3cb...Hexalith:6de3eb4",
+    "diff_url": "https://github.com/Hexalith/Hexalith.Builds/compare/c58c3cb78de3cb6cc10ff2924c56e7f70f359997...6de3eb4c9240c86f418b565bd2fb6d18377a8b0d.diff",
+    "patch_url": "https://github.com/Hexalith/Hexalith.Builds/compare/c58c3cb78de3cb6cc10ff2924c56e7f70f359997...6de3eb4c9240c86f418b565bd2fb6d18377a8b0d.patch",
+    "base_commit": {
+      "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "node_id": "C_kwDOOMzNRdoAKGM1OGMzY2I3OGRlM2NiNmNjMTBmZjI5MjRjNTZlN2Y3MGYzNTk5OTc",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T18:17:38Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-11-05T18:17:38Z"
+        },
+        "message": "fix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.",
+        "tree": {
+          "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq7MhCCRC1aQ7uu5UhlAAA/DAQADiiIEeT0q2GCrYFWN74Un9o\nDNrN6qR9fpCpBBIaA1ROpEvKfdjJjdyJtWTXs9vCKyShGt3DTAq1UJ/4h4BAnwTg\nloc/cWx5DjYgOXfD8khmrIIY+3FcokfJXNHyzdxLuzfG8hz++tYKOZFp14KnS/Lf\nXnD/V5+5SixZQuWxvafBeTcntQx+bP4STMkO8VF6oYFgAqHlHjayb/uXZExr5kz9\nAD4svrdOTBeT10lJ2ZsEMVq8srsRTvHOqqic28YHh5iXgiqDCYeZRbgzdGaMnGG7\nJb3+ZIYdYzNNXmYrxeixThLT9ii+bwxrb3SBToPiZrfnzKODRu7qwEx5W37z1tLH\nyWfXFr5oVH+NLwstVifCIjD8cKvtV2bCZxYEo9eAXBmRv8B0Co3dxvIrFb0S8wht\n0K6WOsIM9gseNVYTgAzR8oQCQHsids5FP2V1fGCnkJc34g3VlbvjQ42DPvVEtOp4\nOjIuOnQ9hXVXbOT1xEbrSaLFGQnF4/XUrIGU8uDnTt4DuQqdvbZm35Acoakq78m3\nhjWUKY0Thv6O+B5ktqq3nZUCqCfwdxcDtasFImJ1egp6XAFTM3Z/5HdRQdTyuTQZ\nbTE+C+y9Mf2j5NKD/vmkx/KQRdLSXWApBe7CY2aKAhW2NwY6QN6B/k8d7qIgXVCw\nSvZHVLCTgIP4Zz6rudOn\n=ueHV\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree e94444c7163d835012542a4a5231578bb36e09c5\nparent 5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef\nauthor J\u00e9r\u00f4me Piquot <jpiquot@itaneo.com> 1793902658 +0100\ncommitter GitHub <noreply@github.com> 1793902658 +0100\n\nfix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.",
+          "verified_at": "2026-11-05T18:17:38Z"
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef"
+        }
+      ]
+    },
+    "merge_base_commit": {
+      "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "node_id": "C_kwDOOMzNRdoAKGM1OGMzY2I3OGRlM2NiNmNjMTBmZjI5MjRjNTZlN2Y3MGYzNTk5OTc",
+      "commit": {
+        "author": {
+          "name": "J\u00e9r\u00f4me Piquot",
+          "email": "jpiquot@itaneo.com",
+          "date": "2026-11-05T18:17:38Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-11-05T18:17:38Z"
+        },
+        "message": "fix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.",
+        "tree": {
+          "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq7MhCCRC1aQ7uu5UhlAAA/DAQADiiIEeT0q2GCrYFWN74Un9o\nDNrN6qR9fpCpBBIaA1ROpEvKfdjJjdyJtWTXs9vCKyShGt3DTAq1UJ/4h4BAnwTg\nloc/cWx5DjYgOXfD8khmrIIY+3FcokfJXNHyzdxLuzfG8hz++tYKOZFp14KnS/Lf\nXnD/V5+5SixZQuWxvafBeTcntQx+bP4STMkO8VF6oYFgAqHlHjayb/uXZExr5kz9\nAD4svrdOTBeT10lJ2ZsEMVq8srsRTvHOqqic28YHh5iXgiqDCYeZRbgzdGaMnGG7\nJb3+ZIYdYzNNXmYrxeixThLT9ii+bwxrb3SBToPiZrfnzKODRu7qwEx5W37z1tLH\nyWfXFr5oVH+NLwstVifCIjD8cKvtV2bCZxYEo9eAXBmRv8B0Co3dxvIrFb0S8wht\n0K6WOsIM9gseNVYTgAzR8oQCQHsids5FP2V1fGCnkJc34g3VlbvjQ42DPvVEtOp4\nOjIuOnQ9hXVXbOT1xEbrSaLFGQnF4/XUrIGU8uDnTt4DuQqdvbZm35Acoakq78m3\nhjWUKY0Thv6O+B5ktqq3nZUCqCfwdxcDtasFImJ1egp6XAFTM3Z/5HdRQdTyuTQZ\nbTE+C+y9Mf2j5NKD/vmkx/KQRdLSXWApBe7CY2aKAhW2NwY6QN6B/k8d7qIgXVCw\nSvZHVLCTgIP4Zz6rudOn\n=ueHV\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree e94444c7163d835012542a4a5231578bb36e09c5\nparent 5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef\nauthor J\u00e9r\u00f4me Piquot <jpiquot@itaneo.com> 1793902658 +0100\ncommitter GitHub <noreply@github.com> 1793902658 +0100\n\nfix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.",
+          "verified_at": "2026-11-05T18:17:38Z"
+        }
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997/comments",
+      "author": {
+        "login": "jpiquot",
+        "id": 6775094,
+        "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/jpiquot",
+        "html_url": "https://github.com/jpiquot",
+        "followers_url": "https://api.github.com/users/jpiquot/followers",
+        "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+        "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+        "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+        "repos_url": "https://api.github.com/users/jpiquot/repos",
+        "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef"
+        }
+      ]
+    },
+    "status": "ahead",
+    "ahead_by": 13,
+    "behind_by": 0,
+    "total_commits": 13,
+    "commits": [
+      {
+        "sha": "2bc5fff679e37318f6e18fc6b25047653faf3261",
+        "node_id": "C_kwDOOMzNRdoAKDJiYzVmZmY2NzllMzczMThmNmUxOGZjNmIyNTA0NzY1M2ZhZjMyNjE",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:49:06Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:49:06Z"
+          },
+          "message": "fix(ci): retain declared diagnostics and adopt Memories 3.0.23\n\nPreserve byte-bound redacted lifecycle, native and functional diagnostics after receipt-owned cleanup. Bind the published Memories declaration without extending Platform admission.",
+          "tree": {
+            "sha": "85c93795101b9d133998ada507234dfc893a8596",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/85c93795101b9d133998ada507234dfc893a8596"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/2bc5fff679e37318f6e18fc6b25047653faf3261",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2bc5fff679e37318f6e18fc6b25047653faf3261",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/2bc5fff679e37318f6e18fc6b25047653faf3261",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2bc5fff679e37318f6e18fc6b25047653faf3261/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/d39844a16ecf522c0d25efd0f53b31f7a3dfe423",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/d39844a16ecf522c0d25efd0f53b31f7a3dfe423"
+          }
+        ]
+      },
+      {
+        "sha": "2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+        "node_id": "C_kwDOOMzNRdoAKDJmMjBiZjc0MDcxMTNiMmYwN2MxZjZmYzIxODEwMWNiYjcwMGM1MGE",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:57:54Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:57:54Z"
+          },
+          "message": "fix(ci): publish complete diagnostics atomically\n\nPreserve the owning four MiB fixed metadata bound. Flush complete private diagnostic bytes before atomic publication and preserve immutable destinations and identical retries.",
+          "tree": {
+            "sha": "6ea4a9b670c99941b4f33ae6557cede6b155727a",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/6ea4a9b670c99941b4f33ae6557cede6b155727a"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2f20bf7407113b2f07c1f6fc218101cbb700c50a/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "2bc5fff679e37318f6e18fc6b25047653faf3261",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2bc5fff679e37318f6e18fc6b25047653faf3261",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/2bc5fff679e37318f6e18fc6b25047653faf3261"
+          }
+        ]
+      },
+      {
+        "sha": "9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+        "node_id": "C_kwDOOMzNRdoAKDkzNjljYThhOGM2ZDQ4N2E0ZDEwMjRlZTI4NjYxZTQ5Yjg2Y2FmOGM",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:57:54Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T05:57:54Z"
+          },
+          "message": "build(audit): record the published Memories 3.0.23 selection\n\nRefresh only the Memories family through the normal audit generator and preserve the other 155 family decisions and all prior provenance.",
+          "tree": {
+            "sha": "d49b260d867d21d0851d2701d7301397a38bf33a",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/d49b260d867d21d0851d2701d7301397a38bf33a"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/9369ca8a8c6d487a4d1024ee28661e49b86caf8c/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/2f20bf7407113b2f07c1f6fc218101cbb700c50a",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/2f20bf7407113b2f07c1f6fc218101cbb700c50a"
+          }
+        ]
+      },
+      {
+        "sha": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+        "node_id": "C_kwDOOMzNRdoAKDA1ZTUxMTcxNjZjZDBmNDQ1YmVmYTY4NWY2ODgwMmVhMWZmZDcxYjU",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T06:06:29Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T06:06:29Z"
+          },
+          "message": "fix(ci): keep diagnostic publication retryable after interruption\n\nUse Linux no-replace rename for complete flushed snapshots. Preserve single-link custody and verify actual collector SIGKILL followed by identical retry.",
+          "tree": {
+            "sha": "aab39900c0d550aae177ce44bdaadbfc13f6e88c",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/aab39900c0d550aae177ce44bdaadbfc13f6e88c"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/05e5117166cd0f445befa685f68802ea1ffd71b5",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/05e5117166cd0f445befa685f68802ea1ffd71b5",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/05e5117166cd0f445befa685f68802ea1ffd71b5",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/05e5117166cd0f445befa685f68802ea1ffd71b5/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/9369ca8a8c6d487a4d1024ee28661e49b86caf8c",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/9369ca8a8c6d487a4d1024ee28661e49b86caf8c"
+          }
+        ]
+      },
+      {
+        "sha": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+        "node_id": "C_kwDOOMzNRdoAKDRjMTYwNmQ1NjdkNWE3ZGU5MWMzZmI5MGEwYzgyNTE4MmFmMjkxM2I",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T06:34:45Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T06:34:45Z"
+          },
+          "message": "refactor(ci): clarify diagnostic custody checks\n\nSeparate complete snapshot writing, exact owner binding and unique reference validation.\nPreserve all negative cases and cleanup assertions while resolving required readability and formatting findings.",
+          "tree": {
+            "sha": "089420da4a64faf27b37b013a97b263d1b3185e1",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/089420da4a64faf27b37b013a97b263d1b3185e1"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/4c1606d567d5a7de91c3fb90a0c825182af2913b",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/4c1606d567d5a7de91c3fb90a0c825182af2913b",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/4c1606d567d5a7de91c3fb90a0c825182af2913b",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/4c1606d567d5a7de91c3fb90a0c825182af2913b/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "05e5117166cd0f445befa685f68802ea1ffd71b5",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/05e5117166cd0f445befa685f68802ea1ffd71b5",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/05e5117166cd0f445befa685f68802ea1ffd71b5"
+          }
+        ]
+      },
+      {
+        "sha": "adf782ef75b0e1453f861c486974237af4fac13f",
+        "node_id": "C_kwDOOMzNRdoAKGFkZjc4MmVmNzViMGUxNDUzZjg2MWM0ODY5NzQyMzdhZjRmYWMxM2Y",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T07:23:37Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-04T07:23:37Z"
+          },
+          "message": "build(audit): anchor Memories provenance in retained main history\n\nRegenerate only Memories through the normal audit generator using the prior published snapshot.\nBind the observation to accepted main ad54fc75b8a1da663ee39da6a2397fc2a965159c so squash preserves reachable provenance.\nPreserve every package selection and the unchanged ancestry validator.",
+          "tree": {
+            "sha": "68e0d981c2387ac45cbd63b8ee1d0c954ec2c609",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/68e0d981c2387ac45cbd63b8ee1d0c954ec2c609"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/adf782ef75b0e1453f861c486974237af4fac13f",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/adf782ef75b0e1453f861c486974237af4fac13f",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/adf782ef75b0e1453f861c486974237af4fac13f",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/adf782ef75b0e1453f861c486974237af4fac13f/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/ad54fc75b8a1da663ee39da6a2397fc2a965159c",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/ad54fc75b8a1da663ee39da6a2397fc2a965159c"
+          }
+        ]
+      },
+      {
+        "sha": "0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+        "node_id": "C_kwDOOMzNRdoAKDBlNzQwNjFjYTZiMmIxYzI5NGYyZGUxMzM0ZWZiYzZiZmViMGM0NDY",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T17:35:53Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T17:35:53Z"
+          },
+          "message": "fix(release): verify final branch reference identity\n\nRecheck complete live refs and production executed validation before tags\nor package pushes.\n\nKeep local executed qualification offline and preserve recorded CI run\nand attempt checks.",
+          "tree": {
+            "sha": "355a5136be84662fd5d2b3283e75ca9e5ed43add",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/355a5136be84662fd5d2b3283e75ca9e5ed43add"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef"
+          }
+        ]
+      },
+      {
+        "sha": "43adaa5d30437bec89f9485d414b1f92342b617c",
+        "node_id": "C_kwDOOMzNRdoAKDQzYWRhYTVkMzA0MzdiZWM4OWY5NDg1ZDQxNGIxZjkyMzQyYjYxN2M",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T17:50:24Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T17:50:24Z"
+          },
+          "message": "test(release): name live source fixture argument\n\nAddress shell:S7679 by binding the helper argument locally before jq.\n\nKeep the full-reference fixtures and all 28 release-source cases unchanged.",
+          "tree": {
+            "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/43adaa5d30437bec89f9485d414b1f92342b617c",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/43adaa5d30437bec89f9485d414b1f92342b617c",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/43adaa5d30437bec89f9485d414b1f92342b617c",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/43adaa5d30437bec89f9485d414b1f92342b617c/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/0e74061ca6b2b1c294f2de1334efbc6bfeb0c446"
+          }
+        ]
+      },
+      {
+        "sha": "c354a044e40d70f494732180be0046611bae44cf",
+        "node_id": "C_kwDOOMzNRdoAKGMzNTRhMDQ0ZTQwZDcwZjQ5NDczMjE4MGJlMDA0NjYxMWJhZTQ0Y2Y",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T20:39:26Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T20:39:26Z"
+          },
+          "message": "fix(runtime): retain safe prerequisite launch diagnostics\n\nCarry finite failure kinds and native error codes from helper startup into\nHXR015 without retaining exception text or process inputs.\n\nCover actual missing, permission-denied and held-writer launches and preserve\nnonzero exit, timeout, cancellation and bounded output controls.",
+          "tree": {
+            "sha": "68cf42efc3cc1a7d61e5e628424817603bb25570",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/68cf42efc3cc1a7d61e5e628424817603bb25570"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/c354a044e40d70f494732180be0046611bae44cf",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c354a044e40d70f494732180be0046611bae44cf",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c354a044e40d70f494732180be0046611bae44cf",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c354a044e40d70f494732180be0046611bae44cf/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "43adaa5d30437bec89f9485d414b1f92342b617c",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/43adaa5d30437bec89f9485d414b1f92342b617c",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/43adaa5d30437bec89f9485d414b1f92342b617c"
+          }
+        ]
+      },
+      {
+        "sha": "7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+        "node_id": "C_kwDOOMzNRdoAKDdiMDUzY2ZkNWY3Y2I2MzUxMzg0MWVkZDA3MTY4ZjRjN2FhYmVkYTA",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:05:13Z"
+          },
+          "committer": {
+            "name": "GitHub",
+            "email": "noreply@github.com",
+            "date": "2026-11-05T21:05:13Z"
+          },
+          "message": "build: merge current main into diagnostic review\n\nBring the reviewed diagnostic branch up to date with restored main for\nstrict required status checks, preserving the reviewed content tree and\noriginal guard commits in the review branch history.",
+          "tree": {
+            "sha": "68cf42efc3cc1a7d61e5e628424817603bb25570",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/68cf42efc3cc1a7d61e5e628424817603bb25570"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+          "comment_count": 0,
+          "verification": {
+            "verified": true,
+            "reason": "valid",
+            "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq7O+JCRC1aQ7uu5UhlAAAi4sQAK2xaqJCRamLsE1oN/M28zS+\nT70GT45+5PJjgCiawt2gpBSVfOZCVpxh+yYlNoxSBv1l+Sa6gZgXZVk0RTQxsB40\nEyCPZ9xpsfAsL0Z74nnUJSrPqXZT93y7aA7f/F8priXGRbY++ecGFFum3HxUi61m\nVYCZv75fnbu+z2jmiNiBtJ2DEwg1TO+jYGu0p+9dxlTORWC8D7YJ0nhW/Axs4NX3\ngFw40o1qCC4xL4Gp3OEkb+9+Nt4L9iCwPEH+laSxAekIP8uDzlxPwJkAEbTc/iFq\nxua/5jgzIhmEIsRBU86oPLYbh8Se0plr81HZ1K/bypEsZdHOaJQ0IsTsR1VkKLWf\nYT4SDJs5OePJYcdcfaaeDYNUOx8XrZklQBKKABMzjmghmGNcKVhF/5VY29sFWY9C\nMukC1ISO6G6OnjUWZ8IvkOovLyVZ9p6SUv92TgtK5sI34ub05DsPIDid3dDGhY5v\nQsPw9wIwTuC7fRdoOTI4TNWc5vX7j1audkcVHBnIkQO86nRRThiwbZluaRxgjHRr\nkcMq6QT/uLrw/HzHvN3BC6V7Hi2C213f2oqsH4dPSSuwrhr4Fzkaj2evUqA8LhBn\nyIkyarOpY9DTI3972xcwA2mqTOa/vXOLieivkMJhXmMvF68KKXxgUJvIJ1RM6Bnj\nIZiGF1TZYuzhxzPxIWz7\n=Zdbg\n-----END PGP SIGNATURE-----\n",
+            "payload": "tree 68cf42efc3cc1a7d61e5e628424817603bb25570\nparent c354a044e40d70f494732180be0046611bae44cf\nparent c58c3cb78de3cb6cc10ff2924c56e7f70f359997\nauthor J\u00e9r\u00f4me Piquot <jpiquot@itaneo.com> 1793912713 +0100\ncommitter GitHub <noreply@github.com> 1793912713 +0100\n\nbuild: merge current main into diagnostic review\n\nBring the reviewed diagnostic branch up to date with restored main for\nstrict required status checks, preserving the reviewed content tree and\noriginal guard commits in the review branch history.\n",
+            "verified_at": "2026-11-05T21:05:14Z"
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/7b053cfd5f7cb63513841edd07168f4c7aabeda0/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "web-flow",
+          "id": 19864447,
+          "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+          "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/web-flow",
+          "html_url": "https://github.com/web-flow",
+          "followers_url": "https://api.github.com/users/web-flow/followers",
+          "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+          "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+          "organizations_url": "https://api.github.com/users/web-flow/orgs",
+          "repos_url": "https://api.github.com/users/web-flow/repos",
+          "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/web-flow/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "c354a044e40d70f494732180be0046611bae44cf",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c354a044e40d70f494732180be0046611bae44cf",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c354a044e40d70f494732180be0046611bae44cf"
+          },
+          {
+            "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c58c3cb78de3cb6cc10ff2924c56e7f70f359997"
+          }
+        ]
+      },
+      {
+        "sha": "c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+        "node_id": "C_kwDOOMzNRdoAKGM3NGQ2NjFjMWQzMjRhMjA1OWExMTMwYWNjMjU3YjRkNmVlYmQxYzY",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:13:15Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:13:15Z"
+          },
+          "message": "build: merge refs/heads/fix/retain-complete-ci-diagnostics into main via /pushall\n\n# Conflicts:\n#\tProps/Directory.Packages.props\n#\tTools/package-version-audit.json\n#\ttest/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+          "tree": {
+            "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c74d661c1d324a2059a1130acc257b4d6eebd1c6/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c58c3cb78de3cb6cc10ff2924c56e7f70f359997"
+          },
+          {
+            "sha": "4c1606d567d5a7de91c3fb90a0c825182af2913b",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/4c1606d567d5a7de91c3fb90a0c825182af2913b",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/4c1606d567d5a7de91c3fb90a0c825182af2913b"
+          }
+        ]
+      },
+      {
+        "sha": "613ba7f30d74413516caf96119fd71652a2122a6",
+        "node_id": "C_kwDOOMzNRdoAKDYxM2JhN2YzMGQ3NDQxMzUxNmNhZjk2MTE5ZmQ3MTY1MmEyMTIyYTY",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:14:02Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:14:02Z"
+          },
+          "message": "build: merge refs/heads/fix/retain-main-audit-lineage into main via /pushall\n\n# Conflicts:\n#\tTools/package-version-audit.json",
+          "tree": {
+            "sha": "e94444c7163d835012542a4a5231578bb36e09c5",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/e94444c7163d835012542a4a5231578bb36e09c5"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/613ba7f30d74413516caf96119fd71652a2122a6",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/613ba7f30d74413516caf96119fd71652a2122a6",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/613ba7f30d74413516caf96119fd71652a2122a6",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/613ba7f30d74413516caf96119fd71652a2122a6/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/c74d661c1d324a2059a1130acc257b4d6eebd1c6",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/c74d661c1d324a2059a1130acc257b4d6eebd1c6"
+          },
+          {
+            "sha": "adf782ef75b0e1453f861c486974237af4fac13f",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/adf782ef75b0e1453f861c486974237af4fac13f",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/adf782ef75b0e1453f861c486974237af4fac13f"
+          }
+        ]
+      },
+      {
+        "sha": "6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "node_id": "C_kwDOOMzNRdoAKDZkZTNlYjRjOTI0MGM4NmY0MThiNTY1YmQyZmI2ZDE4Mzc3YThiMGQ",
+        "commit": {
+          "author": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:14:03Z"
+          },
+          "committer": {
+            "name": "J\u00e9r\u00f4me Piquot",
+            "email": "jpiquot@itaneo.com",
+            "date": "2026-11-05T21:14:03Z"
+          },
+          "message": "build: merge refs/remotes/origin/fix/retain-reviewed-release-guards into main via /pushall",
+          "tree": {
+            "sha": "68cf42efc3cc1a7d61e5e628424817603bb25570",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees/68cf42efc3cc1a7d61e5e628424817603bb25570"
+          },
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/comments",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+          "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/jpiquot",
+          "html_url": "https://github.com/jpiquot",
+          "followers_url": "https://api.github.com/users/jpiquot/followers",
+          "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+          "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+          "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+          "repos_url": "https://api.github.com/users/jpiquot/repos",
+          "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "613ba7f30d74413516caf96119fd71652a2122a6",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/613ba7f30d74413516caf96119fd71652a2122a6",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/613ba7f30d74413516caf96119fd71652a2122a6"
+          },
+          {
+            "sha": "7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits/7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+            "html_url": "https://github.com/Hexalith/Hexalith.Builds/commit/7b053cfd5f7cb63513841edd07168f4c7aabeda0"
+          }
+        ]
+      }
+    ],
+    "files": [
+      {
+        "sha": "4a0413a1712ed15adcaedffc212a6610932f10fd",
+        "filename": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPrerequisiteProbe.cs",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 1,
+        "changes": 7,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionPrerequisiteProbe.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionPrerequisiteProbe.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionPrerequisiteProbe.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -5,6 +5,7 @@\n \n namespace Hexalith.Builds.Tooling.Runtime;\n \n+using System.Globalization;\n using System.Text.RegularExpressions;\n \n using Hexalith.Builds.Tooling.Diagnostics;\n@@ -119,9 +120,13 @@ _ when string.IsNullOrWhiteSpace(output) => \"empty output\",\n             _ => output[..Math.Min(output.Length, 256)],\n         };\n         string exitDetail = result.Started && !result.TimedOut ? $\" (exit {result.ExitCode})\" : string.Empty;\n+        string nativeDetail = result.StartFailure?.NativeErrorCode is int code ? $\", native error {code.ToString(CultureInfo.InvariantCulture)}\" : string.Empty;\n+        string startDetail = result.StartFailure is { } failure\n+            ? $\" (start failure {failure.Kind}{nativeDetail})\"\n+            : string.Empty;\n         return Unavailable(\n             \"HXR015\",\n-            $\"Aspire CLI observed '{observed}'{exitDetail}; expected Aspire.AppHost.Sdk/{expected}.\",\n+            $\"Aspire CLI observed '{observed}'{exitDetail}{startDetail}; expected Aspire.AppHost.Sdk/{expected}.\",\n             \"aspire\",\n             $\"Install Aspire CLI {expected} to match the catalog-selected Aspire.AppHost.Sdk/{expected}, then retry.\");\n     }"
+      },
+      {
+        "sha": "9c7a95d5a788a3eade8d0b62dfb519002b887c69",
+        "filename": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 5,
+        "changes": 24,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcess.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcess.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcess.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -148,7 +148,7 @@ public static Task<CompositionProcessResult> RunAsync(\n         ArgumentNullException.ThrowIfNull(start);\n         ArgumentException.ThrowIfNullOrWhiteSpace(marker);\n         using Process process = new() { StartInfo = start };\n-        if (!TryStart(process))\n+        if (!TryStart(process, out _))\n         {\n             return null;\n         }\n@@ -236,9 +236,9 @@ private static async Task<CompositionProcessResult> RunCoreAsync(ProcessStartInf\n         ArgumentNullException.ThrowIfNull(start);\n         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumOutputCharacters);\n         using Process process = new() { StartInfo = start };\n-        if (!TryStart(process))\n+        if (!TryStart(process, out CompositionProcessStartFailure? startFailure))\n         {\n-            return new CompositionProcessResult(false, -1, string.Empty, false);\n+            return new CompositionProcessResult(false, -1, string.Empty, false) { StartFailure = startFailure };\n         }\n \n         process.StandardInput.Close();\n@@ -301,14 +301,28 @@ private static async Task<CompositionProcessResult> RunCoreAsync(ProcessStartInf\n         }\n     }\n \n-    private static bool TryStart(Process process)\n+    private static bool TryStart(Process process, out CompositionProcessStartFailure? failure)\n     {\n+        failure = null;\n         try\n         {\n-            return process.Start();\n+            bool started = process.Start();\n+            if (!started)\n+            {\n+                failure = new(CompositionProcessStartFailureKind.ReturnedFalse, null);\n+            }\n+\n+            return started;\n         }\n         catch (Exception exception) when (exception is Win32Exception or IOException or InvalidOperationException or PlatformNotSupportedException)\n         {\n+            failure = exception switch\n+            {\n+                Win32Exception native => new(CompositionProcessStartFailureKind.Win32, native.NativeErrorCode),\n+                IOException => new(CompositionProcessStartFailureKind.InputOutput, null),\n+                InvalidOperationException => new(CompositionProcessStartFailureKind.InvalidOperation, null),\n+                _ => new(CompositionProcessStartFailureKind.PlatformNotSupported, null),\n+            };\n             return false;\n         }\n     }"
+      },
+      {
+        "sha": "c3dd957e4c23716c7879f76c08646693028d8b1f",
+        "filename": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessResult.cs",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 0,
+        "changes": 3,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessResult.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessResult.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessResult.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -14,6 +14,9 @@ namespace Hexalith.Builds.Tooling.Runtime;\n /// <param name=\"TimedOut\">A value indicating whether the bound elapsed.</param>\n public sealed record CompositionProcessResult(bool Started, int ExitCode, string Output, bool TimedOut)\n {\n+    /// <summary>Gets the finite launch failure metadata when no process started.</summary>\n+    public CompositionProcessStartFailure? StartFailure { get; init; }\n+\n     /// <summary>Gets a value indicating whether standard output exceeded the capture bound.</summary>\n     public bool OutputTruncated { get; init; }\n "
+      },
+      {
+        "sha": "78c1307fb6cba6c8f07e5f7c02368ef6ed81f4e5",
+        "filename": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessStartFailure.cs",
+        "status": "added",
+        "additions": 11,
+        "deletions": 0,
+        "changes": 11,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailure.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailure.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailure.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -0,0 +1,11 @@\n+// <copyright file=\"CompositionProcessStartFailure.cs\" company=\"ITANEO\">\n+// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.\n+// Licensed under the MIT license. See LICENSE file in the project root for full license information.\n+// </copyright>\n+\n+namespace Hexalith.Builds.Tooling.Runtime;\n+\n+/// <summary>Retains finite launch failure metadata without exception text or process inputs.</summary>\n+/// <param name=\"Kind\">The bounded launch failure classification.</param>\n+/// <param name=\"NativeErrorCode\">The native error code, only for a native launch exception.</param>\n+public sealed record CompositionProcessStartFailure(CompositionProcessStartFailureKind Kind, int? NativeErrorCode);\n\\ No newline at end of file"
+      },
+      {
+        "sha": "1ed87e953bf951a16db70fbeb220ee9c6db2855b",
+        "filename": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessStartFailureKind.cs",
+        "status": "added",
+        "additions": 25,
+        "deletions": 0,
+        "changes": 25,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailureKind.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailureKind.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/src%2Flibraries%2FHexalith.Builds.Tooling%2FRuntime%2FCompositionProcessStartFailureKind.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -0,0 +1,25 @@\n+// <copyright file=\"CompositionProcessStartFailureKind.cs\" company=\"ITANEO\">\n+// Copyright (c) ITANEO (https://www.itaneo.com). All rights reserved.\n+// Licensed under the MIT license. See LICENSE file in the project root for full license information.\n+// </copyright>\n+\n+namespace Hexalith.Builds.Tooling.Runtime;\n+\n+/// <summary>Identifies the finite failure classes caught while starting a helper.</summary>\n+public enum CompositionProcessStartFailureKind\n+{\n+    /// <summary>The process start operation returned false.</summary>\n+    ReturnedFalse = 0,\n+\n+    /// <summary>The native process launch failed.</summary>\n+    Win32 = 1,\n+\n+    /// <summary>The process start operation encountered an input/output failure.</summary>\n+    InputOutput = 2,\n+\n+    /// <summary>The process start operation was invalid.</summary>\n+    InvalidOperation = 3,\n+\n+    /// <summary>The platform does not support the process start operation.</summary>\n+    PlatformNotSupported = 4,\n+}\n\\ No newline at end of file"
+      },
+      {
+        "sha": "1f224f7489d77833bf08b5216c5081f5b092f9be",
+        "filename": "test/Hexalith.Builds.Module.Tests/CompositionPrerequisiteProbeTests.cs",
+        "status": "modified",
+        "additions": 49,
+        "deletions": 0,
+        "changes": 49,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/test%2FHexalith.Builds.Module.Tests%2FCompositionPrerequisiteProbeTests.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/test%2FHexalith.Builds.Module.Tests%2FCompositionPrerequisiteProbeTests.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/test%2FHexalith.Builds.Module.Tests%2FCompositionPrerequisiteProbeTests.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -237,6 +237,55 @@ public async Task AspireUnavailableObservationsFailClosedAsync(string mode)\n         }\n     }\n \n+    /// <summary>Verifies actual launch failures remain distinct without disclosing executable paths or exception details.</summary>\n+    /// <param name=\"mode\">The controlled filesystem launch condition.</param>\n+    /// <param name=\"nativeCode\">The expected native launch failure code.</param>\n+    /// <returns>The bounded fail-closed probe assertion.</returns>\n+    [Theory]\n+    [InlineData(\"missing\", 2)]\n+    [InlineData(\"permission-denied\", 13)]\n+    [InlineData(\"held-writer\", 26)]\n+    public async Task AspireLaunchFailuresRetainSafeNativeCodeAsync(string mode, int nativeCode)\n+    {\n+        SkipOnWindows();\n+        string root = CompositionTestFiles.CreateDirectory();\n+        try\n+        {\n+            const string sensitiveDetail = \"private-launch-detail-must-not-leak\";\n+            string aspire = Path.Combine(root, sensitiveDetail);\n+            if (mode != \"missing\")\n+            {\n+                CompositionTestFiles.WriteScript(aspire, $\"echo '{CompositionToolchainPins.AspireAppHostSdkVersion}'\");\n+            }\n+\n+            if (mode == \"permission-denied\" && !OperatingSystem.IsWindows())\n+            {\n+                File.SetUnixFileMode(aspire, UnixFileMode.UserRead | UnixFileMode.UserWrite);\n+            }\n+\n+            using FileStream? writer = mode == \"held-writer\"\n+                ? new(aspire, FileMode.Open, FileAccess.Write, FileShare.ReadWrite)\n+                : null;\n+            ToolDiagnostic? result = await CompositionPrerequisiteProbe.ProbeAspireAsync(\n+                aspire, TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken).ConfigureAwait(true);\n+\n+            _ = result.ShouldNotBeNull();\n+            result.RuleId.ShouldBe(\"HXR015\");\n+            result.Phase.ShouldBe(ToolPhase.Prerequisite);\n+            result.Category.ShouldBe(ToolFailureCategory.PrerequisiteUnavailable);\n+            result.Message.ShouldBe($\"Aspire CLI observed 'missing' (start failure Win32, native error {nativeCode}); expected Aspire.AppHost.Sdk/{CompositionToolchainPins.AspireAppHostSdkVersion}.\");\n+            result.Message.Length.ShouldBeLessThan(512);\n+            result.Message.ShouldNotContain(root);\n+            result.Message.ShouldNotContain(sensitiveDetail);\n+            result.Message.ShouldNotContain(\"(exit \");\n+            result.Hint.ShouldBe($\"Install Aspire CLI {CompositionToolchainPins.AspireAppHostSdkVersion} to match the catalog-selected Aspire.AppHost.Sdk/{CompositionToolchainPins.AspireAppHostSdkVersion}, then retry.\");\n+        }\n+        finally\n+        {\n+            CompositionTestFiles.Delete(root);\n+        }\n+    }\n+\n     /// <summary>Verifies a caller cancellation propagates from the bounded Aspire probe.</summary>\n     /// <returns>The asynchronous test.</returns>\n     [Fact]"
+      },
+      {
+        "sha": "59c209f270fda8e98499ac2735a820d4bf78344a",
+        "filename": "test/Hexalith.Builds.Module.Tests/CompositionProcessTests.cs",
+        "status": "modified",
+        "additions": 120,
+        "deletions": 0,
+        "changes": 120,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Builds/blob/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/test%2FHexalith.Builds.Module.Tests%2FCompositionProcessTests.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Builds/raw/6de3eb4c9240c86f418b565bd2fb6d18377a8b0d/test%2FHexalith.Builds.Module.Tests%2FCompositionProcessTests.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/test%2FHexalith.Builds.Module.Tests%2FCompositionProcessTests.cs?ref=6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+        "patch": "@@ -17,6 +17,126 @@ namespace Hexalith.Builds.ModuleTool.Tests;\n [Collection(nameof(PlatformManifestTestGrouping))]\n public sealed class CompositionProcessTests\n {\n+    /// <summary>Verifies missing executables retain native metadata without sensitive process inputs.</summary>\n+    /// <returns>The bounded launch refusal assertion.</returns>\n+    [Fact]\n+    public async Task MissingExecutableRetainsOnlySafeLaunchMetadataAsync()\n+    {\n+        string root = CompositionTestFiles.CreateDirectory();\n+        try\n+        {\n+            const string sensitiveDetail = \"private-launch-detail-must-not-leak\";\n+            CompositionProcessResult result = await CompositionProcess.RunAsync(\n+                CompositionProcess.CreateStartInfo(\n+                    Path.Combine(root, sensitiveDetail),\n+                    [sensitiveDetail + \"-argument\"],\n+                    root,\n+                    new Dictionary<string, string>(StringComparer.Ordinal) { [\"HEXALITH_PRIVATE_LAUNCH_DETAIL\"] = sensitiveDetail + \"-environment\" }),\n+                TimeSpan.FromSeconds(5),\n+                TestContext.Current.CancellationToken).ConfigureAwait(true);\n+\n+            result.Started.ShouldBeFalse();\n+            result.ExitCode.ShouldBe(-1);\n+            result.TimedOut.ShouldBeFalse();\n+            result.Output.ShouldBeEmpty();\n+            result.ErrorOutput.ShouldBeEmpty();\n+            result.OutputTruncated.ShouldBeFalse();\n+            CompositionProcessStartFailure failure = result.StartFailure.ShouldNotBeNull();\n+            failure.Kind.ShouldBe(CompositionProcessStartFailureKind.Win32);\n+            failure.NativeErrorCode.ShouldBe(2);\n+            result.ToString().ShouldNotContain(root);\n+            result.ToString().ShouldNotContain(sensitiveDetail);\n+        }\n+        finally\n+        {\n+            CompositionTestFiles.Delete(root);\n+        }\n+    }\n+\n+    /// <summary>Verifies invalid start descriptions retain only their finite failure kind.</summary>\n+    /// <returns>The invalid-operation launch refusal assertion.</returns>\n+    [Fact]\n+    public async Task InvalidStartDescriptionRetainsSafeFailureKindAsync()\n+    {\n+        CompositionProcessResult result = await CompositionProcess.RunAsync(\n+            new System.Diagnostics.ProcessStartInfo(),\n+            TimeSpan.FromSeconds(5),\n+            TestContext.Current.CancellationToken).ConfigureAwait(true);\n+\n+        result.Started.ShouldBeFalse();\n+        result.ExitCode.ShouldBe(-1);\n+        result.TimedOut.ShouldBeFalse();\n+        result.Output.ShouldBeEmpty();\n+        result.ErrorOutput.ShouldBeEmpty();\n+        CompositionProcessStartFailure failure = result.StartFailure.ShouldNotBeNull();\n+        failure.Kind.ShouldBe(CompositionProcessStartFailureKind.InvalidOperation);\n+        failure.NativeErrorCode.ShouldBeNull();\n+    }\n+\n+    /// <summary>Verifies the line-marker API preserves its missing-helper null result.</summary>\n+    /// <returns>The bounded missing-helper assertion.</returns>\n+    [Fact]\n+    public async Task MissingExecutableHasNoFirstMatchingLineAsync()\n+    {\n+        string root = CompositionTestFiles.CreateDirectory();\n+        try\n+        {\n+            string? line = await CompositionProcess.ReadFirstLineContainingAsync(\n+                CompositionProcess.CreateStartInfo(Path.Combine(root, \"missing-helper\"), [], null, null),\n+                \"marker\",\n+                TimeSpan.FromSeconds(5),\n+                TestContext.Current.CancellationToken).ConfigureAwait(true);\n+            line.ShouldBeNull();\n+        }\n+        finally\n+        {\n+            CompositionTestFiles.Delete(root);\n+        }\n+    }\n+\n+    /// <summary>Verifies a started executable's nonzero exit is not classified as a launch failure.</summary>\n+    /// <returns>The actual controlled nonzero-exit assertion.</returns>\n+    [Fact]\n+    public async Task StartedNonzeroProcessHasNoLaunchFailureAsync()\n+    {\n+        if (OperatingSystem.IsWindows())\n+        {\n+            Assert.Skip(\"The nonzero-exit probe uses a POSIX shell.\");\n+        }\n+\n+        CompositionProcessResult result = await CompositionProcess.RunAsync(\n+            CompositionProcess.CreateStartInfo(\"/bin/sh\", [\"-c\", \"printf observed; exit 1\"], null, null),\n+            TimeSpan.FromSeconds(5),\n+            TestContext.Current.CancellationToken).ConfigureAwait(true);\n+\n+        result.Started.ShouldBeTrue();\n+        result.ExitCode.ShouldBe(1);\n+        result.Output.ShouldBe(\"observed\");\n+        result.TimedOut.ShouldBeFalse();\n+        result.StartFailure.ShouldBeNull();\n+    }\n+\n+    /// <summary>Verifies a started executable's timeout is not classified as a launch failure.</summary>\n+    /// <returns>The actual controlled timeout assertion.</returns>\n+    [Fact]\n+    public async Task TimedOutProcessHasNoLaunchFailureAsync()\n+    {\n+        if (OperatingSystem.IsWindows())\n+        {\n+            Assert.Skip(\"The timeout probe uses a POSIX shell.\");\n+        }\n+\n+        CompositionProcessResult result = await CompositionProcess.RunAsync(\n+            CompositionProcess.CreateStartInfo(\"/bin/sh\", [\"-c\", \"sleep 30\"], null, null),\n+            TimeSpan.FromMilliseconds(200),\n+            TestContext.Current.CancellationToken).ConfigureAwait(true);\n+\n+        result.Started.ShouldBeTrue();\n+        result.ExitCode.ShouldBe(-1);\n+        result.TimedOut.ShouldBeTrue();\n+        result.StartFailure.ShouldBeNull();\n+    }\n+\n     /// <summary>Retains explicit nonsecret SDK prevention and cache controls only for dotnet children.</summary>\n     [Fact]\n     public void DotnetChildrenRetainSdkControlsWithoutBroadeningOtherHelpers()"
+      }
+    ]
+  },
+  "tree_equal_closed_review": true,
+  "c58_is_ancestor": true,
+  "incoming_message_post_observation_validation": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "ownership": "External session push/branch deletion/automatic merged PR record observed. This parent did not perform that push/merge, and does not credit pending PR/full main CI as passed."
+}

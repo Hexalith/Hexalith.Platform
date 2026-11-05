@@ -1,0 +1,125 @@
+{
+  "utc": "2026-11-05T14:02:35.374217+00:00",
+  "base": "d9498bb15dd80de84941a43db4d42b583600904b",
+  "head": "0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+  "agentAuthoredChanges": false,
+  "evidenceFilesRehashed": 55,
+  "evidenceBytesRehashed": 5653525,
+  "indexSha256": "5bf06ee6908ec350c1fd05d0391999d69c1f4ac333d69f7d2e5035a1cb0fd8ac",
+  "actualExternalPatchBytes": 734,
+  "actualExternalPatchSha256": "4cf7792078725585d9f6d5d5f23539c95cd14aa4957a7a707051d0ea85b010c6",
+  "sourceInputsIndependentlyVerified": 10248,
+  "sourceHashesExactlyComparedToImmutableGit": 10246,
+  "explicitExistingCheckoutProjections": [
+    {
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-eventstore-2026-07-05/ARCHITECTURE-SPINE.md",
+      "projection": "existing tracked symlink to independently committed in-repository document",
+      "gitLinkSha256": "1e71c1890c1abe261bdfccbb82ff5eabe14d6de46639bbe5f61b9a88c36a3cde",
+      "observedResolvedBodySha256": "af9dbf6b30daad508b19c3c4771a8d0a4ec43f5a5adcbd4fced7b14345932a37"
+    },
+    {
+      "path": "global.json",
+      "projection": "checkout CRLF versus committed LF only",
+      "gitSha256": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+      "observedWorkingSha256": "8f1a6f3d126acf6d138769cb8c312eae3bbecdd07f64b43bb482b1e088e1e765"
+    }
+  ],
+  "outputDllsRehashedUnchanged": 1353,
+  "actualPassedUniqueCases": 36,
+  "groups": [
+    {
+      "name": "caller-contracts",
+      "actualPassed": 13,
+      "xml": "current0245-caller-contracts-first.xml",
+      "sha256": "eaca5b703bdb2d8fd6d61d7b5e024827deb316022685e7521ed0b81f103aea97"
+    },
+    {
+      "name": "incoming-trust",
+      "actualPassed": 1,
+      "xml": "current0245-incoming-trust-first.xml",
+      "sha256": "5250d6890621d255dbbd828c3196740106cbf0212525022de03d47e73798beeb"
+    },
+    {
+      "name": "incoming-catalog-invocation",
+      "actualPassed": 17,
+      "xml": "current0245-incoming-catalog-invocation-first.xml",
+      "sha256": "4bf2cee74e13d6cf4d5b135590478195ebb7575111531a48b44417bf02240077"
+    },
+    {
+      "name": "strict-secret-controls",
+      "actualPassed": 5,
+      "xml": "current0245-strict-secret-controls-first.xml",
+      "sha256": "862b98d4aedf959dcd7705cd5040a1bd14a0952688964347d8158551ac9b1c87"
+    }
+  ],
+  "genuineRecordedToolPayloadsComparedToSignedArchive": 310,
+  "realPreparedConsumers": [
+    {
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-getProperty:Configuration,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithPartiesVersion,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode",
+        "-getItem:PackageReference,ProjectReference"
+      ],
+      "exitCode": 0,
+      "output": "prepared-contracts-effective-msbuild.json",
+      "properties": {
+        "Configuration": "Release",
+        "HexalithEventStoreVersion": "4.1.0",
+        "HexalithTenantsVersion": "7.0.2",
+        "HexalithMemoriesVersion": "3.0.23",
+        "HexalithPartiesVersion": "3.0.0",
+        "UseHexalithProjectReferences": "false",
+        "UseNuGetDeps": "true",
+        "HexalithSourceMappingMode": "package"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj",
+        "-nologo",
+        "-p:Configuration=Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:UseNuGetDeps=true",
+        "-getProperty:Configuration,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithPartiesVersion,UseHexalithProjectReferences,UseNuGetDeps,HexalithSourceMappingMode",
+        "-getItem:PackageReference,ProjectReference"
+      ],
+      "exitCode": 0,
+      "output": "prepared-server-effective-msbuild.json",
+      "properties": {
+        "Configuration": "Release",
+        "HexalithEventStoreVersion": "4.1.0",
+        "HexalithTenantsVersion": "7.0.2",
+        "HexalithMemoriesVersion": "3.0.23",
+        "HexalithPartiesVersion": "3.0.0",
+        "UseHexalithProjectReferences": "false",
+        "UseNuGetDeps": "true",
+        "HexalithSourceMappingMode": "package"
+      }
+    }
+  ],
+  "realPlatformIdentity": {
+    "Commit": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "CompositionCommit": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "CheckoutCommit": "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+    "PlatformPath": "/home/administrator/.cache/hexalith/story-2-8/eventstore-current-pin-repair-20261105/Hexalith.EventStore/references/Hexalith.Platform",
+    "ReleaseTag": "v1.4.1",
+    "CatalogCommit": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+    "ToolVersionRange": "[4.44.3, 5.0.0-0)",
+    "RecordPath": "/home/administrator/.cache/hexalith/story-2-8/eventstore-current-pin-repair-20261105/Hexalith.EventStore/references/Hexalith.Platform/hexalith-platform.json",
+    "IsPlatformRepository": false
+  },
+  "normalSixCommandPreparationFirstPassed": true,
+  "mappingHash": "84ffc0d11fec38b4d3019d39915446c015271504dc3d856063f6588bda04462f",
+  "auditRenderingCorrection": "Initial parent default diff inherited submodule log rendering (716 bytes). Explicit short/full-index rendering matches the retained complete 734-byte patch. The first source audit treated the existing documentation symlink resolved body and global.json checkout CRLF as raw Git blobs; both exact existing projections are now verified separately. Source, evidence and product assertions are unchanged.",
+  "currentHostedNative9StillRequired": true,
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

@@ -1,0 +1,145 @@
+{
+  "utc": "2026-11-05T18:15:59.266902+00:00",
+  "head": "43adaa5d30437bec89f9485d414b1f92342b617c",
+  "run": 42078929990,
+  "job": {
+    "id": 127427164870,
+    "run_id": 42078929990,
+    "workflow_name": "CI",
+    "head_branch": "fix/final-source-reference-guards",
+    "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42078929990",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOOMzNRc8AAAAdq0A6xg",
+    "head_sha": "43adaa5d30437bec89f9485d414b1f92342b617c",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127427164870",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42078929990/job/127427164870",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-05T17:54:15Z",
+    "started_at": "2026-11-05T17:54:18Z",
+    "completed_at": "2026-11-05T18:10:49Z",
+    "name": ".NET tests",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-05T17:54:19Z",
+        "completed_at": "2026-11-05T17:54:20Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-05T17:54:20Z",
+        "completed_at": "2026-11-05T17:54:31Z"
+      },
+      {
+        "name": "Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-05T17:54:31Z",
+        "completed_at": "2026-11-05T17:54:32Z"
+      },
+      {
+        "name": "Restore",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-05T17:54:32Z",
+        "completed_at": "2026-11-05T17:54:42Z"
+      },
+      {
+        "name": "Build",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-05T17:54:42Z",
+        "completed_at": "2026-11-05T17:58:27Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Module.Tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-05T17:58:27Z",
+        "completed_at": "2026-11-05T18:10:29Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Evidence.Tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-05T18:10:29Z",
+        "completed_at": "2026-11-05T18:10:41Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Tooling.IntegrationTests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-05T18:10:41Z",
+        "completed_at": "2026-11-05T18:10:47Z"
+      },
+      {
+        "name": "Post Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-05T18:10:47Z",
+        "completed_at": "2026-11-05T18:10:47Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-11-05T18:10:47Z",
+        "completed_at": "2026-11-05T18:10:47Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-11-05T18:10:47Z",
+        "completed_at": "2026-11-05T18:10:47Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127427164870",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000073435,
+    "runner_name": "GitHub Actions 1000073435",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  "log": "/home/administrator/.cache/hexalith/story-2-8/builds-pr162-43adaa-hosted-20261105/job127427164870-dotnet-first.log",
+  "bytes": 61252,
+  "sha256": "880a2431602d3d5c52fcfc15b15921a9caf966f2deb642980387089567b2b79a",
+  "projectCounters": [
+    {
+      "total": 2819,
+      "failed": 0,
+      "succeeded": 2814,
+      "skipped": 5
+    },
+    {
+      "total": 191,
+      "failed": 0,
+      "succeeded": 191,
+      "skipped": 0
+    },
+    {
+      "total": 13,
+      "failed": 0,
+      "succeeded": 1,
+      "skipped": 12
+    }
+  ],
+  "scope": "Actual completed PR .NET lane on authenticated same-tree synthetic merge. Existing skips explicit; full aggregate/main/publication/native gates remain separate."
+}

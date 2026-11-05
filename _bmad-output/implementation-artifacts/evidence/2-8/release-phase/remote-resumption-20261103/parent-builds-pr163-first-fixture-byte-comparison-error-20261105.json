@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-05T19:30:08.162330+00:00",
+  "error": "First raw Git blob comparison failed on module/executable/P0Fixture.Inventory.Descriptor/ModuleDescriptorV1.cs",
+  "expected": {
+    "sizeBytes": 1248,
+    "sha256": "2e0fe2791e077589fea0272564cb80d941f29f8857e9679bc796c136cd42f232"
+  },
+  "rawGitBlob": {
+    "sizeBytes": 1227,
+    "sha256": "9cc9cbcbff61ade96ff17fcff617bfce687ee8af1cbdecc89dcfa9352885af7f"
+  },
+  "actualGitCatFileFilters": {
+    "sizeBytes": 1248,
+    "sha256": "2e0fe2791e077589fea0272564cb80d941f29f8857e9679bc796c136cd42f232"
+  },
+  "correction": "Use actual owning Git attribute-aware --filters projection of immutable reviewed source, rather than raw stored LF bodies. No product/test/CI rerun or expectation change."
+}

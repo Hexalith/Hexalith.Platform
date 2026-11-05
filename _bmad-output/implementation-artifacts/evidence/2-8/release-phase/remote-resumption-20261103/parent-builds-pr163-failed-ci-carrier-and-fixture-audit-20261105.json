@@ -1,0 +1,59 @@
+{
+  "utc": "2026-11-05T19:30:09.844655+00:00",
+  "run": 42090197080,
+  "runConclusion": "failure",
+  "headSource": "43adaa5d30437bec89f9485d414b1f92342b617c",
+  "testedSyntheticSource": "2b68f43d6df0f455f5b8390de7fd049ad04a1d4f",
+  "testedTree": "e94444c7163d835012542a4a5231578bb36e09c5",
+  "artifactId": 13445943472,
+  "archiveSHA256": "ee5e1852c406659586d0c2cf53824e6292e6e56de4fc82ea80bf9a592980d738",
+  "producerAttempt": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_SHA": "2b68f43d6df0f455f5b8390de7fd049ad04a1d4f",
+    "GITHUB_RUN_ID": "42090197080",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "contracts",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/ci.yml@refs/pull/163/merge",
+    "GITHUB_WORKFLOW_SHA": "2b68f43d6df0f455f5b8390de7fd049ad04a1d4f",
+    "GITHUB_EVENT_NAME": "pull_request",
+    "schema": "hexalith.g4-qualification-attempt.v1",
+    "kind": "ci",
+    "producerStepOutcome": "success",
+    "qualificationCredit": false,
+    "purpose": "diagnostic identity; not completed qualification evidence"
+  },
+  "qualificationPayloadsVerified": 55,
+  "actualSourceFixtureBodiesVerified": 299,
+  "sourceFixtureProjection": "actual owning git cat-file --filters from immutable reviewed source with the same tested tree",
+  "inventorySHA256": "cd1416cd323ea47acde329a1bd92d3a05f0e374f5049ef11898344ec16903f62",
+  "qualification": {
+    "packageBuild": {
+      "mode": "official",
+      "result": "passed"
+    },
+    "sourceValidation": {
+      "mode": "skipped",
+      "result": "not-run"
+    },
+    "controls": {
+      "mode": "executed",
+      "result": "passed"
+    },
+    "sourceTree": {
+      "clean": true,
+      "revision": "2b68f43d6df0f455f5b8390de7fd049ad04a1d4f"
+    },
+    "releaseEligible": false,
+    "ineligibilityReasons": [
+      "source validation was skipped (-SkipSourceValidation)."
+    ]
+  },
+  "contractsLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/builds-pr163-first-ci-20261105/contracts-job127465909461-first.log",
+    "bytes": 181501,
+    "sha256": "1432709586b2dde915d5968195d9c106479412d9581aa92f6ed3b7b241bbe0c5"
+  },
+  "publicAuthority": false,
+  "wholeRunAccepted": false,
+  "interpretation": "Contracts job succeeded and carrier matches the actual reviewed source tree; source validation skipped. Failed .NET gate remains blocking. No public release or native credit."
+}

@@ -1,0 +1,36 @@
+{
+  "utc": "2026-11-05T17:56:23.970722+00:00",
+  "source": "d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836",
+  "run": 42070167244,
+  "isolatedReports": 15,
+  "actualIsolated": {
+    "Passed": 6359,
+    "NotExecuted": 14
+  },
+  "owner": "2114f09009a507db31344d67edcc41a9",
+  "immutableFirstOutcome": {
+    "cause": "startup-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "failed",
+    "recordedAt": "2026-11-05T17:11:41.6937427Z"
+  },
+  "cleanup": {
+    "attemptId": "f509463b4e4f370ba2c25c80f8b79325",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-05T17:11:44.7492247Z",
+    "ownedResourceIds": [],
+    "state": "populated"
+  },
+  "rule": "HXP020",
+  "nativeCasesExecuted": 0,
+  "verifiedZeroOwnedLeftovers": true,
+  "qualifiedRuntimeOrCancellationAcceptance": false,
+  "sourceChange": "Incoming6-path evidence-reader/native-assertion hardening preserved; no replacement caller/producer pins or exception recovery claimed."
+}

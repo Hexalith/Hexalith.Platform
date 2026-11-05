@@ -1,0 +1,23 @@
+{
+  "utc": "2026-11-05T15:28:16.597387+00:00",
+  "purpose": "read-only current-source race check during temporary Parties observer preparation",
+  "repositories": {
+    "Hexalith.Parties": {
+      "source": "58cd1a234bd7293589399fb8ef9fd11c7b14ed04",
+      "tree": "7004dc8686eb95f00e1b9b53c80685c71edce065",
+      "message": "ci: qualify current-owner package integration",
+      "parents": [
+        "d4415715b2517927655c538e6d41e05d71d4207e"
+      ]
+    },
+    "Hexalith.Platform": {
+      "source": "15fe49ace008f4777d71c1462d581e9e4880d205",
+      "tree": "a57fee74e0fb84fba55fb05867d8feb2f5b28a0f",
+      "message": "test(composition): cover the catalog startup handoff\n\nRegister the genuine signed-preflight and ordinary catalog handoff regressions.\n\nRetain all 347 prior controls; all 349 registered cases and the five SDK\nconsumer lanes passed on the exact reviewed source. Production source\nremains unchanged from the published Platform 1.4.1 runtime.",
+      "parents": [
+        "692cd6d025032f04f68ce302f02839d746f85ee9",
+        "6e1a04d3a24ebe7a93fb6794b1ceec29d57aa445"
+      ]
+    }
+  }
+}

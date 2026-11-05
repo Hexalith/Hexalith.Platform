@@ -1,0 +1,150 @@
+{
+  "utc": "2026-11-05T14:09:39.378101+00:00",
+  "source": "0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+  "run": 42037042919,
+  "attempt": 1,
+  "isolatedReports": 20,
+  "isolated": {
+    "total": 16518,
+    "executed": 16469,
+    "passed": 16469,
+    "failed": 0,
+    "notExecuted": 49
+  },
+  "nativeActualUniquePassed": 9,
+  "nativeReportSha256": "974f6f7eceac576231c4a757b1d08a413d1c38ab143049f15f3858a1001ff9d3",
+  "duplicateNativeReportNotDoubleCounted": true,
+  "platformRuntime": "v1.4.1/4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+  "toolTuple": "4.44.3/fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "actualGatewayPersistenceAndAnonymous401Passed": true,
+  "tenOwnedResourcesReadyAndCleaned": true,
+  "terminal": {
+    "cause": "tests-completed",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "passed",
+    "recordedAt": "2026-11-05T14:03:41.8537447Z"
+  },
+  "cleanup": {
+    "attemptId": "51c55b51cd94b116cfda5c28cdeda5bd",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-05T14:03:46.0896873Z",
+    "ownedResourceIds": [
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore",
+      "resource:eventstore-dapr-cli",
+      "resource:redis",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "state": "populated"
+  },
+  "deadlines": {
+    "execution": {
+      "actualDurationSeconds": 36.722003099999995,
+      "configurationContentIdentity": "sha256:31d637e81157f578a455f107e3844c9f17c498086aaa9592c23a9028e2bdce00",
+      "effectiveSeconds": 120,
+      "expiresAt": "2026-11-05T14:05:05.1166328Z",
+      "origin": "test-execution-started",
+      "originAt": "2026-11-05T14:03:05.1166328Z",
+      "state": "populated"
+    },
+    "startup": {
+      "actualDurationSeconds": 74.6460442,
+      "effectiveSeconds": 600,
+      "expiresAt": "2026-11-05T14:11:50.4328440Z",
+      "origin": "environment-requested",
+      "originAt": "2026-11-05T14:01:50.4328440Z",
+      "override": {
+        "state": "not-overridden"
+      },
+      "state": "populated"
+    }
+  },
+  "retainedDiagnostics": [
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:473d0e15679e06f8da14375fd1024681cf5421c08f53926b6f4353f13f822336",
+      "id": "lifecycle",
+      "redacted": true,
+      "reference": "lifecycle-473d0e15679e06f8da14375fd1024681cf5421c08f53926b6f4353f13f822336.json"
+    },
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:974f6f7eceac576231c4a757b1d08a413d1c38ab143049f15f3858a1001ff9d3",
+      "id": "native-report",
+      "redacted": true,
+      "reference": "native-974f6f7eceac576231c4a757b1d08a413d1c38ab143049f15f3858a1001ff9d3.trx"
+    }
+  ],
+  "nativeLoadedObservations": [
+    {
+      "file": "loaded-assemblies-f252b2a20a6ef3506f1e9c44a98c5806.json",
+      "body": {
+        "kind": "real-native-test-loaded-assemblies",
+        "ownerRunId": "f252b2a20a6ef3506f1e9c44a98c5806",
+        "ownerAttemptId": "b45867623e8ed68e000d98dc4600ba3f",
+        "environmentId": "6355179180dd69b365d59a122aa06405",
+        "revision": "0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+        "mappingHash": "5abbe103ecf8888d75b176bf8110135cc3df7b289e8f5987c8cf3d7568340915",
+        "executionContext": {
+          "kind": "ci",
+          "repository": "Hexalith/Hexalith.EventStore",
+          "workflowRunId": "42037042919",
+          "workflowAttempt": 1,
+          "jobId": "build-and-test",
+          "runnerKind": "github-hosted",
+          "operatingSystem": "Linux",
+          "disposable": true
+        },
+        "assemblies": [
+          {
+            "identity": "Hexalith.EventStore.Platform.IntegrationTests, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.1.0+0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+            "moduleVersionId": "02d6f396-239c-4748-9ff8-275239c1997c",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/f252b2a20a6ef3506f1e9c44a98c5806/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Platform.IntegrationTests.dll",
+            "sha256": "34e6029071f182ab5e4be136537816b08d312b17364f7a6c38cf86878ebec3a3"
+          },
+          {
+            "identity": "Hexalith.EventStore.Testing, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.1.0+0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+            "moduleVersionId": "632dcdd8-752b-4ae8-a9bf-5242fc001848",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/f252b2a20a6ef3506f1e9c44a98c5806/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.dll",
+            "sha256": "d855d8ad723e365dac4b7e0bb733abbc4e2d9dbbf8bd22978b960d58ab5eea6c"
+          },
+          {
+            "identity": "Hexalith.EventStore.Testing.Integration, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+            "informationalVersion": "4.1.0+0245c39c2884d4859cb4bce75aeeb209ef70ec74",
+            "moduleVersionId": "6e72c0b4-ac6f-4cc0-a691-dc0feddf83cf",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/f252b2a20a6ef3506f1e9c44a98c5806/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.Integration.dll",
+            "sha256": "b60e80a626556c01f7e4ce360a6086d11e3775615da6f2b78815160be138773c"
+          },
+          {
+            "identity": "StackExchange.Redis, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46",
+            "informationalVersion": "3.4.31+9d17974fca",
+            "moduleVersionId": "789a4301-495e-461c-8124-1ae65e18ed80",
+            "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/f252b2a20a6ef3506f1e9c44a98c5806/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/StackExchange.Redis.dll",
+            "sha256": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909"
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Current source exactCI/native evidence. Independent live-sidecar/published-compatibility owner workflow remains active.",
+    "Native DLL identities are real observations; the DLL bodies themselves are not retained.",
+    "Parties native21/manual scenarios and full Story2.8 final diff/review remain pending."
+  ],
+  "candidateAcceptance": false,
+  "storyComplete": false
+}

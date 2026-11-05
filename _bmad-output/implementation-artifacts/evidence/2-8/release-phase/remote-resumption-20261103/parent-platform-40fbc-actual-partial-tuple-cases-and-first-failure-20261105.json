@@ -1,0 +1,1178 @@
+{
+  "utc": "2026-11-05T18:44:42.439926+00:00",
+  "source": "40fbc9683c713323398d8732a3d563c444e469da",
+  "run": 42083650568,
+  "artifact": 13442521712,
+  "archive": "/home/administrator/.cache/hexalith/story-2-8/platform-40fbc-hosted-20261105/tuple-13442521712.zip",
+  "archiveSha256": "3072492ac46e380aeb8440e708c968198e619a0fb8aa06fe9dee27030fd5c5a3",
+  "reports": [
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-0.xml",
+      "bytes": 62696,
+      "sha256": "14ad1b93c7eabe60305621f93e0d94a486a2a5e66d7e39cc1c6a779572b76d2a",
+      "caseCount": 83,
+      "outcomes": {
+        "Pass": 83
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"parent-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"file-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"changing\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"oversize\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"directory\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"cancel\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"stall\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"missing-profile\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"missing-sibling\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"rebuilder-collision\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.ActualDevelopmentTryComposeUsesPortableBoundedMetadataAndRetainsLateWorkerOwnership(fault: \\\"rebuilder-collision-case\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests.TimedOutDevelopmentWorkersKeepAllFourSlotsUntilActualLateCompletion",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.LateAcquisitionCleanupRetainsSynchronizationUntilActualDrainAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"fifo\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"project\\\", fault: \\\"development-missing\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"nested-duplicate-json\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"duplicate-json\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"duplicate-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"duplicate-status\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"duplicate-date\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"duplicate-target\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"duplicate-section\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"stall-system\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"stall-caller\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"cancel\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"stall\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"stall\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"stall\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"changing\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"changing\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"changing\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"parent-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"parent-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"parent-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"oversize\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"oversize\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"oversize\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"project\\\", fault: \\\"fifo\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"packet\\\", fault: \\\"fifo\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"register\\\", fault: \\\"fifo\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"late-name-conflict\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests.ActualTryComposeBoundsAllSelectedMetadataBeforeResourceComposition(selected: \\\"profile\\\", fault: \\\"late-name-conflict-case\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"source\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-align\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-overflow\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-memsz\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-filesz\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-offset\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-truncated\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-bss-entry\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-nonexec\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-entry\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-null-only\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"nonexecutable\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"dynamic-loader\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"interpreter\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"kernel\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"replacement\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"unlisted\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"dependency\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"project\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-align-offset\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests.ActualAcceptedAspireCompositionChecksCompleteImmutableSiblingBytesBeforeAddingAnyResource(mutation: \\\"invalid-overlap\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"conflict\\\", reason: \\\"replay-conflict\\\", route: \\\"tenant\\\", lostAcknowledgment: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"provider-denied\\\", reason: \\\"unavailable-owner\\\", route: \\\"system\\\", lostAcknowledgment: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"unavailable\\\", reason: \\\"unavailable-owner\\\", route: \\\"tenant\\\", lostAcknowledgment: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"invalid-tag\\\", reason: \\\"invalid-tag\\\", route: \\\"system\\\", lostAcknowledgment: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"conflict\\\", reason: \\\"replay-conflict\\\", route: \\\"tenant\\\", lostAcknowledgment: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"provider-denied\\\", reason: \\\"unavailable-owner\\\", route: \\\"system\\\", lostAcknowledgment: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"unavailable\\\", reason: \\\"unavailable-owner\\\", route: \\\"tenant\\\", lostAcknowledgment: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualVerifierAdmissionRecorderAndSpoolPreserveExactDenialCauseRoutingAndOriginal(scenario: \\\"invalid-tag\\\", reason: \\\"invalid-tag\\\", route: \\\"system\\\", lostAcknowledgment: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen(mutation: \\\"expiry\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen(mutation: \\\"revocation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen(mutation: \\\"profile\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen(mutation: \\\"unavailable\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests.ActualAdmitAuthenticatesAfterLastReadinessWithoutRenewingFirstSeen(mutation: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-1.xml",
+      "bytes": 2407,
+      "sha256": "9919007b8d6602ac8e03911b0b0431a5741408497a814440f6c294bbbd167830",
+      "caseCount": 2,
+      "outcomes": {
+        "Pass": 2
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-10.xml",
+      "bytes": 2593,
+      "sha256": "c164c8c5688246a4454d34956944b7997f5ae81b0fa1af35c5dff1f94b8e284d",
+      "caseCount": 2,
+      "outcomes": {
+        "Pass": 2
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-11.xml",
+      "bytes": 9318,
+      "sha256": "a9fca4456c37dd129caf965fa465e8cfd03a5f23307148d912b7145794ef4f4e",
+      "caseCount": 2,
+      "outcomes": {
+        "Fail": 2
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+          "result": "Fail"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-2.xml",
+      "bytes": 17805,
+      "sha256": "f52448660df28675d6c9dd19e7bff261e870146c12a16747a1b40ee3fa4d9e4d",
+      "caseCount": 24,
+      "outcomes": {
+        "Pass": 24
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"tenants\\\", mode: Source)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"tenants\\\", mode: Package)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"parties\\\", mode: Source)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"parties\\\", mode: Package)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"memories\\\", mode: Source)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests.ActiveControlSourceDoesNotReplacePublishedPackageInputs(module: \\\"memories\\\", mode: Package)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.CancelledResponseCannotRetainAnEarlierProof",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"internal-operation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"extra-operation-field\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"extra-key-field\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"extra-root-field\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-message-type\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-domain\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"unauthorized\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-kind\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-digest\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-policy\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-result-schema\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-schema\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-generation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-root\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"wrong-contract-version\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests.ObservedMetadataMustMatchTheCanonicalPublicGeneration(scenario: \\\"oversized\\\")",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-3.xml",
+      "bytes": 30725,
+      "sha256": "6572039616b451999b49a8790a49847b12d389a9bcec620ba124b9b2eebb732b",
+      "caseCount": 44,
+      "outcomes": {
+        "Pass": 44
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.EndpointCredentialWriterProducesTheChannelTheBuildsReaderAcceptsAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"foreign-run\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"foreign-module\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"global-administrators-domain\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RefusesANativeScopeThatDiffersFromTheOwningRunAsync(violation: \\\"missing-synthetic-tenant\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.ElapsedStartupDeadlineCancelsBeforeMintingCredentialsAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FutureStartupDeadlineValidatesSourceBeforeRequiringApplicationModelAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.FailedPreparationRemovesCredentialFilesWrittenWhileItRunsAsync(cancel: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(mutation: \\\"parent-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(mutation: \\\"outside-root\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"activation-attempt\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"activation-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"readback-attempt\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests.CompleteActivationValidationRunsBeforeSourceProgressAndCredentialsAsync(mutation: \\\"readback-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"missing-readback-host\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"changed-inventory\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"changed-topology\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"changed-authentication\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"foreign-readback-attempt\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"foreign-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"missing-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-profile\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-generation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"different-peer-epoch\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"zero-epoch\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"not-serving\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"extra-readback-host\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-activation-host\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"scoped-gateway\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-gateway-profile\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"foreign-technical-receiver\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"missing-gateway-technical\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"missing-technical\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-canonical\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-root\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-attempt\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"foreign-cohort\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"empty-cohort\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"extra-readback\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"missing-readback\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"wrong-proof\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests.CompleteRunAndEveryHostIdentityMustAgree(scenario: \\\"duplicate-readback-host\\\")",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-4.xml",
+      "bytes": 5570,
+      "sha256": "3cf2739d86e3f5eda4b4a9c5d1d71e4a1a1428bc0a6f41366cd1d7dba1cc12a9",
+      "caseCount": 7,
+      "outcomes": {
+        "Pass": 7
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"hash\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"commit\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources(value: \\\"catalog-version\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources(field: \\\"version\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources(field: \\\"commit\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-5.xml",
+      "bytes": 20524,
+      "sha256": "900475da3d0c543bcfd0e16fe3314dce2d62ad4efa5c34a2824e6797c5487c13",
+      "caseCount": 28,
+      "outcomes": {
+        "Pass": 28
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.ValidBoundRequestReachesImageProbeThroughComposeRun",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"key\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"drop-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"owners\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"memories\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"eventstore\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OpaqueProofRejectsMutatedMappingCollectionsAndSerializedPlanCopies",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"no-proof\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"missing-server\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"foreign-image\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owner-snapshot\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"tenants-near-miss\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"sdk-near-miss\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"suite\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"extra-server\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"active-module\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"environment\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-root\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-source\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"mapping\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owners\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"drop-request\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"declaration-path\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"production\\\")",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-6.xml",
+      "bytes": 3596,
+      "sha256": "a2cfa6899f6cc8cffea1d32cd594fc98786a74a41f45b4406f00176d5f247f0f",
+      "caseCount": 4,
+      "outcomes": {
+        "Pass": 4
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary(server: \\\"domain\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary(server: \\\"api\\\")",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-7.xml",
+      "bytes": 26012,
+      "sha256": "05a50c55fd4165cd60c0977a73791a0dccc0b6aa585d9d33764e5a6c915e289b",
+      "caseCount": 40,
+      "outcomes": {
+        "Pass": 40
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.SerializedOrdinaryOptionsCannotAcquireAdmission",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ProofDoesNotReplaceFiniteCohortAndTopologyChecks(development: True)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ProofDoesNotReplaceFiniteCohortAndTopologyChecks(development: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"run\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"attempt\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"environment\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"source\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"mapping\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"platform-root\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"owner\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"selected-test\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"declaration\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"model\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"catalog-generation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"configuration\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"images\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"projects\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"expanded-owner\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.MutatedOptionsCannotReplayProof(fault: \\\"expansion-binding\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"not-base64\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.InvalidParentKeyRefusesProofCreation(key: \\\"AAAAAAAAAAAAAAAAAAAAAA==\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.TrustedComposeRunCreatesOrdinaryProofWithoutExpandedOwners",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.OrdinaryProofBindsActualParentInputsWithoutAnExpansionMac",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.NestedSelectedTestRepositoryIsRefusedAtProofCreation",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"missing-proof\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"changed-snapshot\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.RunnerSnapshotReuseRefusesUnverifiedInputsWithoutRematerializing(fault: \\\"foreign-workspace\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ReaderAuthorityRefusesForeignPublicBytes(cohort: \\\"unknown\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.CleanActiveGitRevisionDriftInvalidatesTheOriginalProof",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"plan\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"mapping\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"catalog\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"pinned-catalog\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"declaration\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"test\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"seed\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests.ChangedPhysicalInputsInvalidateProof(file: \\\"identity\\\")",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-8.xml",
+      "bytes": 2390,
+      "sha256": "c034299cea7ab2e906b2003c019997f4d2aa964ec547cf71e41ec3adc0f34e45",
+      "caseCount": 2,
+      "outcomes": {
+        "Pass": 2
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources(exit: 1, timedOut: False)",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources(exit: 0, timedOut: True)",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "path": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-9.xml",
+      "bytes": 5668,
+      "sha256": "03eb529a4e3c257c85123ab7170fcf40b6ac0055b3eebfc61ab9c078f1c4bffc",
+      "caseCount": 7,
+      "outcomes": {
+        "Pass": 7
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.OrdinarySourceDependencyFixtureCannotIssueMeasuredCurrentOwnerAuthority",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"mixed\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"dirty-source\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"entry\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"snapshot\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.CurrentPurposeRefusesChangedParentInputs(change: \\\"key\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests.PublishedPurposeCannotAuthorizeCurrentProfile",
+          "result": "Pass"
+        }
+      ]
+    }
+  ],
+  "actualOutcomes": {
+    "Pass": 243,
+    "Fail": 2
+  },
+  "failures": [
+    {
+      "report": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-11.xml",
+      "case": {
+        "id": "b245be0d-af13-4b3e-b7ae-66be04c459c6",
+        "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+        "result": "Fail",
+        "time": "3.605",
+        "time-rtf": "00:00:03.6050000",
+        "start-rtf": "2026-11-05T18:27:52.4770572+00:00",
+        "finish-rtf": "2026-11-05T18:27:56.1054231+00:00",
+        "type": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+        "method": "CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+        "source-file": "/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs",
+        "source-line": "64"
+      },
+      "details": "<test id=\"b245be0d-af13-4b3e-b7ae-66be04c459c6\" name=\"Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync\" result=\"Fail\" time=\"3.605\" time-rtf=\"00:00:03.6050000\" start-rtf=\"2026-11-05T18:27:52.4770572+00:00\" finish-rtf=\"2026-11-05T18:27:56.1054231+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests\" method=\"CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync\" source-file=\"/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs\" source-line=\"64\"><failure exception-type=\"Shouldly.ShouldAssertException\"><message>Shouldly.ShouldAssertException : `fixture.Compose(builder, options =&gt; { captured = options; options.CurrentOwnerProof!.Matches(options).ShouldBeTrue(); throw new InvalidOperationException(\\\"Expected measured runner authority; stop before resource effects.\\\"); })`\n    should throw\nSystem.InvalidOperationException\n    but threw\nSystem.IO.InvalidDataException\n---- System.IO.InvalidDataException : The current-owner package profile requires its private runner authority and exact Release/public dependency artifacts.</message><stack-trace>   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.Capture(PlatformPartiesPackageFixture fixture) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 101\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 68\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n----- Inner Stack Trace -----\n   at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Git(String root, String[] arguments) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs:line 209\n   at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Create(PlatformCompositionOptions options, String key, Boolean developmentRun) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs:line 59\n   at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs:line 109\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.Compose(IDistributedApplicationBuilder builder, Func`2 configure, CompositionRunPlan suppliedPlan) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 206\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.&lt;&gt;c__DisplayClass2_0.&lt;Capture&gt;b__0() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 101\n   at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod) in /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs:line 23</stack-trace></failure></test>"
+    },
+    {
+      "report": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-11.xml",
+      "case": {
+        "id": "0b901e56-b8e1-4e5b-8787-a0083e61b8d6",
+        "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+        "result": "Fail",
+        "time": "2.64",
+        "time-rtf": "00:00:02.6400000",
+        "start-rtf": "2026-11-05T18:27:56.1188450+00:00",
+        "finish-rtf": "2026-11-05T18:27:58.7602792+00:00",
+        "type": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+        "method": "CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+        "source-file": "/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs",
+        "source-line": "14"
+      },
+      "details": "<test id=\"0b901e56-b8e1-4e5b-8787-a0083e61b8d6\" name=\"Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync\" result=\"Fail\" time=\"2.64\" time-rtf=\"00:00:02.6400000\" start-rtf=\"2026-11-05T18:27:56.1188450+00:00\" finish-rtf=\"2026-11-05T18:27:58.7602792+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests\" method=\"CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync\" source-file=\"/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs\" source-line=\"14\"><failure exception-type=\"Shouldly.ShouldAssertException\"><message>Shouldly.ShouldAssertException : `fixture.Compose(builder, options =&gt; { captured = options; options.CurrentOwnerProof!.Matches(options).ShouldBeTrue(); throw new InvalidOperationException(\\\"Expected measured runner authority; stop before resource effects.\\\"); })`\n    should throw\nSystem.InvalidOperationException\n    but threw\nSystem.IO.InvalidDataException\n---- System.IO.InvalidDataException : The current-owner package profile requires its private runner authority and exact Release/public dependency artifacts.</message><stack-trace>   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.Capture(PlatformPartiesPackageFixture fixture) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 101\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 18\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n----- Inner Stack Trace -----\n   at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Git(String root, String[] arguments) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs:line 209\n   at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Create(PlatformCompositionOptions options, String key, Boolean developmentRun) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs:line 59\n   at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs:line 109\n   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.Compose(IDistributedApplicationBuilder builder, Func`2 configure, CompositionRunPlan suppliedPlan) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 206\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.&lt;&gt;c__DisplayClass2_0.&lt;Capture&gt;b__0() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs:line 101\n   at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod) in /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs:line 23</stack-trace></failure></test>"
+    }
+  ],
+  "group11Logs": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-40fbc-hosted-20261105/test-11.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-40fbc-hosted-20261105/test-11.stdout",
+      "bytes": 7301,
+      "sha256": "96d466f715807bd863ab96a60c9dfb2ee94f0b9cf01da8cf39785d534b2562fb",
+      "text": "xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)\n\u001b[37m  Discovering: Hexalith.Platform.Composition.Tests\n\u001b[0m\u001b[37m  Discovered:  Hexalith.Platform.Composition.Tests\n\u001b[0m\u001b[37m  Starting:    Hexalith.Platform.Composition.Tests\n\u001b[0m\u001b[91m    Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync [FAIL]\n\u001b[0m\u001b[37m      Shouldly.ShouldAssertException : `fixture.Compose(builder, options => { captured = options; options.CurrentOwnerProof!.Matches(options).ShouldBeTrue(); throw new InvalidOperationException(\"Expected measured runner authority; stop before resource effects.\"); })`\r\n\u001b[0m\u001b[37m          should throw\r\n\u001b[0m\u001b[37m      System.InvalidOperationException\r\n\u001b[0m\u001b[37m          but threw\r\n\u001b[0m\u001b[37m      System.IO.InvalidDataException\n\u001b[0m\u001b[37m      ---- System.IO.InvalidDataException : The current-owner package profile requires its private runner authority and exact Release/public dependency artifacts.\n\u001b[0m\u001b[90m      Stack Trace:\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(101,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.Capture(PlatformPartiesPackageFixture fixture)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(68,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync()\n\u001b[0m\u001b[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n\u001b[0m\u001b[37m        --- End of stack trace from previous location ---\n\u001b[0m\u001b[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n\u001b[0m\u001b[37m        ----- Inner Stack Trace -----\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs(209,0): at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Git(String root, String[] arguments)\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs(59,0): at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Create(PlatformCompositionOptions options, String key, Boolean developmentRun)\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(206,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.Compose(IDistributedApplicationBuilder builder, Func`2 configure, CompositionRunPlan suppliedPlan)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(101,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.<>c__DisplayClass2_0.<Capture>b__0()\n\u001b[0m\u001b[37m        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)\n\u001b[0m\u001b[91m    Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync [FAIL]\n\u001b[0m\u001b[37m      Shouldly.ShouldAssertException : `fixture.Compose(builder, options => { captured = options; options.CurrentOwnerProof!.Matches(options).ShouldBeTrue(); throw new InvalidOperationException(\"Expected measured runner authority; stop before resource effects.\"); })`\r\n\u001b[0m\u001b[37m          should throw\r\n\u001b[0m\u001b[37m      System.InvalidOperationException\r\n\u001b[0m\u001b[37m          but threw\r\n\u001b[0m\u001b[37m      System.IO.InvalidDataException\n\u001b[0m\u001b[37m      ---- System.IO.InvalidDataException : The current-owner package profile requires its private runner authority and exact Release/public dependency artifacts.\n\u001b[0m\u001b[90m      Stack Trace:\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(101,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.Capture(PlatformPartiesPackageFixture fixture)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(18,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync()\n\u001b[0m\u001b[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n\u001b[0m\u001b[37m        --- End of stack trace from previous location ---\n\u001b[0m\u001b[37m           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n\u001b[0m\u001b[37m           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n\u001b[0m\u001b[37m        ----- Inner Stack Trace -----\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs(209,0): at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Git(String root, String[] arguments)\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs(59,0): at Hexalith.Platform.Composition.PlatformCurrentOwnerProof.Create(PlatformCompositionOptions options, String key, Boolean developmentRun)\n\u001b[0m\u001b[37m        src/Hexalith.Platform.Composition/PlatformAppModel.cs(109,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(206,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.Compose(IDistributedApplicationBuilder builder, Func`2 configure, CompositionRunPlan suppliedPlan)\n\u001b[0m\u001b[37m        tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs(101,0): at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.<>c__DisplayClass2_0.<Capture>b__0()\n\u001b[0m\u001b[37m        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)\n\u001b[0m\u001b[37m  Finished:    Hexalith.Platform.Composition.Tests (ID = '5015d3b0b458a02c6ccdec088e1245b23c930ffd283afdcbfa47d93b7e1efffa')\n\u001b[0m\u001b[37m=== TEST EXECUTION SUMMARY ===\n\u001b[0m\u001b[37m   Hexalith.Platform.Composition.Tests  Total: 2, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 6.413s\n\u001b[0m\u001b[0m"
+    }
+  ],
+  "legacy349Lane": "SKIPPED after current tuple failure; no new legacy pass claim.",
+  "credit": "Actual partial source-bound current253 profile only; not full current/legacy/native acceptance."
+}

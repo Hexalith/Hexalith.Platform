@@ -1,0 +1,9 @@
+{
+  "utc": "2026-11-05T17:59:34.030190+00:00",
+  "auditExit": 1,
+  "exception": "KeyError: tree",
+  "cause": "Parent supplied REST commit wrapper with tree nested under commit; audit expected authenticated Git commit object with top-level tree.",
+  "correction": "Read actual official git/commits endpoint and verify tree equality against original REST metadata; original receipt retained.",
+  "nativeOrBrowserTestsRerun": false,
+  "archiveChanged": false
+}

@@ -1,0 +1,49 @@
+{
+  "utc": "2026-11-05T19:31:05.9686545+00:00",
+  "toolingPath": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-4444-5fa-official-20261105/hexalith.builds.module.cli-extracted/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+  "toolingSHA256": "57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2",
+  "purpose": "Controlled diagnostic discrimination only. Does not identify the original hosted native error or grant hosted qualification credit.",
+  "nativeErrors": [
+    {
+      "mode": "missing",
+      "type": "System.ComponentModel.Win32Exception",
+      "NativeErrorCode": 2,
+      "HResult": -2147467259
+    },
+    {
+      "mode": "permission-denied",
+      "type": "System.ComponentModel.Win32Exception",
+      "NativeErrorCode": 13,
+      "HResult": -2147467259
+    },
+    {
+      "mode": "held-for-writing",
+      "type": "System.ComponentModel.Win32Exception",
+      "NativeErrorCode": 26,
+      "HResult": -2147467259
+    }
+  ],
+  "results": [
+    {
+      "mode": "missing",
+      "fixtureExists": false,
+      "fixtureSHA256": null,
+      "message": "Aspire CLI observed \u0027missing\u0027; expected Aspire.AppHost.Sdk/13.6.4.",
+      "ruleId": "HXR015"
+    },
+    {
+      "mode": "permission-denied",
+      "fixtureExists": true,
+      "fixtureSHA256": "2ee344cf0c7d1643fc8d133336247df7c9b3e028ff84cfaec0cd5c526e69fd02",
+      "message": "Aspire CLI observed \u0027missing\u0027; expected Aspire.AppHost.Sdk/13.6.4.",
+      "ruleId": "HXR015"
+    },
+    {
+      "mode": "held-for-writing",
+      "fixtureExists": true,
+      "fixtureSHA256": "2ee344cf0c7d1643fc8d133336247df7c9b3e028ff84cfaec0cd5c526e69fd02",
+      "message": "Aspire CLI observed \u0027missing\u0027; expected Aspire.AppHost.Sdk/13.6.4.",
+      "ruleId": "HXR015"
+    }
+  ]
+}

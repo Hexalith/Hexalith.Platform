@@ -1,0 +1,71 @@
+{
+  "utc": "2026-11-05T20:52:43.779839+00:00",
+  "closedRoot": "/home/administrator/.cache/hexalith/story-2-8/builds-prerequisite-launch-diagnostic-20261105",
+  "indexSHA256": "7ff8d107610e84c9c5d898589111045238a9cb6af46bff3ed9fd2335a9c26628",
+  "checkpointSHA256": "3f5112781d7f2f96cca230c776a16e5bb5ec2ac558f1d3af00b2e3f3ca2f19d9",
+  "allClosedFilesRehashed": 18151,
+  "allClosedBytesRehashed": 2252589951,
+  "parentReadCompleteSevenPathPatch": true,
+  "patchSHA256": "f5a1784bd4c9af660e0b3603c190d53d3d3794623e1737fc95fd70a19b64e3d6",
+  "patchBytes": 17068,
+  "head": "c354a044e40d70f494732180be0046611bae44cf",
+  "parent": "43adaa5d30437bec89f9485d414b1f92342b617c",
+  "tree": "68cf42efc3cc1a7d61e5e628424817603bb25570",
+  "cleanRealHeadAndExactValidatedMessageVerified": true,
+  "actualXml": {
+    "causal-red.xml": {
+      "bytes": 18121,
+      "sha256": "c0f2d47ff9534e0c3d515bea2f28a57d73131a689251c408b11d5eeab057b44c",
+      "actualPassed": 0,
+      "actualFailed": 3
+    },
+    "omission-mutant.xml": {
+      "bytes": 18790,
+      "sha256": "efd602da085d7792ef1264350762f813a20283c5a3dfefc9f1490edd844d3060",
+      "actualPassed": 0,
+      "actualFailed": 3
+    },
+    "final-clean-narrow-groups.xml": {
+      "bytes": 16421,
+      "sha256": "f5be7aaf8460e08f6df9e2d67366d01269cd925926cfdf969843e354764331a8",
+      "actualPassed": 27,
+      "actualFailed": 0
+    }
+  },
+  "final27Names": [
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.InvalidStartDescriptionRetainsSafeFailureKindAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.OutputBeyondCaptureBoundIsMarkedTruncatedAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.DotnetChildrenRetainSdkControlsWithoutBroadeningOtherHelpers",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.StartedNonzeroProcessHasNoLaunchFailureAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.TimedOutProcessHasNoLaunchFailureAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ErrorBeyondCaptureBoundRetainsLastMarkerAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableRetainsOnlySafeLaunchMetadataAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableHasNoFirstMatchingLineAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.CreateStartInfoScrubsInheritedEnvironmentAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.MissingDockerAndDaprHomeAreUnavailableAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireVersionEqualityAsync(suffix: \\\"\\\", accepted: True)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireVersionEqualityAsync(suffix: \\\"+build.hash\\\", accepted: True)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireVersionEqualityAsync(suffix: \\\"-preview.1\\\", accepted: False)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireProbePropagatesCancellationAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.ParsersReadCliRuntimeAndServiceVersions",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.SelectedToolchainIsAvailableAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireLaunchFailuresRetainSafeNativeCodeAsync(mode: \\\"missing\\\", nativeCode: 2)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireLaunchFailuresRetainSafeNativeCodeAsync(mode: \\\"permission-denied\\\", nativeCode: 13)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireLaunchFailuresRetainSafeNativeCodeAsync(mode: \\\"held-writer\\\", nativeCode: 26)",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"missing\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"malformed\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"different\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"empty\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"failed\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.AspireUnavailableObservationsFailClosedAsync(mode: \\\"timeout\\\")",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.WrongRuntimeBinaryVersionIsUnavailableAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.WrongDaprCliVersionIsUnavailableAsync"
+  ],
+  "actualPublicHexalithArchives": 12,
+  "actualSignatureCommandsAllExit0": 1,
+  "actualSignatureSuccessesInBatch": 12,
+  "actualPackageMembersRehashed": 14,
+  "all13RestoreSourcesPublicOnlyAndCachePrivate": true,
+  "originalHostedNativeCause": "Unproved; new safe diagnostic distinctions only",
+  "hostedPublicationNativeOrStoryAcceptance": false
+}

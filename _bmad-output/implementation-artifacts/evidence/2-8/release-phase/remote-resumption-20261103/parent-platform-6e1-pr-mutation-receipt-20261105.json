@@ -1,0 +1,131 @@
+{
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "6e1a04d3a24ebe7a93fb6794b1ceec29d57aa445\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:43:59.938132+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "warning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\nwarning: unable to find all commit-graph files\n",
+      "utc": "2026-11-05T13:44:00.386745+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "fetch",
+        "--no-recurse-submodules",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "From https://github.com/Hexalith/Hexalith.Platform\n * branch              main       -> FETCH_HEAD\n   4afa0421..692cd6d0  main       -> origin/main\n",
+      "utc": "2026-11-05T13:44:01.130387+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "stdout": "692cd6d025032f04f68ce302f02839d746f85ee9\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:44:01.132166+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "4afa0421794f7e6f3fcbd5d84664eae206e9daa5",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "stdout": "_bmad-output/implementation-artifacts/evidence/2-8/README.md\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-1e8-first-isolated-and-empty-cleanup-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-1e8-first-primary-failure-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-1e8-terminal-artifact-list-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-394-concurrent-close-observation-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-independent-artifact-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-independent-artifact-list-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-body-20261105.md\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-mutation-receipt-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-reviewed-tree-equality-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-source-binding-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-pr-title-20261105.txt\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078166-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078181-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078181-20261105T130808Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078207-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078221-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032078246-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032079134-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032079134-20261105T130941Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032079519-20261105T130737Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-run42032079519-20261105T130910Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-source-and-control-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-7b-source-audit-procedure-20261105.py\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-incoming-2dca-to-cb0d-comparison-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-eventstore-incoming-cb0d-source-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-newer-callers-Hexalith.EventStore-run42020261097-20261105T123217Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-newer-callers-Hexalith.EventStore-run42020261097-20261105T123303Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-newer-callers-Hexalith.EventStore-run42020261097-20261105T123349Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-newer-callers-Hexalith.EventStore-run42020261097-20261105T123435Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-newer-callers-Hexalith.EventStore-run42020261746-20261105T121136Z.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-7f-source-and-component-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-7f3e-15-isolated-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-7f3e-source-api-receipt-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-7f3e-ui-hosted-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-incoming-1d078-caller-contract-inventory-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-incoming-1d078-first-refusal-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-141-genuine-publication-binding-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-hosted-api-receipt-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-hosted-artifact-acquisition-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-hosted-tuple-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-sdk-artifact-list-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-sdk-audit-procedure-20261105.py\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-sdk-catalog-audit-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-tuple-artifact-list-20261105.json\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-4afa-tuple-audit-procedure-20261105.py\n_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/readme-continuation-before-20261105-1315.md\n_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:44:01.134896+00:00"
+    },
+    {
+      "command": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-6e1-pr-title-20261105.txt",
+        "--config",
+        "commitlint.config.mjs",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "stdout": "\u29d7   --- input ---\ntest(composition): cover the catalog startup handoff\n\u2714   found 0 problems, 0 warnings\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:44:01.330972+00:00"
+    },
+    {
+      "command": [
+        "gh",
+        "pr",
+        "list",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--state",
+        "open",
+        "--head",
+        "fix/catalog-handoff-regression",
+        "--json",
+        "number,title,headRefOid"
+      ],
+      "exitCode": 0,
+      "stdout": "[]\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:44:01.798726+00:00"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "HEAD:refs/heads/fix/catalog-handoff-regression"
+      ],
+      "exitCode": 0,
+      "stdout": "branch 'fix/isolate-catalog-validation-cache' set up to track 'origin/fix/catalog-handoff-regression'.\n",
+      "stderr": "remote: \nremote: Create a pull request for 'fix/catalog-handoff-regression' on GitHub by visiting:        \nremote:      https://github.com/Hexalith/Hexalith.Platform/pull/new/fix/catalog-handoff-regression        \nremote: \nTo https://github.com/Hexalith/Hexalith.Platform.git\n * [new branch]        HEAD -> fix/catalog-handoff-regression\n",
+      "utc": "2026-11-05T13:44:03.850639+00:00"
+    },
+    {
+      "command": [
+        "gh",
+        "pr",
+        "create",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--base",
+        "main",
+        "--head",
+        "fix/catalog-handoff-regression",
+        "--title",
+        "test(composition): cover the catalog startup handoff",
+        "--body-file",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-platform-6e1-pr-body-20261105.md"
+      ],
+      "exitCode": 0,
+      "stdout": "https://github.com/Hexalith/Hexalith.Platform/pull/24\n",
+      "stderr": "",
+      "utc": "2026-11-05T13:44:07.632216+00:00"
+    }
+  ]
+}

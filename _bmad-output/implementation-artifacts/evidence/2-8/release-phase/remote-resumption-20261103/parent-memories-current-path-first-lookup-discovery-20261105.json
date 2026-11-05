@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-05T20:35:04.392675+00:00",
+  "historicalSource": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
+  "currentSource": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+  "oldPath": "src/Hexalith.Memories.DomainService/Hexalith.Memories.DomainService.csproj",
+  "firstCurrentLookupExit": 128,
+  "finding": "Historical source contains the conditional nonpublishing adapter profile; the old path does not exist in current source. Inspect actual current tree and packaging before planning edits. Do not assert current source retains the old project layout or defect.",
+  "priorFindingSuperseded": true,
+  "correction": "The current859 commit is absent from the canonical local object database (git ls-tree fatal not a tree object). Local gitshow cannot establish whether its old source path exists. Current official Git API commit/tree now independently retrieved; no current source-layout/defect claim from the failed local lookup."
+}

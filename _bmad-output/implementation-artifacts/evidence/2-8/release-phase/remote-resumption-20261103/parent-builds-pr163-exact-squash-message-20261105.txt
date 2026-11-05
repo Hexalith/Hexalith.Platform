@@ -1,0 +1,7 @@
+fix(runtime): retain safe prerequisite launch diagnostics
+
+Carry finite failure kinds and native error codes from helper startup into
+HXR015 without retaining exception text or process inputs.
+
+Cover actual missing, permission-denied and held-writer launches and preserve
+nonzero exit, timeout, cancellation and bounded output controls.

@@ -1,0 +1,92 @@
+{
+  "utc": "2026-11-05T18:01:56.848890+00:00",
+  "source": "43adaa5d30437bec89f9485d414b1f92342b617c",
+  "response": {
+    "total": 1,
+    "p": 1,
+    "ps": 100,
+    "paging": {
+      "pageIndex": 1,
+      "pageSize": 100,
+      "total": 1
+    },
+    "effortTotal": 5,
+    "debtTotal": 5,
+    "issues": [
+      {
+        "key": "AaGszXrk3dsrvWWBFjrI",
+        "rule": "shell:S7679",
+        "severity": "MAJOR",
+        "component": "Hexalith_Hexalith.Builds:Tools/test-g4-release-source.sh",
+        "project": "Hexalith_Hexalith.Builds",
+        "hash": "9ae27cb92ec596a5fad110c3f223c675",
+        "textRange": {
+          "startLine": 36,
+          "endLine": 36,
+          "startOffset": 35,
+          "endOffset": 37
+        },
+        "flows": [],
+        "resolution": "FIXED",
+        "status": "CLOSED",
+        "message": "Assign this positional parameter to a local variable.",
+        "effort": "5min",
+        "debt": "5min",
+        "assignee": "jpiquot@github",
+        "tags": [
+          "readability",
+          "shell"
+        ],
+        "creationDate": "2026-11-05T17:35:53+0000",
+        "updateDate": "2026-11-05T17:53:17+0000",
+        "closeDate": "2026-11-05T17:53:17+0000",
+        "type": "CODE_SMELL",
+        "organization": "hexalith-a",
+        "pullRequest": "162",
+        "cleanCodeAttribute": "CLEAR",
+        "cleanCodeAttributeCategory": "INTENTIONAL",
+        "impacts": [
+          {
+            "softwareQuality": "MAINTAINABILITY",
+            "severity": "MEDIUM"
+          }
+        ],
+        "issueStatus": "FIXED",
+        "projectName": "Hexalith.Builds",
+        "internalTags": [],
+        "lastChangeAnalysisUuid": "328a750c-cd47-4f18-ad84-1f26afac9766",
+        "lastChangeSource": "ANALYSIS"
+      }
+    ],
+    "components": [
+      {
+        "organization": "hexalith-a",
+        "key": "Hexalith_Hexalith.Builds",
+        "uuid": "AaGszPKYox6zAou8P-67",
+        "enabled": true,
+        "qualifier": "TRK",
+        "name": "Hexalith.Builds",
+        "longName": "Hexalith.Builds",
+        "pullRequest": "162"
+      },
+      {
+        "organization": "hexalith-a",
+        "key": "Hexalith_Hexalith.Builds:Tools/test-g4-release-source.sh",
+        "uuid": "AaGszXeH3dsrvWWBFjpd",
+        "enabled": true,
+        "qualifier": "FIL",
+        "name": "test-g4-release-source.sh",
+        "longName": "Tools/test-g4-release-source.sh",
+        "path": "Tools/test-g4-release-source.sh",
+        "pullRequest": "162"
+      }
+    ],
+    "organizations": [
+      {
+        "key": "hexalith-a",
+        "name": "Hexalith"
+      }
+    ],
+    "facets": []
+  }
+}

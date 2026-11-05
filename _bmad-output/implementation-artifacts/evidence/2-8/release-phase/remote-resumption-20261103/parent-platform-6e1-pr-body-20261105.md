@@ -1,0 +1,5 @@
+Register two regressions for the real signed AppHost validation-to-ordinary catalog handoff. The published validation process legitimately enriches the derived consumer-version cache. Reproducing the former unconditional materialization resets that cache and makes actual ordinary catalog generation refuse the invalidated proof; the published 1.4.1 path preserves the verified warm snapshot and generates the same catalog successfully.
+
+The comparison allows only the actual CatalogBuilder consumer entry and its recomputed hash. Original source, pinned-tree, plan, existing snapshot fields, proof refusals and before-resource boundaries remain checked. The test fixture uses its existing inert image probe; it starts no services. Production source and the published 1.4.1 runtime are unchanged.
+
+Validation: all 349 registered Release/package cases passed with no skips or errors; all 347 prior executed cases are retained. Exact signed tool members, 21,429 source hashes and 631 output DLLs remained unchanged through execution. First fixture and expectation failures are retained in the qualification evidence. Fresh PR/source gates remain required.

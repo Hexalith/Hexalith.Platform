@@ -1,0 +1,352 @@
+{
+  "utc": "2026-11-05T20:28:37.959563+00:00",
+  "source": "b74a12c54162dbc890accb483c6f97e3bf618eab",
+  "run": 42099216118,
+  "conclusion": "failure",
+  "isolatedRows": [
+    {
+      "file": "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx",
+      "bytes": 511951,
+      "sha256": "c5ae9b3510b112286dc26c509ab48fc3d15d7e68dc2d20747bb15c9c15260b90",
+      "actualOutcomes": {
+        "Passed": 327
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx",
+      "bytes": 14187,
+      "sha256": "c07efa60a086e366bb8ff37d2eac383c75e9db4892ecd19336bfa1d59ef43254",
+      "actualOutcomes": {
+        "Passed": 9
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx",
+      "bytes": 19018,
+      "sha256": "3fe512bb12d0b2260fe1b677073c5b97593881ce8afcaee764104c7025327b9e",
+      "actualOutcomes": {
+        "Passed": 12
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx",
+      "bytes": 900665,
+      "sha256": "daa7a41742997b34ba1c91c9c10723095d84468d8aa0bd5d6739db70fc52b0da",
+      "actualOutcomes": {
+        "Passed": 581
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx",
+      "bytes": 539517,
+      "sha256": "7024c7a228b207844bd10af8e29a675e40e159265cb5442243f8d0d57a001bac",
+      "actualOutcomes": {
+        "Passed": 345
+      }
+    },
+    {
+      "file": "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx",
+      "bytes": 134143,
+      "sha256": "4395ad4241d489f4fc021f74d6b395c93b452cf7c144cfd72851c2b65eb01a8a",
+      "actualOutcomes": {
+        "Passed": 85
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx",
+      "bytes": 361439,
+      "sha256": "fb7569d7ffeee84bc20d76de5b0e8163780f034be60c4e09d606a0029d43154e",
+      "actualOutcomes": {
+        "Passed": 240
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx",
+      "bytes": 138900,
+      "sha256": "1f6406704fd3a98a0b743de1c37104d29f379a4d97db26e66d11da55c9eedae1",
+      "actualOutcomes": {
+        "Passed": 94
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx",
+      "bytes": 265679,
+      "sha256": "ffb59608a33d9fa35ab6909b7aa33785df9576a64ad4df54e3421374f51038b5",
+      "actualOutcomes": {
+        "Passed": 171
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx",
+      "bytes": 746245,
+      "sha256": "a43697673b26895f415dd9f2fde8849cb8f81cbe2e6c2399711a4a52083caff6",
+      "actualOutcomes": {
+        "Passed": 466,
+        "NotExecuted": 1
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx",
+      "bytes": 97314,
+      "sha256": "e07366ea027c876f6266e82e364b45f859ee4ec4be313c0fa62f265ce12a4615",
+      "actualOutcomes": {
+        "Passed": 66
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx",
+      "bytes": 502812,
+      "sha256": "6dd6f58cb46fc09f51fb4592e900c985d6b56ee008172c49057d04f0311bd56d",
+      "actualOutcomes": {
+        "Passed": 334
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx",
+      "bytes": 490006,
+      "sha256": "0b21ffb646f12256cebfbb7a8b4cc319939c637c8f727212227283a16cb51341",
+      "actualOutcomes": {
+        "Passed": 315
+      }
+    },
+    {
+      "file": "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx",
+      "bytes": 4503439,
+      "sha256": "0a4a19e9e9de594f1f062c15b7b7442cf99d78cb248a879c11ed825c44f5bea8",
+      "actualOutcomes": {
+        "Passed": 2852,
+        "NotExecuted": 13
+      }
+    },
+    {
+      "file": "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx",
+      "bytes": 682511,
+      "sha256": "9d252ec6f88981f4901034df049623ec93ed32ea8e47e653a8037a937eb1e53d",
+      "actualOutcomes": {
+        "Passed": 463
+      }
+    }
+  ],
+  "isolatedActualTotals": {
+    "Passed": 6360,
+    "NotExecuted": 14
+  },
+  "actualReservationCases": [
+    {
+      "name": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \"Live\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_AdmitExactlyOneWriter(mode: \"DirectReadiness\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.ExtPartiesVerifierEvidenceTests.SynchronizedReservations_WaitForDelayedPeerBeforeCompletingStartup",
+      "outcome": "Passed"
+    }
+  ],
+  "owner": {
+    "attemptId": "8b6977d0f111b3f2318532413cc6afbf",
+    "attemptSequence": 1,
+    "environmentId": "0004fec157ce08ca045c2b6ecc8ec808",
+    "ownerRunId": "44404e43d6f1449e05ac8d79dff98a7a",
+    "role": "owner",
+    "runId": "44404e43d6f1449e05ac8d79dff98a7a"
+  },
+  "immutableTerminal": {
+    "cause": "startup-timeout",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "failed",
+    "recordedAt": "2026-11-05T20:22:32.2864269Z"
+  },
+  "startupDeadline": {
+    "effectiveSeconds": 600,
+    "expiresAt": "2026-11-05T20:22:31.9341375Z",
+    "origin": "environment-requested",
+    "originAt": "2026-11-05T20:12:31.9341375Z",
+    "override": {
+      "state": "not-overridden"
+    },
+    "state": "populated"
+  },
+  "actualStartupDiagnostics": [
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "eventstore",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'eventstore' last='state=Running;health=Unhealthy'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories' last='state=Exited;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories-access-telemetry",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories-access-telemetry' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories-access-telemetry-clock",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories-access-telemetry-clock' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories-access-telemetry-clock-dapr-cli",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories-access-telemetry-clock-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories-access-telemetry-dapr-cli",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories-access-telemetry-dapr-cli' last='state=Waiting;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "memories-domain-service",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'memories-domain-service' last='state=Exited;health=unknown'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "parties",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'parties' last='state=Running;health=Unhealthy'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "tenants",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'tenants' last='state=Running;health=Unhealthy'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "tenants-api",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Unready resource 'tenants-api' last='state=Running;health=Unhealthy'. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/44404e43d6f1449e05ac8d79dff98a7a'.",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR021",
+      "source": null
+    }
+  ],
+  "cleanup": {
+    "attemptId": "e5b7e63a3ecd605d437a8987c320f214",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-05T20:22:38.8575607Z",
+    "ownedResourceIds": [
+      "resource:redis",
+      "resource:eventstore",
+      "resource:dapr-placement-mtls",
+      "resource:dapr-scheduler-mtls",
+      "resource:dapr-sentry",
+      "resource:eventstore-dapr-cli",
+      "resource:memories",
+      "resource:memories-access-telemetry",
+      "resource:memories-access-telemetry-clock",
+      "resource:memories-access-telemetry-clock-dapr-cli",
+      "resource:memories-access-telemetry-dapr-cli",
+      "resource:memories-dapr-cli",
+      "resource:memories-domain-service",
+      "resource:memories-domain-service-dapr-cli",
+      "resource:memories-graph",
+      "resource:memories-vectors",
+      "resource:parties",
+      "resource:parties-dapr-cli",
+      "resource:tenants",
+      "resource:tenants-api",
+      "resource:tenants-api-dapr-cli",
+      "resource:tenants-dapr-cli"
+    ],
+    "state": "populated"
+  },
+  "remaining": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+  },
+  "declaredDiagnosticBodyHashVerified": {
+    "classification": "internal",
+    "contentIdentity": "sha256:35f786fe1c9efe4960b9117a26ebd5ed7d408d20331fbc05e885b17ae88b7921",
+    "id": "lifecycle",
+    "redacted": true,
+    "reference": "lifecycle-35f786fe1c9efe4960b9117a26ebd5ed7d408d20331fbc05e885b17ae88b7921.json"
+  },
+  "artifactMembers": [
+    "cleanup.json",
+    "execution.json",
+    "invocation.json",
+    "lifecycle-35f786fe1c9efe4960b9117a26ebd5ed7d408d20331fbc05e885b17ae88b7921.json",
+    "test-result.json"
+  ],
+  "nativeCasesExecuted": 0,
+  "limits": [
+    "No native/readiness acceptance; runtime body/artifact bindings remain not-yet-populated.",
+    "Only declared redacted lifecycle diagnostic was retained; underlying exited Memories exceptions, startup stdout/stderr and actual allocated per-provider identities were not retained. Do not invent the startup cause.",
+    "22 owned logical resource identities are reported clean; this is not evidence that all22 became ready.",
+    "Preserved unmodified600s deadline and first outcome. No unchanged retry or timeout waiver."
+  ]
+}

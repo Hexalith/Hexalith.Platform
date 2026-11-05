@@ -1,0 +1,179 @@
+{
+  "utc": "2026-11-05T16:21:32.127785+00:00",
+  "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+  "version": "7.0.4",
+  "normalRelease": 42039944398,
+  "sourceGates": [
+    {
+      "conclusion": "success",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "id": 42029976383,
+      "path": ".github/workflows/ci.yml",
+      "run_attempt": 1,
+      "run_number": 1778,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "id": 42029976106,
+      "path": ".github/workflows/story-guards.yml",
+      "run_attempt": 1,
+      "run_number": 773,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "event": "push",
+      "head_branch": "main",
+      "head_sha": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "id": 42029975839,
+      "path": ".github/workflows/source-reference.yml",
+      "run_attempt": 1,
+      "run_number": 609,
+      "status": "completed"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Hexalith.Tenants.Aspire.7.0.4.nupkg",
+      "signedSha256": "97f6f65eda909e3797f873b4fd1c446f57fab1dd14685069e124b6ab83c7aae5",
+      "releaseSha256": "b322382a15a0a1a266e3343c5274efbbed32c41418a1c1bc97902e39fd74ccc8",
+      "actualPayloads": 6,
+      "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "signatureExit": 0
+    },
+    {
+      "name": "Hexalith.Tenants.Client.7.0.4.nupkg",
+      "signedSha256": "36ca4232d215d95bdcd0e6ff4867df7c844079bb538425d43f9e618fabd5e5a6",
+      "releaseSha256": "f8cfec616a06edd6144fa03b39648873d83362bc543659602688ac13926a5da9",
+      "actualPayloads": 6,
+      "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "signatureExit": 0
+    },
+    {
+      "name": "Hexalith.Tenants.Contracts.7.0.4.nupkg",
+      "signedSha256": "04989ef3b9755c8af217517c7964a75796903d2c21c517ff76d7d46c574861a7",
+      "releaseSha256": "43bc7531037038acb2baa7bb25b1fb55b8b102931746119cdc0897e07cd827eb",
+      "actualPayloads": 6,
+      "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "signatureExit": 0
+    },
+    {
+      "name": "Hexalith.Tenants.Server.7.0.4.nupkg",
+      "signedSha256": "6daeac9fde718cdc84d804f132ec33aeae49c9b9fbeaf91e876dbaec7c4302be",
+      "releaseSha256": "8c5b5cd99569dffc3787bba610c571424626bbf4d557f5c8c8c14b91e480d482",
+      "actualPayloads": 6,
+      "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "signatureExit": 0
+    },
+    {
+      "name": "Hexalith.Tenants.Testing.7.0.4.nupkg",
+      "signedSha256": "454cb5126dfdaf7c3fa38b470527f5a602bed8dbd0d21409aeb46995673802c3",
+      "releaseSha256": "7b48f809397b65207e5c1da55050ab7fd1c12d24e1913d68a961db1bbbce2af6",
+      "actualPayloads": 6,
+      "source": "8e20524574901d71ad5f4876804c64c3c6c87b88",
+      "signatureExit": 0
+    }
+  ],
+  "payloadMembersIndependentlyCompared": 30,
+  "imageChains": [
+    {
+      "path": "producer/13421588264/7.0.4/tenants",
+      "image": "registry.hexalith.com/tenants:7.0.4",
+      "indexDigest": "sha256:712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c",
+      "architectures": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ]
+    },
+    {
+      "path": "producer/13421588264/7.0.4/destinations/oci",
+      "image": "registry.hexalith.com/tenants:7.0.4",
+      "indexDigest": "sha256:712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c",
+      "architectures": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ]
+    },
+    {
+      "path": "producer/13421588264/7.0.4/tenants-api",
+      "image": "registry.hexalith.com/tenants-api:7.0.4",
+      "indexDigest": "sha256:39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2",
+      "architectures": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ]
+    },
+    {
+      "path": "producer/13421588264/7.0.4/tenants-api-destination/oci",
+      "image": "registry.hexalith.com/tenants-api:7.0.4",
+      "indexDigest": "sha256:39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2",
+      "architectures": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ]
+    }
+  ],
+  "actualHostedProducerSmokes": [
+    {
+      "cleanup": "pass",
+      "digest": "sha256:9e30ec2285d29502a9f32bd8ba8104ce6d424c7b869ea18973e3092e54202529",
+      "outcome": "pass",
+      "platform": "linux/amd64"
+    },
+    {
+      "cleanup": "pass",
+      "digest": "sha256:677d084d658e83d33fcccb77b31ab934dc796612c7a0fc770c3c98cf3a3e04a2",
+      "outcome": "pass",
+      "platform": "linux/arm64"
+    },
+    {
+      "cleanup": "pass",
+      "digest": "sha256:ef956af7faea264d1950e23be385aceca5cc52cfaf59a3c2eaf0e28be2c012fe",
+      "outcome": "pass",
+      "platform": "linux/amd64"
+    },
+    {
+      "cleanup": "pass",
+      "digest": "sha256:15d6566ed5d981d4eb977bedc0bae73c32b464136aaf4ad3520371cfb1794261",
+      "outcome": "pass",
+      "platform": "linux/arm64"
+    }
+  ],
+  "passed": true,
+  "scope": "Genuine prerequisite identity/body/publication/producer checks only; not Parties lifecycle or native acceptance",
+  "limits": [
+    "Image manifest/config bytes authenticated from official producer artifacts; no layer fetch or local image execution",
+    "SDK restore/dependency observations remain producer metadata, not a new running-image DLL observation",
+    "No new Builds publication or accepted caller/runtime pin changed"
+  ]
+}

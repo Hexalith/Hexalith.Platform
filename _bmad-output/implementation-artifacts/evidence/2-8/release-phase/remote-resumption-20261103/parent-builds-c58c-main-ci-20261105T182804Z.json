@@ -1,0 +1,1096 @@
+{
+  "utc": "2026-11-05T18:28:04.036053+00:00",
+  "run": {
+    "id": 42082834472,
+    "name": "CI",
+    "node_id": "WFR_kwLOOMzNRc8AAAAJzFUYKA",
+    "head_branch": "main",
+    "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+    "path": ".github/workflows/ci.yml",
+    "display_title": "fix(release): verify final branch reference identity",
+    "run_number": 709,
+    "event": "push",
+    "status": "in_progress",
+    "conclusion": null,
+    "workflow_id": 320718206,
+    "check_suite_id": 114033991157,
+    "check_suite_node_id": "CS_kwDOOMzNRc8AAAAajPSd9Q",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+    "pull_requests": [],
+    "created_at": "2026-11-05T18:17:41Z",
+    "updated_at": "2026-11-05T18:17:46Z",
+    "actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [
+      {
+        "path": "Hexalith/Hexalith.Builds/.github/workflows/codeql.yml@c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "ref": "refs/heads/main"
+      },
+      {
+        "path": "Hexalith/Hexalith.Builds/.github/workflows/dependency-review.yml@c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "ref": "refs/heads/main"
+      }
+    ],
+    "run_started_at": "2026-11-05T18:17:41Z",
+    "triggering_actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472/jobs",
+    "logs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472/logs",
+    "check_suite_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-suites/114033991157",
+    "artifacts_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472/artifacts",
+    "cancel_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472/cancel",
+    "rerun_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/workflows/320718206",
+    "head_commit": {
+      "id": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+      "tree_id": "e94444c7163d835012542a4a5231578bb36e09c5",
+      "message": "fix(release): verify final branch reference identity\n\nValidate the full live branch reference before tags and package pushes.\nRequire the final source check for protected executed-mode releases while\nkeeping local qualification offline and preserving exact CI run and attempt\nbinding.\n\nRetain the newer final prepare hook, publisher and prerelease controls,\nand name the shell fixture argument for static analysis.",
+      "timestamp": "2026-11-05T18:17:38Z",
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com"
+      }
+    },
+    "repository": {
+      "id": 952945989,
+      "node_id": "R_kgDOOMzNRQ",
+      "name": "Hexalith.Builds",
+      "full_name": "Hexalith/Hexalith.Builds",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds",
+      "description": "Common project for building Hexalith applications, modules and libraries",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/deployments"
+    },
+    "head_repository": {
+      "id": 952945989,
+      "node_id": "R_kgDOOMzNRQ",
+      "name": "Hexalith.Builds",
+      "full_name": "Hexalith/Hexalith.Builds",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds",
+      "description": "Common project for building Hexalith applications, modules and libraries",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/deployments"
+    }
+  },
+  "jobs": {
+    "total_count": 6,
+    "jobs": [
+      {
+        "id": 127440083474,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVaEg",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440083474",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440083474",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:45Z",
+        "completed_at": "2026-11-05T18:20:45Z",
+        "name": "Python contract tests",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T18:17:45Z",
+            "completed_at": "2026-11-05T18:17:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:48Z"
+          },
+          {
+            "name": "Initialize .NET SDK",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T18:17:48Z",
+            "completed_at": "2026-11-05T18:17:50Z"
+          },
+          {
+            "name": "Test self-CI required status",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T18:17:50Z",
+            "completed_at": "2026-11-05T18:17:51Z"
+          },
+          {
+            "name": "Test qualification evidence retention",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-05T18:17:51Z",
+            "completed_at": "2026-11-05T18:17:51Z"
+          },
+          {
+            "name": "Test qualification file boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T18:17:51Z",
+            "completed_at": "2026-11-05T18:17:51Z"
+          },
+          {
+            "name": "Test G-6 runtime/toolchain evidence validator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-05T18:17:51Z",
+            "completed_at": "2026-11-05T18:20:22Z"
+          },
+          {
+            "name": "Test historical runtime/toolchain disposition validator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-05T18:20:22Z",
+            "completed_at": "2026-11-05T18:20:22Z"
+          },
+          {
+            "name": "Test container publisher helpers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-05T18:20:22Z",
+            "completed_at": "2026-11-05T18:20:32Z"
+          },
+          {
+            "name": "Test CI integration lifecycle helper",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-05T18:20:32Z",
+            "completed_at": "2026-11-05T18:20:33Z"
+          },
+          {
+            "name": "Setup Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-05T18:20:33Z",
+            "completed_at": "2026-11-05T18:20:33Z"
+          },
+          {
+            "name": "Install Node.js dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-05T18:20:33Z",
+            "completed_at": "2026-11-05T18:20:36Z"
+          },
+          {
+            "name": "Test module build preparation helper",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-11-05T18:20:36Z",
+            "completed_at": "2026-11-05T18:20:39Z"
+          },
+          {
+            "name": "Test governed workflow provenance evaluator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-11-05T18:20:39Z",
+            "completed_at": "2026-11-05T18:20:40Z"
+          },
+          {
+            "name": "Test split publication contract",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-11-05T18:20:40Z",
+            "completed_at": "2026-11-05T18:20:40Z"
+          },
+          {
+            "name": "Test commitlint helpers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-11-05T18:20:40Z",
+            "completed_at": "2026-11-05T18:20:42Z"
+          },
+          {
+            "name": "Post Setup Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 30,
+            "started_at": "2026-11-05T18:20:42Z",
+            "completed_at": "2026-11-05T18:20:42Z"
+          },
+          {
+            "name": "Post Initialize .NET SDK",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 31,
+            "started_at": "2026-11-05T18:20:42Z",
+            "completed_at": "2026-11-05T18:20:42Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 32,
+            "started_at": "2026-11-05T18:20:42Z",
+            "completed_at": "2026-11-05T18:20:42Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 33,
+            "started_at": "2026-11-05T18:20:42Z",
+            "completed_at": "2026-11-05T18:20:42Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440083474",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000073452,
+        "runner_name": "GitHub Actions 1000073452",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127440083936,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVb4A",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440083936",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440083936",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:45Z",
+        "completed_at": null,
+        "name": "Package catalog contracts",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T18:17:45Z",
+            "completed_at": "2026-11-05T18:17:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:54Z"
+          },
+          {
+            "name": "Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T18:17:54Z",
+            "completed_at": "2026-11-05T18:17:56Z"
+          },
+          {
+            "name": "Validate central package versions",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T18:17:56Z",
+            "completed_at": "2026-11-05T18:17:58Z"
+          },
+          {
+            "name": "Test authoritative package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-05T18:17:58Z",
+            "completed_at": "2026-11-05T18:18:04Z"
+          },
+          {
+            "name": "Test central package version validator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T18:18:04Z",
+            "completed_at": "2026-11-05T18:18:18Z"
+          },
+          {
+            "name": "Validate package version audit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-05T18:18:18Z",
+            "completed_at": "2026-11-05T18:18:52Z"
+          },
+          {
+            "name": "Test package version audit generator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-05T18:18:52Z",
+            "completed_at": "2026-11-05T18:19:23Z"
+          },
+          {
+            "name": "Test package version audit validator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-05T18:19:23Z",
+            "completed_at": "2026-11-05T18:27:51Z"
+          },
+          {
+            "name": "Validate Builds consumer package authority",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 10,
+            "started_at": "2026-11-05T18:27:51Z",
+            "completed_at": null
+          },
+          {
+            "name": "Test consumer package authority validator",
+            "status": "pending",
+            "conclusion": null,
+            "number": 11,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Validate package version exception inventory",
+            "status": "pending",
+            "conclusion": null,
+            "number": 12,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test package version exception validator",
+            "status": "pending",
+            "conclusion": null,
+            "number": 13,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Validate Platform version catalog and hosting compatibility",
+            "status": "pending",
+            "conclusion": null,
+            "number": 14,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test Platform version catalog contracts",
+            "status": "pending",
+            "conclusion": null,
+            "number": 15,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Validate Dapr package versions",
+            "status": "pending",
+            "conclusion": null,
+            "number": 16,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test Dapr package validator",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Initialize .NET",
+            "status": "pending",
+            "conclusion": null,
+            "number": 33,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 34,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440083936",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000073455,
+        "runner_name": "GitHub Actions 1000073455",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127440083997,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVcHQ",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440083997",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440083997",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:44Z",
+        "completed_at": null,
+        "name": ".NET tests",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T18:17:45Z",
+            "completed_at": "2026-11-05T18:17:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:54Z"
+          },
+          {
+            "name": "Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T18:17:54Z",
+            "completed_at": "2026-11-05T18:17:55Z"
+          },
+          {
+            "name": "Restore",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T18:17:55Z",
+            "completed_at": "2026-11-05T18:18:15Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-05T18:18:15Z",
+            "completed_at": "2026-11-05T18:21:35Z"
+          },
+          {
+            "name": "Test Hexalith.Builds.Module.Tests",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 6,
+            "started_at": "2026-11-05T18:21:35Z",
+            "completed_at": null
+          },
+          {
+            "name": "Test Hexalith.Builds.Evidence.Tests",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test Hexalith.Builds.Tooling.IntegrationTests",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Initialize .NET",
+            "status": "pending",
+            "conclusion": null,
+            "number": 15,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 16,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440083997",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000073453,
+        "runner_name": "GitHub Actions 1000073453",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127440084217,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVc-Q",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440084217",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440084217",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:45Z",
+        "completed_at": "2026-11-05T18:21:25Z",
+        "name": "CodeQL / analyze",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:48Z"
+          },
+          {
+            "name": "Initialize CodeQL",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T18:17:48Z",
+            "completed_at": "2026-11-05T18:18:02Z"
+          },
+          {
+            "name": "Perform CodeQL Analysis",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T18:18:02Z",
+            "completed_at": "2026-11-05T18:21:22Z"
+          },
+          {
+            "name": "Post Perform CodeQL Analysis",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T18:21:22Z",
+            "completed_at": "2026-11-05T18:21:22Z"
+          },
+          {
+            "name": "Post Initialize CodeQL",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-05T18:21:22Z",
+            "completed_at": "2026-11-05T18:21:23Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-05T18:21:23Z",
+            "completed_at": "2026-11-05T18:21:24Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-05T18:21:24Z",
+            "completed_at": "2026-11-05T18:21:24Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440084217",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000073454,
+        "runner_name": "GitHub Actions 1000073454",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127440084364,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVdjA",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440084364",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440084364",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:45Z",
+        "completed_at": null,
+        "name": "Build and package contracts",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T18:17:45Z",
+            "completed_at": "2026-11-05T18:17:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v7.0.1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T18:17:46Z",
+            "completed_at": "2026-11-05T18:17:54Z"
+          },
+          {
+            "name": "Initialize .NET",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T18:17:54Z",
+            "completed_at": "2026-11-05T18:17:55Z"
+          },
+          {
+            "name": "Test domain workflow test-platform contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T18:17:55Z",
+            "completed_at": "2026-11-05T18:18:21Z"
+          },
+          {
+            "name": "Test strict v2 workflow contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-05T18:18:21Z",
+            "completed_at": "2026-11-05T18:18:25Z"
+          },
+          {
+            "name": "Test caller-owned domain release preparation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T18:18:25Z",
+            "completed_at": "2026-11-05T18:18:26Z"
+          },
+          {
+            "name": "Setup Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-05T18:18:26Z",
+            "completed_at": "2026-11-05T18:18:26Z"
+          },
+          {
+            "name": "Install Node.js dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-05T18:18:26Z",
+            "completed_at": "2026-11-05T18:18:29Z"
+          },
+          {
+            "name": "Verify npm dependency provenance and signatures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-05T18:18:29Z",
+            "completed_at": "2026-11-05T18:18:32Z"
+          },
+          {
+            "name": "Test commitlint workflow contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-05T18:18:32Z",
+            "completed_at": "2026-11-05T18:18:34Z"
+          },
+          {
+            "name": "Test legacy package publisher contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-05T18:18:34Z",
+            "completed_at": "2026-11-05T18:18:34Z"
+          },
+          {
+            "name": "Test G-4 tool package publisher contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-05T18:18:34Z",
+            "completed_at": "2026-11-05T18:25:01Z"
+          },
+          {
+            "name": "Test G-4 release lifecycle contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-11-05T18:25:01Z",
+            "completed_at": "2026-11-05T18:25:01Z"
+          },
+          {
+            "name": "Test G-4 release source guard",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-11-05T18:25:01Z",
+            "completed_at": "2026-11-05T18:25:02Z"
+          },
+          {
+            "name": "Test G-4 source CI verification",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-11-05T18:25:02Z",
+            "completed_at": "2026-11-05T18:25:02Z"
+          },
+          {
+            "name": "Initialize runner NuGet configuration",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-11-05T18:25:02Z",
+            "completed_at": "2026-11-05T18:25:02Z"
+          },
+          {
+            "name": "Test G-4 tool package qualification gate",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-11-05T18:25:02Z",
+            "completed_at": "2026-11-05T18:27:17Z"
+          },
+          {
+            "name": "Test G-4 tool package artifact validator",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18,
+            "started_at": "2026-11-05T18:27:17Z",
+            "completed_at": "2026-11-05T18:27:18Z"
+          },
+          {
+            "name": "Restore",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19,
+            "started_at": "2026-11-05T18:27:18Z",
+            "completed_at": "2026-11-05T18:27:26Z"
+          },
+          {
+            "name": "Build",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 20,
+            "started_at": "2026-11-05T18:27:26Z",
+            "completed_at": null
+          },
+          {
+            "name": "Qualify G-4 tool source and Release packages",
+            "status": "pending",
+            "conclusion": null,
+            "number": 21,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Archive CI qualification evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 22,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Record CI qualification attempt",
+            "status": "pending",
+            "conclusion": null,
+            "number": 23,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain CI qualification evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 24,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test multi-platform container publisher contracts",
+            "status": "pending",
+            "conclusion": null,
+            "number": 25,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Test governed workflow provenance",
+            "status": "pending",
+            "conclusion": null,
+            "number": 26,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Setup Node.js",
+            "status": "pending",
+            "conclusion": null,
+            "number": 50,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Initialize .NET",
+            "status": "pending",
+            "conclusion": null,
+            "number": 51,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v7.0.1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 52,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440084364",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000073456,
+        "runner_name": "GitHub Actions 1000073456",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127440086740,
+        "run_id": 42082834472,
+        "workflow_name": "CI",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42082834472",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOOMzNRc8AAAAdrAVm1A",
+        "head_sha": "c58c3cb78de3cb6cc10ff2924c56e7f70f359997",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127440086740",
+        "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42082834472/job/127440086740",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-05T18:17:42Z",
+        "started_at": "2026-11-05T18:17:42Z",
+        "completed_at": "2026-11-05T18:17:42Z",
+        "name": "Dependency review",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127440086740",
+        "labels": [],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

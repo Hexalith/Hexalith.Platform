@@ -1,0 +1,6 @@
+{
+  "sha": "7b053cfd5f7cb63513841edd07168f4c7aabeda0",
+  "merge_method": "squash",
+  "commit_title": "fix(runtime): retain safe prerequisite launch diagnostics",
+  "commit_message": "Carry finite failure kinds and native error codes from helper startup into\nHXR015 without retaining exception text or process inputs.\n\nCover actual missing, permission-denied and held-writer launches and preserve\nnonzero exit, timeout, cancellation and bounded output controls."
+}

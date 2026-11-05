@@ -1,0 +1,9 @@
+fix(release): verify final branch reference identity
+
+Validate the full live branch reference before tags and package pushes.
+Require the final source check for protected executed-mode releases while
+keeping local qualification offline and preserving exact CI run and attempt
+binding.
+
+Retain the newer final prepare hook, publisher and prerelease controls,
+and name the shell fixture argument for static analysis.

@@ -1,0 +1,73 @@
+{
+  "runId": "33e0140c7255820e281417198c19097a",
+  "observedAt": "2026-11-05T13:54:25.724784+00:00",
+  "startupFailure": {
+    "schema": "hexalith.g4-startup-failure.v1",
+    "ruleId": "HXR025",
+    "resource": "eventstore",
+    "appId": "eventstore",
+    "status": "state=Running;health=Unhealthy"
+  },
+  "applicationStartupClassifications": [
+    {
+      "resource": "parties",
+      "containerId": "508e4644719d",
+      "state": "exited",
+      "exitCode": 0,
+      "exceptionTypes": [
+        "Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogUnavailableException",
+        "System.Threading.Tasks.TaskCanceledException",
+        "System.TimeoutException"
+      ],
+      "methodSymbols": [
+        "Hexalith.EventStore.ServiceDefaults.Routing.DevelopmentRouteCatalogBootstrap.ActivateAsync",
+        "Hexalith.EventStore.ServiceDefaults.Routing.DevelopmentRouteCatalogBootstrap.RetryBackendAsync",
+        "Hexalith.EventStore.ServiceDefaults.Routing.DevelopmentRouteCatalogBootstrapWorker.ExecuteAsync",
+        "Hexalith.EventStore.ServiceDefaults.Routing.DevelopmentRouteCatalogTrustValidator.ValidateAsync",
+        "Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogAuthority.PrepareAsync",
+        "Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogAuthority.ValidateAsync",
+        "Hexalith.Parties.HealthChecks.DaprTenantsReadinessProbe.IsReadyAsync",
+        "Hexalith.Parties.HealthChecks.TenantsIntegrationHealthCheck.CheckHealthAsync",
+        "Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync",
+        "Microsoft.Extensions.Http.Resilience.ResilienceHandler.SendAsync",
+        "System.Net.Http.HttpClient.HandleFailure"
+      ],
+      "classifications": {
+        "background-service-failed": 2,
+        "background-service-stop-host": 2,
+        "host-shutdown": 2,
+        "catalog-unavailable": 2,
+        "timeout": 6
+      },
+      "numericHttpStatuses": [
+        503
+      ]
+    }
+  ],
+  "safeConfigurationAndPublicBodyChecks": [
+    {
+      "resource": "parties",
+      "environmentIsDevelopment": {
+        "ASPNETCORE_ENVIRONMENT": true,
+        "DOTNET_ENVIRONMENT": true
+      },
+      "publicAssemblySha256": {
+        "Hexalith.EventStore.ServiceDefaults.dll": "1c2f5800a3523621ff981f36b73a415682f02a0647c8c27ec0255a625ebca2ac",
+        "Hexalith.EventStore.Contracts.dll": "8b01258ef4928a570b4afaae451dbf2cec799407fe89195eb506bec3d3e12895",
+        "Hexalith.Parties.dll": "e8b2d64226bd2d701f328cc9872e1faa80345b61f1fba3f7f7bdb54d7cdf7965"
+      }
+    }
+  ],
+  "additionalClosedChecks": [
+    {
+      "resource": "parties",
+      "developmentTrustBindingRefusal": true,
+      "publicDependencyIdentities": [
+        "Hexalith.EventStore.Client/3.130.2",
+        "Hexalith.EventStore.Contracts/3.130.2",
+        "Hexalith.EventStore.DomainService/3.130.2",
+        "Hexalith.EventStore.ServiceDefaults/3.130.2"
+      ]
+    }
+  ]
+}

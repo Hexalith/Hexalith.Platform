@@ -1,0 +1,76 @@
+{
+  "utc": "2026-11-05T21:01:20.262530+00:00",
+  "protection": {
+    "exitCode": 1,
+    "body": {
+      "message": "Branch protection has been disabled on this repository.",
+      "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+      "status": "404"
+    },
+    "stderr": "gh: Branch protection has been disabled on this repository. (HTTP 404)\n"
+  },
+  "rules": {
+    "exitCode": 0,
+    "body": [
+      {
+        "type": "deletion",
+        "ruleset_source_type": "Repository",
+        "ruleset_source": "Hexalith/Hexalith.Builds",
+        "ruleset_id": 19196298
+      },
+      {
+        "type": "non_fast_forward",
+        "ruleset_source_type": "Repository",
+        "ruleset_source": "Hexalith/Hexalith.Builds",
+        "ruleset_id": 19196298
+      },
+      {
+        "type": "pull_request",
+        "parameters": {
+          "required_approving_review_count": 0,
+          "dismiss_stale_reviews_on_push": false,
+          "required_reviewers": [],
+          "require_code_owner_review": false,
+          "dismissal_restriction": {
+            "enabled": false,
+            "allowed_actors": []
+          },
+          "require_last_push_approval": false,
+          "required_review_thread_resolution": false,
+          "require_extra_approval_for_unattributed_changes": true,
+          "allowed_merge_methods": [
+            "squash"
+          ]
+        },
+        "ruleset_source_type": "Repository",
+        "ruleset_source": "Hexalith/Hexalith.Builds",
+        "ruleset_id": 19196298
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "Codacy Static Code Analysis",
+              "integration_id": 56611
+            },
+            {
+              "context": "SonarCloud Code Analysis",
+              "integration_id": 12526
+            },
+            {
+              "context": "commitlint / commitlint",
+              "integration_id": 15368
+            }
+          ]
+        },
+        "ruleset_source_type": "Repository",
+        "ruleset_source": "Hexalith/Hexalith.Builds",
+        "ruleset_id": 19196298
+      }
+    ],
+    "stderr": ""
+  }
+}
