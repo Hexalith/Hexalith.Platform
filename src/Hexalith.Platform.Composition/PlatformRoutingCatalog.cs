@@ -28,6 +28,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
         string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
+            : options.CurrentOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
             : options.PartiesRunProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)
             : options.QualificationOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options)
             : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
@@ -80,7 +81,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string request = Path.Combine(build, "request.json");
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
-            qualificationCohort,
+            qualificationCohort, currentOwnerArtifacts = options.CurrentOwnerProof?.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
@@ -96,6 +97,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             if (run.ExitCode != 0 || run.TimedOut) throw new InvalidDataException($"Owner routing catalog generation refused; see {Path.Combine(build, "generation.log")}.");
             byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
             using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(pending, "receipt.json")));
+            options.CurrentOwnerProof?.VerifyReader(receipt.RootElement);
             string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
             if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
             var catalog = RouteCatalogCodec.Decode(bytes, root);
@@ -106,6 +108,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
                 System.IO.Directory.Delete(pending, true);
             }
             else System.IO.Directory.Move(pending, target);
+            if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), File.ReadAllBytes(Path.Combine(target, "receipt.json")));
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
                 receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
                 receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());

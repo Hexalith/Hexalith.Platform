@@ -85,6 +85,11 @@ public static class PlatformServerBindings
                 if (!privateRunnerGateway && !(options.Mapping with { Entries = [source], PlatformIdentity = null }).ContainsProject(project))
                     throw Failure(module, identity, project, "mapped project is missing or physically outside its owner root");
             }
+            else if (identity == "parties/domain" && options.CurrentOwnerProof is { } current)
+            {
+                if (!current.Matches(options)) throw Failure(module, identity, "project", "current owner authority changed");
+                project = PlatformCurrentOwnerProof.OwnerProject(options);
+            }
             else if (identity == "eventstore/gateway")
             {
                 project = options.EventStoreSeedProject;

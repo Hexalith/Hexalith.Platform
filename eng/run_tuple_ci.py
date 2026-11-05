@@ -222,7 +222,7 @@ def main():
                 counts = ET.parse(xml).getroot().find("assembly").attrib
                 if int(counts["total"]) != group["requiredCount"] or int(counts["total"]) <= 0 or int(counts["passed"]) != int(counts["total"]) or any(int(counts.get(key, "0")) for key in ["failed", "errors", "skipped", "not-run"]):
                     raise ValueError("Incomplete/nonpassing required suite: " + project.stem)
-                result["tests"].append({"project": str(project.relative_to(ROOT)), "counts": counts})
+                result["tests"].append({"project": str(project.relative_to(ROOT)), "purpose": group.get("purpose", "recorded-tuple-boundary"), "selectors": group["selectors"], "platformSource": revision, "counts": counts})
             if sum(int(group["counts"]["passed"]) for group in result["tests"]) != required_total:
                 raise ValueError("Declared required test total did not execute.")
         except BaseException:

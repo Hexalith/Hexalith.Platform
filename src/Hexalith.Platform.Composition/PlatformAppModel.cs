@@ -106,7 +106,9 @@ public static class PlatformAppModel
             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
         };
         if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
-            options = options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
+            options = plan.SelectedTests.Any(test => test.Name == PlatformCurrentOwnerProof.Profile)
+                ? options with { CurrentOwnerProof = PlatformCurrentOwnerProof.Create(options, signingKey, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode) }
+                : options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
         Compose(builder, configureOptions(options));
     }
 
@@ -115,7 +117,7 @@ public static class PlatformAppModel
     {
         if (options.Mapping.Mode == WorkspaceMode.Package && options.RunPlan?.PlatformActiveModule == "parties")
         {
-            if (workspace != options.RunPlan.Workspace || options.PartiesRunProof?.Matches(options) != true)
+            if (workspace != options.RunPlan.Workspace || (options.PartiesRunProof?.Matches(options) != true && options.CurrentOwnerProof?.Matches(options) != true))
                 throw new InvalidDataException("The ordinary Parties package snapshot requires its unchanged trusted parent proof.");
             return;
         }
@@ -195,7 +197,7 @@ public static class PlatformAppModel
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
-                    servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts));
+                    servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts, options));
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
@@ -281,9 +283,11 @@ public static class PlatformAppModel
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile", "-p:GeneratePackageOnBuild=false");
-                    if (options.UsePrebuiltProjects) project.WithArgs("--no-build", "--no-restore");
+                    if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
+                    else if (options.CurrentOwnerProof is { } measured && server.ResourceId == "parties")
+                        project.WithArgs("--artifacts-path", measured.Artifacts);
                     else if (options.RunPlan?.SelectedTest is not null)
                         project.WithArgs("--artifacts-path", Path.Combine(options.RunPlan.Workspace, "project-builds", server.ResourceId));
                     if (server.ResourceId == "timesheets")
@@ -301,7 +305,7 @@ public static class PlatformAppModel
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
-                    foreach (KeyValuePair<string, string> pair in SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace)) project.WithEnvironment(pair.Key, pair.Value);
+                    foreach (KeyValuePair<string, string> pair in SourceMappingMaterializer.Environment(options.Mapping, options.CurrentOwnerProof is { } currentMapping && server.ResourceId == "parties" ? currentMapping.MappingWorkspace : mappingWorkspace)) project.WithEnvironment(pair.Key, pair.Value);
                     projects.Add(server.ResourceId, project);
                 }
                 else

@@ -1,0 +1,86 @@
+namespace Hexalith.Platform.Composition.Tests;
+
+using System.Security.Cryptography;
+using System.Text.Json;
+using Hexalith.Builds.Tooling.Runtime;
+using Shouldly;
+using Xunit;
+
+/// <summary>Checks additive declaration compatibility without granting any public package, image or runtime authority.</summary>
+public sealed class PlatformOrdinaryDeclarationCompatibilityTests
+{
+    /// <summary>The exact updated declaration retains each ordinary profile's existing parent proof.</summary>
+    [Theory]
+    [InlineData("platform-package")]
+    [InlineData("lifecycle-package")]
+    public void UpdatedDeclarationRetainsOrdinaryPurpose(string profile)
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformCompositionOptions options = Updated(fixture, profile);
+        PlatformPartiesRunProof proof = PlatformPartiesRunProof.Create(options, fixture.Key);
+        proof.Matches(options).ShouldBeTrue();
+        proof.MatchesCurrent(options).ShouldBeFalse();
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(options.RunPlan!.PlatformDeclarationHash).ShouldBeTrue();
+    }
+
+    /// <summary>The actual published producer uses uppercase hex without changing the measured declaration bytes.</summary>
+    [Fact]
+    public async Task ProducerUppercaseHashesRetainTheSameFiniteDeclaration()
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformCompositionOptions options = Updated(fixture, "platform-package");
+        ModuleTestSelection selected = options.RunPlan!.SelectedTest! with { ManifestHash = PlatformCurrentOwnerProof.DeclarationHash.ToUpperInvariant() };
+        CompositionRunPlan plan = options.RunPlan with { PlatformDeclarationHash = selected.ManifestHash, SelectedTest = selected, SelectedTests = [selected] };
+        await CompositionDocumentStore.WriteAsync(Path.Combine(plan.Workspace, "plan.json"), plan, CancellationToken.None).ConfigureAwait(true);
+        options = options with { RunPlan = plan };
+        PlatformPartiesRunProof.Create(options, fixture.Key).Matches(options).ShouldBeTrue();
+    }
+
+    /// <summary>The compatibility set remains finite; changing only source bytes cannot acquire it.</summary>
+    [Fact]
+    public void OnlyTheTwoMeasuredDeclarationsAreCompatible()
+    {
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash).ShouldBeTrue();
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.DeclarationHash).ShouldBeTrue();
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(new string('0', 64)).ShouldBeFalse();
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(null).ShouldBeFalse();
+        const string LegacyAppHost = "23fbcd1b7e495a85920a44b1d7fd690cee69548dadd9ae02768d8d29b355577b";
+        const string LegacyTooling = "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000";
+        const string CurrentAppHost = "e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10";
+        const string CurrentTooling = "57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2";
+        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, LegacyTooling).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, CurrentTooling).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, CurrentTooling).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, LegacyTooling).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, new string('0', 64)).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(null, CurrentTooling).ShouldBeFalse();
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Options.RunPlan!).ShouldBeFalse();
+        PlatformCompositionOptions options = Updated(fixture, "platform-current-package");
+        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
+    }
+
+    private static PlatformCompositionOptions Updated(PlatformPartiesProofFixture fixture, string profile)
+    {
+        PlatformCompositionOptions options = fixture.Options;
+        string declaration = options.DeclarationPaths.Single();
+        using Stream original = typeof(PlatformOrdinaryDeclarationCompatibilityTests).Assembly.GetManifestResourceStream(
+            "Hexalith.Platform.Composition.Tests.Fixtures.parties-current-declaration.json")!;
+        using (FileStream target = File.Create(declaration)) original.CopyTo(target);
+        string hash = Hash(declaration);
+        hash.ShouldBe(PlatformCurrentOwnerProof.DeclarationHash);
+        using JsonDocument manifest = JsonDocument.Parse(File.ReadAllBytes(declaration));
+        var suite = manifest.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray().Single(test => test.GetProperty("name").GetString() == profile);
+        string entry = suite.GetProperty("entry").GetString()!;
+        string project = Path.Combine(options.Mapping.Root, entry);
+        Directory.CreateDirectory(Path.GetDirectoryName(project)!);
+        File.WriteAllText(project, "<Project />");
+        PlatformPartiesProofFixture.Commit(options.Mapping.Root);
+        ModuleTestSelection selected = options.RunPlan!.SelectedTest! with { Name = profile, Entry = entry, EntryHash = Hash(project), ManifestHash = hash };
+        CompositionRunPlan plan = options.RunPlan with { PlatformDeclarationHash = hash, SelectedTest = selected, SelectedTests = [selected] };
+        CompositionDocumentStore.WriteAsync(Path.Combine(plan.Workspace, "plan.json"), plan, CancellationToken.None).GetAwaiter().GetResult();
+        return options with { RunPlan = plan, PartiesRunProof = null };
+    }
+
+    private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
+}

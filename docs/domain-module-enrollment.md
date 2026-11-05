@@ -1,14 +1,28 @@
 # Enroll a domain module
 
 The module owner uses this kit to prepare enrollment in Platform. Static validation
-and the human demonstration are separate gates. This proposed Platform source
-pins the genuine published tool `4.44.3`, including ordinary declaration validation
-and the read-only `--adoption` report. Copy the exact pin from the selected direct
-Platform checkout as described below; the [tuple binding](../eng/builds-tuple.json)
+and the human demonstration are separate gates. Select the exact published tool
+from the chosen direct Platform checkout, including ordinary declaration validation
+and the read-only `--adoption` report. Copy that source-specific pin as described
+below; the [tuple binding](../eng/builds-tuple.json)
 records its public package and source identities. The original
 [enrollment release evidence](../_bmad-output/implementation-artifacts/evidence/1-13/README.md)
 remains historical. Source/component checks and published tooling leave the
 owner's live SM-2 demonstration separately unverified.
+
+The same-code legacy source L preserves Builds `4.44.3`/fc212224, Tenants `7.0.2`
+and its original 349 controls. Current model M prepares a distinct private
+source-owned Parties/SDK `4.1.0`/Tenants `7.0.4` purpose with 253 primary cases;
+M selects genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, from successful normal
+[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
+after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
+Its exact pin/floor are `4.44.4`; the selected tuple supplies its authenticated
+catalog, signed validation pair and archive/inventory identities. Shared code,
+tests, helpers, workflows and docs must match between committed sources.
+Their eight bounded metadata differences grant no binary-equivalence or current
+runtime acceptance claim. Do not substitute L's historical public reader/image
+receipts for M's private artifact observations and live native qualification.
 
 ## 1. Declare and initialize the minimum workspace
 

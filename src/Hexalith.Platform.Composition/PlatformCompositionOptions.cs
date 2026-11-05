@@ -29,6 +29,9 @@ public sealed record PlatformCompositionOptions
     /// <summary>Gets the separate nonserialized ordinary-Parties proof from the trusted key-bearing runner handoff.</summary>
     [System.Text.Json.Serialization.JsonIgnore]
     internal PlatformPartiesRunProof? PartiesRunProof { get; init; }
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    internal PlatformCurrentOwnerProof? CurrentOwnerProof { get; init; }
     /// <summary>Gets the explicitly selected module class. Known reference technical owners need no override.</summary>
     public bool? DomainModule { get; init; }
     /// <summary>Gets the explicit Development/source-mode Timesheets host opt-in.</summary>

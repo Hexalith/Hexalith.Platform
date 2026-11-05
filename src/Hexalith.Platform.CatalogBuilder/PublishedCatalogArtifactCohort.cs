@@ -15,6 +15,7 @@ internal static class PublishedCatalogArtifactCohort
     internal const string CurrentName = "eventstore-4.1.0-tenants-7.0.2";
     /// <summary>The complete ordinary-Parties public reader with the newly selected SDK/Tenants pair.</summary>
     internal const string CurrentFullPartiesName = "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memories-3.0.23";
+    internal const string CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.23";
     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
     {
         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
@@ -48,6 +49,14 @@ internal static class PublishedCatalogArtifactCohort
     // M23, P3 and Hexalith.McpCli2.0 remain the same authenticated public owners in both SDK/Tenants cohorts.
     private static readonly FrozenDictionary<string, string> _currentFullPartiesHashes = _currentHashes
         .Concat(_fullPartiesHashes.Where(pair => !_hashes.ContainsKey(pair.Key))).ToFrozenDictionary(StringComparer.Ordinal);
+
+    private static readonly FrozenDictionary<string, string> _currentOwnerHashes = _currentFullPartiesHashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) && !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["Hexalith.Tenants.Contracts"] = "6758c6691127f0f480d1a84860de621bd610f60d7ef1b6c5fe9e5a768283f983",
+            ["Hexalith.Tenants.Server"] = "44187842f060b1c7bd8a4cff3bf7a3c69c1eaebb0aae9267b61a401cc41d27a3",
+        }).ToFrozenDictionary(StringComparer.Ordinal);
 
     /// <summary>Selects only complete measured version pairs; unknown, mixed and near-match pairs carry no authority.</summary>
     internal static string? ForVersions(string sdk, string tenants, bool fullParties = false) => (sdk, tenants, fullParties) switch
@@ -96,6 +105,8 @@ internal static class PublishedCatalogArtifactCohort
         ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
         : throw new InvalidDataException("The requested full public artifact cohort is unavailable.");
 
+    internal static IReadOnlyList<string> VerifyCurrentReferences() => _currentOwnerHashes.Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), CurrentOwnerName)).ToArray();
+
     /// <summary>Verifies a loaded owner or SDK artifact before reading its attributes or invoking its factory.</summary>
     internal static string Verify(Assembly assembly, string cohort = Name)
     {
@@ -107,12 +118,32 @@ internal static class PublishedCatalogArtifactCohort
         return assembly.Location;
     }
 
+    internal static void VerifyCurrentSdkFile(string path, string digest)
+    {
+        string name = AssemblyName.GetAssemblyName(path).Name!;
+        if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !_currentOwnerHashes.TryGetValue(name, out string? expected)
+            || digest != expected || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))) != expected)
+            throw new InvalidDataException("The current owner must load the exact public SDK bodies.");
+    }
+
+    internal static void VerifyCurrentReferenceReceipt(IReadOnlyList<(string Path, string Hash)> artifacts)
+    {
+        foreach (var expected in _currentOwnerHashes)
+        {
+            var matches = artifacts.Where(item => AssemblyName.GetAssemblyName(item.Path).Name == expected.Key).ToArray();
+            if (matches.Length != 1 || matches[0].Hash != expected.Value
+                || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(matches[0].Path))) != expected.Value)
+                throw new InvalidDataException("The current reader receipt differs from the immutable public reference cohort.");
+        }
+    }
+
     private static IReadOnlyDictionary<string, string> Hashes(string cohort) => cohort switch
     {
         Name => _hashes,
         FullPartiesName => _fullPartiesHashes,
         CurrentName => _currentHashes,
         CurrentFullPartiesName => _currentFullPartiesHashes,
+        CurrentOwnerName => _currentOwnerHashes,
         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
     };
 }
