@@ -26,6 +26,7 @@ public sealed class PlatformCurrentOwnerPackageTests
         finally { PlatformCurrentOwnerProof.PreparedObserver.Value = previousObserver; }
         prepared.ShouldBe(1, "The actual build/pack/final-reader producer must invoke the tested final revision guard before issuance.");
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
+        proof.SourceRevision.ShouldBe(PlatformPartiesProofFixture.Git(options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path!, "rev-parse", "HEAD"));
         proof.Matches(options).ShouldBeTrue();
         options.PartiesRunProof.ShouldBeNull();
         PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull("The selected new tuple is not an admitted full public Parties cohort.");
@@ -105,15 +106,6 @@ public sealed class PlatformCurrentOwnerPackageTests
 
     private static PlatformCompositionOptions Capture(PlatformPartiesPackageFixture fixture)
     {
-        PlatformCompositionOptions? captured = null;
-        var builder = PlatformPartiesPackageFixture.Builder();
-        Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
-        {
-            captured = options;
-            options.CurrentOwnerProof!.Matches(options).ShouldBeTrue();
-            throw new InvalidOperationException("Expected measured runner authority; stop before resource effects.");
-        })).Message.ShouldBe("Expected measured runner authority; stop before resource effects.");
-        builder.Resources.ShouldBeEmpty();
-        return captured!;
+        return fixture.CaptureCurrent();
     }
 }

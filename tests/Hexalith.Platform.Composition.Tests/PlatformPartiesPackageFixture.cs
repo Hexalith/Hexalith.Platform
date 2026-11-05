@@ -33,6 +33,16 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         "registry.hexalith.com/parties@sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
     };
 
+    /// <summary>The six genuine current public images; the private current Parties executable is never relabeled as a public image.</summary>
+    internal static IReadOnlySet<string> CurrentImages { get; } = Images.Where(image => !image.Contains("/tenants", StringComparison.Ordinal)
+        && !image.Contains("/parties@", StringComparison.Ordinal)).Concat(
+    [
+        "registry.hexalith.com/tenants@sha256:712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c",
+        "registry.hexalith.com/tenants-api@sha256:39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2",
+    ]).ToHashSet(StringComparer.Ordinal);
+
+    private IReadOnlySet<string> SelectedImages => Plan.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile ? CurrentImages : Images;
+
     /// <summary>Gets the independently owned private workspace; no source checkout is copied or edited.</summary>
     internal string Workspace { get; }
     /// <summary>Gets the actual selected declaration/test/mapping handoff persisted by the fixture.</summary>
@@ -123,7 +133,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
 
     /// <summary>Runs the actual signed host's validation-only transport, stopping at an effect-free image-probe executable.</summary>
     /// <param name="completeCatalog">Whether the validation-only host proceeds through the real catalog using only the inert image probe.</param>
-    internal async Task<CompositionProcessResult> RunPublishedValidationAsync(bool completeCatalog = false)
+    /// <param name="signingKey">An explicit malformed-key negative control; omission preserves the opaque real parent key.</param>
+    internal async Task<CompositionProcessResult> RunPublishedValidationAsync(bool completeCatalog = false, string? signingKey = null)
     {
         string host = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "Hexalith.Builds.Module.AppHost.dll");
         File.Exists(host).ShouldBeTrue("The genuine published AppHost is mandatory; there is no source fallback.");
@@ -133,9 +144,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         string log = Path.Combine(probes, "images.txt");
         // Never contacts a registry. Fail on the seventh exact inspect, before rendering or model allocation.
         string script = "#!/bin/sh\n[ \"$#\" = 3 ] && [ \"$1\" = manifest ] && [ \"$2\" = inspect ] || exit 90\n"
-            + "case \"$3\" in\n" + string.Join("|", Images.Order(StringComparer.Ordinal)) + ") ;;\n*) exit 91 ;;\nesac\n"
+            + "case \"$3\" in\n" + string.Join("|", SelectedImages.Order(StringComparer.Ordinal)) + ") ;;\n*) exit 91 ;;\nesac\n"
             + "printf '%s\\n' \"$3\" >> '" + log + "'\n"
-            + (completeCatalog ? string.Empty : "[ \"$(wc -l < '" + log + "')\" -lt 7 ] || exit 83\n")
+            + (completeCatalog ? string.Empty : "[ \"$(wc -l < '" + log + "')\" -lt " + SelectedImages.Count + " ] || exit 83\n")
             + "printf '{}\\n'\n";
         await File.WriteAllTextAsync(executable, script, TestContext.Current.CancellationToken);
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(executable, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
@@ -143,7 +154,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             new Dictionary<string, string>
             {
                 [CompositionEnvironment.PlanPath] = Path.Combine(Workspace, "plan.json"),
-                [CompositionEnvironment.SigningKey] = _key,
+                [CompositionEnvironment.SigningKey] = signingKey ?? _key,
                 [CompositionEnvironment.RunId] = Plan.RunId,
                 [CompositionEnvironment.DaprRuntimePath] = Path.Combine(Plan.DaprHome, ".dapr", "bin"),
                 ["DOTNET_ENVIRONMENT"] = "Development",
@@ -166,7 +177,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         result.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
         result.ErrorOutput.ShouldContain("is unavailable from its released registry");
         File.ReadAllLines(Path.Combine(Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
-            .ShouldBe(Images.Order(StringComparer.Ordinal));
+            .ShouldBe(SelectedImages.Order(StringComparer.Ordinal));
         Directory.Exists(Path.Combine(Workspace, "platform-components")).ShouldBeFalse();
         if (Plan.ResourceClaimStateDirectory is not null) Directory.Exists(Plan.ResourceClaimStateDirectory).ShouldBeFalse();
     }
@@ -204,6 +215,20 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Invokes the actual key-bearing entry without exposing or replacing its private key.</summary>
     internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure, CompositionRunPlan? suppliedPlan = null)
         => PlatformAppModel.ComposeRun(builder, suppliedPlan ?? Plan, _key, Seed, configure);
+
+    /// <summary>Captures genuine measured private artifacts at the normal entry callback, without composing or starting resources.</summary>
+    internal PlatformCompositionOptions CaptureCurrent()
+    {
+        var builder = Builder();
+        Should.Throw<InvalidOperationException>(() => Compose(builder, options =>
+        {
+            Options = options;
+            options.CurrentOwnerProof!.Matches(options).ShouldBeTrue();
+            throw new InvalidOperationException("Expected measured runner authority; stop before resource effects.");
+        })).Message.ShouldBe("Expected measured runner authority; stop before resource effects.");
+        builder.Resources.ShouldBeEmpty();
+        return Options;
+    }
 
     /// <summary>Requires zero model resources and no rendering from an entry-only control.</summary>
     internal void AssertNoEffects(IDistributedApplicationBuilder builder)

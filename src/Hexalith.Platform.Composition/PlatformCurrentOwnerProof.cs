@@ -19,12 +19,14 @@ internal sealed class PlatformCurrentOwnerProof
     private readonly string _receipt;
     private readonly string _seal;
     private readonly byte[] _key;
+    private readonly PlatformCurrentOwnerSourceState _source;
 
     private PlatformCurrentOwnerProof(PlatformCompositionOptions options, string key, string directory, IReadOnlyDictionary<string, string> bodies,
-        IReadOnlyDictionary<string, string> files, string revision)
+        IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
     {
         _parent = PlatformPartiesRunProof.CreateCurrent(options, key);
-        if (Git(ActiveRoot(options), "rev-parse", "HEAD") != revision) throw Refusal();
+        source.RequireUnchanged(ActiveRoot(options), source.Revision);
+        _source = source;
         Directory = directory;
         Bodies = bodies;
         PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
@@ -32,7 +34,7 @@ internal sealed class PlatformCurrentOwnerProof
         _key = Convert.FromBase64String(key);
         _receipt = JsonSerializer.Serialize(new
         {
-            profile = Profile, revision, options.Mapping.ContentHash,
+            profile = Profile, revision = source.Revision, options.Mapping.ContentHash,
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
             platform = options.Mapping.PlatformIdentity, configuration = "Release", bodies, files,
         });
@@ -47,6 +49,8 @@ internal sealed class PlatformCurrentOwnerProof
     internal string MappingWorkspace => Path.Combine(Directory, "owner-mapping");
     internal string Cache => Path.Combine(Directory, "reader-packages");
     internal string ReaderConfig => Path.Combine(Directory, "reader.nuget.config");
+    /// <summary>Gets the immutable pre-build source identity retained by the proof and readiness observation.</summary>
+    internal string SourceRevision => _source.Revision;
     internal IReadOnlyDictionary<string, string> Bodies { get; }
     internal IReadOnlyDictionary<string, string> PackageArchives { get; }
 
@@ -61,11 +65,8 @@ internal sealed class PlatformCurrentOwnerProof
         if (Hash(options.DeclarationPaths.Single()) != DeclarationHash) throw Refusal();
         string active = ActiveRoot(options);
         string revision = Git(active, "rev-parse", "HEAD");
-        var inputs = PlatformCurrentOwnerSourceInventory.Read(active, revision, options.RunPlan!.StartupDeadlineUtc)
-            .Select(name => Path.Combine(active, name))
-            .Where(path => Path.GetExtension(path) is ".cs" or ".csproj" or ".props" or ".targets" or ".json"
-                || Path.GetFileName(path) is ".editorconfig" or ".gitattributes" or "nuget.config" or "NuGet.Config")
-            .ToDictionary(path => path, Hash, StringComparer.Ordinal);
+        PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, options.RunPlan!.StartupDeadlineUtc);
+        IReadOnlyDictionary<string, string> inputs = source.Inputs;
         string project = OwnerProject(options);
         string directory = Path.Combine(options.RunPlan!.Workspace, "current-owner", Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(directory);
@@ -153,13 +154,13 @@ internal sealed class PlatformCurrentOwnerProof
             files[asset] = Hash(asset);
         }
         foreach (string path in System.IO.Directory.GetFiles(ownerMapping, "*", SearchOption.AllDirectories)) files[path] = Hash(path);
-        if (inputs.Any(pair => Hash(pair.Key) != pair.Value) || Git(active, "rev-parse", "HEAD") != revision) throw Refusal();
+        source.RequireUnchanged(active, revision);
         string readerPreflight = Path.Combine(directory, "reader-preflight");
         CompositionWorkspace.CreatePrivateDirectory(readerPreflight);
         _ = PlatformPackageCatalogReader.Prepare(new System.Xml.Linq.XDocument(new System.Xml.Linq.XElement("Project")), options,
             options.RunPlan.Workspace, readerPreflight, DateTimeOffset.UtcNow + PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan.StartupDeadlineUtc, DateTimeOffset.UtcNow));
-        VerifyPreparedRevision(active, revision);
-        return new(options, key, directory, bodies, files, revision);
+        VerifyPreparedRevision(active, revision, source);
+        return new(options, key, directory, bodies, files, source);
 
         void Run(string[] command, string log)
         {
@@ -173,10 +174,12 @@ internal sealed class PlatformCurrentOwnerProof
     /// <summary>Requires the pinned revision after final real reader preparation, before any proof can be issued.</summary>
     /// <param name="root">The actual active owner root.</param>
     /// <param name="revision">The immutable revision whose inputs and bodies were measured.</param>
-    internal static void VerifyPreparedRevision(string root, string revision)
+    /// <param name="source">The complete pre-build input state, or a fresh component-only boundary capture.</param>
+    internal static void VerifyPreparedRevision(string root, string revision, PlatformCurrentOwnerSourceState? source = null)
     {
+        source ??= PlatformCurrentOwnerSourceState.Capture(root, revision, null);
         PreparedObserver.Value?.Invoke();
-        if (Git(root, "rev-parse", "HEAD") != revision) throw Refusal();
+        source.RequireUnchanged(root, revision);
     }
 
     internal void VerifyReader(JsonElement receipt)
@@ -195,6 +198,7 @@ internal sealed class PlatformCurrentOwnerProof
     {
         try
         {
+            _source.RequireUnchanged(ActiveRoot(options), SourceRevision);
             return _parent.MatchesCurrent(options) && options.Projects == PlatformServerBindings.ReferenceProjects
                 && _files.All(pair => Hash(pair.Key) == pair.Value)
                 && Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt))) == _seal;

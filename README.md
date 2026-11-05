@@ -47,7 +47,7 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.23` and
-258 primary cases. M selects genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+269 primary cases. M selects genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
 at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, published by successful normal
 [release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
 after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
