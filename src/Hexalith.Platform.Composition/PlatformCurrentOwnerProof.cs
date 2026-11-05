@@ -199,9 +199,9 @@ internal sealed class PlatformCurrentOwnerProof
     {
         try
         {
+            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects) return false;
             _source.RequireUnchanged(ActiveRoot(options), SourceRevision);
-            return _parent.MatchesCurrent(options) && options.Projects == PlatformServerBindings.ReferenceProjects
-                && _files.All(pair => Hash(pair.Key) == pair.Value)
+            return _files.All(pair => Hash(pair.Key) == pair.Value)
                 && Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt))) == _seal;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or InvalidDataException) { return false; }

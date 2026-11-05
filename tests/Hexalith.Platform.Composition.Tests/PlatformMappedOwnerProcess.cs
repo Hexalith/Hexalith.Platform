@@ -10,8 +10,10 @@ internal sealed class PlatformMappedOwnerProcess : IAsyncDisposable
 
     private PlatformMappedOwnerProcess(Process process) => _process = process;
 
+    /// <summary>Gets the actual inert child PID published to the unstarted component model.</summary>
     internal int Id => _process.Id;
 
+    /// <summary>Maps the supplied actual files read-only and confirms the child's readiness without starting any module.</summary>
     internal static async Task<PlatformMappedOwnerProcess> StartAsync(IEnumerable<string> paths)
     {
         Process process = new() { StartInfo = new ProcessStartInfo("python3")
@@ -35,6 +37,7 @@ internal sealed class PlatformMappedOwnerProcess : IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         try

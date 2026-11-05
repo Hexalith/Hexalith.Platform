@@ -54,7 +54,13 @@ public sealed class PlatformCurrentOwnerPreparationTests
                 new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-component-key", null, "unused-component-issuer"), null!, expectedHosts, options);
             using CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
             bound.CancelAfter(TimeSpan.FromSeconds(30));
-            var refusal = await Should.ThrowAsync<InvalidDataException>(() => preparation.PrepareAsync(app.Services, bound.Token));
+            Exception? failure = await Record.ExceptionAsync(() => preparation.PrepareAsync(app.Services, bound.Token));
+            TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
+            {
+                fault, actualPreparationFailureType = failure?.GetType().Name,
+                sourceValidatedProgressPublished = File.Exists(Path.Combine(structural, "preparation-progress.json")),
+            }));
+            var refusal = failure.ShouldBeOfType<InvalidDataException>();
             refusal.Message.ShouldContain(fault == "absent-main" ? "not uniquely mapped" : "differs from its measured Release body");
             foreach (string file in new[] { "current-owner-observation.json", "preparation-progress.json", "preparation.json" })
                 File.Exists(Path.Combine(structural, file)).ShouldBeFalse();
