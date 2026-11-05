@@ -30,7 +30,7 @@ using Microsoft.Extensions.Options;
 
 /// <summary>Prepares synthetic owner state through the real native APIs before the runner publishes readiness.</summary>
 internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, string catalogDirectory, string signingKey,
-    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding, IReadOnlyDictionary<string, string> expectedCatalogHosts) : ICompositionRunPreparation
+    PlatformTenantBootstrapAccess tenantBootstrap, PlatformServerBinding memoriesBinding, IReadOnlyDictionary<string, string> expectedCatalogHosts, PlatformCompositionOptions? composition = null) : ICompositionRunPreparation
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
 
@@ -109,6 +109,8 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
             ?? throw new InvalidOperationException("The complete committed catalog activation is absent.");
         PlatformCommittedCatalogProof.Validate(activation, canonical, scope.RoutingCatalogRoot, plan.AttemptId, _expectedCatalogHosts, readbacks);
 #endif
+        if (composition?.CurrentOwnerProof is not null)
+            await PlatformCurrentOwnerObservation.CaptureAsync(services, composition, catalogDirectory, cancellationToken).ConfigureAwait(false);
         await WriteProgressAsync("source-validated", null, cancellationToken).ConfigureAwait(false);
         DateTimeOffset now = DateTimeOffset.UtcNow;
         TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, now);

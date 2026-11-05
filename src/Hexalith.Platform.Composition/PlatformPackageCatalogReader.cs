@@ -47,7 +47,8 @@ internal static class PlatformPackageCatalogReader
         string? initial = (string?)root.Attribute("InitialTargets");
         root.SetAttributeValue("InitialTargets", "ValidatePrivateReaderCatalogBeforeRestore" + (string.IsNullOrEmpty(initial) ? "" : ";" + initial));
         return ["-p:AlternateCommonProps=" + common, "-p:ImportDirectoryPackagesProps=false", "-p:DirectoryPackagesPropsPath=" + catalog,
-            "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true"];
+            "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
+            .. options.CurrentOwnerProof is { } current ? new[] { "-p:RestoreConfigFile=" + current.ReaderConfig, "-p:RestorePackagesPath=" + current.Cache } : Array.Empty<string>()];
     }
 
     private static string Escape(string value) => value.Replace("%", "%25", StringComparison.Ordinal).Replace("$", "%24", StringComparison.Ordinal)

@@ -14,6 +14,10 @@ internal static class PlatformPartiesPackageCatalogQualification
     /// <summary>The independently published backend declaration at source639; it has no lifecycle suite.</summary>
     internal const string ReleasedDeclarationHash = "86002eeb916c77bd753a3c618ce394125794baf421315604c9f551b762624504";
 
+    /// <summary>Only these exact old and additive-suite declaration bytes retain ordinary profile compatibility.</summary>
+    internal static bool IsOrdinaryDeclaration(string? hash) => string.Equals(hash, ActiveDeclarationHash, StringComparison.OrdinalIgnoreCase)
+        || string.Equals(hash, PlatformCurrentOwnerProof.DeclarationHash, StringComparison.OrdinalIgnoreCase);
+
     private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _images = new Dictionary<string, (string, string)>(StringComparer.Ordinal)
     {
         ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.0", "2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"),
@@ -33,6 +37,14 @@ internal static class PlatformPartiesPackageCatalogQualification
             ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.2", "2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentOwnerImages = _currentImages
+        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
+        {
+            ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.4", "712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c"),
+            ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.4", "39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2"),
+        }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
@@ -42,27 +54,33 @@ internal static class PlatformPartiesPackageCatalogQualification
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun, bool linux, Architecture architecture)
     {
+        bool current = options.CurrentOwnerProof?.Matches(options) == true;
         string? cohort = null;
+        string? ownerHash = options.RunPlan?.PlatformDeclarationHash;
+        if (!current && !IsOrdinaryDeclaration(ownerHash)) throw Refusal();
         if (!developmentRun || !linux || architecture != Architecture.X64
-            || options.PartiesRunProof?.Matches(options) != true
+            || (!current && options.PartiesRunProof?.Matches(options) != true)
             || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal)
                 .SequenceEqual(["eventstore", "memories", "parties", "tenants"], StringComparer.Ordinal)
             || !servers.Select(Identity).Order(StringComparer.Ordinal).SequenceEqual(_images.Keys.Append("eventstore/gateway").Order(StringComparer.Ordinal), StringComparer.Ordinal)
             || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
-            || !Snapshot(options, declarations, "parties", ActiveDeclarationHash)
-            || (cohort = PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
+            || !Snapshot(options, declarations, "parties", current ? PlatformCurrentOwnerProof.DeclarationHash : ownerHash!.ToLowerInvariant())
+            || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
             || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
-            || !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
+            || !current && !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
             || !CompositionMatches(options, declarations)) throw Refusal();
-        IReadOnlyDictionary<string, (string Image, string Digest)> images = cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
+        IReadOnlyDictionary<string, (string Image, string Digest)> images = current ? _currentOwnerImages
+            : cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
         return servers.Select(server =>
         {
             if (Identity(server) == "eventstore/gateway")
                 return server.Image is null && server.ProjectPath == options.EventStoreSeedProject ? server : throw Refusal();
+            if (current && Identity(server) == "parties/domain")
+                return server.Image is null && server.ProjectPath == PlatformCurrentOwnerProof.OwnerProject(options) ? server : throw Refusal();
             var expected = images[Identity(server)];
             return server.Image == expected.Image && server.ImageDigest is null ? server with { ImageDigest = expected.Digest } : throw Refusal();
         }).ToArray();

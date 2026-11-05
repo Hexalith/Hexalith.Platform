@@ -55,6 +55,11 @@ internal static class PlatformPackageCatalogQualification
         => PublishedCatalogArtifactCohort.ForVersions(PlatformServerBindings.Version(options, "eventstore", "qualification"),
             PlatformServerBindings.Version(options, "tenants", "qualification"), fullParties);
 
+    internal static string? SelectCurrentOwnerCohort(PlatformCompositionOptions options)
+        => PlatformServerBindings.Version(options, "eventstore", "current qualification") == "4.1.0"
+            && PlatformServerBindings.Version(options, "tenants", "current qualification") == "7.0.4"
+            ? PublishedCatalogArtifactCohort.CurrentOwnerName : null;
+
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)
     {
         PlatformModuleDeclaration selected = declarations.Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);

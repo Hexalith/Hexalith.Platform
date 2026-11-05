@@ -28,13 +28,13 @@ if (qualified)
     string[] expected = qualificationName switch
     {
         PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
-        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.CurrentOwnerName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
         _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
     };
     if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
         .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
-    qualifiedArtifacts.AddRange(qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName
+    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName ? PublishedCatalogArtifactCohort.VerifyCurrentReferences() : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName
         ? PublishedCatalogArtifactCohort.VerifyFullParties(qualificationName) : PublishedCatalogArtifactCohort.VerifySdk(qualificationName!));
 }
 List<RouteContractDeclaration> declarations = [];
@@ -51,8 +51,19 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     adapters.Add(adapterAssembly.Location);
     if (qualified)
     {
-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(assembly, qualificationName!));
-        qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(adapterAssembly, qualificationName!));
+        foreach (Assembly artifact in new[] { assembly, adapterAssembly })
+        {
+            if (qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
+            {
+                var measured = input.GetProperty("currentOwnerArtifacts");
+                if (measured.EnumerateObject().Count() != 2
+                    || !measured.TryGetProperty(artifact.GetName().Name!, out var expected)
+                    || expected.GetString() != Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(artifact.Location))))
+                    throw new InvalidDataException("The private current owner reader loaded different measured artifacts.");
+                qualifiedArtifacts.Add(artifact.Location);
+            }
+            else qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(artifact, qualificationName!));
+        }
     }
     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
     declarations.AddRange(routes);

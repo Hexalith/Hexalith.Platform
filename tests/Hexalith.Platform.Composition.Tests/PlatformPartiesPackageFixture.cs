@@ -47,11 +47,13 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Requires the real full public bodies before resolving an explicitly prepared coherent workspace; there is no legacy or synthetic fallback.</summary>
     internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
     {
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName)
+        bool current = profile == PlatformCurrentOwnerProof.Profile;
+        string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             .ShouldBeTrue("Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBeTrue();
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
+        if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBeTrue();
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -60,7 +62,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             (File.Exists(marker) || Directory.Exists(marker)).ShouldBeTrue("Direct dependencies must already be prepared; this test must not initialize them.");
         }
         string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
-        Hash(manifest).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
+        Hash(manifest).ShouldBe(current ? PlatformCurrentOwnerProof.DeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
         mapping.Root.ShouldBe(root);
         mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
@@ -93,7 +95,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", "7.0.2"), ("memories", "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", "3.0.23"), ("parties", "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

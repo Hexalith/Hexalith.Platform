@@ -9,12 +9,14 @@ using Hexalith.Builds.Tooling.Workspace;
 /// <remarks>The ordinary plan has no issuer MAC. This proof preserves the verified parent handoff in memory; it is not candidate authority.</remarks>
 internal sealed class PlatformPartiesRunProof
 {
+    private readonly bool _currentOwner;
     private readonly string _optionsDigest;
     private readonly string _activeRevision;
     private readonly IReadOnlyDictionary<string, string> _files;
 
-    private PlatformPartiesRunProof(PlatformCompositionOptions options)
+    private PlatformPartiesRunProof(PlatformCompositionOptions options, bool currentOwner)
     {
+        _currentOwner = currentOwner;
         _optionsDigest = Digest(options);
         _activeRevision = Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD");
         _files = Inputs(options).Distinct(StringComparer.Ordinal).ToDictionary(path => path, Hash, StringComparer.Ordinal);
@@ -22,21 +24,32 @@ internal sealed class PlatformPartiesRunProof
 
     /// <summary>Checks actual parent plan, mapping, selected tests and source inputs before retaining their private in-memory binding.</summary>
     internal static PlatformPartiesRunProof Create(PlatformCompositionOptions options, string signingKey)
+        => Create(options, signingKey, currentOwner: false);
+
+    internal static PlatformPartiesRunProof CreateCurrent(PlatformCompositionOptions options, string signingKey)
+        => Create(options, signingKey, currentOwner: true);
+
+    private static PlatformPartiesRunProof Create(PlatformCompositionOptions options, string signingKey, bool currentOwner)
     {
         Span<byte> key = stackalloc byte[48];
         if (!Convert.TryFromBase64String(signingKey, key, out int size) || size != key.Length)
             throw Refusal();
         CryptographicOperations.ZeroMemory(key);
-        Validate(options);
-        return new(options);
+        Validate(options, currentOwner);
+        return new(options, currentOwner);
     }
 
     /// <summary>Refuses replay or mutable plan, source, mapping, declaration, configuration or test inputs before composition effects.</summary>
-    internal bool Matches(PlatformCompositionOptions options)
+    internal bool Matches(PlatformCompositionOptions options) => Matches(options, currentOwner: false);
+
+    internal bool MatchesCurrent(PlatformCompositionOptions options) => Matches(options, currentOwner: true);
+
+    private bool Matches(PlatformCompositionOptions options, bool currentOwner)
     {
+        if (_currentOwner != currentOwner) return false;
         try
         {
-            Validate(options);
+            Validate(options, _currentOwner);
             return Digest(options) == _optionsDigest && Git(ActiveRoot(options.Mapping), "rev-parse", "HEAD") == _activeRevision
                 && _files.All(pair => Hash(pair.Key) == pair.Value);
         }
@@ -46,7 +59,7 @@ internal sealed class PlatformPartiesRunProof
         }
     }
 
-    private static void Validate(PlatformCompositionOptions options)
+    private static void Validate(PlatformCompositionOptions options, bool currentOwner)
     {
         CompositionRunPlan plan = options.RunPlan ?? throw Refusal();
         SourceMapping mapping = options.Mapping;
@@ -67,7 +80,8 @@ internal sealed class PlatformPartiesRunProof
             throw Refusal();
         string activeRoot = ActiveRoot(mapping);
         string declaration = Path.Combine(activeRoot, "module", "hexalith.module-manifest.v2.json");
-        if (plan.PlatformDeclarationPaths[0] != declaration || !Hash(declaration).Equals(plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase))
+        if (plan.PlatformDeclarationPaths[0] != declaration || !Hash(declaration).Equals(plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase)
+            || !currentOwner && !PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(plan.PlatformDeclarationHash))
             throw Refusal();
         SourceMapping persisted = SourceMapping.LoadVerified(Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), mapping.ContentHash);
         if (persisted.ContentHash != mapping.ContentHash) throw Refusal();
@@ -76,7 +90,7 @@ internal sealed class PlatformPartiesRunProof
         if (CompositionDocumentStore.Serialize(recorded) != CompositionDocumentStore.Serialize(plan)
             && !(PlatformPartiesValidationContext.IsCurrentPublishedValidation(plan)
                 && PlatformPartiesValidationContext.IsExactClaimProjection(recorded, plan))) throw Refusal();
-        ValidateTests(plan, declaration, mapping);
+        ValidateTests(plan, declaration, mapping, currentOwner);
         SourceMappingEntry active = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties");
         SourceMappingEntry builds = mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds");
         string buildsRoot = builds.Origin switch
@@ -96,8 +110,9 @@ internal sealed class PlatformPartiesRunProof
             throw Refusal();
     }
 
-    private static void ValidateTests(CompositionRunPlan plan, string declaration, SourceMapping mapping)
+    private static void ValidateTests(CompositionRunPlan plan, string declaration, SourceMapping mapping, bool currentOwner)
     {
+        if (currentOwner && (plan.SelectedTests.Count != 1 || plan.SelectedTest?.Entry != PlatformCurrentOwnerProof.TestEntry)) throw Refusal();
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
         JsonElement tests = document.RootElement.GetProperty("modules").EnumerateArray()
             .Single(module => module.GetProperty("identity").GetProperty("moduleId").GetString() == "parties").GetProperty("tests");
@@ -108,7 +123,7 @@ internal sealed class PlatformPartiesRunProof
         foreach (ModuleTestSelection selected in plan.SelectedTests)
         {
             string entry = Path.GetFullPath(Path.Combine(ActiveRoot(mapping), selected.Entry));
-            if (selected.ModuleId != "parties" || selected.Mode != "package" || selected.Name is not ("platform-package" or "lifecycle-package")
+            if (selected.ModuleId != "parties" || selected.Mode != "package" || (currentOwner ? selected.Name != PlatformCurrentOwnerProof.Profile : selected.Name is not ("platform-package" or "lifecycle-package"))
                 || Path.IsPathRooted(selected.Entry) || !owner.ContainsProject(entry)
                 || Git(Path.GetDirectoryName(entry)!, "rev-parse", "--show-toplevel") != ActiveRoot(mapping)
                 || selected.Entry.StartsWith("references/", StringComparison.OrdinalIgnoreCase)
