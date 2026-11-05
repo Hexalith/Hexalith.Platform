@@ -1,21 +1,32 @@
 # Package catalog qualification
 
+The current private reference preparation binds genuine [Memories v3.0.24](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.24)
+at `859680b38a77f04cc8f81ab7a5fe7f40a617cc2a` ([release 42108808279](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42108808279))
+and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
+at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
+actually contain the measured public SDK `4.1.0` bodies. The historical public
+reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
+Genuine Builds `4.44.5` supplies the current catalog and paired validation bodies.
+This publication does not replace fresh same-code current/legacy CI, unchanged
+native runtime execution, persisted effects or exact cleanup. Public artifact
+measurement and source equivalence alone grant no current runtime qualification.
+
 The current private owner preparation uses `platform-current-package`, measured
 Release bodies from active Parties source, and authenticated released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.23` references. Its exact Parties declaration is
+Tenants `7.0.4` and Memories `3.0.24` references. Its exact Parties declaration is
 `d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
 No public Parties/7.0.4 cohort is admitted by this preparation. M selects genuine
-[Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
-at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, from successful normal
-[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
-and exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
-Its current tool pin/floor are `4.44.4`; catalog blob
-`5bd9ab8dd93358942eaa8d164c99ca2bd18f0204` and SHA-256
-`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`
+[Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
+at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, from successful normal
+[release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
+and exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268).
+Its current tool pin/floor are `4.44.5`; catalog blob
+`a5f653999932228ec15450f5251e67c4fff5bf20` and SHA-256
+`b61f70f09ab102e24ae5561de20a7398c42d7a9004067dd1e4c7ac29b3cadb9b`
 bind the released SDK4.1/T704 reference selection. Signed AppHost
-`e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10`
+`acac3d8ee71977f2f70fc5099510d69be695e2ff466f78e06ee9086d86c45066`
 is admitted only together with actual adjacent Tooling
-`57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2`;
+`445d9219c0670abff9550fa3c028c3ee00ffc4d9b3a4c07e5e14b078f035cbb4`;
 the historical pair remains separately admitted and cross-pair mixtures refuse.
 All public body/image authority maps remain finite and unchanged.
 

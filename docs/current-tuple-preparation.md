@@ -1,15 +1,26 @@
 # Current tuple preparation
 
+The current private reference preparation binds genuine [Memories v3.0.24](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.24)
+at `859680b38a77f04cc8f81ab7a5fe7f40a617cc2a` ([release 42108808279](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42108808279))
+and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
+at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
+actually contain the measured public SDK `4.1.0` bodies. The historical public
+reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
+Genuine Builds `4.44.5` supplies the current catalog and paired validation bodies.
+This publication does not replace fresh same-code current/legacy CI, unchanged
+native runtime execution, persisted effects or exact cleanup. Public artifact
+measurement and source equivalence alone grant no current runtime qualification.
+
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.23`, and 258 primary cases. M selects genuine
-[Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
-at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, published by successful normal
-[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
-after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800),
-with exact tool pin and supported floor `4.44.4`. The committed tuple records
-catalog blob `5bd9ab8dd93358942eaa8d164c99ca2bd18f0204`, catalog SHA-256
-`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`,
+Tenants `7.0.4` and Memories `3.0.24`, and 258 primary cases. M selects genuine
+[Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
+at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
+[release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
+after exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268),
+with exact tool pin and supported floor `4.44.5`. The committed tuple records
+catalog blob `a5f653999932228ec15450f5251e67c4fff5bf20`, catalog SHA-256
+`b61f70f09ab102e24ae5561de20a7398c42d7a9004067dd1e4c7ac29b3cadb9b`,
 and the actual signed archive, Tooling and inventory identities. Its measured
 validation pair is recorded below; hosted exact-source/native acceptance remains
 separate and required.
@@ -26,13 +37,25 @@ its exact descriptor in M. No nested checkout or dependency source fallback is
 permitted.
 
 The signed module archive SHA-256 is
-`d375583dba2800fcc76e4d013a102b59937470af87487f890fbd0926a37af294`.
+`8f42087c954fb37cacd28c483b9bb03b27cd4e1804d93ce7d8d7131a952e28cd`.
 Its AppHost body is
-`e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10`;
+`acac3d8ee71977f2f70fc5099510d69be695e2ff466f78e06ee9086d86c45066`;
 its root and adjacent g4-host Tooling bodies both are
-`57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2`.
-Admission requires this complete pair or the retained historical 4.44.3 pair;
+`445d9219c0670abff9550fa3c028c3ee00ffc4d9b3a4c07e5e14b078f035cbb4`.
+Admission requires this complete pair or the separately retained historical
+4.44.4 and 4.44.3 pairs;
 cross-pair mixtures and ordinary caller claim suppression remain refused.
+
+## Previous published Builds 4.44.4 tuple
+
+The preceding genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
+publication at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef` remains historical.
+Its signed archive SHA-256 is `d375583dba2800fcc76e4d013a102b59937470af87487f890fbd0926a37af294`;
+AppHost `e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10`
+and Tooling `57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2`
+remain admitted only as that complete pair. Its catalog SHA-256 is
+`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`.
+These previous receipts do not substitute for the current producer or runtime evidence.
 
 ## Historical released tuple and earlier preparation
 

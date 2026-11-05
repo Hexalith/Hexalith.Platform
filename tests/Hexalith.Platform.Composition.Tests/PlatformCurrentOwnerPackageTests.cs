@@ -34,7 +34,24 @@ public sealed class PlatformCurrentOwnerPackageTests
         options.Mapping.Entries.Where(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform"))
             .ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
         var declarations = PlatformDeclarationSet.Load(options);
-        var servers = PlatformPartiesPackageCatalogQualification.Bind(options, declarations, PlatformAppModel.Prepare(options), developmentRun: true);
+        var unbound = PlatformAppModel.Prepare(options);
+        var servers = PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true);
+        foreach (var expected in new[]
+        {
+            ("server", "memories", "7cbba1867709359bf7a4c5f115e8879bfbb9548cdf209947dc0f8c633ad859d7"),
+            ("domain", "memories-domain-service", "efbd5e1d37e8ac75c78855ae4f22664ea294b8f6e1a65e4a8c6f44c1efb5eacb"),
+            ("clock", "memories-access-telemetry-clock", "7da6f0849a1994513e126f3cbea50754c414be563d499850830e34c10ac411ef"),
+            ("telemetry", "memories-access-telemetry", "7c4f498dc7f7f0a2ab965efd05f76853f6f42a1b2513e3e0d94eeea96971620a"),
+        })
+        {
+            var actual = servers.Single(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && server.ServerId == expected.Item1);
+            actual.Image.ShouldBe("registry.hexalith.com/" + expected.Item2 + ":3.0.24");
+            actual.ImageDigest.ShouldBe(expected.Item3);
+            var stale = unbound.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && server.ServerId == expected.Item1
+                ? server with { Image = "registry.hexalith.com/" + expected.Item2 + ":3.0.23", ImageDigest = null } : server).ToArray();
+            Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, stale, developmentRun: true));
+            proof.Matches(options).ShouldBeTrue("A stale reference binding must be refused without changing the actual measured owner authority.");
+        }
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
         servers.Where(server => server.Image is not null).Count().ShouldBe(6);

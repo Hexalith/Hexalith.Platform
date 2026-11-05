@@ -1,5 +1,16 @@
 # Hexalith.Platform
 
+The current private reference preparation binds genuine [Memories v3.0.24](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.24)
+at `859680b38a77f04cc8f81ab7a5fe7f40a617cc2a` ([release 42108808279](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42108808279))
+and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
+at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
+actually contain the measured public SDK `4.1.0` bodies. The historical public
+reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
+Genuine Builds `4.44.5` supplies the current catalog and paired validation bodies.
+This publication does not replace fresh same-code current/legacy CI, unchanged
+native runtime execution, persisted effects or exact cleanup. Public artifact
+measurement and source equivalence alone grant no current runtime qualification.
+
 Platform-owned Aspire host for Hexalith domain modules.
 
 This repository is the **EXT-HOST-1** delivery target for Hexalith Agents: it owns
@@ -46,14 +57,14 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
-purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.23` and
-258 primary cases. M selects genuine [Builds v4.44.4](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.4)
-at `5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef`, published by successful normal
-[release 42077837054](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42077837054)
-after exact-source [CI 42073886800](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42073886800).
-Its pin and supported floor are `4.44.4`; its catalog Git blob is
-`5bd9ab8dd93358942eaa8d164c99ca2bd18f0204`, SHA-256
-`43a6668f2c54ed6f400cb3ac9a4bdbbe46dcad2ac0c58ea22cf6a17fcdde428c`.
+purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.24` and
+258 primary cases. M selects genuine [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
+at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
+[release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
+after exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268).
+Its pin and supported floor are `4.44.5`; its catalog Git blob is
+`a5f653999932228ec15450f5251e67c4fff5bf20`, SHA-256
+`b61f70f09ab102e24ae5561de20a7398c42d7a9004067dd1e4c7ac29b3cadb9b`.
 The tuple binds the observed signed archive, paired validation bodies and
 inventory; this publication does not establish current model/native acceptance.
 

@@ -142,8 +142,8 @@ internal sealed class PlatformCurrentOwnerProof
                     && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
                         || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != "4.1.0"
                         || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != "7.0.4"
-                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != "3.0.23"
-                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != "2.0.0")) throw Refusal();
+                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != "3.0.24"
+                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != "2.0.1")) throw Refusal();
                 if (library.Value.GetProperty("type").GetString() == "project")
                 {
                     string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(document.RootElement.GetProperty("project").GetProperty("restore").GetProperty("projectPath").GetString()!)!, library.Value.GetProperty("msbuildProject").GetString()!));

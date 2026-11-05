@@ -38,11 +38,15 @@ internal static class PlatformPartiesPackageCatalogQualification
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
     private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentOwnerImages = _currentImages
-        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal))
+        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal) && !pair.Key.StartsWith("memories/", StringComparison.Ordinal))
         .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
         {
             ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.4", "712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c"),
             ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.4", "39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2"),
+            ["memories/server"] = ("registry.hexalith.com/memories:3.0.24", "7cbba1867709359bf7a4c5f115e8879bfbb9548cdf209947dc0f8c633ad859d7"),
+            ["memories/domain"] = ("registry.hexalith.com/memories-domain-service:3.0.24", "efbd5e1d37e8ac75c78855ae4f22664ea294b8f6e1a65e4a8c6f44c1efb5eacb"),
+            ["memories/clock"] = ("registry.hexalith.com/memories-access-telemetry-clock:3.0.24", "7da6f0849a1994513e126f3cbea50754c414be563d499850830e34c10ac411ef"),
+            ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.24", "7c4f498dc7f7f0a2ab965efd05f76853f6f42a1b2513e3e0d94eeea96971620a"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
@@ -68,7 +72,7 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
             || !Snapshot(options, declarations, "parties", current ? PlatformCurrentOwnerProof.DeclarationHash : ownerHash!.ToLowerInvariant())
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
-            || !VersionsMatch(options) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
+            || !VersionsMatch(options, current) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             || !current && !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
@@ -86,7 +90,7 @@ internal static class PlatformPartiesPackageCatalogQualification
         }).ToArray();
     }
 
-    private static bool VersionsMatch(PlatformCompositionOptions options) => new[] { ("memories", "3.0.23"), ("parties", "3.0.0") }
+    private static bool VersionsMatch(PlatformCompositionOptions options, bool current) => new[] { ("memories", current ? "3.0.24" : "3.0.23"), ("parties", "3.0.0") }
         .All(item => PlatformServerBindings.Version(options, item.Item1, "full-Parties qualification") == item.Item2);
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

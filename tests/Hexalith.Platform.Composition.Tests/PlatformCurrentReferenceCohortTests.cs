@@ -2,6 +2,7 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Runtime.Loader;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 using Xunit;
@@ -21,6 +22,22 @@ public sealed class PlatformCurrentReferenceCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.CurrentOwnerName));
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.4", fullParties: true).ShouldBeNull("The private current purpose does not grant a new public-consumer cohort.");
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.2", fullParties: true).ShouldBe(PublishedCatalogArtifactCohort.CurrentFullPartiesName);
+        string cache = typeof(PlatformCurrentReferenceCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+            .Single(attribute => attribute.Key == "PlatformHistoricalPackageRoot").Value!;
+        var context = new AssemblyLoadContext("old-reference-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
+        try
+        {
+            foreach (string name in new[] { "Hexalith.Memories.Contracts", "Hexalith.Memories.EventStore", "Hexalith.Memories.EventStoreExtensions", "Hexalith.McpCli.Abstractions" })
+            {
+                string version = name == "Hexalith.McpCli.Abstractions" ? "2.0.0" : "3.0.23";
+                string path = Path.Combine(cache, name.ToLowerInvariant(), version, "lib", "net10.0", name + ".dll");
+                File.Exists(path).ShouldBeTrue("The original public package is a required restore input; no synthetic or current-body substitution.");
+                Assembly old = context.LoadFromAssemblyPath(path);
+                PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBe(path);
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+            }
+        }
+        finally { context.Unload(); }
     }
 
     [Fact]

@@ -15,7 +15,7 @@ internal static class PublishedCatalogArtifactCohort
     internal const string CurrentName = "eventstore-4.1.0-tenants-7.0.2";
     /// <summary>The complete ordinary-Parties public reader with the newly selected SDK/Tenants pair.</summary>
     internal const string CurrentFullPartiesName = "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memories-3.0.23";
-    internal const string CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.23";
+    internal const string CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.24-mcpcli-2.0.1";
     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
     {
         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
@@ -51,11 +51,16 @@ internal static class PublishedCatalogArtifactCohort
         .Concat(_fullPartiesHashes.Where(pair => !_hashes.ContainsKey(pair.Key))).ToFrozenDictionary(StringComparer.Ordinal);
 
     private static readonly FrozenDictionary<string, string> _currentOwnerHashes = _currentFullPartiesHashes
-        .Where(pair => !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) && !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) && !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal)
+            && !pair.Key.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && pair.Key != "Hexalith.McpCli.Abstractions")
         .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["Hexalith.Tenants.Contracts"] = "6758c6691127f0f480d1a84860de621bd610f60d7ef1b6c5fe9e5a768283f983",
             ["Hexalith.Tenants.Server"] = "44187842f060b1c7bd8a4cff3bf7a3c69c1eaebb0aae9267b61a401cc41d27a3",
+            ["Hexalith.Memories.Contracts"] = "e64ecb7787da0b81644e3d644bb768f7c06c036079a4439206fb71fe840819dc",
+            ["Hexalith.Memories.EventStore"] = "f0762fd414e7d8b317f02668739212c9c68266addf24f77d3b93383b9c8d304d",
+            ["Hexalith.Memories.EventStoreExtensions"] = "920d206be7f0428cd7b32ceed8c06dea68907cf0a9075790901eff10e796c6aa",
+            ["Hexalith.McpCli.Abstractions"] = "aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e",
         }).ToFrozenDictionary(StringComparer.Ordinal);
 
     /// <summary>Selects only complete measured version pairs; unknown, mixed and near-match pairs carry no authority.</summary>

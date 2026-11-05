@@ -14,6 +14,7 @@ PROFILE_HASH = "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0
 PROVENANCE = "src/Hexalith.Platform.Composition/Declarations/provenance.json"
 LEGACY_PROVENANCE_HASH = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61"
 TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
+MEMORIES_CURRENT_SOURCE = "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a"
 ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
            "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties"}
 
@@ -76,9 +77,11 @@ def verify(root: Path, current: str, legacy: str) -> dict:
     expected = decode(old_provenance)
     expected["tenants"]["version"] = "7.0.4"
     expected["tenants"]["commit"] = TENANTS_CURRENT_SOURCE
+    expected["memories"]["version"] = "3.0.24"
+    expected["memories"]["commit"] = MEMORIES_CURRENT_SOURCE
     selected = decode(git(root, "show", current + ":" + PROVENANCE))
     if selected != original and selected != expected:
-        raise ValueError("Current provenance changed more than the authenticated Tenants version and source.")
+        raise ValueError("Current provenance changed more than the authenticated Tenants and Memories versions and sources.")
     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
         raise ValueError("Legacy source changed its exact published tool identity.")

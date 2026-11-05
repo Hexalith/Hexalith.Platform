@@ -62,7 +62,8 @@ def qualify(args):
             output = work / "output"
             consumer.execute(["dotnet", "build", str(project), "-c", "Release", "--output", str(output),
                               "-m:1", "-nr:false", "--disable-build-servers", "-warnaserror",
-                              *consumer.properties(args.builds_root, "4.1.0", "7.0.2")], args.evidence / "build.log")
+                              *consumer.properties(args.builds_root, "4.1.0", "7.0.2"),
+                              "-p:HexalithMemoriesVersion=3.0.23", "-p:HexalithMcpCliVersion=2.0.0"], args.evidence / "build.log")
             report["executedArtifacts"] = consumer.retain_execution(project, output, "reader", args.evidence, "4.1.0", "7.0.2")
             retained = args.evidence / "reader-output"
             shutil.copytree(output, retained)

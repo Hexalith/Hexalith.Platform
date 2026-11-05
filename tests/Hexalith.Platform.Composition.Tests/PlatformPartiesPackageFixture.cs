@@ -50,7 +50,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         bool current = profile == PlatformCurrentOwnerProof.Profile;
         string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
         PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
-            .ShouldBeTrue("Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
+            .ShouldBeTrue(current
+                ? "Current Parties preparation requires the genuine published M24/SDK4.1 tuple and loaded public Contracts body."
+                : "Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
         PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
         if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBeTrue();
@@ -95,7 +97,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", current ? "3.0.24" : "3.0.23"), ("parties", "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

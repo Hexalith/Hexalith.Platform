@@ -57,6 +57,21 @@ public sealed class PlatformCurrentOwnerPurposeTests
         PlatformCompositionOptions options = Current(fixture);
         Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.Create(options, fixture.Key, developmentRun: true));
         Directory.Exists(Path.Combine(options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
+        // Component-only version selection: these local catalog bytes grant no artifact or runtime authority.
+        string catalogRoot = Path.Combine(fixture.Root, "version-selection");
+        string catalog = Path.Combine(catalogRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
+        Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
+        PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
+        const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.4</HexalithTenantsVersion><HexalithMemoriesVersion>";
+        const string Suffix = "</HexalithMemoriesVersion></PropertyGroup></Project>";
+        File.WriteAllText(catalog, Prefix + "3.0.24" + Suffix);
+        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
+        foreach (string refused in new[] { "3.0.23", "3.0.240", "3.0.24+unqualified" })
+        {
+            File.WriteAllText(catalog, Prefix + refused + Suffix);
+            PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
+        }
+        Directory.Exists(Path.Combine(options.RunPlan.Workspace, "current-owner")).ShouldBeFalse();
     }
 
     /// <summary>The production finalization guard rejects a clean standalone HEAD advance; this component fixture issues no artifact proof.</summary>
