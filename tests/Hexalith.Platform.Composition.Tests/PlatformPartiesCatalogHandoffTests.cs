@@ -2,6 +2,7 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Security.Cryptography;
 using System.Text.Json;
+using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
 
@@ -17,6 +18,7 @@ public sealed class PlatformPartiesCatalogHandoffTests
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
         await fixture.PersistClaimStateAsync();
+        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken);
         string snapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
         string[] inputs = [Path.Combine(fixture.Workspace, "plan.json"), .. Directory.GetFiles(
             Path.Combine(fixture.Workspace, "source-mapping"), "*", SearchOption.AllDirectories)];
