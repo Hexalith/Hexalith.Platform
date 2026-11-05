@@ -21,9 +21,10 @@ internal sealed class PlatformCurrentOwnerProof
     private readonly byte[] _key;
 
     private PlatformCurrentOwnerProof(PlatformCompositionOptions options, string key, string directory, IReadOnlyDictionary<string, string> bodies,
-        IReadOnlyDictionary<string, string> files)
+        IReadOnlyDictionary<string, string> files, string revision)
     {
         _parent = PlatformPartiesRunProof.CreateCurrent(options, key);
+        if (Git(ActiveRoot(options), "rev-parse", "HEAD") != revision) throw Refusal();
         Directory = directory;
         Bodies = bodies;
         PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
@@ -31,12 +32,15 @@ internal sealed class PlatformCurrentOwnerProof
         _key = Convert.FromBase64String(key);
         _receipt = JsonSerializer.Serialize(new
         {
-            profile = Profile, revision = Git(ActiveRoot(options), "rev-parse", "HEAD"), options.Mapping.ContentHash,
+            profile = Profile, revision, options.Mapping.ContentHash,
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
             platform = options.Mapping.PlatformIdentity, configuration = "Release", bodies, files,
         });
         _seal = Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt)));
     }
+
+    /// <summary>Optional isolated test observation after real measurement; cannot replace artifacts or grant authority.</summary>
+    internal static AsyncLocal<Action?> PreparedObserver { get; } = new();
 
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
@@ -56,9 +60,9 @@ internal sealed class PlatformCurrentOwnerProof
         _ = PlatformPartiesRunProof.CreateCurrent(options, key);
         if (Hash(options.DeclarationPaths.Single()) != DeclarationHash) throw Refusal();
         string active = ActiveRoot(options);
-        var inputs = Git(active, "ls-files", "-z").Split('\0', StringSplitOptions.RemoveEmptyEntries)
-            .Where(name => !name.StartsWith("references/", StringComparison.Ordinal))
-            .Select(name => Path.Combine(active, name)).Where(File.Exists)
+        string revision = Git(active, "rev-parse", "HEAD");
+        var inputs = PlatformCurrentOwnerSourceInventory.Read(active, revision, options.RunPlan!.StartupDeadlineUtc)
+            .Select(name => Path.Combine(active, name))
             .Where(path => Path.GetExtension(path) is ".cs" or ".csproj" or ".props" or ".targets" or ".json"
                 || Path.GetFileName(path) is ".editorconfig" or ".gitattributes" or "nuget.config" or "NuGet.Config")
             .ToDictionary(path => path, Hash, StringComparer.Ordinal);
@@ -89,7 +93,6 @@ internal sealed class PlatformCurrentOwnerProof
         Dictionary<string, string> environment = new(SourceMappingMaterializer.Environment(options.Mapping, ownerMapping), StringComparer.Ordinal)
         { ["NUGET_PACKAGES"] = cache };
         string version = PlatformServerBindings.Version(options, "parties", "current owner");
-        string revision = Git(active, "rev-parse", "HEAD");
         string[] arguments = ["-c", "Release", "--artifacts-path", artifacts, "-p:GeneratePackageOnBuild=false",
             "-p:HexalithPartiesPackageVersion=" + version, "-p:ContinuousIntegrationBuild=true", "-p:RepositoryCommit=" + revision, "-p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Parties", "-p:RestoreConfigFile=" + publicConfig,
             "-m:1", "-nodeReuse:false", "--disable-build-servers", "--nologo"];
@@ -150,12 +153,13 @@ internal sealed class PlatformCurrentOwnerProof
             files[asset] = Hash(asset);
         }
         foreach (string path in System.IO.Directory.GetFiles(ownerMapping, "*", SearchOption.AllDirectories)) files[path] = Hash(path);
-        if (inputs.Any(pair => Hash(pair.Key) != pair.Value)) throw Refusal();
+        if (inputs.Any(pair => Hash(pair.Key) != pair.Value) || Git(active, "rev-parse", "HEAD") != revision) throw Refusal();
         string readerPreflight = Path.Combine(directory, "reader-preflight");
         CompositionWorkspace.CreatePrivateDirectory(readerPreflight);
         _ = PlatformPackageCatalogReader.Prepare(new System.Xml.Linq.XDocument(new System.Xml.Linq.XElement("Project")), options,
             options.RunPlan.Workspace, readerPreflight, DateTimeOffset.UtcNow + PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan.StartupDeadlineUtc, DateTimeOffset.UtcNow));
-        return new(options, key, directory, bodies, files);
+        VerifyPreparedRevision(active, revision);
+        return new(options, key, directory, bodies, files, revision);
 
         void Run(string[] command, string log)
         {
@@ -164,6 +168,15 @@ internal sealed class PlatformCurrentOwnerProof
             File.WriteAllText(Path.Combine(directory, log), result.Output + result.ErrorOutput);
             if (result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw new InvalidDataException("Current owner Release preparation failed; see " + Path.Combine(directory, log));
         }
+    }
+
+    /// <summary>Requires the pinned revision after final real reader preparation, before any proof can be issued.</summary>
+    /// <param name="root">The actual active owner root.</param>
+    /// <param name="revision">The immutable revision whose inputs and bodies were measured.</param>
+    internal static void VerifyPreparedRevision(string root, string revision)
+    {
+        PreparedObserver.Value?.Invoke();
+        if (Git(root, "rev-parse", "HEAD") != revision) throw Refusal();
     }
 
     internal void VerifyReader(JsonElement receipt)
