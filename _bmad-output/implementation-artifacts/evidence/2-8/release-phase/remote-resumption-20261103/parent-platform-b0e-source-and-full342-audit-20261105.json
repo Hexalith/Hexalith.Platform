@@ -1,0 +1,336 @@
+{
+  "observedAt": "2026-11-05T10:38:34.415541+00:00",
+  "source": {
+    "base": "e905e91991fa1f234424c9b88cc18b1c9e7ddd78",
+    "head": "b0e37b68b50023df50f1b7bbcb8361d3766f6354",
+    "branch": "fix/qualify-sdk-410-handoff",
+    "pathCount": 35,
+    "paths": [
+      {
+        "path": ".config/dotnet-tools.json",
+        "blob": "8643b33aaae2e541938a4f1b880309a02accc834",
+        "bytes": 206,
+        "sha256": "f11d2b9583071655167b3f98eaf5cd2a1b59de8f120544d244c4729ae91ca149"
+      },
+      {
+        "path": ".github/workflows/catalog-builder.yml",
+        "blob": "b2c70f73dd56779fe1ad5b2685a7918ed4e00b93",
+        "bytes": 3138,
+        "sha256": "75be89e6b8d14ff0ac3655decc4c6153714de3dbc012c12912ac77963169ed80"
+      },
+      {
+        "path": "README.md",
+        "blob": "9c4c38b97f455f9fc0554dfbd923d641550f5c02",
+        "bytes": 23823,
+        "sha256": "8f743a4d3aa45f0afb53dca91a562d4f6b6f64965efd93c75314f30e4b9afcb7"
+      },
+      {
+        "path": "docs/current-tuple-preparation.md",
+        "blob": "5468a48897e80826bc2468a53fc0c51fc119e3d8",
+        "bytes": 5886,
+        "sha256": "ff00439bc0510e8d81a1523d1062ba3de194005329e755126560e1766864ad85"
+      },
+      {
+        "path": "docs/domain-module-enrollment.md",
+        "blob": "6f738c7712956e696fabb00986dd16928dfb548d",
+        "bytes": 14703,
+        "sha256": "a269295c6350faa06503ffb8d6f1f9f934c5b76e9920802dcaca31f49ab1dc3e"
+      },
+      {
+        "path": "docs/package-catalog-qualification.md",
+        "blob": "ee46584619857c51e010b2ac57ed765314a3689c",
+        "bytes": 14742,
+        "sha256": "87f7455be159a0aaadb2ee09e5405c895f2652e48e7ee7950c90e83e03966126"
+      },
+      {
+        "path": "eng/builds-tuple.json",
+        "blob": "5f9d9074555858cec597f5fa2f1acaa392ee3bae",
+        "bytes": 1050,
+        "sha256": "554359e26442ff2a039d927236e9d126d55c1b752c2c0edf632062f767f3ed8a"
+      },
+      {
+        "path": "eng/tuple-ci-suites.json",
+        "blob": "65d2ca22fbd8b64a29ddbd4e1e68df8ef168cc11",
+        "bytes": 6051,
+        "sha256": "ca8d81aadebbf7146717bf27fb2ba4d7b757d9576c8acfff20abd529e1f0fa01"
+      },
+      {
+        "path": "hexalith-platform.json",
+        "blob": "5d9f71154676892076dd3450dec94cc7cb82b642",
+        "bytes": 68,
+        "sha256": "4b324533e9d3bbcc40532b1e161f0b134ce4eea7fe93d6dffe893007cabc2a27"
+      },
+      {
+        "path": "references/Hexalith.Builds",
+        "gitlink": "fc2122240a39f03628c04fa8433e5eece90b8b4c"
+      },
+      {
+        "path": "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj",
+        "blob": "6470d50b304926a9158a6a5393afa1564fcf5fc8",
+        "bytes": 2012,
+        "sha256": "97115087d34a49dddfad9eff6d1d81bc24a5606fd1d2e7c4caa347be4092d249"
+      },
+      {
+        "path": "src/Hexalith.Platform.CatalogBuilder/Program.cs",
+        "blob": "5b45611c131edab5706cdd0c02b4115cab99d189",
+        "bytes": 10455,
+        "sha256": "0ff4fc7d4919dcf55bcaec67c3c78d7194c6f445d65eeba569f398def869bda5"
+      },
+      {
+        "path": "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
+        "blob": "d6af350e55334503325146e28fd6c2c272a0ba7e",
+        "bytes": 7665,
+        "sha256": "3f35820df581e9432127d585c333330bdd69457feff11b822f5001f229d03dfc"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+        "blob": "e7249daed45f5d75c3af15a33032fbd4f51110d4",
+        "bytes": 846,
+        "sha256": "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "blob": "d063a995519635c1706826e51c8041c439a9a588",
+        "bytes": 5697,
+        "sha256": "33d988dfb62c3c33edf010f329a1312c86745393e929e03b0cb2fc73ca6d39aa"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs",
+        "blob": "8822114121cff1514d0d31f46a0c9102d6bd3683",
+        "bytes": 5681,
+        "sha256": "05ffcf4d33578a104203030075b9cdec02ba702d684abee6c46c8cb80564c868"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs",
+        "blob": "2cdeea6982a908ea2b8ae92a42347017907412c3",
+        "bytes": 8187,
+        "sha256": "b0707719a7d485610262e65a6985efef6c1a8d73b0779e300d31699a8c039a59"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+        "blob": "c895a8b50b70b29988b2cbe8a2be7ef0fc9be9c1",
+        "bytes": 11123,
+        "sha256": "2c04f772e621f648755ee32fb4d21d74bb114efff7650439d38719abe280544c"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+        "blob": "7bb6fedfc14dee5ad457cd487db98254d7f1bdbe",
+        "bytes": 2743,
+        "sha256": "f461bb33f6a1e424fe493fafcc2fa6842ba38259589ee5ddaf98c11273c98c9e"
+      },
+      {
+        "path": "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+        "blob": "29a58e22a24e2e5faaa01ffd1bc362e9e16ffbf7",
+        "bytes": 9726,
+        "sha256": "298274e7d60c69e7bd2e5cf2cadcc99730e96ace1790d17a47e3b6bfa4830598"
+      },
+      {
+        "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "blob": "5d92a216caebcca64d0a1fcb07fca067f183ea5f",
+        "bytes": 1931,
+        "sha256": "8b663fafeb7f1fb78dfe4c1454b4199a0fdcb742873d0b6ef9e3d49d5700c8f5"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "blob": "1bd3ca61e9b8f2decbe98d8a558e119c5d20194d",
+        "bytes": 9294,
+        "sha256": "c6fdeda350b8ebc33aa27adcf72979c2c5ae1952ad4cdff0ef1a2e69bf56ce2f"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs",
+        "blob": "227458c9e5323007f02ba69b0185b01bb6d71329",
+        "bytes": 54823,
+        "sha256": "0a313841cb8fdcedc1a59c48b90198cd5c89780dba6bf0d83b531aed90a873bb"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogEntryPointTests.cs",
+        "blob": "62614b2754881d1ed7c41dcbe9821b1cc44074a4",
+        "bytes": 4878,
+        "sha256": "f21db0aa6cba4fd69f8c0ead32c5dfd17cb58441f416a287f50e4ab2b3dcc375"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs",
+        "blob": "9a78f85ffdfdff9194ed4de9d32d62cc57a267b3",
+        "bytes": 11589,
+        "sha256": "d11c7964b0cd76d36b9db188945383eba70ceb0079bac86579e69ce088e3ecbb"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs",
+        "blob": "866a19ffc9e16f63210199613149fc78b194667d",
+        "bytes": 21171,
+        "sha256": "dc144d63405c189b65013b82e4518c8015a43b46f0c0baca0775902ad6f67702"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs",
+        "blob": "91cd8ed61c4634e88a33077fae8f48021917b1c7",
+        "bytes": 3791,
+        "sha256": "33992bcf0e3c3cc24a85a89547a0814ba74c1154e25a76a0ac40d205410935df"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+        "blob": "b0132011f3e386d4c98e3c63f6936c977939f209",
+        "bytes": 17333,
+        "sha256": "858ba4c553f9b386b354dbf09d32ceb042a46014ba33f314080a5149a491826f"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs",
+        "blob": "6a742773763afc8216c105b9d152714e5027d95d",
+        "bytes": 14448,
+        "sha256": "194eafa2988bad31618ecaf45e690b5c3e1bea5bb8714d7ad8a24f6dd90dcc72"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs",
+        "blob": "32cfbcca3931e4f7419eb5d5047edc1ee319caed",
+        "bytes": 7264,
+        "sha256": "ed628da815df539923d70776c591df318c5524c195c2aebb81b86e72b4f620ec"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs",
+        "blob": "bb885b266c44374278413260994af473aedb9095",
+        "bytes": 5746,
+        "sha256": "165cc6d4b38be47c63c2d172201d34f9a4a9725da305471fc94b72650ed95d29"
+      },
+      {
+        "path": "tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs",
+        "blob": "e59cd627c359cd43d592fa05f114525a13986a94",
+        "bytes": 13328,
+        "sha256": "99f6c5ce38ec4aee6fa51a0d6ce59e7e7f5a4884df2fe5805dee84b13f6e11a1"
+      },
+      {
+        "path": "tests/catalog-builder/verify_catalog_builder.py",
+        "blob": "0ca32e93737e1f8cefd0859fa60b3043be1f629c",
+        "bytes": 24168,
+        "sha256": "0a9e8fe18678af19354fdfe1cb483f2e423f9be94fa909897d7a62ba64aa4fbb"
+      },
+      {
+        "path": "tests/catalog-builder/verify_public_owner_cohorts.py",
+        "blob": "fa36a4df7f5ecd0d54466e188023e3408167193f",
+        "bytes": 10227,
+        "sha256": "e881a1808fad8cd75db95ee2a3cf9ff38c1c3a4bfdfd67101a68d4fdfcdcc03d"
+      },
+      {
+        "path": "tests/catalog-builder/verify_sdk_gates.py",
+        "blob": "9344e64a218471d7dae83cc62e9fa4d6111273ba",
+        "bytes": 7735,
+        "sha256": "13b9628a2c29aad4e643740b96164c3e081629855dd305b1d6b1f4b57e7ba1ae"
+      }
+    ],
+    "patch": "producer4443-required342-complete-proposal.patch",
+    "patchBytes": 135190,
+    "patchSha256": "412baccb742697a84f41a4ad26aabb39997972c368525f19406bb47f322af128"
+  },
+  "currentIndexFilesRehashed": 2868,
+  "currentIndexBytes": 779271874,
+  "priorIndicesPreserved": [
+    {
+      "index": "producer4443-full340-index.json",
+      "files": 2481
+    },
+    {
+      "index": "owner-predicate-index.json",
+      "files": 1599
+    },
+    {
+      "index": "owner-cohort-index.json",
+      "files": 1457
+    },
+    {
+      "index": "sdk410-tenants702-preparation-index.json",
+      "files": 864
+    }
+  ],
+  "actualUniqueRequiredPassed": 342,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "notRun": 0,
+  "groups": [
+    {
+      "number": 1,
+      "passed": 83,
+      "xmlSha256": "015d0a92de6fc75048b998de1ab65a51dc37ab30c8a25faa8fcba08e4ffaae32"
+    },
+    {
+      "number": 2,
+      "passed": 2,
+      "xmlSha256": "e61b4afacb57407bdf2ed1c2591f0bf1b9b676cc3f8010a16b99801c12a69f79"
+    },
+    {
+      "number": 3,
+      "passed": 24,
+      "xmlSha256": "ed863ba8e06a0e703e76baa5b2bf3e2f9ecce5cf4950f1560e8797b654d950d2"
+    },
+    {
+      "number": 4,
+      "passed": 44,
+      "xmlSha256": "f2ef0ce5733570019275622414afe078e509307f7e63b98cca9048934def7e30"
+    },
+    {
+      "number": 5,
+      "passed": 7,
+      "xmlSha256": "dafd6441d8a5377c179db5bfed41d366a379eb159de7a0d4d7a37d30df5f9a13"
+    },
+    {
+      "number": 6,
+      "passed": 28,
+      "xmlSha256": "b7f50179fdd801a4d642b0cb92b6aa0f58b7c942adc90cd7aabe7f020179e5a4"
+    },
+    {
+      "number": 7,
+      "passed": 9,
+      "xmlSha256": "d1ab7a846f4f41f369a9d09de03a8d9e931f6a9abe7f7213471a0e78dbec7b9e"
+    },
+    {
+      "number": 8,
+      "passed": 4,
+      "xmlSha256": "8de8f434f0add31c062a283979b3977cbbe70b7a41bfbaec205d8190cb844a61"
+    },
+    {
+      "number": 9,
+      "passed": 37,
+      "xmlSha256": "2db32af166d2cb34610374f30f684e6c06837e11a9dee1feb976b6ac77070495"
+    },
+    {
+      "number": 10,
+      "passed": 3,
+      "xmlSha256": "0cb85a57605bc214b2e7b707ac42a187e01845b9766902779047d8a904b8836c"
+    },
+    {
+      "number": 11,
+      "passed": 21,
+      "xmlSha256": "7d943d41cf705feed127f76336cb5fdb2c87300bea5709fe15674eeb4dfe2a3a"
+    },
+    {
+      "number": 12,
+      "passed": 9,
+      "xmlSha256": "b3686ef47e8bf75f77088da61e72a651814ff61ad239f8790fb9e381ef0f4dcb"
+    },
+    {
+      "number": 13,
+      "passed": 22,
+      "xmlSha256": "7ae74a67b3be2a7cfc0e191a6658190d409869e265bbaa7c54731e8a908d12e7"
+    },
+    {
+      "number": 14,
+      "passed": 47,
+      "xmlSha256": "170915be98b8aa52ab89c8ce6531a8ea1b62ac6845c6b651ccc520438e34f704"
+    },
+    {
+      "number": 15,
+      "passed": 2,
+      "xmlSha256": "5b4b597564a81612aef72560f0041d4a2eba7b3e8e3165384333d9719fdd19c1"
+    }
+  ],
+  "allOriginal271SelectorsUnchanged": true,
+  "allOriginal340CaseIdentitiesRetained": true,
+  "firstFull340FiveFailuresPreserved": true,
+  "all161CurrentOutputDllsMatchUnchangedBeforeAfterIdentities": true,
+  "all317PreparedBodiesEqualSignedPublicArchive": true,
+  "actualProducerBindingEqualsIndependentOfficialBinding": true,
+  "parentReadAll35ProposalDiffs": true,
+  "independentUnifiedDiff": "/tmp/story2-8-final-platform-proposal-h2v_hh1b.patch",
+  "independentUnifiedDiffSha256": "0e1332c5206fde5bc2079a42c4381a1bcbbe42331cf85e4ebc2419d6238a813b",
+  "firstParentAuditSetupFailure": "Used prepared directory instead of its published subdirectory for _rels/.rels; corrected the parent path projection, with no product/source/output modification.",
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

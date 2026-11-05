@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-05T11:10:20.791111+00:00",
+  "platformHead": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+  "before": "3853f0c1490586652f1bc5bf450c75ecc234e0b4",
+  "recordedSource": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "exitCode": 0,
+  "stdout": "Updating 3853f0c1..fc212224\nFast-forward\n Props/Directory.Packages.props                     |   12 +-\n Tools/package-version-audit.json                   | 1775 +++++++++++++++-----\n Tools/test-authoritative-package-catalog.ps1       |    2 +-\n .../Runtime/CompositionDeclarationOptions.cs       |    2 +\n .../DeclarationClosureTests.cs                     |   14 +-\n .../DirectCatalogDeclarationTests.cs               |    2 +-\n test/fixtures/module/platform/tenants-7.0.2.json   |  596 +++++++\n 7 files changed, 1968 insertions(+), 435 deletions(-)\n create mode 100644 test/fixtures/module/platform/tenants-7.0.2.json\n",
+  "stderr": "",
+  "after": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "afterStatus": "",
+  "noNestedInitialization": true,
+  "meaning": "Fast-forward clean existing Builds main to exact genuinely published pin already recorded by new canonical Platform main. Existing incoming source and dirty parent evidence preserved."
+}

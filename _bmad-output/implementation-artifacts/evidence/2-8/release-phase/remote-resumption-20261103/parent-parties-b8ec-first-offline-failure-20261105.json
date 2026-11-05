@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-05T11:18:55.764394+00:00",
+  "source": "b8ec68520b078b68f254c73b0e0c721983d59e8d",
+  "runId": 42017443465,
+  "attempt": 1,
+  "jobId": 127211390175,
+  "log": "/home/administrator/.cache/hexalith/story-2-8/parties-incoming-b8ec-hosted-20261105/job127211390175-offline-first.log",
+  "bytes": 26466,
+  "sha256": "77bd1fe2564f8121e4f8982c58ee6b17c6da207b8bba2ad405c95e8c922829f0",
+  "observedFailureLines": [
+    "2026-11-05T11:15:17.1225453Z \u001b[36;1m  dotnet build \"$project\" --configuration Release --disable-build-servers -m:1 -warnaserror \"${package_properties[@]}\"\u001b[0m",
+    "2026-11-05T11:15:17.1228812Z \u001b[36;1m  --minimum-expected-tests 7 --fail-skips on\u001b[0m",
+    "2026-11-05T11:15:17.1231502Z \u001b[36;1m  --minimum-expected-tests 23 --fail-skips on\u001b[0m",
+    "2026-11-05T11:16:06.0393636Z \u001b[31mTest run summary: Minimum expected tests policy violation, tests ran 2, minimum expected 7",
+    "2026-11-05T11:16:06.0398143Z   failed: 0"
+  ],
+  "nativeAcceptance": false
+}

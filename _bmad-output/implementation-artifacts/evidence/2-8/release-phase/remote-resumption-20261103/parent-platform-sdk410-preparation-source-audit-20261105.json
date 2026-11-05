@@ -1,0 +1,25 @@
+{
+  "base": "e905e91991fa1f234424c9b88cc18b1c9e7ddd78",
+  "worktree": "/home/administrator/.cache/hexalith/story-2-8/platform-sdk410-migration-20261105/Hexalith.Platform",
+  "sourceChangedPaths": [
+    ".github/workflows/catalog-builder.yml",
+    "eng/tuple-ci-suites.json",
+    "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs",
+    "tests/catalog-builder/verify_catalog_builder.py",
+    "tests/catalog-builder/verify_sdk_gates.py"
+  ],
+  "fiveAuditedHandoffFilesByteIdentical": true,
+  "parentReadSevenNewDiffPaths": true,
+  "preparationPatch": "/tmp/story2-8-sdk410-preparation-m4hwxc11.patch",
+  "patchSha256": "3f7bd4e3bc471146690ac2c848f73e70ed1a000dd978cab52e235be0e0de57e5",
+  "assessment": "Finite SDK4.1 compile gates and exact new SDK/Tenants matrix lane preserve historical lanes; diagnostic consumer binding is explicitly not candidate acceptance. Runtime tuple/cohort/provenance/context still require genuine new producer publication and full qualification.",
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

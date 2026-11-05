@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-05T11:20:35.257952+00:00",
+  "source": "b8ec68520b078b68f254c73b0e0c721983d59e8d",
+  "runId": 42017443465,
+  "attempt": 1,
+  "jobId": 127211390025,
+  "log": "/home/administrator/.cache/hexalith/story-2-8/parties-incoming-b8ec-hosted-20261105/job127211390025-main-first.log",
+  "bytes": 89178,
+  "sha256": "a4e9b843a5c87e59c908dc9911c566826c99ebfe3847e298ce409e4829fea610",
+  "observedFailureLines": [
+    "2026-11-05T11:19:07.5103709Z Consumer package validation failed: Command '['dotnet', 'run', '--project', '/tmp/hexalith-parties-consumer-package-smoke/client-consumer/ClientConsumer.csproj', '--configuration', 'Release', '--no-build', '--no-restore']' returned non-zero exit status 134.",
+    "2026-11-05T11:19:07.5230981Z ##[error]Process completed with exit code 1.",
+    "2026-11-05T11:19:09.0654999Z \u001b[36;1m    echo '::error title=Missing test shard output::Tier 1 VSTest did not report a failure count.'\u001b[0m",
+    "2026-11-05T11:19:09.0656959Z \u001b[36;1m    echo '::error title=Missing test shard output::Tier 1 Microsoft.Testing.Platform did not report a failure count.'\u001b[0m",
+    "2026-11-05T11:19:09.0659906Z \u001b[36;1m    printf '::error title=Invalid test shard output::Expected a numeric failure count, received %s.\\n' \"$failure_count\"\u001b[0m",
+    "2026-11-05T11:19:09.0661856Z \u001b[36;1m  printf '::error title=Blocking test failures::%d test project(s) failed across the blocking tiers.\\n' \"$total_failures\"\u001b[0m",
+    "2026-11-05T11:19:09.0758476Z ##[error]Tier 1 Microsoft.Testing.Platform did not report a failure count.",
+    "2026-11-05T11:19:09.0759884Z ##[error]Process completed with exit code 1."
+  ],
+  "nativeAcceptance": false
+}

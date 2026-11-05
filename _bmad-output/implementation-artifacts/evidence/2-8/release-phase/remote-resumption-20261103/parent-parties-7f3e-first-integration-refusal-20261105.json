@@ -1,0 +1,267 @@
+{
+  "at": "2026-11-05T12:06:04.737377+00:00",
+  "source": "7f3efaf08cc14e5e042358045c748a1412da62c1",
+  "runId": 42022130363,
+  "attempt": 1,
+  "jobId": 127227227056,
+  "rawLog": "/home/administrator/.cache/hexalith/story-2-8/parties-7f3e-hosted-20261105/job127227227056-primary-first.log",
+  "rawLogSha256": "f0aa6635d580487305fe91a3dcfc5a756c896cd684f5466408721cb2e5e68779",
+  "failureLines": [
+    "2026-11-05T12:03:34.9020978Z ##[error]Process completed with exit code 3."
+  ],
+  "artifact": {
+    "id": 13413285763,
+    "node_id": "MDg6QXJ0aWZhY3QxMzQxMzI4NTc2Mw==",
+    "name": "module-integration-diagnostics",
+    "size_in_bytes": 3058,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13413285763",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13413285763/zip",
+    "expired": false,
+    "digest": "sha256:f504d8a566985760ee9d033e5828de1c0416e7d728cae0df5d36547106c0e5cd",
+    "created_at": "2026-11-05T12:03:36Z",
+    "updated_at": "2026-11-05T12:03:36Z",
+    "expires_at": "2026-11-12T12:03:36Z",
+    "workflow_run": {
+      "id": 42022130363,
+      "repository_id": 1170072276,
+      "head_repository_id": 1170072276,
+      "head_branch": "main",
+      "head_sha": "7f3efaf08cc14e5e042358045c748a1412da62c1"
+    }
+  },
+  "retainedDocuments": {
+    "cleanup.json": {
+      "diagnostics": [
+        {
+          "category": "None",
+          "field": "down",
+          "hint": null,
+          "location": null,
+          "message": "Runner-owned invocation cleanup completed.",
+          "phase": "Cleanup",
+          "row": null,
+          "ruleId": "HXI001",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "None",
+        "exitCode": "Success",
+        "phase": "None",
+        "ruleId": null
+      },
+      "remainingResources": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "runId": "2515e50ca1ca32a21ae4f7c79d237c4e",
+      "status": "completed",
+      "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/2515e50ca1ca32a21ae4f7c79d237c4e/test-result.json"
+    },
+    "execution.json": {
+      "diagnostics": [
+        {
+          "category": "TopologyOrLifecycle",
+          "field": "apphost",
+          "hint": "Inspect the run prerequisites and retry.",
+          "location": null,
+          "message": "The Builds-owned AppHost exited before every resource was healthy. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/2515e50ca1ca32a21ae4f7c79d237c4e'.",
+          "phase": "Topology",
+          "row": null,
+          "ruleId": "HXR020",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "TopologyOrLifecycle",
+        "exitCode": "TopologyOrLifecycle",
+        "phase": "Topology",
+        "ruleId": "HXR020"
+      },
+      "remainingResources": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "runId": "2515e50ca1ca32a21ae4f7c79d237c4e",
+      "status": "failed",
+      "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/2515e50ca1ca32a21ae4f7c79d237c4e/test-result.json"
+    },
+    "invocation.json": {
+      "classification": "baseline-only",
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "42022130363"
+      },
+      "profiles": [
+        "platform-package"
+      ]
+    },
+    "lifecycle-68f87e4db4489f3f2b98720d4611e0d66e7777f2453fabcbff91a9498c96c3d2.json": {
+      "runId": "2515e50ca1ca32a21ae4f7c79d237c4e",
+      "outcome": "failed",
+      "cause": "startup-failure",
+      "cleanup": "complete",
+      "discoveryUnverified": false,
+      "discoveryFailures": [],
+      "ruleIds": [
+        "HXR020"
+      ],
+      "terminalRuleIds": [
+        "HXR020"
+      ]
+    },
+    "test-result.json": {
+      "bindings": {
+        "artifacts": {
+          "expected": {
+            "state": "not-yet-populated"
+          },
+          "loaded": {
+            "state": "not-yet-populated"
+          }
+        },
+        "attachments": {
+          "holds": [],
+          "state": "populated"
+        },
+        "candidate": {
+          "classification": "baseline-only",
+          "reason": "No authenticated candidate request was selected.",
+          "state": "populated"
+        },
+        "deadlines": {
+          "execution": {
+            "state": "not-yet-populated"
+          },
+          "startup": {
+            "effectiveSeconds": 600,
+            "expiresAt": "2026-11-05T12:12:29.8852775Z",
+            "origin": "environment-requested",
+            "originAt": "2026-11-05T12:02:29.8852775Z",
+            "override": {
+              "state": "not-overridden"
+            },
+            "state": "populated"
+          }
+        },
+        "decision": {
+          "state": "not-yet-populated"
+        },
+        "environment": {
+          "catalog": {
+            "state": "not-yet-populated"
+          },
+          "composition": {
+            "state": "not-yet-populated"
+          },
+          "executionContext": {
+            "disposable": true,
+            "jobId": "build-and-test",
+            "kind": "ci",
+            "operatingSystem": "Linux",
+            "repository": "Hexalith/Hexalith.Parties",
+            "runnerKind": "github-hosted",
+            "workflowAttempt": 1,
+            "workflowRunId": "42022130363"
+          },
+          "isolation": {
+            "state": "not-yet-populated"
+          },
+          "mode": "package",
+          "readiness": {
+            "state": "not-yet-populated"
+          },
+          "resources": {
+            "state": "not-yet-populated"
+          },
+          "startupTasks": {
+            "state": "not-yet-populated"
+          }
+        },
+        "reuseLineage": {
+          "state": "not-yet-populated"
+        },
+        "run": {
+          "attemptId": "43b428c9496e4aeb2239a3ef4f174e15",
+          "attemptSequence": 1,
+          "environmentId": "db4391d07d3b2e9e1a1aa146f091f585",
+          "ownerRunId": "2515e50ca1ca32a21ae4f7c79d237c4e",
+          "role": "owner",
+          "runId": "2515e50ca1ca32a21ae4f7c79d237c4e"
+        },
+        "suite": {
+          "completion": {
+            "state": "not-yet-populated"
+          },
+          "declared": {
+            "state": "not-yet-populated"
+          }
+        },
+        "tool": {
+          "state": "not-yet-populated"
+        }
+      },
+      "cleanup": {
+        "attemptId": "107e08e84d7a91a306d1d45eb7cdd316",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "disposition": "complete",
+        "failures": [],
+        "leftoverResourceIds": [],
+        "observedAt": "2026-11-05T12:03:35.9318183Z",
+        "ownedResourceIds": [],
+        "state": "populated"
+      },
+      "diagnostics": [
+        {
+          "classification": "internal",
+          "contentIdentity": "sha256:68f87e4db4489f3f2b98720d4611e0d66e7777f2453fabcbff91a9498c96c3d2",
+          "id": "lifecycle",
+          "redacted": true,
+          "reference": "lifecycle-68f87e4db4489f3f2b98720d4611e0d66e7777f2453fabcbff91a9498c96c3d2.json"
+        }
+      ],
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "retention": {
+        "disposition": "not-retained",
+        "failureRunIds": [],
+        "reason": "local-failure-retention-not-established",
+        "recordedAt": "2026-11-05T12:03:35.9318183Z",
+        "retainedResourceIds": [],
+        "state": "populated"
+      },
+      "schema": "hexalith.test-result.v1",
+      "terminal": {
+        "cause": "startup-failure",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "failed",
+        "recordedAt": "2026-11-05T12:03:33.6095124Z"
+      },
+      "termination": {
+        "state": "not-yet-populated"
+      }
+    }
+  },
+  "nativeAcceptance": false
+}

@@ -1,0 +1,35 @@
+{
+  "source": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+  "comparisonSource": "3853f0c1490586652f1bc5bf450c75ecc234e0b4",
+  "changedPaths": [
+    "Props/Directory.Packages.props",
+    "Tools/package-version-audit.json",
+    "Tools/test-authoritative-package-catalog.ps1",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+    "test/Hexalith.Builds.Module.Tests/DeclarationClosureTests.cs",
+    "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+    "test/fixtures/module/platform/tenants-7.0.2.json"
+  ],
+  "catalogUnchanged": false,
+  "runtimeChanges": [
+    "CompositionDeclarationOptions: exact released Tenants7.0.2 source+declaration bindings"
+  ],
+  "changedFileSha256": {
+    "Props/Directory.Packages.props": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145",
+    "Tools/package-version-audit.json": "cc7f79938a8692d39335cfa766690ff3da9b9003e7524eb7360675c98ef916d2",
+    "Tools/test-authoritative-package-catalog.ps1": "bf19116548fc869c8d0743f4726069465c0114f40ad25f46536ac7f75a5e9800",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs": "d6bf0c317f66110c3d26fdc48c9e7fd3bb4834f37c049d60ee7b0332dee411c1",
+    "test/Hexalith.Builds.Module.Tests/DeclarationClosureTests.cs": "20ed9cc2f442ff99fc3e7e2715b2e9b3ea6e12f82e8d8fb5ef98a51260bf7c42",
+    "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs": "93c4dc47625240c3bafbb7b44699f11dc29d2249b1a71d502c34551de5e147ac",
+    "test/fixtures/module/platform/tenants-7.0.2.json": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+  },
+  "metadata": {
+    "schemaVersion": 2,
+    "generatedFromRevision": "caa08cd60b2d047fad7b89ff065c7a9b95a7cc5a",
+    "catalogPath": "Props/Directory.Packages.props",
+    "catalogSha256": "84314babb699b64c125f72ba0b71e5c2e77b4ca7a9292c827d91735abcc60d83",
+    "catalogRawSha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145"
+  },
+  "firstAuditScopeAssertion": "Failed because own commit diff omitted intermediate catalog/provenance commits; full source comparison used before mutation/publication.",
+  "candidateAcceptance": false
+}

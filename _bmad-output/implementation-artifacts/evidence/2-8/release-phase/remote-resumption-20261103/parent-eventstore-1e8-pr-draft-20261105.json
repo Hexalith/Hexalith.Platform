@@ -1,0 +1,8 @@
+{
+  "title": "build(ci): adopt the released Platform 1.4 tuple",
+  "body": "Current EventStore CI refuses package preparation because its Platform revision is untagged, its direct Builds selection differs from Platform, and its module tool is below the supported range. Select genuine [Platform 1.4.0](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.4.0) at ae7516ee6961dd31a5e319be59ead76449ab04a0, matching published [Builds 4.44.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.3) at fc2122240a39f03628c04fa8433e5eece90b8b4c, and exact module CLI 4.44.3. Update the matching caller-contract assertion.\n\nValidation: committed Release/package Contracts build passed with zero warnings/errors; all 13 focused caller, reference-owner, dependency-mode and publication-contract cases passed with no skips. Unchanged normal shared preparation passed at the clean committed source, and actual prepared Contracts/native-project MSBuild evaluations select SDK 4.1.0/Tenants 7.0.2. Parent independently checked the complete four-path change, 99 unchanged test-output DLLs and all 310 actual tool payloads against the genuine signed archive. Full hosted CI/native qualification remains required.\n",
+  "bodyFile": "/tmp/story2-8-eventstore140-pr-body-23yysvry.md",
+  "base": "main",
+  "head": "fix/adopt-platform-140",
+  "source": "1e8fd617b39db0c839a68031968f7639f9206518"
+}

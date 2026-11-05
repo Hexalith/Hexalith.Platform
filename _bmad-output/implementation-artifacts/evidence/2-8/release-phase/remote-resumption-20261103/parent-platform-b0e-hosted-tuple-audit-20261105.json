@@ -1,0 +1,245 @@
+{
+  "at": "2026-11-05T10:54:54.759015+00:00",
+  "source": "b0e37b68b50023df50f1b7bbcb8361d3766f6354",
+  "runId": 42012989102,
+  "attempt": 1,
+  "artifactId": 13408183160,
+  "artifactSha256": "8bd2624c7cca3c6927e1632e9905a3e12a87485387633f7700e84e1b14b79442",
+  "sourceStateClean": true,
+  "allSourceInputHashesComparedToImmutableGit": 21258,
+  "actualXmlGroups": [
+    {
+      "file": "required-0.xml",
+      "passed": 83,
+      "sha256": "f9e6ae051c14ee50555912bce4ba17775fe9d1ea0e8e9ab1661afb3bbae95423"
+    },
+    {
+      "file": "required-1.xml",
+      "passed": 2,
+      "sha256": "6f855e27859f3b6e155d7bf00f9e572f80a21ea28fd61ae4f764d6253b82ce9d"
+    },
+    {
+      "file": "required-2.xml",
+      "passed": 24,
+      "sha256": "c844b12b001d7c92316bd780a6ab409fa0fb93d6a28009b8731e2e40132b0d64"
+    },
+    {
+      "file": "required-3.xml",
+      "passed": 44,
+      "sha256": "203afcaed25363503f00e0cc7ac3da35475feeab00a837f7fe1a5ceaa4483af3"
+    },
+    {
+      "file": "required-4.xml",
+      "passed": 7,
+      "sha256": "f7d47a78439c80b5a05431fd164c69bdc8509eb29cb4903b057f7b0dd700a0e3"
+    },
+    {
+      "file": "required-5.xml",
+      "passed": 28,
+      "sha256": "baa95e53ce2c626d5b0ddcee60007f075fb1866b5cd05680e183efd961975764"
+    },
+    {
+      "file": "required-6.xml",
+      "passed": 9,
+      "sha256": "751dda64b9e84bc50d511f572dfded2e1ccc9b818a64c452ea1804e8a0fe0025"
+    },
+    {
+      "file": "required-7.xml",
+      "passed": 4,
+      "sha256": "d711f5cc856b4cf7bdf5ca98936a7c238c84c88596ce9805db7f99f49a7e23f3"
+    },
+    {
+      "file": "required-8.xml",
+      "passed": 37,
+      "sha256": "1f678a12e3eee2c40ece33b3188c42f498281382b4113b9d6828fa2a7da6dce7"
+    },
+    {
+      "file": "required-9.xml",
+      "passed": 3,
+      "sha256": "5ae9423f769466a9ac5f3fbb3131914d5198d1870938080cc1bb35dcb3c914a0"
+    },
+    {
+      "file": "required-10.xml",
+      "passed": 21,
+      "sha256": "c01f71f171b450a0fb04b3af3a0df887dae3c7f8145114c49d6a58170d0a5840"
+    },
+    {
+      "file": "required-11.xml",
+      "passed": 9,
+      "sha256": "c33b0e60ccc97524b2c05d7a451380031f51a6088f628a613408273401359bef"
+    },
+    {
+      "file": "required-12.xml",
+      "passed": 22,
+      "sha256": "afd5efeed6f69727628deae02940543cfb19837f06cc1240f8a485b5e16b1041"
+    },
+    {
+      "file": "required-13.xml",
+      "passed": 47,
+      "sha256": "853d2ef10153a98d4790c9e8eb982b6daae7ce0de691135cbc66f9fa51e78e36"
+    },
+    {
+      "file": "required-14.xml",
+      "passed": 2,
+      "sha256": "e9466aaa0679fba22b0a36b80a06cfc441893e4a3abf30f15b34b02b935d0e2a"
+    }
+  ],
+  "passedTotal": 342,
+  "actualExecutedReaderCases": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \\\"mapping\\\")",
+      "result": "Pass",
+      "outputSha256": "71f949564032d883d5ebd44e9b992c17be79cd9d7dee5018417166764e55f8de"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \\\"snapshot\\\")",
+      "result": "Pass",
+      "outputSha256": "218a18034d1c1268f597daf60d148078e6dd96051488cfd818b5cdb999471463"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \\\"catalog\\\")",
+      "result": "Pass",
+      "outputSha256": "145e123078676aad5050b992f9a69764b6679c755083a439818c2feb0c45cb99"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \\\"missing-snapshot\\\")",
+      "result": "Pass",
+      "outputSha256": "ecb87a29465aee18f7b7d8ada204b2ef82479ac17762147c833a0f043494700d"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.QualifiedTenantsModelForwardsDistinctReceiverTokensAsync",
+      "result": "Pass",
+      "outputSha256": "0412ab2aff7c172f3c9fd7b724a320e24d17f26a39d2eeb3ae6b1dc79276b065"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.AuthenticatedPackageReaderBuildsAndExecutesWithPublicArtifactsAsync",
+      "result": "Pass",
+      "outputSha256": "1e7e9a52821989a8909f174ebe421bcec191eb218b7c7c43753931f1649c7530"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ReaderChecksEffectiveVersionsAndRestoredAssetsAsync(fault: \\\"version\\\")",
+      "result": "Pass",
+      "outputSha256": "159f1aa12b3494132e8473495757111e7b258c6c1a74a5427fc52cf9d7f85ba0"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ReaderChecksEffectiveVersionsAndRestoredAssetsAsync(fault: \\\"assets\\\")",
+      "result": "Pass",
+      "outputSha256": "f56d66666e5f172fb8fa40e260c9159e2c27f22df25a38b469d974f7a4f9d811"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.OrdinaryConsumerStillRejectsMixedActiveSdkSourceAndPackagesAsync",
+      "result": "Pass",
+      "outputSha256": "66523bd3fcfe42cec0dc429b4a9dcfdb564dee54810b8d48d7b1528d3537c090"
+    }
+  ],
+  "actualExecutedFullReaderCases": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync",
+      "result": "Pass",
+      "outputSha256": "0b25750b443535b1cb8ad63f9f007e8b9700c8a58fed84cacdb5568c1d3f8110"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"version\\\")",
+      "result": "Pass",
+      "outputSha256": "eb9ff230f0b7595e8ae69225f93698f35aebdc9c8d103e0ed86dfcc39149f3e9"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"assets\\\")",
+      "result": "Pass",
+      "outputSha256": "4b99baa0fa7a10c9f5b581be18dba5963ba03792ec2cef08d1ca114b3836e8e2"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.OrdinaryConsumerRetainsActivePartiesSourceGuardAsync",
+      "result": "Pass",
+      "outputSha256": "f8116c0fe91a4fe1a4a2fc33fb2a08d0c758df024cd7407fb9176fd66d66e7e5"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"missing-owner\\\")",
+      "result": "Pass",
+      "outputSha256": "5c0a88536432fc9ce4b1fe12ec9006440082634c183c146a5a8b6952bf406ba7"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-owner\\\")",
+      "result": "Pass",
+      "outputSha256": "226b9ae48aaaed0c19053ca6cb830106cef6fba482dbb905730c6512ea3b1eb6"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"legacy-cohort\\\")",
+      "result": "Pass",
+      "outputSha256": "f9b535b87410b032585335e83ea5e2b166fd8f9b670c48419df6a3792036fd34"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"unknown-cohort\\\")",
+      "result": "Pass",
+      "outputSha256": "e37506ce4904e5e763223a9f63ec8a4309f8ead69ebfc262efc5b63452ca6304"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-body\\\")",
+      "result": "Pass",
+      "outputSha256": "84ddfeda64b97b80245c68630f51466c132c7e26bfa3d6b914e9ccac37e20655"
+    }
+  ],
+  "fullReaderPositiveBaselines": 8,
+  "fullReaderPublicHashes": {
+    "Hexalith.EventStore.Contracts": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+    "Hexalith.EventStore.Client": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+    "Hexalith.EventStore.DomainService": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+    "Hexalith.EventStore.ServiceDefaults": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+    "Hexalith.Tenants.Contracts": "4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9",
+    "Hexalith.Tenants.Server": "70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b",
+    "Hexalith.Memories.Contracts": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+    "Hexalith.Memories.EventStore": "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
+    "Hexalith.Memories.EventStoreExtensions": "c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25",
+    "Hexalith.Parties.Contracts": "b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9",
+    "Hexalith.Parties.EventStoreExtensions": "8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604",
+    "Hexalith.McpCli.Abstractions": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06"
+  },
+  "readerPositiveOutputPublicHashes": {
+    "Hexalith.EventStore.Contracts": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+    "Hexalith.EventStore.Client": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+    "Hexalith.EventStore.DomainService": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+    "Hexalith.EventStore.ServiceDefaults": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+    "Hexalith.Tenants.Contracts": "4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9",
+    "Hexalith.Tenants.Server": "70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b"
+  },
+  "readerPositiveCatalogRoot": "1756c78fa0cdca5eaf1a712265a54ca9cd7a489afb49d8f0edfb6f84b74588cb",
+  "allCommandsExit0": 71,
+  "recordedTuple": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "2b590597dcb7924194ee5dfdc5eb5e55fa4e0dde",
+        "sha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145"
+      }
+    },
+    "publication": {
+      "version": "4.44.3",
+      "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+      "releaseTag": "v4.44.3",
+      "catalogSha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145",
+      "archiveSha256": "32c2f517791bfce975bf775e73bbbf626cc710da83c68b89c5e305ef55acea32",
+      "toolingSha256": "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000",
+      "inventorySha256": "aaaa9de0ba9add0095ea63b2ac6813c8e558929e6e359216b3a99eb998b49de4",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.3/g4-tool-package-inventory.json"
+    }
+  },
+  "allSignedArchiveMemberHashesVerified": 317,
+  "retainedExtractedMembersVerified": 315,
+  "signedArchiveOnlyMembers": [
+    "_rels/.rels",
+    ".signature.p7s"
+  ],
+  "beforeAfterCompositionOutputHashObservationsUnchanged": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "limits": [
+    "The reader tests use synthetic active-source entry metadata and real public SDK/catalog inputs; no services started.",
+    "Positive output proves real reader execution, not a conditional early return. Reader DLL bodies are not retained; their hashes/MVIDs are observations in test output.",
+    "The exact same public signed CLI archive was independently repository-signature verified offline in the 4.44.3 official audit; no online revocation claim.",
+    "Full native services, cross-version wire behavior and Story2.8 lifecycle qualification remain incomplete."
+  ]
+}

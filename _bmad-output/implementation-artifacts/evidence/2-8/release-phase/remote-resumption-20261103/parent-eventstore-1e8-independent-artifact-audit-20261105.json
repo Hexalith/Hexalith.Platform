@@ -1,0 +1,231 @@
+{
+  "at": "2026-11-05T11:57:16.626956+00:00",
+  "source": "1e8fd617b39db0c839a68031968f7639f9206518",
+  "testedSource": "122c17a526975ce9bcc9296794d60c7812ef092d",
+  "runId": 42020261746,
+  "attempt": 1,
+  "reports": [
+    {
+      "artifactId": 13411576272,
+      "name": "tenants-source-mode-test-results",
+      "archiveSha256": "sha256:202efeadf6e350b9b742b510766d43ea68303f41a77768f9d49ea9f3e966ba77",
+      "reports": [
+        {
+          "file": "Hexalith.EventStore.AppHost.Tests.trx",
+          "sha256": "f8e75248248e4c89a88aa6d4b92fa76f17fd648e2804e2058918b949e2738a5f",
+          "counters": {
+            "total": "7",
+            "executed": "7",
+            "passed": "7",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 7,
+          "actualFocusedCallerCases": []
+        }
+      ]
+    },
+    {
+      "artifactId": 13411312542,
+      "name": "contracts-test-results",
+      "archiveSha256": "sha256:a8b4d4ad92e7d93496565e76168927831fa89a2671d973c7bcddd1b22313f183",
+      "reports": [
+        {
+          "file": "Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.trx",
+          "sha256": "4b1ab82df66b0c819cfee305d7cd840121dbbd7596431fb8e7ba10161049e4a5",
+          "counters": {
+            "total": "1535",
+            "executed": "1533",
+            "passed": "1533",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "2",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "actualCases": 1535,
+          "actualFocusedCallerCases": [
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pull_only_secrets",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "97303005-e41c-412b-b835-a8183d776d26",
+              "executionId": "97303005-e41c-412b-b835-a8183d776d26",
+              "computerName": "unknown",
+              "duration": "00:00:00.0070000",
+              "startTime": "2026-11-05T11:38:46.1256097+00:00",
+              "endTime": "2026-11-05T11:38:46.1330019+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Release_workflow_owns_trusted_publishing_with_approved_eventstore_container_only",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "f0fb89c8-a6c2-477c-9ea8-973cb84c4719",
+              "executionId": "f0fb89c8-a6c2-477c-9ea8-973cb84c4719",
+              "computerName": "unknown",
+              "duration": "00:00:00.0240000",
+              "startTime": "2026-11-05T11:38:46.2052314+00:00",
+              "endTime": "2026-11-05T11:38:46.2295447+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Contracts_and_live_sidecar_workflow_jobs_remain_blocking",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "dc01453f-0f59-41a2-bb42-d534804fec72",
+              "executionId": "dc01453f-0f59-41a2-bb42-d534804fec72",
+              "computerName": "unknown",
+              "duration": "00:00:00.0150000",
+              "startTime": "2026-11-05T11:38:46.2467084+00:00",
+              "endTime": "2026-11-05T11:38:46.2624355+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"\")",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "38d5b451-1bc9-4807-8047-59a122566a8e",
+              "executionId": "38d5b451-1bc9-4807-8047-59a122566a8e",
+              "computerName": "unknown",
+              "duration": "00:00:00.0070000",
+              "startTime": "2026-11-05T11:38:46.2634005+00:00",
+              "endTime": "2026-11-05T11:38:46.2710049+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners: ${{ input\"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "d579bb09-5c72-475d-adc6-e604222a7c51",
+              "executionId": "d579bb09-5c72-475d-adc6-e604222a7c51",
+              "computerName": "unknown",
+              "duration": "00:00:00.0030000",
+              "startTime": "2026-11-05T11:38:46.2710986+00:00",
+              "endTime": "2026-11-05T11:38:46.2750195+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners: tenants,t\"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "375c232a-f919-4d21-979e-611853b5814c",
+              "executionId": "375c232a-f919-4d21-979e-611853b5814c",
+              "computerName": "unknown",
+              "duration": "00:00:00.0010000",
+              "startTime": "2026-11-05T11:38:46.2751133+00:00",
+              "endTime": "2026-11-05T11:38:46.2767263+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners: memories\")",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "1ee7776d-7ed5-49c3-9062-33008b7f4ff0",
+              "executionId": "1ee7776d-7ed5-49c3-9062-33008b7f4ff0",
+              "computerName": "unknown",
+              "duration": "00:00:00.0020000",
+              "startTime": "2026-11-05T11:38:46.2768100+00:00",
+              "endTime": "2026-11-05T11:38:46.2795425+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners: tenants,m\"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "4bac552b-3e2f-4bcc-a451-844f805b6e05",
+              "executionId": "4bac552b-3e2f-4bcc-a451-844f805b6e05",
+              "computerName": "unknown",
+              "duration": "00:00:00.0000000",
+              "startTime": "2026-11-05T11:38:46.2796171+00:00",
+              "endTime": "2026-11-05T11:38:46.2805675+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners: tenants\\n \"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "598735b1-ad9d-4a72-a4d6-8c84fe55fed4",
+              "executionId": "598735b1-ad9d-4a72-a4d6-8c84fe55fed4",
+              "computerName": "unknown",
+              "duration": "00:00:00.0020000",
+              "startTime": "2026-11-05T11:38:46.2806438+00:00",
+              "endTime": "2026-11-05T11:38:46.2835918+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \"      integration-test-reference-owners:\")",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "55d63a2b-4095-4fc1-b278-38225b145037",
+              "executionId": "55d63a2b-4095-4fc1-b278-38225b145037",
+              "computerName": "unknown",
+              "duration": "00:00:00.0040000",
+              "startTime": "2026-11-05T11:38:46.2836700+00:00",
+              "endTime": "2026-11-05T11:38:46.2878411+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "81cdb17c-15d0-45b8-8dce-07c8a1c484c0",
+              "executionId": "81cdb17c-15d0-45b8-8dce-07c8a1c484c0",
+              "computerName": "unknown",
+              "duration": "00:00:00.0120000",
+              "startTime": "2026-11-05T11:38:46.2884077+00:00",
+              "endTime": "2026-11-05T11:38:46.3009273+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \"Debug\", source: True)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "b57db2b9-0203-4041-8daf-bd7ef7dcee30",
+              "executionId": "b57db2b9-0203-4041-8daf-bd7ef7dcee30",
+              "computerName": "unknown",
+              "duration": "00:00:00.9420000",
+              "startTime": "2026-11-05T11:38:46.3909418+00:00",
+              "endTime": "2026-11-05T11:38:47.3334766+00:00"
+            },
+            {
+              "testName": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \"Release\", source: False)",
+              "outcome": "Passed",
+              "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+              "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
+              "testId": "c59e69ac-ec7f-4892-9311-9d54850b9602",
+              "executionId": "c59e69ac-ec7f-4892-9311-9d54850b9602",
+              "computerName": "unknown",
+              "duration": "00:00:03.2120000",
+              "startTime": "2026-11-05T11:38:47.3336823+00:00",
+              "endTime": "2026-11-05T11:38:50.5463100+00:00"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Completed independent Contracts/Tenants source-mode jobs only; primary isolated/native and other owner gates remain required.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

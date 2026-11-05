@@ -1,0 +1,637 @@
+{
+  "recordedUtc": "2026-11-05T08:19:15.354467+00:00",
+  "scope": "Local read-only resumption audit. No source modifications, services, remote operations or test reruns.",
+  "source": {
+    "root": "/home/administrator/.cache/hexalith/story-2-8/platform-parties-handoff-20261104/Hexalith.Platform",
+    "base": "338a6afc31850761f49c0de7d399266dd15cfe84",
+    "head": "580625cf1d910a33481adeb05d1343aa359964a2",
+    "tree": "6e6dea3bab8f24edbc060758aacb01dbce973d55",
+    "status": "",
+    "changedPaths": [
+      "eng/tuple-ci-suites.json",
+      "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs",
+      "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs"
+    ],
+    "patchEqualsRetainedByteForByte": true,
+    "patchSha256": "a92b2298ac3ab91c60e25073bad0f48fd44363a02a76daecc972704ab18f4ae2",
+    "changedFileSha256": {
+      "eng/tuple-ci-suites.json": "bc96a3cc00b4d2109ecccddcd5c30d6207d23f566586901c06dfee58a4425d20",
+      "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs": "2c04f772e621f648755ee32fb4d21d74bb114efff7650439d38719abe280544c",
+      "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs": "be4ed33f94517b16bc265074867c7d8619dc248c970065e6f818cfb3236fc81d",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs": "bc8017d9abdbff657b006266dad70044f271836b4c1f1b92691db176959e6a96",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs": "ed628da815df539923d70776c591df318c5524c195c2aebb81b86e72b4f620ec"
+    },
+    "protectedInputsPreserved": [
+      "eng/builds-tuple.json",
+      "hexalith-platform.json",
+      ".gitmodules",
+      "Directory.Build.props",
+      "src/Hexalith.Platform.Composition/Declarations/eventstore.json",
+      "src/Hexalith.Platform.Composition/Declarations/local-profile.json",
+      "src/Hexalith.Platform.Composition/Declarations/memories.json",
+      "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+      "src/Hexalith.Platform.Composition/Declarations/tenants.json"
+    ]
+  },
+  "verifiedEvidence": [
+    {
+      "path": "platform-parties-handoff-actual-caller-CallerDiagnostic.csproj",
+      "bytes": 394,
+      "sha256": "ce58add199c4e66a493250b4e8e199e44d9de2e9002c1de830838c50d9fa1695"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-Program.cs",
+      "bytes": 5839,
+      "sha256": "920f654127e43245490d9b5d525d6d390a15497574ef49a2ca5ad6c5947fcf3c"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-diagnostic-build.log",
+      "bytes": 419,
+      "sha256": "1ff62cb3e2f11e7ee53b67016a907377e2235d98643d1cd9bc6adc2efc2b2efd"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-diagnostic-corrected-build.log",
+      "bytes": 317,
+      "sha256": "bc00bc76fa3574d9559a66cbbb40a20731c5809e2db4759663058d4b4ce7172a"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-transport-corrected.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-transport-corrected.stderr",
+      "bytes": 282,
+      "sha256": "804d70ac845ee9dcee59184a89bb0a8b71b91291943dec2536e0af3728de8069"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-transport.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-transport.stderr",
+      "bytes": 282,
+      "sha256": "804d70ac845ee9dcee59184a89bb0a8b71b91291943dec2536e0af3728de8069"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-validator-build.log",
+      "bytes": 317,
+      "sha256": "3162ca9126a0d6330ec070658a5207b4cd5f05fb97a1aac98d8911098c13702e"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-validator-transport.json",
+      "bytes": 2449,
+      "sha256": "0d09d4029fe239203951f45b52e5121838b306a0bad9f1e74cee3dfa4ce58336"
+    },
+    {
+      "path": "platform-parties-handoff-actual-caller-validator-transport.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "platform-parties-handoff-causal-build.log",
+      "bytes": 2186,
+      "sha256": "6597ebd9f1c892534ef8e30a9ffebe6605a6fcd9315c5ec5eef953e57a0ffab2"
+    },
+    {
+      "path": "platform-parties-handoff-causal-red.log",
+      "bytes": 2240,
+      "sha256": "155f03ed643c81a844ca292314e37b1fdf9fdf9ab233fee304d3a9cf523d6651"
+    },
+    {
+      "path": "platform-parties-handoff-causal-red.xml",
+      "bytes": 4804,
+      "sha256": "73d4e2ef91a00cce5fd89b85b2dd448bbff441d03992f289f132eb80ffdf786e"
+    },
+    {
+      "path": "platform-parties-handoff-checkpoint.json",
+      "bytes": 10381,
+      "sha256": "64389156ba26f334e8e39a0c959c53d90dce1b3a4f3b5255c779da802703c648"
+    },
+    {
+      "path": "platform-parties-handoff-commitlint-version.log",
+      "bytes": 23,
+      "sha256": "abd13a154d14b9421771a1d96b65e1af17ac2453ff1a8e52f6621c4e9135b3af"
+    },
+    {
+      "path": "platform-parties-handoff-controls-build-corrected.log",
+      "bytes": 2186,
+      "sha256": "2c31e5138cd3d59ed42404df814b1b8703f1789a1c5f938af58d4a8b36fc363a"
+    },
+    {
+      "path": "platform-parties-handoff-controls-build.log",
+      "bytes": 2919,
+      "sha256": "31ff52ef4f84a3b518d704e7df07f68676d9f46814c0275d2b536982d2321515"
+    },
+    {
+      "path": "platform-parties-handoff-direct-checkout-inputs.json",
+      "bytes": 2232,
+      "sha256": "0e253c6ed2f976e4ad6a1c8f0121e07cf8165f6ac406cfa94ca6fab88ca5d852"
+    },
+    {
+      "path": "platform-parties-handoff-first-red.log",
+      "bytes": 2125,
+      "sha256": "c85ff3e2384a95a966172f9f6f8cb6991024cf1ee3662b936f02d7a559a53e6b"
+    },
+    {
+      "path": "platform-parties-handoff-first-red.xml",
+      "bytes": 3564,
+      "sha256": "3f9d5c15a42b63397ba554c94e1b47b6efc406a755599cb41428ddc97c2bc329"
+    },
+    {
+      "path": "platform-parties-handoff-fix-commit-message.txt",
+      "bytes": 412,
+      "sha256": "5b0cd74335038d6b65158dcd17181b4e047cb88a6631cf9979dc40fe08648e73"
+    },
+    {
+      "path": "platform-parties-handoff-fix-commitlint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "platform-parties-handoff-fix-first-build.log",
+      "bytes": 2186,
+      "sha256": "c360f887318ca3765d5b6a5141f190ec27953c98a10eaeb5b6f8431bedcfdc41"
+    },
+    {
+      "path": "platform-parties-handoff-focused-first-green.log",
+      "bytes": 491,
+      "sha256": "0b98b464d56e08679533b8372df7c752742d56a9eb25f1939c89d72f203c3acb"
+    },
+    {
+      "path": "platform-parties-handoff-focused-first-green.xml",
+      "bytes": 18106,
+      "sha256": "2a27519801ad1aa2012bcab98fedd487de39d5aa120422275fe1f89244f9b8c8"
+    },
+    {
+      "path": "platform-parties-handoff-full-proposal.patch",
+      "bytes": 19134,
+      "sha256": "a92b2298ac3ab91c60e25073bad0f48fd44363a02a76daecc972704ab18f4ae2"
+    },
+    {
+      "path": "platform-parties-handoff-projected-red.log",
+      "bytes": 2240,
+      "sha256": "76097ec97fa473fe6f5e6f5d72e483ee4860678c0a3532bd7a437657c90beecb"
+    },
+    {
+      "path": "platform-parties-handoff-projected-red.xml",
+      "bytes": 3801,
+      "sha256": "a8b43c6eb5d8dc42835e6de451bdd81808defc3d17a074693f4712e53606d984"
+    },
+    {
+      "path": "platform-parties-handoff-published-entry-members.json",
+      "bytes": 1169,
+      "sha256": "f6b920a8e12303cc5d65a9550d2791904599f4fc5b8419b3d1b27e107a71cd56"
+    },
+    {
+      "path": "platform-parties-handoff-red-build.log",
+      "bytes": 3908,
+      "sha256": "07501c54b57309d5b6e55c8ae1ae73d13e1b5a407e0d41755664196ba49fa5c1"
+    },
+    {
+      "path": "platform-parties-handoff-red-capture-build.log",
+      "bytes": 2186,
+      "sha256": "361a190a5ec8850ab439df186977818f7855a489f453dda480d2adb9ebfaa207"
+    },
+    {
+      "path": "platform-parties-handoff-red-commit-message.txt",
+      "bytes": 257,
+      "sha256": "40bce3f9dd3fbbed4b7f8433620b8b05a6915339fa2035732814731f32490864"
+    },
+    {
+      "path": "platform-parties-handoff-red-commitlint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "platform-parties-handoff-required-01.log",
+      "bytes": 41400,
+      "sha256": "ef4e1b4f53d84d43ecc5a2ae5cd6245fc357454db8d70c38729e8027f20f7cc5"
+    },
+    {
+      "path": "platform-parties-handoff-required-01.xml",
+      "bytes": 66426,
+      "sha256": "e73745f8d435666e4f4e2d019d3afa0572caf4e5f78676680b47e01d063493e9"
+    },
+    {
+      "path": "platform-parties-handoff-required-02.log",
+      "bytes": 489,
+      "sha256": "58a847849bb4a7c7e6dad32fcd0180dcd23a59867d4f6df5130d6df2eba23a3d"
+    },
+    {
+      "path": "platform-parties-handoff-required-02.xml",
+      "bytes": 2574,
+      "sha256": "7dc2ba7fcc32d0a1278437668e8e8786aa4f624f3a90ab527a0dfcf0a1c931ca"
+    },
+    {
+      "path": "platform-parties-handoff-required-03.log",
+      "bytes": 490,
+      "sha256": "18cbff1d9ae0d509a4b9419bb6ef8f589294d1848ea8888b14b6f37af7e71bbe"
+    },
+    {
+      "path": "platform-parties-handoff-required-03.xml",
+      "bytes": 18932,
+      "sha256": "8ba8d0e1f8a5cbc49eda5ff41e9fe5090f6a127e8f08aff3437c2c759f4058c3"
+    },
+    {
+      "path": "platform-parties-handoff-required-04.log",
+      "bytes": 490,
+      "sha256": "58987a5ae3f4b7d9931aaf52139f9b09517b73d346f01f43b845bf12adf4649c"
+    },
+    {
+      "path": "platform-parties-handoff-required-04.xml",
+      "bytes": 32741,
+      "sha256": "b57109342a908fb3762875793250921ca53703b55e43aee7cb79349ee9c4b204"
+    },
+    {
+      "path": "platform-parties-handoff-required-05.log",
+      "bytes": 489,
+      "sha256": "51a363a1621c384fb34db66ef8b53fccf4f0f994c5e751dad58132d682260ebf"
+    },
+    {
+      "path": "platform-parties-handoff-required-05.xml",
+      "bytes": 5955,
+      "sha256": "0fd22d9e1a79fc6fecdf86631a1606d7258e9cad8e3924cae02f511bc6b005e3"
+    },
+    {
+      "path": "platform-parties-handoff-required-06.log",
+      "bytes": 490,
+      "sha256": "6469dc9e06b7f2a5ee44c558dece0bd0329291c7ce053aad54ac594c3e70ee2f"
+    },
+    {
+      "path": "platform-parties-handoff-required-06.xml",
+      "bytes": 21839,
+      "sha256": "0fbe0f332c8affc541a81d0527a32ab606e0977b399984a63ee2ade029fdfdd8"
+    },
+    {
+      "path": "platform-parties-handoff-required-07.log",
+      "bytes": 490,
+      "sha256": "3d2caa81a8928b1dfcb13e53ec6a876c960c26b687f441e6d9b5ed732d78a6b2"
+    },
+    {
+      "path": "platform-parties-handoff-required-07.xml",
+      "bytes": 15670,
+      "sha256": "94f6ebd0eda7dc39e8d24ee7d2a48fcb0485986d388c164a935a8d655c538123"
+    },
+    {
+      "path": "platform-parties-handoff-required-08.log",
+      "bytes": 489,
+      "sha256": "b837ee5175c37591200927e95a4a501fc6bf8b92a7c279e2e001722d74471f2e"
+    },
+    {
+      "path": "platform-parties-handoff-required-08.xml",
+      "bytes": 3851,
+      "sha256": "791d08f7ff4cf151080be61b106d14a2a269b3b8e83ae710b8d877abd83daafc"
+    },
+    {
+      "path": "platform-parties-handoff-required-09.log",
+      "bytes": 490,
+      "sha256": "1056d73372ff8e72a72655c657902a14ccca88ed3011aeda3d19400f66a1e354"
+    },
+    {
+      "path": "platform-parties-handoff-required-09.xml",
+      "bytes": 25684,
+      "sha256": "47d4c934d87986d1e809d472d1b5dd0f1929827d924fe66735458658b3f977a3"
+    },
+    {
+      "path": "platform-parties-handoff-required-10.log",
+      "bytes": 489,
+      "sha256": "6b236a4a282bdc4445491da6d25e80768e4aaf6270292acbf59e301c8ff0f80e"
+    },
+    {
+      "path": "platform-parties-handoff-required-10.xml",
+      "bytes": 3381,
+      "sha256": "ff1e0171abd4a5694b16496c41fbcbe1aa7a9d371cc14ef04b1e5f75a310b38b"
+    },
+    {
+      "path": "platform-parties-handoff-required-11.log",
+      "bytes": 491,
+      "sha256": "eae42a32cc96c29300bae8326b9561caa037a1b02f58fdce78c547f0a22ebd79"
+    },
+    {
+      "path": "platform-parties-handoff-required-11.xml",
+      "bytes": 15802,
+      "sha256": "e6d6fdf4b970693e5ab1f6e1ab6d5c8409600d9f5893f29fddb95f286b476dca"
+    },
+    {
+      "path": "platform-parties-handoff-required-12.log",
+      "bytes": 490,
+      "sha256": "18254b7acd4a05c9b3b45eb4461ea1445ee32a4ac5df41c7dce20ed042a59fda"
+    },
+    {
+      "path": "platform-parties-handoff-required-12.xml",
+      "bytes": 23972,
+      "sha256": "82d087cf0e854e8a3d3a0d16757b0d61a268d5ee08aa38443b148dbee35fe9c0"
+    },
+    {
+      "path": "platform-parties-handoff-required-13.log",
+      "bytes": 491,
+      "sha256": "9d4622e18e316f711a2d16ba9f927bfd6b9084010ae83966159747fccacf26b9"
+    },
+    {
+      "path": "platform-parties-handoff-required-13.xml",
+      "bytes": 18105,
+      "sha256": "1a6c618bf0b90a057c0842510b95f468fdbbe07adc75605e23ebe062f6d5101e"
+    },
+    {
+      "path": "platform-parties-handoff-required-summary.json",
+      "bytes": 12524,
+      "sha256": "5643b0fe412f06c5f26600b3725aef79581194fd79c7e14b76f97ae7d1592957"
+    },
+    {
+      "path": "platform-parties-handoff-run-profile.py",
+      "bytes": 1902,
+      "sha256": "94890cac2a06b58b3a65dbf83de5666395a6eb5d73ec31bdd22f033dc27be9a1"
+    },
+    {
+      "path": "platform-parties-handoff-source-final.json",
+      "bytes": 4051,
+      "sha256": "dbe2c667a0ea69502a8421dc640015be9a87dd64e50722b2f486a0c48054eb3a"
+    }
+  ],
+  "requiredProfile": {
+    "originalGroupsPreserved": 12,
+    "originalRequiredCases": 271,
+    "addedRequiredCases": 22,
+    "uniqueExecutedPassingCases": 293,
+    "counts": {
+      "total": 293,
+      "passed": 293,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0
+    },
+    "groups": [
+      {
+        "group": 1,
+        "counts": {
+          "total": 83,
+          "passed": 83,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+          "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests",
+          "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests",
+          "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+          "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests"
+        ],
+        "xmlSha256": "e73745f8d435666e4f4e2d019d3afa0572caf4e5f78676680b47e01d063493e9"
+      },
+      {
+        "group": 2,
+        "counts": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+          "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+        ],
+        "xmlSha256": "7dc2ba7fcc32d0a1278437668e8e8786aa4f624f3a90ab527a0dfcf0a1c931ca"
+      },
+      {
+        "group": 3,
+        "counts": {
+          "total": 24,
+          "passed": 24,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
+          "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
+        ],
+        "xmlSha256": "8ba8d0e1f8a5cbc49eda5ff41e9fe5090f6a127e8f08aff3437c2c759f4058c3"
+      },
+      {
+        "group": 4,
+        "counts": {
+          "total": 44,
+          "passed": 44,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
+          "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests"
+        ],
+        "xmlSha256": "b57109342a908fb3762875793250921ca53703b55e43aee7cb79349ee9c4b204"
+      },
+      {
+        "group": 5,
+        "counts": {
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
+        ],
+        "xmlSha256": "0fd22d9e1a79fc6fecdf86631a1606d7258e9cad8e3924cae02f511bc6b005e3"
+      },
+      {
+        "group": 6,
+        "counts": {
+          "total": 28,
+          "passed": 28,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+          "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests"
+        ],
+        "xmlSha256": "0fbe0f332c8affc541a81d0527a32ab606e0977b399984a63ee2ade029fdfdd8"
+      },
+      {
+        "group": 7,
+        "counts": {
+          "total": 9,
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests"
+        ],
+        "xmlSha256": "94f6ebd0eda7dc39e8d24ee7d2a48fcb0485986d388c164a935a8d655c538123"
+      },
+      {
+        "group": 8,
+        "counts": {
+          "total": 4,
+          "passed": 4,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+          "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
+        ],
+        "xmlSha256": "791d08f7ff4cf151080be61b106d14a2a269b3b8e83ae710b8d877abd83daafc"
+      },
+      {
+        "group": 9,
+        "counts": {
+          "total": 37,
+          "passed": 37,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
+        ],
+        "xmlSha256": "47d4c934d87986d1e809d472d1b5dd0f1929827d924fe66735458658b3f977a3"
+      },
+      {
+        "group": 10,
+        "counts": {
+          "total": 3,
+          "passed": 3,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
+        ],
+        "xmlSha256": "ff1e0171abd4a5694b16496c41fbcbe1aa7a9d371cc14ef04b1e5f75a310b38b"
+      },
+      {
+        "group": 11,
+        "counts": {
+          "total": 21,
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
+        ],
+        "xmlSha256": "e6d6fdf4b970693e5ab1f6e1ab6d5c8409600d9f5893f29fddb95f286b476dca"
+      },
+      {
+        "group": 12,
+        "counts": {
+          "total": 9,
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
+        ],
+        "xmlSha256": "82d087cf0e854e8a3d3a0d16757b0d61a268d5ee08aa38443b148dbee35fe9c0"
+      },
+      {
+        "group": 13,
+        "counts": {
+          "total": 22,
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "not-run": 0,
+          "errors": 0
+        },
+        "selectors": [
+          "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
+        ],
+        "xmlSha256": "1a6c618bf0b90a057c0842510b95f468fdbbe07adc75605e23ebe062f6d5101e"
+      }
+    ]
+  },
+  "publicArchive": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/builds-4442-official-20261104/hexalith.builds.module.cli.4.44.2.nupkg",
+    "sha256": "eded95db31ca23e41fe7ba630c823224833755e1970e26ff4cd8f3482ba69dbf",
+    "memberChecks": [
+      {
+        "member": "tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll",
+        "sha256": "a1387a6ccf8f5165c966f9b3dff133c6b066f7e1fece1be31e45bc2c597b353a",
+        "retainedExtractedEqual": true
+      },
+      {
+        "member": "tools/net10.0/any/g4-host/Hexalith.Builds.Tooling.dll",
+        "sha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+        "retainedExtractedEqual": true
+      },
+      {
+        "member": "tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+        "sha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61",
+        "retainedExtractedEqual": true
+      }
+    ],
+    "testOutputToolingSha256": "99e7345682f7a066185825f899f5ce902745a6804f5b0a9923e9fce0a6adfe61"
+  },
+  "causalRed": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationWithoutClaimProjectionReachesBoundaryAsync",
+      "result": "Pass",
+      "message": ""
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync",
+      "result": "Fail",
+      "message": "Shouldly.ShouldAssertException : result.ErrorOutput\n    should not contain (case insensitive comparison)\n\\\"trusted parent plan/key handoff\\\"\n    but was actually\n\\\"The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged sour...\\\""
+    }
+  ],
+  "callerStates": [
+    {
+      "root": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties",
+      "head": "c83fead177ca91f4d4b5aa09fc2ec5826ae0f173",
+      "status": ""
+    },
+    {
+      "root": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Platform",
+      "head": "338a6afc31850761f49c0de7d399266dd15cfe84",
+      "status": ""
+    },
+    {
+      "root": "/home/administrator/.cache/hexalith/story-2-8/parties-platform117-adoption-20261103/Hexalith.Parties/references/Hexalith.Builds",
+      "head": "ae68c59bd2f4145a23ccf68c3711f98eaf62195f",
+      "status": ""
+    }
+  ],
+  "assessment": "No concrete implementation defect found in the retained five-path correction. Published validation projection is process-and-byte-bound; ordinary execution still requires the complete persisted plan, including claim directory.",
+  "limitations": [
+    "Qualified only the retained local component correction and evidence.",
+    "Exact-head hosted tuple gates/publication, coherent Parties adoption and full native run remain parent-owned.",
+    "Three manual lifecycle scenarios and final whole-story review remain outstanding.",
+    "Recognition intentionally admits only the authenticated 4.44.2/AE AppHost and Tooling bodies."
+  ]
+}

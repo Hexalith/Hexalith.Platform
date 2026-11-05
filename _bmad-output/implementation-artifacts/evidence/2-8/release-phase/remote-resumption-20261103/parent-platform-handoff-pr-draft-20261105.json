@@ -1,0 +1,8 @@
+{
+  "title": "fix(composition): accept the published validation handoff",
+  "head": "580625cf1d910a33481adeb05d1343aa359964a2",
+  "branch": "fix/parties-validation-handoff",
+  "bodyFile": "/tmp/story-2-8-platform-handoff-pr-5bjbz915.md",
+  "body": "The signed Builds AppHost persists the complete run plan, then clears ResourceClaimStateDirectory for validation before allocation. Platform rejects this normal handoff because the projected document differs from the saved plan.\n\nAccept only that exact one-field projection inside the authenticated Builds 4.44.2 validation process, checking the AppHost and Tooling binaries, arguments and consumed parent environment. Keep the complete saved plan in the proof inputs and preserve strict claim-directory matching in ordinary execution.\n\nValidation: 293 required local component cases passed with zero failures or skips, including all original 271 cases and 22 new published-AppHost transport, mutation, ordinary execution and replay controls. The Release package build passed with zero warnings or errors. Retained evidence includes the causal failure against the original implementation and the exact five-file source patch.\n\nHosted source gates, Platform publication, caller adoption and actual native/lifecycle qualification remain required. This change grants no candidate acceptance.\n",
+  "status": "Local reviewable draft only; incoming main tuple choice pending. No branch push or PR creation."
+}

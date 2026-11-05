@@ -1,0 +1,55 @@
+{
+  "source": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+  "run": 41973362055,
+  "attempt": 1,
+  "job": 127066464493,
+  "log": "/home/administrator/.cache/hexalith/story-2-8/eventstore-newer-source-20261105/build-and-test.log",
+  "logSha256": "37e9c42e0bb496d1402bed863b0aad4674edd8ec5b82d028b8b318f65316d3a0",
+  "actualPreparationResult": {
+    "status": "failed",
+    "outcome": {
+      "exitCode": "PrerequisiteUnavailable",
+      "phase": "Prerequisite",
+      "category": "PrerequisiteUnavailable",
+      "ruleId": "HXW011"
+    },
+    "diagnostics": [
+      {
+        "ruleId": "HXW011",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Platform identity aaa30aff1038688a921494a78c9fc53fc5eb8836 has no local v<SemVer> release tag.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform",
+        "hint": "Fetch Platform tags, then retry.",
+        "source": null,
+        "location": null,
+        "row": null
+      },
+      {
+        "ruleId": "HXW009",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Builds catalog '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds' is staged 06a51f55bfe2e03a06e1121d94a41e98f1e3e251, checked out 06a51f55bfe2e03a06e1121d94a41e98f1e3e251; Platform aaa30aff1038688a921494a78c9fc53fc5eb8836 pins ae68c59bd2f4145a23ccf68c3711f98eaf62195f.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds",
+        "hint": null,
+        "source": null,
+        "location": null,
+        "row": null
+      },
+      {
+        "ruleId": "HXW010",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Tool version 4.44.0 is outside Platform range [4.44.2, 5.0.0-0) at '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform/hexalith-platform.json'.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform/hexalith-platform.json",
+        "hint": null,
+        "source": null,
+        "location": null,
+        "row": null
+      }
+    ]
+  },
+  "interpretation": "Correct pre-provision refusal of an untagged Platform source, mismatched direct Builds source and old tool outside the declared floor. Current EventStore main also needs coherent genuine newer-tuple adoption after Platform publication; old dbc6 runtime evidence cannot be relabelled as this source. No new runtime/API defect is implied.",
+  "nativeTestsExecuted": 0,
+  "sourceChanges": false
+}

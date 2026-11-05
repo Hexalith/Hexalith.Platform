@@ -1,0 +1,155 @@
+{
+  "at": "2026-11-05T11:32:15.447541+00:00",
+  "source": "1e8fd617b39db0c839a68031968f7639f9206518",
+  "base": "2dca77cc2f22a9b85e4fcc3f8e18cbcaa532b135",
+  "paths": [
+    ".config/dotnet-tools.json",
+    "references/Hexalith.Builds",
+    "references/Hexalith.Platform",
+    "tests/Hexalith.EventStore.Contracts.Tests/Packaging/ReleasePackageManifestTests.cs"
+  ],
+  "reviewedCompletePatch": "/tmp/story2-8-eventstore-1e8-reviewed-6td5km3k.patch",
+  "patchBytes": 2145,
+  "patchSha256": "843f9da01894b31af496032ee0bebc565937e86ede9d90ffe236751d577e73ff",
+  "actualTests": [
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Release_workflow_owns_trusted_publishing_with_approved_eventstore_container_only",
+      "method": "Release_workflow_owns_trusted_publishing_with_approved_eventstore_container_only",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \\\"Debug\\\", source: True)",
+      "method": "PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes(configuration: \\\"Release\\\", source: False)",
+      "method": "PlatformPackageIntegrationUsesOwnedHarnessAcrossDependencyModes",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests",
+      "method": "Shared_ci_workflow_uses_domain_ci_with_deterministic_server_tests",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"\\\")",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners:\\\")",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners: memories\\\")",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners: tenants,m\\\"\u00b7\u00b7\u00b7)",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners: tenants,t\\\"\u00b7\u00b7\u00b7)",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners: ${{ input\\\"\u00b7\u00b7\u00b7)",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs(replacement: \\\"      integration-test-reference-owners: tenants\\\\n \\\"\u00b7\u00b7\u00b7)",
+      "method": "SharedCiV2ReferenceOwnerSelectionRejectsChangedInputs",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pull_only_secrets",
+      "method": "Shared_ci_v2_requires_the_pinned_tool_declared_package_suite_and_pull_only_secrets",
+      "result": "Pass"
+    },
+    {
+      "name": "Hexalith.EventStore.Contracts.Tests.Packaging.ReleasePackageManifestTests.Contracts_and_live_sidecar_workflow_jobs_remain_blocking",
+      "method": "Contracts_and_live_sidecar_workflow_jobs_remain_blocking",
+      "result": "Pass"
+    }
+  ],
+  "actualPassed": 13,
+  "outputDllBodiesIndependentlyRehashed": 99,
+  "outputBeforeAfterUnchanged": true,
+  "ordinaryResourceFreePreparationPassed": true,
+  "actualPreparationCommands": 6,
+  "actualCiIdentityAbsent": true,
+  "platformIdentity": {
+    "Commit": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+    "CompositionCommit": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+    "CheckoutCommit": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+    "PlatformPath": "/home/administrator/.cache/hexalith/story-2-8/eventstore-newer-tuple-20261105/Hexalith.EventStore/references/Hexalith.Platform",
+    "ReleaseTag": "v1.4.0",
+    "CatalogCommit": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+    "ToolVersionRange": "[4.44.3, 5.0.0-0)",
+    "RecordPath": "/home/administrator/.cache/hexalith/story-2-8/eventstore-newer-tuple-20261105/Hexalith.EventStore/references/Hexalith.Platform/hexalith-platform.json",
+    "IsPlatformRepository": false
+  },
+  "mappingHash": "359c80aa3d45c552c0e40cf4cd88f20f1cadc71dd87974a945f5182a946a1dfa",
+  "genuineSignedToolPayloadsComparedToActualResolvedBodies": 310,
+  "rawCatalogSha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145",
+  "normalPreparedCatalogSha256": "51dfde7bd5526cd15f2a246a2514a3afc4aa45f7423005b226e98bc741772381",
+  "catalogSelectionsUnchangedAcrossNormalBomAndLineEndingMaterialization": true,
+  "actualMsbuildPreparedConsumers": [
+    {
+      "command": [
+        "dotnet",
+        "msbuild",
+        "src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-nologo",
+        "-getProperty:MSBuildProjectName,Configuration,UseHexalithProjectReferences,UseNuGetDeps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithPartiesVersion,HexalithSourceMappingMode,HexalithSourceMappingHash"
+      ],
+      "exitCode": 0,
+      "actualProperties": {
+        "MSBuildProjectName": "Hexalith.EventStore.Contracts",
+        "Configuration": "Release",
+        "UseHexalithProjectReferences": "false",
+        "UseNuGetDeps": "true",
+        "HexalithEventStoreVersion": "4.1.0",
+        "HexalithTenantsVersion": "7.0.2",
+        "HexalithMemoriesVersion": "3.0.23",
+        "HexalithPartiesVersion": "3.0.0",
+        "HexalithSourceMappingMode": "package",
+        "HexalithSourceMappingHash": "359c80aa3d45c552c0e40cf4cd88f20f1cadc71dd87974a945f5182a946a1dfa"
+      }
+    },
+    {
+      "command": [
+        "dotnet",
+        "msbuild",
+        "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
+        "-nologo",
+        "-getProperty:MSBuildProjectName,Configuration,UseHexalithProjectReferences,UseNuGetDeps,HexalithEventStoreVersion,HexalithTenantsVersion,HexalithMemoriesVersion,HexalithPartiesVersion,HexalithSourceMappingMode,HexalithSourceMappingHash"
+      ],
+      "exitCode": 0,
+      "actualProperties": {
+        "MSBuildProjectName": "Hexalith.EventStore.Platform.IntegrationTests",
+        "Configuration": "Release",
+        "UseHexalithProjectReferences": "false",
+        "UseNuGetDeps": "true",
+        "HexalithEventStoreVersion": "4.1.0",
+        "HexalithTenantsVersion": "7.0.2",
+        "HexalithMemoriesVersion": "3.0.23",
+        "HexalithPartiesVersion": "3.0.0",
+        "HexalithSourceMappingMode": "package",
+        "HexalithSourceMappingHash": "359c80aa3d45c552c0e40cf4cd88f20f1cadc71dd87974a945f5182a946a1dfa"
+      }
+    }
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "limits": [
+    "Local resource-free and component evidence only; all hosted isolated/native/independent jobs remain required.",
+    "Signed archive is the already authenticated genuine release; offline repository signature result does not establish online revocation status."
+  ]
+}

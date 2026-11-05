@@ -1,0 +1,812 @@
+{
+  "at": "20261105T105642Z",
+  "run": {
+    "id": 42014778312,
+    "name": "Catalog builder consumer binding",
+    "node_id": "WFR_kwLOTzCqis8AAAAJyEajyA",
+    "head_branch": "main",
+    "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+    "path": ".github/workflows/catalog-builder.yml",
+    "display_title": "feat(composition): qualify the SDK 4.1 and Tenants 7.0.2 tuple",
+    "run_number": 111,
+    "event": "push",
+    "status": "in_progress",
+    "conclusion": null,
+    "workflow_id": 403192424,
+    "check_suite_id": 113846974401,
+    "check_suite_node_id": "CS_kwDOTzCqis8AAAAagc73wQ",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+    "pull_requests": [],
+    "created_at": "2026-11-05T10:56:02Z",
+    "updated_at": "2026-11-05T10:56:08Z",
+    "actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [],
+    "run_started_at": "2026-11-05T10:56:02Z",
+    "triggering_actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312/jobs",
+    "logs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312/logs",
+    "check_suite_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-suites/113846974401",
+    "artifacts_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312/artifacts",
+    "cancel_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312/cancel",
+    "rerun_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/403192424",
+    "head_commit": {
+      "id": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+      "tree_id": "8cf93a65f1dec11a15f1ff3bd0aa5bda904e6911",
+      "message": "feat(composition): qualify the SDK 4.1 and Tenants 7.0.2 tuple\n\nMerge PR #23 after the five SDK lanes and all 342 required tuple cases passed.\n\nPreserve ordinary claim binding and historical public artifact authorities.",
+      "timestamp": "2026-11-05T10:55:58Z",
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com"
+      }
+    },
+    "repository": {
+      "id": 1328589450,
+      "node_id": "R_kgDOTzCqig",
+      "name": "Hexalith.Platform",
+      "full_name": "Hexalith/Hexalith.Platform",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform",
+      "description": "Platform-owned Aspire host for Hexalith domain modules (EXT-HOST-1 for Agents)",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/deployments"
+    },
+    "head_repository": {
+      "id": 1328589450,
+      "node_id": "R_kgDOTzCqig",
+      "name": "Hexalith.Platform",
+      "full_name": "Hexalith/Hexalith.Platform",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform",
+      "description": "Platform-owned Aspire host for Hexalith domain modules (EXT-HOST-1 for Agents)",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/deployments"
+    }
+  },
+  "jobs": {
+    "total_count": 5,
+    "jobs": [
+      {
+        "id": 127202444455,
+        "run_id": 42014778312,
+        "workflow_name": "Catalog builder consumer binding",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTzCqis8AAAAdndtEpw",
+        "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/127202444455",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312/job/127202444455",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T10:56:03Z",
+        "started_at": "2026-11-05T10:56:06Z",
+        "completed_at": null,
+        "name": "consumer-binding (3.130.2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T10:56:07Z",
+            "completed_at": "2026-11-05T10:56:08Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T10:56:08Z",
+            "completed_at": "2026-11-05T10:56:16Z"
+          },
+          {
+            "name": "Initialize only the declared shared package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T10:56:16Z",
+            "completed_at": "2026-11-05T10:56:26Z"
+          },
+          {
+            "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T10:56:26Z",
+            "completed_at": "2026-11-05T10:56:27Z"
+          },
+          {
+            "name": "Verify every finite capability gate once",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-05T10:56:27Z",
+            "completed_at": "2026-11-05T10:56:27Z"
+          },
+          {
+            "name": "Build the owning tool against the published SDK without warnings",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T10:56:27Z",
+            "completed_at": "2026-11-05T10:56:41Z"
+          },
+          {
+            "name": "Qualify the actual executable against public SDK and owner artifacts",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 7,
+            "started_at": "2026-11-05T10:56:41Z",
+            "completed_at": null
+          },
+          {
+            "name": "Verify closed current public owner cohorts before any runner execution",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain executable and refusal evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 18,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/127202444455",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000072877,
+        "runner_name": "GitHub Actions 1000072877",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127202444748,
+        "run_id": 42014778312,
+        "workflow_name": "Catalog builder consumer binding",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTzCqis8AAAAdndtFzA",
+        "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/127202444748",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312/job/127202444748",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T10:56:03Z",
+        "started_at": "2026-11-05T10:56:05Z",
+        "completed_at": null,
+        "name": "consumer-binding (3.130.0)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T10:56:06Z",
+            "completed_at": "2026-11-05T10:56:07Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T10:56:07Z",
+            "completed_at": "2026-11-05T10:56:13Z"
+          },
+          {
+            "name": "Initialize only the declared shared package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T10:56:13Z",
+            "completed_at": "2026-11-05T10:56:20Z"
+          },
+          {
+            "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T10:56:20Z",
+            "completed_at": "2026-11-05T10:56:20Z"
+          },
+          {
+            "name": "Verify every finite capability gate once",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-05T10:56:20Z",
+            "completed_at": "2026-11-05T10:56:20Z"
+          },
+          {
+            "name": "Build the owning tool against the published SDK without warnings",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T10:56:20Z",
+            "completed_at": "2026-11-05T10:56:27Z"
+          },
+          {
+            "name": "Qualify the actual executable against public SDK and owner artifacts",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 7,
+            "started_at": "2026-11-05T10:56:27Z",
+            "completed_at": null
+          },
+          {
+            "name": "Verify closed current public owner cohorts before any runner execution",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain executable and refusal evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 18,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/127202444748",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000072878,
+        "runner_name": "GitHub Actions 1000072878",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127202444836,
+        "run_id": 42014778312,
+        "workflow_name": "Catalog builder consumer binding",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTzCqis8AAAAdndtGJA",
+        "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/127202444836",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312/job/127202444836",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T10:56:03Z",
+        "started_at": "2026-11-05T10:56:06Z",
+        "completed_at": null,
+        "name": "consumer-binding (3.130.1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T10:56:07Z",
+            "completed_at": "2026-11-05T10:56:09Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T10:56:09Z",
+            "completed_at": "2026-11-05T10:56:21Z"
+          },
+          {
+            "name": "Initialize only the declared shared package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T10:56:21Z",
+            "completed_at": "2026-11-05T10:56:28Z"
+          },
+          {
+            "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T10:56:28Z",
+            "completed_at": "2026-11-05T10:56:29Z"
+          },
+          {
+            "name": "Verify every finite capability gate once",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-05T10:56:29Z",
+            "completed_at": "2026-11-05T10:56:29Z"
+          },
+          {
+            "name": "Build the owning tool against the published SDK without warnings",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T10:56:29Z",
+            "completed_at": "2026-11-05T10:56:42Z"
+          },
+          {
+            "name": "Qualify the actual executable against public SDK and owner artifacts",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 7,
+            "started_at": "2026-11-05T10:56:42Z",
+            "completed_at": null
+          },
+          {
+            "name": "Verify closed current public owner cohorts before any runner execution",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain executable and refusal evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 18,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/127202444836",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000072880,
+        "runner_name": "GitHub Actions 1000072880",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127202444941,
+        "run_id": 42014778312,
+        "workflow_name": "Catalog builder consumer binding",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTzCqis8AAAAdndtGjQ",
+        "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/127202444941",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312/job/127202444941",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T10:56:03Z",
+        "started_at": "2026-11-05T10:56:06Z",
+        "completed_at": null,
+        "name": "consumer-binding (4.1.0)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T10:56:06Z",
+            "completed_at": "2026-11-05T10:56:07Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T10:56:07Z",
+            "completed_at": "2026-11-05T10:56:14Z"
+          },
+          {
+            "name": "Initialize only the declared shared package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T10:56:14Z",
+            "completed_at": "2026-11-05T10:56:21Z"
+          },
+          {
+            "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T10:56:21Z",
+            "completed_at": "2026-11-05T10:56:21Z"
+          },
+          {
+            "name": "Verify every finite capability gate once",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-05T10:56:21Z",
+            "completed_at": "2026-11-05T10:56:21Z"
+          },
+          {
+            "name": "Build the owning tool against the published SDK without warnings",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-05T10:56:21Z",
+            "completed_at": "2026-11-05T10:56:36Z"
+          },
+          {
+            "name": "Qualify the actual executable against public SDK and owner artifacts",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 7,
+            "started_at": "2026-11-05T10:56:36Z",
+            "completed_at": null
+          },
+          {
+            "name": "Verify closed current public owner cohorts before any runner execution",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain executable and refusal evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 18,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/127202444941",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000072879,
+        "runner_name": "GitHub Actions 1000072879",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 127202444989,
+        "run_id": 42014778312,
+        "workflow_name": "Catalog builder consumer binding",
+        "head_branch": "main",
+        "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/42014778312",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTzCqis8AAAAdndtGvQ",
+        "head_sha": "ae7516ee6961dd31a5e319be59ead76449ab04a0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/127202444989",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42014778312/job/127202444989",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-05T10:56:03Z",
+        "started_at": "2026-11-05T10:56:07Z",
+        "completed_at": null,
+        "name": "consumer-binding (3.132.1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-05T10:56:08Z",
+            "completed_at": "2026-11-05T10:56:08Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-05T10:56:08Z",
+            "completed_at": "2026-11-05T10:56:15Z"
+          },
+          {
+            "name": "Initialize only the declared shared package catalog",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-05T10:56:15Z",
+            "completed_at": "2026-11-05T10:56:21Z"
+          },
+          {
+            "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-05T10:56:21Z",
+            "completed_at": "2026-11-05T10:56:22Z"
+          },
+          {
+            "name": "Verify every finite capability gate once",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 5,
+            "started_at": "2026-11-05T10:56:22Z",
+            "completed_at": null
+          },
+          {
+            "name": "Build the owning tool against the published SDK without warnings",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Qualify the actual executable against public SDK and owner artifacts",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Verify closed current public owner cohorts before any runner execution",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain executable and refusal evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+            "status": "pending",
+            "conclusion": null,
+            "number": 17,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "pending",
+            "conclusion": null,
+            "number": 18,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/127202444989",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000072881,
+        "runner_name": "GitHub Actions 1000072881",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}
