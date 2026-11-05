@@ -15,7 +15,16 @@ public sealed class PlatformCurrentOwnerPackageTests
     public async Task CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync()
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
-        PlatformCompositionOptions options = Capture(fixture);
+        PlatformCompositionOptions options;
+        int prepared = 0;
+        Action? previousObserver = PlatformCurrentOwnerProof.PreparedObserver.Value;
+        try
+        {
+            PlatformCurrentOwnerProof.PreparedObserver.Value = () => prepared++;
+            options = Capture(fixture);
+        }
+        finally { PlatformCurrentOwnerProof.PreparedObserver.Value = previousObserver; }
+        prepared.ShouldBe(1, "The actual build/pack/final-reader producer must invoke the tested final revision guard before issuance.");
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
         proof.Matches(options).ShouldBeTrue();
         options.PartiesRunProof.ShouldBeNull();

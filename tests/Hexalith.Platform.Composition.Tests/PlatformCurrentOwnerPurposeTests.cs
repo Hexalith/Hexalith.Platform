@@ -59,6 +59,40 @@ public sealed class PlatformCurrentOwnerPurposeTests
         Directory.Exists(Path.Combine(options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
     }
 
+    /// <summary>The production finalization guard rejects a clean standalone HEAD advance; this component fixture issues no artifact proof.</summary>
+    [Fact]
+    public void StandaloneCleanAdvanceDuringPreparedStageRefusesIssuance()
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformCompositionOptions options = Current(fixture);
+        PlatformPartiesRunProof oldParent = PlatformPartiesRunProof.CreateCurrent(options, fixture.Key);
+        string root = options.Mapping.Root;
+        string revision = PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD");
+        string tree = PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD^{tree}");
+        PlatformPartiesProofFixture.Git(root, "status", "--porcelain").ShouldBeEmpty();
+        Action? previous = PlatformCurrentOwnerProof.PreparedObserver.Value;
+        int observed = 0;
+        try
+        {
+            PlatformCurrentOwnerProof.PreparedObserver.Value = () =>
+            {
+                observed++;
+                PlatformPartiesProofFixture.Git(root, "-c", "user.name=Local proof fixture", "-c", "user.email=fixture@invalid",
+                    "-c", "commit.gpgsign=false", "commit", "--allow-empty", "-q", "-m", "test(proof): record local boundary inputs");
+                PlatformPartiesProofFixture.Git(root, "status", "--porcelain").ShouldBeEmpty();
+                PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD^{tree}").ShouldBe(tree);
+            };
+            Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.VerifyPreparedRevision(root, revision));
+            observed.ShouldBe(1);
+            PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD").ShouldNotBe(revision);
+            oldParent.MatchesCurrent(options).ShouldBeFalse();
+            PlatformPartiesRunProof.CreateCurrent(options, fixture.Key).MatchesCurrent(options).ShouldBeTrue();
+            options.CurrentOwnerProof.ShouldBeNull();
+            Directory.Exists(Path.Combine(fixture.Options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
+        }
+        finally { PlatformCurrentOwnerProof.PreparedObserver.Value = previous; }
+    }
+
     private static PlatformCompositionOptions Current(PlatformPartiesProofFixture fixture)
     {
         PlatformCompositionOptions original = fixture.Options;

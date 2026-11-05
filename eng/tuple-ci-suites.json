@@ -102,7 +102,7 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests"
       ],
-      "requiredCount": 7,
+      "requiredCount": 8,
       "purpose": "current-owner-package"
     },
     {
@@ -137,6 +137,15 @@
       "filter": "-class",
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests"
+      ],
+      "requiredCount": 4,
+      "purpose": "current-owner-package"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests"
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package"
