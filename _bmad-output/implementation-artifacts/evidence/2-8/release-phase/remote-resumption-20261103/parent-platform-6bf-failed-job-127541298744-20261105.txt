@@ -1,0 +1,360 @@
+﻿2026-11-05T21:23:12.4867097Z Current runner version: '2.338.2'
+2026-11-05T21:23:12.4895744Z ##[group]Runner Image Provisioner
+2026-11-05T21:23:12.4896628Z Hosted Compute Agent
+2026-11-05T21:23:12.4897392Z Version: 20261028.624
+2026-11-05T21:23:12.4898009Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-05T21:23:12.4898765Z Build Date: 2026-10-28T21:51:42Z
+2026-11-05T21:23:12.4899564Z Worker ID: {de479424-e909-43cd-b5f6-c94f87a8c474}
+2026-11-05T21:23:12.4900346Z Region: centralus
+2026-11-05T21:23:12.4901003Z Cloud: Azure
+2026-11-05T21:23:12.4901852Z ##[endgroup]
+2026-11-05T21:23:12.4903277Z ##[group]Operating System
+2026-11-05T21:23:12.4903951Z Ubuntu
+2026-11-05T21:23:12.4904429Z 26.04.1
+2026-11-05T21:23:12.4905029Z LTS
+2026-11-05T21:23:12.4905513Z ##[endgroup]
+2026-11-05T21:23:12.4906005Z ##[group]Runner Image
+2026-11-05T21:23:12.4906598Z Image: ubuntu-26.04
+2026-11-05T21:23:12.4907101Z Version: 20261101.186.1
+2026-11-05T21:23:12.4908363Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-05T21:23:12.4909786Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+2026-11-05T21:23:12.4910712Z ##[endgroup]
+2026-11-05T21:23:12.4911945Z ##[group]GITHUB_TOKEN Permissions
+2026-11-05T21:23:12.4913904Z Contents: read
+2026-11-05T21:23:12.4914409Z Metadata: read
+2026-11-05T21:23:12.4914887Z ##[endgroup]
+2026-11-05T21:23:12.4917016Z Secret source: Actions
+2026-11-05T21:23:12.4917877Z Cache mode: write
+2026-11-05T21:23:12.4918606Z Prepare workflow directory
+2026-11-05T21:23:12.5302992Z Prepare all required actions
+2026-11-05T21:23:12.5338751Z Getting action download info
+2026-11-05T21:23:12.8415898Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-05T21:23:12.9547944Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-05T21:23:13.3676135Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-11-05T21:23:13.4781015Z Complete job name: tuple
+2026-11-05T21:23:13.5269307Z ##[group]Run python3 - <<'PY'
+2026-11-05T21:23:13.5269720Z [36;1mpython3 - <<'PY'[0m
+2026-11-05T21:23:13.5270017Z [36;1mimport json, os[0m
+2026-11-05T21:23:13.5270310Z [36;1mfrom pathlib import Path[0m
+2026-11-05T21:23:13.5270748Z [36;1moutput = Path(os.environ['RUNNER_TEMP']) / 'platform-tuple-bootstrap'[0m
+2026-11-05T21:23:13.5271182Z [36;1moutput.mkdir()[0m
+2026-11-05T21:23:13.5271846Z [36;1mkeys = ['PLATFORM_CANDIDATE_SHA', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'RUNNER_OS', 'RUNNER_ARCH', 'ImageOS', 'ImageVersion'][0m
+2026-11-05T21:23:13.5272808Z [36;1m(output / 'bootstrap.json').write_text(json.dumps({'status': 'started-only', 'candidateAcceptance': False, 'context': {key: os.environ.get(key) for key in keys}}, indent=2))[0m
+2026-11-05T21:23:13.5273509Z [36;1mPY[0m
+2026-11-05T21:23:13.5318818Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-05T21:23:13.5319316Z env:
+2026-11-05T21:23:13.5319550Z   CI: true
+2026-11-05T21:23:13.5319923Z   PLATFORM_CANDIDATE_SHA: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:13.5320324Z   REQUESTED_LEGACY_SOURCE: 
+2026-11-05T21:23:13.5320614Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-05T21:23:13.5320896Z ##[endgroup]
+2026-11-05T21:23:13.5767253Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-05T21:23:13.5767693Z with:
+2026-11-05T21:23:13.5767959Z   ref: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:13.5768280Z   fetch-depth: 0
+2026-11-05T21:23:13.5768522Z   submodules: false
+2026-11-05T21:23:13.5768777Z   persist-credentials: false
+2026-11-05T21:23:13.5769070Z   repository: Hexalith/Hexalith.Platform
+2026-11-05T21:23:13.5771219Z   token: ***
+2026-11-05T21:23:13.5771644Z   ssh-strict: true
+2026-11-05T21:23:13.5771894Z   ssh-user: git
+2026-11-05T21:23:13.5772130Z   clean: true
+2026-11-05T21:23:13.5772605Z   sparse-checkout-cone-mode: true
+2026-11-05T21:23:13.5772979Z   fetch-tags: false
+2026-11-05T21:23:13.5773239Z   show-progress: true
+2026-11-05T21:23:13.5773510Z   lfs: false
+2026-11-05T21:23:13.5773751Z   set-safe-directory: true
+2026-11-05T21:23:13.5774145Z   allow-unsafe-pr-checkout: false
+2026-11-05T21:23:13.5774425Z env:
+2026-11-05T21:23:13.5774645Z   CI: true
+2026-11-05T21:23:13.5774985Z   PLATFORM_CANDIDATE_SHA: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:13.5775371Z   REQUESTED_LEGACY_SOURCE: 
+2026-11-05T21:23:13.5775648Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-05T21:23:13.5775918Z ##[endgroup]
+2026-11-05T21:23:13.7626838Z Syncing repository: Hexalith/Hexalith.Platform
+2026-11-05T21:23:13.7628653Z ##[group]Getting Git version info
+2026-11-05T21:23:13.7629450Z Working directory is '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+2026-11-05T21:23:13.7630435Z [command]/usr/bin/git version
+2026-11-05T21:23:13.7630908Z git version 2.56.0
+2026-11-05T21:23:13.7643791Z ##[endgroup]
+2026-11-05T21:23:13.7652708Z Temporarily overriding HOME='/home/runner/work/_temp/9d6c9319-e381-4e1d-ab48-7d47485713fb' before making global git config changes
+2026-11-05T21:23:13.7653954Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T21:23:13.7656700Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+2026-11-05T21:23:13.7714714Z Deleting the contents of '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+2026-11-05T21:23:13.7717704Z ##[group]Determining repository object format
+2026-11-05T21:23:13.7718565Z ##[endgroup]
+2026-11-05T21:23:13.7719303Z ##[group]Initializing the repository
+2026-11-05T21:23:13.7722594Z [command]/usr/bin/git init /home/runner/work/Hexalith.Platform/Hexalith.Platform
+2026-11-05T21:23:13.7825303Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-05T21:23:13.7826674Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-05T21:23:13.7829003Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-05T21:23:13.7829844Z hint: call:
+2026-11-05T21:23:13.7830570Z hint:
+2026-11-05T21:23:13.7831113Z hint: 	git config --global init.defaultBranch <name>
+2026-11-05T21:23:13.7831781Z hint:
+2026-11-05T21:23:13.7832299Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-05T21:23:13.7833100Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-05T21:23:13.7833777Z hint:
+2026-11-05T21:23:13.7834130Z hint: 	git branch -m <name>
+2026-11-05T21:23:13.7834537Z hint:
+2026-11-05T21:23:13.7835098Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-05T21:23:13.7836095Z Initialized empty Git repository in /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/
+2026-11-05T21:23:13.7846358Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Platform
+2026-11-05T21:23:13.7937570Z ##[endgroup]
+2026-11-05T21:23:13.7938335Z ##[group]Disabling automatic garbage collection
+2026-11-05T21:23:13.7941801Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-05T21:23:13.8009695Z ##[endgroup]
+2026-11-05T21:23:13.8010483Z ##[group]Setting up auth
+2026-11-05T21:23:13.8011054Z Removing SSH command configuration
+2026-11-05T21:23:13.8012784Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:23:13.8039247Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:23:13.8405975Z Removing HTTP extra header
+2026-11-05T21:23:13.8410698Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:23:13.8439619Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:23:13.8667316Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:23:13.8672112Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:23:13.8711998Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:23:13.8949935Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-05T21:23:13.8986175Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path /home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:13.9015257Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:13.9046815Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:13.9074807Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:13.9101846Z ##[endgroup]
+2026-11-05T21:23:13.9102464Z ##[group]Fetching the repository
+2026-11-05T21:23:13.9107981Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-11-05T21:23:18.4295579Z From https://github.com/Hexalith/Hexalith.Platform
+2026-11-05T21:23:18.4296042Z  * [new branch]        main       -> origin/main
+2026-11-05T21:23:18.4296283Z  * [new tag]           v1.0.0     -> v1.0.0
+2026-11-05T21:23:18.4296566Z  * [new tag]           v1.0.1     -> v1.0.1
+2026-11-05T21:23:18.4296771Z  * [new tag]           v1.1.0     -> v1.1.0
+2026-11-05T21:23:18.4296982Z  * [new tag]           v1.1.1     -> v1.1.1
+2026-11-05T21:23:18.4297195Z  * [new tag]           v1.1.2     -> v1.1.2
+2026-11-05T21:23:18.4297388Z  * [new tag]           v1.1.3     -> v1.1.3
+2026-11-05T21:23:18.4297623Z  * [new tag]           v1.1.4     -> v1.1.4
+2026-11-05T21:23:18.4297874Z  * [new tag]           v1.1.5     -> v1.1.5
+2026-11-05T21:23:18.4298209Z  * [new tag]           v1.1.6     -> v1.1.6
+2026-11-05T21:23:18.4298442Z  * [new tag]           v1.1.7     -> v1.1.7
+2026-11-05T21:23:18.4298653Z  * [new tag]           v1.1.8     -> v1.1.8
+2026-11-05T21:23:18.4298856Z  * [new tag]           v1.2.0     -> v1.2.0
+2026-11-05T21:23:18.4299101Z  * [new tag]           v1.2.1     -> v1.2.1
+2026-11-05T21:23:18.4299335Z  * [new tag]           v1.2.2     -> v1.2.2
+2026-11-05T21:23:18.4299562Z  * [new tag]           v1.2.3     -> v1.2.3
+2026-11-05T21:23:18.4299768Z  * [new tag]           v1.3.0     -> v1.3.0
+2026-11-05T21:23:18.4299961Z  * [new tag]           v1.4.0     -> v1.4.0
+2026-11-05T21:23:18.4300159Z  * [new tag]           v1.4.1     -> v1.4.1
+2026-11-05T21:23:18.4300352Z  * [new tag]           v1.5.0     -> v1.5.0
+2026-11-05T21:23:18.4305944Z [command]/usr/bin/git rev-parse --verify --quiet 6bf64fe05ed934d7c23d78e30f863c3b29947295^{object}
+2026-11-05T21:23:18.4334378Z 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:18.4338318Z ##[endgroup]
+2026-11-05T21:23:18.4338905Z ##[group]Determining the checkout info
+2026-11-05T21:23:18.4339523Z ##[endgroup]
+2026-11-05T21:23:18.4342663Z [command]/usr/bin/git sparse-checkout disable
+2026-11-05T21:23:18.4388638Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-05T21:23:18.4419744Z ##[group]Checking out the ref
+2026-11-05T21:23:18.4423007Z [command]/usr/bin/git checkout --progress --force 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:19.4718942Z Updating files:  45% (9983/21921)
+2026-11-05T21:23:19.4864459Z Updating files:  46% (10084/21921)
+2026-11-05T21:23:19.5070194Z Updating files:  47% (10303/21921)
+2026-11-05T21:23:19.5164131Z Updating files:  48% (10523/21921)
+2026-11-05T21:23:19.5367812Z Updating files:  49% (10742/21921)
+2026-11-05T21:23:19.5515354Z Updating files:  50% (10961/21921)
+2026-11-05T21:23:19.5586249Z Updating files:  51% (11180/21921)
+2026-11-05T21:23:19.5752243Z Updating files:  52% (11399/21921)
+2026-11-05T21:23:19.6208744Z Updating files:  53% (11619/21921)
+2026-11-05T21:23:19.6299081Z Updating files:  54% (11838/21921)
+2026-11-05T21:23:19.6382179Z Updating files:  55% (12057/21921)
+2026-11-05T21:23:19.6458658Z Updating files:  56% (12276/21921)
+2026-11-05T21:23:19.6558568Z Updating files:  57% (12495/21921)
+2026-11-05T21:23:19.6706842Z Updating files:  58% (12715/21921)
+2026-11-05T21:23:19.6798005Z Updating files:  59% (12934/21921)
+2026-11-05T21:23:19.6896038Z Updating files:  60% (13153/21921)
+2026-11-05T21:23:19.6981788Z Updating files:  61% (13372/21921)
+2026-11-05T21:23:19.7071602Z Updating files:  62% (13592/21921)
+2026-11-05T21:23:19.7163865Z Updating files:  63% (13811/21921)
+2026-11-05T21:23:19.7340002Z Updating files:  64% (14030/21921)
+2026-11-05T21:23:19.7484004Z Updating files:  65% (14249/21921)
+2026-11-05T21:23:19.7609799Z Updating files:  66% (14468/21921)
+2026-11-05T21:23:19.7754512Z Updating files:  67% (14688/21921)
+2026-11-05T21:23:19.7900834Z Updating files:  68% (14907/21921)
+2026-11-05T21:23:19.8008466Z Updating files:  69% (15126/21921)
+2026-11-05T21:23:19.8071244Z Updating files:  70% (15345/21921)
+2026-11-05T21:23:19.8173587Z Updating files:  71% (15564/21921)
+2026-11-05T21:23:19.8252676Z Updating files:  72% (15784/21921)
+2026-11-05T21:23:19.8333861Z Updating files:  73% (16003/21921)
+2026-11-05T21:23:19.8400315Z Updating files:  74% (16222/21921)
+2026-11-05T21:23:19.8459500Z Updating files:  75% (16441/21921)
+2026-11-05T21:23:19.8542685Z Updating files:  76% (16660/21921)
+2026-11-05T21:23:19.8857709Z Updating files:  77% (16880/21921)
+2026-11-05T21:23:19.9032183Z Updating files:  78% (17099/21921)
+2026-11-05T21:23:19.9160918Z Updating files:  79% (17318/21921)
+2026-11-05T21:23:19.9245940Z Updating files:  80% (17537/21921)
+2026-11-05T21:23:19.9423253Z Updating files:  81% (17757/21921)
+2026-11-05T21:23:19.9526304Z Updating files:  82% (17976/21921)
+2026-11-05T21:23:19.9706166Z Updating files:  83% (18195/21921)
+2026-11-05T21:23:19.9952113Z Updating files:  84% (18414/21921)
+2026-11-05T21:23:20.0126350Z Updating files:  85% (18633/21921)
+2026-11-05T21:23:20.0367423Z Updating files:  86% (18853/21921)
+2026-11-05T21:23:20.0576042Z Updating files:  87% (19072/21921)
+2026-11-05T21:23:20.0686069Z Updating files:  88% (19291/21921)
+2026-11-05T21:23:20.0804668Z Updating files:  89% (19510/21921)
+2026-11-05T21:23:20.1547416Z Updating files:  90% (19729/21921)
+2026-11-05T21:23:20.1772162Z Updating files:  91% (19949/21921)
+2026-11-05T21:23:20.1907157Z Updating files:  92% (20168/21921)
+2026-11-05T21:23:20.2044788Z Updating files:  93% (20387/21921)
+2026-11-05T21:23:20.2148981Z Updating files:  94% (20606/21921)
+2026-11-05T21:23:20.2230248Z Updating files:  95% (20825/21921)
+2026-11-05T21:23:20.2326458Z Updating files:  96% (21045/21921)
+2026-11-05T21:23:20.2413730Z Updating files:  97% (21264/21921)
+2026-11-05T21:23:20.2533248Z Updating files:  98% (21483/21921)
+2026-11-05T21:23:20.2650773Z Updating files:  99% (21702/21921)
+2026-11-05T21:23:20.2651713Z Updating files: 100% (21921/21921)
+2026-11-05T21:23:20.2651985Z Updating files: 100% (21921/21921), done.
+2026-11-05T21:23:20.2810794Z Note: switching to '6bf64fe05ed934d7c23d78e30f863c3b29947295'.
+2026-11-05T21:23:20.2811041Z 
+2026-11-05T21:23:20.2811174Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-05T21:23:20.2811705Z changes and commit them, and you can discard any commits you make in this
+2026-11-05T21:23:20.2811972Z state without impacting any branches by switching back to a branch.
+2026-11-05T21:23:20.2812130Z 
+2026-11-05T21:23:20.2812553Z If you want to create a new branch to retain commits you create, you may
+2026-11-05T21:23:20.2812815Z do so (now or later) by using -c with the switch command. Example:
+2026-11-05T21:23:20.2812963Z 
+2026-11-05T21:23:20.2813036Z   git switch -c <new-branch-name>
+2026-11-05T21:23:20.2813133Z 
+2026-11-05T21:23:20.2813199Z Or undo this operation with:
+2026-11-05T21:23:20.2813289Z 
+2026-11-05T21:23:20.2813352Z   git switch -
+2026-11-05T21:23:20.2813421Z 
+2026-11-05T21:23:20.2813545Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-05T21:23:20.2813712Z 
+2026-11-05T21:23:20.2813804Z HEAD is now at 6bf64fe0 build: sync local changes via /pushall
+2026-11-05T21:23:20.2970445Z ##[endgroup]
+2026-11-05T21:23:20.2972329Z [command]/usr/bin/git log -1 --format=%H
+2026-11-05T21:23:20.2999932Z 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:20.3008102Z ##[group]Removing auth
+2026-11-05T21:23:20.3008350Z Removing SSH command configuration
+2026-11-05T21:23:20.3010609Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:23:20.3039406Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:23:20.3306125Z Removing HTTP extra header
+2026-11-05T21:23:20.3306569Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:23:20.3341878Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:23:20.3606905Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:23:20.3609306Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:23:20.3635900Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+2026-11-05T21:23:20.3636584Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+2026-11-05T21:23:20.3637026Z includeif.gitdir:/github/workspace/.git.path
+2026-11-05T21:23:20.3637347Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T21:23:20.3644249Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+2026-11-05T21:23:20.3669695Z /home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:20.3678927Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-d0ab52c5\-0177\-4688\-8142\-ad80f3e87610\.config
+2026-11-05T21:23:20.3721141Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+2026-11-05T21:23:20.3747397Z /home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:20.3755102Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-d0ab52c5\-0177\-4688\-8142\-ad80f3e87610\.config
+2026-11-05T21:23:20.3798321Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-05T21:23:20.3822484Z /github/runner_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:20.3829253Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-d0ab52c5\-0177\-4688\-8142\-ad80f3e87610\.config
+2026-11-05T21:23:20.3866243Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T21:23:20.3893535Z /github/runner_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config
+2026-11-05T21:23:20.3902127Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-d0ab52c5\-0177\-4688\-8142\-ad80f3e87610\.config
+2026-11-05T21:23:20.3940582Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:23:20.4209590Z Removing credentials config '/home/runner/work/_temp/git-credentials-d0ab52c5-0177-4688-8142-ad80f3e87610.config'
+2026-11-05T21:23:20.4219972Z ##[endgroup]
+2026-11-05T21:23:20.4367871Z ##[group]Run set -euo pipefail
+2026-11-05T21:23:20.4368074Z [36;1mset -euo pipefail[0m
+2026-11-05T21:23:20.4368259Z [36;1mbootstrap="$RUNNER_TEMP/platform-tuple-bootstrap"[0m
+2026-11-05T21:23:20.4368552Z [36;1mexec > >(tee "$bootstrap/initialize.stdout") 2> >(tee "$bootstrap/initialize.stderr" >&2)[0m
+2026-11-05T21:23:20.4368866Z [36;1mtrap 'code=$?; printf "%s\n" "$code" > "$bootstrap/initialize.exit"' EXIT[0m
+2026-11-05T21:23:20.4369119Z [36;1m[[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]][0m
+2026-11-05T21:23:20.4369337Z [36;1mtest "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"[0m
+2026-11-05T21:23:20.4369557Z [36;1mpython3 -B eng/test_legacy_tuple_source.py[0m
+2026-11-05T21:23:20.4369906Z [36;1mlegacy_source=$(python3 -B eng/legacy_tuple_source.py --current "$PLATFORM_CANDIDATE_SHA" --requested "$REQUESTED_LEGACY_SOURCE")[0m
+2026-11-05T21:23:20.4370413Z [36;1mprintf 'current-source=%s\nlegacy-source=%s\n' "$PLATFORM_CANDIDATE_SHA" "$legacy_source" >> "$GITHUB_OUTPUT"[0m
+2026-11-05T21:23:20.4370740Z [36;1mbuilds_source="$(python3 -B eng/builds_tuple.py)"[0m
+2026-11-05T21:23:20.4370995Z [36;1mtest "$(git rev-parse HEAD:references/Hexalith.Builds)" = "$builds_source"[0m
+2026-11-05T21:23:20.4371231Z [36;1mgit submodule update --init[0m
+2026-11-05T21:23:20.4371667Z [36;1mtest "$(git -C references/Hexalith.Builds rev-parse HEAD)" = "$builds_source"[0m
+2026-11-05T21:23:20.4415003Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-05T21:23:20.4415205Z env:
+2026-11-05T21:23:20.4415321Z   CI: true
+2026-11-05T21:23:20.4415513Z   PLATFORM_CANDIDATE_SHA: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:20.4415751Z   REQUESTED_LEGACY_SOURCE: 
+2026-11-05T21:23:20.4415900Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-05T21:23:20.4416040Z ##[endgroup]
+2026-11-05T21:23:21.5103867Z .........
+2026-11-05T21:23:21.5104335Z ----------------------------------------------------------------------
+2026-11-05T21:23:21.5104725Z Ran 9 tests in 0.876s
+2026-11-05T21:23:21.5104935Z 
+2026-11-05T21:23:21.5105261Z OK
+2026-11-05T21:23:21.5949565Z ##[error]Process completed with exit code 1.
+2026-11-05T21:23:21.6002969Z ##[group]Run python3 - <<'PY'
+2026-11-05T21:23:21.6003178Z [36;1mpython3 - <<'PY'[0m
+2026-11-05T21:23:21.6003324Z [36;1mimport datetime, json, os[0m
+2026-11-05T21:23:21.6003483Z [36;1mfrom pathlib import Path[0m
+2026-11-05T21:23:21.6003730Z [36;1mpath = Path(os.environ['RUNNER_TEMP']) / 'platform-tuple-bootstrap/bootstrap.json'[0m
+2026-11-05T21:23:21.6004005Z [36;1mrecord = json.loads(path.read_text())[0m
+2026-11-05T21:23:21.6004270Z [36;1mkeys = ['CHECKOUT_OUTCOME', 'DEPENDENCIES_OUTCOME', 'SDK_OUTCOME', 'PREFLIGHT_OUTCOME'][0m
+2026-11-05T21:23:21.6004570Z [36;1mrecord['outcomes'] = {key: os.environ.get(key) for key in keys}[0m
+2026-11-05T21:23:21.6004940Z [36;1mrecord['status'] = 'completed' if all(value == 'success' for value in record['outcomes'].values()) else 'failed-or-incomplete'[0m
+2026-11-05T21:23:21.6005336Z [36;1mrecord['finishedUtc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()[0m
+2026-11-05T21:23:21.6005655Z [36;1mpath.write_text(json.dumps(record, indent=2))[0m
+2026-11-05T21:23:21.6005834Z [36;1mPY[0m
+2026-11-05T21:23:21.6050957Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:23:21.6051117Z env:
+2026-11-05T21:23:21.6051235Z   CI: true
+2026-11-05T21:23:21.6051584Z   PLATFORM_CANDIDATE_SHA: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:21.6051937Z   REQUESTED_LEGACY_SOURCE: 
+2026-11-05T21:23:21.6052087Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-05T21:23:21.6052243Z   CHECKOUT_OUTCOME: success
+2026-11-05T21:23:21.6052385Z   DEPENDENCIES_OUTCOME: failure
+2026-11-05T21:23:21.6052528Z   SDK_OUTCOME: skipped
+2026-11-05T21:23:21.6052678Z   PREFLIGHT_OUTCOME: skipped
+2026-11-05T21:23:21.6052826Z ##[endgroup]
+2026-11-05T21:23:21.6378004Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-11-05T21:23:21.6378246Z with:
+2026-11-05T21:23:21.6378382Z   name: platform-tuple-42111895087-1
+2026-11-05T21:23:21.6378612Z   path: /home/runner/work/_temp/platform-tuple-bootstrap
+artifacts/tuple-ci
+
+2026-11-05T21:23:21.6378847Z   if-no-files-found: error
+2026-11-05T21:23:21.6378989Z   compression-level: 6
+2026-11-05T21:23:21.6379124Z   overwrite: false
+2026-11-05T21:23:21.6379259Z   include-hidden-files: false
+2026-11-05T21:23:21.6379401Z   archive: true
+2026-11-05T21:23:21.6379516Z env:
+2026-11-05T21:23:21.6379628Z   CI: true
+2026-11-05T21:23:21.6379806Z   PLATFORM_CANDIDATE_SHA: 6bf64fe05ed934d7c23d78e30f863c3b29947295
+2026-11-05T21:23:21.6380014Z   REQUESTED_LEGACY_SOURCE: 
+2026-11-05T21:23:21.6380158Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-05T21:23:21.6380305Z ##[endgroup]
+2026-11-05T21:23:21.7517941Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-05T21:23:21.7532305Z The least common ancestor is /home/runner/work. This will be the root directory of the artifact
+2026-11-05T21:23:21.7532953Z With the provided path, there will be 4 files uploaded
+2026-11-05T21:23:21.7533794Z Artifact name is valid!
+2026-11-05T21:23:21.7534290Z Root directory input is valid!
+2026-11-05T21:23:22.0332790Z Uploading artifact: platform-tuple-42111895087-1.zip
+2026-11-05T21:23:22.0353187Z Beginning upload of artifact content to blob storage
+2026-11-05T21:23:22.2338838Z Uploaded bytes 1154
+2026-11-05T21:23:22.2818369Z Finished uploading artifact content to blob storage!
+2026-11-05T21:23:22.2818960Z SHA256 digest of uploaded artifact is 1b966a751a9797d472ff6256c990ad80968c062af4aa0bb9167007ed72c2c48e
+2026-11-05T21:23:22.2819430Z Finalizing artifact upload
+2026-11-05T21:23:22.7850220Z Artifact platform-tuple-42111895087-1 successfully finalized. Artifact ID 13455232553
+2026-11-05T21:23:22.7851202Z Artifact platform-tuple-42111895087-1 has been successfully uploaded! Final size is 1154 bytes. Artifact ID is 13455232553
+2026-11-05T21:23:22.7854708Z Artifact download URL: https://github.com/Hexalith/Hexalith.Platform/actions/runs/42111895087/artifacts/13455232553
+2026-11-05T21:23:22.8056917Z Post job cleanup.
+2026-11-05T21:23:22.8688041Z [command]/usr/bin/git version
+2026-11-05T21:23:22.8730764Z git version 2.56.0
+2026-11-05T21:23:22.8759531Z Temporarily overriding HOME='/home/runner/work/_temp/fbae0edf-4076-4d81-a994-cf8289f5360d' before making global git config changes
+2026-11-05T21:23:22.8760098Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T21:23:22.8764289Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+2026-11-05T21:23:22.8805899Z Removing SSH command configuration
+2026-11-05T21:23:22.8813068Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:23:22.8877725Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:23:22.9180631Z Removing HTTP extra header
+2026-11-05T21:23:22.9187455Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:23:22.9225720Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:23:22.9496920Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:23:22.9504149Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:23:22.9539718Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:23:22.9947135Z Evaluate and set job outputs
+2026-11-05T21:23:22.9953260Z Set output 'current-source'
+2026-11-05T21:23:22.9954473Z Set output 'legacy-source'
+2026-11-05T21:23:22.9955254Z Cleaning up orphan processes

@@ -1,0 +1,479 @@
+{
+  "utc": "2026-11-05T21:46:34.730213+00:00",
+  "artifact_archive": "/home/administrator/.cache/hexalith/story-2-8/memories-pr66-hosted-20261105/production-deployment-evidence.zip",
+  "archive_sha256": "cfac2649d1a7f17f9ffc809a998ac9361700ca3bbed7f91d51af20d0c1f61970",
+  "members": [
+    {
+      "file": "containers/release/access-telemetry-clock.tar.gz",
+      "bytes": 58890752,
+      "sha256": "33927cf91782279326a5342de75bec681cbadd7dc8e5d3b0a16176f0c0d60d32"
+    },
+    {
+      "file": "containers/release/access-telemetry.tar.gz",
+      "bytes": 59098624,
+      "sha256": "641c7ae202c389f3f8b975a1fe1952384825384ee821d89d4a3e2ed4c47f3c29"
+    },
+    {
+      "file": "containers/release/build-summary.json",
+      "bytes": 1914,
+      "sha256": "defe904104ef4b34826ee073c199d0a3c455efef99faba9d17454ab4ef79697d"
+    },
+    {
+      "file": "containers/release/domain-service.tar.gz",
+      "bytes": 61718528,
+      "sha256": "0278953b095bc54e6bdeb819e9ffc1dead2da4bbd8cd7de35befc6f8429d3ba1"
+    },
+    {
+      "file": "containers/release/mcp.tar.gz",
+      "bytes": 60006912,
+      "sha256": "df56ef7e637706035b339b90ece0a1cdef91a9af308051c04beb1b31082eb11a"
+    },
+    {
+      "file": "containers/release/production-deployment.yaml",
+      "bytes": 51259,
+      "sha256": "048e03482e6bb731860a5c7fdd7ad10fc9d0a32665a78e30228a06ff4ffd0f50"
+    },
+    {
+      "file": "containers/release/server.tar.gz",
+      "bytes": 271625216,
+      "sha256": "b68a47b3bae7585bff5555e7693b5b593e7a8d74920eed81e0059cf2fd5df7e3"
+    },
+    {
+      "file": "production-deployment-verification/describe-pods.txt",
+      "bytes": 50160,
+      "sha256": "6f7346af5ca74e1e07433a70998a18599625e86a8d43b51ac2a2af093341f9da"
+    },
+    {
+      "file": "production-deployment-verification/describe-workloads.txt",
+      "bytes": 40826,
+      "sha256": "37185fdb37263976bee4d0ebf07f3b74a3741f716fd98579d1c7211ae179fe89"
+    },
+    {
+      "file": "production-deployment-verification/events.txt",
+      "bytes": 31402,
+      "sha256": "5b172c24441fd085ea70f0a722b8140f7396eee1fb13e94f3bd20d6b7beb9691"
+    },
+    {
+      "file": "production-deployment-verification/falkordb-0-falkordb-current.log",
+      "bytes": 2614,
+      "sha256": "1d3d79cad65dc313122ca687ca8ef392fc3d774d5a8c308ee9d1f8576986cf94"
+    },
+    {
+      "file": "production-deployment-verification/falkordb-0-falkordb-previous.log",
+      "bytes": 103,
+      "sha256": "1b298d3685cabdda0bf2177ce8171d4fbfbbfaff2e8f81a2c4d86cc3012b688a"
+    },
+    {
+      "file": "production-deployment-verification/health-initial-mcp-health-001.json",
+      "bytes": 1311,
+      "sha256": "5db973cab7c6fbeda6885e98e5a4e78fce3767eb5741534b9ea957eb10fdbdec"
+    },
+    {
+      "file": "production-deployment-verification/health-initial-server-health-001.json",
+      "bytes": 1431,
+      "sha256": "0ebb3fd4ad31964fe0cc0879872df8004154b317b9d155e0d0f022f27cb39b8b"
+    },
+    {
+      "file": "production-deployment-verification/health-initial-server-health-002.json",
+      "bytes": 2464,
+      "sha256": "3c429025751bb2c6c185bb56c9bbe0156ce924dac5703540aa25fefa634ceaf3"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-degraded-001.json",
+      "bytes": 2563,
+      "sha256": "2650cb1f8e231341fcf6274ab09c88a4f35acfd7172f5c52354389e34e3a3035"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-restored-001.json",
+      "bytes": 2563,
+      "sha256": "4783c5c064178be05fefd2dee01ab01307b0fdc83e195db39f28b87455ec00d8"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-restored-002.json",
+      "bytes": 2481,
+      "sha256": "a50d021f75962dba20809123015777a25d3e5fdd22aaa483f9abb21bab11484e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-capacity-restored-001.json",
+      "bytes": 2480,
+      "sha256": "73d4175de7f360a31b218c37bcde16b626da31241317c5a0cc33961f1a347f16"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-mcp-restored-001.json",
+      "bytes": 1325,
+      "sha256": "c52921a03cb2bffd2aa91264e807f0f8f91b1ea5b22b50907287c0561e97e02e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-restored-001.json",
+      "bytes": 2682,
+      "sha256": "ae7fc6f15e96d1f4d7ab56342a1751a12491a6d85505236c5cbbb5853de427fe"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-restored-002.json",
+      "bytes": 2471,
+      "sha256": "6b78e0c35da08a08ea0f168f5b6be41caed9173daed107293d41e176a2f85826"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-unhealthy-001.json",
+      "bytes": 2904,
+      "sha256": "860c74e0686a5a83932243547201fa9d3351b6b59faa666ac24fe96816628566"
+    },
+    {
+      "file": "production-deployment-verification/health-required-redis-restored-001.json",
+      "bytes": 2770,
+      "sha256": "a51a6c797001b7a0aaa1d996fad3ae865251fce1217aeadb25e3c80052adee3e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-redis-unhealthy-001.json",
+      "bytes": 3162,
+      "sha256": "aa995b74665eb2ec1445ea7a9a8cf4f5292d857d7325880f9fc801f0c510b4d7"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-restored-001.json",
+      "bytes": 1321,
+      "sha256": "371021e0df228f7cd089daa01f4b21ceed381e080cba6c0319d4718d9055f1db"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-unhealthy-001.json",
+      "bytes": 1322,
+      "sha256": "91f2c0547b8d6422762863b31222d84e5787d1d95c928bc31abe0b0ce0abb8f7"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-unhealthy-002.json",
+      "bytes": 1381,
+      "sha256": "42b11994d804ff8e2698ce47328c783b74bae95bd2de72f95bc4e25fa89c6f27"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-restored-001.json",
+      "bytes": 2467,
+      "sha256": "1a0d05e74d1716b098102601a087e461ee454fc8f322aaaf4d324738c94c9ca0"
+    },
+    {
+      "file": "production-deployment-verification/last-stage.txt",
+      "bytes": 29,
+      "sha256": "156eaf39d8d6f2017018629f2713200e585f5126e51bcb6bc7c586ef635dca1f"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-ms9qc-daprd-current.log",
+      "bytes": 26222,
+      "sha256": "bd91261151e5c149505171c30ed56a15c5466a70dc3faf9b9f81d97715e90161"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-ms9qc-daprd-previous.log",
+      "bytes": 115,
+      "sha256": "2736d93cc9a45e3623c745818a7d1e5decdaf6e474e83ada7f45b5c50ad3a734"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-ms9qc-memories-current.log",
+      "bytes": 33682,
+      "sha256": "f4ad8f4411592db9ebab1fcadcd35752e9eadb67cbbbd3122144dcebf04504b9"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-ms9qc-memories-previous.log",
+      "bytes": 118,
+      "sha256": "e617b54207afbfb71f2ff7f471ab1e313dd97087843fe40e64c1db8fc18ca74d"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-z7kxt-daprd-current.log",
+      "bytes": 26782,
+      "sha256": "86bac2c23a555897c2125c792427c801bcc9f7a726e9a4a59be69734196c5ebc"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-z7kxt-daprd-previous.log",
+      "bytes": 115,
+      "sha256": "be977fb5919444e120d93b7c82880047b7ac3d8428a946d742e2e75ae5a6dfbf"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-z7kxt-memories-current.log",
+      "bytes": 33682,
+      "sha256": "838071f9c2e59d45b2e22745c142fe249a6ef8d369197ec6d542546b1dba5dbc"
+    },
+    {
+      "file": "production-deployment-verification/memories-6b8c988bdb-z7kxt-memories-previous.log",
+      "bytes": 118,
+      "sha256": "364c0223cea0f9380372e3c738d1583a89fdefad47882e2f8e5bb3ba453e434f"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-c2lxn-daprd-current.log",
+      "bytes": 34068,
+      "sha256": "15a8a59d040e9ca49d63cf3352e7ec74e92259987c7462d4f03673db820b28d6"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-c2lxn-daprd-previous.log",
+      "bytes": 119,
+      "sha256": "6a52ce7523713dc03083b71e4ff25bd630379458d4bbf729d7d719be3c952176"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-c2lxn-memories-mcp-current.log",
+      "bytes": 10320,
+      "sha256": "63b17933ada7f5bb8a12ebd7783db65ee6f571f0f84ad4cc0051e2d58482a614"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-c2lxn-memories-mcp-previous.log",
+      "bytes": 126,
+      "sha256": "5a600f5f063aaab658db9194bbc9497255f78b677314ddfbae64e1e3fa631425"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-v2m77-daprd-current.log",
+      "bytes": 33810,
+      "sha256": "040555e04a38e24ad992c9980dca80a1d21ab6455ac04eda3692d9b554b52a38"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-v2m77-memories-mcp-current.log",
+      "bytes": 9664,
+      "sha256": "db7b1d3afd0f91a6bb3354c4f5d1e1aa7d29451f6932d245bb3c1637b61cbf1b"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-v2m77-daprd-previous.log",
+      "bytes": 119,
+      "sha256": "7fa9289e8edb678fe1fbdce548f24526aff9c7bf520ebcc0272342fd47bbe122"
+    },
+    {
+      "file": "production-deployment-verification/memories-mcp-547c877dd9-v2m77-memories-mcp-previous.log",
+      "bytes": 126,
+      "sha256": "ac1a70bddd666635c8b1b96bd732a463fef42dab3542adb68f6757b856243b98"
+    },
+    {
+      "file": "production-deployment-verification/openbao-bootstrap.json",
+      "bytes": 1266,
+      "sha256": "7f9f4b4832db03b45bceae1e317621bbbe2810d8946826cca30f14a17fed03ea"
+    },
+    {
+      "file": "production-deployment-verification/pods.json",
+      "bytes": 151304,
+      "sha256": "e214a4aa6c94fc6f031ebceb0567f9abfa8ff53badea35426b88cba467200dd7"
+    },
+    {
+      "file": "production-deployment-verification/pods.txt",
+      "bytes": 1080,
+      "sha256": "e19f804cbea7f55496f4ab05b17997a307f29e09f7fe6061fcaa348cb5aecd04"
+    },
+    {
+      "file": "production-deployment-verification/redis-stack-0-redis-current.log",
+      "bytes": 7101,
+      "sha256": "46eb584a9998df26d10aa784708dec0e279d884bd20d015e11e042bcc3b6838e"
+    },
+    {
+      "file": "production-deployment-verification/redis-stack-0-redis-previous.log",
+      "bytes": 103,
+      "sha256": "d84c7e86c44ffc489a5205b8b8d2489e259f25b0c03dfade9cf6602cfe6b97ae"
+    },
+    {
+      "file": "production-deployment-verification/secret-store-substitution.json",
+      "bytes": 958,
+      "sha256": "2965381f591d3806f25d2ee1552c098f6f5b3dca9a8da69adb226425a393a3e7"
+    },
+    {
+      "file": "production-deployment-verification/verification-result.json",
+      "bytes": 158,
+      "sha256": "1b8d7823632bf4c0c1aa3454a376f49b924a9fe0b6671805766cf1f95b273372"
+    }
+  ],
+  "verification": {
+    "schemaVersion": 1,
+    "status": "succeeded",
+    "stage": "required-server-mcp-restored",
+    "capturedAt": "2026-11-05T21:35:53.7302492Z",
+    "error": null
+  },
+  "private_image_build_summary": {
+    "schemaVersion": 1,
+    "artifactKind": "container-images",
+    "status": "succeeded",
+    "version": "0.0.0-ci.950",
+    "push": false,
+    "packageDirectory": "artifacts/containers/release",
+    "source": "registry.hexalith.com",
+    "startedAt": "2026-11-05T21:31:03.8142539Z",
+    "completedAt": "2026-11-05T21:32:21.8387755Z",
+    "images": [
+      {
+        "name": "server",
+        "image": "registry.hexalith.com/memories:0.0.0-ci.950",
+        "status": "succeeded",
+        "exitCode": 0,
+        "error": "",
+        "disposition": "built"
+      },
+      {
+        "name": "mcp",
+        "image": "registry.hexalith.com/memories-mcp:0.0.0-ci.950",
+        "status": "succeeded",
+        "exitCode": 0,
+        "error": "",
+        "disposition": "built"
+      },
+      {
+        "name": "access-telemetry",
+        "image": "registry.hexalith.com/memories-access-telemetry:0.0.0-ci.950",
+        "status": "succeeded",
+        "exitCode": 0,
+        "error": "",
+        "disposition": "built"
+      },
+      {
+        "name": "access-telemetry-clock",
+        "image": "registry.hexalith.com/memories-access-telemetry-clock:0.0.0-ci.950",
+        "status": "succeeded",
+        "exitCode": 0,
+        "error": "",
+        "disposition": "built"
+      },
+      {
+        "name": "domain-service",
+        "image": "registry.hexalith.com/memories-domain-service:0.0.0-ci.950",
+        "status": "succeeded",
+        "exitCode": 0,
+        "error": "",
+        "disposition": "built"
+      }
+    ],
+    "pushed": [
+      "registry.hexalith.com/memories:0.0.0-ci.950",
+      "registry.hexalith.com/memories-mcp:0.0.0-ci.950",
+      "registry.hexalith.com/memories-access-telemetry:0.0.0-ci.950",
+      "registry.hexalith.com/memories-access-telemetry-clock:0.0.0-ci.950",
+      "registry.hexalith.com/memories-domain-service:0.0.0-ci.950"
+    ],
+    "failed": [],
+    "notAttempted": [],
+    "recovery": "Stop and reconcile immutable evidence with J\u00e9r\u00f4me Piquot; current missing-only recovery belongs to Story 30.5."
+  },
+  "health_observations": [
+    {
+      "file": "production-deployment-verification/health-initial-mcp-health-001.json",
+      "stage": "initial-mcp-health",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "5db973cab7c6fbeda6885e98e5a4e78fce3767eb5741534b9ea957eb10fdbdec"
+    },
+    {
+      "file": "production-deployment-verification/health-initial-server-health-001.json",
+      "stage": "initial-server-health",
+      "attempt": 1,
+      "status_code": null,
+      "sha256": "0ebb3fd4ad31964fe0cc0879872df8004154b317b9d155e0d0f022f27cb39b8b"
+    },
+    {
+      "file": "production-deployment-verification/health-initial-server-health-002.json",
+      "stage": "initial-server-health",
+      "attempt": 2,
+      "status_code": 200,
+      "sha256": "3c429025751bb2c6c185bb56c9bbe0156ce924dac5703540aa25fefa634ceaf3"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-degraded-001.json",
+      "stage": "optional-falkordb-degraded",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "2650cb1f8e231341fcf6274ab09c88a4f35acfd7172f5c52354389e34e3a3035"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-restored-001.json",
+      "stage": "optional-falkordb-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "4783c5c064178be05fefd2dee01ab01307b0fdc83e195db39f28b87455ec00d8"
+    },
+    {
+      "file": "production-deployment-verification/health-optional-falkordb-restored-002.json",
+      "stage": "optional-falkordb-restored",
+      "attempt": 2,
+      "status_code": 200,
+      "sha256": "a50d021f75962dba20809123015777a25d3e5fdd22aaa483f9abb21bab11484e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-capacity-restored-001.json",
+      "stage": "required-dapr-token-capacity-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "73d4175de7f360a31b218c37bcde16b626da31241317c5a0cc33961f1a347f16"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-mcp-restored-001.json",
+      "stage": "required-dapr-token-mcp-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "c52921a03cb2bffd2aa91264e807f0f8f91b1ea5b22b50907287c0561e97e02e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-restored-001.json",
+      "stage": "required-dapr-token-restored",
+      "attempt": 1,
+      "status_code": 503,
+      "sha256": "ae7fc6f15e96d1f4d7ab56342a1751a12491a6d85505236c5cbbb5853de427fe"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-restored-002.json",
+      "stage": "required-dapr-token-restored",
+      "attempt": 2,
+      "status_code": 200,
+      "sha256": "6b78e0c35da08a08ea0f168f5b6be41caed9173daed107293d41e176a2f85826"
+    },
+    {
+      "file": "production-deployment-verification/health-required-dapr-token-unhealthy-001.json",
+      "stage": "required-dapr-token-unhealthy",
+      "attempt": 1,
+      "status_code": 503,
+      "sha256": "860c74e0686a5a83932243547201fa9d3351b6b59faa666ac24fe96816628566"
+    },
+    {
+      "file": "production-deployment-verification/health-required-redis-restored-001.json",
+      "stage": "required-redis-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "a51a6c797001b7a0aaa1d996fad3ae865251fce1217aeadb25e3c80052adee3e"
+    },
+    {
+      "file": "production-deployment-verification/health-required-redis-unhealthy-001.json",
+      "stage": "required-redis-unhealthy",
+      "attempt": 1,
+      "status_code": 503,
+      "sha256": "aa995b74665eb2ec1445ea7a9a8cf4f5292d857d7325880f9fc801f0c510b4d7"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-restored-001.json",
+      "stage": "required-server-mcp-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "371021e0df228f7cd089daa01f4b21ceed381e080cba6c0319d4718d9055f1db"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-unhealthy-001.json",
+      "stage": "required-server-mcp-unhealthy",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "91f2c0547b8d6422762863b31222d84e5787d1d95c928bc31abe0b0ce0abb8f7"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-mcp-unhealthy-002.json",
+      "stage": "required-server-mcp-unhealthy",
+      "attempt": 2,
+      "status_code": 503,
+      "sha256": "42b11994d804ff8e2698ce47328c783b74bae95bd2de72f95bc4e25fa89c6f27"
+    },
+    {
+      "file": "production-deployment-verification/health-required-server-restored-001.json",
+      "stage": "required-server-restored",
+      "attempt": 1,
+      "status_code": 200,
+      "sha256": "1a0d05e74d1716b098102601a087e461ee454fc8f322aaaf4d324738c94c9ca0"
+    }
+  ],
+  "cleanup_log_lines": [
+    "2026-11-05T21:35:55.9470637Z Deleting cluster \"hexalith-memories-verification\" ...",
+    "2026-11-05T21:35:59.2601127Z Deleted nodes: [\"hexalith-memories-verification-control-plane\"]",
+    "2026-11-05T21:36:16.9484615Z Deleting cluster \"chart-testing\" ..."
+  ],
+  "job_log_private_witness": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/memories-pr66-hosted-20261105/production-deployment-job.log",
+    "bytes": 63456,
+    "sha256": "24ed6ccde3b46903c6c4fac1d5009f1f727324cecd71fd7344351994b76f6f2b"
+  },
+  "limits": [
+    "This is ordinary owner CI private image/rollout evidence, never public image publication.",
+    "The domain-service archive was built; this rollout workflow passes server/Mcp/telemetry/clock archives and does not independently prove domain-service startup.",
+    "Kind cleanup command output is retained; this workflow provides no per-provider exact-empty inventory receipt, so no Story2.8 exact-zero qualification credit is claimed.",
+    "The build summary field named pushed coexists with push:false and built dispositions; no registry publication inferred from that field."
+  ]
+}

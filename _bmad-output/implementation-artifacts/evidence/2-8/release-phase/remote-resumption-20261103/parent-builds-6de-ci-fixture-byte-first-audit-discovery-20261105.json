@@ -1,0 +1,294 @@
+{
+  "utc": "2026-11-05T21:45:31.947780+00:00",
+  "prior_audit_failure": "Exact raw Git blob equality does not automatically equal checkout bytes. Inspect all differences before accepting any.",
+  "mismatches": [
+    {
+      "file": "module/executable/P0Fixture.Inventory.Descriptor/ModuleDescriptorV1.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory.Descriptor/ModuleDescriptorV1.cs",
+        "sha256": "2e0fe2791e077589fea0272564cb80d941f29f8857e9679bc796c136cd42f232",
+        "sizeBytes": 1248
+      },
+      "git_bytes": 1227,
+      "git_sha256": "9cc9cbcbff61ade96ff17fcff617bfce687ee8af1cbdecc89dcfa9352885af7f",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/ModuleDescriptorV1.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory.Descriptor/ModuleDescriptorV1.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/Program.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/Program.cs",
+        "sha256": "e475e7d058e0af8828f2f98c91f1a5a5c3f1ac41eb8de9112f909a2860a7fb70",
+        "sizeBytes": 518
+      },
+      "git_bytes": 505,
+      "git_sha256": "a97212099e5a567bcfa58e3d4b760ad1b67d7fbbb15d3820cc18f136001ae877",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/Program.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/Program.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/ReserveStock.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/ReserveStock.cs",
+        "sha256": "1d57c9105b20ead40ffa02fd438929beb92f0839aa99ba34175952eb2afda752",
+        "sizeBytes": 503
+      },
+      "git_bytes": 492,
+      "git_sha256": "10acabf52d5aab29b601f458a7377c055394e14e8e390c4790bb6a9502b330f3",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/ReserveStock.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/ReserveStock.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/StockAggregate.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/StockAggregate.cs",
+        "sha256": "9c4c3db06ec9aa5ec50df9953584d897ed0d3e64b5b2137ec4de018db6b6e916",
+        "sizeBytes": 1237
+      },
+      "git_bytes": 1208,
+      "git_sha256": "bfb362f84ca34a2e403db6b0b750c350cc9de1c82f860285bc561d5e00409001",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/StockAggregate.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/StockAggregate.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/StockReserved.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/StockReserved.cs",
+        "sha256": "01f2b22a63c0550bd633429e2ab1271bfdaaaa55ebe4688faf9f5fa26cb169c1",
+        "sizeBytes": 650
+      },
+      "git_bytes": 636,
+      "git_sha256": "007873a766fd6be4c6fac8f9c41227f0bfa275c86e0624d64ee75670df8c7e53",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/StockReserved.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/StockReserved.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/StockState.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/StockState.cs",
+        "sha256": "79a10f18e66980676b387153695f9ead55641cdc994ff69987a4645a174a79f1",
+        "sizeBytes": 1020
+      },
+      "git_bytes": 988,
+      "git_sha256": "f98d575043e4715e7e8543117b3084083c9348c86e7ac0077561d690ab6d1690",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/StockState.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/StockState.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Inventory/StockSummaryProjection.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Inventory/StockSummaryProjection.cs",
+        "sha256": "82be6e04e6eb114d8760e55c7c7c8af11e385738884e519dc0486abf65a15d0f",
+        "sizeBytes": 2166
+      },
+      "git_bytes": 2109,
+      "git_sha256": "85e55966f8aeec67aa4145665a20b1b7270239ea809a8daf2fdeb92622bd65b3",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Inventory/StockSummaryProjection.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Inventory/StockSummaryProjection.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.NativeMetadataProbe/Program.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.NativeMetadataProbe/Program.cs",
+        "sha256": "48a5a55ef67378519bdd988bc6aba12548cfdd23b7b2e744660ec327decfbe6b",
+        "sizeBytes": 3657
+      },
+      "git_bytes": 3579,
+      "git_sha256": "485686649ea32414a07bca0df1fc0320b38725d0b3b1cd40c023ee2f0c863b8b",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/Program.cs: text: set\ntest/fixtures/module/executable/P0Fixture.NativeMetadataProbe/Program.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.NativeTests/RunHandoff.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.NativeTests/RunHandoff.cs",
+        "sha256": "407167b5a607eaa549c31901d4ff0d68be679da1ea253a2cfd172dda62bbb3a9",
+        "sizeBytes": 1782
+      },
+      "git_bytes": 1747,
+      "git_sha256": "4b9db00c3ed4d8bccae1b3f358c7561b3ffaacc6106d0b868aa16facb909a203",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.NativeTests/RunHandoff.cs: text: set\ntest/fixtures/module/executable/P0Fixture.NativeTests/RunHandoff.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.NativeTests/RunHandoffTests.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.NativeTests/RunHandoffTests.cs",
+        "sha256": "ac8b0f575b12f42dff862c734a9bdeded23fd5a1ad041fd369082d269079df01",
+        "sizeBytes": 4018
+      },
+      "git_bytes": 3922,
+      "git_sha256": "468cef5fcf6e50da832b6e8d995faa4acb5ea76882122a9e2b8cf868300db45b",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.NativeTests/RunHandoffTests.cs: text: set\ntest/fixtures/module/executable/P0Fixture.NativeTests/RunHandoffTests.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders.Descriptor/ModuleDescriptorV1.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders.Descriptor/ModuleDescriptorV1.cs",
+        "sha256": "ff48f0b6ba8b481c60f30b26572ec838e18a6331b701c054eb40c936e1c2215e",
+        "sizeBytes": 1233
+      },
+      "git_bytes": 1212,
+      "git_sha256": "3d28dbd90d3c3a25fd5f227112f594c331707fe5ae772fb370aeae114e2e5d80",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders.Descriptor/ModuleDescriptorV1.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders.Descriptor/ModuleDescriptorV1.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/OrderAggregate.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/OrderAggregate.cs",
+        "sha256": "a734f87f5c760c3b5fcdfe3bea8daaad69b01241426ed2d3a9cad2dfcd07ebba",
+        "sizeBytes": 1219
+      },
+      "git_bytes": 1190,
+      "git_sha256": "2ecf5f2d96e609cc44aba1c404a16b5a33fc7b72a2d4ad555c7c7996910fc898",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/OrderAggregate.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/OrderAggregate.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/OrderPlaced.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/OrderPlaced.cs",
+        "sha256": "25c2ac2399270d54a79f963ccfb1960a751be6b8426000399c2a4bc6e96903f7",
+        "sizeBytes": 648
+      },
+      "git_bytes": 634,
+      "git_sha256": "2071acc421761b2b1e6ff4fc2ed34c428735088bc9eb64a4f8541bca07536342",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/OrderPlaced.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/OrderPlaced.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/OrderState.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/OrderState.cs",
+        "sha256": "616fe1765602d54b25e51f303f148c13f8332f8607f78e42b94ad744c114583b",
+        "sizeBytes": 1009
+      },
+      "git_bytes": 977,
+      "git_sha256": "17cc3f519f6a446a4b62b9ef601d5264828498ae54ed79ac6a9a9b468d30a0f8",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/OrderState.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/OrderState.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/OrderSummaryProjection.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/OrderSummaryProjection.cs",
+        "sha256": "14e0b4e9d3d8d39dff1f87c62772fd0edd6105b5ef372a48cac8a12f789f79f4",
+        "sizeBytes": 2139
+      },
+      "git_bytes": 2082,
+      "git_sha256": "7ca1f80b7378467ea6ecb29758df543c2f176405d0d623c9b5f2ce44827ce5d7",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/OrderSummaryProjection.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/OrderSummaryProjection.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/PlaceOrder.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/PlaceOrder.cs",
+        "sha256": "e20f6943e7428b8943e0f42163e9abc7fa1d84116a8dfb88a9efdc6dd021a247",
+        "sizeBytes": 497
+      },
+      "git_bytes": 486,
+      "git_sha256": "c277095d2ca3a68ea01e9563b877814332d495fa47745628817766c71b9db2ce",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/PlaceOrder.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/PlaceOrder.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Orders/Program.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Orders/Program.cs",
+        "sha256": "e475e7d058e0af8828f2f98c91f1a5a5c3f1ac41eb8de9112f909a2860a7fb70",
+        "sizeBytes": 518
+      },
+      "git_bytes": 505,
+      "git_sha256": "a97212099e5a567bcfa58e3d4b760ad1b67d7fbbb15d3820cc18f136001ae877",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Orders/Program.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Orders/Program.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Ui.Descriptor/UiDescriptorV1.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Ui.Descriptor/UiDescriptorV1.cs",
+        "sha256": "5879dcbc5ae708acf8e81439899dff8a914ccc17555bf37d3d746335c11f1b73",
+        "sizeBytes": 1394
+      },
+      "git_bytes": 1373,
+      "git_sha256": "56a147aefd12defd0a9b5aab2973f9cde5b5aad9eba441834c3dc3bf78d3c6ef",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Ui.Descriptor/UiDescriptorV1.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Ui.Descriptor/UiDescriptorV1.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Ui/InventoryUiMarker.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Ui/InventoryUiMarker.cs",
+        "sha256": "d2f17a9faa5aadec9ed63d1e85929ada381d6478d7ca39ddf8c64f4f225fed64",
+        "sizeBytes": 550
+      },
+      "git_bytes": 537,
+      "git_sha256": "8354234310a1237e88203fcf5cda26e6ae5a5ff1d196ed2d4e371fea4c3972bf",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Ui/InventoryUiMarker.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Ui/InventoryUiMarker.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Ui/OrdersUiMarker.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Ui/OrdersUiMarker.cs",
+        "sha256": "79aa69fcb1a68e5a31d6f1df5c63b25f2c89a485d1e68ad6d29b6f8b154bb372",
+        "sizeBytes": 535
+      },
+      "git_bytes": 522,
+      "git_sha256": "cda1b9d4811d7ecbd333222bd46661fab0426bfb75fab0dec7c7a0409326d9f8",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Ui/OrdersUiMarker.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Ui/OrdersUiMarker.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Ui/PlaceOrderUiCommand.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Ui/PlaceOrderUiCommand.cs",
+        "sha256": "980e5084096731d83449c75234dec8bf1982dce25cd7e21394ad1a31b3d3468f",
+        "sizeBytes": 651
+      },
+      "git_bytes": 631,
+      "git_sha256": "82c72de06b7b25da151ae718d9c81c169ab5c06edc409eab8ef6d9d6b2edd9bd",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Ui/PlaceOrderUiCommand.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Ui/PlaceOrderUiCommand.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/executable/P0Fixture.Ui/ReserveStockUiCommand.cs",
+      "recorded": {
+        "file": "module/executable/P0Fixture.Ui/ReserveStockUiCommand.cs",
+        "sha256": "65eac95828e59e36338277308b996887d2839e4d358c664929dd866ea7518dad",
+        "sizeBytes": 655
+      },
+      "git_bytes": 635,
+      "git_sha256": "08b29b73b299a1e1faf7999a583fa64b3b28dfdc21ec32f80b38f5f7ec6f5afd",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/executable/P0Fixture.Ui/ReserveStockUiCommand.cs: text: set\ntest/fixtures/module/executable/P0Fixture.Ui/ReserveStockUiCommand.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/platform-loader/PlatformAppModel.cs",
+      "recorded": {
+        "file": "module/platform-loader/PlatformAppModel.cs",
+        "sha256": "2577647ab789251a229ff5b4ca378a6b9316b4762e03931c1315875fdc7ecdda",
+        "sizeBytes": 3091
+      },
+      "git_bytes": 3029,
+      "git_sha256": "61ce41bfe2d1fa5ae562616bf9a66960b13af55136a1d30748c322a144433fe4",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/platform-loader/PlatformAppModel.cs: text: set\ntest/fixtures/module/platform-loader/PlatformAppModel.cs: eol: crlf\n"
+    },
+    {
+      "file": "module/platform-loader/PlatformServerAnnotation.cs",
+      "recorded": {
+        "file": "module/platform-loader/PlatformServerAnnotation.cs",
+        "sha256": "709da72a2a6972fc228eed6e939e9980bb5d5a27afb58f047db8009c08b4311d",
+        "sizeBytes": 511
+      },
+      "git_bytes": 500,
+      "git_sha256": "ebee04a58bc4c2ab65989355187956d54a447d82127995b1045d186d20d128fb",
+      "crlf_matches": true,
+      "attributes": "test/fixtures/module/platform-loader/PlatformServerAnnotation.cs: text: set\ntest/fixtures/module/platform-loader/PlatformServerAnnotation.cs: eol: crlf\n"
+    }
+  ]
+}

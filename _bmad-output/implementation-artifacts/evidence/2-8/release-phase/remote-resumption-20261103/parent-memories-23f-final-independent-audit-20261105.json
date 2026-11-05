@@ -1,0 +1,43 @@
+{
+  "utc": "2026-11-05T21:27:58.862783+00:00",
+  "passed": true,
+  "head": "23f7231ac1329e681d0b2b4bba876e62b3bb095b",
+  "parent": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+  "tree": "8ceaa4333dec8c9ee9ddab52251632f861f16c17",
+  "fullPatchReadByParent": true,
+  "patchSha256": "19900e9ab53899dd54df4aa070866197c5808fa725246b3c0737b2193ffa7c6c",
+  "indexedFiles": 28308,
+  "indexedBytes": 1355963340,
+  "indexSha256": "32d4c6219893177b31552d5fc813b9e75f3a6d3e70a72885595901ea2ebd7afa",
+  "checkpointSha256": "5a573b7372963beae631ad67d993532ea27ba70a29332450216b56de96694f75",
+  "actualCases": {
+    "causal-production-omission.xml": {
+      "count": 1,
+      "result": "Fail"
+    },
+    "coherent-final-domain-tests.xml": {
+      "count": 13,
+      "result": "Pass"
+    },
+    "coherent-existing-catalog-controls.xml": {
+      "count": 3,
+      "result": "Pass"
+    }
+  },
+  "publicOnlyRestoreAssets": 6,
+  "genuinePublicSdkArchiveSignaturesAndBodyBindings": 4,
+  "privateOwnerPackageAndPublishAndTestBodyBindings": 2,
+  "allFinalPublishFileBindings": 73,
+  "finalCommandSourceFilesChecked": {
+    "coherent-final-production-build-inputs.json": 6446,
+    "coherent-final-ordinary-publish-inputs.json": 6446
+  },
+  "allCommandStdoutStderrHashesChecked": 45,
+  "preservedNewerEventStoreSource": "fe974f485fa2c29d9ea055f5597b41ae38d072f1",
+  "firstAuditorErrorsRetained": [
+    "Default Git submodule=log required explicit --submodule=short for exact unified diff.",
+    "Actual NuGet packageFolders uses a path without trailing slash; compare normalized paths."
+  ],
+  "previousComponentAudit": "parent-memories-23f-corrected-complete-source-and-artifact-audit-20261105.json completed source/ancestry/XML/archives/private package checks before its path-format assertion. No source/evidence/test changes were made.",
+  "hostedNativeOrPublicationAcceptance": false
+}

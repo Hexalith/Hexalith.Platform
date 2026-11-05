@@ -1,0 +1,542 @@
+﻿2026-11-05T21:18:39.2205807Z Current runner version: '2.338.2'
+2026-11-05T21:18:39.2222777Z ##[group]Runner Image Provisioner
+2026-11-05T21:18:39.2223364Z Hosted Compute Agent
+2026-11-05T21:18:39.2223700Z Version: 20261028.624
+2026-11-05T21:18:39.2224095Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-05T21:18:39.2224500Z Build Date: 2026-10-28T21:51:42Z
+2026-11-05T21:18:39.2224874Z Worker ID: {9e2e7f96-4f70-4b44-9dd4-adf0226aa77f}
+2026-11-05T21:18:39.2225346Z Region: southcentralus
+2026-11-05T21:18:39.2225678Z Cloud: Azure
+2026-11-05T21:18:39.2226044Z ##[endgroup]
+2026-11-05T21:18:39.2226824Z ##[group]Operating System
+2026-11-05T21:18:39.2227158Z Ubuntu
+2026-11-05T21:18:39.2227543Z 26.04.1
+2026-11-05T21:18:39.2227839Z LTS
+2026-11-05T21:18:39.2228160Z ##[endgroup]
+2026-11-05T21:18:39.2228484Z ##[group]Runner Image
+2026-11-05T21:18:39.2228840Z Image: ubuntu-26.04
+2026-11-05T21:18:39.2229228Z Version: 20261101.186.1
+2026-11-05T21:18:39.2229950Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-05T21:18:39.2230806Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+2026-11-05T21:18:39.2231336Z ##[endgroup]
+2026-11-05T21:18:39.2232028Z ##[group]GITHUB_TOKEN Permissions
+2026-11-05T21:18:39.2233316Z Contents: read
+2026-11-05T21:18:39.2233724Z Metadata: read
+2026-11-05T21:18:39.2234043Z ##[endgroup]
+2026-11-05T21:18:39.2235325Z Secret source: Actions
+2026-11-05T21:18:39.2235869Z Cache mode: write
+2026-11-05T21:18:39.2236257Z Prepare workflow directory
+2026-11-05T21:18:39.2438588Z Prepare all required actions
+2026-11-05T21:18:39.2471475Z Getting action download info
+2026-11-05T21:18:39.4933025Z Download action repository 'actions/checkout@v7.0.1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-05T21:18:39.6527418Z Complete job name: .NET tests
+2026-11-05T21:18:39.7046505Z ##[group]Run actions/checkout@v7.0.1
+2026-11-05T21:18:39.7046942Z with:
+2026-11-05T21:18:39.7047175Z   fetch-depth: 0
+2026-11-05T21:18:39.7047441Z   submodules: false
+2026-11-05T21:18:39.7047700Z   persist-credentials: false
+2026-11-05T21:18:39.7048000Z   repository: Hexalith/Hexalith.Builds
+2026-11-05T21:18:39.7050053Z   token: ***
+2026-11-05T21:18:39.7050286Z   ssh-strict: true
+2026-11-05T21:18:39.7050528Z   ssh-user: git
+2026-11-05T21:18:39.7050761Z   clean: true
+2026-11-05T21:18:39.7051011Z   sparse-checkout-cone-mode: true
+2026-11-05T21:18:39.7051295Z   fetch-tags: false
+2026-11-05T21:18:39.7051548Z   show-progress: true
+2026-11-05T21:18:39.7051801Z   lfs: false
+2026-11-05T21:18:39.7052041Z   set-safe-directory: true
+2026-11-05T21:18:39.7052499Z   allow-unsafe-pr-checkout: false
+2026-11-05T21:18:39.7052958Z ##[endgroup]
+2026-11-05T21:18:39.8797251Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-05T21:18:39.8798577Z ##[group]Getting Git version info
+2026-11-05T21:18:39.8799060Z Working directory is '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-05T21:18:39.8799932Z [command]/usr/bin/git version
+2026-11-05T21:18:39.8823338Z git version 2.56.0
+2026-11-05T21:18:39.8834864Z ##[endgroup]
+2026-11-05T21:18:39.8842716Z Temporarily overriding HOME='/home/runner/work/_temp/c760b6bc-f32f-463d-8aaa-9334b8c0b55d' before making global git config changes
+2026-11-05T21:18:39.8843895Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T21:18:39.8845675Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-05T21:18:39.8894826Z Deleting the contents of '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-05T21:18:39.8896714Z ##[group]Determining repository object format
+2026-11-05T21:18:39.8897630Z ##[endgroup]
+2026-11-05T21:18:39.8898231Z ##[group]Initializing the repository
+2026-11-05T21:18:39.8900029Z [command]/usr/bin/git init /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-05T21:18:39.8972725Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-05T21:18:39.8973707Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-05T21:18:39.8975188Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-05T21:18:39.8975929Z hint: call:
+2026-11-05T21:18:39.8976576Z hint:
+2026-11-05T21:18:39.8976973Z hint: 	git config --global init.defaultBranch <name>
+2026-11-05T21:18:39.8977318Z hint:
+2026-11-05T21:18:39.8977742Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-05T21:18:39.8978237Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-05T21:18:39.8978622Z hint:
+2026-11-05T21:18:39.8978925Z hint: 	git branch -m <name>
+2026-11-05T21:18:39.8979183Z hint:
+2026-11-05T21:18:39.8979514Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-05T21:18:39.8982154Z Initialized empty Git repository in /home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/
+2026-11-05T21:18:39.8990373Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-05T21:18:39.9031324Z ##[endgroup]
+2026-11-05T21:18:39.9031746Z ##[group]Disabling automatic garbage collection
+2026-11-05T21:18:39.9034126Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-05T21:18:39.9062151Z ##[endgroup]
+2026-11-05T21:18:39.9062888Z ##[group]Setting up auth
+2026-11-05T21:18:39.9063344Z Removing SSH command configuration
+2026-11-05T21:18:39.9070037Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:18:39.9095445Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:18:39.9433586Z Removing HTTP extra header
+2026-11-05T21:18:39.9438187Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:18:39.9465340Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:18:39.9667877Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:18:39.9677275Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:18:39.9702087Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:18:39.9905543Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-05T21:18:39.9933798Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path /home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:39.9958762Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:39.9985309Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:40.0010280Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:40.0034104Z ##[endgroup]
+2026-11-05T21:18:40.0034504Z ##[group]Fetching the repository
+2026-11-05T21:18:40.0038173Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-11-05T21:18:43.5044468Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-05T21:18:43.5045593Z  * [new branch]        main       -> origin/main
+2026-11-05T21:18:43.5046532Z  * [new tag]           v1.60.0    -> v1.60.0
+2026-11-05T21:18:43.5047734Z  * [new tag]           v1.61.0    -> v1.61.0
+2026-11-05T21:18:43.5048653Z  * [new tag]           v1.62.0    -> v1.62.0
+2026-11-05T21:18:43.5049519Z  * [new tag]           v1.63.0    -> v1.63.0
+2026-11-05T21:18:43.5050374Z  * [new tag]           v2.0.0     -> v2.0.0
+2026-11-05T21:18:43.5051266Z  * [new tag]           v2.0.1     -> v2.0.1
+2026-11-05T21:18:43.5052136Z  * [new tag]           v2.0.2     -> v2.0.2
+2026-11-05T21:18:43.5053218Z  * [new tag]           v2.0.3     -> v2.0.3
+2026-11-05T21:18:43.5054116Z  * [new tag]           v3.0.0     -> v3.0.0
+2026-11-05T21:18:43.5054994Z  * [new tag]           v3.0.1     -> v3.0.1
+2026-11-05T21:18:43.5055935Z  * [new tag]           v3.0.2     -> v3.0.2
+2026-11-05T21:18:43.5056881Z  * [new tag]           v3.0.3     -> v3.0.3
+2026-11-05T21:18:43.5057917Z  * [new tag]           v3.0.4     -> v3.0.4
+2026-11-05T21:18:43.5058868Z  * [new tag]           v3.0.5     -> v3.0.5
+2026-11-05T21:18:43.5059797Z  * [new tag]           v3.1.0     -> v3.1.0
+2026-11-05T21:18:43.5060769Z  * [new tag]           v3.10.0    -> v3.10.0
+2026-11-05T21:18:43.5061721Z  * [new tag]           v3.10.1    -> v3.10.1
+2026-11-05T21:18:43.5062840Z  * [new tag]           v3.10.2    -> v3.10.2
+2026-11-05T21:18:43.5064008Z  * [new tag]           v3.10.3    -> v3.10.3
+2026-11-05T21:18:43.5064828Z  * [new tag]           v3.11.0    -> v3.11.0
+2026-11-05T21:18:43.5065731Z  * [new tag]           v3.11.1    -> v3.11.1
+2026-11-05T21:18:43.5066626Z  * [new tag]           v3.12.0    -> v3.12.0
+2026-11-05T21:18:43.5067529Z  * [new tag]           v3.12.1    -> v3.12.1
+2026-11-05T21:18:43.5068451Z  * [new tag]           v3.12.2    -> v3.12.2
+2026-11-05T21:18:43.5069376Z  * [new tag]           v3.13.0    -> v3.13.0
+2026-11-05T21:18:43.5070281Z  * [new tag]           v3.14.0    -> v3.14.0
+2026-11-05T21:18:43.5071629Z  * [new tag]           v3.14.1    -> v3.14.1
+2026-11-05T21:18:43.5072996Z  * [new tag]           v3.14.2    -> v3.14.2
+2026-11-05T21:18:43.5074101Z  * [new tag]           v3.14.3    -> v3.14.3
+2026-11-05T21:18:43.5075015Z  * [new tag]           v3.14.4    -> v3.14.4
+2026-11-05T21:18:43.5075926Z  * [new tag]           v3.14.5    -> v3.14.5
+2026-11-05T21:18:43.5076831Z  * [new tag]           v3.14.6    -> v3.14.6
+2026-11-05T21:18:43.5077730Z  * [new tag]           v3.15.0    -> v3.15.0
+2026-11-05T21:18:43.5078655Z  * [new tag]           v3.16.0    -> v3.16.0
+2026-11-05T21:18:43.5079590Z  * [new tag]           v3.17.0    -> v3.17.0
+2026-11-05T21:18:43.5080631Z  * [new tag]           v3.17.1    -> v3.17.1
+2026-11-05T21:18:43.5081873Z  * [new tag]           v3.17.10   -> v3.17.10
+2026-11-05T21:18:43.5083294Z  * [new tag]           v3.17.11   -> v3.17.11
+2026-11-05T21:18:43.5084625Z  * [new tag]           v3.17.12   -> v3.17.12
+2026-11-05T21:18:43.5085939Z  * [new tag]           v3.17.13   -> v3.17.13
+2026-11-05T21:18:43.5087241Z  * [new tag]           v3.17.14   -> v3.17.14
+2026-11-05T21:18:43.5088356Z  * [new tag]           v3.17.15   -> v3.17.15
+2026-11-05T21:18:43.5089230Z  * [new tag]           v3.17.16   -> v3.17.16
+2026-11-05T21:18:43.5090082Z  * [new tag]           v3.17.17   -> v3.17.17
+2026-11-05T21:18:43.5090943Z  * [new tag]           v3.17.18   -> v3.17.18
+2026-11-05T21:18:43.5091792Z  * [new tag]           v3.17.19   -> v3.17.19
+2026-11-05T21:18:43.5092978Z  * [new tag]           v3.17.2    -> v3.17.2
+2026-11-05T21:18:43.5093859Z  * [new tag]           v3.17.20   -> v3.17.20
+2026-11-05T21:18:43.5094744Z  * [new tag]           v3.17.21   -> v3.17.21
+2026-11-05T21:18:43.5095606Z  * [new tag]           v3.17.22   -> v3.17.22
+2026-11-05T21:18:43.5096477Z  * [new tag]           v3.17.3    -> v3.17.3
+2026-11-05T21:18:43.5097326Z  * [new tag]           v3.17.4    -> v3.17.4
+2026-11-05T21:18:43.5098196Z  * [new tag]           v3.17.5    -> v3.17.5
+2026-11-05T21:18:43.5099196Z  * [new tag]           v3.17.6    -> v3.17.6
+2026-11-05T21:18:43.5100031Z  * [new tag]           v3.17.7    -> v3.17.7
+2026-11-05T21:18:43.5100873Z  * [new tag]           v3.17.8    -> v3.17.8
+2026-11-05T21:18:43.5101908Z  * [new tag]           v3.17.9    -> v3.17.9
+2026-11-05T21:18:43.5102934Z  * [new tag]           v3.18.0    -> v3.18.0
+2026-11-05T21:18:43.5103779Z  * [new tag]           v3.18.1    -> v3.18.1
+2026-11-05T21:18:43.5104623Z  * [new tag]           v3.18.2    -> v3.18.2
+2026-11-05T21:18:43.5105467Z  * [new tag]           v3.2.0     -> v3.2.0
+2026-11-05T21:18:43.5106293Z  * [new tag]           v3.3.0     -> v3.3.0
+2026-11-05T21:18:43.5107128Z  * [new tag]           v3.4.0     -> v3.4.0
+2026-11-05T21:18:43.5107978Z  * [new tag]           v3.4.1     -> v3.4.1
+2026-11-05T21:18:43.5108819Z  * [new tag]           v3.5.0     -> v3.5.0
+2026-11-05T21:18:43.5109660Z  * [new tag]           v3.5.1     -> v3.5.1
+2026-11-05T21:18:43.5110498Z  * [new tag]           v3.5.2     -> v3.5.2
+2026-11-05T21:18:43.5111357Z  * [new tag]           v3.5.3     -> v3.5.3
+2026-11-05T21:18:43.5112197Z  * [new tag]           v3.6.0     -> v3.6.0
+2026-11-05T21:18:43.5113277Z  * [new tag]           v3.6.1     -> v3.6.1
+2026-11-05T21:18:43.5114438Z  * [new tag]           v3.6.2     -> v3.6.2
+2026-11-05T21:18:43.5115310Z  * [new tag]           v3.7.0     -> v3.7.0
+2026-11-05T21:18:43.5116259Z  * [new tag]           v3.7.1     -> v3.7.1
+2026-11-05T21:18:43.5117099Z  * [new tag]           v3.7.2     -> v3.7.2
+2026-11-05T21:18:43.5117997Z  * [new tag]           v3.8.0     -> v3.8.0
+2026-11-05T21:18:43.5118878Z  * [new tag]           v3.8.1     -> v3.8.1
+2026-11-05T21:18:43.5119831Z  * [new tag]           v3.8.2     -> v3.8.2
+2026-11-05T21:18:43.5120871Z  * [new tag]           v3.8.3     -> v3.8.3
+2026-11-05T21:18:43.5121824Z  * [new tag]           v3.9.0     -> v3.9.0
+2026-11-05T21:18:43.5122805Z  * [new tag]           v3.9.1     -> v3.9.1
+2026-11-05T21:18:43.5123625Z  * [new tag]           v4.0.0     -> v4.0.0
+2026-11-05T21:18:43.5124564Z  * [new tag]           v4.1.0     -> v4.1.0
+2026-11-05T21:18:43.5125391Z  * [new tag]           v4.10.0    -> v4.10.0
+2026-11-05T21:18:43.5126238Z  * [new tag]           v4.11.0    -> v4.11.0
+2026-11-05T21:18:43.5127137Z  * [new tag]           v4.12.0    -> v4.12.0
+2026-11-05T21:18:43.5127928Z  * [new tag]           v4.13.0    -> v4.13.0
+2026-11-05T21:18:43.5128713Z  * [new tag]           v4.13.1    -> v4.13.1
+2026-11-05T21:18:43.5129496Z  * [new tag]           v4.13.2    -> v4.13.2
+2026-11-05T21:18:43.5130276Z  * [new tag]           v4.13.3    -> v4.13.3
+2026-11-05T21:18:43.5131061Z  * [new tag]           v4.13.4    -> v4.13.4
+2026-11-05T21:18:43.5131845Z  * [new tag]           v4.14.0    -> v4.14.0
+2026-11-05T21:18:43.5132695Z  * [new tag]           v4.15.0    -> v4.15.0
+2026-11-05T21:18:43.5133488Z  * [new tag]           v4.16.0    -> v4.16.0
+2026-11-05T21:18:43.5134511Z  * [new tag]           v4.16.1    -> v4.16.1
+2026-11-05T21:18:43.5135587Z  * [new tag]           v4.16.2    -> v4.16.2
+2026-11-05T21:18:43.5136771Z  * [new tag]           v4.16.3    -> v4.16.3
+2026-11-05T21:18:43.5137567Z  * [new tag]           v4.16.4    -> v4.16.4
+2026-11-05T21:18:43.5138328Z  * [new tag]           v4.16.5    -> v4.16.5
+2026-11-05T21:18:43.5139095Z  * [new tag]           v4.17.0    -> v4.17.0
+2026-11-05T21:18:43.5139848Z  * [new tag]           v4.17.1    -> v4.17.1
+2026-11-05T21:18:43.5140610Z  * [new tag]           v4.17.10   -> v4.17.10
+2026-11-05T21:18:43.5141374Z  * [new tag]           v4.17.2    -> v4.17.2
+2026-11-05T21:18:43.5142137Z  * [new tag]           v4.17.3    -> v4.17.3
+2026-11-05T21:18:43.5143061Z  * [new tag]           v4.17.4    -> v4.17.4
+2026-11-05T21:18:43.5143818Z  * [new tag]           v4.17.5    -> v4.17.5
+2026-11-05T21:18:43.5144574Z  * [new tag]           v4.17.6    -> v4.17.6
+2026-11-05T21:18:43.5145341Z  * [new tag]           v4.17.7    -> v4.17.7
+2026-11-05T21:18:43.5146105Z  * [new tag]           v4.17.8    -> v4.17.8
+2026-11-05T21:18:43.5146875Z  * [new tag]           v4.17.9    -> v4.17.9
+2026-11-05T21:18:43.5147640Z  * [new tag]           v4.18.0    -> v4.18.0
+2026-11-05T21:18:43.5148421Z  * [new tag]           v4.18.1    -> v4.18.1
+2026-11-05T21:18:43.5149197Z  * [new tag]           v4.18.10   -> v4.18.10
+2026-11-05T21:18:43.5150104Z  * [new tag]           v4.18.11   -> v4.18.11
+2026-11-05T21:18:43.5150872Z  * [new tag]           v4.18.2    -> v4.18.2
+2026-11-05T21:18:43.5151639Z  * [new tag]           v4.18.3    -> v4.18.3
+2026-11-05T21:18:43.5152500Z  * [new tag]           v4.18.4    -> v4.18.4
+2026-11-05T21:18:43.5153248Z  * [new tag]           v4.18.5    -> v4.18.5
+2026-11-05T21:18:43.5154004Z  * [new tag]           v4.18.6    -> v4.18.6
+2026-11-05T21:18:43.5154756Z  * [new tag]           v4.18.7    -> v4.18.7
+2026-11-05T21:18:43.5155510Z  * [new tag]           v4.18.8    -> v4.18.8
+2026-11-05T21:18:43.5156270Z  * [new tag]           v4.18.9    -> v4.18.9
+2026-11-05T21:18:43.5157027Z  * [new tag]           v4.19.0    -> v4.19.0
+2026-11-05T21:18:43.5157781Z  * [new tag]           v4.19.1    -> v4.19.1
+2026-11-05T21:18:43.5158548Z  * [new tag]           v4.19.2    -> v4.19.2
+2026-11-05T21:18:43.5159306Z  * [new tag]           v4.2.0     -> v4.2.0
+2026-11-05T21:18:43.5160052Z  * [new tag]           v4.20.0    -> v4.20.0
+2026-11-05T21:18:43.5160820Z  * [new tag]           v4.21.0    -> v4.21.0
+2026-11-05T21:18:43.5161579Z  * [new tag]           v4.21.1    -> v4.21.1
+2026-11-05T21:18:43.5162403Z  * [new tag]           v4.21.2    -> v4.21.2
+2026-11-05T21:18:43.5163165Z  * [new tag]           v4.21.3    -> v4.21.3
+2026-11-05T21:18:43.5163930Z  * [new tag]           v4.21.4    -> v4.21.4
+2026-11-05T21:18:43.5164696Z  * [new tag]           v4.21.5    -> v4.21.5
+2026-11-05T21:18:43.5165458Z  * [new tag]           v4.21.6    -> v4.21.6
+2026-11-05T21:18:43.5166227Z  * [new tag]           v4.21.7    -> v4.21.7
+2026-11-05T21:18:43.5166994Z  * [new tag]           v4.22.0    -> v4.22.0
+2026-11-05T21:18:43.5167766Z  * [new tag]           v4.23.0    -> v4.23.0
+2026-11-05T21:18:43.5168533Z  * [new tag]           v4.24.0    -> v4.24.0
+2026-11-05T21:18:43.5169386Z  * [new tag]           v4.25.0    -> v4.25.0
+2026-11-05T21:18:43.5170152Z  * [new tag]           v4.25.1    -> v4.25.1
+2026-11-05T21:18:43.5170896Z  * [new tag]           v4.26.0    -> v4.26.0
+2026-11-05T21:18:43.5171657Z  * [new tag]           v4.27.0    -> v4.27.0
+2026-11-05T21:18:43.5172461Z  * [new tag]           v4.27.1    -> v4.27.1
+2026-11-05T21:18:43.5173213Z  * [new tag]           v4.27.2    -> v4.27.2
+2026-11-05T21:18:43.5173969Z  * [new tag]           v4.27.3    -> v4.27.3
+2026-11-05T21:18:43.5174722Z  * [new tag]           v4.27.4    -> v4.27.4
+2026-11-05T21:18:43.5175472Z  * [new tag]           v4.27.5    -> v4.27.5
+2026-11-05T21:18:43.5176232Z  * [new tag]           v4.28.0    -> v4.28.0
+2026-11-05T21:18:43.5176983Z  * [new tag]           v4.29.0    -> v4.29.0
+2026-11-05T21:18:43.5177732Z  * [new tag]           v4.29.1    -> v4.29.1
+2026-11-05T21:18:43.5178473Z  * [new tag]           v4.3.0     -> v4.3.0
+2026-11-05T21:18:43.5179241Z  * [new tag]           v4.30.0    -> v4.30.0
+2026-11-05T21:18:43.5180000Z  * [new tag]           v4.30.1    -> v4.30.1
+2026-11-05T21:18:43.5180899Z  * [new tag]           v4.31.0    -> v4.31.0
+2026-11-05T21:18:43.5181678Z  * [new tag]           v4.31.1    -> v4.31.1
+2026-11-05T21:18:43.5182831Z  * [new tag]           v4.31.2    -> v4.31.2
+2026-11-05T21:18:43.5183714Z  * [new tag]           v4.32.0    -> v4.32.0
+2026-11-05T21:18:43.5184533Z  * [new tag]           v4.33.0    -> v4.33.0
+2026-11-05T21:18:43.5185316Z  * [new tag]           v4.33.1    -> v4.33.1
+2026-11-05T21:18:43.5186279Z  * [new tag]           v4.34.0    -> v4.34.0
+2026-11-05T21:18:43.5187140Z  * [new tag]           v4.35.0    -> v4.35.0
+2026-11-05T21:18:43.5187918Z  * [new tag]           v4.35.1    -> v4.35.1
+2026-11-05T21:18:43.5188680Z  * [new tag]           v4.35.2    -> v4.35.2
+2026-11-05T21:18:43.5189443Z  * [new tag]           v4.36.0    -> v4.36.0
+2026-11-05T21:18:43.5190213Z  * [new tag]           v4.37.0    -> v4.37.0
+2026-11-05T21:18:43.5190982Z  * [new tag]           v4.38.0    -> v4.38.0
+2026-11-05T21:18:43.5191761Z  * [new tag]           v4.38.1    -> v4.38.1
+2026-11-05T21:18:43.5192849Z  * [new tag]           v4.38.2    -> v4.38.2
+2026-11-05T21:18:43.5193765Z  * [new tag]           v4.38.3    -> v4.38.3
+2026-11-05T21:18:43.5194568Z  * [new tag]           v4.39.0    -> v4.39.0
+2026-11-05T21:18:43.5195365Z  * [new tag]           v4.4.0     -> v4.4.0
+2026-11-05T21:18:43.5196140Z  * [new tag]           v4.40.0    -> v4.40.0
+2026-11-05T21:18:43.5196911Z  * [new tag]           v4.40.1    -> v4.40.1
+2026-11-05T21:18:43.5197684Z  * [new tag]           v4.41.0    -> v4.41.0
+2026-11-05T21:18:43.5198466Z  * [new tag]           v4.41.1    -> v4.41.1
+2026-11-05T21:18:43.5199363Z  * [new tag]           v4.42.0    -> v4.42.0
+2026-11-05T21:18:43.5200389Z  * [new tag]           v4.42.1    -> v4.42.1
+2026-11-05T21:18:43.5201169Z  * [new tag]           v4.43.0    -> v4.43.0
+2026-11-05T21:18:43.5201955Z  * [new tag]           v4.43.1    -> v4.43.1
+2026-11-05T21:18:43.5202925Z  * [new tag]           v4.43.2    -> v4.43.2
+2026-11-05T21:18:43.5203692Z  * [new tag]           v4.43.3    -> v4.43.3
+2026-11-05T21:18:43.5204464Z  * [new tag]           v4.43.4    -> v4.43.4
+2026-11-05T21:18:43.5205238Z  * [new tag]           v4.43.5    -> v4.43.5
+2026-11-05T21:18:43.5206010Z  * [new tag]           v4.43.6    -> v4.43.6
+2026-11-05T21:18:43.5206772Z  * [new tag]           v4.44.0    -> v4.44.0
+2026-11-05T21:18:43.5207644Z  * [new tag]           v4.44.1    -> v4.44.1
+2026-11-05T21:18:43.5208416Z  * [new tag]           v4.44.2    -> v4.44.2
+2026-11-05T21:18:43.5209182Z  * [new tag]           v4.44.3    -> v4.44.3
+2026-11-05T21:18:43.5210029Z  * [new tag]           v4.44.4    -> v4.44.4
+2026-11-05T21:18:43.5210841Z  * [new tag]           v4.5.0     -> v4.5.0
+2026-11-05T21:18:43.5211712Z  * [new tag]           v4.5.1     -> v4.5.1
+2026-11-05T21:18:43.5212700Z  * [new tag]           v4.6.0     -> v4.6.0
+2026-11-05T21:18:43.5213517Z  * [new tag]           v4.6.1     -> v4.6.1
+2026-11-05T21:18:43.5214530Z  * [new tag]           v4.6.2     -> v4.6.2
+2026-11-05T21:18:43.5215499Z  * [new tag]           v4.6.3     -> v4.6.3
+2026-11-05T21:18:43.5216360Z  * [new tag]           v4.6.4     -> v4.6.4
+2026-11-05T21:18:43.5217219Z  * [new tag]           v4.7.0     -> v4.7.0
+2026-11-05T21:18:43.5217977Z  * [new tag]           v4.8.0     -> v4.8.0
+2026-11-05T21:18:43.5218731Z  * [new tag]           v4.9.0     -> v4.9.0
+2026-11-05T21:18:43.5219474Z  * [new tag]           v4.9.1     -> v4.9.1
+2026-11-05T21:18:43.5220215Z  * [new tag]           v4.9.2     -> v4.9.2
+2026-11-05T21:18:43.5221061Z  * [new tag]           v4.9.3     -> v4.9.3
+2026-11-05T21:18:43.5281295Z [command]/usr/bin/git branch --list --remote origin/main
+2026-11-05T21:18:43.5282888Z   origin/main
+2026-11-05T21:18:43.5285005Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-11-05T21:18:43.5286282Z 6de3eb4c9240c86f418b565bd2fb6d18377a8b0d
+2026-11-05T21:18:43.5288957Z ##[endgroup]
+2026-11-05T21:18:43.5290340Z ##[group]Determining the checkout info
+2026-11-05T21:18:43.5291962Z ##[endgroup]
+2026-11-05T21:18:43.5293070Z [command]/usr/bin/git sparse-checkout disable
+2026-11-05T21:18:43.5295410Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-05T21:18:43.5297504Z ##[group]Checking out the ref
+2026-11-05T21:18:43.5298485Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-05T21:18:43.7959142Z Switched to a new branch 'main'
+2026-11-05T21:18:43.7973429Z branch 'main' set up to track 'origin/main'.
+2026-11-05T21:18:43.8031158Z ##[endgroup]
+2026-11-05T21:18:43.8074167Z [command]/usr/bin/git log -1 --format=%H
+2026-11-05T21:18:43.8097183Z 6de3eb4c9240c86f418b565bd2fb6d18377a8b0d
+2026-11-05T21:18:43.8105574Z ##[group]Removing auth
+2026-11-05T21:18:43.8105885Z Removing SSH command configuration
+2026-11-05T21:18:43.8108179Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:18:43.8134406Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:18:43.8346290Z Removing HTTP extra header
+2026-11-05T21:18:43.8348906Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:18:43.8375135Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:18:43.8586702Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:18:43.8589180Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:18:43.8614909Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-05T21:18:43.8615585Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-05T21:18:43.8616124Z includeif.gitdir:/github/workspace/.git.path
+2026-11-05T21:18:43.8616406Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T21:18:43.8622615Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-05T21:18:43.8643501Z /home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:43.8651993Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-c6a91f5b\-62aa\-4899\-b858\-3f9c6347338b\.config
+2026-11-05T21:18:43.8681124Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-05T21:18:43.8700180Z /home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:43.8706366Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-c6a91f5b\-62aa\-4899\-b858\-3f9c6347338b\.config
+2026-11-05T21:18:43.8733353Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-05T21:18:43.8752299Z /github/runner_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:43.8757370Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c6a91f5b\-62aa\-4899\-b858\-3f9c6347338b\.config
+2026-11-05T21:18:43.8783701Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T21:18:43.8801846Z /github/runner_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config
+2026-11-05T21:18:43.8807113Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c6a91f5b\-62aa\-4899\-b858\-3f9c6347338b\.config
+2026-11-05T21:18:43.8834284Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:18:43.9045636Z Removing credentials config '/home/runner/work/_temp/git-credentials-c6a91f5b-62aa-4899-b858-3f9c6347338b.config'
+2026-11-05T21:18:43.9052977Z ##[endgroup]
+2026-11-05T21:18:43.9259372Z Prepare all required actions
+2026-11-05T21:18:43.9259766Z Getting action download info
+2026-11-05T21:18:44.0414938Z Download action repository 'actions/setup-dotnet@v6.0.0' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-11-05T21:18:44.5056578Z ##[group]Run ./Github/initialize-dotnet
+2026-11-05T21:18:44.5056783Z with:
+2026-11-05T21:18:44.5056932Z   global-json-file: global.json
+2026-11-05T21:18:44.5057097Z   dotnet-version: 10.0.403
+2026-11-05T21:18:44.5057259Z ##[endgroup]
+2026-11-05T21:18:44.5094744Z ##[start-action display=Setup .NET from global.json;id=__self.__actions_setup-dotnet]
+2026-11-05T21:18:44.5145199Z ##[group]Run actions/setup-dotnet@v6.0.0
+2026-11-05T21:18:44.5145394Z with:
+2026-11-05T21:18:44.5145541Z   global-json-file: global.json
+2026-11-05T21:18:44.5145709Z   cache: false
+2026-11-05T21:18:44.5145980Z ##[endgroup]
+2026-11-05T21:18:44.6014336Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-05T21:18:45.1038644Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-05T21:18:45.1062182Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6.0.0/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-05T21:18:45.4932480Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-05T21:18:45.5036445Z ##[end-action id=__self.__actions_setup-dotnet;outcome=success;conclusion=success;duration_ms=994]
+2026-11-05T21:18:45.5054383Z ##[start-action display=Setup .NET 10.0.403;id=__self.__actions_setup-dotnet_2]
+2026-11-05T21:18:45.5060240Z ##[end-action id=__self.__actions_setup-dotnet_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-05T21:18:45.5061548Z ##[start-action display=Add Aspire Workloads;id=__self.__run]
+2026-11-05T21:18:45.5064321Z ##[end-action id=__self.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-05T21:18:45.5099901Z ##[group]Run dotnet restore Hexalith.Builds.slnx
+2026-11-05T21:18:45.5100153Z [36;1mdotnet restore Hexalith.Builds.slnx[0m
+2026-11-05T21:18:45.5145135Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:18:45.5145291Z env:
+2026-11-05T21:18:45.5145409Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-05T21:18:45.5145551Z ##[endgroup]
+2026-11-05T21:19:07.2889556Z   Determining projects to restore...
+2026-11-05T21:19:09.7854286Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 995 ms).
+2026-11-05T21:19:10.5773773Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 1.67 sec).
+2026-11-05T21:19:10.6794670Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 886 ms).
+2026-11-05T21:19:10.8025893Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 4 ms).
+2026-11-05T21:19:10.8093789Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 3 ms).
+2026-11-05T21:19:11.4874255Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 2.39 sec).
+2026-11-05T21:19:11.5825150Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 14 ms).
+2026-11-05T21:19:11.8374185Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 942 ms).
+2026-11-05T21:19:11.8403823Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 172 ms).
+2026-11-05T21:19:11.8624083Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 1.18 sec).
+2026-11-05T21:19:12.0127703Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 2 ms).
+2026-11-05T21:19:12.1744042Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 11 ms).
+2026-11-05T21:19:12.1756007Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 7 ms).
+2026-11-05T21:19:12.4157014Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 20 ms).
+2026-11-05T21:19:12.6880992Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 3.96 sec).
+2026-11-05T21:19:12.6895596Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 836 ms).
+2026-11-05T21:19:12.7380408Z ##[group]Run dotnet build Hexalith.Builds.slnx --no-restore --configuration Release -warnaserror -p:GeneratePackageOnBuild=false
+2026-11-05T21:19:12.7380920Z [36;1mdotnet build Hexalith.Builds.slnx --no-restore --configuration Release -warnaserror -p:GeneratePackageOnBuild=false[0m
+2026-11-05T21:19:12.7420836Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:19:12.7420970Z env:
+2026-11-05T21:19:12.7421294Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-05T21:19:12.7438322Z ##[endgroup]
+2026-11-05T21:19:17.4987186Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.1.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+2026-11-05T21:19:26.5433890Z   P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+2026-11-05T21:19:27.8564745Z   Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+2026-11-05T21:19:27.9344545Z   Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+2026-11-05T21:19:28.3894200Z   P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+2026-11-05T21:19:28.6235291Z   P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+2026-11-05T21:19:29.2054630Z   P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+2026-11-05T21:19:29.4155535Z   P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+2026-11-05T21:19:29.6514050Z   P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+2026-11-05T21:20:51.0161495Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+2026-11-05T21:20:51.5078112Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+2026-11-05T21:20:51.5393840Z   P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+2026-11-05T21:20:51.5731328Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+2026-11-05T21:20:54.7635665Z   Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+2026-11-05T21:20:55.4414919Z   Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+2026-11-05T21:20:57.7454349Z   Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+2026-11-05T21:21:09.9922740Z   Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+2026-11-05T21:21:10.0158524Z 
+2026-11-05T21:21:10.0163719Z Build succeeded.
+2026-11-05T21:21:10.0164097Z     0 Warning(s)
+2026-11-05T21:21:10.0164487Z     0 Error(s)
+2026-11-05T21:21:10.0164854Z 
+2026-11-05T21:21:10.0165447Z Time Elapsed 00:01:56.87
+2026-11-05T21:21:10.0530451Z ##[group]Run dotnet test test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --no-restore --configuration Release
+2026-11-05T21:21:10.0530980Z [36;1mdotnet test test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --no-restore --configuration Release[0m
+2026-11-05T21:21:10.0570841Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:21:10.0570994Z env:
+2026-11-05T21:21:10.0571107Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-05T21:21:10.0571242Z ##[endgroup]
+2026-11-05T21:21:14.4920574Z Running tests from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:23:16.5054873Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync
+2026-11-05T21:23:16.5077941Z   This integration assertion requires the enclosing Platform checkout or a verified source mapping.
+2026-11-05T21:23:16.5083850Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:23:59.3254372Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync
+2026-11-05T21:23:59.3283219Z   This repository is not inside the Platform root with its Commons checkout.
+2026-11-05T21:23:59.3309506Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:24:21.7554967Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync
+2026-11-05T21:24:21.7560999Z   This repository is not inside the Platform root with its EventStore checkout.
+2026-11-05T21:24:21.7564455Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:29:25.0362280Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync
+2026-11-05T21:29:25.0363372Z   This qualification-only assertion requires the controlled catalog SDK interception harness.
+2026-11-05T21:29:25.0364331Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:29:36.3835459Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync
+2026-11-05T21:29:36.3838368Z   Native process inspection is explicitly gated to Windows and macOS.
+2026-11-05T21:29:36.3839486Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-05T21:30:09.7611534Z [m/home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64) [32mpassed[m [90m(8m 55s 272ms)[m
+2026-11-05T21:30:09.7637144Z 
+2026-11-05T21:30:09.7643192Z [32mTest run summary: Passed!
+2026-11-05T21:30:09.7646155Z [m  total: 2827
+2026-11-05T21:30:09.7646483Z   failed: 0
+2026-11-05T21:30:09.7646858Z [32m  succeeded: 2822
+2026-11-05T21:30:09.7647070Z [m  skipped: 5
+2026-11-05T21:30:09.7647222Z   duration: 8m 55s 570ms
+2026-11-05T21:30:09.7885354Z ##[group]Run dotnet test test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --no-restore --configuration Release
+2026-11-05T21:30:09.7885900Z [36;1mdotnet test test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj --no-restore --configuration Release[0m
+2026-11-05T21:30:09.7926876Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:30:09.7927015Z env:
+2026-11-05T21:30:09.7927132Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-05T21:30:09.7927277Z ##[endgroup]
+2026-11-05T21:30:12.4830747Z Running tests from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll (net10.0|x64)
+2026-11-05T21:30:17.2508776Z [m/home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll (net10.0|x64) [32mpassed[m [90m(4s 769ms)[m
+2026-11-05T21:30:17.2536120Z 
+2026-11-05T21:30:17.2541801Z [32mTest run summary: Passed!
+2026-11-05T21:30:17.2545667Z [m  total: 191
+2026-11-05T21:30:17.2545865Z   failed: 0
+2026-11-05T21:30:17.2546044Z [32m  succeeded: 191
+2026-11-05T21:30:17.2546181Z [m  skipped: 0
+2026-11-05T21:30:17.2546315Z   duration: 4s 915ms
+2026-11-05T21:30:17.2785292Z ##[group]Run dotnet test test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj --no-restore --configuration Release
+2026-11-05T21:30:17.2785945Z [36;1mdotnet test test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj --no-restore --configuration Release[0m
+2026-11-05T21:30:17.2826660Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:30:17.2826801Z env:
+2026-11-05T21:30:17.2826991Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-05T21:30:17.2827133Z ##[endgroup]
+2026-11-05T21:30:20.4250350Z Running tests from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6370880Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.FrontComposerHostShowsBothBoundedContextsAsync
+2026-11-05T21:30:20.6372949Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6374256Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6386301Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: "p0-inventory", commandType: "ReserveStock", eventType: "Hexalith.Builds.P0Fixture.Inventory.StockReserved")
+2026-11-05T21:30:20.6388220Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6389650Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6420825Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: "p0-orders", commandType: "PlaceOrder", eventType: "Hexalith.Builds.P0Fixture.Orders.OrderPlaced")
+2026-11-05T21:30:20.6422859Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6424180Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6425914Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.IdentityRejectsAnonymousForeignKeyAndForeignTenantAsync
+2026-11-05T21:30:20.6427248Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6428539Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6430863Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.EventStoreInvokesModulesThroughDaprSidecarsAsync
+2026-11-05T21:30:20.6432119Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6433948Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6443772Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LiveRunIsolationTests.ConcurrentRunsAreIsolatedAndDownOfOneLeavesTheOtherHealthyAsync
+2026-11-05T21:30:20.6445344Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6446797Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6466071Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LivePublicCommandTests.RunDownAndTestUseRunScopedLiveCompositionAsync
+2026-11-05T21:30:20.6467708Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6469456Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6480573Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LiveCancellationTests.CancellingMidStartupLeavesNoProcessOrContainerAsync
+2026-11-05T21:30:20.6481944Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6483399Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6500825Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.RunStartsHealthyCarriesRunIdentityAndStopsAsync
+2026-11-05T21:30:20.6502593Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6504253Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6512709Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.DownLeavesNothingTaggedAndIsIdempotentAsync
+2026-11-05T21:30:20.6514627Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6516316Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6529309Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: "full", platform: "vstest")
+2026-11-05T21:30:20.6531143Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6533430Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.6535613Z [33mskipped[m Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: "full-mtp", platform: "mtp")
+2026-11-05T21:30:20.6537415Z   Live G-4 composition is opt-in: set HEXALITH_G4_LIVE=1 and HEXALITH_DAPR_HOME to a verified Dapr CLI 1.18.2 / runtime 1.18.7 home with Docker available, and install an Aspire CLI 13.6.4. A skipped live test is not passing evidence.
+2026-11-05T21:30:20.6539136Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64)
+2026-11-05T21:30:20.9226958Z [m/home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll (net10.0|x64) [32mpassed[m [90m(498ms)[m
+2026-11-05T21:30:20.9253946Z 
+2026-11-05T21:30:20.9260138Z [32mTest run summary: Passed!
+2026-11-05T21:30:20.9263807Z [m  total: 13
+2026-11-05T21:30:20.9264017Z   failed: 0
+2026-11-05T21:30:20.9264260Z [32m  succeeded: 1
+2026-11-05T21:30:20.9264486Z [m  skipped: 12
+2026-11-05T21:30:20.9264686Z   duration: 644ms
+2026-11-05T21:30:20.9538366Z Post job cleanup.
+2026-11-05T21:30:20.9540668Z ##[start-action display=Setup .NET from global.json;id=__777a9487-3872-4462-b375-4f2073521f58.__actions_setup-dotnet]
+2026-11-05T21:30:20.9571105Z Post job cleanup.
+2026-11-05T21:30:21.0349803Z ##[end-action id=__777a9487-3872-4462-b375-4f2073521f58.__actions_setup-dotnet;outcome=success;conclusion=success;duration_ms=80]
+2026-11-05T21:30:21.0407833Z Post job cleanup.
+2026-11-05T21:30:21.0999500Z [command]/usr/bin/git version
+2026-11-05T21:30:21.1033502Z git version 2.56.0
+2026-11-05T21:30:21.1054289Z Temporarily overriding HOME='/home/runner/work/_temp/6ffd94a8-e984-4531-bd07-9c4d6eff21f0' before making global git config changes
+2026-11-05T21:30:21.1055049Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T21:30:21.1056132Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-05T21:30:21.1083347Z Removing SSH command configuration
+2026-11-05T21:30:21.1087478Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T21:30:21.1116485Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T21:30:21.1353071Z Removing HTTP extra header
+2026-11-05T21:30:21.1365388Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T21:30:21.1386973Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T21:30:21.1639814Z Removing includeIf entries pointing to credentials config files
+2026-11-05T21:30:21.1647271Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T21:30:21.1674863Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T21:30:21.2021193Z Cleaning up orphan processes
+2026-11-05T21:30:21.2220897Z Terminate orphan process: pid (2482) (dotnet)
+2026-11-05T21:30:21.2248220Z Terminate orphan process: pid (2483) (dotnet)
+2026-11-05T21:30:21.2260727Z Terminate orphan process: pid (2484) (dotnet)
+2026-11-05T21:30:21.2272279Z Terminate orphan process: pid (2650) (VBCSCompiler)

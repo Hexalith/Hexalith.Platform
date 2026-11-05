@@ -1,0 +1,133 @@
+{
+  "utc": "2026-11-05T21:31:24.134122+00:00",
+  "job": {
+    "id": 127537430498,
+    "run_id": 42110776766,
+    "workflow_name": "CI",
+    "head_branch": "main",
+    "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/42110776766",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOOMzNRc8AAAAdsdK_4g",
+    "head_sha": "6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/127537430498",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42110776766/job/127537430498",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-05T21:14:14Z",
+    "started_at": "2026-11-05T21:18:38Z",
+    "completed_at": "2026-11-05T21:30:23Z",
+    "name": ".NET tests",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-05T21:18:39Z",
+        "completed_at": "2026-11-05T21:18:39Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-05T21:18:39Z",
+        "completed_at": "2026-11-05T21:18:43Z"
+      },
+      {
+        "name": "Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-05T21:18:43Z",
+        "completed_at": "2026-11-05T21:18:45Z"
+      },
+      {
+        "name": "Restore",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-05T21:18:45Z",
+        "completed_at": "2026-11-05T21:19:12Z"
+      },
+      {
+        "name": "Build",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-05T21:19:12Z",
+        "completed_at": "2026-11-05T21:21:10Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Module.Tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-05T21:21:10Z",
+        "completed_at": "2026-11-05T21:30:09Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Evidence.Tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-05T21:30:09Z",
+        "completed_at": "2026-11-05T21:30:17Z"
+      },
+      {
+        "name": "Test Hexalith.Builds.Tooling.IntegrationTests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-05T21:30:17Z",
+        "completed_at": "2026-11-05T21:30:20Z"
+      },
+      {
+        "name": "Post Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-05T21:30:20Z",
+        "completed_at": "2026-11-05T21:30:21Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-11-05T21:30:21Z",
+        "completed_at": "2026-11-05T21:30:21Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-11-05T21:30:21Z",
+        "completed_at": "2026-11-05T21:30:21Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/127537430498",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000073654,
+    "runner_name": "GitHub Actions 1000073654",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  "log": {
+    "path": "parent-builds-6de-main-dotnet-complete-log-20261105.txt",
+    "bytes": 54085,
+    "sha256": "c41c8402e98cc82f0ec195889f3eb71e34c093ad0ad765073e7e087701682be3"
+  },
+  "summary_lines": [
+    "2026-11-05T21:30:09.7643192Z \u001b[32mTest run summary: Passed!",
+    "2026-11-05T21:30:09.7646155Z \u001b[m  total: 2827",
+    "2026-11-05T21:30:17.2541801Z \u001b[32mTest run summary: Passed!",
+    "2026-11-05T21:30:17.2545667Z \u001b[m  total: 191",
+    "2026-11-05T21:30:20.9260138Z \u001b[32mTest run summary: Passed!",
+    "2026-11-05T21:30:20.9263807Z \u001b[m  total: 13"
+  ],
+  "scope": "Actual completed main .NET job only; remaining build/package job and aggregate still required."
+}

@@ -1,0 +1,41 @@
+{
+  "utc": "2026-11-05T21:33:49.701096+00:00",
+  "head": "6bf64fe05ed934d7c23d78e30f863c3b29947295",
+  "complete_git_diff_path_count": 426,
+  "non_evidence_changes": [
+    "M\treferences/Hexalith.Builds",
+    "M\treferences/Hexalith.EventStore",
+    "M\treferences/Hexalith.Folders",
+    "M\treferences/Hexalith.FrontComposer",
+    "M\treferences/Hexalith.McpCli",
+    "M\treferences/Hexalith.Memories",
+    "M\treferences/Hexalith.Parties",
+    "M\treferences/Hexalith.Projects",
+    "M\treferences/Hexalith.Tenants"
+  ],
+  "recorded_builds_gitlink": "6de3eb4c9240c86f418b565bd2fb6d18377a8b0d",
+  "bound_public_producer": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef",
+  "actual_read_only_binding_command": {
+    "argv": [
+      "python3",
+      "-B",
+      "eng/builds_tuple.py"
+    ],
+    "exit_code": 0,
+    "stdout": "5fa2b97c8b22047c2c33e2c9f7017fd5d604c9ef\n",
+    "stderr": ""
+  },
+  "workflow_exact_identity_test_fails": true,
+  "hosted_failed_job": 127541298744,
+  "hosted_run": 42111895087,
+  "hosted_job_log": {
+    "path": "parent-platform-6bf-failed-job-127541298744-20261105.txt",
+    "sha256": "201898989f30de205407af4c891adcc4e8795c0442742cd402d9d8c90b7b9600"
+  },
+  "cause_scope": "Actual bootstrap ran nine legacy-source fixture tests successfully, then failed before dependency initialization. The recorded Builds Gitlink differs from the exact existing public producer binding; the workflow explicit equality test fails for these actual values. No native execution or package qualification occurred.",
+  "incoming_preservation": "Keep incoming main/evidence/nine dependency pointers. The independent key test preparation stays based on closed8d34; later real final binding/L-M integration must reconcile actual published authority without inventing a version or dropping incoming work.",
+  "auditor_notes": [
+    "Git compare API caps file output; complete local Git diff used for non-evidence paths.",
+    "First attempted exclude pathspec was rejected by Git; plain diff plus exact prefix filtering used. No source changes."
+  ]
+}
