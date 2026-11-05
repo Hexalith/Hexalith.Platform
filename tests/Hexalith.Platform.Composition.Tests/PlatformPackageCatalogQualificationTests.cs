@@ -82,7 +82,10 @@ public sealed class PlatformPackageCatalogQualificationTests
             case "active-module": options = options with { ActiveModule = "tenants" }; break;
             case "suite": options = options with { RunPlan = fixture.Plan with { SelectedTest = fixture.Plan.SelectedTest! with { Mode = "source" } } }; break;
             case "sdk-near-miss": ChangeCatalog(fixture.Root, "<HexalithEventStoreVersion>4.1.0", "<HexalithEventStoreVersion>4.1.1"); break;
-            case "tenants-near-miss": ChangeCatalog(fixture.Root, "<HexalithTenantsVersion>7.0.2", "<HexalithTenantsVersion>7.0.3"); break;
+            case "tenants-near-miss":
+                string tenantsVersion = JsonNode.Parse(File.ReadAllText(Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json")))!["tenants"]!["version"]!.GetValue<string>();
+                ChangeCatalog(fixture.Root, $"<HexalithTenantsVersion>{tenantsVersion}</HexalithTenantsVersion>", $"<HexalithTenantsVersion>{tenantsVersion}0</HexalithTenantsVersion>");
+                break;
             case "owner-snapshot":
                 JsonNode changed = JsonNode.Parse(declarations[0].Declaration.GetRawText())!;
                 changed["identity"]!["dependencies"] = new JsonArray("memories");
