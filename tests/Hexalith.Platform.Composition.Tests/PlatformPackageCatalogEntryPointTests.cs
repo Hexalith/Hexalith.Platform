@@ -19,7 +19,7 @@ public sealed class PlatformPackageCatalogEntryPointTests
         var builder = Builder();
         int probes = 0;
         bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
-            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts");
+            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName);
         void Compose() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
             ImageProbeRunner = (start, timeout, _) =>
@@ -28,8 +28,8 @@ public sealed class PlatformPackageCatalogEntryPointTests
                 start.FileName.ShouldBe("docker");
                 timeout.ShouldBe(TimeSpan.FromSeconds(20));
                 start.ArgumentList.ShouldBe(["manifest", "inspect", probes == 1
-                    ? "registry.hexalith.com/tenants@sha256:2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42"
-                    : "registry.hexalith.com/tenants-api@sha256:2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6"]);
+                    ? "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed"
+                    : "registry.hexalith.com/tenants-api@sha256:2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4"]);
                 if (probes == 1) return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
                 throw new InvalidOperationException("Expected immutable image-probe boundary reached.");
             },

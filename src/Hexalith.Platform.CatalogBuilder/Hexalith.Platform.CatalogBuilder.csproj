@@ -13,5 +13,7 @@
     <PackageReference Include="Hexalith.EventStore.Client" />
     <PackageReference Include="Hexalith.EventStore.DomainService" />
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
+    <!-- Bind the owner adapter's transitive server to the selected catalog SDK as well. -->
+    <PackageReference Include="Hexalith.EventStore.Server" />
   </ItemGroup>
 </Project>

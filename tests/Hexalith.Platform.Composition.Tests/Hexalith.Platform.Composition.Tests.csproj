@@ -54,6 +54,17 @@
     <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'"><PackageReference Include="Hexalith.EventStore.Contracts" /><PackageReference Include="Hexalith.EventStore.Client" /><PackageReference Include="Hexalith.EventStore.Server" /><PackageReference Include="Hexalith.EventStore.ServiceDefaults" /></ItemGroup>
+  <!-- The registered public-cohort controls execute every actual selected owner body in package mode. -->
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+    <PackageReference Include="Hexalith.Tenants.Contracts" />
+    <PackageReference Include="Hexalith.Tenants.Server" />
+    <PackageReference Include="Hexalith.Memories.Contracts" />
+    <PackageReference Include="Hexalith.Memories.EventStore" />
+    <PackageReference Include="Hexalith.Memories.EventStoreExtensions" />
+    <PackageReference Include="Hexalith.Parties.Contracts" />
+    <PackageReference Include="Hexalith.Parties.EventStoreExtensions" />
+    <PackageReference Include="Hexalith.McpCli.Abstractions" />
+  </ItemGroup>
   <!-- MVC Testing's generated manifest takes precedence over assembly content-root attributes. -->
   <Target Name="RegisterPublishedBuildsHostContentRoot" BeforeTargets="_AddContentRootForProjectReferences" Condition="'$(BuildsEventStoreHostAssemblyPath)' != ''">
     <GetAssemblyIdentity AssemblyFiles="$(BuildsEventStoreHostAssemblyPath)">
