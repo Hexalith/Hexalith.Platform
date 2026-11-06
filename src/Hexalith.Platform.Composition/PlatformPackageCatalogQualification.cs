@@ -73,7 +73,7 @@ internal static class PlatformPackageCatalogQualification
             && plan.SelectedTests.Count == 1 && plan.SelectedTests[0] == selected
             && string.Equals(selected.ManifestHash, plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase)
             && string.Equals(plan.PlatformDeclarationHash, "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495", StringComparison.OrdinalIgnoreCase)
-            && MatchesTestEntry(options, selected)
+            && MatchesTestSource(options, selected)
             && CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
             && PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") == "4.1.0"
             && PlatformServerBindings.Version(options, "tenants", "private EventStore package test") == "7.0.5"
@@ -86,12 +86,15 @@ internal static class PlatformPackageCatalogQualification
             && PlatformServerBindings.Version(options, "memories", "current qualification") == "3.0.25"
             ? PublishedCatalogArtifactCohort.CurrentOwnerName : null;
 
-    private static bool MatchesTestEntry(PlatformCompositionOptions options, ModuleTestSelection selected)
+    private static bool MatchesTestSource(PlatformCompositionOptions options, ModuleTestSelection selected)
     {
         SourceMappingEntry[] active = options.Mapping.Entries.Where(entry => entry.Identity == "Hexalith.EventStore" && entry.Origin == "source" && entry.Path is not null).ToArray();
-        if (active.Length != 1) return false;
-        string path = Path.Combine(active[0].Path!, selected.Entry);
-        return File.Exists(path) && string.Equals(selected.EntryHash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))), StringComparison.OrdinalIgnoreCase);
+        if (active.Length != 1 || options.RunPlan!.PlatformDeclarationPaths.Count != 1) return false;
+        string manifest = Path.GetFullPath(Path.Combine(active[0].Path!, "module", "hexalith.module-manifest.v2.json"));
+        string entry = Path.Combine(active[0].Path!, selected.Entry);
+        return Path.GetFullPath(options.RunPlan.PlatformDeclarationPaths[0]) == manifest && File.Exists(manifest)
+            && string.Equals(selected.ManifestHash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(manifest))), StringComparison.OrdinalIgnoreCase)
+            && File.Exists(entry) && string.Equals(selected.EntryHash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(entry))), StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

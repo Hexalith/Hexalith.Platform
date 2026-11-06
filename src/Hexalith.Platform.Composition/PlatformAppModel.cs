@@ -142,7 +142,9 @@ public static class PlatformAppModel
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
-        if (catalogParticipants.Count > 0 && options.Mapping.Mode != WorkspaceMode.Source)
+        bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan is
+            { PlatformActiveModule: "eventstore", SelectedTest: { ModuleId: "eventstore", Name: "platform-package" } };
+        if (options.Mapping.Mode != WorkspaceMode.Source && (catalogParticipants.Count > 0 || eventStorePackageTest))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
             catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
