@@ -26,8 +26,18 @@ internal static class PlatformPackageCatalogReader
         string preflight = Path.Combine(build, "validate-catalog.proj");
         XElement early = Validation(false);
         early.SetAttributeValue("ProjectName", "Hexalith.Platform.CatalogBuilder");
-        new XDocument(new XElement("Project", new XAttribute("DefaultTargets", "Validate"), UsingTask(),
-            new XElement("Target", new XAttribute("Name", "Validate"), early))).Save(preflight);
+        XElement preflightTarget = new("Target", new XAttribute("Name", "Validate"), early);
+        if (options.RunPlan?.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile)
+        {
+            // The published seed builds after composition; record its consumer before the parent proof seals the snapshot.
+            string seedName = Path.GetFileNameWithoutExtension(options.EventStoreSeedProject
+                ?? throw new InvalidDataException("The current owner seed project is unavailable."));
+            if (string.IsNullOrWhiteSpace(seedName)) throw new InvalidDataException("The current owner seed project is unavailable.");
+            XElement seed = Validation(false);
+            seed.SetAttributeValue("ProjectName", seedName);
+            preflightTarget.Add(seed);
+        }
+        new XDocument(new XElement("Project", new XAttribute("DefaultTargets", "Validate"), UsingTask(), preflightTarget)).Save(preflight);
         var validation = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet", ["msbuild", preflight, "-target:Validate", "-nologo", "-m:1", "-nodeReuse:false"], options.PlatformRoot, null),
             PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), deadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         string log = Path.Combine(build, "catalog-validation.log");

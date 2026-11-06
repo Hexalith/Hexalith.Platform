@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 using Xunit;
@@ -27,6 +28,20 @@ public sealed class PlatformCurrentOwnerPackageTests
         prepared.ShouldBe(1, "The actual build/pack/final-reader producer must invoke the tested final revision guard before issuance.");
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
         proof.Matches(options).ShouldBeTrue();
+        string preparedSnapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
+        byte[] preparedSnapshotBytes = File.ReadAllBytes(preparedSnapshot);
+        using (JsonDocument preparedCatalog = JsonDocument.Parse(preparedSnapshotBytes))
+            preparedCatalog.RootElement.GetProperty("ProjectVersions").TryGetProperty(Path.GetFileNameWithoutExtension(fixture.Seed), out _).ShouldBeTrue();
+        // The real published seed's actual later validation must leave the issued proof and exact snapshot unchanged.
+        var seedValidation = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+            ["msbuild", fixture.Seed, "-target:HexalithValidateCatalogBeforeRestore", "-nologo", "-m:1", "-nodeReuse:false"], options.PlatformRoot,
+            SourceMappingMaterializer.Environment(options.Mapping, fixture.Workspace)),
+            TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken).ConfigureAwait(true);
+        seedValidation.ExitCode.ShouldBe(0, seedValidation.ErrorOutput);
+        seedValidation.TimedOut.ShouldBeFalse();
+        seedValidation.OutputTruncated.ShouldBeFalse();
+        File.ReadAllBytes(preparedSnapshot).ShouldBe(preparedSnapshotBytes);
+        proof.Matches(options).ShouldBeTrue("The actual published seed's legitimate validation must not invalidate or recapture the sealed snapshot.");
         options.PartiesRunProof.ShouldBeNull();
         PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull("The selected new tuple is not an admitted full public Parties cohort.");
         options.QualificationOwnerProof.ShouldBeNull();
