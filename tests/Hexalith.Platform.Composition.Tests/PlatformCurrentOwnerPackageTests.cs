@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 using Xunit;
@@ -27,6 +28,20 @@ public sealed class PlatformCurrentOwnerPackageTests
         prepared.ShouldBe(1, "The actual build/pack/final-reader producer must invoke the tested final revision guard before issuance.");
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
         proof.Matches(options).ShouldBeTrue();
+        string preparedSnapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
+        byte[] preparedSnapshotBytes = File.ReadAllBytes(preparedSnapshot);
+        using (JsonDocument preparedCatalog = JsonDocument.Parse(preparedSnapshotBytes))
+            preparedCatalog.RootElement.GetProperty("ProjectVersions").TryGetProperty(Path.GetFileNameWithoutExtension(fixture.Seed), out _).ShouldBeTrue();
+        // The real published seed's actual later validation must leave the issued proof and exact snapshot unchanged.
+        var seedValidation = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+            ["msbuild", fixture.Seed, "-target:HexalithValidateCatalogBeforeRestore", "-nologo", "-m:1", "-nodeReuse:false"], options.PlatformRoot,
+            SourceMappingMaterializer.Environment(options.Mapping, fixture.Workspace)),
+            TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken).ConfigureAwait(true);
+        seedValidation.ExitCode.ShouldBe(0, seedValidation.ErrorOutput);
+        seedValidation.TimedOut.ShouldBeFalse();
+        seedValidation.OutputTruncated.ShouldBeFalse();
+        File.ReadAllBytes(preparedSnapshot).ShouldBe(preparedSnapshotBytes);
+        proof.Matches(options).ShouldBeTrue("The actual published seed's legitimate validation must not invalidate or recapture the sealed snapshot.");
         options.PartiesRunProof.ShouldBeNull();
         PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull("The selected new tuple is not an admitted full public Parties cohort.");
         options.QualificationOwnerProof.ShouldBeNull();
@@ -38,18 +53,21 @@ public sealed class PlatformCurrentOwnerPackageTests
         var servers = PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true);
         foreach (var expected in new[]
         {
-            ("server", "memories", "7cbba1867709359bf7a4c5f115e8879bfbb9548cdf209947dc0f8c633ad859d7"),
-            ("domain", "memories-domain-service", "efbd5e1d37e8ac75c78855ae4f22664ea294b8f6e1a65e4a8c6f44c1efb5eacb"),
-            ("clock", "memories-access-telemetry-clock", "7da6f0849a1994513e126f3cbea50754c414be563d499850830e34c10ac411ef"),
-            ("telemetry", "memories-access-telemetry", "7c4f498dc7f7f0a2ab965efd05f76853f6f42a1b2513e3e0d94eeea96971620a"),
+            ("server", "memories", "a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"),
+            ("domain", "memories-domain-service", "90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"),
+            ("clock", "memories-access-telemetry-clock", "e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"),
+            ("telemetry", "memories-access-telemetry", "d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"),
         })
         {
             var actual = servers.Single(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && server.ServerId == expected.Item1);
-            actual.Image.ShouldBe("registry.hexalith.com/" + expected.Item2 + ":3.0.24");
+            actual.Image.ShouldBe("registry.hexalith.com/" + expected.Item2 + ":3.0.25");
             actual.ImageDigest.ShouldBe(expected.Item3);
-            var stale = unbound.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && server.ServerId == expected.Item1
-                ? server with { Image = "registry.hexalith.com/" + expected.Item2 + ":3.0.23", ImageDigest = null } : server).ToArray();
-            Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, stale, developmentRun: true));
+            foreach (string staleVersion in new[] { "3.0.23", "3.0.24" })
+            {
+                var stale = unbound.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && server.ServerId == expected.Item1
+                    ? server with { Image = "registry.hexalith.com/" + expected.Item2 + ":" + staleVersion, ImageDigest = null } : server).ToArray();
+                Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, stale, developmentRun: true));
+            }
             proof.Matches(options).ShouldBeTrue("A stale reference binding must be refused without changing the actual measured owner authority.");
         }
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
@@ -69,6 +87,28 @@ public sealed class PlatformCurrentOwnerPackageTests
         }
         Directory.GetFiles(Path.Combine(proof.Directory, "feed"), "*.nupkg").Length.ShouldBe(2);
         File.Exists(Path.Combine(proof.Artifacts, "bin", "Hexalith.Parties", "release", "Hexalith.Parties.dll")).ShouldBeTrue();
+        byte[] canonical = File.ReadAllBytes(catalog.CatalogPath);
+        byte[] retainedReceipt = File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json"));
+        byte[] firstReaderReceipt = File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json"));
+        PlatformCompositionOptions replacement = Capture(fixture);
+        PlatformCurrentOwnerProof replacementProof = replacement.CurrentOwnerProof!;
+        replacementProof.Bodies["Hexalith.Parties.Contracts"].ShouldNotBe(proof.Bodies["Hexalith.Parties.Contracts"],
+            "The real second private Release preparation must supply changed measured bodies for this reuse regression.");
+        replacementProof.Matches(replacement).ShouldBeTrue();
+        var replacementServers = PlatformPartiesPackageCatalogQualification.Bind(replacement,
+            PlatformDeclarationSet.Load(replacement), PlatformAppModel.Prepare(replacement), developmentRun: true);
+        PlatformRoutingCatalog repeated = PlatformRoutingCatalog.Generate(replacement, replacementServers, Path.Combine(fixture.Workspace, "platform-components"));
+        File.ReadAllBytes(repeated.CatalogPath).ShouldBe(canonical, "Equal canonical catalog bytes retain the original immutable target.");
+        File.ReadAllBytes(Path.Combine(repeated.Directory, "receipt.json")).ShouldBe(retainedReceipt,
+            "The retained original catalog receipt must not be rewritten as current private authority.");
+        byte[] freshReaderReceipt = File.ReadAllBytes(Path.Combine(repeated.Directory, "current-reader-receipt.json"));
+        freshReaderReceipt.SequenceEqual(firstReaderReceipt).ShouldBeFalse("The current receipt must describe the actual second reader, even when canonical bytes are equal.");
+        using (JsonDocument freshReceipt = JsonDocument.Parse(freshReaderReceipt))
+        {
+            replacementProof.VerifyReader(freshReceipt.RootElement);
+            Should.Throw<InvalidDataException>(() => proof.VerifyReader(freshReceipt.RootElement));
+        }
+        replacementProof.Matches(replacement).ShouldBeTrue("Repeated generation preserves the second measured proof without repair or reissuance.");
         string snapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
         byte[] enriched = File.ReadAllBytes(snapshot);
         byte[] previous = File.ReadAllBytes(catalog.CatalogPath);

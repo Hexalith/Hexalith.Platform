@@ -1,12 +1,17 @@
 # Hexalith.Platform
 
-The current private reference preparation binds genuine [Memories v3.0.24](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.24)
-at `859680b38a77f04cc8f81ab7a5fe7f40a617cc2a` ([release 42108808279](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42108808279))
+The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
+at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
 at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
-Genuine Builds `4.44.5` supplies the current catalog and paired validation bodies.
+The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
+while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+this reference selection and its measured paired validation bodies. The issuer
+retains legacy grant aggregates and supplies the exact canonical tenant, domain
+and permission sets requested by each caller; it adds no authority. Publication
+alone grants no M25 runtime acceptance.
 This publication does not replace fresh same-code current/legacy CI, unchanged
 native runtime execution, persisted effects or exact cleanup. Public artifact
 measurement and source equivalence alone grant no current runtime qualification.
@@ -57,16 +62,19 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
-purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.24` and
-259 primary cases. M selects genuine [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
-at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
-[release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
-after exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268).
-Its pin and supported floor are `4.44.5`; its catalog Git blob is
-`a5f653999932228ec15450f5251e67c4fff5bf20`, SHA-256
-`b61f70f09ab102e24ae5561de20a7398c42d7a9004067dd1e4c7ac29b3cadb9b`.
+purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
+259 primary cases. M selects genuine [Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
+at `0b08666cb2aac1264007564f86ca9c52376499e4`, published by successful normal
+[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
+after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850).
+Its pin and supported floor are `4.44.7`; its catalog Git blob is
+`f109d49d49588fb83d25a5f417169b35f343976b`, SHA-256
+`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`.
 The tuple binds the observed signed archive, paired validation bodies and
 inventory; this publication does not establish current model/native acceptance.
+
+The previous Builds `4.44.6` producer and its complete signed pair remain
+historical evidence in [the retained tuple record](docs/current-tuple-preparation.md#previous-published-builds-4446-tuple).
 
 Both lanes must execute their actual committed source and tuple. Shared code,
 tests, helpers, workflows and documentation must match; only eight explicitly

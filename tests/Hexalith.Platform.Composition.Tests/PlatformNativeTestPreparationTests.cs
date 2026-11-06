@@ -1,6 +1,9 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Reflection;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Globalization;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.EventStore.Client.Routing;
@@ -10,7 +13,7 @@ using Hexalith.Tenants.Contracts.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
-/// <summary>Exercises native owner preparation up to, but excluding, its first network call.</summary>
+/// <summary>Exercises native owner source/refusal checks and controlled readiness transport without live runtime qualification.</summary>
 public sealed class PlatformNativeTestPreparationTests
 {
     private const string ScopeRefusal = "The native consumer scope differs from this owning run.";
@@ -54,6 +57,27 @@ public sealed class PlatformNativeTestPreparationTests
 
         failure.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe(ScopeRefusal);
         workspace.ShouldBeUnprepared(preparation);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+        if (violation == "missing-synthetic-tenant")
+        {
+            // Keeping the owning tenant must not make an additional valid foreign grant eligible.
+            workspace.Plan.ForeignTenantNamespace.ShouldNotBe(workspace.Plan.TenantNamespace);
+            Hexalith.EventStore.Contracts.Identity.TenantCanonicalizer.TryCanonicalize(workspace.Plan.TenantNamespace, out _).ShouldBeTrue();
+            Hexalith.EventStore.Contracts.Identity.TenantCanonicalizer.TryCanonicalize(workspace.Plan.ForeignTenantNamespace, out _).ShouldBeTrue();
+            File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+            File.WriteAllBytes(Path.Combine(workspace.Catalog, "native-scope.json"), JsonSerializer.SerializeToUtf8Bytes(
+                valid with { Tenants = [workspace.Plan.TenantNamespace, workspace.Plan.ForeignTenantNamespace] }));
+            workspace.WriteStaleCredentials();
+            PlatformNativeTestPreparation broadened = workspace.Preparation();
+
+            Exception broaderFailure = await CaptureAsync(broadened.PrepareAsync(services, bound.Token));
+
+            broaderFailure.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe(ScopeRefusal);
+            File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+            File.Exists(Path.Combine(workspace.Root, "readiness.json")).ShouldBeFalse();
+            workspace.ShouldBeUnprepared(broadened);
+        }
+#endif
     }
 
     /// <summary>Removes a credential channel that appears after entry cleanup when preparation is refused or cancelled.</summary>
@@ -130,6 +154,10 @@ public sealed class PlatformNativeTestPreparationTests
         using (JsonDocument progress = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(workspace.Catalog, "preparation-progress.json"))))
             progress.RootElement.GetProperty("step").GetString().ShouldBe("source-validated");
         workspace.ShouldBeUnprepared(preparation);
+        await AssertReadinessPollingAsync(workspace);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+        await PlatformNativeGatewayContractChecks.AssertAsync(workspace.Catalog, workspace.Plan.TenantNamespace);
+#endif
     }
 
 #if HEXALITH_PLATFORM_V2_CATALOG
@@ -254,6 +282,184 @@ public sealed class PlatformNativeTestPreparationTests
         (await ReadBuildsSecretsAsync(workspace.Plan with { TenantNamespace = workspace.Plan.ForeignTenantNamespace }, readiness)).ShouldBeNull();
     }
 
+    private static async Task AssertReadinessPollingAsync(PreparationWorkspace workspace)
+    {
+        using CancellationTokenSource bound = Bound();
+        PlatformNativeTestPreparation preparation = workspace.Preparation();
+        foreach (string header in new[] { "delta", "date", "absent", "invalid", "past", "zero" })
+        {
+            int requests = 0, predicates = 0;
+            DateTimeOffset notBefore = default;
+            using var client = new HttpClient(new NativeReadinessResponseHandler(request =>
+            {
+                request.Method.ShouldBe(HttpMethod.Get);
+                request.RequestUri!.AbsolutePath.ShouldBe("/tenants/synthetic");
+                requests++;
+                if (requests == 1)
+                {
+                    var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests)
+                        { Content = new StringContent("{\"id\":\"synthetic\",\"status\":\"active\"}") };
+                    DateTimeOffset now = DateTimeOffset.UtcNow;
+                    if (header == "delta") response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(2));
+                    else if (header == "date") response.Headers.TryAddWithoutValidation("Retry-After", now.AddSeconds(2).ToString("R", CultureInfo.InvariantCulture));
+                    else if (header == "invalid") response.Headers.TryAddWithoutValidation("Retry-After", "invalid-component-header");
+                    else if (header == "past") response.Headers.RetryAfter = new RetryConditionHeaderValue(now.AddMinutes(-1));
+                    else if (header == "zero") response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.Zero);
+                    notBefore = header == "date" ? response.Headers.RetryAfter!.Date!.Value
+                        : header == "delta" ? now + response.Headers.RetryAfter!.Delta!.Value : now.AddSeconds(1);
+                    return response;
+                }
+                if (requests == 2)
+                {
+                    // Allow only timer precision; the old100ms loop and immediate retry cannot satisfy the server wait.
+                    DateTimeOffset.UtcNow.ShouldBeGreaterThanOrEqualTo(notBefore.AddMilliseconds(-30));
+                    predicates.ShouldBe(0, "A429 body must never reach the readiness predicate.");
+                }
+                string json = requests switch
+                {
+                    2 => "{\"id\":\"synthetic\",\"status\":\"provisioning\"}",
+                    3 => "{\"id\":\"foreign\",\"status\":\"active\"}",
+                    4 => "{\"id\":\"synthetic\",\"status\":\"active\"}",
+                    _ => throw new InvalidOperationException("Unexpected readiness component request."),
+                };
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(json) };
+            })) { BaseAddress = new Uri("http://localhost/") };
+            await preparation.PollAsync("memories-active-observing", client, "tenants/synthetic", element =>
+            {
+                predicates++;
+                return element.GetProperty("id").GetString() == "synthetic" && element.GetProperty("status").GetString() == "active";
+            }, bound.Token);
+            requests.ShouldBe(4); predicates.ShouldBe(3);
+            workspace.ShouldBeUnprepared(preparation);
+        }
+        int transientRequests = 0;
+        HttpStatusCode[] transient = [HttpStatusCode.NotFound, HttpStatusCode.Forbidden, HttpStatusCode.Conflict, HttpStatusCode.ServiceUnavailable, HttpStatusCode.OK];
+        using (var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+        {
+            HttpStatusCode status = transient[transientRequests++];
+            return new HttpResponseMessage(status) { Content = new StringContent("{\"ready\":true}") };
+        })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            await preparation.PollAsync("memories-active-observing", client, "tenant", element => element.GetProperty("ready").GetBoolean(), bound.Token);
+            transientRequests.ShouldBe(5); workspace.ShouldBeUnprepared(preparation);
+        }
+        foreach (HttpStatusCode terminal in new[] { HttpStatusCode.BadRequest, HttpStatusCode.Unauthorized, HttpStatusCode.InternalServerError })
+        {
+            int requests = 0;
+            using var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+            { requests++; return new HttpResponseMessage(terminal); })) { BaseAddress = new Uri("http://localhost/") };
+            var failure = await Should.ThrowAsync<InvalidOperationException>(() => preparation.PollAsync("memories-active-observing", client, "tenant", _ => false, bound.Token));
+            failure.Message.ShouldBe("The real owner readiness observation failed: " + (int)terminal);
+            requests.ShouldBe(1); workspace.ShouldBeUnprepared(preparation);
+        }
+        int cancelledRequests = 0;
+        using var cancelled = CancellationTokenSource.CreateLinkedTokenSource(bound.Token);
+        var observed = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        string progressPath = Path.Combine(workspace.Catalog, "preparation-progress.json");
+        File.Delete(progressPath);
+        using (var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+        {
+            cancelledRequests++;
+            var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests);
+            response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromMinutes(1));
+            observed.TrySetResult(); return response;
+        })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            Task polling = preparation.PollAsync("memories-active-observing", client, "tenant", _ => false, cancelled.Token);
+            await observed.Task.WaitAsync(bound.Token);
+            while (!File.Exists(progressPath)) await Task.Delay(1, bound.Token);
+            using (JsonDocument progress = JsonDocument.Parse(File.ReadAllBytes(progressPath)))
+                progress.RootElement.GetProperty("httpStatus").GetInt32().ShouldBe(429);
+            polling.IsCompleted.ShouldBeFalse();
+            await cancelled.CancelAsync();
+            await Should.ThrowAsync<OperationCanceledException>(() => polling.WaitAsync(TimeSpan.FromSeconds(2), bound.Token));
+            polling.IsCanceled.ShouldBeTrue();
+            cancelledRequests.ShouldBe(1); workspace.ShouldBeUnprepared(preparation);
+        }
+        using var deadline = new PreparationWorkspace(null);
+        int deadlineRequests = 0;
+        using (var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+        {
+            deadlineRequests++;
+            var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests);
+            response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromMinutes(1));
+            return response;
+        })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            // All workspace, ports, signing key and client setup precedes this one authoritative test budget.
+            PlatformNativeTestPreparation deadlinePreparation = deadline.PreparationWithDeadline(DateTimeOffset.UtcNow.AddSeconds(1));
+            Task polling = deadlinePreparation.PollAsync("memories-active-observing", client, "tenant", _ => false, bound.Token);
+            Exception failure = await CaptureAsync(polling);
+            failure.ShouldBeAssignableTo<OperationCanceledException>().Message.ShouldContain("startup deadline");
+            polling.IsCanceled.ShouldBeTrue();
+            bound.IsCancellationRequested.ShouldBeFalse();
+            deadlineRequests.ShouldBe(1); deadline.ShouldBeUnprepared(deadlinePreparation);
+        }
+        using var expired = new PreparationWorkspace(null);
+        int expiredRequests = 0;
+        using (var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+        { expiredRequests++; throw new InvalidOperationException("An elapsed startup must not send another request."); })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            PlatformNativeTestPreparation expiredPreparation = expired.PreparationWithDeadline(DateTimeOffset.UtcNow.AddSeconds(-1));
+            Task polling = expiredPreparation.PollAsync("memories-active-observing", client, "tenant", _ => false, bound.Token);
+            Exception failure = await CaptureAsync(polling);
+            failure.ShouldBeAssignableTo<OperationCanceledException>().Message.ShouldContain("startup deadline");
+            polling.IsCanceled.ShouldBeTrue(); expiredRequests.ShouldBe(0);
+            expired.ShouldBeUnprepared(expiredPreparation);
+        }
+        using var nullDeadline = new PreparationWorkspace(null);
+        using var nullCancellation = CancellationTokenSource.CreateLinkedTokenSource(bound.Token);
+        int nullRequests = 0;
+        string nullProgress = Path.Combine(nullDeadline.Catalog, "preparation-progress.json");
+        var nullObserved = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using (var client = new HttpClient(new NativeReadinessResponseHandler(_ =>
+        {
+            nullRequests++;
+            var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests);
+            // A valid HTTP delta that exceeds Task.Delay's supported range, not malformed input.
+            response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromDays(60));
+            nullObserved.TrySetResult(); return response;
+        })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            PlatformNativeTestPreparation nullPreparation = nullDeadline.PreparationWithDeadline(null);
+            Task polling = nullPreparation.PollAsync("memories-active-observing", client, "tenant", _ => false, nullCancellation.Token);
+            await nullObserved.Task.WaitAsync(bound.Token);
+            while (!File.Exists(nullProgress)) await Task.Delay(1, bound.Token);
+            polling.IsCompleted.ShouldBeFalse("The clock's default600 budget must cap a valid huge delay without a range fault.");
+            await nullCancellation.CancelAsync();
+            Exception failure = await CaptureAsync(polling.WaitAsync(TimeSpan.FromSeconds(2), bound.Token));
+            failure.ShouldBeAssignableTo<OperationCanceledException>();
+            polling.IsCanceled.ShouldBeTrue(); nullRequests.ShouldBe(1);
+            nullDeadline.ShouldBeUnprepared(nullPreparation);
+        }
+        using var late = new PreparationWorkspace(null);
+        int lateRequests = 0, latePredicates = 0;
+        var lateObserved = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var held = new TaskCompletionSource<HttpResponseMessage>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using (var client = new HttpClient(new NativeReadinessResponseHandler((_, cancellation) =>
+        {
+            lateRequests++; lateObserved.TrySetResult();
+            return held.Task.WaitAsync(cancellation);
+        })) { BaseAddress = new Uri("http://localhost/") })
+        {
+            DateTimeOffset limit = DateTimeOffset.UtcNow.AddSeconds(1);
+            PlatformNativeTestPreparation latePreparation = late.PreparationWithDeadline(limit);
+            Task polling = latePreparation.PollAsync("memories-active-observing", client, "tenant", _ => { latePredicates++; return true; }, bound.Token);
+            try
+            {
+                await lateObserved.Task.WaitAsync(bound.Token);
+                await Task.Delay(CompositionStartupClock.Remaining(limit, DateTimeOffset.UtcNow) + TimeSpan.FromMilliseconds(30), bound.Token);
+                held.SetResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"ready\":true}") });
+                Exception failure = await CaptureAsync(polling);
+                failure.ShouldBeAssignableTo<OperationCanceledException>().Message.ShouldContain("startup deadline");
+                bound.IsCancellationRequested.ShouldBeFalse(); polling.IsCanceled.ShouldBeTrue();
+                lateRequests.ShouldBe(1); latePredicates.ShouldBe(0);
+                late.ShouldBeUnprepared(latePreparation);
+            }
+            finally { held.TrySetCanceled(); }
+        }
+    }
+
     private static CancellationTokenSource Bound()
     {
         // ReadRequiredAsync waits for missing owner files; a regression must fail, not hang.
@@ -282,6 +488,8 @@ public sealed class PlatformNativeTestPreparationTests
     /// <summary>Owns one temporary run workspace with the actual owner source files native preparation reads first.</summary>
     private sealed class PreparationWorkspace : IDisposable
     {
+        private readonly string _signingKey = CompositionSigningKey.Create();
+
         public PreparationWorkspace(DateTimeOffset? startupDeadlineUtc)
         {
             Root = Path.Combine(Path.GetTempPath(), "platform-native-preparation-" + Guid.NewGuid().ToString("N"));
@@ -311,7 +519,12 @@ public sealed class PlatformNativeTestPreparationTests
         public CompositionNativeTestScope Scope { get; }
 
         // Neither delegated Tenants transport nor the Memories binding is reached before the network boundary.
-        public PlatformNativeTestPreparation Preparation(string? catalogDirectory = null) => new(Plan, catalogDirectory ?? Catalog, CompositionSigningKey.Create(),
+        public PlatformNativeTestPreparation Preparation(string? catalogDirectory = null) => CreatePreparation(Plan, catalogDirectory ?? Catalog);
+
+        /// <summary>Latches only the test's immutable deadline after workspace/key/client setup, without a production clock or timer seam.</summary>
+        public PlatformNativeTestPreparation PreparationWithDeadline(DateTimeOffset? deadline) => CreatePreparation(Plan with { StartupDeadlineUtc = deadline }, Catalog);
+
+        private PlatformNativeTestPreparation CreatePreparation(CompositionRunPlan selected, string directory) => new(selected, directory, _signingKey,
             new PlatformTenantBootstrapAccess("tenants", "tenants", "unused-bootstrap-key", null, "unused-issuer"), null!, new Dictionary<string, string> { ["fixture-tenants"] = "tenants", ["eventstore"] = "eventstore" });
 
         public void WriteSource(CompositionNativeTestScope scope)

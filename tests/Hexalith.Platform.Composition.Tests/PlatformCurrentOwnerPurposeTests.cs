@@ -3,7 +3,9 @@ namespace Hexalith.Platform.Composition.Tests;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
 using Xunit;
 
@@ -65,6 +67,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
             PlatformPartiesRunProof proof = PlatformPartiesRunProof.CreateCurrent(options, key);
             File.AppendAllText(Path.Combine(options.RunPlan.Workspace, "source-mapping", "catalog-versions.json"), " ");
             proof.MatchesCurrent(options).ShouldBeFalse();
+            AssertSeedValidationRetainsSnapshot(fixture, options);
         }
         else Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.CreateCurrent(options, key));
     }
@@ -83,9 +86,9 @@ public sealed class PlatformCurrentOwnerPurposeTests
         PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
         const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.4</HexalithTenantsVersion><HexalithMemoriesVersion>";
         const string Suffix = "</HexalithMemoriesVersion></PropertyGroup></Project>";
-        File.WriteAllText(catalog, Prefix + "3.0.24" + Suffix);
+        File.WriteAllText(catalog, Prefix + "3.0.25" + Suffix);
         PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
-        foreach (string refused in new[] { "3.0.23", "3.0.240", "3.0.24+unqualified" })
+        foreach (string refused in new[] { "3.0.23", "3.0.24", "3.0.250", "3.0.25+unqualified", "3.0.26" })
         {
             File.WriteAllText(catalog, Prefix + refused + Suffix);
             PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
@@ -125,6 +128,55 @@ public sealed class PlatformCurrentOwnerPurposeTests
             Directory.Exists(Path.Combine(fixture.Options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
         }
         finally { PlatformCurrentOwnerProof.PreparedObserver.Value = previous; }
+    }
+
+    // Component-only real MSBuild validation: no private artifact proof or runtime qualification is issued.
+    private static void AssertSeedValidationRetainsSnapshot(PlatformPartiesProofFixture fixture, PlatformCompositionOptions options)
+    {
+        string seed = Path.Combine(fixture.Root, "Host.csproj");
+        File.Copy(options.EventStoreSeedProject!, seed);
+        options = options with { EventStoreSeedProject = seed };
+        string workspace = options.RunPlan!.Workspace;
+        string snapshot = Path.Combine(workspace, "source-mapping", "catalog-versions.json");
+        string catalogHash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(workspace, "source-mapping", "pinned-tree", "Props", "Directory.Packages.props"))));
+        Dictionary<string, string> pinned = new() { ["Props/Directory.Packages.props"] = catalogHash };
+        Dictionary<string, string> versions = new();
+        Dictionary<string, IReadOnlyDictionary<string, string>> projects = new();
+        string pin = options.Mapping.PlatformIdentity!.CatalogCommit!;
+        var snapshotRecord = new CatalogVersionSnapshot(options.Mapping.ContentHash, pin, catalogHash, pinned, versions, projects,
+            CatalogVersionSnapshot.ComputeHash(options.Mapping.ContentHash, pin, catalogHash, pinned, versions, projects));
+        File.WriteAllBytes(snapshot, JsonSerializer.SerializeToUtf8Bytes(snapshotRecord));
+        string preflight = Path.Combine(workspace, "seed-preflight");
+        Directory.CreateDirectory(preflight);
+        _ = PlatformPackageCatalogReader.Prepare(new XDocument(new XElement("Project")), options, workspace, preflight, DateTimeOffset.UtcNow.AddMinutes(1));
+        byte[] prepared = File.ReadAllBytes(snapshot);
+        PlatformPartiesRunProof proof = PlatformPartiesRunProof.CreateCurrent(options, fixture.Key);
+        proof.MatchesCurrent(options).ShouldBeTrue();
+        // Execute the real generated validation task as the actual seed consumer at its later build boundary.
+        XDocument validation = XDocument.Load(Path.Combine(preflight, "validate-catalog.proj"));
+        XElement target = validation.Root!.Element("Target")!;
+        XElement seedValidation = new(target.Elements().First());
+        seedValidation.SetAttributeValue("ProjectName", Path.GetFileNameWithoutExtension(seed));
+        target.ReplaceNodes(seedValidation);
+        string later = Path.Combine(preflight, "validate-seed.proj");
+        validation.Save(later);
+        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+            ["msbuild", later, "-target:Validate", "-nologo", "-m:1", "-nodeReuse:false"], options.PlatformRoot, null),
+            TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken).GetAwaiter().GetResult();
+        result.ExitCode.ShouldBe(0, result.ErrorOutput);
+        result.TimedOut.ShouldBeFalse();
+        result.OutputTruncated.ShouldBeFalse();
+        proof.MatchesCurrent(options).ShouldBeTrue("Later legitimate seed validation must preserve the issued parent proof without repair or recapture.");
+        File.ReadAllBytes(snapshot).SequenceEqual(prepared).ShouldBeTrue("The actual seed consumer must be evaluated before the parent proof seals its snapshot.");
+        string ordinary = Path.Combine(workspace, "ordinary-preflight");
+        Directory.CreateDirectory(ordinary);
+        _ = PlatformPackageCatalogReader.Prepare(new XDocument(new XElement("Project")), options with { RunPlan = null }, workspace, ordinary, DateTimeOffset.UtcNow.AddMinutes(1));
+        XDocument ordinaryValidation = XDocument.Load(Path.Combine(ordinary, "validate-catalog.proj"));
+        ordinaryValidation.Root!.Element("Target")!.Elements().Select(element => (string?)element.Attribute("ProjectName"))
+            .ShouldBe(["Hexalith.Platform.CatalogBuilder"], "Ordinary reader preparation must retain its existing consumer selection.");
+        File.ReadAllBytes(snapshot).SequenceEqual(prepared).ShouldBeTrue();
+        File.AppendAllText(snapshot, " ");
+        proof.MatchesCurrent(options).ShouldBeFalse("Exact snapshot tampering remains refused after early preparation.");
     }
 
     private static PlatformCompositionOptions Current(PlatformPartiesProofFixture fixture)
