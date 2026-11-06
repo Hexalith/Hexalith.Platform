@@ -38,10 +38,10 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     {
         "registry.hexalith.com/tenants@sha256:712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c",
         "registry.hexalith.com/tenants-api@sha256:39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2",
-        "registry.hexalith.com/memories@sha256:7cbba1867709359bf7a4c5f115e8879bfbb9548cdf209947dc0f8c633ad859d7",
-        "registry.hexalith.com/memories-domain-service@sha256:efbd5e1d37e8ac75c78855ae4f22664ea294b8f6e1a65e4a8c6f44c1efb5eacb",
-        "registry.hexalith.com/memories-access-telemetry-clock@sha256:7da6f0849a1994513e126f3cbea50754c414be563d499850830e34c10ac411ef",
-        "registry.hexalith.com/memories-access-telemetry@sha256:7c4f498dc7f7f0a2ab965efd05f76853f6f42a1b2513e3e0d94eeea96971620a",
+        "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+        "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+        "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+        "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
     };
 
     private IReadOnlySet<string> SelectedImages => Plan.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile ? CurrentImages : Images;
@@ -67,7 +67,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
         PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             .ShouldBeTrue(current
-                ? "Current Parties preparation requires the genuine published M24/SDK4.1 tuple and loaded public Contracts body."
+                ? "Current Parties preparation requires the genuine published M25/SDK4.1 tuple and loaded public Contracts body."
                 : "Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
         PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();

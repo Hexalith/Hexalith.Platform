@@ -36,13 +36,14 @@ catalog receipt. An ordinary plan has no prior issuer-key anchor: a fresh
 well-formed initial key is valid under the trusted parent handoff, while malformed
 keys and changed plan, run, entry or source inputs remain refused.
 
-This source integration has static preservation evidence only. Earlier component
-7/90 results remain bound to their original committed sources. The incoming
-legacy descriptor is retained as history and does not establish same-code
-qualification for these merged repairs. A real final legacy/current cut and new
-functional, hosted and native qualification remain required after the corrected
-public owner and catalog bindings are ready. The existing public Memories
-3.0.24 coordinates do not qualify the pending ordinary backend adapter fix.
+Earlier source integration had static preservation evidence only, and the earlier
+component 7/90 results remain bound to their original committed sources. The
+corrected public Memories 3.0.25 producer includes the ordinary backend adapter
+fix. Its finite public bindings do not establish runtime acceptance. The final
+binding procedure creates a new real legacy/current pair after every shared
+source, test, helper and documentation change; the incoming historical descriptor
+cannot qualify the newly integrated repairs. Actual isolated results must name
+those new commits. Hosted, public-Parties and native qualification remain separate.
 
 The separate same-code legacy lane L retains its genuine Builds `4.44.3`/fc212224
 and Tenants `7.0.2` tuple and all original 349 cases. The nine conditional old
@@ -51,7 +52,7 @@ Current private-reader/reference and native observations require their own real
 source/run/attempt bindings. Both lanes execute actual committed revisions, with
 identical shared source and only eight bounded metadata differences; neither
 source equivalence nor counts imply binary, runtime or publication acceptance.
-The parent must create a new real L commit after shared changes before activating
+Create a new real L commit after all shared changes before activating
 its exact descriptor in M. No nested checkout or dependency source fallback is
 permitted.
 

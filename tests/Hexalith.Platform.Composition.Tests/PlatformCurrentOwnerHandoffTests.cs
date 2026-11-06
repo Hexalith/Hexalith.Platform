@@ -119,6 +119,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         versions.Count.ShouldBe(original["ProjectVersions"]!.AsObject().Count + 1);
         versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
         versions[consumer]!["Hexalith.Tenants.Contracts"]!.GetValue<string>().ShouldBe("7.0.4");
+        versions[consumer]!["Hexalith.Memories.Contracts"]!.GetValue<string>().ShouldBe("3.0.25");
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(warm)!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,
             snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
