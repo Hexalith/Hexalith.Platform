@@ -26,6 +26,7 @@ public sealed class PlatformCurrentOwnerPackageTests
         finally { PlatformCurrentOwnerProof.PreparedObserver.Value = previousObserver; }
         prepared.ShouldBe(1, "The actual build/pack/final-reader producer must invoke the tested final revision guard before issuance.");
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
+        proof.SourceRevision.ShouldBe(PlatformPartiesProofFixture.Git(options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path!, "rev-parse", "HEAD"));
         proof.Matches(options).ShouldBeTrue();
         options.PartiesRunProof.ShouldBeNull();
         PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull("The selected new tuple is not an admitted full public Parties cohort.");
@@ -115,7 +116,7 @@ public sealed class PlatformCurrentOwnerPackageTests
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
         PlatformCompositionOptions accepted = Capture(fixture);
         PlatformCurrentOwnerProof proof = accepted.CurrentOwnerProof!;
-        foreach (string fault in new[] { "archive", "runtime-body", "snapshot", "project-override", "dependency-source", "reference-image" })
+        foreach (string fault in new[] { "archive", "runtime-body", "snapshot", "project-override", "dependency-source", "owner-source", "owner-missing", "reference-image" })
         {
             PlatformCompositionOptions options = accepted;
             string? path = fault switch
@@ -131,6 +132,8 @@ public sealed class PlatformCurrentOwnerPackageTests
                 if (path is not null) File.AppendAllText(path, "changed");
                 if (fault == "project-override") options = options with { Projects = new Dictionary<string, string>(PlatformServerBindings.ReferenceProjects) { ["parties/domain"] = "foreign.csproj" } };
                 if (fault == "dependency-source") options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == "Hexalith.EventStore" ? entry with { Origin = "source", Path = options.PlatformRoot } : entry).ToArray() } };
+                if (fault == "owner-source") options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Select(entry => entry.Identity == "Hexalith.Parties" ? entry with { Origin = "package", Path = null } : entry).ToArray() } };
+                if (fault == "owner-missing") options = options with { Mapping = options.Mapping with { Entries = options.Mapping.Entries.Where(entry => entry.Identity != "Hexalith.Parties").ToArray() } };
                 if (fault == "reference-image") options = options with { Images = new Dictionary<string, string>(PlatformServerBindings.ReferenceImages) { ["tenants/domain"] = "registry.invalid/tenants" } };
                 proof.Matches(options).ShouldBeFalse(fault);
                 var builder = PlatformPartiesPackageFixture.Builder();
@@ -144,15 +147,6 @@ public sealed class PlatformCurrentOwnerPackageTests
 
     private static PlatformCompositionOptions Capture(PlatformPartiesPackageFixture fixture)
     {
-        PlatformCompositionOptions? captured = null;
-        var builder = PlatformPartiesPackageFixture.Builder();
-        Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
-        {
-            captured = options;
-            options.CurrentOwnerProof!.Matches(options).ShouldBeTrue();
-            throw new InvalidOperationException("Expected measured runner authority; stop before resource effects.");
-        })).Message.ShouldBe("Expected measured runner authority; stop before resource effects.");
-        builder.Resources.ShouldBeEmpty();
-        return captured!;
+        return fixture.CaptureCurrent();
     }
 }

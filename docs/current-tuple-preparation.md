@@ -13,7 +13,7 @@ measurement and source equivalence alone grant no current runtime qualification.
 
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.24`, and 259 primary cases. M selects genuine
+Tenants `7.0.4` and Memories `3.0.24`, and 271 primary cases. M selects genuine
 [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
 at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, published by successful normal
 [release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
@@ -24,6 +24,22 @@ catalog blob `a5f653999932228ec15450f5251e67c4fff5bf20`, catalog SHA-256
 and the actual signed archive, Tooling and inventory identities. Its measured
 validation pair is recorded below; hosted exact-source/native acceptance remains
 separate and required.
+
+The integrated source now registers 271 current cases, including seven ordinary
+handoff controls. It retains the complete owner revision and eligible input set
+through private compilation, proof sealing and observation. The fresh ordinary
+reader publishes its verified current receipt while preserving the initial
+catalog receipt. An ordinary plan has no prior issuer-key anchor: a fresh
+well-formed initial key is valid under the trusted parent handoff, while malformed
+keys and changed plan, run, entry or source inputs remain refused.
+
+This source integration has static preservation evidence only. Earlier component
+7/90 results remain bound to their original committed sources. The incoming
+legacy descriptor is retained as history and does not establish same-code
+qualification for these merged repairs. A real final legacy/current cut and new
+functional, hosted and native qualification remain required after the corrected
+public owner and catalog bindings are ready. The existing public Memories
+3.0.24 coordinates do not qualify the pending ordinary backend adapter fix.
 
 The separate same-code legacy lane L retains its genuine Builds `4.44.3`/fc212224
 and Tenants `7.0.2` tuple and all original 349 cases. The nine conditional old

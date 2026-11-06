@@ -23,7 +23,7 @@ owner's live SM-2 demonstration separately unverified.
 
 The same-code legacy source L preserves Builds `4.44.3`/fc212224, Tenants `7.0.2`
 and its original 349 controls. Current model M prepares a distinct private
-source-owned Parties/SDK `4.1.0`/Tenants `7.0.4`/Memories `3.0.24` purpose with 259 primary cases;
+source-owned Parties/SDK `4.1.0`/Tenants `7.0.4`/Memories `3.0.24` purpose with 271 primary cases;
 M selects genuine [Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
 at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, from successful normal
 [release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
