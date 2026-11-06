@@ -108,7 +108,11 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 File.WriteAllBytes(Path.Combine(catalog.Directory, "native-scope.json"), JsonSerializer.SerializeToUtf8Bytes(new
                 {
                     plan.RunId, ModuleId = suite.ModuleId, RoutingCatalogRoot = catalog.RootDigest,
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+                    Domains = domains, Tenants = new[] { plan.TenantNamespace },
+#else
                     Domains = domains, Tenants = new[] { plan.TenantNamespace, "system" },
+#endif
                 }));
             }
             File.WriteAllBytes(Path.Combine(catalog.Directory, "selected-closure.json"), JsonSerializer.SerializeToUtf8Bytes(new

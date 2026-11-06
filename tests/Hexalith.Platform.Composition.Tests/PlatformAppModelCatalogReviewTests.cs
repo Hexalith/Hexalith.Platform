@@ -158,7 +158,11 @@ public sealed partial class PlatformAppModelTests
             scope.RunId.ShouldBe(plan.RunId); scope.ModuleId.ShouldBe("parties");
             scope.RoutingCatalogRoot.ShouldBe((string)gateway[prefix + "RootDigest"]);
             scope.Domains.ShouldBe(["party"]);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+            scope.Tenants.ShouldBe([plan.TenantNamespace]);
+#else
             scope.Tenants.ShouldBe([plan.TenantNamespace, "system"]);
+#endif
             using var closure = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalogDirectory, "selected-closure.json")));
             closure.RootElement.GetProperty("RunId").GetString().ShouldBe(plan.RunId);
             closure.RootElement.GetProperty("hosts").EnumerateArray().Select(host => host.GetProperty("ResourceId").GetString()).Order().ShouldBe(participants);

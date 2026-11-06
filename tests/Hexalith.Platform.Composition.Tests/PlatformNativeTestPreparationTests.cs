@@ -54,6 +54,27 @@ public sealed class PlatformNativeTestPreparationTests
 
         failure.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe(ScopeRefusal);
         workspace.ShouldBeUnprepared(preparation);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+        if (violation == "missing-synthetic-tenant")
+        {
+            // Keeping the owning tenant must not make an additional valid foreign grant eligible.
+            workspace.Plan.ForeignTenantNamespace.ShouldNotBe(workspace.Plan.TenantNamespace);
+            Hexalith.EventStore.Contracts.Identity.TenantCanonicalizer.TryCanonicalize(workspace.Plan.TenantNamespace, out _).ShouldBeTrue();
+            Hexalith.EventStore.Contracts.Identity.TenantCanonicalizer.TryCanonicalize(workspace.Plan.ForeignTenantNamespace, out _).ShouldBeTrue();
+            File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+            File.WriteAllBytes(Path.Combine(workspace.Catalog, "native-scope.json"), JsonSerializer.SerializeToUtf8Bytes(
+                valid with { Tenants = [workspace.Plan.TenantNamespace, workspace.Plan.ForeignTenantNamespace] }));
+            workspace.WriteStaleCredentials();
+            PlatformNativeTestPreparation broadened = workspace.Preparation();
+
+            Exception broaderFailure = await CaptureAsync(broadened.PrepareAsync(services, bound.Token));
+
+            broaderFailure.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe(ScopeRefusal);
+            File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+            File.Exists(Path.Combine(workspace.Root, "readiness.json")).ShouldBeFalse();
+            workspace.ShouldBeUnprepared(broadened);
+        }
+#endif
     }
 
     /// <summary>Removes a credential channel that appears after entry cleanup when preparation is refused or cancelled.</summary>
@@ -130,6 +151,9 @@ public sealed class PlatformNativeTestPreparationTests
         using (JsonDocument progress = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(workspace.Catalog, "preparation-progress.json"))))
             progress.RootElement.GetProperty("step").GetString().ShouldBe("source-validated");
         workspace.ShouldBeUnprepared(preparation);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+        await PlatformNativeGatewayContractChecks.AssertAsync(workspace.Catalog, workspace.Plan.TenantNamespace);
+#endif
     }
 
 #if HEXALITH_PLATFORM_V2_CATALOG
