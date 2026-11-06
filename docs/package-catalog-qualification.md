@@ -1,34 +1,37 @@
 # Package catalog qualification
 
-The current private reference preparation binds genuine [Memories v3.0.24](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.24)
-at `859680b38a77f04cc8f81ab7a5fe7f40a617cc2a` ([release 42108808279](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42108808279))
+The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
+at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
 at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
-Genuine Builds `4.44.5` supplies the current catalog and paired validation bodies.
+The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
+while the current private purpose refuses them. Genuine Builds `4.44.6` supplies
+this reference selection and its measured paired validation bodies. Publication
+alone grants no M25 runtime acceptance.
 This publication does not replace fresh same-code current/legacy CI, unchanged
 native runtime execution, persisted effects or exact cleanup. Public artifact
 measurement and source equivalence alone grant no current runtime qualification.
 
 The current private owner preparation uses `platform-current-package`, measured
 Release bodies from active Parties source, and authenticated released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.24` references. Its exact Parties declaration is
+Tenants `7.0.4` and Memories `3.0.25` references. Its exact Parties declaration is
 `d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
 No public Parties/7.0.4 cohort is admitted by this preparation. M selects genuine
-[Builds v4.44.5](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.5)
-at `afb2d4fd556b5d30a92734d21cb62bfe946ae958`, from successful normal
-[release 42118761518](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42118761518)
-and exact-source [CI 42115650268](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42115650268).
-Its current tool pin/floor are `4.44.5`; catalog blob
-`a5f653999932228ec15450f5251e67c4fff5bf20` and SHA-256
-`b61f70f09ab102e24ae5561de20a7398c42d7a9004067dd1e4c7ac29b3cadb9b`
+[Builds v4.44.6](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.6)
+at `ad50acf920d78ee16033bdc1cf26c34e8275cdcb`, from successful normal
+[release 42144370420](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42144370420)
+and exact-source [CI 42142102328](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42142102328).
+Its current tool pin/floor are `4.44.6`; catalog blob
+`f109d49d49588fb83d25a5f417169b35f343976b` and SHA-256
+`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`
 bind the released SDK4.1/T704 reference selection. Signed AppHost
-`acac3d8ee71977f2f70fc5099510d69be695e2ff466f78e06ee9086d86c45066`
+`2b746f7b8a91e70fe1e2a571dc4ca832c4cb18ca502b60a467347da32a4fe84c`
 is admitted only together with actual adjacent Tooling
-`445d9219c0670abff9550fa3c028c3ee00ffc4d9b3a4c07e5e14b078f035cbb4`;
+`23ef9fa3ec8a6c85e91a08da434e0fd1990ff1f613e8f36e0951144b09a37b87`;
 the historical pair remains separately admitted and cross-pair mixtures refuse.
-All public body/image authority maps remain finite and unchanged.
+Historical public body/image authority maps remain finite and unchanged.
 
 The current primary profile requires 271 cases, including real private-reader,
 reference, declaration and running-owner refusal controls. The same-code legacy

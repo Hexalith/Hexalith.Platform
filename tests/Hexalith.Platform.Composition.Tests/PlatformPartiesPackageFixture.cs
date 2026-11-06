@@ -113,7 +113,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", current ? "3.0.24" : "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", current ? "3.0.25" : "3.0.23"), ("parties", "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
