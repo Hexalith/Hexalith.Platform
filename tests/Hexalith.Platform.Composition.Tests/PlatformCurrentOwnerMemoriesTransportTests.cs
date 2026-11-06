@@ -17,6 +17,9 @@ public sealed class PlatformCurrentOwnerMemoriesTransportTests
     public async Task CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync()
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
+        CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(fixture.Plan.DaprConfigPath)!);
+        await File.WriteAllTextAsync(fixture.Plan.DaprConfigPath, CompositionDaprComponentRenderer.RenderConfiguration(fixture.Plan),
+            TestContext.Current.CancellationToken).ConfigureAwait(true);
         var builder = PlatformPartiesPackageFixture.Builder();
         builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(fixture.Workspace, "never-start-dcp");
         builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(fixture.Workspace, "never-start-dashboard");
