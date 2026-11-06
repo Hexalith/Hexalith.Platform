@@ -1,16 +1,7 @@
 {
-  "purpose": "Current-model exact-source package boundaries and measured active-owner preflight; no candidate or public-consumer acceptance",
+  "purpose": "Tuple binding, released declarations and analyzer regression preflight only",
   "remainingQualification": "Other Platform suites, explicitly enabled live cases, authenticated candidate-decision evidence and generated/direct runtime integration remain mandatory before acceptance.",
   "groups": [
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests"
-      ],
-      "requiredCount": 1,
-      "purpose": "current-owner-package"
-    },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
       "filter": "-class",
@@ -21,8 +12,7 @@
         "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
         "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests"
       ],
-      "requiredCount": 83,
-      "purpose": "current-model-boundary"
+      "requiredCount": 83
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -31,8 +21,7 @@
         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
       ],
-      "requiredCount": 2,
-      "purpose": "current-model-boundary"
+      "requiredCount": 2
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -41,8 +30,7 @@
         "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
         "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
       ],
-      "requiredCount": 24,
-      "purpose": "current-model-boundary"
+      "requiredCount": 24
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -51,8 +39,7 @@
         "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
         "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests"
       ],
-      "requiredCount": 44,
-      "purpose": "current-model-boundary"
+      "requiredCount": 44
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -63,8 +50,7 @@
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
       ],
-      "requiredCount": 7,
-      "purpose": "current-model-boundary"
+      "requiredCount": 7
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -73,8 +59,15 @@
         "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
         "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests"
       ],
-      "requiredCount": 28,
-      "purpose": "current-model-boundary"
+      "requiredCount": 28
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests"
+      ],
+      "requiredCount": 9
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -84,8 +77,7 @@
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
       ],
-      "requiredCount": 4,
-      "purpose": "current-model-boundary"
+      "requiredCount": 4
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -93,8 +85,47 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
       ],
-      "requiredCount": 40,
-      "purpose": "current-model-boundary"
+      "requiredCount": 40
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
+      ],
+      "requiredCount": 3
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
+      ],
+      "requiredCount": 21
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
+      ],
+      "requiredCount": 11
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
+      ],
+      "requiredCount": 22
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests"
+      ],
+      "requiredCount": 47
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -102,126 +133,15 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources"
       ],
-      "requiredCount": 2,
-      "purpose": "current-model-boundary"
+      "requiredCount": 2
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
       "filter": "-class",
       "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests"
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests"
       ],
-      "requiredCount": 9,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests"
-      ],
-      "requiredCount": 2,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests"
-      ],
-      "requiredCount": 2,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests"
-      ],
-      "requiredCount": 4,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests"
-      ],
-      "requiredCount": 4,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests"
-      ],
-      "requiredCount": 4,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests"
-      ],
-      "requiredCount": 4,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests"
-      ],
-      "requiredCount": 7,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests"
-      ],
-      "requiredCount": 1,
-      "purpose": "current-owner-package"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests"
-      ],
-      "requiredCount": 1,
-      "purpose": "private-eventstore-package-test"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests"
-      ],
-      "requiredCount": 41,
-      "purpose": "private-eventstore-package-test"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests"
-      ],
-      "requiredCount": 1,
-      "purpose": "private-eventstore-production-model"
+      "requiredCount": 2
     }
-  ],
-  "historicalPublicControls": {
-    "purpose": "same-changed-source-legacy-tuple-regression-not-current-cohort-acceptance",
-    "sourceInput": "legacy-source-sha",
-    "buildsSource": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
-    "toolVersion": "4.44.3",
-    "profileSha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
-    "requiredCount": 349,
-    "workflowJob": "legacy-public-cohort",
-    "qualificationCredit": false
-  }
+  ]
 }
