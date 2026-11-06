@@ -471,3 +471,11 @@ Platform Maintainer (Hexalith).
 The [package catalog qualification boundary](docs/package-catalog-qualification.md)
 documents the separate finite ordinary Parties source proposal, measured public
 and image roles, and pending genuine tuple/native qualification.
+
+## Automatic source releases
+
+After both main push qualifications succeed, [the source publisher](docs/source-releases.md)
+uses standard Conventional Commits to calculate a source tag and GitHub release.
+It publishes no packages or images and writes no version or changelog commit.
+Tag creation still requires the repository's separate automation authorization;
+this configuration does not change the existing tag rules.

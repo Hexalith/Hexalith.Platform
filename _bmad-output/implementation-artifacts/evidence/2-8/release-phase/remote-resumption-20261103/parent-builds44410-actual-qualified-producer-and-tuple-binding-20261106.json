@@ -1,0 +1,80 @@
+{
+  "utc": "2026-11-06T13:45:15.720776+00:00",
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "f4e908206f2d6481c0ced6b7d4e62e28dcf3b330",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "2eccd7598d0e243b308fa504ef6f23724125d542",
+        "sha256": "91ad525c4eb88e21d5f168115c9ea2143f7996526032687ede99cfdc37647825"
+      }
+    },
+    "publication": {
+      "version": "4.44.10",
+      "sourceRevision": "f4e908206f2d6481c0ced6b7d4e62e28dcf3b330",
+      "releaseTag": "v4.44.10",
+      "catalogSha256": "91ad525c4eb88e21d5f168115c9ea2143f7996526032687ede99cfdc37647825",
+      "archiveSha256": "9ae9c09588bccdbc28456284508f691364f24058d7eafe5207e10704aa1bbcce",
+      "toolingSha256": "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632",
+      "inventorySha256": "f79aa001b3c110c24a2e5ec3dd3e400d1a533a86248b49179f1f0f9c82592092",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.10/g4-tool-package-inventory.json"
+    }
+  },
+  "actualNormalReleaseRun": 42223647770,
+  "actualQualifiedSourceCi": 42221243284,
+  "releaseId": 436539655,
+  "signedPackagesMembersVerified": [
+    41,
+    317
+  ],
+  "qualificationPayloadsVerified": 55,
+  "sourceFixtureBodiesVerified": 301,
+  "moduleBodyHashes": {
+    "Hexalith.Builds.Tooling.dll": [
+      {
+        "path": "tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+        "sha256": "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632"
+      },
+      {
+        "path": "tools/net10.0/any/g4-host/Hexalith.Builds.Tooling.dll",
+        "sha256": "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632"
+      }
+    ],
+    "Hexalith.Builds.Module.AppHost.dll": [
+      {
+        "path": "tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll",
+        "sha256": "0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf"
+      }
+    ],
+    "Hexalith.Builds.Module.Cli.dll": [
+      {
+        "path": "tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+        "sha256": "38c6738263771ea9c2b88ad37b93542fcc4a9269a84caff7ada20ccc3448d78b"
+      }
+    ],
+    "Hexalith.Builds.Module.EventStoreHost.dll": [
+      {
+        "path": "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+        "sha256": "902b2885f2e91a51f5074244cf721fc4d8ee34c648be297cd14a705e08603224"
+      }
+    ]
+  },
+  "primaryAudit": {
+    "privatePath": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-44410-f4e-official-20261106T134332Z/_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-builds-44410-source-ci-official-audit-20261106T134332Z.json",
+    "sha256": "5b7f251f93bfc3d1df5bdaa602623b16530a6be457fed649ddaea51bf0d825a2"
+  },
+  "incomingPlatformSource": "64858f25f49407847c9651e626da68c505e98867",
+  "incomingBindingEqualsActualPublicProducer": true,
+  "incomingCompletePairCount": 8,
+  "incomingActualCurrentPair": [
+    "0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf",
+    "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632"
+  ],
+  "scope": "Actual normally published producer; preserve genuine incoming source, no runtime/sourceCI/native/Story acceptance transferred.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}
