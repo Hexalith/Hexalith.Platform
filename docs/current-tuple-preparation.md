@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -18,17 +18,34 @@ measurement and source equivalence alone grant no current runtime qualification.
 
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
-Tenants `7.0.4` and Memories `3.0.25`, and 259 primary cases. M selects genuine
-[Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
-at `0b08666cb2aac1264007564f86ca9c52376499e4`, published by successful normal
-[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
-after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850),
-with exact tool pin and supported floor `4.44.7`. The committed tuple records
+Tenants `7.0.4` and Memories `3.0.25`, and 271 primary cases. M selects genuine
+[Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
+at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, published by successful normal
+[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
+after exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850),
+with exact tool pin and supported floor `4.44.8`. The committed tuple records
 catalog blob `f109d49d49588fb83d25a5f417169b35f343976b`, catalog SHA-256
 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`,
 and the actual signed archive, Tooling and inventory identities. Its measured
 validation pair is recorded below; hosted exact-source/native acceptance remains
 separate and required.
+
+The integrated source now registers 271 current cases, including seven ordinary
+handoff controls. It retains the complete owner revision and eligible input set
+through private compilation, proof sealing and observation. The fresh ordinary
+reader publishes its verified current receipt while preserving the initial
+catalog receipt. An ordinary plan has no prior issuer-key anchor: a fresh
+well-formed initial key is valid under the trusted parent handoff, while malformed
+keys and changed plan, run, entry or source inputs remain refused.
+
+Earlier source integration had static preservation evidence only, and the earlier
+component 7/90 results remain bound to their original committed sources. The
+corrected public Memories 3.0.25 producer includes the ordinary backend adapter
+fix. Its finite public bindings do not establish runtime acceptance. The final
+binding procedure creates a new real legacy/current pair after every shared
+source, test, helper and documentation change; the incoming historical descriptor
+cannot qualify the newly integrated repairs. Actual isolated results must name
+those new commits. Hosted, public-Parties and native qualification remain separate.
 
 The separate same-code legacy lane L retains its genuine Builds `4.44.3`/fc212224
 and Tenants `7.0.2` tuple and all original 349 cases. The nine conditional old
@@ -37,19 +54,33 @@ Current private-reader/reference and native observations require their own real
 source/run/attempt bindings. Both lanes execute actual committed revisions, with
 identical shared source and only eight bounded metadata differences; neither
 source equivalence nor counts imply binary, runtime or publication acceptance.
-The parent must create a new real L commit after shared changes before activating
+Create a new real L commit after all shared changes before activating
 its exact descriptor in M. No nested checkout or dependency source fallback is
 permitted.
 
 The signed module archive SHA-256 is
-`8b9c455ac1dbb1cd9b1fe2bc0042894c6b2752485a10725eeb2068bd8c561353`.
+`b89616f914463be8a76e5b129c5028ea31ca532f008a97690b55d854f02f57cd`.
 Its AppHost body is
-`f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911`;
+`ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764`;
 its root and adjacent g4-host Tooling bodies both are
-`6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90`.
+`f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9`.
 Admission requires this complete pair or the separately retained historical
-4.44.6, 4.44.5, 4.44.4 and 4.44.3 pairs;
+4.44.7, 4.44.6, 4.44.5, 4.44.4 and 4.44.3 pairs;
 cross-pair mixtures and ordinary caller claim suppression remain refused.
+
+## Previous published Builds 4.44.7 tuple
+
+The incoming scoped-gateway source selected genuine [Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
+at `0b08666cb2aac1264007564f86ca9c52376499e4`, from normal
+[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
+after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850).
+Its signed archive SHA-256 is `8b9c455ac1dbb1cd9b1fe2bc0042894c6b2752485a10725eeb2068bd8c561353`;
+AppHost `f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911`
+and Tooling `6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90`
+remain admitted only together. Its inventory SHA-256 is
+`e5ce4b773cd4eee160045630a4d3af825d42c11d5422446c7a8ad4c8843ab8d0`;
+the catalog blob and SHA-256 match the current catalog above. These historical
+receipts do not replace the current producer or exact-source qualification.
 
 ## Previous published Builds 4.44.6 tuple
 

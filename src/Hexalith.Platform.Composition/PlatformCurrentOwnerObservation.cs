@@ -41,10 +41,11 @@ internal static class PlatformCurrentOwnerObservation
         using JsonDocument reader = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "current-reader-receipt.json"), token).ConfigureAwait(false));
         proof.VerifyReader(reader.RootElement);
         using JsonDocument scope = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "native-scope.json"), token).ConfigureAwait(false));
+        if (!proof.Matches(options)) throw new InvalidDataException("Current owner inputs changed before observation publication.");
         await File.WriteAllBytesAsync(Path.Combine(catalogDirectory, "current-owner-observation.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
             profile = PlatformCurrentOwnerProof.Profile, plan.RunId, plan.AttemptId, plan.EnvironmentId,
-            revision = Revision(options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path!),
+            revision = proof.SourceRevision,
             mappingHash = options.Mapping.ContentHash, configuration = "Release", qualificationCredit = false,
             platform = options.Mapping.PlatformIdentity, sdkVersion = "4.1.0", tenantsVersion = "7.0.4",
             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
@@ -76,11 +77,6 @@ internal static class PlatformCurrentOwnerObservation
         return (pid, runtime);
     }
 
-    private static string Revision(string root)
-    {
-        CompositionProcessResult result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], root, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
-        return result.ExitCode == 0 && !result.TimedOut ? result.Output.Trim() : throw new InvalidDataException("Current source revision unavailable.");
-    }
     private static IEnumerable<int> ProcessTree(int owner)
     {
         Queue<int> pending = new();

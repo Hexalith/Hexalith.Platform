@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -63,11 +63,11 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
-259 primary cases. M selects genuine [Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
-at `0b08666cb2aac1264007564f86ca9c52376499e4`, published by successful normal
-[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
-after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850).
-Its pin and supported floor are `4.44.7`; its catalog Git blob is
+271 primary cases. M selects genuine [Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
+at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, published by successful normal
+[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
+after exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850).
+Its pin and supported floor are `4.44.8`; its catalog Git blob is
 `f109d49d49588fb83d25a5f417169b35f343976b`, SHA-256
 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`.
 The tuple binds the observed signed archive, paired validation bodies and
@@ -150,9 +150,9 @@ Local Debug defaults retain source references. For owner CI,
 verified signed tool archive, including the host dependency manifest and MVC
 Testing content root. CI rejects foreign project references and changed extracted
 bytes, requires clean recorded source, builds Release and enforces the declared
-suite counts. The required profile preserves the prior 201 E/T, reader and
-channel cases, adds 37 Parties proof cases, three actual mapped-owner cases,
-21 full entry cases and nine full reader cases, for 271 required cases.
+suite counts. The earlier package preparation profile preserved the prior 201 E/T, reader and
+channel cases, added 37 Parties proof cases, three actual mapped-owner cases,
+21 full entry cases and nine full reader cases, for 271 historical required cases.
 Local signed-tool component results and audit-only graph checks remain distinct
 from the mandatory exact-HEAD hosted tuple and real native qualification.
 Every group must execute its exact count with no errors, failures, skips or unrun

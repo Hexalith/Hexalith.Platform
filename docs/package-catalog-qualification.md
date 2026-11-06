@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -21,21 +21,21 @@ Release bodies from active Parties source, and authenticated released SDK `4.1.0
 Tenants `7.0.4` and Memories `3.0.25` references. Its exact Parties declaration is
 `d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
 No public Parties/7.0.4 cohort is admitted by this preparation. M selects genuine
-[Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
-at `0b08666cb2aac1264007564f86ca9c52376499e4`, from successful normal
-[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
-and exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850).
-Its current tool pin/floor are `4.44.7`; catalog blob
+[Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
+at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, from successful normal
+[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
+and exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850).
+Its current tool pin/floor are `4.44.8`; catalog blob
 `f109d49d49588fb83d25a5f417169b35f343976b` and SHA-256
 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`
 bind the released SDK4.1/T704 reference selection. Signed AppHost
-`f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911`
+`ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764`
 is admitted only together with actual adjacent Tooling
-`6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90`;
+`f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9`;
 the historical pair remains separately admitted and cross-pair mixtures refuse.
 Historical public body/image authority maps remain finite and unchanged.
 
-The current primary profile requires 259 cases, including real private-reader,
+The current primary profile requires 271 cases, including real private-reader,
 reference, declaration and running-owner refusal controls. The same-code legacy
 source separately requires all original 349 cases on the genuine old tuple;
 its nine historical public-reader cases do not earn current reader credit.
