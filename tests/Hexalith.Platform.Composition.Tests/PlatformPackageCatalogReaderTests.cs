@@ -275,7 +275,7 @@ public sealed class PlatformPackageCatalogReaderTests(ITestOutputHelper output)
     private static bool RequirePublicContext()
     {
         if (PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName)) return true;
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true)).Message.ShouldContain("owner SDK");

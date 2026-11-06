@@ -7,14 +7,14 @@ using Aspire.Hosting.Lifecycle;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
 /// <summary>Applies allocated Dapr listener ports and each server's channel tokens to the actual CLI process.</summary>
-internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null, string? workspace = null) : IDistributedApplicationEventingSubscriber
+internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null, string? workspace = null, bool currentOwnerPackage = false) : IDistributedApplicationEventingSubscriber
 {
     /// <inheritdoc />
     public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
     {
         _ = eventing.Subscribe<BeforeStartEvent>((startup, _) =>
         {
-            try { Apply(startup.Model, servers, certificateDirectory, sentryAddress, workspace); }
+            try { Apply(startup.Model, servers, certificateDirectory, sentryAddress, workspace, currentOwnerPackage); }
             catch (Exception failure) when (workspace is not null)
             {
                 PlatformCompositionWorkspace.MarkFailed(workspace, failure.Message);
@@ -26,7 +26,7 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
     }
 
     /// <summary>Configures generated CLI resources after the Dapr integration creates them.</summary>
-    internal static void Apply(DistributedApplicationModel model, IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null, string? workspace = null)
+    internal static void Apply(DistributedApplicationModel model, IReadOnlyList<PlatformServerBinding> servers, string? certificateDirectory = null, string? sentryAddress = null, string? workspace = null, bool currentOwnerPackage = false)
     {
         IEnumerable<IResource> applications = servers.Count == 0
             ? model.Resources.Where(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Any())
@@ -42,6 +42,12 @@ internal sealed class PlatformDaprEndpointSubscriber(IReadOnlyList<PlatformServe
                         Resource = application.Name,
                         Listeners = await NativeListenerPortsAsync(context.Args, context.CancellationToken).ConfigureAwait(false),
                     }))));
+            if (currentOwnerPackage && application is ContainerResource { Name: "memories" })
+            {
+                // Toolkit appends the real sidecar endpoint provider during BeforeStart; retain it for container host rewriting.
+                application.Annotations.Add(new EnvironmentCallbackAnnotation(context =>
+                    context.EnvironmentVariables["EventStore__CommandGateway__BaseAddress"] = context.EnvironmentVariables["DAPR_HTTP_ENDPOINT"]));
+            }
             sidecar.Annotations.Add(new EnvironmentCallbackAnnotation(context =>
             {
                 foreach (string token in new[] { "APP_API_TOKEN", "DAPR_API_TOKEN" })

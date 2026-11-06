@@ -36,6 +36,7 @@
     <PackageReference Include="Hexalith.EventStore.Aspire" />
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
     <PackageReference Include="Hexalith.Tenants.Contracts" />
+    <PackageReference Include="Hexalith.Tenants.Server" Condition="'$(HexalithEventStoreVersion)' == '4.1.0' and '$(HexalithTenantsVersion)' == '7.0.5'" />
     <PackageReference Include="Hexalith.Memories.Contracts" />
     <PackageReference Include="Hexalith.Parties.Contracts" />
   </ItemGroup>

@@ -26,12 +26,13 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.descriptor = dict(schema="hexalith.platform.legacy-tuple-source.v1", purpose="same-code-legacy-tuple-regression", sourceRevision=None,
             buildsSource=legacy.BUILDS, toolVersion="4.44.3", profileSha256=legacy.PROFILE_HASH, requiredCount=349, qualificationCredit=False)
         self.write_descriptor()
-        # Restore only the measured old fields when this test executes from M704/M25;
-        # the fixed Git-body hash proves these are the authentic L702 bytes.
-        self.provenance = (legacy.ROOT / legacy.PROVENANCE).read_bytes().replace(b'"7.0.4"', b'"7.0.2"').replace(
-            legacy.TENANTS_CURRENT_SOURCE.encode(), b"143cec60a3f5bb1831fa57f35c510880ceb788d8").replace(
-            b'"3.0.25"', b'"3.0.23"').replace(legacy.MEMORIES_CURRENT_SOURCE.encode(), b"82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f")
-        self.assertEqual(hashlib.sha256(self.provenance).hexdigest(), legacy.LEGACY_PROVENANCE_HASH)
+        # Authentic bytes from committed legacy source c9c54d859d701a468d1c73090067cb6a65a00191;
+        # never reconstruct this authority from whichever provenance the checkout selects.
+        fixture = Path(__file__).parents[1] / "tests/Hexalith.Platform.Composition.Tests/Fixtures/public-702-provenance.json"
+        self.provenance = fixture.read_bytes()
+        historical_hash = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61"
+        self.assertEqual(hashlib.sha256(self.provenance).hexdigest(), historical_hash)
+        self.assertEqual(legacy.LEGACY_PROVENANCE_HASH, historical_hash)
         self.write(legacy.PROVENANCE, self.provenance)
         (self.root / "references/Hexalith.Builds").mkdir(parents=True)
         self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.BUILDS + ",references/Hexalith.Builds")
@@ -39,9 +40,10 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.descriptor["sourceRevision"] = self.old
         self.write_descriptor()
         self.write("eng/tuple-ci-suites.json", b'{"groups": [{"current": true}]}\n')
-        self.current_provenance = self.provenance.replace(b'"7.0.2"', b'"7.0.4"').replace(
-            b"143cec60a3f5bb1831fa57f35c510880ceb788d8", legacy.TENANTS_CURRENT_SOURCE.encode()).replace(
-            b'"3.0.23"', b'"3.0.25"').replace(b"82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f", legacy.MEMORIES_CURRENT_SOURCE.encode())
+        current = copy.deepcopy(json.loads(self.provenance))
+        current["tenants"].update(version="7.0.4", commit=legacy.TENANTS_CURRENT_SOURCE)
+        current["memories"].update(version="3.0.25", commit=legacy.MEMORIES_CURRENT_SOURCE)
+        self.current_provenance = (json.dumps(current, indent=2) + "\n").encode()
         self.write(legacy.PROVENANCE, self.current_provenance)
         self.current = self.commit()
 
@@ -91,6 +93,11 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.assertEqual(self.git("rev-parse", "HEAD"), self.old)
         self.assertEqual(self.git("status", "--porcelain"), before)
         self.assertFalse((self.root / "references/Hexalith.Builds/.git").exists())
+        self.git("checkout", "-q", self.current)
+        self.write(legacy.PROVENANCE, self.provenance)
+        original_provenance_current = self.commit()
+        self.git("checkout", "-q", self.old)
+        self.assertEqual(legacy.verify(self.root, original_provenance_current, self.old)["sourceEquivalence"], "verified")
 
     def test_only_exact_eighth_provenance_path_is_added_and_old_body_remains_bound(self):
         self.assertEqual(len(legacy.ALLOWED), 8)
@@ -114,6 +121,7 @@ class LegacyTupleSourceTests(unittest.TestCase):
         mutations = (("eventstore", "version", "9.9.9"), ("memories", "commit", "f" * 40),
             ("tenants", "sha256", "0" * 64), ("tenants", "source", "different.json"),
             ("tenants", "repository", "Foreign.Owner"), ("tenants", "commit", "143cec60a3f5bb1831fa57f35c510880ceb788d8"),
+            ("tenants", "version", "7.0.2"),
             ("tenants", "unknown", True), ("memories", "version", "3.0.23"), ("memories", "version", "3.0.24"),
             ("memories", "commit", "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"),
             ("memories", "sha256", "0" * 64), ("unknown", None, {}))
@@ -128,6 +136,25 @@ class LegacyTupleSourceTests(unittest.TestCase):
                 self.git("checkout", "-q", self.old)
                 with self.assertRaisesRegex(ValueError, "more than the authenticated"):
                     legacy.verify(self.root, altered, self.old)
+
+    def test_exact_published_705_tuple_is_accepted_and_crossed_version_sources_refuse(self):
+        document = json.loads(self.current_provenance)
+        document["tenants"].update(version="7.0.5", commit=legacy.TENANTS_705_SOURCE)
+        self.write(legacy.PROVENANCE, json.dumps(document).encode())
+        released = self.commit()
+        self.git("checkout", "-q", self.old)
+        self.assertEqual(legacy.verify(self.root, released, self.old)["requiredCount"], 349)
+        for version, source in (("7.0.5", legacy.TENANTS_CURRENT_SOURCE), ("7.0.4", legacy.TENANTS_705_SOURCE),
+                ("7.0.2", legacy.TENANTS_705_SOURCE), ("7.0.5", "143cec60a3f5bb1831fa57f35c510880ceb788d8")):
+            with self.subTest(version=version, source=source):
+                self.git("checkout", "-q", released)
+                changed = copy.deepcopy(document)
+                changed["tenants"].update(version=version, commit=source)
+                self.write(legacy.PROVENANCE, json.dumps(changed).encode())
+                crossed = self.commit()
+                self.git("checkout", "-q", self.old)
+                with self.assertRaisesRegex(ValueError, "more than the authenticated"):
+                    legacy.verify(self.root, crossed, self.old)
 
     def test_current_checkout_cannot_claim_the_legacy_source(self):
         with self.assertRaises(ValueError): legacy.verify(self.root, self.current, self.old)

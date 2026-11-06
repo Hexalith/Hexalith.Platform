@@ -19,7 +19,14 @@ public sealed class PlatformPackageCatalogQualificationTests
     [Fact]
     public void LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages()
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        PlatformServerBindings.Version(fixture.Options, "tenants", "historical public fixture").ShouldBe("7.0.2");
+        PlatformServerBindings.Version(fixture.Options, "memories", "historical public fixture").ShouldBe("3.0.23");
+        using PlatformQualificationPackageFixture current = PlatformQualificationPackageFixture.CurrentTest();
+        string currentProvenance = Path.Combine(current.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
+        byte[] actualProvenance = File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json"));
+        File.ReadAllBytes(currentProvenance).ShouldBe(actualProvenance);
+        PlatformServerBindings.Version(current.Options, "tenants", "current test fixture").ShouldBe(JsonNode.Parse(actualProvenance)!["tenants"]!["version"]!.GetValue<string>());
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);
@@ -65,7 +72,7 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData("production")]
     public void ChangedScopeCohortOrAuthorityRefusesBeforeEffects(string fault)
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         PlatformCompositionOptions options = fixture.Options;
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
@@ -108,7 +115,7 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData(true)]
     public void OrdinaryComposeCannotUseSerializedRequestOrProofFields(bool stripped)
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         int probes = 0;
         string serialized = JsonSerializer.Serialize(fixture.Options);
         serialized.Contains("QualificationOwnerProof", StringComparison.Ordinal).ShouldBeFalse();
@@ -134,7 +141,7 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData("eventstore")]
     public void AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(string owner)
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwners = [owner], QualificationOwnersBinding = null }, key);
         PlatformCompositionOptions options = fixture.Options with { QualificationOwners = [owner], RunPlan = plan, QualificationOwnerProof = PlatformQualificationOwnerProof.Create(plan, key) };
@@ -149,7 +156,7 @@ public sealed class PlatformPackageCatalogQualificationTests
     [Fact]
     public void OpaqueProofRejectsMutatedMappingCollectionsAndSerializedPlanCopies()
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         fixture.Options.QualificationOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
         PlatformCompositionOptions changed = fixture.Options with { RunPlan = fixture.Plan with { AttemptId = CompositionRunPlanFactory.NewRunId() } };
         fixture.Options.QualificationOwnerProof.Matches(changed).ShouldBeFalse();

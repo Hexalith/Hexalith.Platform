@@ -1,0 +1,55 @@
+{
+  "utc": "2026-11-06T22:31:48.495077+00:00",
+  "userApproval": {
+    "utc": "2026-11-06T22:22:55.444408+00:00",
+    "userAnswer": "i approve",
+    "approvedRule": 24657217,
+    "approvedDelta": {
+      "conditions.ref_name.exclude": {
+        "before": [],
+        "after": [
+          "refs/tags/v[0-9]*"
+        ]
+      }
+    },
+    "scope": "Creation by all repository contents-write actors including Actions; no tag updates/deletions, main rule, other creation rule, new actor or credential changes.",
+    "existingNormalMergeAuthorization": "Actualjpiquot existing sole-contributor review bypass already explicitly authorized; all actual CI must pass."
+  },
+  "actualNewMain": "ed991837945571a12743214fc18a87fbd323fc30",
+  "actualNewMainLegacy": "a433c24ba2aa293d810048f03ebf51ef23318a03",
+  "actualPublicPlatformSourceRelease": {
+    "id": 436963852,
+    "tag": "v1.5.7",
+    "source": "ed991837945571a12743214fc18a87fbd323fc30"
+  },
+  "actualMainTupleRun": 42281947755,
+  "actualMainCatalogRun": 42281947817,
+  "incomingFullProposalRead": {
+    "path": "/tmp/story28-approved-new-main-complete-sw0ufuq4.diff",
+    "privateCopy": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/approved-enable-20261106T222255Z/incoming-main-complete.diff",
+    "sha256": "6ebda823de737599243105abdab1cce3f9c0864ead78d14b4c30ab6ced2a8cc3",
+    "bytes": 144032,
+    "lines": 1887,
+    "paths": "M\t.config/dotnet-tools.json\nM\t.gitattributes\nM\tREADME.md\nM\tdocs/current-tuple-preparation.md\nM\tdocs/domain-module-enrollment.md\nM\tdocs/package-catalog-qualification.md\nM\teng/builds-tuple.json\nM\teng/legacy-tuple-source.json\nM\teng/legacy_tuple_source.py\nM\teng/test_legacy_tuple_source.py\nM\teng/tuple-ci-suites.json\nM\thexalith-platform.json\nM\treferences/Hexalith.Builds\nM\tsrc/Hexalith.Platform.CatalogBuilder/Program.cs\nM\tsrc/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs\nM\tsrc/Hexalith.Platform.Composition/Declarations/provenance.json\nM\tsrc/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\nM\tsrc/Hexalith.Platform.Composition/PlatformAppModel.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs\nM\tsrc/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs\nA\ttests/Hexalith.Platform.Composition.Tests/Fixtures/public-702-provenance.json\nM\ttests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs\nA\ttests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerMemoriesTransportTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPurposeTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformCurrentReferenceCohortTests.cs\nA\ttests/Hexalith.Platform.Composition.Tests/PlatformEventStorePackageCatalogReaderTests.cs\nA\ttests/Hexalith.Platform.Composition.Tests/PlatformEventStorePackageTestCohortTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogEntryPointTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs\nA\ttests/Hexalith.Platform.Composition.Tests/PlatformProductionModelClosureTests.cs\nM\ttests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs\nA\ttests/catalog-builder/verify_eventstore_package_test_cohort.py\n"
+  },
+  "parentReadEveryIncomingLine": true,
+  "currentProfile": {
+    "requiredCount": 315,
+    "groups": 22,
+    "sha256": "f6846701a602ca9dde1c21d1140ffc7d34fd8a61571f6b5f1efbfd50c63ac6a0"
+  },
+  "actualBuildsSource": "567604b616613ba429be0609636d805db776a709",
+  "actualBuildsVersion": "4.44.11",
+  "publicPartiesObservation": {
+    "source": "4542afbbe664583a5e892b6a12d436d22dc33cd2",
+    "release": 437088011,
+    "tag": "v3.1.0",
+    "publishedAt": "2026-11-06T21:40:43Z",
+    "notYetParentAuthenticated": true
+  },
+  "allRemotePolicySourceActionsSoFar": "Read-only since latest user approval; no policy/main/tag/credential mutation. Old PR29 remains open at oldMa50, all oldsourceCIpasses historical only.",
+  "scope": "Refresh unchanged automatic publisher by normally preserving incoming main, actual public bindings and expanded315controls; no new runtime feature/cohort/pin change.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

@@ -36,8 +36,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>The six genuine current public images; the private current Parties executable is never relabeled as a public image.</summary>
     internal static IReadOnlySet<string> CurrentImages { get; } = new HashSet<string>(StringComparer.Ordinal)
     {
-        "registry.hexalith.com/tenants@sha256:712a6975c87d804e93399026c25a668926daaf60b2cb1837729d7a464100166c",
-        "registry.hexalith.com/tenants-api@sha256:39e1fab54a79df171b3ac4aa40a3e3d4bb2812697ed80f6dc330b55ae00393d2",
+        "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+        "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
         "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
         "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
         "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
@@ -113,7 +113,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.4" : "7.0.2"), ("memories", current ? "3.0.25" : "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.5" : "7.0.2"), ("memories", current ? "3.0.25" : "3.0.23"), ("parties", "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

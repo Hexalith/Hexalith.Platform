@@ -47,7 +47,7 @@ internal static class PlatformCurrentOwnerObservation
             profile = PlatformCurrentOwnerProof.Profile, plan.RunId, plan.AttemptId, plan.EnvironmentId,
             revision = proof.SourceRevision,
             mappingHash = options.Mapping.ContentHash, configuration = "Release", qualificationCredit = false,
-            platform = options.Mapping.PlatformIdentity, sdkVersion = "4.1.0", tenantsVersion = "7.0.4",
+            platform = options.Mapping.PlatformIdentity, sdkVersion = "4.1.0", tenantsVersion = "7.0.5",
             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
             packageArchives = proof.PackageArchives,
             runtimeBodies = runtime, catalogBodies = proof.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),

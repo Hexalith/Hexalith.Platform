@@ -8,14 +8,35 @@ using Hexalith.Builds.Tooling.Workspace;
 /// <summary>Uses genuine published declaration bytes with synthetic owned entry files; confers no package runtime acceptance.</summary>
 internal sealed class PlatformQualificationPackageFixture : IDisposable
 {
+    /// <summary>Selects the authenticated historical public SDK 4.1.0/Tenants 7.0.2 inputs for existing controls.</summary>
+    internal static PlatformQualificationPackageFixture HistoricalPublic() => new(currentTest: false);
+
+    /// <summary>Selects actual checkout provenance for separate current-test controls; grants no public or runtime acceptance.</summary>
+    internal static PlatformQualificationPackageFixture CurrentTest() => new(currentTest: true);
+
     /// <summary>Copies genuine declaration/policy bytes and creates explicitly synthetic owned entry prerequisites.</summary>
-    internal PlatformQualificationPackageFixture()
+    /// <param name="currentTest">Whether to copy actual current provenance instead of the authenticated historical public bytes.</param>
+    private PlatformQualificationPackageFixture(bool currentTest)
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-qualified-cohort-" + Guid.NewGuid().ToString("N"));
         string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
         Directory.CreateDirectory(declarations);
-        foreach (string file in new[] { "eventstore.json", "tenants.json", "memories.json", "provenance.json", "local-profile.json" })
+        foreach (string file in new[] { "eventstore.json", "tenants.json", "memories.json", "local-profile.json" })
             File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", file), Path.Combine(declarations, file));
+        string provenancePath = Path.Combine(declarations, "provenance.json");
+        if (currentTest)
+            File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json"), provenancePath);
+        else
+        {
+            using Stream historical = typeof(PlatformQualificationPackageFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures.public-702-provenance.json")
+                ?? throw new InvalidDataException("The authenticated historical public provenance fixture is missing.");
+            using MemoryStream buffer = new();
+            historical.CopyTo(buffer);
+            byte[] bytes = buffer.ToArray();
+            if (Convert.ToHexStringLower(SHA256.HashData(bytes)) != "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61")
+                throw new InvalidDataException("The historical public provenance fixture differs from its authenticated Git body.");
+            File.WriteAllBytes(provenancePath, bytes);
+        }
         string components = Path.Combine(PlatformTestRepository.Root, "DaprComponents", "reference");
         foreach (string file in Directory.GetFiles(components, "*", SearchOption.AllDirectories))
         {
@@ -44,7 +65,11 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
             PlatformIdentity = new PlatformIdentity(source, source, source, Root, "synthetic-fixture", new string('b', 40), "[4.43.6,5.0.0-0)", "identity.json", false),
         };
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        ModuleTestSelection selected = new("eventstore", "platform-package", "dotnet-test", "owned.csproj", "manifest", "entry", 120, 30, now, now.AddSeconds(120), now.AddSeconds(120), "package");
+        string entry = currentTest ? "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj" : "owned.csproj";
+        ModuleTestSelection selected = new("eventstore", "platform-package", currentTest ? "mtp" : "dotnet-test", entry,
+            currentTest ? Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(manifest))) : "manifest",
+            currentTest ? Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(Root, entry)))) : "entry",
+            120, currentTest ? 90 : 30, now, now.AddSeconds(120), now.AddSeconds(120), "package");
         CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.Combine(Root, "run"), Path.Combine(Root, "dapr"),
             new CompositionRunPorts(20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, [20014], 20015, 20016, 20017, [new(20018, 20019, 20020, 20021)]),
             [new CompositionRunModule("eventstore", "eventstore", "eventstore", seed)], []) with
