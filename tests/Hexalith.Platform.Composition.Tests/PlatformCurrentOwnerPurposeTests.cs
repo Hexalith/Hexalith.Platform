@@ -84,7 +84,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
         string catalog = Path.Combine(catalogRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
         Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
         PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
-        const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.4</HexalithTenantsVersion><HexalithMemoriesVersion>";
+        const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.5</HexalithTenantsVersion><HexalithMemoriesVersion>";
         const string Suffix = "</HexalithMemoriesVersion></PropertyGroup></Project>";
         File.WriteAllText(catalog, Prefix + "3.0.25" + Suffix);
         PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
@@ -93,6 +93,13 @@ public sealed class PlatformCurrentOwnerPurposeTests
             File.WriteAllText(catalog, Prefix + refused + Suffix);
             PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
         }
+        foreach (string refused in new[] { "7.0.0", "7.0.2", "7.0.4", "7.0.50", "7.0.5+unqualified", "7.0.6" })
+        {
+            File.WriteAllText(catalog, Prefix.Replace("7.0.5", refused, StringComparison.Ordinal) + "3.0.25" + Suffix);
+            PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
+        }
+        File.WriteAllText(catalog, Prefix.Replace("4.1.0", "4.0.4", StringComparison.Ordinal) + "3.0.25" + Suffix);
+        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
         Directory.Exists(Path.Combine(options.RunPlan.Workspace, "current-owner")).ShouldBeFalse();
     }
 

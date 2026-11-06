@@ -1,5 +1,42 @@
 # Enroll a domain module
 
+## Current signed producer and Tenants 7.0.5 tuple
+
+The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
+at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
+[release 42245346373](https://github.com/Hexalith/Hexalith.Tenants/actions/runs/42245346373)
+after exact-source [CI 42239774184](https://github.com/Hexalith/Hexalith.Tenants/actions/runs/42239774184).
+The declaration remains byte-identical. Current-Parties uses a new private
+reference name with SDK `4.1.0`, Memories `3.0.25` and McpCli `2.0.1` unchanged.
+Both private Tenants `7.0.4` maps and all historical public maps remain separate.
+
+The distinct `private-eventstore-package-test-4.1.0-tenants-7.0.5` reader has
+only six signed bodies. Runner admission requires the actual parent-key proof,
+exact declared EventStore `platform-package` test, package mode, Development
+Linux/x64, tenants-only expansion, two authenticated declarations and three
+servers. Public version selection still refuses `4.1.0`/`7.0.5`; neither private
+purpose authorizes a full public Parties consumer or a general launch.
+
+The active producer is genuine [Builds v4.44.11](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.11)
+at `567604b616613ba429be0609636d805db776a709`, published by successful normal
+[release 42252030945](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42252030945)
+after exact-source [CI 42249566014](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42249566014).
+The exact tool pin and supported floor are `4.44.11`. The signed archive SHA-256 is
+`3fa63148745f75ac80bbb60bbf602b39a73bbf1ade07ffe9911f73937e0cfb89`; the complete admitted validation pair is
+AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and Tooling
+`c1d319f7c5a5f33219bbe8437f95ff169318ef5265c5827591c547623171c8db`. Catalog blob is
+`e47b3ff72c2d7adac0c100b38279ba069501cdc1`, catalog SHA-256
+`4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
+`a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
+
+The source inventories register 313 current cases and preserve all 349 original
+legacy controls. Fresh final same-code L/M source proof, exact-source hosted
+validation, native effects and complete cleanup remain separately required.
+Package measurement and component checks grant no public-consumer or candidate
+acceptance. The prior producer preparation below retains its own original facts.
+
+## Previous Builds 4.44.10 preparation
+
 The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
 at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)

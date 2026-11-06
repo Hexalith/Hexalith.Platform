@@ -30,7 +30,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
             : options.CurrentOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
             : options.PartiesRunProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)
-            : options.QualificationOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options)
+            : options.QualificationOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectTestCohort(options)
             : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
         if (options.Mapping.Mode == WorkspaceMode.Package && qualificationCohort is null)
             throw new InvalidDataException("The private package reader requires a complete measured SDK/Tenants version pair.");

@@ -49,7 +49,7 @@ internal static class PlatformPartiesPackageCatalogQualification
             ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.24", "7c4f498dc7f7f0a2ab965efd05f76853f6f42a1b2513e3e0d94eeea96971620a"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
-    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentOwnerImages = _previousCurrentOwnerImages
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _tenants704CurrentOwnerImages = _previousCurrentOwnerImages
         .Where(pair => !pair.Key.StartsWith("memories/", StringComparison.Ordinal))
         .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
         {
@@ -57,6 +57,14 @@ internal static class PlatformPartiesPackageCatalogQualification
             ["memories/domain"] = ("registry.hexalith.com/memories-domain-service:3.0.25", "90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"),
             ["memories/clock"] = ("registry.hexalith.com/memories-access-telemetry-clock:3.0.25", "e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"),
             ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.25", "d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"),
+        }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentOwnerImages = _tenants704CurrentOwnerImages
+        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
+        {
+            ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.5", "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"),
+            ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.5", "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>

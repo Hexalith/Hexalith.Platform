@@ -13,7 +13,7 @@ public sealed class PlatformPackageCatalogEntryPointTests
     [Fact]
     public void ValidBoundRequestReachesImageProbeThroughComposeRun()
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         var builder = Builder();
@@ -57,7 +57,7 @@ public sealed class PlatformPackageCatalogEntryPointTests
     [InlineData("owners")]
     public void InvalidBoundRequestRefusesBeforeComposeRunEffects(string fault)
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         string originalBinding = plan.QualificationOwnersBinding!;
