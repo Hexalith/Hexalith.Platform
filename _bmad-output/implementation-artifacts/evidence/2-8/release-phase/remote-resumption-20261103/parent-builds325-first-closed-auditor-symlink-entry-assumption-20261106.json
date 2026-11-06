@@ -1,0 +1,7 @@
+{
+  "at": "2026-11-06T01:31:51.120548+00:00",
+  "firstOutcome": "Assertion refused indexed node_modules/.bin/commitlint because parent wrongly assumed files list excludes declared symlink paths",
+  "actualIndexContract": "Both dereferenced file-body hashes and a separate exact15symlink-target list are supplied",
+  "correction": "Verify every file body and exact declared target; undeclared symlinks still refuse",
+  "changedSourceOrEvidence": false
+}

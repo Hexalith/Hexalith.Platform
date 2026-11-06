@@ -1,0 +1,734 @@
+{
+  "utc": "2026-11-06T03:11:59.917506+00:00",
+  "source": "ebb30f9252af1372d81f49f2e675fdc9f39e5895",
+  "workflowRun": 42151863850,
+  "actualPassedCases": 20,
+  "actualMSBuildPropertyEvaluations": 60,
+  "trxSha256": "ea4a62a4a8e05b4d7b6e951eaa1c078e19fbc6dce3ce3fe24988967ac1bf3b43",
+  "cases": [
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.25-preview.1\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.25-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.25-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.25-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.26\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.26",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.26",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.26",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.3\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.3",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.3",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.3",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.18\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.18",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.18",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.18",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.23\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.23",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.23",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.23",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.24\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.24",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.24",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.24",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.24\", source: True, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.24",
+          "source": true,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.24",
+          "source": true,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.24",
+          "source": true,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"invalid\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "invalid",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "invalid",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "invalid",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.22\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.22",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.22",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.22",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.2\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.2",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.2",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.2",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.24-preview.1\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.24-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.24-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.24-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.10\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.10",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.10",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.10",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.11\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.11",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.11",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.11",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.13\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.13",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.13",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.13",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"\", source: True, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "",
+          "source": true,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "",
+          "source": true,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "",
+          "source": true,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.25\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.25",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.25",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.25",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.12\", source: False, supported: True)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.12",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.12",
+          "source": false,
+          "supported": true,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY;HEXALITH_MEMORIES_SOURCE_REFRESH",
+            "MemoriesSourceRefreshSupported": "true"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.12",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.1.0\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.1.0",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.1.0",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.1.0",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hexalith.Parties.Ci.Tests.MemoriesRefreshCompilationTests.ExactSelectionControlsSymbolAndAssemblyMetadata(version: \"3.0.23-preview.1\", source: False, supported: False)",
+      "outcome": "Passed",
+      "actualPropertyEvaluations": [
+        {
+          "project": "Hexalith.Parties",
+          "version": "3.0.23-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Hexalith.Parties.Tests",
+          "version": "3.0.23-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED;HEXALITH_EVENTSTORE_NONEXPIRING_RECOVERY",
+            "MemoriesSourceRefreshSupported": "false"
+          }
+        },
+        {
+          "project": "Unrelated",
+          "version": "3.0.23-preview.1",
+          "source": false,
+          "supported": false,
+          "properties": {
+            "DefineConstants": "UNCHANGED",
+            "MemoriesSourceRefreshSupported": ""
+          }
+        }
+      ]
+    }
+  ],
+  "priorAuditorSchemaAssumption": "First attempt expected StdOut; actual MTP stores all60 evaluated properties in TextMessages/Message. Read those actual bodies without changing any assertion. The earlier absent-StdOut limit is retained, not evidence of missing actual Message bodies.",
+  "scope": "Actual owning MSBuild symbol/property policy and unrelated-project refusal only. Assembly metadata assertions passed in the actual tests; metadata values are not separately printed. No binary protocol or native runtime credit.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

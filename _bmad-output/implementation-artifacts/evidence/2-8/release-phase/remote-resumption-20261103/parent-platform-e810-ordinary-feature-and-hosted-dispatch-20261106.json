@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateAcceptance": false,
+  "storyAcceptance": false,
+  "source": "e810be0356da55b6db1794262c722e358470a093",
+  "legacy": "b65de93fc57b4e04ac28e02a5df59be388bdac73",
+  "branch": "story-2-8/scoped-gateway-4448-union-e810be03",
+  "ordinaryFeaturePush": {
+    "argv": [
+      "git",
+      "--git-dir",
+      "/home/administrator/.cache/hexalith/story-2-8/parent-platform-e810-hosted-20261106/source.git",
+      "-c",
+      "submodule.recurse=false",
+      "push",
+      "https://github.com/Hexalith/Hexalith.Platform.git",
+      "e810be0356da55b6db1794262c722e358470a093:refs/heads/story-2-8/scoped-gateway-4448-union-e810be03"
+    ],
+    "startedUtc": "2026-11-06T07:08:48.322288+00:00",
+    "endedUtc": "2026-11-06T07:08:50.378025+00:00",
+    "exitCode": 0,
+    "body": null,
+    "candidateAcceptance": false
+  },
+  "dispatchRequests": [
+    {
+      "workflow": "tuple-ci.yml",
+      "request": {
+        "argv": [
+          "gh",
+          "api",
+          "--method",
+          "POST",
+          "repos/Hexalith/Hexalith.Platform/actions/workflows/tuple-ci.yml/dispatches",
+          "--input",
+          "-"
+        ],
+        "startedUtc": "2026-11-06T07:08:50.774894+00:00",
+        "endedUtc": "2026-11-06T07:08:52.382045+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/scoped-gateway-4448-union-e810be03",
+          "inputs": {
+            "candidate-sha": "e810be0356da55b6db1794262c722e358470a093",
+            "legacy-source-sha": "b65de93fc57b4e04ac28e02a5df59be388bdac73"
+          }
+        },
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "workflow": "catalog-builder.yml",
+      "request": {
+        "argv": [
+          "gh",
+          "api",
+          "--method",
+          "POST",
+          "repos/Hexalith/Hexalith.Platform/actions/workflows/catalog-builder.yml/dispatches",
+          "--input",
+          "-"
+        ],
+        "startedUtc": "2026-11-06T07:08:52.382158+00:00",
+        "endedUtc": "2026-11-06T07:08:53.820485+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/scoped-gateway-4448-union-e810be03"
+        },
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "runsPendingIdentityRead": false,
+  "prCreated": false,
+  "mainChangedByParent": false,
+  "policyChanged": false,
+  "publicSourceAcceptance": false,
+  "runs": [
+    {
+      "workflow": "tuple-ci.yml",
+      "run": 42178949195,
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42178949195"
+    },
+    {
+      "workflow": "catalog-builder.yml",
+      "run": 42178951812,
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42178951812"
+    }
+  ]
+}

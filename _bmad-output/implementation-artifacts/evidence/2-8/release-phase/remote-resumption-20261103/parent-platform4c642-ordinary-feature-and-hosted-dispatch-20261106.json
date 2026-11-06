@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "candidateAcceptance": false,
+  "source": "4c6426c4e57a07e9947199d41b33a904b39d3e0e",
+  "legacy": "71b4eaccc1d9da199b41b9ef53eb890c2d7b567a",
+  "branch": "story-2-8/signed-handoff-deadline-4c6426c4",
+  "ordinaryFeaturePush": {
+    "argv": [
+      "git",
+      "-c",
+      "submodule.recurse=false",
+      "push",
+      "https://github.com/Hexalith/Hexalith.Platform.git",
+      "4c6426c4e57a07e9947199d41b33a904b39d3e0e:refs/heads/story-2-8/signed-handoff-deadline-4c6426c4"
+    ],
+    "startedUtc": "2026-11-06T03:32:27.067855+00:00",
+    "endedUtc": "2026-11-06T03:32:28.986297+00:00",
+    "exitCode": 0,
+    "mainBefore": "e7e16f621365337e7d6f81c242c9e5c355b3556f",
+    "candidateAcceptance": false
+  },
+  "runs": [
+    {
+      "workflow": "tuple-ci.yml",
+      "run": 42157170062,
+      "request": {
+        "workflow": "tuple-ci.yml",
+        "startedUtc": "2026-11-06T03:32:29.363393+00:00",
+        "endedUtc": "2026-11-06T03:32:31.156442+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/signed-handoff-deadline-4c6426c4",
+          "inputs": {
+            "candidate-sha": "4c6426c4e57a07e9947199d41b33a904b39d3e0e",
+            "legacy-source-sha": "71b4eaccc1d9da199b41b9ef53eb890c2d7b567a"
+          }
+        },
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "workflow": "catalog-builder.yml",
+      "run": 42157172741,
+      "request": {
+        "workflow": "catalog-builder.yml",
+        "startedUtc": "2026-11-06T03:32:31.156611+00:00",
+        "endedUtc": "2026-11-06T03:32:32.693199+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/signed-handoff-deadline-4c6426c4"
+        },
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "prCreated": false,
+  "mainChangedByParent": false,
+  "policyChanged": false,
+  "publicSourceAcceptance": false
+}

@@ -1,0 +1,67 @@
+{
+  "utc": "2026-11-06T05:31:50.165330+00:00",
+  "source": "44b7f684775c6f8cfa212eacb541156be5ebdb1e",
+  "actualPassed": 38,
+  "reports": [
+    {
+      "name": "startup",
+      "passed": 20,
+      "xmlSha256": "80f8675928e4a446e2f8f52d42df5f6c7c7ca889ed26d89323d3a3e70d7a4e9b",
+      "actualCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.DownIsKeyedByRunIdAndIdempotentAsync",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.DownReportsBlockedStdinListenerAsync",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.IncompleteCleanupKeepsOwnerAndPeerClaimsAsync",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"cause\\\", expectedRuleId: \\\"HXR027\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"diagnostics-io\\\", expectedRuleId: \\\"HXR027\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"exit\\\", expectedRuleId: \\\"HXR020\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"foreign-failure\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"foreign\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"never\\\", expectedRuleId: \\\"HXR021\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"status-unready\\\", expectedRuleId: \\\"HXR027\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-detail\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-name\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-status\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"unsafe-task\\\", expectedRuleId: \\\"HXR022\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.UncleanTeardownAfterReadinessFailureReportsAndPersistsHxr023Async",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync"
+      ]
+    },
+    {
+      "name": "redaction",
+      "passed": 18,
+      "xmlSha256": "3ae4b613b008a79b84921e2d084e067c3b7a60f91154e6e5e96c0c55668dc1b7",
+      "actualCases": [
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"*\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"platform:tenants\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"synthetic\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"system\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"tenant-a tenant-b\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.CanonicalGrantsPreserveInputsWithoutBroadeningAuthority(grant: \\\"tenant/a\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.DiagnosticMirrorDoesNotRetainSensitiveResourceOutputAsync",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.EmptyGrantsDoNotAcquireAuthority",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.ExplicitSurfacesDoNotGrantAdministratorAuthority(surface: \\\"agent\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.ExplicitSurfacesDoNotGrantAdministratorAuthority(surface: \\\"service\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.ExplicitSurfacesDoNotGrantAdministratorAuthority(surface: \\\"ui\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.RetainedDocumentsAndSessionTextNeverContainKeyOrTokenAsync",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.SigningKeysAreFreshAndStrong",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.TokensAreSignedWithTheRunKeyAndCarryClaims",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.UnknownAuthenticatedSurfaceIsRefused(surface: \\\"*\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.UnknownAuthenticatedSurfaceIsRefused(surface: \\\"\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.UnknownAuthenticatedSurfaceIsRefused(surface: \\\"agent ui\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionRedactionTests.UnknownAuthenticatedSurfaceIsRefused(surface: \\\"operator\\\")"
+      ]
+    }
+  ],
+  "allInputFilesMatchedGitWithTrackedCheckoutAttributes": 3224,
+  "allCompiledOutputBodiesRehashedBeforeAfter": 1051,
+  "all20PriorStartupNamesRetainedAndPassed": true,
+  "whole18RedactionClassIncluding7IncomingCasesPassed": true,
+  "resultSha256": "caa44de77bd509b42ff1c98a198f1ed97c34d271582183d8a993f995161ab462",
+  "sourceClean": true,
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

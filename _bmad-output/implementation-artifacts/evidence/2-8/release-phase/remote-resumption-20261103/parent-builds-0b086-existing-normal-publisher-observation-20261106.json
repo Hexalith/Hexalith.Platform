@@ -1,0 +1,16 @@
+{
+  "utc": "2026-11-06T05:48:16.353680+00:00",
+  "actualSource": "0b08666cb2aac1264007564f86ca9c52376499e4",
+  "actualNormalReleaseRun": 42169350830,
+  "event": "workflow_dispatch",
+  "workflow": ".github/workflows/build-release.yml",
+  "sourceVerification": "success",
+  "releaseJob": "in_progress at Create Release",
+  "pendingEnvironmentReviews": 0,
+  "parentDispatchOrReviewOrPolicyMutation": false,
+  "sourceCi": 42166762850,
+  "sourceCiConclusion": "success",
+  "decision": "Reuse and observe the existing normal publisher. Preserve its exact main source through completion before merging PR172. Do not dispatch a duplicate or guess the resulting version/body.",
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

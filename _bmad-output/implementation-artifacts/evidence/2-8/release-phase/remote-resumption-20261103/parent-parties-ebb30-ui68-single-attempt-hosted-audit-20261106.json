@@ -1,0 +1,890 @@
+{
+  "utc": "2026-11-06T03:10:24.982395+00:00",
+  "source": "ebb30f9252af1372d81f49f2e675fdc9f39e5895",
+  "workflowRun": 42151863850,
+  "job": 127676745851,
+  "artifact": 13472469248,
+  "archiveSha256": "3f14ddf167ee730baccb9cf2ef9fe46cc3894362583bc51541c8739ae0bb25fa",
+  "htmlSha256": "c3bb09f121bccc9af20971e93b4430dd3886edd290a2e3582188e275c0eca7d1",
+  "reportParts": [
+    {
+      "file": "admin-parties-list.spec.ts",
+      "sha256": "05d430c0245d2a977f87cc62c2ff2e6bfbfed99527efbda62ee14e15938402a6",
+      "count": 23
+    },
+    {
+      "file": "consumer-portal-routes.spec.ts",
+      "sha256": "9fc5aa1fcf75f79b9085d614580cf9340ff8caa7d18bf7c044d47af77f552fe8",
+      "count": 25
+    },
+    {
+      "file": "parties-accessibility.spec.ts",
+      "sha256": "f10bbd8b949846b48be48bac7a059f3eb419a779cf57a8695fa5cbd47435f722",
+      "count": 17
+    },
+    {
+      "file": "party-picker.spec.ts",
+      "sha256": "01451704ec13a4bb55ee55c5bca80adf3cc5fcdd59b4aa7f9ab0a71491127d43",
+      "count": 3
+    }
+  ],
+  "actualPassed": 68,
+  "flaky": 0,
+  "skipped": 0,
+  "allSingleAttempt": true,
+  "cases": [
+    {
+      "testId": "47a4edf0907112663e9c-543ba3caaa8a8ffb61f2",
+      "title": "debounced display-name search combines with type and active filters",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 27,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-61181c503c12d6318d00",
+      "title": "normalized display-name search matches diacritics and keeps local fallback status polite",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 45,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-8864c9a9bf6869d613ed",
+      "title": "normalized display-name search keeps deterministic row ordering",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 68,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-4f11dbc30624129beaa1",
+      "title": "next page preserves the current search criteria",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 87,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-524c34d7bfd0c38649f9",
+      "title": "degraded search preserves last-known rows and announces stale data",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 111,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-e237bfcd4028a499063a",
+      "title": "empty search has a clear-filters recovery path",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 121,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-1e6a193d4f44fc41815d",
+      "title": "keyboard navigation opens a row and type-ahead focuses search",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 133,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-3a0b0c8431baa930f825",
+      "title": "GDPR operation focus rings clear nested accordion edges with forced colors none",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 152,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-efd9a1a17b6d94afa276",
+      "title": "GDPR operation focus rings clear nested accordion edges with forced colors active",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 152,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-dcdfb0cd011846ae0c44",
+      "title": "desktop row click and direct route render the existing party detail surface",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 163,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-6221ed1e5a6b52d17672",
+      "title": "direct GDPR route opens operations destination without browser-visible command/query calls or overflow",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 185,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-24655006d02915c862f3",
+      "title": "direct GDPR route for a missing party renders bounded state with no mutation controls",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 368,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-43040ff35e7747a42e80",
+      "title": "direct GDPR route for an erased party keeps export and records available without PII",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 379,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-a481dedd88850513be4f",
+      "title": "direct GDPR route rejects unsafe scoped ids before fetching party data",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 495,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-8ca427af7621c3543e17",
+      "title": "detail GDPR action navigates to the party-scoped operations route",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 505,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-93983d4704f83e045a05",
+      "title": "create form submits and navigates with optimistic status",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 541,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-38e4a5d1b0cac5e5983d",
+      "title": "edit form uses detail edit action and submits route-authoritative update",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 565,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-13306460bfb7471fc404",
+      "title": "validation alert is assertive and preserves entered values",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 585,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-9fa93abef7a35988027e",
+      "title": "gateway validation rejection is announced without losing entered values",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 596,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-c2a3928b49c60f247bb6",
+      "title": "phone and zoom form layout avoids horizontal overflow",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 612,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-448646f5067c583f34f5",
+      "title": "phone detail behaves as a full-screen sheet and restores row focus on close",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 627,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-6c2db77ecc66fe9d9fbf",
+      "title": "phone detail remains readable under zoom-equivalent narrow emulation",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 650,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "47a4edf0907112663e9c-2303a39de244436d4d3f",
+      "title": "phone direct route opens detail without an originating row and closes to search focus",
+      "source": {
+        "file": "admin-parties-list.spec.ts",
+        "line": 670,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-fe850f206110499c9b07",
+      "title": "section accordions preserve primary content and keyboard focus at narrow width with forced colors none",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 36,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-9d259aae0dae6ab3804e",
+      "title": "section accordions preserve primary content and keyboard focus at narrow width with forced colors active",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 36,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-8b3f74f8c23f43ed5f7c",
+      "title": "bound Consumer can open /me without browser-visible gateway calls",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 70,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-520cbdd73b2b531e74cb",
+      "title": "bound Consumer can open /me/edit without browser-visible gateway calls",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 70,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-d76b750ebe34538ddbcf",
+      "title": "bound Consumer can open /me/consent without browser-visible gateway calls",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 70,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-5ca35834204789b58e4f",
+      "title": "bound Consumer can open /me/privacy without browser-visible gateway calls",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 70,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-b69cab0f0ddda27d0922",
+      "title": "unauthenticated /me challenges sign-in with the return URL preserved",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 109,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-18615bc53cc1676e46f0",
+      "title": "unauthenticated /me/edit challenges sign-in with the return URL preserved",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 109,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-f6dd945db1fb15730a98",
+      "title": "unauthenticated /me/consent challenges sign-in with the return URL preserved",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 109,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-e7e84c0499d8fada917c",
+      "title": "unauthenticated /me/privacy challenges sign-in with the return URL preserved",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 109,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-1a371c40e5003f59b0d6",
+      "title": "Admin-only user cannot open /me/consent or see Consumer consent data",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 125,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-2fb285f7cc9b8aa61d8e",
+      "title": "Admin-only user cannot open /me/privacy or see Consumer export data",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 140,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-264e97e901fba8ecb480",
+      "title": "bound Consumer saves editable profile details through the self-scoped command path",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 157,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-57dddaa23b3703c531fb",
+      "title": "bound Consumer validation preserves typed values and does not issue a command",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 178,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-22d42b859441405a4b81",
+      "title": "bound Consumer consent surface exposes semantic switches and honest lawful-basis split",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 198,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-0767cc28251158b5141e",
+      "title": "bound Consumer grants and withdraws consent through the self-scoped command path",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 224,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-61a0afeabb3a8c8793cb",
+      "title": "bound Consumer exports own data through the self-scoped path",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 257,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-06698ef9cc0a0eb44539",
+      "title": "bound Consumer navigation cancels an active shared download without late feedback or browser resources",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 314,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-4353060f220c7eadc455",
+      "title": "bound Consumer sees processing summary through the self-scoped path",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 320,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-dc525e886c6b5bc93f39",
+      "title": "bound Consumer sees bounded empty processing state with privacy actions still usable",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 344,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-1f8935a28540aa9a579e",
+      "title": "bound Consumer sees bounded processing retry guidance after transient load failure",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 366,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-2b1e4d5516ed1458ac03",
+      "title": "bound Consumer requests and cancels erasure through the self-scoped path",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 390,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-ff21d13919983e7d86af",
+      "title": "bound Consumer cannot cancel erasure once deletion has begun",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 422,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-e07f4b71116db18a470e",
+      "title": "bound Consumer sees permanent erasure copy without a cancel action after deletion completes",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 451,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "29a86d8654111cbc1944-2e28dd72d5576adabe4a",
+      "title": "bound Consumer sees retry guidance when the JSON download helper fails",
+      "source": {
+        "file": "consumer-portal-routes.spec.ts",
+        "line": 477,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-b42c3f03467e54816ee0",
+      "title": "specimen is nonblank and passes the blocking axe gate",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 23,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-70706464c0204db5c467",
+      "title": "blocking axe gate rejects an inaccessible navigation outside main content",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 65,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-8e51e6ddf4ba514bf791",
+      "title": "blocking axe gate rejects an inaccessible skip link outside main content",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 65,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-9b5672cb47a1883a756e",
+      "title": "skip links are the first two focusable elements in the shell and focus their targets",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 92,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-fe8aebd8e9f1e5f4f365",
+      "title": "compact and resized layouts expose only mounted skip targets and preserve keyboard content access",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 110,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-72f62521d7bf5a738289",
+      "title": "route-heading announcement leaves skip links forward reachable and focuses their targets",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 161,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-dbfbd00608f6404c2938",
+      "title": "client-side route focus restores forward skip access",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 184,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-e93f3967941b91ceee37",
+      "title": "keyboard flow reaches representative controls without trapping focus",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 226,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-a4ab9d1c016290818965",
+      "title": "accordion focus check rejects suppressed actual focus paint",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 235,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-a5ee96b60b04359667e7",
+      "title": "accordion focus check rejects an intermediate clipping wrapper",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 258,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-13c404768db243b6e3d7",
+      "title": "disabled irreversible confirmation retains the Fluent disabled appearance",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 270,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-75d92d38fdc33ba050cd",
+      "title": "content controls have visible keyboard focus with forced colors none",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 299,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-62b4c88046013883ad00",
+      "title": "content controls have visible keyboard focus with forced colors active",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 299,
+        "column": 5
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-e257865e3c0e30376487",
+      "title": "content reduced-motion rules suppress nonzero animation and transition settings",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 418,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-c6f5aad6c8defea5c7f0",
+      "title": "filled primary button does not compute to raw teal",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 458,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-66674ea2f1eacdd85bf7",
+      "title": "semantic visual baseline for deterministic shell specimen",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 468,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "1f1b2285ceaad2c8e432-d72f26d00d8e297d609b",
+      "title": "visual baseline for deterministic shell specimen",
+      "source": {
+        "file": "parties-accessibility.spec.ts",
+        "line": 474,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "9395236186d605108c24-d3be46342e572c03d9ad",
+      "title": "keyboard selection keeps focus on the input and emits a bounded event",
+      "source": {
+        "file": "party-picker.spec.ts",
+        "line": 20,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "9395236186d605108c24-635d8123cb7d4ef70378",
+      "title": "escape closes degraded results without changing durable selection",
+      "source": {
+        "file": "party-picker.spec.ts",
+        "line": 60,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    },
+    {
+      "testId": "9395236186d605108c24-cca5283f51f5a886d6e6",
+      "title": "admin form bridge receives the bounded party-selected event",
+      "source": {
+        "file": "party-picker.spec.ts",
+        "line": 83,
+        "column": 3
+      },
+      "project": "chromium",
+      "retry": 0,
+      "status": "passed"
+    }
+  ],
+  "browserIdentity": {
+    "browser": "156.0.8078.4",
+    "node": "v24.22.1",
+    "baseURL": "http://127.0.0.1:5072",
+    "server": {
+      "mode": "managed",
+      "command": "dotnet run --project ../../src/Hexalith.Parties.UI/Hexalith.Parties.UI.csproj --configuration Release --no-build --no-restore --no-launch-profile -- --urls http://127.0.0.1:5072",
+      "environment": {
+        "ASPNETCORE_ENVIRONMENT": "Test",
+        "Hexalith__Parties__AccessibilitySpecimens__Enabled": "true",
+        "Hexalith__Parties__AdminPortalE2E__Enabled": "true",
+        "Parties__BaseUrl": "http://127.0.0.1:59999",
+        "Parties__Tenant": "test-tenant",
+        "Parties__FrontComposer__UseSharedUiPrimitives": "true"
+      }
+    },
+    "assets": [
+      {
+        "path": "/Hexalith.Parties.UI.styles.css",
+        "sha256": "4159f8748bca3dec98f5db5239beb1f6fa68fa6b1bc7628305b5ba89a78f24a8",
+        "bytes": 4101
+      },
+      {
+        "path": "/_content/Hexalith.FrontComposer.Shell/css/fc-shell.css",
+        "sha256": "dceb51b05c81b0b5f1a90b5318ede9366dfdb9c2d10b6b1d9f89f4389a35d3a3",
+        "bytes": 2042
+      },
+      {
+        "path": "/_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css",
+        "sha256": "b19e1ee20f32df30f563083bc6d239c70c576bef29cd9f89dda3076146881ca8",
+        "bytes": 174641
+      }
+    ]
+  },
+  "assetScope": "Three browser-observed CSS hashes and sizes are retained; actual served byte bodies were not retained in this artifact, so no independent byte rehash is claimed.",
+  "nativeBackendAcceptance": false,
+  "candidateAcceptance": false
+}

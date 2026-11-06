@@ -1,0 +1,45 @@
+{
+  "utc": "2026-11-06T01:25:21.885615+00:00",
+  "actualMain": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "actualRetainedOrigin": "3f3c8866e15ebf209067453700236e378f605c2e",
+  "tree": "9da101e1aff405a9746aa02bdf2c628db24afb54",
+  "sourceRoot": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-ad50-read-20261106/source.git",
+  "threeBodyIdentitiesEqualIndependentlyVerifiedPrivateProposal": {
+    "Props/Directory.Packages.props": "e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs": "0588522338e936e890ce1317bdbf52f4b26c2f04529fc96e4549826c6171d131",
+    "test/fixtures/module/platform/memories-3.0.25.json": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+  },
+  "auditExactlyEqualApartFromTruthfulRetainedOriginAndActualObservationTimestamp": true,
+  "originAncestorOfActualMain": true,
+  "allUnrelatedTrackedObjectsModesAndGitlinksPreserved": 3220,
+  "changedPaths": [
+    "Props/Directory.Packages.props",
+    "Tools/package-version-audit.json",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+    "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+    "test/fixtures/module/platform/memories-3.0.25.json"
+  ],
+  "fullIncomingPatchBytes": 58864,
+  "fullIncomingPatchSha256": "52d57f79520d2ca2d005c93fe6486b74033aea9b41b55465b8f38f0960dfdaa1",
+  "actualMessages": [
+    {
+      "commit": "3f3c8866e15ebf209067453700236e378f605c2e",
+      "message": "build(deps): adopt the published Memories adapter\n\nSelect verified Memories 3.0.25 packages and its actual release source.\nRetain prior release maps and declaration snapshots while binding the\nnew production adapter publication to the canonical catalog.\n",
+      "lockedCommitlintExit": 0
+    },
+    {
+      "commit": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+      "message": "fix(deps): qualify the current Memories tuple\n\nBind the live freshness audit to the verified 3.0.25 runtime publication\nand its committed catalog. Preserve all unrelated package and family\ndecisions and historical release maps.\n",
+      "lockedCommitlintExit": 0
+    }
+  ],
+  "sourceCI": 42142102328,
+  "sourceCIStatus": "running at observation",
+  "nextAction": "Authenticate actual hosted CI and normal publication; retain private16-case component; do not push duplicate catalog proposal or alter policy",
+  "limits": [
+    "External main movement is not a parent-performed operation",
+    "Incoming source runs eight currentM25 declaration cases; private source additionally retained eightM24 cases",
+    "No actual new public tool/catalog version is asserted yet",
+    "No native/candidate/full-story acceptance"
+  ]
+}

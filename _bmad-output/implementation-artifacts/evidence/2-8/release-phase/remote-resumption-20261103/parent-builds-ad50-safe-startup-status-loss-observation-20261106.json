@@ -1,0 +1,24 @@
+{
+  "utc": "2026-11-06T04:39:58.514777+00:00",
+  "actualBuildsSource": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "files": [
+    {
+      "path": "src/hosts/Hexalith.Builds.Module.AppHost/AppHostRunner.cs",
+      "sha256": "32cb0dd4202aa7c6923c4e0252a9566234a49b185836d167ff6a9218464f6e6c"
+    },
+    {
+      "path": "src/hosts/Hexalith.Builds.Module.AppHost/RunPreparationDiagnostic.cs",
+      "sha256": "674e8bd2d7f764bf1287f6d742d5cc6c5291b52de64b7fe3194f93ad259246d3"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+      "sha256": "5236f7ce6d9e45c0d2fab931811596d1bebc7eb0ef3eb13bcff2428abca4482c"
+    }
+  ],
+  "finding": "ReadStartupFailuresAsync validates failure.Status but its unready-resource projection omits that status. The no-unready branch retains it. CopySelectedMetadataAsync does not archive startup-failure.json.",
+  "actualHxr027Source": "AppHostRunner catches a faulted preparation/cutover task; RunPreparationDiagnostic emits allowlisted exception type/stage or bounded cutover status, never arbitrary exception text.",
+  "underlyingPartiesCauseProved": false,
+  "sourceBudgetOrSchemaChangeRequired": false,
+  "localNativeExecutions": 0,
+  "candidateAcceptance": false
+}

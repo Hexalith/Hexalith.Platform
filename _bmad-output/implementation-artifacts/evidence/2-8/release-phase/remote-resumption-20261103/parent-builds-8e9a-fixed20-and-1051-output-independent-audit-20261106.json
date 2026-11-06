@@ -1,0 +1,24 @@
+{
+  "utc": "2026-11-06T04:54:55.610226+00:00",
+  "source": "8e9a0eab73f910606449b06597336025de69d738",
+  "actualPassed": 20,
+  "allInputFilesMatchedGitWithTrackedCheckoutAttributes": 3224,
+  "allCompiledOutputBodiesRehashedBeforeAfter": 1051,
+  "all11FirstRedNamesNowPassed": true,
+  "actualStatusDiagnostic": {
+    "RuleId": "HXR027",
+    "Phase": 4,
+    "Category": 4,
+    "Message": "Unready resource 'eventstore' last='HTTP 503' task='verify' status='fault-InvalidDataException;stage=owner-preparation'. deadline='60s' diagnostics='/home/administrator/.cache/hexalith/story-2-8/builds-safe-startup-status-20261106/tmp/hexalith-g4-unit-067658e482724a46ae27a60c7a0fd722/state/diagnostics/6001ae09ab6f437f769eada8f3d442d3'.",
+    "Field": "eventstore",
+    "Hint": "Inspect the preserved startup diagnostics.",
+    "Source": null,
+    "Location": null,
+    "Row": null
+  },
+  "xmlSha256": "b0c542d9458a0ef9133c28f7b842b98e0aa1be43919a1ad8226c88deb9896887",
+  "resultSha256": "3ec205db947acb8db693bf33f64825996e9c95bf3447627f0dd1d62d9ef0e9a7",
+  "sourceClean": true,
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

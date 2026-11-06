@@ -1,0 +1,135 @@
+{
+  "observedAtUtc": "2026-11-06T00:51:05.932075+00:00",
+  "remoteMain": "afb2d4fd556b5d30a92734d21cb62bfe946ae958",
+  "rulesetId": 19196298,
+  "allowedMergeMethods": [
+    "squash"
+  ],
+  "requiredReviewCount": 0,
+  "requiredChecks": {
+    "strict_required_status_checks_policy": true,
+    "do_not_enforce_on_create": false,
+    "required_status_checks": [
+      {
+        "context": "Codacy Static Code Analysis",
+        "integration_id": 56611
+      },
+      {
+        "context": "SonarCloud Code Analysis",
+        "integration_id": 12526
+      },
+      {
+        "context": "commitlint / commitlint",
+        "integration_id": 15368
+      }
+    ]
+  },
+  "currentMaintainedAuditOrigin": "8e46ccbbff89fd10ea2ede3a914fba26e2c6e819",
+  "sourceFiles": {
+    "Tools/audit-central-package-versions.ps1": {
+      "bytes": 86146,
+      "sha256": "4c40563c0561696a21a267efc44e72bcdf408c9e80454ef36bd7d84be513973d"
+    },
+    "Tools/validate-package-version-audit.ps1": {
+      "bytes": 114990,
+      "sha256": "0a21097035d235dc7345e7e6cb2dad522ce4b35ae2a461f9d64fb65168c21065"
+    },
+    ".github/workflows/ci.yml": {
+      "bytes": 13339,
+      "sha256": "dfa5e4e02abff129a80810998159112e4e3a51f3a8d93ec93864c77a7c4aad92"
+    },
+    "Tools/README.md": {
+      "bytes": 36706,
+      "sha256": "e44be5c716f58859735f81c4546bc7b206dba14675a5c067c0b13a826cdfeefe"
+    }
+  },
+  "verifiedConstraints": [
+    "Generator records actual HEAD and requires committed source catalog bytes",
+    "Validator requires current semantic catalog equality, origin exact raw/semantic catalog bytes and origin ancestor of HEAD",
+    "Normal CI explicitly runs unchanged validator",
+    "Squashing changed catalog plus source-origin audit discards required source ancestor; an ordinary successful pre-merge branch check does not make it valid after squash"
+  ],
+  "action": "Prepare honest two-commit proposal and normal checks; hold main merge/publication pending a permitted concrete resolution",
+  "prohibitions": [
+    "No protected-main push",
+    "No known broken squash merge",
+    "No false or future source identity",
+    "No validator waiver or policy change inferred",
+    "No use of existing account bypass"
+  ],
+  "rawApiRoot": "/home/administrator/.cache/hexalith/story-2-8/builds-catalog-325-parent-preflight-20261106",
+  "apiBodies": {
+    "prs.json": {
+      "bytes": 208331,
+      "sha256": "d754b7fb324de68cd1d29c978e406b3228569833d668b9160684d9c002079b63"
+    },
+    "protection.json": {
+      "bytes": 184,
+      "sha256": "55f62583b9cf09d7aa77481c4ff072e8a8d38350cc5b320e8b2fb53073865331"
+    },
+    "repository.json": {
+      "bytes": 7205,
+      "sha256": "ec502cfa4d1a3d4d74abd98f61da0a807c8ef68552233e406c557dd8e76f5152"
+    },
+    "branch-rules.json": {
+      "bytes": 1194,
+      "sha256": "60ffac0d9d9db607a669e6bf5ad3d410229ab5389542e252f5b0d39c9dcc7fec"
+    },
+    "workflows.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ruleset-detail.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "protection.stderr": {
+      "bytes": 71,
+      "sha256": "cbc92ed27cb31a6b1a1317c9afd897c50f3d7e8682e69b2a9839e226bb1adef4"
+    },
+    "ruleset-detail.json": {
+      "bytes": 1444,
+      "sha256": "1b7a6f187e3b21158e81bbd436cdd460a565d65ee33c4a9d0425cd2763870699"
+    },
+    "main.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "rulesets.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "repository.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "main.json": {
+      "bytes": 13037,
+      "sha256": "82ec17a1e16648b734eb3a2979949a3a36f75ff416f126734ba65215bf254c81"
+    },
+    "workflows.json": {
+      "bytes": 6311,
+      "sha256": "bc9c83cfab269654b6c21cc073046121043ae0cc041e9e2f6ab0284190507e19"
+    },
+    "prs.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "production.json": {
+      "bytes": 1616,
+      "sha256": "81f3e615c1dffcc5b7cc6915f43dbf1be9fa00d764b232de164221bbbbdfcaf4"
+    },
+    "production.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "rulesets.json": {
+      "bytes": 459,
+      "sha256": "09c4532457032b423ae4651cc10b0a1eec00173daee2cce10cc4943fb0b17475"
+    },
+    "branch-rules.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

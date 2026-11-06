@@ -1,0 +1,21 @@
+{
+  "utc": "2026-11-06T00:31:40.381260+00:00",
+  "firstProcedure": "parent-memories325-carrier-and-signed-package-audit-procedure-20261106.py",
+  "firstExitCode": 1,
+  "inputFiles": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-public-20261106/Hexalith.Memories.Aspire.3.0.25.nupkg",
+      "sha256": "a933302a5034bcbc9e8a858d391ab0869904d58cdde551589d6d7d49c14fa947",
+      "hasRepositorySignatureMember": false
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-public-20261106/hexalith.memories.aspire.3.0.25.nupkg",
+      "sha256": "42bc0bb6dce6a8ed2005f390f63ee465b2e4b613e27db2bcb4f1dca478c0c4ee",
+      "hasRepositorySignatureMember": true
+    }
+  ],
+  "normalVerifierLog": "/home/administrator/.cache/hexalith/story-2-8/memories-325-public-20261106/Hexalith.Memories.Aspire-normal-signature.txt",
+  "normalVerifierLogSha256": "9e1ab53a7ded717de45bb1de88a3e48698d719f5424add559a54e6eaa5273ffb",
+  "observation": "Normal verifier printed two verifications for the same package identity; one selected sibling was the genuine unsigned GitHub release asset whose filename differs only by case. The public signed archive contains its actual repository signature and reconstructs exactly to the official unsigned archive.",
+  "nextControl": "Keep both originals untouched. Use separate signed and unsigned directories in a NEW audit root and rerun unchanged normal verification, without any revocation/source/flag waiver."
+}

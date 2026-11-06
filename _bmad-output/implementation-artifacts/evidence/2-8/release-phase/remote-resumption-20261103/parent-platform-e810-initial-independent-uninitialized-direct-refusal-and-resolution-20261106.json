@@ -1,0 +1,56 @@
+{
+  "utc": "2026-11-06T07:06:52.832944+00:00",
+  "failedAudit": "initial-parent-full-pair-audit",
+  "rootStatus": "",
+  "directs": [
+    {
+      "name": "Hexalith.AI.Tools",
+      "actual": "1745b6663ad32bb1288167135ed0f979366c53a0",
+      "expected": "1745b6663ad32bb1288167135ed0f979366c53a0",
+      "equal": true,
+      "status": ""
+    },
+    {
+      "name": "Hexalith.Builds",
+      "actual": "26b9c1d192c844efe0e074cf91fc87afd1d43f4d",
+      "expected": "26b9c1d192c844efe0e074cf91fc87afd1d43f4d",
+      "equal": true,
+      "status": ""
+    },
+    {
+      "name": "Hexalith.EventStore",
+      "actual": "5df9640657dff0125b656f450a59e989485195dc",
+      "expected": "5df9640657dff0125b656f450a59e989485195dc",
+      "equal": true,
+      "status": ""
+    },
+    {
+      "name": "Hexalith.Tenants",
+      "actual": "c1395216240a8971c3d27e10ac64d55ec5ea5980",
+      "expected": "c1395216240a8971c3d27e10ac64d55ec5ea5980",
+      "equal": true,
+      "status": ""
+    },
+    {
+      "name": "Hexalith.Memories",
+      "actual": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+      "expected": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+      "equal": true,
+      "status": ""
+    },
+    {
+      "name": "Hexalith.Parties",
+      "actual": "b74a12c54162dbc890accb483c6f97e3bf618eab",
+      "expected": "b74a12c54162dbc890accb483c6f97e3bf618eab",
+      "equal": true,
+      "status": ""
+    }
+  ],
+  "outgoingMessageLintsAlreadyPassed": 26,
+  "candidateAcceptance": false,
+  "resolution": {
+    "cause": "The initial parent loop ran git inside an uninitialized declared dependency directory; Git searched upward and returned the owning Platform HEAD, so its expected-child-HEAD assertion refused. All six actually initialized direct checkouts and owning root were already clean/exact.",
+    "correction": "Check for an actual direct .git before child Git calls; verify all six initialized heads and retain the other eleven uninitialized directories. No source change or extra dependency initialization.",
+    "resolvedUtc": "2026-11-06T07:08:17.073684+00:00"
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "utc": "2026-11-05T22:05:11.546487+00:00",
+  "passed": true,
+  "head": "2d2c394ad6005e41fd8db3ab6c18dfd670f59518",
+  "tree": "5c41b2adada95436a390c51b8d9ea19a9d86c12e",
+  "base": "8d34b07e0493866e8b2a79dcf71c360ec159f0cc",
+  "fullPatchReadByParent": true,
+  "patchSha256": "8053d4fe1f4b4a7ba4b6977e41e08597dffaea1fb5b4c1c207252a825945bac1",
+  "allIndexedFilesRehashed": 58700,
+  "indexedBytes": 2564883756,
+  "indexSha256": "1b11082542b69a7864bb43fc595d8c089cc5350c7bb949e29b4095548c579eb3",
+  "checkpointSha256": "fe33f1a900e15b8758295a0c02a492b51602bd0b69672ec19e5bef2cf499e500",
+  "actualPassedCases": [
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"wrong-key-encoding\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"mixed-plan\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"stale-run\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"entry-body\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"source-binding\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync"
+  ],
+  "positiveWitnesses": [
+    {
+      "case": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "source": "d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836",
+      "initialKeySource": "original-fixture-key",
+      "runtimeBodies": {
+        "Hexalith.Parties": "4112c6654e741c84b3546c06122fdfee1bd21fe77f3942162d2e9ccf4367e333",
+        "Hexalith.Parties.Contracts": "b73bec203c31e1bf2602b2002b486afb75580c0290b6c1e4f214a3ed95ab869d",
+        "Hexalith.Parties.Projections": "696348ac3c02136623d4e9547ff13a8eecb4a3ed1739df3d45956c45a0aa688e",
+        "Hexalith.Parties.Authentication": "2ba0ab94dd5ab411d2cfbc946205916d62392d89929f44bdb03ea378885c34f7",
+        "Hexalith.Parties.Security": "ce48ad937b8bfc00c4997443589ddd3680bce955e67b7531321a7006ecadce97",
+        "Hexalith.Parties.EventStoreExtensions": "c524e5dc366609644e90b734a171a0b725b223d33dce3ec355f3df270d753a27"
+      },
+      "packageArchives": {
+        "Hexalith.Parties.Contracts.3.0.0.nupkg": "29ae86f59ff49e9a126676d58f63fff268da615a9534e59b14637bc0277f894e",
+        "Hexalith.Parties.EventStoreExtensions.3.0.0.nupkg": "48bff270a9201f4c48f8f175ddd8212b49c5141f293ab6faf32a99b5eb346654"
+      },
+      "loadedArtifacts": [
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "assemblyIdentity": "Hexalith.EventStore.Client, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "assemblyIdentity": "Hexalith.EventStore.Contracts, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.EventStore.DomainService.dll",
+          "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+          "assemblyIdentity": "Hexalith.EventStore.DomainService, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.EventStore.ServiceDefaults.dll",
+          "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+          "assemblyIdentity": "Hexalith.EventStore.ServiceDefaults, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.McpCli.Abstractions.dll",
+          "sha256": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+          "assemblyIdentity": "Hexalith.McpCli.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "2.0.0+06cfdf25a352034b36041e9ed44da514b167ca5a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Memories.Contracts.dll",
+          "sha256": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+          "assemblyIdentity": "Hexalith.Memories.Contracts, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Memories.EventStore.dll",
+          "sha256": "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
+          "assemblyIdentity": "Hexalith.Memories.EventStore, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Memories.EventStoreExtensions.dll",
+          "sha256": "c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25",
+          "assemblyIdentity": "Hexalith.Memories.EventStoreExtensions, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Parties.Contracts.dll",
+          "sha256": "b73bec203c31e1bf2602b2002b486afb75580c0290b6c1e4f214a3ed95ab869d",
+          "assemblyIdentity": "Hexalith.Parties.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0+d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Parties.EventStoreExtensions.dll",
+          "sha256": "c524e5dc366609644e90b734a171a0b725b223d33dce3ec355f3df270d753a27",
+          "assemblyIdentity": "Hexalith.Parties.EventStoreExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0+d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Platform.CatalogBuilder.dll",
+          "sha256": "83b725b81f8b7e4c8437a1f791062ee8b28ae168a7f2cea53858749ebd7c0fb7",
+          "assemblyIdentity": "Hexalith.Platform.CatalogBuilder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Tenants.Contracts.dll",
+          "sha256": "6758c6691127f0f480d1a84860de621bd610f60d7ef1b6c5fe9e5a768283f983",
+          "assemblyIdentity": "Hexalith.Tenants.Contracts, Version=7.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "7.0.4+8e20524574901d71ad5f4876804c64c3c6c87b88"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-01360c83a8e94638967416f7befb3b59/platform-components/catalog-reader/output/Hexalith.Tenants.Server.dll",
+          "sha256": "44187842f060b1c7bd8a4cff3bf7a3c69c1eaebb0aae9267b61a401cc41d27a3",
+          "assemblyIdentity": "Hexalith.Tenants.Server, Version=7.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "7.0.4+8e20524574901d71ad5f4876804c64c3c6c87b88"
+        }
+      ]
+    },
+    {
+      "case": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "source": "d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836",
+      "initialKeySource": "fresh-independent-key",
+      "runtimeBodies": {
+        "Hexalith.Parties": "1403cf198bccd864d6ea81b618fc6e745af94169559855a3a4b9a658e98ab4ee",
+        "Hexalith.Parties.Contracts": "f1ea3791a16c6cd3be7c580e903ab20d3c371efa1449c99c49247e4bb1c1352f",
+        "Hexalith.Parties.Projections": "490a635d8680080b53bffbcacbb87dab86b1c08ed8ba5567707bfddd36e59fe4",
+        "Hexalith.Parties.Authentication": "17ac768ec83c0f64ec59f58f2be06da71ae75daa8f663b47b7e22338f7e9df81",
+        "Hexalith.Parties.Security": "8c7f0e1774d3148484c836fbcf0475703fb9377f83435c7f391ab157930563b7",
+        "Hexalith.Parties.EventStoreExtensions": "ee3e5a415560d84c883ea2687660d5d95fc1f2340bf9fec772aa01513ee80914"
+      },
+      "packageArchives": {
+        "Hexalith.Parties.Contracts.3.0.0.nupkg": "c97a3e9de7be5050a271fe2f5b23b6e6040f9de2bb5f4fdf665c560bbfe181c7",
+        "Hexalith.Parties.EventStoreExtensions.3.0.0.nupkg": "5c26a67814754199dd5798df4cdbb6810b604e088ecb2e779f902c930df22c5b"
+      },
+      "loadedArtifacts": [
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "assemblyIdentity": "Hexalith.EventStore.Client, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "assemblyIdentity": "Hexalith.EventStore.Contracts, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.EventStore.DomainService.dll",
+          "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+          "assemblyIdentity": "Hexalith.EventStore.DomainService, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.EventStore.ServiceDefaults.dll",
+          "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+          "assemblyIdentity": "Hexalith.EventStore.ServiceDefaults, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "4.1.0+dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.McpCli.Abstractions.dll",
+          "sha256": "fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06",
+          "assemblyIdentity": "Hexalith.McpCli.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "2.0.0+06cfdf25a352034b36041e9ed44da514b167ca5a"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Memories.Contracts.dll",
+          "sha256": "28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7",
+          "assemblyIdentity": "Hexalith.Memories.Contracts, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Memories.EventStore.dll",
+          "sha256": "325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec",
+          "assemblyIdentity": "Hexalith.Memories.EventStore, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Memories.EventStoreExtensions.dll",
+          "sha256": "c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25",
+          "assemblyIdentity": "Hexalith.Memories.EventStoreExtensions, Version=3.0.23.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "3.0.23+82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Parties.Contracts.dll",
+          "sha256": "f1ea3791a16c6cd3be7c580e903ab20d3c371efa1449c99c49247e4bb1c1352f",
+          "assemblyIdentity": "Hexalith.Parties.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0+d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Parties.EventStoreExtensions.dll",
+          "sha256": "ee3e5a415560d84c883ea2687660d5d95fc1f2340bf9fec772aa01513ee80914",
+          "assemblyIdentity": "Hexalith.Parties.EventStoreExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0+d1ff12ebbfb75f88b4e169796d7ed1d79fc9a836"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Platform.CatalogBuilder.dll",
+          "sha256": "9b9d6aa2927878af49f7ab58765402439f4eb91eb5ad98c69c735757a895ac3e",
+          "assemblyIdentity": "Hexalith.Platform.CatalogBuilder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "1.0.0"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Tenants.Contracts.dll",
+          "sha256": "6758c6691127f0f480d1a84860de621bd610f60d7ef1b6c5fe9e5a768283f983",
+          "assemblyIdentity": "Hexalith.Tenants.Contracts, Version=7.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "7.0.4+8e20524574901d71ad5f4876804c64c3c6c87b88"
+        },
+        {
+          "path": "/home/administrator/.cache/hexalith/story-2-8/platform-well-formed-key-preparation-20261105/tmp/platform-full-parties-d2e4ce4b9d554924b94e33156081188f/platform-components/catalog-reader/output/Hexalith.Tenants.Server.dll",
+          "sha256": "44187842f060b1c7bd8a4cff3bf7a3c69c1eaebb0aae9267b61a401cc41d27a3",
+          "assemblyIdentity": "Hexalith.Tenants.Server, Version=7.0.4.0, Culture=neutral, PublicKeyToken=null",
+          "informationalVersion": "7.0.4+8e20524574901d71ad5f4876804c64c3c6c87b88"
+        }
+      ]
+    }
+  ],
+  "selectedPublicPackages": 17,
+  "selectedPublicBodies": 17,
+  "currentProfile": 270,
+  "legacyProfile": 349,
+  "firstFailedPremiseRetained": true,
+  "initialKeyNoPriorAnchor": true,
+  "qualificationCredit": false,
+  "remaining": "Fresh-main final genuine tuple/L-M binding, whole hosted/native/manual and original-baseline/review gates. Active separate Memories CI enrollment."
+}

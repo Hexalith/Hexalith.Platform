@@ -1,0 +1,25 @@
+{
+  "utc": "2026-11-06T04:50:53.027346+00:00",
+  "source": "8e9a0eab73f910606449b06597336025de69d738",
+  "tree": "8c0585b78b095b006d2ef2c4f4e812b52da1a984",
+  "soleParent": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "completeParentReadDiff": {
+    "path": "/tmp/story28-builds-8e9a-complete-nebhbz3x.diff",
+    "bytes": 5732,
+    "sha256": "5b28d8e028c40ebfe53dde704cd14c1433305d4561c8c1639d728d14544ba7c7"
+  },
+  "readAllLines": 75,
+  "onlyThreePathsChanged": [
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs"
+  ],
+  "unrelatedObjectsAndModesUnchanged": 3222,
+  "normalActualFullMessagePassedParentLockedCommitlint": true,
+  "productionChange": "Retain previously validated safe failure.Status in the existing unready-resource diagnostic message.",
+  "schemaRedactionPolicyProductionBudgetsUnchanged": true,
+  "regressionFirstRedIndependentlyAudited": true,
+  "fixedSourceResults": "Pending; no remote write yet",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

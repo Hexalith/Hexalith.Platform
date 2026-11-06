@@ -1,0 +1,52 @@
+{
+  "at": "2026-11-06T02:17:16.833351+00:00",
+  "oldPublishedSource": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+  "newPublishedSource": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+  "actualReviewedTreeSource": "0da33b098a8e793da9de3135f6e351883eb70924",
+  "reviewedAndPublishedTreeExactlyEqualByPriorAuthenticatedMerge": true,
+  "sourceTrees": [
+    {
+      "path": "src/Hexalith.Memories.Contracts",
+      "files": 144,
+      "gitObjectAndModeListingSha256": "01c3a581864a5c9f00c74f64fadb4cb65ebe4b783318a805249adb484581af88",
+      "allSourceObjectsUnchanged": true
+    },
+    {
+      "path": "src/Hexalith.Memories.Client.Rest",
+      "files": 12,
+      "gitObjectAndModeListingSha256": "3f08c53c8dd9fc083af500750d547074fb78f9d996afce9db6b5f12266c89a6c",
+      "allSourceObjectsUnchanged": true
+    }
+  ],
+  "refreshLocations": [
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:478:    /// <summary>Refreshes canonical file content with a stable revision token and an exact predecessor condition.</summary>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:492:    public virtual Task<string> RefreshAsync(string tenantId, string caseId, string sourceUri, byte[] content,",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:496:            refresh: true, expectedMemoryUnitId, reopenSourceVersion, sourceRevisionNumber);",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:508:        bool refresh = false,",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:540:            RefreshExistingSource = refresh,",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:552:        if (refresh && (!response.Headers.TryGetValues(SourceRefreshProtocol.AcknowledgementHeader, out IEnumerable<string>? acknowledgements)",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:553:            || !acknowledgements.SequenceEqual([SourceRefreshProtocol.Version], StringComparer.Ordinal)))",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Client.Rest/MemoriesClient.cs:555:            throw CreateInvalidResponseException(response.StatusCode, \"The producer did not acknowledge revision-aware source refresh; admission remains unresolved.\");",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/IngestionInput.cs:73:    /// <summary>Gets whether to conditionally refresh successful content. Ordinary ingestion retains its deduplication defaults.</summary>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/IngestionInput.cs:74:    public bool RefreshExistingSource { get; init; }",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/IngestionInput.cs:80:    public string? RefreshIdentityDigest { get; init; }",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/IngestionInput.cs:82:    /// <summary>Gets the canonical predecessor required for refresh publication, or null when the source has never been published.</summary>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceInventoryEntry.cs:14:/// <param name=\"RefreshProtocolVersion\">The supported explicit refresh protocol captured at admission, or null for ordinary ingestion.</param>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceInventoryEntry.cs:15:/// <param name=\"SourceRevisionNumber\">The authoritative refresh revision, or null for ordinary ingestion.</param>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceInventoryEntry.cs:16:/// <param name=\"RefreshIdentityDigest\">The immutable refresh content/revision binding, or null for ordinary ingestion.</param>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceInventoryEntry.cs:19:    WorkflowPayloadReference? SourcePayloadReference = null, string? RefreshProtocolVersion = null,",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceInventoryEntry.cs:20:    long? SourceRevisionNumber = null, string? RefreshIdentityDigest = null, bool CandidateArtifactsDeleted = false)",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceRefreshProtocol.cs:3:/// <summary>Explicit acknowledgement required before a client treats an admission as revision-aware refresh.</summary>",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceRefreshProtocol.cs:4:public static class SourceRefreshProtocol",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceRefreshProtocol.cs:7:    public const string AcknowledgementHeader = \"X-Hexalith-Source-Refresh\";",
+    "0da33b098a8e793da9de3135f6e351883eb70924:src/Hexalith.Memories.Contracts/V1/SourceRefreshProtocol.cs:9:    public const string Version = \"source-refresh-v1\";"
+  ],
+  "claim": "The exact Client.Rest/Contracts source implementations, including refresh protocol, are unchanged between genuine M24 and M25 source trees.",
+  "limits": [
+    "No binary/API/wire execution compatibility result is inferred from source equality alone.",
+    "Normal M25 public signatures/body authority already authenticated separately.",
+    "Consumer exact-version capability declaration and real compiler/refusal controls remain necessary when adopting M25."
+  ],
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-06T01:05:46.903554+00:00",
+  "base": "afb2d4fd556b5d30a92734d21cb62bfe946ae958",
+  "sourceProposal": "5bb47a9b7c6397237eccd22663d3b2cadd809df0",
+  "tree": "661d88afa5f5dca20b1cedfb3a851dc4318bb8b2",
+  "parents": [
+    "afb2d4fd556b5d30a92734d21cb62bfe946ae958"
+  ],
+  "changedPaths": [
+    "Props/Directory.Packages.props",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+    "test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs",
+    "test/fixtures/module/platform/memories-3.0.25.json"
+  ],
+  "allOtherTrackedObjectsModesAndGitlinksExact": 3221,
+  "sourcePatchBytes": 42679,
+  "sourcePatchSha256": "b1e80da1edfda6f27abcca1536f91ba4e2cd5924e367c9a4fb9664c1aed7e795",
+  "patchRead": "Complete code diff and all931fixturelines read, including the section truncated in the first display",
+  "independentActualPublishedDeclarationBodyEqual": true,
+  "declaredSourceAuthority": "Normally merged246157 has exact reviewed0da33 tree per authenticated merge/sourceCI/publisher receipts",
+  "fixtureSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840",
+  "lockedCommitlintVersion": "21.2.4",
+  "actualFullMessageExit": 0,
+  "firstRun": {
+    "passedHistorical": 8,
+    "failedCurrent": 8,
+    "failure": "Missing exact production dictionary entry encountered in the real declaration fixture setup, not native service execution"
+  },
+  "correctedRun": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "oldAndNewExactCaseNames": [
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: False, memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: False, memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: True, memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: True, memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"dirty-catalog\\\", memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"dirty-catalog\\\", memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"dirty-platform\\\", memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"dirty-platform\\\", memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"missing-catalog\\\", memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"missing-catalog\\\", memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"wrong-pin\\\", memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.InvalidDirectAuthorityStillRefusesBeforeAllocationAsync(fault: \\\"wrong-pin\\\", memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: False, memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: False, memoriesVersion: \\\"3.0.25\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: True, memoriesVersion: \\\"3.0.24\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: True, memoriesVersion: \\\"3.0.25\\\")"
+    ]
+  },
+  "limits": [
+    "Source proposal only; separate actual audit generation/commit still pending",
+    "Actual sourceC is not yet retained in main; no squash merge or publication qualification",
+    "No native/service/candidate/full-story credit",
+    "Agent initial LF/CRLF preservation assertion failure and unintended continued local commit are retained; no amend; committed source is independently exact"
+  ]
+}

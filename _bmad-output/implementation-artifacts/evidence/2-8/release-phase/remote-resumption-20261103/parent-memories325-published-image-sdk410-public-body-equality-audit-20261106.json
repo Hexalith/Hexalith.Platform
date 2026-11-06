@@ -1,0 +1,104 @@
+{
+  "utc": "2026-11-06T00:37:43.279034+00:00",
+  "version": "3.0.25",
+  "source": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+  "publicSdkVersion": "4.1.0",
+  "allFourActualPublicSdkArchivesNormalSignatureVerified": {
+    "Hexalith.EventStore.Client.dll": {
+      "id": "Hexalith.EventStore.Client",
+      "publicVersion": "4.1.0",
+      "archive": "/home/administrator/.cache/hexalith/story-2-8/memories-production-sdk410-prerequisite-20261105/nuget-packages/hexalith.eventstore.client/4.1.0/hexalith.eventstore.client.4.1.0.nupkg",
+      "archiveSha256": "efab5fd7b4e7d5bbafc2a09adc92e98b985ca750ee888323585892c33cab50cc",
+      "archiveMember": "lib/net10.0/Hexalith.EventStore.Client.dll",
+      "publicDllSha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "normalSignatureExit": 0,
+      "normalSignatureLogSha256": "1e506e13a66a9b79c940b82ab952204f6d1861c2fa50981ba870ee3270d335ca"
+    },
+    "Hexalith.EventStore.Contracts.dll": {
+      "id": "Hexalith.EventStore.Contracts",
+      "publicVersion": "4.1.0",
+      "archive": "/home/administrator/.cache/hexalith/story-2-8/memories-production-sdk410-prerequisite-20261105/nuget-packages/hexalith.eventstore.contracts/4.1.0/hexalith.eventstore.contracts.4.1.0.nupkg",
+      "archiveSha256": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70",
+      "archiveMember": "lib/net10.0/Hexalith.EventStore.Contracts.dll",
+      "publicDllSha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "normalSignatureExit": 0,
+      "normalSignatureLogSha256": "f6f7951f48b4ba7b31c62f5484f1a227562a004ffde8cc4eeda3c6ae22905c27"
+    },
+    "Hexalith.EventStore.DomainService.dll": {
+      "id": "Hexalith.EventStore.DomainService",
+      "publicVersion": "4.1.0",
+      "archive": "/home/administrator/.cache/hexalith/story-2-8/memories-production-sdk410-prerequisite-20261105/nuget-packages/hexalith.eventstore.domainservice/4.1.0/hexalith.eventstore.domainservice.4.1.0.nupkg",
+      "archiveSha256": "da40e1e05461bac67bbbf9f3a839085e0f8c65e726168b33f2dc955e0c2d1fb0",
+      "archiveMember": "lib/net10.0/Hexalith.EventStore.DomainService.dll",
+      "publicDllSha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "normalSignatureExit": 0,
+      "normalSignatureLogSha256": "8a307c8806cc7fee7ae3e35ec91cee754bffb7501a4e4c888441a00cdf02dfe1"
+    },
+    "Hexalith.EventStore.ServiceDefaults.dll": {
+      "id": "Hexalith.EventStore.ServiceDefaults",
+      "publicVersion": "4.1.0",
+      "archive": "/home/administrator/.cache/hexalith/story-2-8/memories-production-sdk410-prerequisite-20261105/nuget-packages/hexalith.eventstore.servicedefaults/4.1.0/hexalith.eventstore.servicedefaults.4.1.0.nupkg",
+      "archiveSha256": "bdd2fd1e6eb19e45f488da2654673acc662a4d3c8e4b5e8465e90aac3ce901d5",
+      "archiveMember": "lib/net10.0/Hexalith.EventStore.ServiceDefaults.dll",
+      "publicDllSha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "normalSignatureExit": 0,
+      "normalSignatureLogSha256": "4e0fd42d4a11b7a7eaa75edd4f50237f14c93056c58cfbbf8a36cbdacf0d017c"
+    }
+  },
+  "everyImageSdkDllMatchesPublicSignedArchiveMember": [
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "file": "Hexalith.EventStore.Client.dll",
+      "imageDllSha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "matchesActualSignedPublicSdk410Archive": "efab5fd7b4e7d5bbafc2a09adc92e98b985ca750ee888323585892c33cab50cc"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "file": "Hexalith.EventStore.Contracts.dll",
+      "imageDllSha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "matchesActualSignedPublicSdk410Archive": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "file": "Hexalith.EventStore.DomainService.dll",
+      "imageDllSha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "matchesActualSignedPublicSdk410Archive": "da40e1e05461bac67bbbf9f3a839085e0f8c65e726168b33f2dc955e0c2d1fb0"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "file": "Hexalith.EventStore.ServiceDefaults.dll",
+      "imageDllSha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "matchesActualSignedPublicSdk410Archive": "bdd2fd1e6eb19e45f488da2654673acc662a4d3c8e4b5e8465e90aac3ce901d5"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "file": "Hexalith.EventStore.Client.dll",
+      "imageDllSha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "matchesActualSignedPublicSdk410Archive": "efab5fd7b4e7d5bbafc2a09adc92e98b985ca750ee888323585892c33cab50cc"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "file": "Hexalith.EventStore.Contracts.dll",
+      "imageDllSha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "matchesActualSignedPublicSdk410Archive": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "file": "Hexalith.EventStore.DomainService.dll",
+      "imageDllSha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "matchesActualSignedPublicSdk410Archive": "da40e1e05461bac67bbbf9f3a839085e0f8c65e726168b33f2dc955e0c2d1fb0"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "file": "Hexalith.EventStore.ServiceDefaults.dll",
+      "imageDllSha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "matchesActualSignedPublicSdk410Archive": "bdd2fd1e6eb19e45f488da2654673acc662a4d3c8e4b5e8465e90aac3ce901d5"
+    }
+  ],
+  "matchedImageSdkOccurrences": 8,
+  "imagesSdkSourceOrVersionRelabeling": false,
+  "sourceBuiltSdkSubstitution": false,
+  "scope": "Actual public SDK410 archive-to-published-image body equality; no application startup or native/Story acceptance.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "candidateAcceptance": false,
+  "source": "ec282f4338c4b6d900e32b827821fc97a272fe76",
+  "legacy": "e02c71f6bb989be347ff32f6247aff36ed1f4124",
+  "branch": "story-2-8/seed-snapshot-union-ec282f43",
+  "ordinaryFeaturePush": {
+    "argv": [
+      "git",
+      "-c",
+      "submodule.recurse=false",
+      "push",
+      "https://github.com/Hexalith/Hexalith.Platform.git",
+      "ec282f4338c4b6d900e32b827821fc97a272fe76:refs/heads/story-2-8/seed-snapshot-union-ec282f43"
+    ],
+    "startedUtc": "2026-11-06T04:20:38.572559+00:00",
+    "endedUtc": "2026-11-06T04:20:40.689233+00:00",
+    "exitCode": 0,
+    "mainBefore": "d1da347db92ef3272beda90005be5239878ff901",
+    "candidateAcceptance": false
+  },
+  "runs": [
+    {
+      "workflow": "tuple-ci.yml",
+      "run": 42161942017,
+      "request": {
+        "workflow": "tuple-ci.yml",
+        "startedUtc": "2026-11-06T04:20:41.068137+00:00",
+        "endedUtc": "2026-11-06T04:20:42.761136+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/seed-snapshot-union-ec282f43",
+          "inputs": {
+            "candidate-sha": "ec282f4338c4b6d900e32b827821fc97a272fe76",
+            "legacy-source-sha": "e02c71f6bb989be347ff32f6247aff36ed1f4124"
+          }
+        },
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "workflow": "catalog-builder.yml",
+      "run": 42161944597,
+      "request": {
+        "workflow": "catalog-builder.yml",
+        "startedUtc": "2026-11-06T04:20:42.761286+00:00",
+        "endedUtc": "2026-11-06T04:20:44.173944+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/seed-snapshot-union-ec282f43"
+        },
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "prCreated": false,
+  "mainChangedByParent": false,
+  "policyChanged": false,
+  "publicSourceAcceptance": false
+}

@@ -1,0 +1,97 @@
+{
+  "observedAtUtc": "2026-11-06T00:45:46.491247+00:00",
+  "status": "passed",
+  "publicVersion": "3.0.25",
+  "source": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+  "staticInspectionRoot": "/home/administrator/.cache/hexalith/story-2-8/memories-325-static-inspection-20261106",
+  "files": {
+    "Hexalith.EventStore.DomainService-image-sdk-public-normal-signature.txt": {
+      "bytes": 440,
+      "sha256": "8a307c8806cc7fee7ae3e35ec91cee754bffb7501a4e4c888441a00cdf02dfe1"
+    },
+    "Hexalith.EventStore.Client-image-sdk-public-normal-signature.txt": {
+      "bytes": 433,
+      "sha256": "1e506e13a66a9b79c940b82ab952204f6d1861c2fa50981ba870ee3270d335ca"
+    },
+    "member-help.stdout": {
+      "bytes": 7962,
+      "sha256": "5f6e8a1fc08cc8dd494696fecf48ef9ea591819bff9e893fc4431576de3f3aca"
+    },
+    "Hexalith.EventStore.ServiceDefaults-image-sdk-public-normal-signature.txt": {
+      "bytes": 442,
+      "sha256": "4e0fd42d4a11b7a7eaa75edd4f50237f14c93056c58cfbbf8a36cbdacf0d017c"
+    },
+    "actual-domain-references.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "library-help.stderr": {
+      "bytes": 485,
+      "sha256": "08b8ca4b621ecbbe5eb7aa2f48fbf83833921071d70b0b070e5bddb86d0e4f2e"
+    },
+    "actual-domain-main.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual-domain-main.json": {
+      "bytes": 2708,
+      "sha256": "e60a10e381564ebe44cf5d1b1381fe267727fc3725192deb6e8446189e85d148"
+    },
+    "actual-domain-references.json": {
+      "bytes": 3668,
+      "sha256": "3d8972822edbe3dbee9fa62a4e34350d06af0ffb9f7edaa5c2b83810468312f4"
+    },
+    "member-help.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual-domain-main-explicit-il.json": {
+      "bytes": 3029,
+      "sha256": "71188c8dc35f1044e35325a7cb3b484eb4c38c0d82eb845692d0157d02cb8dd2"
+    },
+    "Hexalith.EventStore.Contracts-image-sdk-public-normal-signature.txt": {
+      "bytes": 436,
+      "sha256": "f6f7951f48b4ba7b31c62f5484f1a227562a004ffde8cc4eeda3c6ae22905c27"
+    },
+    "actual-domain-main-explicit-il.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual-domain-library.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual-image-adapter-create.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "library-help.stdout": {
+      "bytes": 7963,
+      "sha256": "80fd34227da8ea373f48c55522d3b3cd853a046a3aac70855f7104b7f655559d"
+    },
+    "actual-image-adapter-create.json": {
+      "bytes": 2913,
+      "sha256": "8029a7e2df5b517b8454a1bc1fde9cacb0f6df7a37ee725e16f3765f362f915e"
+    },
+    "actual-domain-library.json": {
+      "bytes": 2024,
+      "sha256": "f102fa07be598a93c56274df3014fb29cd52c430061e4782b1893577cb812bf2"
+    }
+  },
+  "actualImageMainIL": {
+    "section": "IL",
+    "lines": 55,
+    "characters": 2889,
+    "content": "IL_0000: ldarg.0\nIL_0001: call         Microsoft.AspNetCore.Builder.WebApplication::CreateBuilder(string[])\nIL_0006: stloc.0\nIL_0007: ldloc.0\nIL_0008: ldc.i4.2\nIL_0009: newarr       System.Reflection.Assembly\nIL_000E: dup\nIL_000F: ldc.i4.0\nIL_0010: ldtoken      Hexalith.Memories.DomainService.MemoriesTenantAggregateAdapter\nIL_0015: call         System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)\nIL_001A: callvirt     System.Type::get_Assembly()\nIL_001F: stelem.ref\nIL_0020: dup\nIL_0021: ldc.i4.1\nIL_0022: ldtoken      Hexalith.Memories.EventStore.Domain.Events.IMemoriesEventPayload\nIL_0027: call         System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)\nIL_002C: callvirt     System.Type::get_Assembly()\nIL_0031: stelem.ref\nIL_0032: call         Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions::AddEventStoreDomainService(Microsoft.AspNetCore.Builder.WebApplicationBuilder, System.Reflection.Assembly[])\nIL_0037: pop\nIL_0038: ldloc.0\nIL_0039: callvirt     Microsoft.AspNetCore.Builder.WebApplicationBuilder::get_Services()\nIL_003E: ldnull\nIL_003F: call         Hexalith.EventStore.Client.Registration.ReadModelStoreServiceCollectionExtensions::AddEventStoreReadModelStore(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Action<Hexalith.EventStore.Client.Projections.ReadModelBatchOptions>)\nIL_0044: pop\nIL_0045: ldloc.0\nIL_0046: callvirt     Microsoft.AspNetCore.Builder.WebApplicationBuilder::get_Services()\nIL_004B: ldloc.0\nIL_004C: callvirt     Microsoft.AspNetCore.Builder.WebApplicationBuilder::get_Configuration()\nIL_0051: ldc.i4.2\nIL_0052: newarr       System.Reflection.Assembly\nIL_0057: dup\nIL_0058: ldc.i4.0\nIL_0059: ldtoken      Hexalith.Memories.EventStore.Routing.MemoriesCatalogDeclarations\nIL_005E: call         System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)\nIL_0063: callvirt     System.Type::get_Assembly()\nIL_0068: stelem.ref\nIL_0069: dup\nIL_006A: ldc.i4.1\nIL_006B: ldtoken      Hexalith.Memories.EventStoreExtensions.MemoriesCatalogAdapters\nIL_0070: call         System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)\nIL_0075: callvirt     System.Type::get_Assembly()\nIL_007A: stelem.ref\nIL_007B: call         Hexalith.EventStore.DomainService.DevelopmentDomainRouteCatalog::AddEventStoreDevelopmentDomainCatalog(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfiguration, System.Reflection.Assembly[])\nIL_0080: pop\nIL_0081: ldloc.0\nIL_0082: callvirt     Microsoft.AspNetCore.Builder.WebApplicationBuilder::Build()\nIL_0087: stloc.1\nIL_0088: ldloc.1\nIL_0089: call         Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions::UseEventStoreDomainService(Microsoft.AspNetCore.Builder.WebApplication)\nIL_008E: pop\nIL_008F: ldloc.1\nIL_0090: ldnull\nIL_0091: callvirt     Microsoft.AspNetCore.Builder.WebApplication::Run(string)\nIL_0096: ret"
+  },
+  "authority": "Actual authenticated published amd64 image DLL, not source-built output",
+  "claims": [
+    "Actual Main passes MemoriesCatalogDeclarations and MemoriesCatalogAdapters assembly identities to AddEventStoreDevelopmentDomainCatalog",
+    "Actual PE has adapter assembly reference and actual published adapter factory method",
+    "No image/application/service was started; metadata and IL only"
+  ],
+  "limits": [
+    "No runtime success claim",
+    "Arm64 layer bodies were not fetched by parent; architecture manifests/configs were authenticated separately"
+  ]
+}

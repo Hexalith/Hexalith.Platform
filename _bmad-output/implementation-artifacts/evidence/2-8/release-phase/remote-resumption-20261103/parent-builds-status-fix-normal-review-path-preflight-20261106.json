@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-06T04:43:01.244350+00:00",
+  "buildsMain": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "rulesetId": 19196298,
+  "rulesetSha256": "1b7a6f187e3b21158e81bbd436cdd460a565d65ee33c4a9d0425cd2763870699",
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": false,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "squash"
+        ]
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "Codacy Static Code Analysis",
+            "integration_id": 56611
+          },
+          {
+            "context": "SonarCloud Code Analysis",
+            "integration_id": 12526
+          },
+          {
+            "context": "commitlint / commitlint",
+            "integration_id": 15368
+          }
+        ]
+      }
+    }
+  ],
+  "noBypassWillBeUsed": true,
+  "normalBuildsPath": "Real authenticated author may create normal PR, await exact-head CI and all required checks, then normal squash merge. No approving review is required by this ruleset.",
+  "platformSeparateReviewLimitation": "Platform ruleset24657106 still requires one CODEOWNER review; only authenticated jpiquot exists and cannot approve its own authored PR. The real-contributor clarification remains pending.",
+  "candidateAcceptance": false
+}

@@ -1,0 +1,67 @@
+{
+  "utc": "2026-11-06T01:54:14.137669+00:00",
+  "base": "ae9fb2bdcb90b3dc4db7971abcb6b41c14e0890c",
+  "head": "3a6add8cae1fd574d8186bc8339705ccbe6bb59d",
+  "reviewedParent": "1d43dda5816b333e00d33b75e511997d8df7c636",
+  "tree": "b735d43855546c63857fdbc39a979c119da7a92a",
+  "actualParents": [
+    "ae9fb2bdcb90b3dc4db7971abcb6b41c14e0890c",
+    "1d43dda5816b333e00d33b75e511997d8df7c636"
+  ],
+  "nonoverlapObjectsModesAndPathsCompared": 21956,
+  "incomingDirectGitlinks": 17,
+  "incomingRoutingCodeExact": true,
+  "entireProofBodyEqualsClosedSealsPlusExactIncomingFlagAndDiagnosticMethod": true,
+  "entirePackageTestBodyEqualsClosedAssertionsPlusExactIncomingRepeatedReaderAssertions": true,
+  "profileUnion": 271,
+  "soleProfileDifferenceFromClosed": "PurposeTests8->9; all closed groups/selectors/counts preserved",
+  "allProducerMetadataLegacyDescriptorAndVerifierUnchanged": true,
+  "fullPatchRead": "All885lines including three smaller followup chunks covering the initially truncated last285lines",
+  "fullPatchSha256": "51e3d5e36b2ef1a6d96cf203af3ad7869140d293c15016501740a5887d6ad689",
+  "fullPatchBytes": 62473,
+  "closedFilesIndependentlyHashed": 28547,
+  "closedBytes": 873967753,
+  "declaredSymlinkTargetsVerified": 5,
+  "checkpointSha256": "b4af1f63e5ed0db5c8d944235a2355ecb4aa87bb3c5cdfd512d44bbd9d8f80c4",
+  "indexSha256": "df4992b5b02ab9d734db641974bc72034eb86d2ce4508f1657e7807ac166805f",
+  "anchors": {
+    "index": {
+      "path": "evidence/source-integration-evidence-index.json",
+      "bytes": 7127801,
+      "sha256": "df4992b5b02ab9d734db641974bc72034eb86d2ce4508f1657e7807ac166805f"
+    },
+    "report": {
+      "path": "evidence/source-integration-report.md",
+      "bytes": 5741,
+      "sha256": "cabb5b3f5de1d314c9245cf60ec2c80de2ed12582f5d61af9925438a49303bfc"
+    },
+    "source": {
+      "path": "evidence/source-integration-final-source.json",
+      "bytes": 757,
+      "sha256": "2601fa0aeb9f145c146dc66fc2e8be1ebc01c73e64ade6cfce4e90fcc3a6e32f"
+    },
+    "fullPatch": {
+      "path": "evidence/incoming-main-to-merged-full.patch",
+      "bytes": 62473,
+      "sha256": "51e3d5e36b2ef1a6d96cf203af3ad7869140d293c15016501740a5887d6ad689"
+    },
+    "staticPreservation": {
+      "path": "evidence/precommit-static-source-preservation.json",
+      "bytes": 4131,
+      "sha256": "3cecbd34def8be144298eb353a1c31e703fbc7a638445964521ef523acef2aba"
+    },
+    "previousEvidencePreservation": {
+      "path": "evidence/all-previous-evidence-and-installed-tool-preservation.json",
+      "bytes": 7262,
+      "sha256": "89e496458f7c7c2d73074ca5266e1e90de90a9d0001efd2d4cd101602cd81c4f"
+    },
+    "previousDeclaredSymlinkPreservation": {
+      "path": "evidence/previous-declared-symlink-preservation.json",
+      "bytes": 20254,
+      "sha256": "84374e3931763ce906bbe8af9c9e4a161392e6b64541142d79a171980e0abb02"
+    }
+  },
+  "scope": "Static source integration only; no compiler/test/native/realL-M qualification",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

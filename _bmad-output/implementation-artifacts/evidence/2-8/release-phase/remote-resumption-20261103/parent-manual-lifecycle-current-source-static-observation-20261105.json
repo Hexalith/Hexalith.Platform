@@ -1,0 +1,64 @@
+{
+  "utc": "2026-11-05T23:06:10.407449+00:00",
+  "source": "b74a12c54162dbc890accb483c6f97e3bf618eab",
+  "actualMainRef": {
+    "ref": "refs/heads/main",
+    "node_id": "REF_kwDORb3i1K9yZWZzL2hlYWRzL21haW4",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/git/refs/heads/main",
+    "object": {
+      "sha": "b74a12c54162dbc890accb483c6f97e3bf618eab",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/git/commits/b74a12c54162dbc890accb483c6f97e3bf618eab"
+    }
+  },
+  "actualWorkflow": {
+    "id": 406038512,
+    "node_id": "W_kwDORb3i1M4YM6fw",
+    "name": "Disposable CI lifecycle qualification",
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "state": "active",
+    "created_at": "2026-11-03T18:58:40.000+01:00",
+    "updated_at": "2026-11-03T18:58:40.000+01:00",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/workflows/406038512",
+    "html_url": "https://github.com/Hexalith/Hexalith.Parties/blob/main/.github/workflows/ci-lifecycle-qualification.yml",
+    "badge_url": "https://github.com/Hexalith/Hexalith.Parties/workflows/Disposable%20CI%20lifecycle%20qualification/badge.svg"
+  },
+  "workflowSha256": "89b5b2592f1d0ee5efdc4e8e64f8199bf08a185e209eab992b1417a26311ef22",
+  "controllerSha256": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+  "actualToolManifestSha256": "d9559fc4181f7d98c1a2991dd7ad81c661576b589418c52748e9a46e998a66ef",
+  "actualToolManifest": {
+    "version": 1,
+    "isRoot": true,
+    "tools": {
+      "aspirate": {
+        "version": "9.1.0",
+        "commands": [
+          "aspirate"
+        ],
+        "rollForward": false
+      },
+      "hexalith.builds.module.cli": {
+        "version": "4.44.4",
+        "commands": [
+          "hexalith-module"
+        ],
+        "rollForward": false
+      }
+    }
+  },
+  "incoming445PreparationScriptTreeEntry": "100644 blob a0a21abadd444cdd73504071b456f33945c55152\tGithub/prepare-module-build/prepare_module_build.py",
+  "observation": "The current real preparation script exists in genuine445. No missing-file workflow defect inferred from an earlier static baseline. Final caller/tool/profile/source must be audited again before sequential dispatch.",
+  "workflowBaselines": {
+    "jobMinutes": 60,
+    "profile": "platform-package"
+  },
+  "qualification": {
+    "jobMinutes": 45,
+    "profile": "lifecycle-package",
+    "holdSeconds": 240,
+    "readinessSeconds": 20
+  },
+  "dispatchesPerformed": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,162 @@
+{
+  "startedUtc": "2026-11-05T23:27:34.460034+00:00",
+  "scope": "Transfer exact existing reviewed Git objects through the documented Git API after Git transport commit_refs failures. No source identity, author, date, content, force or policy change.",
+  "operations": [
+    {
+      "label": "operation-0",
+      "method": "GET",
+      "endpoint": "git/ref/heads/fix/production-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-1",
+      "method": "GET",
+      "endpoint": "git/ref/heads/main",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-2",
+      "method": "GET",
+      "endpoint": "pulls/66",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-3",
+      "method": "GET",
+      "endpoint": "rules/branches/fix%2Fproduction-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-f2e2c26a224a6ad953a0a24c59d1eb21a6cf84e3",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-658f6599511918b4902b2ba0c2adc0099e34ea1d",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-0e73fb3142240d1da09bebab04d2f95bbd60470b",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "tree-c0114baa97a08ea298288cdda12cb896f0a49788",
+      "method": "POST",
+      "endpoint": "git/trees",
+      "exitCode": 0
+    },
+    {
+      "label": "commit-c0114baa97a08ea298288cdda12cb896f0a49788",
+      "method": "POST",
+      "endpoint": "git/commits",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-e8671b2c6c2c4bc9261e7a558a3fbef5b734d60d",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-ce8512499bf8c2ffebc9bbd5ade69819a9754459",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "blob-b8cb200e6a9a46cf19c3e29b5dcdcf2a944860f6",
+      "method": "POST",
+      "endpoint": "git/blobs",
+      "exitCode": 0
+    },
+    {
+      "label": "tree-0da33b098a8e793da9de3135f6e351883eb70924",
+      "method": "POST",
+      "endpoint": "git/trees",
+      "exitCode": 0
+    },
+    {
+      "label": "commit-0da33b098a8e793da9de3135f6e351883eb70924",
+      "method": "POST",
+      "endpoint": "git/commits",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-14",
+      "method": "GET",
+      "endpoint": "git/ref/heads/fix/production-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-15",
+      "method": "GET",
+      "endpoint": "git/ref/heads/main",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-16",
+      "method": "GET",
+      "endpoint": "pulls/66",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-17",
+      "method": "GET",
+      "endpoint": "rules/branches/fix%2Fproduction-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "normal-feature-fast-forward",
+      "method": "PATCH",
+      "endpoint": "git/refs/heads/fix/production-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-19",
+      "method": "GET",
+      "endpoint": "git/ref/heads/fix/production-domain-intent-adapters",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-20",
+      "method": "GET",
+      "endpoint": "git/ref/heads/main",
+      "exitCode": 0
+    },
+    {
+      "label": "operation-21",
+      "method": "GET",
+      "endpoint": "pulls/66",
+      "exitCode": 0
+    }
+  ],
+  "branchUpdated": true,
+  "exactOriginalCommitsTransferred": [
+    {
+      "sha": "c0114baa97a08ea298288cdda12cb896f0a49788",
+      "tree": "e296e8c1204f4b012f1ccdfc0bf74e33e659d906",
+      "parent": "a4d1baac8c732563b362f9af1d92633945134662",
+      "rawMessageSha256": "4d685ac14e34a83f113aae6c0b05ab08045aff16ed70712cfc8a05f8d627d923",
+      "exactOriginalAuthorAndCommitterMetadataCopied": true
+    },
+    {
+      "sha": "0da33b098a8e793da9de3135f6e351883eb70924",
+      "tree": "bb77de2d6f16d2c2922a4d55ca6606377d6d772e",
+      "parent": "c0114baa97a08ea298288cdda12cb896f0a49788",
+      "rawMessageSha256": "9766d0a4db9a9d981899b5539ec1af8b05e1b682beb75cf495003059b3c814ac",
+      "exactOriginalAuthorAndCommitterMetadataCopied": true
+    }
+  ],
+  "completedUtc": "2026-11-05T23:28:43.453573+00:00",
+  "independentPostUpdateRefAndPrVerified": true,
+  "mainUnchanged": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+  "force": false,
+  "protectedMainPush": false,
+  "firstPostUpdateObservation": "Immediate branch ref was new, PR API briefly returned old a4d head. That first response and assertion remain retained. Fresh independent no-cache GET now confirms exact new PR head. No additional ref mutation was needed.",
+  "privateCompleteOperationReceipts": "/home/administrator/.cache/hexalith/story-2-8/parent-memories-exact-gitdata-transfer-20261105"
+}
