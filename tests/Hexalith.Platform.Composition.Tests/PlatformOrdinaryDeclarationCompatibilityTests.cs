@@ -66,6 +66,14 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
             PlatformPartiesValidationContext.IsPublishedPair(previous.Item1, NextTooling).ShouldBeFalse();
             PlatformPartiesValidationContext.IsPublishedPair(NextAppHost, previous.Item2).ShouldBeFalse();
         }
+        const string CanonicalClaimsAppHost = "f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911";
+        const string CanonicalClaimsTooling = "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90";
+        PlatformPartiesValidationContext.IsPublishedPair(CanonicalClaimsAppHost, CanonicalClaimsTooling).ShouldBeTrue();
+        foreach (var previous in new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling), (NewAppHost, NewTooling), (NextAppHost, NextTooling) })
+        {
+            PlatformPartiesValidationContext.IsPublishedPair(previous.Item1, CanonicalClaimsTooling).ShouldBeFalse();
+            PlatformPartiesValidationContext.IsPublishedPair(CanonicalClaimsAppHost, previous.Item2).ShouldBeFalse();
+        }
         PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, CurrentTooling).ShouldBeFalse();
         PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, LegacyTooling).ShouldBeFalse();
         PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, new string('0', 64)).ShouldBeFalse();
