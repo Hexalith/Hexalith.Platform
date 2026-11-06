@@ -168,7 +168,15 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
                 ["DOTNET_ENVIRONMENT"] = "Development",
                 ["PATH"] = probes + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"),
             });
-        CompositionProcessResult result = await CompositionProcess.RunAsync(start, TimeSpan.FromSeconds(45), TestContext.Current.CancellationToken);
+        TimeSpan timeout = TimeSpan.FromSeconds(45);
+        if (completeCatalog)
+        {
+            DateTimeOffset deadline = Plan.StartupDeadlineUtc
+                ?? throw new InvalidDataException("Complete catalog validation requires its original startup deadline.");
+            timeout = CompositionStartupClock.Remaining(deadline, DateTimeOffset.UtcNow);
+            if (timeout <= TimeSpan.Zero) throw new InvalidDataException("The published validation startup deadline has expired.");
+        }
+        CompositionProcessResult result = await CompositionProcess.RunAsync(start, timeout, TestContext.Current.CancellationToken);
         result.Output.ShouldNotContain(_key);
         result.ErrorOutput.ShouldNotContain(_key);
         if (signingKey is not null)
@@ -176,10 +184,10 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             result.Output.Contains(signingKey, StringComparison.Ordinal).ShouldBeFalse();
             result.ErrorOutput.Contains(signingKey, StringComparison.Ordinal).ShouldBeFalse();
         }
+        // Both keys were checked absent; retain this bounded output before timeout/truncation assertions.
+        TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
         result.TimedOut.ShouldBeFalse();
         result.OutputTruncated.ShouldBeFalse();
-        // The output is nonsecret and deliberately retained by xUnit for the first causal refusal.
-        TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
         return result;
     }
 

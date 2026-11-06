@@ -58,6 +58,8 @@ public sealed class PlatformCurrentOwnerHandoffTests
     private static async Task AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync(string? initialSigningKey = null)
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
+        DateTimeOffset? declaredStartupDeadline = fixture.Plan.StartupDeadlineUtc;
+        declaredStartupDeadline.ShouldNotBeNull();
         if (initialSigningKey is not null) fixture.UsesSigningKey(initialSigningKey).ShouldBeFalse();
         await fixture.PersistClaimStateAsync();
         await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken);
@@ -68,6 +70,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         byte[] cold = File.ReadAllBytes(snapshot);
         var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
         validation.ExitCode.ShouldBe(0);
+        fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         byte[] warm = File.ReadAllBytes(snapshot);
         AssertDerivedEnrichment(cold, warm);
         File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
@@ -104,6 +107,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
             File.ReadAllBytes(snapshot).ShouldBe(warm);
             throw new InvalidOperationException("Expected real signed current validation and ordinary catalog; stop before resources.");
         }, signingKey: initialSigningKey)).Message.ShouldBe("Expected real signed current validation and ordinary catalog; stop before resources.");
+        fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
