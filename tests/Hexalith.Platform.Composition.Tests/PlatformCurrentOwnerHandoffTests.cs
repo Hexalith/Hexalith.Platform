@@ -72,7 +72,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         validation.ExitCode.ShouldBe(0);
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         byte[] warm = File.ReadAllBytes(snapshot);
-        AssertDerivedEnrichment(cold, warm);
+        AssertDerivedEnrichment(cold, warm, Path.GetFileNameWithoutExtension(fixture.Seed));
         File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
             .ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
         string catalogPath = Path.Combine(fixture.Workspace, "platform-components", fixture.Plan.EnvironmentId + "-catalog", "catalog.json");
@@ -113,21 +113,27 @@ public sealed class PlatformCurrentOwnerHandoffTests
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
     }
 
-    private static void AssertDerivedEnrichment(byte[] cold, byte[] warm)
+    private static void AssertDerivedEnrichment(byte[] cold, byte[] warm, string seedConsumer)
     {
-        const string consumer = "Hexalith.Platform.CatalogBuilder";
+        string[] consumers = ["Hexalith.Platform.CatalogBuilder", seedConsumer];
+        consumers.Distinct(StringComparer.Ordinal).Count().ShouldBe(2);
         JsonNode original = JsonNode.Parse(cold)!;
         JsonNode derived = JsonNode.Parse(warm)!;
-        original["ProjectVersions"]!.AsObject().ContainsKey(consumer).ShouldBeFalse();
         JsonObject versions = derived["ProjectVersions"]!.AsObject();
-        versions.Count.ShouldBe(original["ProjectVersions"]!.AsObject().Count + 1);
-        versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
-        versions[consumer]!["Hexalith.Tenants.Contracts"]!.GetValue<string>().ShouldBe("7.0.4");
-        versions[consumer]!["Hexalith.Memories.Contracts"]!.GetValue<string>().ShouldBe("3.0.25");
+        versions.Count.ShouldBe(original["ProjectVersions"]!.AsObject().Count + consumers.Length);
+        foreach (string consumer in consumers)
+        {
+            original["ProjectVersions"]!.AsObject().ContainsKey(consumer).ShouldBeFalse();
+            versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
+            versions[consumer]!["Hexalith.Tenants.Contracts"]!.GetValue<string>().ShouldBe("7.0.4");
+            versions[consumer]!["Hexalith.Memories.Contracts"]!.GetValue<string>().ShouldBe("3.0.25");
+            JsonNode.DeepEquals(versions[consumer], original["Versions"]).ShouldBeTrue(
+                "Both known consumers use the exact default public catalog versions without extra or changed package entries.");
+        }
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(warm)!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,
             snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
-        versions.Remove(consumer).ShouldBeTrue();
+        foreach (string consumer in consumers) versions.Remove(consumer).ShouldBeTrue();
         derived["Hash"] = original["Hash"]!.DeepClone();
         JsonNode.DeepEquals(original, derived).ShouldBeTrue();
     }
