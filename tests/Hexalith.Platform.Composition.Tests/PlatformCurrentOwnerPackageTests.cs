@@ -69,6 +69,28 @@ public sealed class PlatformCurrentOwnerPackageTests
         }
         Directory.GetFiles(Path.Combine(proof.Directory, "feed"), "*.nupkg").Length.ShouldBe(2);
         File.Exists(Path.Combine(proof.Artifacts, "bin", "Hexalith.Parties", "release", "Hexalith.Parties.dll")).ShouldBeTrue();
+        byte[] canonical = File.ReadAllBytes(catalog.CatalogPath);
+        byte[] retainedReceipt = File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json"));
+        byte[] firstReaderReceipt = File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json"));
+        PlatformCompositionOptions replacement = Capture(fixture);
+        PlatformCurrentOwnerProof replacementProof = replacement.CurrentOwnerProof!;
+        replacementProof.Bodies["Hexalith.Parties.Contracts"].ShouldNotBe(proof.Bodies["Hexalith.Parties.Contracts"],
+            "The real second private Release preparation must supply changed measured bodies for this reuse regression.");
+        replacementProof.Matches(replacement).ShouldBeTrue();
+        var replacementServers = PlatformPartiesPackageCatalogQualification.Bind(replacement,
+            PlatformDeclarationSet.Load(replacement), PlatformAppModel.Prepare(replacement), developmentRun: true);
+        PlatformRoutingCatalog repeated = PlatformRoutingCatalog.Generate(replacement, replacementServers, Path.Combine(fixture.Workspace, "platform-components"));
+        File.ReadAllBytes(repeated.CatalogPath).ShouldBe(canonical, "Equal canonical catalog bytes retain the original immutable target.");
+        File.ReadAllBytes(Path.Combine(repeated.Directory, "receipt.json")).ShouldBe(retainedReceipt,
+            "The retained original catalog receipt must not be rewritten as current private authority.");
+        byte[] freshReaderReceipt = File.ReadAllBytes(Path.Combine(repeated.Directory, "current-reader-receipt.json"));
+        freshReaderReceipt.SequenceEqual(firstReaderReceipt).ShouldBeFalse("The current receipt must describe the actual second reader, even when canonical bytes are equal.");
+        using (JsonDocument freshReceipt = JsonDocument.Parse(freshReaderReceipt))
+        {
+            replacementProof.VerifyReader(freshReceipt.RootElement);
+            Should.Throw<InvalidDataException>(() => proof.VerifyReader(freshReceipt.RootElement));
+        }
+        replacementProof.Matches(replacement).ShouldBeTrue("Repeated generation preserves the second measured proof without repair or reissuance.");
         string snapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
         byte[] enriched = File.ReadAllBytes(snapshot);
         byte[] previous = File.ReadAllBytes(catalog.CatalogPath);

@@ -96,7 +96,8 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             File.WriteAllText(Path.Combine(build, "generation.log"), run.Output + run.ErrorOutput);
             if (run.ExitCode != 0 || run.TimedOut) throw new InvalidDataException($"Owner routing catalog generation refused; see {Path.Combine(build, "generation.log")}.");
             byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
-            using var receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(pending, "receipt.json")));
+            byte[] verifiedReceipt = File.ReadAllBytes(Path.Combine(pending, "receipt.json"));
+            using var receipt = JsonDocument.Parse(verifiedReceipt);
             options.CurrentOwnerProof?.VerifyReader(receipt.RootElement);
             string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
             if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
@@ -108,7 +109,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
                 System.IO.Directory.Delete(pending, true);
             }
             else System.IO.Directory.Move(pending, target);
-            if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), File.ReadAllBytes(Path.Combine(target, "receipt.json")));
+            if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
                 receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
                 receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());
