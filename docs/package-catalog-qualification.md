@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.9` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -21,17 +21,17 @@ Release bodies from active Parties source, and authenticated released SDK `4.1.0
 Tenants `7.0.4` and Memories `3.0.25` references. Its exact Parties declaration is
 `d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
 No public Parties/7.0.4 cohort is admitted by this preparation. M selects genuine
-[Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
-at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, from successful normal
-[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
-and exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850).
-Its current tool pin/floor are `4.44.8`; catalog blob
-`f109d49d49588fb83d25a5f417169b35f343976b` and SHA-256
-`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`
+[Builds v4.44.9](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.9)
+at `0577f0c2d70bd4c2999aa3d98a705c83919bfc00`, from successful normal
+[release 42201011603](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42201011603)
+and exact-source [CI 42198245252](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42198245252).
+Its current tool pin/floor are `4.44.9`; catalog blob
+`b3b2258a4e51264cd675a6ae8a5e985fdcf06c50` and SHA-256
+`f9bbef8913c39b6d7439b73b6762dcf2aa4518a1f8e0087f37c48f96235f8cd1`
 bind the released SDK4.1/T704 reference selection. Signed AppHost
-`ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764`
+`672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0`
 is admitted only together with actual adjacent Tooling
-`f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9`;
+`3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a`;
 the historical pair remains separately admitted and cross-pair mixtures refuse.
 Historical public body/image authority maps remain finite and unchanged.
 
