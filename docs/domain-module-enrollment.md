@@ -29,7 +29,7 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
 `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
 `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
 
-The source inventories register 313 current cases and preserve all 349 original
+The source inventories register 315 current cases and preserve all 349 original
 legacy controls. Fresh final same-code L/M source proof, exact-source hosted
 validation, native effects and complete cleanup remain separately required.
 Package measurement and component checks grant no public-consumer or candidate

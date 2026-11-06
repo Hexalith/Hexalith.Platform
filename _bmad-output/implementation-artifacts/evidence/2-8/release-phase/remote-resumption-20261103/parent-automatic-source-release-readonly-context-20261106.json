@@ -1,0 +1,225 @@
+{
+  "utc": "2026-11-06T13:38:06.012069+00:00",
+  "userChoice": "Automatic releases from Conventional Commits; supersedes the immediately preceding manually triggered choice.",
+  "platformMain": "24947d37fcc800da96bd1f1761dd1dd19fd6551d",
+  "sourceRelease": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases/436175551",
+    "assets_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/releases/436175551/assets",
+    "upload_url": "https://uploads.github.com/repos/Hexalith/Hexalith.Platform/releases/436175551/assets{?name,label}",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.5.4",
+    "id": 436175551,
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "node_id": "RE_kwDOTzCqis4Z_4K_",
+    "tag_name": "v1.5.4",
+    "target_commitish": "13fc1a8978b4e6dcf8233b443c23c4e4258c49c7",
+    "name": "v1.5.4",
+    "draft": false,
+    "immutable": false,
+    "prerelease": false,
+    "created_at": "2026-11-06T06:03:35Z",
+    "updated_at": "2026-11-06T06:28:49Z",
+    "published_at": "2026-11-06T06:28:49Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/tarball/v1.5.4",
+    "zipball_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/zipball/v1.5.4",
+    "body": "Repair native gateway preparation against the published SDK 4.1.0 and Tenants 7.0.4 contracts, with scoped management and status calls and the canonical issuer from genuine Builds 4.44.7. Preserve historical public cohorts and their refusal controls.\n\nSource: `13fc1a8978b4e6dcf8233b443c23c4e4258c49c7`. Builds source: `0b08666cb2aac1264007564f86ca9c52376499e4`.\n\n[Exact-source tuple CI](https://github.com/Hexalith/Hexalith.Platform/actions/runs/42172121935) passed all 259 current controls, including both real readers, and all original 349 historical controls from `e25716f742dd505ebda4dfc9bbc10594d0aa3e61`. The unchanged historical profile and exact eight-path source comparison were independently verified. [Catalog CI](https://github.com/Hexalith/Hexalith.Platform/actions/runs/42172122108) passed all five SDK rows.\n\nThis source release identifies the qualified preparation dependency. Downstream native execution, persisted effects, cleanup and publication remain required; no candidate acceptance or public consumer runtime credit is granted.\n"
+  },
+  "tagCreationRule": {
+    "id": 24657217,
+    "name": "Platform tag creation authorization",
+    "target": "tag",
+    "source_type": "Repository",
+    "source": "Hexalith/Hexalith.Platform",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~ALL"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "creation"
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5PMKqKzgF4PUE",
+    "created_at": "2026-10-07T16:03:35.050+02:00",
+    "updated_at": "2026-10-07T16:03:35.087+02:00",
+    "bypass_actors": [
+      {
+        "actor_id": 6775094,
+        "actor_type": "User",
+        "bypass_mode": "always"
+      }
+    ],
+    "current_user_can_bypass": "always",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217"
+      },
+      "html": {
+        "href": "https://github.com/Hexalith/Hexalith.Platform/rules/24657217"
+      }
+    }
+  },
+  "tagImmutabilityRule": {
+    "id": 24657570,
+    "name": "Platform immutable tags",
+    "target": "tag",
+    "source_type": "Repository",
+    "source": "Hexalith/Hexalith.Platform",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~ALL"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "update"
+      },
+      {
+        "type": "deletion"
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5PMKqKzgF4PqI",
+    "created_at": "2026-10-07T16:10:23.263+02:00",
+    "updated_at": "2026-10-07T16:10:23.295+02:00",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      },
+      "html": {
+        "href": "https://github.com/Hexalith/Hexalith.Platform/rules/24657570"
+      }
+    }
+  },
+  "repositorySecretsMetadata": {
+    "total_count": 0,
+    "secrets": []
+  },
+  "actualActionsApp": {
+    "id": 15368,
+    "client_id": "Iv1.05c79e9ad1f6bdfa",
+    "slug": "github-actions",
+    "node_id": "MDM6QXBwMTUzNjg=",
+    "owner": {
+      "login": "github",
+      "id": 9919,
+      "node_id": "MDEyOk9yZ2FuaXphdGlvbjk5MTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github",
+      "html_url": "https://github.com/github",
+      "followers_url": "https://api.github.com/users/github/followers",
+      "following_url": "https://api.github.com/users/github/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github/subscriptions",
+      "organizations_url": "https://api.github.com/users/github/orgs",
+      "repos_url": "https://api.github.com/users/github/repos",
+      "events_url": "https://api.github.com/users/github/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github/received_events",
+      "type": "Organization",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "name": "GitHub Actions",
+    "description": "Automate your workflow from idea to production",
+    "external_url": "https://help.github.com/en/actions",
+    "html_url": "https://github.com/apps/github-actions",
+    "created_at": "2018-07-30T09:30:17Z",
+    "updated_at": "2026-06-18T16:17:48Z",
+    "permissions": {
+      "actions": "write",
+      "administration": "read",
+      "artifact_metadata": "write",
+      "attestations": "write",
+      "checks": "write",
+      "code_quality": "write",
+      "contents": "write",
+      "copilot_requests": "write",
+      "deployments": "write",
+      "discussions": "write",
+      "drives": "write",
+      "issues": "write",
+      "merge_queues": "write",
+      "metadata": "read",
+      "models": "read",
+      "packages": "write",
+      "pages": "write",
+      "pull_requests": "write",
+      "repository_hooks": "write",
+      "repository_projects": "write",
+      "security_events": "write",
+      "statuses": "write",
+      "vulnerability_alerts": "read"
+    },
+    "events": [
+      "branch_protection_rule",
+      "check_run",
+      "check_suite",
+      "create",
+      "delete",
+      "deployment",
+      "deployment_status",
+      "discussion",
+      "discussion_comment",
+      "fork",
+      "gollum",
+      "issues",
+      "issue_comment",
+      "label",
+      "merge_group",
+      "milestone",
+      "page_build",
+      "public",
+      "pull_request",
+      "pull_request_review",
+      "pull_request_review_comment",
+      "push",
+      "registry_package",
+      "release",
+      "repository",
+      "repository_dispatch",
+      "status",
+      "watch",
+      "workflow_dispatch",
+      "workflow_run"
+    ]
+  },
+  "primaryDocs": [
+    "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run",
+    "https://docs.github.com/en/actions/concepts/security/github_token",
+    "https://semantic-release.gitbook.io/semantic-release/usage/configuration",
+    "https://github.com/semantic-release/github"
+  ],
+  "scope": "Read-only publisher preparation; no rule/credential/tag/publication mutation."
+}

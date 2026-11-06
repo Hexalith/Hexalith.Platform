@@ -29,7 +29,7 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
 `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
 `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
 
-The source inventories register 313 current cases and preserve all 349 original
+The source inventories register 315 current cases and preserve all 349 original
 legacy controls. Fresh final same-code L/M source proof, exact-source hosted
 validation, native effects and complete cleanup remain separately required.
 Package measurement and component checks grant no public-consumer or candidate
@@ -508,3 +508,11 @@ Platform Maintainer (Hexalith).
 The [package catalog qualification boundary](docs/package-catalog-qualification.md)
 documents the separate finite ordinary Parties source proposal, measured public
 and image roles, and pending genuine tuple/native qualification.
+
+## Automatic source releases
+
+After both main push qualifications succeed, [the source publisher](docs/source-releases.md)
+uses standard Conventional Commits to calculate a source tag and GitHub release.
+It publishes no packages or images and writes no version or changelog commit.
+Tag creation still requires the repository's separate automation authorization;
+this configuration does not change the existing tag rules.
