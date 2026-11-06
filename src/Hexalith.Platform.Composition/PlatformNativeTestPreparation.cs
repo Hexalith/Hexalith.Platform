@@ -289,21 +289,47 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         }
     }
 
-    private async Task PollAsync(string step, HttpClient client, string path, Func<JsonElement, bool> ready, CancellationToken token)
+    /// <summary>Observes the actual owner readiness predicate within the existing startup budget; internal visibility permits controlled transport checks.</summary>
+    internal async Task PollAsync(string step, HttpClient client, string path, Func<JsonElement, bool> ready, CancellationToken token)
     {
         while (true)
         {
+            RequirePollingBudget(token);
             using var response = await client.GetAsync(path, token).ConfigureAwait(false);
+            RequirePollingBudget(token);
             await WriteProgressAsync(step, (int)response.StatusCode, token).ConfigureAwait(false);
+            if (response.StatusCode == HttpStatusCode.TooManyRequests)
+            {
+                RetryConditionHeaderValue? retry = response.Headers.RetryAfter;
+                TimeSpan delay = retry?.Delta ?? (retry?.Date is { } date ? date - DateTimeOffset.UtcNow : TimeSpan.Zero);
+                if (delay <= TimeSpan.Zero) delay = TimeSpan.FromSeconds(1);
+                TimeSpan remaining = CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, DateTimeOffset.UtcNow);
+                if (delay >= remaining)
+                {
+                    await Task.Delay(remaining, token).ConfigureAwait(false);
+                    throw new OperationCanceledException("The startup deadline elapsed during native owner readiness observation.", token);
+                }
+                await Task.Delay(delay, token).ConfigureAwait(false);
+                continue;
+            }
             if (response.IsSuccessStatusCode)
             {
                 using var document = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(token).ConfigureAwait(false));
-                if (ready(document.RootElement)) return;
+                bool observedReady = ready(document.RootElement);
+                RequirePollingBudget(token);
+                if (observedReady) return;
             }
             else if (response.StatusCode is not (HttpStatusCode.NotFound or HttpStatusCode.Forbidden or HttpStatusCode.Conflict or HttpStatusCode.ServiceUnavailable))
                 throw new InvalidOperationException("The real owner readiness observation failed: " + (int)response.StatusCode);
             await Task.Delay(100, token).ConfigureAwait(false);
         }
+    }
+
+    private void RequirePollingBudget(CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+        if (CompositionStartupClock.Remaining(plan.StartupDeadlineUtc, DateTimeOffset.UtcNow) <= TimeSpan.Zero)
+            throw new OperationCanceledException("The startup deadline elapsed during native owner readiness observation.", token);
     }
 
     private async Task<PlatformNativeInvocationAccess> MemoriesInvocationAsync(IServiceProvider services, CancellationToken cancellationToken)
