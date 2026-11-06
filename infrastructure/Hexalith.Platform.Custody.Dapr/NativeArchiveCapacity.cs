@@ -27,7 +27,7 @@ internal sealed class NativeArchiveCapacity(ComponentProfile profile,NativeInsta
         using var held=HeldArchiveDirectory.Acquire(Config.Directory);_held.Value=held;
         try {
         var config=Config;var directory=new DirectoryInfo(config.Directory);
-        if(!directory.Exists || directory.LinkTarget is not null || CustodyJson.Hash(await BoundedRegularFile.ReadAsync(Path.Combine(config.Directory,"enrollment.json"),65536,token))!=installation.ArchiveEnrollmentSha256)
+        if(!directory.Exists || directory.LinkTarget is not null || CustodyJson.Hash(await BoundedRegularFile.ReadAsync(Path.Combine(config.Directory,"enrollment.json"),65536,token).ConfigureAwait(false)) !=installation.ArchiveEnrollmentSha256)
             throw new AuthorityUnavailableException("Independent native capacity enrollment unavailable.");
         string mount=ArchiveFileLease.FilesystemIdentity(config.Directory);
         if(ArchiveFileLease.FilesystemIdentity(installation.CheckpointArchiveDirectory)!=mount || ArchiveFileLease.FilesystemIdentity(installation.OriginalArchiveDirectory)!=mount)

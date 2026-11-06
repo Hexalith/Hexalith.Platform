@@ -14,7 +14,7 @@ internal sealed class RegistrationPublisherFixture : ICustodyRegistrationPublish
     public async Task<CustodyKeyRegistration?> PublishAsync(CustodyKeyRegistration original, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        if (BeforePublication is { } action) await action(original);
+        if (BeforePublication is { } action) await action(original).ConfigureAwait(false);
         if (Unavailable) return null;
         if (Originals.TryGetValue(original.Identity, out var prior) && prior != original) return null;
         Originals[original.Identity] = original;

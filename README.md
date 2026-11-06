@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.9` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.10` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -63,13 +63,13 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
-271 primary cases. M selects genuine [Builds v4.44.9](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.9)
-at `0577f0c2d70bd4c2999aa3d98a705c83919bfc00`, published by successful normal
-[release 42201011603](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42201011603)
-after exact-source [CI 42198245252](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42198245252).
-Its pin and supported floor are `4.44.9`; its catalog Git blob is
-`b3b2258a4e51264cd675a6ae8a5e985fdcf06c50`, SHA-256
-`f9bbef8913c39b6d7439b73b6762dcf2aa4518a1f8e0087f37c48f96235f8cd1`.
+271 primary cases. M selects genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
+at `f4e908206f2d6481c0ced6b7d4e62e28dcf3b330`, published by successful normal
+[release 42223647770](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42223647770)
+after exact-source [CI 42221243284](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42221243284).
+Its pin and supported floor are `4.44.10`; its catalog Git blob is
+`2eccd7598d0e243b308fa504ef6f23724125d542`, SHA-256
+`91ad525c4eb88e21d5f168115c9ea2143f7996526032687ede99cfdc37647825`.
 The tuple binds the observed signed archive, paired validation bodies and
 inventory; this publication does not establish current model/native acceptance.
 

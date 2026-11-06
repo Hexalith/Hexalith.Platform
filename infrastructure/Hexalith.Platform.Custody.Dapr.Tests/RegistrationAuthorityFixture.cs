@@ -85,7 +85,7 @@ internal sealed class RegistrationAuthorityFixture : ISecretsCredentialBoundDapr
         var context=new DefaultHttpContext { RequestServices=new ServiceCollection().AddLogging().BuildServiceProvider() };
         context.Request.Headers["dapr-api-token"]="joined-channel";context.Request.Headers.Authorization="Bearer "+credential["file:/".Length..];
         context.Request.Body=new MemoryStream(Encoding.UTF8.GetBytes(body));context.Response.Body=new MemoryStream();
-        await (await (role?_authorizer.HandleAsync(context,operation,token):_receiver.HandleAsync(context,operation,token))).ExecuteAsync(context);
+        await (await ((role ?_authorizer.HandleAsync(context,operation,token):_receiver.HandleAsync(context,operation,token)).ConfigureAwait(false))).ExecuteAsync(context).ConfigureAwait(false);
         Calls.Add(app+":"+operation+":"+context.Response.StatusCode);
         if(role && operation=="authorize" && context.Response.StatusCode==200)
         {

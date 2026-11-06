@@ -20,7 +20,7 @@ internal static class KeyEnvelopeBuilder
             byte[] aad = CustodyBindingEnvelopeBytes.OuterAad(outer);
             try { using var aes = new AesGcm(outerKey, 16); aes.Encrypt(outer.Nonce, inner, outer.Ciphertext, outer.Tag, aad); }
             finally { CryptographicOperations.ZeroMemory(aad); }
-            byte[] encryptedOuterKey = await native.EncryptOuterKeyAsync(epoch, input.Identity.TenantId, outerKey, token);
+            byte[] encryptedOuterKey = await native.EncryptOuterKeyAsync(epoch, input.Identity.TenantId, outerKey, token).ConfigureAwait(false);
             return new(new(input.Identity, input.OperationId, input.ExpectedRevision, input.KekVersion,
                 input.OpaqueWrappedKeyReference, "wrap-" + Guid.NewGuid().ToString("N")), outer, encryptedOuterKey, epoch);
         }

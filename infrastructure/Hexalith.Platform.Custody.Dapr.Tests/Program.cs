@@ -55,63 +55,63 @@ if (args.Length > 0)
     tests = tests.Where(t => args.Contains(t.Item1, StringComparer.Ordinal)).ToArray();
 }
 int failed = 0;
-foreach (var (name, run) in tests) try { await run(); Console.WriteLine("PASS " + name); }
+foreach (var (name, run) in tests) try { await run().ConfigureAwait(false); Console.WriteLine("PASS " + name); }
 catch (Exception e) { failed++; Console.WriteLine("FAIL " + name + " " + e); }
 Console.WriteLine($"sourceComponentOnly=true physicalQualification=false passed={tests.Length - failed} failed={failed}");
 return failed == 0 ? 0 : 1;
 
 static void Check(bool condition, string message) { if (!condition) throw new Exception(message); }
-static async Task Closed(Func<Task> action) { try { await action(); } catch (AuthorityUnavailableException) { return; } catch (AuthorityConflictException) { return; } throw new Exception("Expected closed result."); }
+static async Task Closed(Func<Task> action) { try { await action().ConfigureAwait(false); } catch (AuthorityUnavailableException) { return; } catch (AuthorityConflictException) { return; } throw new Exception("Expected closed result."); }
 static async Task Missing() {
     using var f = new Fixture(); var request = f.Wrap("one");
-    await Closed(() => f.Call(request, qualified: false)); Check(f.Native.Encrypts == 0, "Missing qualification sent native key.");
+    await Closed(() => f.Call(request, qualified: false)).ConfigureAwait(false); Check(f.Native.Encrypts == 0, "Missing qualification sent native key.");
     f.Store.State = f.Store.State with { Checkpoint = f.Store.State.Checkpoint with { Anchors = [] } };
     byte[] bytes = [1]; var t = new AnchoredStateTransition("owner", 0, 1, Fixture.Digest, CustodyJson.Hash(bytes), bytes);
-    await Closed(() => f.Call(f.Request("admit-transition", transition: t))); Check(f.Store.State.Checkpoint.Anchors.Count == 0, "Self-enrolled missing owner.");
+    await Closed(() => f.Call(f.Request("admit-transition", transition: t))).ConfigureAwait(false); Check(f.Store.State.Checkpoint.Anchors.Count == 0, "Self-enrolled missing owner.");
 }
 static async Task Keys() {
-    using var f = new Fixture(); var wrapped = await f.Call(f.Wrap("one")); var registration = wrapped.WrappedRegistration!;
+    using var f = new Fixture(); var wrapped = await f.Call(f.Wrap("one")).ConfigureAwait(false); var registration = wrapped.WrappedRegistration!;
     Check(registration is not null && f.Native.Encrypts == 1, "Wrap failed.");
     var use = new CustodyBindingKeyUseV1("lease-u", "delivery-u", "recipient", "transport", registration!.OpaqueWrappedKeyReference);
-    var request = f.Request("unwrap", registration, keyUse: use); var delivered = await f.Call(request);
+    var request = f.Request("unwrap", registration, keyUse: use); var delivered = await f.Call(request).ConfigureAwait(false);
     Check(delivered.KeyDelivery!.RootKey.AsSpan().SequenceEqual(Fixture.Root), "Original root changed.");
     CryptographicOperations.ZeroMemory(delivered.KeyDelivery.RootKey);
-    var duplicate = await f.Call(f.Request("unwrap", registration, keyUse: use));
+    var duplicate = await f.Call(f.Request("unwrap", registration, keyUse: use)).ConfigureAwait(false);
     Check(duplicate.KeyDelivery is null && duplicate.Delivery is not null && f.Native.Decrypts == 1, "Duplicate key release.");
     string id = "key-" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(CustodyJson.DeliveryId(use)));
     var admissionObject = f.Store.State.Checkpoint.NativeResults[id + ":admission"];
-    var signedAdmission = CustodyJson.Read<SignedStatement>(await f.Store.ReadImmutableAsync(admissionObject, default));
+    var signedAdmission = CustodyJson.Read<SignedStatement>(await f.Store.ReadImmutableAsync(admissionObject, default).ConfigureAwait(false));
     var admission = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(signedAdmission.Payload));
     var completion = new KeyCompletion(use, admissionObject.Sha256, admission.Holders.Select(h => new HolderCompletion(h.CopyId,
         h.ProcessIncarnation, h.TransportIncarnation, Fixture.Digest, Fixture.Digest, "VerifiedZeroed")).ToArray());
     var completeRequest = f.Request("complete-key-use", registration, keyUse: use);
-    var completed = await f.Call(completeRequest, evidence: f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion));
+    var completed = await f.Call(completeRequest, evidence: f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion)).ConfigureAwait(false);
     Check(completed.Delivery!.Phase == CustodyBindingIntentPhase.Closed, "Completion not retained.");
     Check(f.Store.Objects.Values.All(b => !System.Text.Encoding.UTF8.GetString(b).Contains(Convert.ToBase64String(Fixture.Root), StringComparison.Ordinal)), "Raw root persisted.");
 }
 static async Task LostWrap() {
     using var f = new Fixture(); f.Store.FailRegistrationCommit = true; var request = f.Wrap("lost");
-    await Closed(() => f.Call(request)); Check(f.Native.Encrypts == 1 && f.Store.State.Checkpoint.Registrations.Count == 0, "Loss injection missed.");
+    await Closed(() => f.Call(request)).ConfigureAwait(false); Check(f.Native.Encrypts == 1 && f.Store.State.Checkpoint.Registrations.Count == 0, "Loss injection missed.");
     var intent = f.Store.State.Checkpoint.NativeIntents.Values.Single();
-    await f.Call(request); Check(f.Native.Encrypts == 1, "Duplicate wrap resent.");
+    await f.Call(request).ConfigureAwait(false); Check(f.Native.Encrypts == 1, "Duplicate wrap resent.");
     var operation = new WorkerOperation("recover-wrap-result", request.Envelope.OperationId, intent.IntentId, intent.SourceGeneration, intent.DestinationGeneration, "", "executor-process-1");
-    f.Qualify(); await f.Exchange.RecoverWrapAsync("tenant", operation, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(operation)), operation), default);
-    var recovered = await f.Call(request); Check(recovered.WrappedRegistration?.OpaqueWrappedKeyReference == "lost" && f.Native.Encrypts == 1, "Original wrap recovery changed identity or resent.");
-    var lookup = await f.Call(f.Lookup(recovered.WrappedRegistration!), qualified: false);
+    f.Qualify(); await f.Exchange.RecoverWrapAsync("tenant", operation, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(operation)), operation), default).ConfigureAwait(false);
+    var recovered = await f.Call(request).ConfigureAwait(false); Check(recovered.WrappedRegistration?.OpaqueWrappedKeyReference == "lost" && f.Native.Encrypts == 1, "Original wrap recovery changed identity or resent.");
+    var lookup = await f.Call(f.Lookup(recovered.WrappedRegistration!), qualified: false).ConfigureAwait(false);
     Check(lookup.Lifecycle?.ReceiptId == recovered.WrappedRegistration!.WrapReceiptId && f.Native.Encrypts == 1, "Lost-result registration lookup did not recover exact receipt.");
 }
 static async Task RegistrationLookup() {
-    using var f = new Fixture(); var wrap = f.Wrap("lookup"); var registration = (await f.Call(wrap)).WrappedRegistration!;
+    using var f = new Fixture(); var wrap = f.Wrap("lookup"); var registration = (await f.Call(wrap).ConfigureAwait(false)).WrappedRegistration!;
     var lookup = f.Lookup(registration); var before = f.Store.State.Head; int objects = f.Store.Objects.Count;
     var handler = new SdkBridge(f); using var client = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
     var invoker = new CustodyBindingDaprInvoker(client, new Dictionary<string, string> { [CustodyBindingContract.LogicalRole] = "custody" }, new LookupAuthority(f, lookup));
-    var wire = await invoker.InvokeAsync(lookup, TimeSpan.FromSeconds(5));
+    var wire = await invoker.InvokeAsync(lookup, TimeSpan.FromSeconds(5)).ConfigureAwait(false);
     Check(wire.State == CustodyBindingTransportState.ReceivedUnverified && wire.Response?.Lifecycle?.ReceiptId == registration.WrapReceiptId && handler.Calls == 1,
         "Real SDK/invoker did not accept the correlated wrapped lifecycle original.");
     Check(lookup.WrapInput is null && lookup.Envelope.RequestDigest != wrap.Envelope.RequestDigest, "Lookup accidentally depends on raw wrap input.");
-    _ = await f.Call(lookup, qualified: false); // Deliberately discard the first lookup acknowledgement.
-    var recovered = await f.Call(lookup, qualified: false);
-    var retry = await f.Call(f.Lookup(registration), qualified: false);
+    _ = await f.Call(lookup, qualified: false).ConfigureAwait(false); // Deliberately discard the first lookup acknowledgement.
+    var recovered = await f.Call(lookup, qualified: false).ConfigureAwait(false);
+    var retry = await f.Call(f.Lookup(registration), qualified: false).ConfigureAwait(false);
     Check(recovered.Lifecycle == retry.Lifecycle && recovered.WrappedRegistration is null && recovered.KeyDelivery is null
         && recovered.Lifecycle!.Identity == registration.Identity && recovered.Lifecycle.OperationId == registration.OperationId
         && recovered.Lifecycle.RequestDigest == lookup.Envelope.RequestDigest && recovered.Lifecycle.Status == CustodyKeyLifecycleStatus.Wrapped
@@ -123,7 +123,7 @@ static async Task RegistrationLookup() {
         registration with { Identity = registration.Identity with { KeyAlias = "other-alias" } },
         registration with { Identity = registration.Identity with { KeyVersion = "other-version" } },
         registration with { Identity = registration.Identity with { TenantId = "other" } },
-    }) await Closed(() => f.Call(f.Lookup(changed), qualified: false));
+    }) await Closed(() => f.Call(f.Lookup(changed), qualified: false)).ConfigureAwait(false);
     Check(f.Store.State.Head == before && f.Store.Objects.Count == objects && f.Native.Encrypts == 1 && f.Native.Decrypts == 0 && f.Native.Schedules == 0,
         "Read-only lookup mutated authority, persisted a replacement or sent native work.");
 }
@@ -135,41 +135,41 @@ static async Task Anchors() {
         var anchor = f.Store.State.Checkpoint.Anchors["owner"]; byte[] bytes = [(byte)(revision + 1)];
         var transition = new AnchoredStateTransition("owner", revision, revision + 1, anchor.Digest, CustodyJson.Hash(bytes), bytes);
         first ??= transition;
-        var admit = await f.Call(f.Request("admit-transition", transition: transition));
+        var admit = await f.Call(f.Request("admit-transition", transition: transition)).ConfigureAwait(false);
         if (revision > 0) {
             var before = f.Store.State.Head;
-            if (!(await f.Call(f.Request("verify-transition", transition: first))).TransitionVerified!.Value
-                || !(await f.Call(f.Request("record-transition", transition: first))).TransitionVerified!.Value
+            if (!(await f.Call(f.Request("verify-transition", transition: first)).ConfigureAwait(false)).TransitionVerified!.Value
+                || !(await f.Call(f.Request("record-transition", transition: first)).ConfigureAwait(false)).TransitionVerified!.Value
                 || f.Store.State.Head != before) throw new Exception("Historical recorded transition disappeared or changed current owner during retry.");
         } Check(admit.TransitionProof?.State == "Admitted", "Admission advanced owner.");
         Check(f.Store.State.Checkpoint.Anchors["owner"].Revision == revision, "Admission mutated anchor.");
-        var record = await f.Call(f.Request(revision == 1 ? "recover-transition" : "record-transition", transition: transition));
+        var record = await f.Call(f.Request(revision == 1 ? "recover-transition" : "record-transition", transition: transition)).ConfigureAwait(false);
         Check(record.TransitionProof?.OwnerRevision == revision + 1, "Record/recovery did not advance exact owner.");
-        Check((await f.Call(f.Request("verify-transition", transition: transition))).TransitionVerified == true, "Exact retained transition not verifiable.");
+        Check((await f.Call(f.Request("verify-transition", transition: transition)).ConfigureAwait(false)).TransitionVerified == true, "Exact retained transition not verifiable.");
     }
     var staleBytes = new byte[] { 99 }; var stale = new AnchoredStateTransition("owner", 0, 1, Fixture.Digest, CustodyJson.Hash(staleBytes), staleBytes);
-    await Closed(() => f.Call(f.Request("record-transition", transition: stale)));
-    var read = await f.Call(f.Request("read-current")); Check(read.Current?.OwnerRevision == 3 && read.Current.ObservedRevision != 3, "Owner revision equated with custody head.");
+    await Closed(() => f.Call(f.Request("record-transition", transition: stale))).ConfigureAwait(false);
+    var read = await f.Call(f.Request("read-current")).ConfigureAwait(false); Check(read.Current?.OwnerRevision == 3 && read.Current.ObservedRevision != 3, "Owner revision equated with custody head.");
 }
 static async Task Holds() {
-    using var f = new Fixture(); var registration = (await f.Call(f.Wrap("held"))).WrappedRegistration!;
-    var free = (await f.Call(f.Wrap("free", "a-free-object"))).WrappedRegistration!;
-    var pin = f.Pin(registration, false); await f.Call(pin);
+    using var f = new Fixture(); var registration = (await f.Call(f.Wrap("held")).ConfigureAwait(false)).WrappedRegistration!;
+    var free = (await f.Call(f.Wrap("free", "a-free-object")).ConfigureAwait(false)).WrappedRegistration!;
+    var pin = f.Pin(registration, false); await f.Call(pin).ConfigureAwait(false);
     var before = f.Store.State.Head;
-    var denied=await f.Call(f.Manifest([free, registration]));
+    var denied=await f.Call(f.Manifest([free, registration])).ConfigureAwait(false);
     Check(denied.ManifestStatus?.Denial is not null && f.Store.State.Checkpoint.Cycle is null && f.Store.State.Head.Revision == before.Revision+1 && f.Native.Schedules == 0,
         "Pinned second target allowed a partial manifest effect.");
-    await f.Call(f.Pin(registration, true));
-    Check((await f.Call(f.Manifest([free,registration]))).ManifestStatus?.Denial?.ReceiptId==denied.ManifestStatus!.Denial!.ReceiptId,"Later pin state rewrote immutable held denial.");
-    var nextManifest=f.Manifest([free,registration]);nextManifest=nextManifest with { Envelope=nextManifest.Envelope with { OperationId="destroy-after-release" } };await f.Call(nextManifest);
-    await Closed(() => f.Call(f.Pin(registration, false))); Check(f.Store.State.Checkpoint.Pins.Count == 0, "Late hold pinned dispatched target.");
-    var frozen = f.Wrap("after-freeze"); await Closed(() => f.Call(frozen)); Check(f.Native.Encrypts == 2, "Frozen allocation sent native key.");
+    await f.Call(f.Pin(registration, true)).ConfigureAwait(false);
+    Check((await f.Call(f.Manifest([free,registration])).ConfigureAwait(false)).ManifestStatus?.Denial?.ReceiptId==denied.ManifestStatus!.Denial!.ReceiptId,"Later pin state rewrote immutable held denial.");
+    var nextManifest=f.Manifest([free,registration]);nextManifest=nextManifest with { Envelope=nextManifest.Envelope with { OperationId="destroy-after-release" } };await f.Call(nextManifest).ConfigureAwait(false);
+    await Closed(() => f.Call(f.Pin(registration, false))).ConfigureAwait(false); Check(f.Store.State.Checkpoint.Pins.Count == 0, "Late hold pinned dispatched target.");
+    var frozen = f.Wrap("after-freeze"); await Closed(() => f.Call(frozen)).ConfigureAwait(false); Check(f.Native.Encrypts == 2, "Frozen allocation sent native key.");
 }
 static async Task Restore() {
-    using var f = new Fixture(); var old = f.Store.State; await f.Call(f.Wrap("one"));
-    await Closed(() => f.Store.CommitAsync(old, SemanticProvider.Clone(old), default));
-    await Closed(() => f.Call(f.Wrap("replacement"))); Check(f.Native.Encrypts == 1, "Restored app reallocated interaction.");
-    var read = f.Request("read-current"); var a = await f.Call(read); var b = await f.Call(read);
+    using var f = new Fixture(); var old = f.Store.State; await f.Call(f.Wrap("one")).ConfigureAwait(false);
+    await Closed(() => f.Store.CommitAsync(old, SemanticProvider.Clone(old), default)).ConfigureAwait(false);
+    await Closed(() => f.Call(f.Wrap("replacement"))).ConfigureAwait(false); Check(f.Native.Encrypts == 1, "Restored app reallocated interaction.");
+    var read = f.Request("read-current"); var a = await f.Call(read).ConfigureAwait(false); var b = await f.Call(read).ConfigureAwait(false);
     Check(f.Store.Reads >= 4 && a.Current!.ObservedRevision == b.Current!.ObservedRevision, "Read current skipped native current read.");
 }
 static Task Frames() {
@@ -182,14 +182,14 @@ static Task Frames() {
     request.Metadata.Add("too-large", new string('x', 65536)); Check(!BindingService.FrameAllowed(request), "Metadata cap bypassed."); return Task.CompletedTask;
 }
 static async Task Lifecycle() {
-    using var f = new Fixture(); var targetRequest = f.Wrap("target"); var target = (await f.Call(targetRequest)).WrappedRegistration!;
-    var secondRequest = f.Wrap("target-2", "second-object"); var second = (await f.Call(secondRequest)).WrappedRegistration!;
-    var survivorRequest = f.Wrap("survivor", "survivor-object"); var survivor = (await f.Call(survivorRequest)).WrappedRegistration!;
-    await f.CloseKey(target, targetRequest.WrapInput!.KeyUse); await f.CloseKey(survivor, survivorRequest.WrapInput!.KeyUse);
-    await f.CloseKey(second, secondRequest.WrapInput!.KeyUse);
-    var manifest = f.Manifest([target, second]); await PublicLifecycleTests.AdmitManifest(f, manifest);
+    using var f = new Fixture(); var targetRequest = f.Wrap("target"); var target = (await f.Call(targetRequest).ConfigureAwait(false)).WrappedRegistration!;
+    var secondRequest = f.Wrap("target-2", "second-object"); var second = (await f.Call(secondRequest).ConfigureAwait(false)).WrappedRegistration!;
+    var survivorRequest = f.Wrap("survivor", "survivor-object"); var survivor = (await f.Call(survivorRequest).ConfigureAwait(false)).WrappedRegistration!;
+    await f.CloseKey(target, targetRequest.WrapInput!.KeyUse).ConfigureAwait(false); await f.CloseKey(survivor, survivorRequest.WrapInput!.KeyUse).ConfigureAwait(false);
+    await f.CloseKey(second, secondRequest.WrapInput!.KeyUse).ConfigureAwait(false);
+    var manifest = f.Manifest([target, second]); await PublicLifecycleTests.AdmitManifest(f, manifest).ConfigureAwait(false);
     var op = new WorkerOperation("select-successor", manifest.Envelope.OperationId, "select", "e1", "e2", "", "executor-process-1"); f.Qualify();
-    await f.Worker.SelectSuccessorAsync("tenant", op, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(op)), op), default);
+    await f.Worker.SelectSuccessorAsync("tenant", op, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(op)), op), default).ConfigureAwait(false);
     var cycle = f.Store.State.Checkpoint.Cycle!;
     ClosureInventory Inventory(bool final = false) {
         var copies = f.Store.State.Checkpoint.Registrations.Values.Select(r => new CopyEntry("object-" + r.Registration.OpaqueWrappedKeyReference,
@@ -211,58 +211,58 @@ static async Task Lifecycle() {
     PreparationEvidence Preparation() { var inventory = Inventory(); var survivors = f.Store.State.Checkpoint.Registrations.Values.Where(r => r.Registration.Identity.ObjectId == "survivor-object").ToArray();
         return new(new(inventory.ManifestDigest, "e1", "e2", CustodyJson.Hash(CustodyJson.Bytes(inventory)), CustodyJson.Hash(CustodyJson.Bytes(survivors)),
             Fixture.Digest, Fixture.Digest, [], [survivor.OpaqueWrappedKeyReference], [target.OpaqueWrappedKeyReference, second.OpaqueWrappedKeyReference], Fixture.Digest, Fixture.Digest), inventory); }
-    var prep = Preparation(); f.Qualify(); await Closed(() => f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default));
+    var prep = Preparation(); f.Qualify(); await Closed(() => f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default)).ConfigureAwait(false);
     var copy = new WorkerOperation("copy-survivor", manifest.Envelope.OperationId, "copy", "e1", "e2", survivor.OpaqueWrappedKeyReference, "executor-process-1"); f.Qualify();
     var missingProducer = copy with { ProducerIncarnation = "" };
-    await Closed(() => f.Worker.CopySurvivorAsync("tenant", missingProducer, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(missingProducer)), missingProducer), default));
-    await f.Worker.CopySurvivorAsync("tenant", copy, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(copy)), copy), default);
+    await Closed(() => f.Worker.CopySurvivorAsync("tenant", missingProducer, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(missingProducer)), missingProducer), default)).ConfigureAwait(false);
+    await f.Worker.CopySurvivorAsync("tenant", copy, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(copy)), copy), default).ConfigureAwait(false);
     Check(f.Store.State.Checkpoint.NativeIntents["copy"].ProducerIncarnation == "executor-process-1", "Signing identity substituted for the executor process.");
-    prep = Preparation(); f.Qualify(); await Closed(() => f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default));
-    await f.CloseNative("copy");
+    prep = Preparation(); f.Qualify(); await Closed(() => f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default)).ConfigureAwait(false);
+    await f.CloseNative("copy").ConfigureAwait(false);
     var empty = Inventory() with { Copies = [], Coverage = Enum.GetValues<CopyClass>().Select(c => new ClassCoverage(c, Fixture.Digest, [])).ToArray() };
     Check(!ClosureRules.Complete(empty, f.Store.State.Checkpoint, false), "Empty inventory contradicted known material.");
     var omittedProducer = Inventory() with { ProducerIncarnations = Inventory().ProducerIncarnations.Where(p => p != "executor-process-1").ToArray(),
         Queues = Inventory().Queues.Where(q => q.ProducerIncarnation != "executor-process-1").ToArray() };
     Check(!ClosureRules.Complete(omittedProducer, f.Store.State.Checkpoint, false), "Native executor process was omitted from closure.");
     prep = Preparation(); f.Qualify();
-    await f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default);
+    await f.Worker.ArmAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(prep)), prep), default).ConfigureAwait(false);
     Check(f.Store.State.Checkpoint.CurrentEpoch == "e2" && !f.Store.State.Checkpoint.Frozen, "B3 did not adopt successor atomically.");
     var schedule = new WorkerOperation("schedule-cut", manifest.Envelope.OperationId, "cut", "e1", "e2", "", "executor-process-1"); f.Qualify();
     f.Native.FailScheduleAck = true;
-    await Closed(() => f.Worker.ScheduleCutAsync("tenant", schedule, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(schedule)), schedule), default));
-    f.Qualify(); await f.Worker.ScheduleCutAsync("tenant", schedule, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(schedule)), schedule), default);
+    await Closed(() => f.Worker.ScheduleCutAsync("tenant", schedule, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(schedule)), schedule), default)).ConfigureAwait(false);
+    f.Qualify(); await f.Worker.ScheduleCutAsync("tenant", schedule, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(schedule)), schedule), default).ConfigureAwait(false);
     Check(f.Native.Schedules == 1, "Destructive duplicate resent native cut.");
     var recoveredSchedule = new RecoveredNativeResult("cut", CustodyJson.Hash(CustodyJson.Bytes(schedule)), "schedule-cut",
         CustodyJson.Bytes(new ScheduleResult("cut", "ScheduleObservedNotErased")), Fixture.Digest, schedule);
-    f.Qualify(); await f.Worker.RecoverNativeResultAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(recoveredSchedule)), recoveredSchedule), default);
+    f.Qualify(); await f.Worker.RecoverNativeResultAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(recoveredSchedule)), recoveredSchedule), default).ConfigureAwait(false);
     Check(f.Native.Schedules == 1, "Native recovery resent destructive effect.");
     FinalClaim FinalFacts(string originalSha) { var inventory = Inventory(final: true); var c = f.Store.State.Checkpoint.Cycle!;
         return new(inventory.ManifestDigest, "e1", "e2", c.PreparationDigest!, ["e1"], CustodyJson.Hash(CustodyJson.Bytes(inventory)), Fixture.Digest,
             Fixture.Digest, "restore", Fixture.Digest, originalSha); }
     var originalPreparation = new OriginalPreparationEvidence(FinalFacts(new string('0', 64)), Inventory(final: true)); f.Qualify();
-    await Closed(() => f.Worker.PrepareOriginalAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(originalPreparation)), originalPreparation), default));
-    await f.CloseNative("cut"); originalPreparation = new(FinalFacts(new string('0', 64)), Inventory(final: true)); f.Qualify();
+    await Closed(() => f.Worker.PrepareOriginalAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(originalPreparation)), originalPreparation), default)).ConfigureAwait(false);
+    await f.CloseNative("cut").ConfigureAwait(false); originalPreparation = new(FinalFacts(new string('0', 64)), Inventory(final: true)); f.Qualify();
     var preparationStatement = f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(originalPreparation)), originalPreparation);
     f.Store.FailIntentResultAck = true;
-    await Closed(() => f.Worker.PrepareOriginalAsync("tenant", preparationStatement, default));
+    await Closed(() => f.Worker.PrepareOriginalAsync("tenant", preparationStatement, default)).ConfigureAwait(false);
     var evidenceDirectory = Directory.CreateTempSubdirectory("hexalith-semantic-original-").FullName;
     var output = Path.Combine(evidenceDirectory, "prepared-original.json");
-    await WorkerEntry.ExecuteAsync(f.Worker, new("prepare-original", "tenant", null, preparationStatement, null, output), default);
-    byte[] bytes = await File.ReadAllBytesAsync(output);
+    await WorkerEntry.ExecuteAsync(f.Worker, new("prepare-original", "tenant", null, preparationStatement, null, output), default).ConfigureAwait(false);
+    byte[] bytes = await File.ReadAllBytesAsync(output).ConfigureAwait(false);
     File.WriteAllText(Path.Combine(evidenceDirectory, "component-public.pem"), f.Profile.ComponentPublicKeyPem);
     File.WriteAllBytes(Path.Combine(evidenceDirectory, "preparation-statement.json"), CustodyJson.Bytes(preparationStatement));
     Console.WriteLine("retainedSourceOriginal=" + output);
-    Check((await f.Worker.PrepareOriginalAsync("tenant", preparationStatement, default)).AsSpan().SequenceEqual(bytes), "Lost preparation acknowledgement replaced original signature.");
+    Check((await f.Worker.PrepareOriginalAsync("tenant", preparationStatement, default).ConfigureAwait(false)).AsSpan().SequenceEqual(bytes), "Lost preparation acknowledgement replaced original signature.");
     var publication = new PublicationEvidence(FinalFacts(CustodyJson.Hash(bytes)), Inventory(final: true)); f.Qualify();
-    await f.Worker.PublishAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(publication)), publication), bytes, default);
-    var header = (await f.Call(manifest)).OriginalHeader!; Check(header.TargetCount == 2 && header.OriginalSha256 == CustodyJson.Hash(bytes), "Incomplete/changed terminal original.");
+    await f.Worker.PublishAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(publication)), publication), bytes, default).ConfigureAwait(false);
+    var header = (await f.Call(manifest).ConfigureAwait(false)).OriginalHeader!; Check(header.TargetCount == 2 && header.OriginalSha256 == CustodyJson.Hash(bytes), "Incomplete/changed terminal original.");
     Check(CustodyJson.Read<CustodyBindingOriginalV1>(bytes).Result.TargetReceipts.Select(r => r.Target)
         .SequenceEqual(manifest.Manifest!.Original.Targets), "Multi-target terminal receipt vector changed order or coverage.");
-    var page = f.Request("read-original-page", page: new(header, 0, bytes.Length)); var actual = await f.Call(page);
+    var page = f.Request("read-original-page", page: new(header, 0, bytes.Length)); var actual = await f.Call(page).ConfigureAwait(false);
     Check(actual.Page!.Data.AsSpan().SequenceEqual(bytes), "Original bytes/signature changed.");
-    var changed = header with { OriginalSha256 = Fixture.Digest }; await Closed(() => f.Call(f.Request("read-original-page", page: new(changed, 0, bytes.Length))));
-    await PublicLifecycleTests.ManifestRecovery(f, manifest);
-    var survivorPlain = await f.Native.ReadOuterKeyAsync(f.Store.State.Checkpoint.Registrations[survivor.OpaqueWrappedKeyReference], default);
+    var changed = header with { OriginalSha256 = Fixture.Digest }; await Closed(() => f.Call(f.Request("read-original-page", page: new(changed, 0, bytes.Length)))).ConfigureAwait(false);
+    await PublicLifecycleTests.ManifestRecovery(f, manifest).ConfigureAwait(false);
+    var survivorPlain = await f.Native.ReadOuterKeyAsync(f.Store.State.Checkpoint.Registrations[survivor.OpaqueWrappedKeyReference], default).ConfigureAwait(false);
     CryptographicOperations.ZeroMemory(survivorPlain); Check(f.Native.Encrypts == 4, "Wrong survivor-copy effect count.");
 }
 
@@ -275,40 +275,40 @@ static async Task OwnerAdapter() {
     using var client = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
     var owner = new CustodyOwnerAuthority(client, "custody", "tenant", scope, CustodyJson.Bytes(f.Profile.Enrollment) is var e ? System.Text.Encoding.UTF8.GetString(e) : "",
         f.Profile.ComponentPublicKeyPem, new OwnerCalls(f));
-    Check(await owner.ValidateStateAsync(0, genesis), "Signed installed genesis refused.");
+    Check(await owner.ValidateStateAsync(0, genesis).ConfigureAwait(false), "Signed installed genesis refused.");
     var target = new byte[] { 2 }; var transition = new AnchoredStateTransition(scope, 0, 1, genesis, CustodyJson.Hash(target), target);
-    Check(await owner.AdmitTransitionAsync(transition), "Public adapter admission failed.");
-    Check(await owner.RecordTransitionAsync(transition), "Public adapter record failed.");
-    Check(await owner.VerifyTransitionAsync(transition), "Public adapter verify failed.");
-    Check(!await owner.ValidateStateAsync(0, genesis), "Restored owner genesis promoted after advance.");
-    Check(await owner.ValidateStateAsync(1, transition.TargetDigest), "Independent current owner invalid.");
-    Check(await owner.AuthorizeOperationAsync("original-operation", "reserve"), "Exact private operation permission unavailable.");
-    handler.CorruptSignature = true; Check(!await owner.ValidateStateAsync(1, transition.TargetDigest), "Unverified current owner accepted.");
+    Check(await owner.AdmitTransitionAsync(transition).ConfigureAwait(false), "Public adapter admission failed.");
+    Check(await owner.RecordTransitionAsync(transition).ConfigureAwait(false), "Public adapter record failed.");
+    Check(await owner.VerifyTransitionAsync(transition).ConfigureAwait(false), "Public adapter verify failed.");
+    Check(!await owner.ValidateStateAsync(0, genesis).ConfigureAwait(false), "Restored owner genesis promoted after advance.");
+    Check(await owner.ValidateStateAsync(1, transition.TargetDigest).ConfigureAwait(false), "Independent current owner invalid.");
+    Check(await owner.AuthorizeOperationAsync("original-operation", "reserve").ConfigureAwait(false), "Exact private operation permission unavailable.");
+    handler.CorruptSignature = true; Check(!await owner.ValidateStateAsync(1, transition.TargetDigest).ConfigureAwait(false), "Unverified current owner accepted.");
     Check(handler.Calls == 8, "SDK repeated or skipped calls.");
 }
 
 static async Task SuccessorRetirement() {
-    using var f = new Fixture(thirdEpoch: true); var targetRequest = f.Wrap("target"); var target = (await f.Call(targetRequest)).WrappedRegistration!;
-    var survivorRequest = f.Wrap("survivor", "survivor-object"); var survivor = (await f.Call(survivorRequest)).WrappedRegistration!;
-    await f.CloseKey(target, targetRequest.WrapInput!.KeyUse); await f.CloseKey(survivor, survivorRequest.WrapInput!.KeyUse);
-    var manifest = f.Manifest([target]); await f.Call(manifest);
+    using var f = new Fixture(thirdEpoch: true); var targetRequest = f.Wrap("target"); var target = (await f.Call(targetRequest).ConfigureAwait(false)).WrappedRegistration!;
+    var survivorRequest = f.Wrap("survivor", "survivor-object"); var survivor = (await f.Call(survivorRequest).ConfigureAwait(false)).WrappedRegistration!;
+    await f.CloseKey(target, targetRequest.WrapInput!.KeyUse).ConfigureAwait(false); await f.CloseKey(survivor, survivorRequest.WrapInput!.KeyUse).ConfigureAwait(false);
+    var manifest = f.Manifest([target]); await f.Call(manifest).ConfigureAwait(false);
     var select = new WorkerOperation("select-successor", manifest.Envelope.OperationId, "select", "e1", "e2", "", "executor-process-1"); f.Qualify();
-    await f.Worker.SelectSuccessorAsync("tenant", select, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(select)), select), default);
+    await f.Worker.SelectSuccessorAsync("tenant", select, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(select)), select), default).ConfigureAwait(false);
     var copy = new WorkerOperation("copy-survivor", manifest.Envelope.OperationId, "copy", "e1", "e2", survivor.OpaqueWrappedKeyReference, "executor-process-1"); f.Qualify();
-    await f.Worker.CopySurvivorAsync("tenant", copy, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(copy)), copy), default);
+    await f.Worker.CopySurvivorAsync("tenant", copy, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(copy)), copy), default).ConfigureAwait(false);
     var retire = new WorkerOperation("retire-successor", manifest.Envelope.OperationId, "retire", "e2", "retired", "", "executor-process-1"); f.Qualify(); f.Native.FailScheduleAck = true;
-    await Closed(() => f.Worker.RetireAlternateAsync("tenant", retire, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(retire)), retire), default));
+    await Closed(() => f.Worker.RetireAlternateAsync("tenant", retire, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(retire)), retire), default)).ConfigureAwait(false);
     Check(f.Store.State.Checkpoint.Cycle!.Phase == CyclePhase.RetiringSuccessor && f.Store.State.Checkpoint.Frozen, "Uncertain successor was not durably fenced.");
-    f.Qualify(); await f.Worker.RetireAlternateAsync("tenant", retire, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(retire)), retire), default);
+    f.Qualify(); await f.Worker.RetireAlternateAsync("tenant", retire, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(retire)), retire), default).ConfigureAwait(false);
     Check(f.Native.Schedules == 1, "Uncertain retirement resent native schedule.");
     var replacement = select with { DestinationEpoch = "e3", IntentId = "select-replacement" }; f.Qualify();
-    await Closed(() => f.Worker.SelectSuccessorAsync("tenant", replacement, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(replacement)), replacement), default));
+    await Closed(() => f.Worker.SelectSuccessorAsync("tenant", replacement, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(replacement)), replacement), default)).ConfigureAwait(false);
     var invalid = new AbandonedSuccessor("e2", ["copy", "retire"], "not-final-evidence", Fixture.Digest, Fixture.Digest); f.Qualify();
-    await Closed(() => f.Worker.AbandonSuccessorAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(invalid)), invalid), default));
+    await Closed(() => f.Worker.AbandonSuccessorAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(invalid)), invalid), default)).ConfigureAwait(false);
     var final = invalid with { FinalDeletionEvidenceDigest = Fixture.Digest }; f.Qualify();
-    await f.Worker.AbandonSuccessorAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(final)), final), default);
+    await f.Worker.AbandonSuccessorAsync("tenant", f.Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(final)), final), default).ConfigureAwait(false);
     Check(f.Store.State.Checkpoint.Registrations[survivor.OpaqueWrappedKeyReference].Epoch == "e1" && f.Store.State.Checkpoint.Cycle!.TaintedEpochs.SequenceEqual(["e2"]), "Original survivor source or permanent taint lost.");
-    f.Qualify(); await f.Worker.SelectSuccessorAsync("tenant", replacement, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(replacement)), replacement), default);
+    f.Qualify(); await f.Worker.SelectSuccessorAsync("tenant", replacement, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(replacement)), replacement), default).ConfigureAwait(false);
     Check(f.Store.State.Checkpoint.Cycle!.SuccessorEpoch == "e3" && f.Native.Schedules == 1 && f.Profile.Epochs.Count(e => e.TenantId == "tenant") == 3, "Replacement exceeded admitted epochs or replayed retirement.");
 }
 
@@ -367,7 +367,7 @@ sealed class Fixture : IDisposable {
         if (evidence is null && use is not null) { var admission = new KeyAdmission(use, e.RequestDigest, Profile.ProfileDigest,
             new[] { "caller", "sdk", "sidecar", "uds", "grpc", "tls", "component", "native" }.Select(r => new KeyHolder("copy-" + use.KeyUseLeaseId + "-" + r, r, use.RecipientProcessIncarnation, use.TransportIncarnation, "owner", Digest)).ToArray());
             evidence = Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(admission)), admission); }
-        return await Provider.InvokeAsync(bytes, Sign("private-operation", CustodyJson.Hash(bytes), permission), Sign("control", CustodyJson.Hash(CustodyJson.Bytes(e.Proof)), control), default, evidence);
+        return await Provider.InvokeAsync(bytes, Sign("private-operation", CustodyJson.Hash(bytes), permission), Sign("control", CustodyJson.Hash(CustodyJson.Bytes(e.Proof)), control), default, evidence).ConfigureAwait(false);
     }
     internal CustodyBindingRequestV1 Request(string operation, CustodyKeyRegistration? registration = null, CustodyKeyLifecycleRequest? lifecycle = null,
         CustodyBindingManifestV1? manifest = null, AnchoredStateTransition? transition = null, CustodyBindingPageReadV1? page = null, CustodyBindingKeyUseV1? keyUse = null,
@@ -402,16 +402,16 @@ sealed class Fixture : IDisposable {
     internal async Task CloseKey(CustodyKeyRegistration registration, CustodyBindingKeyUseV1 use) {
         string id = "key-" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(CustodyJson.DeliveryId(use)));
         var reference = Store.State.Checkpoint.NativeResults[id + ":admission"];
-        var signed = CustodyJson.Read<SignedStatement>(await Store.ReadImmutableAsync(reference, default));
+        var signed = CustodyJson.Read<SignedStatement>(await Store.ReadImmutableAsync(reference, default).ConfigureAwait(false));
         var admitted = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(signed.Payload));
         var completion = new KeyCompletion(use, reference.Sha256, admitted.Holders.Select(h => new HolderCompletion(h.CopyId,
             h.ProcessIncarnation, h.TransportIncarnation, Digest, Digest, "VerifiedZeroed")).ToArray());
-        await Call(Request("complete-key-use", registration, keyUse: use), evidence: Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion));
+        await Call(Request("complete-key-use", registration, keyUse: use), evidence: Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion)).ConfigureAwait(false);
     }
     internal async Task CloseNative(string id) {
         var intent = Store.State.Checkpoint.NativeIntents[id]; var result = Store.State.Checkpoint.NativeResults[id];
         var completion = new NativeCompletion(id, intent.ProducerIncarnation, result.Sha256, Digest, Digest, Digest); Qualify();
-        await Worker.CloseNativeIntentAsync("tenant", Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion), default);
+        await Worker.CloseNativeIntentAsync("tenant", Sign("independent-observer", CustodyJson.Hash(CustodyJson.Bytes(completion)), completion), default).ConfigureAwait(false);
     }
     public void Dispose() { foreach (var s in signers.Values) s.Dispose(); response.Dispose(); File.Delete(qualification); Native.Dispose(); }
 }
@@ -421,7 +421,7 @@ sealed class MemoryStore(ComponentProfile profile, Checkpoint initial) : IAuthor
     public Task<CurrentState> ReadAsync(string tenant, CancellationToken token) { Reads++; if (tenant != State.Checkpoint.TenantId && tenant != "other") throw new AuthorityUnavailableException("Tenant mismatch."); return Task.FromResult(CustodyJson.Read<CurrentState>(CustodyJson.Bytes(tenant == "other" ? OtherState : State))); }
     public Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken token) { string key = category + "/" + Guid.NewGuid().ToString("N"); Objects.Add(key, bytes.ToArray()); return Task.FromResult(new ObjectVersion(key, "v1", CustodyJson.Hash(bytes.Span), bytes.Length, DateTimeOffset.MaxValue)); }
     public Task<byte[]> ReadImmutableAsync(ObjectVersion version, CancellationToken token) { byte[] bytes = Objects[version.Key]; if (CustodyJson.Hash(bytes) != version.Sha256) throw new AuthorityUnavailableException("Substituted immutable."); return Task.FromResult(bytes.ToArray()); }
-    public async Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken token) { if (results.ContainsKey(locator)) throw new AuthorityUnavailableException("Immutable native result exists."); var version = await PutImmutableAsync(bytes, "journal", token); results.Add(locator, version); if (FailIntentResultAck) { FailIntentResultAck = false; throw new AuthorityUnavailableException("Synthetic immutable result acknowledgement loss."); } return version; }
+    public async Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken token) { if (results.ContainsKey(locator)) throw new AuthorityUnavailableException("Immutable native result exists."); var version = await PutImmutableAsync(bytes, "journal", token).ConfigureAwait(false); results.Add(locator, version); if (FailIntentResultAck) { FailIntentResultAck = false; throw new AuthorityUnavailableException("Synthetic immutable result acknowledgement loss."); } return version; }
     public Task<ObjectVersion?> FindIntentResultAsync(string locator, CancellationToken token) => Task.FromResult(results.TryGetValue(locator, out var version) ? version : null);
     public Task<CurrentState> CommitAsync(CurrentState expected, Checkpoint next, CancellationToken token) {
         if (State.Head != expected.Head) throw new AuthorityConflictException();
@@ -433,7 +433,7 @@ sealed class MemoryStore(ComponentProfile profile, Checkpoint initial) : IAuthor
 sealed class FakeNative : IEpochOperations, IKeyAccess, IDisposable {
     readonly byte[] kek = RandomNumberGenerator.GetBytes(32); readonly Dictionary<string, byte[]> epochs = new() { ["e1"] = RandomNumberGenerator.GetBytes(32), ["e2"] = RandomNumberGenerator.GetBytes(32) }; internal int Encrypts, Decrypts, Schedules; internal bool FailScheduleAck;
     public Task<byte[]> EncryptOuterKeyAsync(string epoch, string tenant, byte[] key, CancellationToken token) { Encrypts++; var nonce = RandomNumberGenerator.GetBytes(12); var cipher = new byte[32]; var tag = new byte[16]; using var aes = new AesGcm(epochs[epoch], 16); aes.Encrypt(nonce, key, cipher, tag); return Task.FromResult(nonce.Concat(cipher).Concat(tag).ToArray()); }
-    public async Task<byte[]> ReencryptOuterKeyAsync(string source, string destination, string tenant, byte[] encryptedKey, CancellationToken token) { var plain = Decrypt(source, encryptedKey); try { return await EncryptOuterKeyAsync(destination, tenant, plain, token); } finally { CryptographicOperations.ZeroMemory(plain); } }
+    public async Task<byte[]> ReencryptOuterKeyAsync(string source, string destination, string tenant, byte[] encryptedKey, CancellationToken token) { var plain = Decrypt(source, encryptedKey); try { return await EncryptOuterKeyAsync(destination, tenant, plain, token).ConfigureAwait(false); } finally { CryptographicOperations.ZeroMemory(plain); } }
     public Task ScheduleSourceCutAsync(string epoch, string tenant, CancellationToken token) { Schedules++; if (FailScheduleAck) { FailScheduleAck = false; throw new AuthorityUnavailableException("Synthetic native acknowledgement loss."); } return Task.CompletedTask; }
     internal byte[]? LastTenantKek;
     public Task<byte[]> ReadTenantKekAsync(string tenant, string version, CancellationToken token) => Task.FromResult(LastTenantKek=kek.ToArray());
@@ -461,16 +461,16 @@ sealed class SdkBridge(Fixture fixture) : HttpMessageHandler {
     internal bool ReplayCapturedUnwrap;
     internal Action? AfterResponse;
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token) {
-        Calls++; byte[] frame = await request.Content!.ReadAsByteArrayAsync(token); byte[] data = []; var metadata = new Dictionary<string, string>();
+        Calls++; byte[] frame = await request.Content!.ReadAsByteArrayAsync(token).ConfigureAwait(false); byte[] data = []; var metadata = new Dictionary<string, string>();
         using (var input = new CodedInputStream(frame, 5, frame.Length - 5)) { uint tag; while ((tag = input.ReadTag()) != 0) {
             int field = WireFormat.GetTagFieldNumber(tag); if (field == 2) data = input.ReadBytes().ToByteArray();
             else if (field == 3) { using var map = new CodedInputStream(input.ReadBytes().ToByteArray()); string key = "", value = ""; uint mapTag;
                 while ((mapTag = map.ReadTag()) != 0) { if (WireFormat.GetTagFieldNumber(mapTag) == 1) key = map.ReadString(); else if (WireFormat.GetTagFieldNumber(mapTag) == 2) value = map.ReadString(); else map.SkipLastField(); } metadata.Add(key, value); }
             else input.SkipLastField(); } }
-        if (!initialized) { await service.Init(ServiceBoundaryTests.Init(fixture.Profile.ProfileDigest), new FixtureCallContext()); initialized = true; }
+        if (!initialized) { await service.Init(ServiceBoundaryTests.Init(fixture.Profile.ProfileDigest), new FixtureCallContext()).ConfigureAwait(false); initialized = true; }
         var invocation = new InvokeRequest { Operation = CustodyBindingContract.Decode(data)!.Envelope.Operation, Data = ByteString.CopyFrom(data) };
         foreach (var pair in metadata) invocation.Metadata.Add(pair.Key, pair.Value);
-        var componentResponse = await service.Invoke(invocation, new FixtureCallContext());
+        var componentResponse = await service.Invoke(invocation, new FixtureCallContext()).ConfigureAwait(false);
         var response = CustodyJson.Read<CustodyBindingResponseV1>(componentResponse.Data.Span);
         if (LoseNextRecordAcknowledgement && invocation.Operation == "record-transition") { LoseNextRecordAcknowledgement = false; throw new HttpRequestException("Controlled lost owner-record acknowledgement after service commit."); }
         if (invocation.Operation == "unwrap")

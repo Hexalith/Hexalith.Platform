@@ -22,36 +22,36 @@ internal static class ReviewRegressionTests
     }
     internal static async Task DeliveryTuples()
     {
-        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("tuple-root"))).WrappedRegistration!;
+        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("tuple-root")).ConfigureAwait(false)).WrappedRegistration!;
         var first = new CustodyBindingKeyUseV1("a:b", "c", "recipient", "transport", registration.OpaqueWrappedKeyReference);
         var second = first with { KeyUseLeaseId = "a", DeliveryAttemptId = "b:c" };
         if (CustodyJson.DeliveryId(first) == CustodyJson.DeliveryId(second)) throw new Exception("Canonical delivery tuples collided.");
         foreach (var use in new[] { first, second }) {
-            var result = await f.Call(f.Request("unwrap", registration, keyUse: use));
+            var result = await f.Call(f.Request("unwrap", registration, keyUse: use)).ConfigureAwait(false);
             if (result.KeyDelivery is null) throw new Exception("Distinct colon tuple skipped actual key delivery.");
             System.Security.Cryptography.CryptographicOperations.ZeroMemory(result.KeyDelivery.RootKey);
-            await f.CloseKey(registration, use);
+            await f.CloseKey(registration, use).ConfigureAwait(false);
         }
         var before = f.Store.State.Head;
-        await RefusedAsync(() => f.Call(f.Request("unwrap", registration, keyUse: first with { RecipientProcessIncarnation = "replacement-process" })));
-        await RefusedAsync(() => f.Call(f.Request("unwrap", registration, keyUse: first with { TransportIncarnation = "replacement-transport" })));
+        await RefusedAsync(() => f.Call(f.Request("unwrap", registration, keyUse: first with { RecipientProcessIncarnation = "replacement-process" }))).ConfigureAwait(false);
+        await RefusedAsync(() => f.Call(f.Request("unwrap", registration, keyUse: first with { TransportIncarnation = "replacement-transport" }))).ConfigureAwait(false);
         if (f.Native.Decrypts != 2 || f.Store.State.Head != before) throw new Exception("Duplicate changed delivery use emitted a key or changed authority.");
     }
     internal static async Task SignedHoldReservations()
     {
-        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("held-root"))).WrappedRegistration!;
+        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("held-root")).ConfigureAwait(false)).WrappedRegistration!;
         var request = f.Pin(registration, false); var before = f.Store.State.Head;
         foreach (Func<ControlClaim, ControlClaim> fault in new Func<ControlClaim, ControlClaim>[] {
             c => c with { HoldReservation = null },
             c => c with { HoldReservation = c.HoldReservation! with { HoldId = "substituted-hold" } },
             c => c with { HoldReservation = c.HoldReservation! with { TargetDigest = new string('B',64) } },
             c => c with { EffectiveDispatchRevision = 7, EffectiveDispatchReceiptId = "committed-dispatch" },
-        }) await RefusedAsync(() => f.Call(request, changeControl: fault));
+        }) await RefusedAsync(() => f.Call(request, changeControl: fault)).ConfigureAwait(false);
         if (f.Store.State.Checkpoint.Cycle is not null || f.Store.State.Checkpoint.Pins.Count != 0 || f.Store.State.Head != before)
             throw new Exception("Signed invalid or post-dispatch hold changed pre-cycle authority.");
-        await f.Call(request);
+        await f.Call(request).ConfigureAwait(false);
         if (f.Store.State.Checkpoint.Pins.Count != 1) throw new Exception("Valid current hold reservation fixture never acquired its pin.");
     }
     private static void Refused(Action action) { try { action(); } catch (AuthorityUnavailableException) { return; } throw new Exception("Expected refusal."); }
-    private static async Task RefusedAsync(Func<Task> action) { try { await action(); } catch (AuthorityUnavailableException) { return; } throw new Exception("Expected refusal."); }
+    private static async Task RefusedAsync(Func<Task> action) { try { await action().ConfigureAwait(false); } catch (AuthorityUnavailableException) { return; } throw new Exception("Expected refusal."); }
 }

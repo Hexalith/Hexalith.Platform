@@ -13,7 +13,7 @@ internal static class RegistrationPublicationTests
         using (var missing = new Fixture())
         {
             missing.RestartPublication(null);
-            await Refused(() => missing.Call(missing.Wrap("missing-publisher")));
+            await Refused(() => missing.Call(missing.Wrap("missing-publisher"))).ConfigureAwait(false);
             Check(missing.Native.Encrypts == 0 && missing.Store.Objects.Count == 0, "Missing installation created admission objects or performed native wrap.");
         }
         using (var blocked = new Fixture())
@@ -23,50 +23,50 @@ internal static class RegistrationPublicationTests
             var release=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             blocked.Publisher.BeforePublication=async _=> {
                 Check(blockedRequest.WrapInput!.RootKey.All(value=>value==0) && blocked.Native.LastTenantKek is { } kek && kek.All(value=>value==0),"Publisher observed uncleared root or KEK arrays.");
-                entered.SetResult();await release.Task;
+                entered.SetResult();await release.Task.ConfigureAwait(false);
             };
             var pending=WrapDirectAsync(blocked,blockedRequest,default);
-            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));Check(!pending.IsCompleted,"Publisher did not block.");
-            release.SetResult();await pending;
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false); Check(!pending.IsCompleted,"Publisher did not block.");
+            release.SetResult();await pending.ConfigureAwait(false);
         }
         using var f = new Fixture();
         f.Publisher.BeforePublication = async original => {
-            var retained = await SemanticProvider.ReadWrapOriginalAsync(f.Store, await f.Store.ReadAsync("tenant", default), original, default);
+            var retained = await SemanticProvider.ReadWrapOriginalAsync(f.Store, await f.Store.ReadAsync("tenant", default).ConfigureAwait(false), original, default).ConfigureAwait(false);
             Check(retained.WrappedRegistration == original, "Publication preceded durable verified original.");
         };
         f.Publisher.Unavailable = true;
         var request = f.Wrap("unreceived");
-        await Refused(() => f.Call(request));
+        await Refused(() => f.Call(request)).ConfigureAwait(false);
         var original = f.Store.State.Checkpoint.Registrations.Values.Single().Registration;
         Check(f.Native.Encrypts == 1 && f.Publisher.Originals.Count == 0, "Publication outage did not retain unreceived original.");
         f.RestartPublication(f.Publisher); f.Publisher.Unavailable = false;
         var intent = f.Store.State.Checkpoint.NativeIntents.Values.Single();
         var recovery = new WorkerOperation("recover-wrap-result", original.OperationId, intent.IntentId, intent.SourceGeneration, intent.DestinationGeneration, "", "executor-process-1");
         f.Qualify();
-        await f.Exchange.RecoverWrapAsync("tenant", recovery, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(recovery)), recovery), default);
+        await f.Exchange.RecoverWrapAsync("tenant", recovery, f.Sign("private-operation", CustodyJson.Hash(CustodyJson.Bytes(recovery)), recovery), default).ConfigureAwait(false);
         Check(f.Publisher.Originals[original.Identity] == original && f.Native.Encrypts == 1, "Restart recovery rewrapped or lost original.");
         f.Publisher.LoseAcknowledgement = true;
-        await Refused(() => f.Call(request));
+        await Refused(() => f.Call(request)).ConfigureAwait(false);
         f.RestartPublication(f.Publisher);
-        Check((await f.Call(request)).WrappedRegistration == original && f.Native.Encrypts == 1, "Lost acknowledgement did not reuse exact original.");
-        await f.CloseKey(original,request.WrapInput!.KeyUse);
+        Check((await f.Call(request).ConfigureAwait(false)).WrappedRegistration == original && f.Native.Encrypts == 1, "Lost acknowledgement did not reuse exact original.");
+        await f.CloseKey(original,request.WrapInput!.KeyUse).ConfigureAwait(false);
         Check(f.Store.State.Checkpoint.NativeIntents[intent.IntentId].Phase==CustodyBindingIntentPhase.Closed,"Actual holder completion did not close wrap intent.");
         var closedHead=f.Store.State.Head;f.RestartPublication(f.Publisher);f.Qualify();
-        await f.Exchange.RecoverWrapAsync("tenant",recovery,f.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default);
+        await f.Exchange.RecoverWrapAsync("tenant",recovery,f.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default).ConfigureAwait(false);
         Check(f.Store.State.Head==closedHead && f.Store.State.Checkpoint.NativeIntents[intent.IntentId].Phase==CustodyBindingIntentPhase.Closed
             && f.Store.State.Checkpoint.Deliveries[CustodyJson.DeliveryId(request.WrapInput.KeyUse)].Phase==CustodyBindingIntentPhase.Closed
             && f.Publisher.Originals[original.Identity]==original && f.Native.Encrypts==1,"Closed recovery changed phases, original or native wrap count.");
         f.Publisher.Substitute = true;
-        await Refused(() => f.Exchange.PublishRegistrationAsync(original, default));
+        await Refused(() => f.Exchange.PublishRegistrationAsync(original, default)).ConfigureAwait(false);
         f.Publisher.Substitute = false;
         using var cancelled = new CancellationTokenSource(); cancelled.Cancel();
-        try { await f.Exchange.PublishRegistrationAsync(original, cancelled.Token); throw new Exception("Cancellation fabricated publication success."); }
+        try { await f.Exchange.PublishRegistrationAsync(original, cancelled.Token).ConfigureAwait(false); throw new Exception("Cancellation fabricated publication success."); }
         catch (OperationCanceledException) { }
 
         var handler = new SdkBridge(f);
         using var sdk = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
         var verifier = new DaprCustodyRegistrationOriginalVerifier(PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)));
-        Check(await verifier.VerifyAsync(original, default), "Actual signed immutable original verification failed.");
+        Check(await verifier.VerifyAsync(original, default).ConfigureAwait(false), "Actual signed immutable original verification failed.");
         foreach (var changed in new[] {
             original with { OperationId = "changed" }, original with { ExpectedRevision = original.ExpectedRevision + 1 },
             original with { KekVersion = "changed" }, original with { OpaqueWrappedKeyReference = "changed" }, original with { WrapReceiptId = "changed" },
@@ -75,13 +75,13 @@ internal static class RegistrationPublicationTests
             original with { Identity = original.Identity with { KeyAlias = "changed" } }, original with { Identity = original.Identity with { KeyVersion = "changed" } },
             original with { Identity = original.Identity with { LifecycleVersion = "changed" } }, original with { Identity = original.Identity with { StoreTarget = "changed" } },
             original with { Identity = original.Identity with { ContractVersion = "changed" } },
-        }) Check(!await verifier.VerifyAsync(changed, default), "Substituted original admitted.");
+        }) Check(!await verifier.VerifyAsync(changed, default).ConfigureAwait(false), "Substituted original admitted.");
         var retainedOriginal = f.Store.State.Checkpoint.Originals[original.OperationId];
         f.Store.State.Checkpoint.Originals[original.OperationId] = retainedOriginal with { Response = null };
-        Check(!await verifier.VerifyAsync(original, default), "Missing immutable original admitted.");
+        Check(!await verifier.VerifyAsync(original, default).ConfigureAwait(false), "Missing immutable original admitted.");
         f.Store.State.Checkpoint.Originals[original.OperationId] = retainedOriginal;
         Check(f.Native.Encrypts == 1 && f.Native.Decrypts == 0 && f.Native.Schedules == 0, "Recovery/verification sent extra native work.");
-        await JoinedPublicationAsync();
+        await JoinedPublicationAsync().ConfigureAwait(false);
     }
     private static async Task JoinedPublicationAsync()
     {
@@ -94,21 +94,21 @@ internal static class RegistrationPublicationTests
             Check(request.WrapInput.RootKey.All(value=>value==0) && component.Native.LastTenantKek!.All(value=>value==0),"Post-commit publication retained secret buffers.");
             cancellation.Cancel();
         };
-        try { await WrapDirectAsync(component,request,cancellation.Token);throw new Exception("Post-commit cancellation fabricated success."); }
+        try { await WrapDirectAsync(component,request,cancellation.Token).ConfigureAwait(false); throw new Exception("Post-commit cancellation fabricated success."); }
         catch(OperationCanceledException) when(cancellation.IsCancellationRequested) { }
         catch(AuthorityUnavailableException failure) { throw new Exception("Joined publication refused: "+string.Join(", ",authority.Calls),failure); }
         var original=authority.State.Registrations.Values.Single();
         Check(authority.PrepareWrites==1 && authority.State.Originals.Keys.Any(key=>key.StartsWith("authorizer:",StringComparison.Ordinal)),"Joined actual authorizer did not advance the publication head.");
         authority.AfterPublicationCommit=null;authority.Restart();component.RestartPublication(authority.Publisher);
-        Check(await authority.Locator.FindAsync(original.Identity,default)==original,"Restart locator lost cancelled publication.");
+        Check(await authority.Locator.FindAsync(original.Identity,default).ConfigureAwait(false) == original,"Restart locator lost cancelled publication.");
         var intent=component.Store.State.Checkpoint.NativeIntents.Values.Single();
         var recovery=new WorkerOperation("recover-wrap-result",original.OperationId,intent.IntentId,intent.SourceGeneration,intent.DestinationGeneration,"","executor-process-1");
         component.Qualify();
-        try { await component.Exchange.RecoverWrapAsync("tenant",recovery,component.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default); }
+        try { await component.Exchange.RecoverWrapAsync("tenant",recovery,component.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(recovery)),recovery),default).ConfigureAwait(false); }
         catch(AuthorityUnavailableException failure) { throw new Exception("Joined recovery refused: "+string.Join(", ",authority.Calls),failure); }
         Check(component.Native.Encrypts==1 && authority.State.Registrations.Values.Single()==original,"Joined restart recovery repeated wrapping or changed original.");
         authority.RevokeAfterPrepare=true;
-        Check(await authority.Publisher.PublishAsync(original,default) is null,"Publisher revoked during actual prepare was admitted after verification.");
+        Check(await authority.Publisher.PublishAsync(original,default).ConfigureAwait(false) is null,"Publisher revoked during actual prepare was admitted after verification.");
         Check(component.Native.Encrypts==1 && authority.State.Registrations.Values.Single()==original,"Revoked publication mutated original or wrapped again.");
     }
     private static Task<CustodyBindingResponseV1> WrapDirectAsync(Fixture fixture,CustodyBindingRequestV1 request,CancellationToken token)
@@ -121,7 +121,7 @@ internal static class RegistrationPublicationTests
     private static void Check(bool condition, string message) { if (!condition) throw new Exception(message); }
     private static async Task Refused(Func<Task> operation)
     {
-        try { await operation(); }
+        try { await operation().ConfigureAwait(false); }
         catch (AuthorityUnavailableException) { return; }
         throw new Exception("Expected publication refusal.");
     }

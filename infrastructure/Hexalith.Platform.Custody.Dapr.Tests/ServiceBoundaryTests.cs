@@ -11,22 +11,22 @@ internal static class ServiceBoundaryTests
         using var f = new Fixture(); var service = new BindingService(f.Profile, f.Provider, f.Store); var context = new FixtureCallContext();
         var request = f.Request("read-current"); var invoke = new InvokeRequest { Operation = "read-current", Data = ByteString.CopyFrom(CustodyBindingContract.Encode(request)) };
         foreach (var pair in f.OwnerMetadata(request)) invoke.Metadata.Add(pair.Key, pair.Value);
-        await Refused(() => service.Invoke(invoke, context));
-        await Refused(() => service.Init(Init("wrong-profile"), context));
-        await service.Init(Init(f.Profile.ProfileDigest), context);
-        var before = f.Store.State.Head; var response = await service.Invoke(invoke, context);
+        await Refused(() => service.Invoke(invoke, context)).ConfigureAwait(false);
+        await Refused(() => service.Init(Init("wrong-profile"), context)).ConfigureAwait(false);
+        await service.Init(Init(f.Profile.ProfileDigest), context).ConfigureAwait(false);
+        var before = f.Store.State.Head; var response = await service.Invoke(invoke, context).ConfigureAwait(false);
         if (CustodyJson.Read<CustodyBindingResponseV1>(response.Data.Span).Current is null) throw new Exception("Service invocation missing signed current head.");
-        await service.Init(Init(f.Profile.ProfileDigest), context);
-        await service.Invoke(invoke, context);
-        var noProof = invoke.Clone(); noProof.Metadata.Remove("custody-control-proof"); await Refused(() => service.Invoke(noProof, context));
-        var changed = invoke.Clone(); changed.Operation = "destroy-manifest"; await Refused(() => service.Invoke(changed, context));
+        await service.Init(Init(f.Profile.ProfileDigest), context).ConfigureAwait(false);
+        await service.Invoke(invoke, context).ConfigureAwait(false);
+        var noProof = invoke.Clone(); noProof.Metadata.Remove("custody-control-proof"); await Refused(() => service.Invoke(noProof, context)).ConfigureAwait(false);
+        var changed = invoke.Clone(); changed.Operation = "destroy-manifest"; await Refused(() => service.Invoke(changed, context)).ConfigureAwait(false);
         if (f.Store.State.Head != before) throw new Exception("Init/refused service calls mutated authority.");
     }
     internal static OutputBindingInitRequest Init(string digest) {
         var request = new OutputBindingInitRequest { Metadata = new() };
         request.Metadata.Properties.Add("profileDigest", digest); return request;
     }
-    private static async Task Refused(Func<Task> action) { try { await action(); } catch (RpcException e) when (e.StatusCode == StatusCode.FailedPrecondition) { return; } throw new Exception("Service boundary did not refuse."); }
+    private static async Task Refused(Func<Task> action) { try { await action().ConfigureAwait(false); } catch (RpcException e) when (e.StatusCode == StatusCode.FailedPrecondition) { return; } throw new Exception("Service boundary did not refuse."); }
 }
 internal sealed class FixtureCallContext : ServerCallContext
 {

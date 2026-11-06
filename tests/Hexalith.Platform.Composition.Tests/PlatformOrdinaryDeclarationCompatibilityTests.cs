@@ -78,9 +78,11 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         const string SafeStatusTooling = "f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9";
         const string CurrentProducerAppHost = "672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0";
         const string CurrentProducerTooling = "3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a";
+        const string LatestProducerAppHost = "0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf";
+        const string LatestProducerTooling = "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632";
         var publishedPairs = new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling),
             (NewAppHost, NewTooling), (NextAppHost, NextTooling), (CanonicalClaimsAppHost, CanonicalClaimsTooling),
-            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling) };
+            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling) };
         foreach (var appHostPair in publishedPairs)
             foreach (var toolingPair in publishedPairs)
                 PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)

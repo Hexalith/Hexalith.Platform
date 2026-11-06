@@ -15,7 +15,7 @@ internal static class OpenBaoNativeOperationsTests
 {
     internal static async Task Run()
     {
-        foreach(bool derived in new[]{true,false}) { await Binding(derived);await TenantKekExchange(derived);await SurvivorAndSourceCut(derived); }
+        foreach(bool derived in new[]{true,false}) { await Binding(derived).ConfigureAwait(false); await TenantKekExchange(derived).ConfigureAwait(false); await SurvivorAndSourceCut(derived).ConfigureAwait(false); }
     }
     private static async Task SurvivorAndSourceCut(bool derived)
     {
@@ -30,7 +30,7 @@ internal static class OpenBaoNativeOperationsTests
                 epochs.ToDictionary(value=>value.KeyArn,_=>CustodyJson.Hash(CustodyJson.Bytes(metadata))),Fixture.Digest,"producer","transport",authority.Binding,
                 epochs.ToDictionary(value=>value.KeyArn,_=>new OpenBaoTransitBindingProfile("OpenBaoTransit.AeadAssociatedData.V1",derived)));
             using var native=new OpenBaoNativeOperations(fixture.Profile,installation,fixture.Store,dapr,new NonOwningTransport(transport),originalTransport:authority);
-            var registration=await KeyEnvelopeBuilder.WrapAsync(fixture.Wrap("survivor-source").WrapInput!,kek,"e1",native,default);
+            var registration=await KeyEnvelopeBuilder.WrapAsync(fixture.Wrap("survivor-source").WrapInput!,kek,"e1",native,default).ConfigureAwait(false);
             var admission=new NativeReencryptionAdmission("tenant","e1","e2",CustodyJson.Hash(registration.EncryptedOuterKey),"producer","transport",fixture.Profile.ProfileDigest,"","");
             string subject=CustodyJson.Hash(CustodyJson.Bytes(admission));
             void Enroll(NativeReencryptionAdmission actual)
@@ -39,25 +39,25 @@ internal static class OpenBaoNativeOperationsTests
                 authority.Enroll(subject,fixture.Store.State.Head.Revision,fixture.Store.State.Head.Digest,statement);
             }
             Enroll(admission with { ProducerHolderOriginalSha256=Fixture.Digest,NativeHolderOriginalSha256=Fixture.Digest });
-            byte[] copied=await native.ReencryptOuterKeyAsync("e1","e2","tenant",registration.EncryptedOuterKey,default);
+            byte[] copied=await native.ReencryptOuterKeyAsync("e1","e2","tenant",registration.EncryptedOuterKey,default).ConfigureAwait(false);
             Enroll(admission with { ProducerHolderOriginalSha256=Fixture.Digest,NativeHolderOriginalSha256=Fixture.Digest,DestinationEpoch="other-e2" });
-            int before=transport.Effects;await Refused(()=>native.ReencryptOuterKeyAsync("e1","e2","tenant",registration.EncryptedOuterKey,default));
+            int before=transport.Effects;await Refused(()=>native.ReencryptOuterKeyAsync("e1","e2","tenant",registration.EncryptedOuterKey,default)).ConfigureAwait(false);
             if(transport.Effects!=before) throw new Exception("Substituted signed native-holder admission reached encryption.");
             // The real adapter deletion path must affect only the selected enrolled source.
             var manifest=fixture.Manifest([registration.Registration]);
             var checkpoint=SemanticProvider.Clone(fixture.Store.State) with { Cycle=new(manifest.Envelope.OperationId,manifest,"e1","e2",CyclePhase.Armed,[],[],Fixture.Digest,null),CurrentEpoch="e2" };
-            await fixture.Store.CommitAsync(fixture.Store.State,checkpoint,default);fixture.Qualify();
+            await fixture.Store.CommitAsync(fixture.Store.State,checkpoint,default).ConfigureAwait(false); fixture.Qualify();
             var worker=new RecoverableLifecycle(fixture.Profile,fixture.Store,native,new StatementVerifier(fixture.Profile,TimeProvider.System));
             var operation=new WorkerOperation("schedule-cut",manifest.Envelope.OperationId,"real-openbao-cut","e1","e2","","producer");
-            await worker.ScheduleCutAsync("tenant",operation,fixture.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(operation)),operation),default);
-            fixture.Qualify();await worker.ScheduleCutAsync("tenant",operation,fixture.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(operation)),operation),default);
+            await worker.ScheduleCutAsync("tenant",operation,fixture.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(operation)),operation),default).ConfigureAwait(false);
+            fixture.Qualify();await worker.ScheduleCutAsync("tenant",operation,fixture.Sign("private-operation",CustodyJson.Hash(CustodyJson.Bytes(operation)),operation),default).ConfigureAwait(false);
             if(fixture.Store.State.Checkpoint.Cycle!.Phase!=CyclePhase.AwaitingFinalEvidence) throw new Exception("Native cut scheduling was not retained as awaiting independent final evidence.");
-            await Refused(()=>native.ReadOuterKeyAsync(registration,default));
-            var survivor=registration with { Epoch="e2",EncryptedOuterKey=copied };byte[] outer=await native.ReadOuterKeyAsync(survivor,default);
+            await Refused(()=>native.ReadOuterKeyAsync(registration,default)).ConfigureAwait(false);
+            var survivor=registration with { Epoch="e2",EncryptedOuterKey=copied };byte[] outer=await native.ReadOuterKeyAsync(survivor,default).ConfigureAwait(false);
             try { byte[] root=KeyEnvelopeBuilder.Unwrap(survivor,outer,kek);try { if(!root.AsSpan().SequenceEqual(Fixture.Root)) throw new Exception("Admitted native survivor changed the original root."); }finally { CryptographicOperations.ZeroMemory(root); } }
             finally { CryptographicOperations.ZeroMemory(outer); }
             if(transport.Deletes!=1) throw new Exception("Actual source-cut DELETE was missing or repeated.");
-            await Refused(()=>native.ScheduleSourceCutAsync("e1","other",default));
+            await Refused(()=>native.ScheduleSourceCutAsync("e1","other",default)).ConfigureAwait(false);
         }
         finally { CryptographicOperations.ZeroMemory(kek);File.Delete(credential); }
     }
@@ -86,7 +86,7 @@ internal static class OpenBaoNativeOperationsTests
             var context=new DefaultHttpContext { RequestServices=new ServiceCollection().AddLogging().BuildServiceProvider() };
             context.Request.Headers["dapr-api-token"]="fixture-holder-channel";context.Request.Headers.Authorization="Bearer fixture-holder-caller";
             context.Request.Body=new MemoryStream(Encoding.UTF8.GetBytes(body));context.Response.Body=new MemoryStream();
-            await(await _receiver.HandleAsync(context,method[(method.LastIndexOf('/')+1)..],token)).ExecuteAsync(context);
+            await(await _receiver.HandleAsync(context,method[(method.LastIndexOf('/')+1)..],token).ConfigureAwait(false)).ExecuteAsync(context).ConfigureAwait(false);
             return context.Response.StatusCode==200?Encoding.UTF8.GetString(((MemoryStream)context.Response.Body).ToArray()):null;
         }
         public void Dispose() { _dapr.Dispose();_signer.Dispose();File.Delete(_channel); }
@@ -95,7 +95,7 @@ internal static class OpenBaoNativeOperationsTests
             internal IndependentAuthorityState State=state;private int _revision=1;
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
             {
-                byte[] incoming=await request.Content!.ReadAsByteArrayAsync(token);bool read=request.RequestUri!.AbsolutePath.EndsWith("/GetState",StringComparison.Ordinal);
+                byte[] incoming=await request.Content!.ReadAsByteArrayAsync(token).ConfigureAwait(false); bool read=request.RequestUri!.AbsolutePath.EndsWith("/GetState",StringComparison.Ordinal);
                 if(!read)
                 {
                     if(!request.RequestUri.AbsolutePath.EndsWith("/SaveState",StringComparison.Ordinal)) throw new Exception("Unexpected holder source operation.");
@@ -149,27 +149,27 @@ internal static class OpenBaoNativeOperationsTests
                 var claim=new KeyAdmission(use,request.Envelope.RequestDigest,profile.ProfileDigest,new[]{"caller","sdk","sidecar","uds","grpc","tls","component","native"}.Select(role=>new KeyHolder("fixture-"+use.KeyUseLeaseId+role,role,use.RecipientProcessIncarnation,use.TransportIncarnation,"independent-owner",Fixture.Digest)).ToArray());
                 return fixture.Sign("independent-observer",CustodyJson.Hash(CustodyJson.Bytes(claim)),claim);
             }
-            var wrap=fixture.Wrap("openbao-actual-kek");var wrapped=await exchange.ExecuteAsync(wrap,fixture.Store.State,Admission(wrap),default);
+            var wrap=fixture.Wrap("openbao-actual-kek");var wrapped=await exchange.ExecuteAsync(wrap,fixture.Store.State,Admission(wrap),default).ConfigureAwait(false);
             var registration=wrapped.WrappedRegistration??throw new Exception("Real OpenBao KEK key exchange did not wrap.");
             fixture.Qualify();var unwrap=fixture.Request("unwrap",registration,keyUse:new("read-lease","read-delivery","recipient","transport",registration.OpaqueWrappedKeyReference));
-            var opened=await exchange.ExecuteAsync(unwrap,fixture.Store.State,Admission(unwrap),default);
+            var opened=await exchange.ExecuteAsync(unwrap,fixture.Store.State,Admission(unwrap),default).ConfigureAwait(false);
             if(opened.KeyDelivery is not { } delivered || !delivered.RootKey.AsSpan().SequenceEqual(Fixture.Root)) throw new Exception("Real OpenBao tenant KEK failed KeyExchange unwrap.");
             CryptographicOperations.ZeroMemory(delivered.RootKey);
-            byte[] independentlyOpened=await native.ReadTenantKekAsync("tenant","kek",default);if(!independentlyOpened.AsSpan().SequenceEqual(kek)) throw new Exception("Independent tenant KEK AAD mismatch.");CryptographicOperations.ZeroMemory(independentlyOpened);
+            byte[] independentlyOpened=await native.ReadTenantKekAsync("tenant","kek",default).ConfigureAwait(false); if(!independentlyOpened.AsSpan().SequenceEqual(kek)) throw new Exception("Independent tenant KEK AAD mismatch.");CryptographicOperations.ZeroMemory(independentlyOpened);
             foreach(string substitution in new[]{"tenant","version","resource"})
             {
                 var changed=profile with { Keks=keks.Select(value=>value.TenantId!="tenant"?value:substitution switch { "tenant"=>value with { TenantId="foreign" },"version"=>value with { Version="changed" },_=>value with { ProtectorArn=epochs[0].KeyArn } }).ToArray() };
                 using var refused=new OpenBaoNativeOperations(changed,installation,fixture.Store,dapr,new NonOwningTransport(transport));
-                await Refused(()=>refused.ReadTenantKekAsync(substitution=="tenant"?"foreign":"tenant",substitution=="version"?"changed":"kek",default));
+                await Refused(()=>refused.ReadTenantKekAsync(substitution=="tenant"?"foreign":"tenant",substitution=="version"?"changed":"kek",default)).ConfigureAwait(false);
             }
-            transport.WrongAad=true;await Refused(()=>native.ReadTenantKekAsync("tenant","kek",default));
+            transport.WrongAad=true;await Refused(()=>native.ReadTenantKekAsync("tenant","kek",default)).ConfigureAwait(false);
         }
         finally { CryptographicOperations.ZeroMemory(kek);File.Delete(credential); }
     }
     private static async Task Binding(bool derived)
     {
         using var fixture=new Fixture();using var dapr=new DaprClientBuilder().Build();
-        string credential=Path.GetTempFileName();await File.WriteAllTextAsync(credential,"fixture-native-token");
+        string credential=Path.GetTempFileName();await File.WriteAllTextAsync(credential,"fixture-native-token").ConfigureAwait(false);
         try
         {
             var metadata=JsonSerializer.SerializeToElement(new { type="aes256-gcm96",exportable=false,allow_plaintext_backup=false,derived });
@@ -181,39 +181,39 @@ internal static class OpenBaoNativeOperationsTests
             byte[] original=RandomNumberGenerator.GetBytes(32);
             try
             {
-                byte[] encrypted=await operations.EncryptOuterKeyAsync("e1","tenant",original,default);
-                var registration=await KeyEnvelopeBuilder.WrapAsync(fixture.Wrap("native-aad").WrapInput!,RandomNumberGenerator.GetBytes(32),"e1",fixture.Native,default);
+                byte[] encrypted=await operations.EncryptOuterKeyAsync("e1","tenant",original,default).ConfigureAwait(false);
+                var registration=await KeyEnvelopeBuilder.WrapAsync(fixture.Wrap("native-aad").WrapInput!,RandomNumberGenerator.GetBytes(32),"e1",fixture.Native,default).ConfigureAwait(false);
                 registration=registration with { EncryptedOuterKey=encrypted,Epoch="e1" };
-                byte[] recovered=await operations.ReadOuterKeyAsync(registration,default);
+                byte[] recovered=await operations.ReadOuterKeyAsync(registration,default).ConfigureAwait(false);
                 if(!recovered.AsSpan().SequenceEqual(original)) throw new Exception("OpenBao AEAD roundtrip changed key.");CryptographicOperations.ZeroMemory(recovered);
                 int effects=handler.Effects;
-                await Refused(()=>operations.EncryptOuterKeyAsync("e1","other",original,default));
+                await Refused(()=>operations.EncryptOuterKeyAsync("e1","other",original,default)).ConfigureAwait(false);
                 if(handler.Effects!=effects) throw new Exception("Foreign tenant reached native effect.");
                 // Same encrypted bytes transplanted to an independently enrolled tenant resource must fail authenticated binding.
-                await Refused(()=>operations.ReadOuterKeyAsync(registration with { Epoch="other-e1",Registration=registration.Registration with { Identity=registration.Registration.Identity with { TenantId="other" } } },default));
+                await Refused(()=>operations.ReadOuterKeyAsync(registration with { Epoch="other-e1",Registration=registration.Registration with { Identity=registration.Registration.Identity with { TenantId="other" } } },default)).ConfigureAwait(false);
                 handler.Substitute=true;effects=handler.Effects;
-                await Refused(()=>operations.EncryptOuterKeyAsync("e1","tenant",original,default));
+                await Refused(()=>operations.EncryptOuterKeyAsync("e1","tenant",original,default)).ConfigureAwait(false);
                 if(handler.Effects!=effects) throw new Exception("Substituted metadata reached encryption.");
                 handler.Substitute=false;handler.Malformed=true;
-                await Refused(()=>operations.EncryptOuterKeyAsync("e1","tenant",original,default));
+                await Refused(()=>operations.EncryptOuterKeyAsync("e1","tenant",original,default)).ConfigureAwait(false);
                 if(handler.Effects!=effects) throw new Exception("Malformed metadata reached encryption.");handler.Malformed=false;
                 using(var legacy=new OpenBaoNativeOperations(profile,installation with { TransitBindingProfiles=null },fixture.Store,dapr,new NativeTransport(metadata,derived)))
-                    await Refused(()=>legacy.EncryptOuterKeyAsync("e1","tenant",original,default));
+                    await Refused(()=>legacy.EncryptOuterKeyAsync("e1","tenant",original,default)).ConfigureAwait(false);
                 using(var mismatched=new OpenBaoNativeOperations(profile,installation with { TransitBindingProfiles=epochs.ToDictionary(value=>value.KeyArn,_=>new OpenBaoTransitBindingProfile("OpenBaoTransit.AeadAssociatedData.V1",!derived)) },fixture.Store,dapr,new NativeTransport(metadata,derived)))
-                    await Refused(()=>mismatched.EncryptOuterKeyAsync("e1","tenant",original,default));
+                    await Refused(()=>mismatched.EncryptOuterKeyAsync("e1","tenant",original,default)).ConfigureAwait(false);
                 using(var badEndpoint=new OpenBaoNativeOperations(profile,installation with { OpenBaoHttpsUrl="https://fixture.invalid/substituted-path" },fixture.Store,dapr,new NativeTransport(metadata,derived)))
-                    await Refused(()=>badEndpoint.EncryptOuterKeyAsync("e1","tenant",original,default));
+                    await Refused(()=>badEndpoint.EncryptOuterKeyAsync("e1","tenant",original,default)).ConfigureAwait(false);
                 using(var stalled=new OpenBaoNativeOperations(profile,installation,fixture.Store,dapr,new StalledTransport(),TimeSpan.FromMilliseconds(100)))
                 {
                     var elapsed=System.Diagnostics.Stopwatch.StartNew();
-                    try { await stalled.EncryptOuterKeyAsync("e1","tenant",original,CancellationToken.None);throw new Exception("Stalled native response body escaped total deadline."); }
+                    try { await stalled.EncryptOuterKeyAsync("e1","tenant",original,CancellationToken.None).ConfigureAwait(false); throw new Exception("Stalled native response body escaped total deadline."); }
                     catch(OperationCanceledException) { }
                     if(elapsed.Elapsed>TimeSpan.FromSeconds(3)) throw new Exception("Native headers ended total deadline protection.");
                 }
                 effects=handler.Effects;
-                await Refused(()=>operations.ReencryptOuterKeyAsync("e1","e2","tenant",encrypted,default));
+                await Refused(()=>operations.ReencryptOuterKeyAsync("e1","e2","tenant",encrypted,default)).ConfigureAwait(false);
                 if(handler.Effects!=effects) throw new Exception("Missing independent holder/recovery protocol reached survivor plaintext operation.");
-                handler.WrongAad=true;await Refused(()=>operations.ReadOuterKeyAsync(registration,default));
+                handler.WrongAad=true;await Refused(()=>operations.ReadOuterKeyAsync(registration,default)).ConfigureAwait(false);
                 if(handler.LastAad is null || !Encoding.UTF8.GetString(handler.LastAad).Contains("custody-outer-key-v1",StringComparison.Ordinal)) throw new Exception("Typed purpose/tenant/epoch AAD absent.");
             }
             finally { CryptographicOperations.ZeroMemory(original); }
@@ -221,7 +221,7 @@ internal static class OpenBaoNativeOperationsTests
         finally { File.Delete(credential); }
     }
     private static async Task Refused(Func<Task> action)
-    { try { await action(); } catch(Exception exception) when(exception is AuthorityUnavailableException or HttpRequestException or CryptographicException) { return; }throw new Exception("OpenBao substitution or unsupported mapping was accepted."); }
+    { try { await action().ConfigureAwait(false); } catch(Exception exception) when(exception is AuthorityUnavailableException or HttpRequestException or CryptographicException) { return; }throw new Exception("OpenBao substitution or unsupported mapping was accepted."); }
     private sealed class StalledTransport:HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
@@ -237,7 +237,7 @@ internal static class OpenBaoNativeOperationsTests
     {
         public override bool CanRead=>true;public override bool CanSeek=>false;public override bool CanWrite=>false;
         public override long Length=>throw new NotSupportedException();public override long Position { get=>throw new NotSupportedException();set=>throw new NotSupportedException(); }
-        public override async ValueTask<int> ReadAsync(Memory<byte> buffer,CancellationToken token=default) { await Task.Delay(Timeout.Infinite,token);return 0; }
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer,CancellationToken token=default) { await Task.Delay(Timeout.Infinite,token).ConfigureAwait(false); return 0; }
         public override int Read(byte[] buffer,int offset,int count)=>throw new NotSupportedException();public override void Flush()=>throw new NotSupportedException();
         public override long Seek(long offset,SeekOrigin origin)=>throw new NotSupportedException();public override void SetLength(long value)=>throw new NotSupportedException();public override void Write(byte[] buffer,int offset,int count)=>throw new NotSupportedException();
     }
@@ -271,7 +271,7 @@ internal static class OpenBaoNativeOperationsTests
                 return Json(new { data=Malformed?JsonSerializer.SerializeToElement(new { type="aes256-gcm96" }):Substitute?JsonSerializer.SerializeToElement(new { type="aes256-gcm96",exportable=true,allow_plaintext_backup=false,derived }):metadata });
             }
             if(request.Method!=HttpMethod.Post || !path.StartsWith("/v1/transit/",StringComparison.Ordinal)) throw new Exception("Unexpected native API.");
-            var input=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token)).RootElement;
+            var input=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token).ConfigureAwait(false)).RootElement;
             LastAad=Convert.FromBase64String(input.GetProperty("associated_data").GetString()!);
             var binding=JsonDocument.Parse(LastAad).RootElement;
             if(binding.GetProperty("schema").GetString()!="custody-native-aad-v1" || binding.GetProperty("authority").GetString()!="authority" || binding.GetProperty("incarnation").GetString()!="incarnation"

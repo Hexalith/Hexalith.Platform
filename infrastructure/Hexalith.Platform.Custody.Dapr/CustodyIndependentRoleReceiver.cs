@@ -39,7 +39,7 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
         try
         {
             if (method is not ("prepare" or "authorize" or "observe")) return Results.StatusCode(403);
-            string channel = await DaprSecretsInvoker.ReadMountedBearerAsync("file:" + installation.AppChannelTokenFile, budget.Token)
+            string channel = await DaprSecretsInvoker.ReadMountedBearerAsync("file:" + installation.AppChannelTokenFile, budget.Token).ConfigureAwait(false)
                 ?? throw new AuthorityUnavailableException("Installed private app-channel credential required.");
             var channelHeader = context.Request.Headers["dapr-api-token"];
             var bearerHeader = context.Request.Headers.Authorization;
@@ -47,7 +47,7 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
                 || !CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(channel), Encoding.UTF8.GetBytes(actual))
                 || bearerHeader.Count != 1 || bearerHeader[0] is not { Length: > 7 and <= 8199 } bearer || !bearer.StartsWith("Bearer ", StringComparison.Ordinal))
                 return Results.StatusCode(403);
-            string? body = await DaprSecretsInvoker.ReadBoundedAsync(context.Request.Body, budget.Token, CustodyBindingContract.CandidateRequestMessageBytes);
+            string? body = await DaprSecretsInvoker.ReadBoundedAsync(context.Request.Body, budget.Token, CustodyBindingContract.CandidateRequestMessageBytes).ConfigureAwait(false);
             if (body is null) return Results.StatusCode(400);
             byte[] bytes = Encoding.UTF8.GetBytes(body); CustodyBindingContract.RejectDuplicateProperties(bytes);
             CustodyCallIntent intent;
@@ -60,31 +60,31 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
             ISecretsCredentialBoundDaprInvoker transport = authenticatedTransport ?? new DaprSecretsInvoker(dapr);
             var scopes = new IndependentDaprAuthority(transport, installation.CallerScopeAuthority, clock);
             string bearerSha256 = CustodyJson.Hash(Encoding.UTF8.GetBytes(bearer[7..]));
-            var workload=await scopes.InvokeAsync<CustodyRoleWorkloadGrant>("custody-role-authorize",new { role=installation.Role,intent,bearerSha256,method },budget.Token);
+            var workload=await scopes.InvokeAsync<CustodyRoleWorkloadGrant>("custody-role-authorize",new { role=installation.Role,intent,bearerSha256,method },budget.Token).ConfigureAwait(false);
             if(workload is null || workload.BearerSha256!=bearerSha256 || workload.Role!=installation.Role || workload.ScopeReference!=intent.TenantId+"|"+intent.OwnerPurposeScope
                 || workload.IntentSha256!=CustodyJson.Hash(CustodyJson.Bytes(intent)) || workload.ValidUntil<=clock.GetUtcNow()) return Results.StatusCode(403);
             async Task<CustodyRoleIssuance> Issue(object response)
             {
                 string responseSha256=CustodyJson.Hash(CustodyJson.Bytes(response));
-                var issued=await scopes.InvokeAsync<CustodyRoleIssuance>("custody-role-authorize",new { role=installation.Role,intent,bearerSha256,method,grant=workload,responseSha256 },budget.Token);
+                var issued=await scopes.InvokeAsync<CustodyRoleIssuance>("custody-role-authorize",new { role=installation.Role,intent,bearerSha256,method,grant=workload,responseSha256 },budget.Token).ConfigureAwait(false);
                 if(issued is null || issued.Grant!=workload || issued.Method!=method || issued.ResponseSha256!=responseSha256 || workload.ValidUntil<=clock.GetUtcNow())
                     throw new AuthorityUnavailableException("Current exact workload issuance denied.");
                 return issued;
             }
-            var current = await store.ReadAsync(intent.TenantId, budget.Token);
+            var current = await store.ReadAsync(intent.TenantId, budget.Token).ConfigureAwait(false);
             var verifier = new StatementVerifier(profile, clock);
             var originals = new IndependentDaprAuthority(transport, installation.OriginalAuthority, clock);
             var originalScope = new { tenant = intent.TenantId, scope = intent.OwnerPurposeScope, operationId = intent.OperationId,
                 revision = current.Head.Revision, digest = current.Head.Digest };
             if (installation.Role == "observer" && method == "observe")
             {
-                var observation = await originals.InvokeAsync<SignedStatement>("custody-native-observation-original", originalScope, budget.Token);
+                var observation = await originals.InvokeAsync<SignedStatement>("custody-native-observation-original", originalScope, budget.Token).ConfigureAwait(false);
                 if (observation is null) return Results.StatusCode(503);
                 if (!verifier.Verify(observation, "native-evidence-original", current, intent.RequestDigest, TimeSpan.FromSeconds(30))) return Results.StatusCode(503);
                 var issuance=await Issue(observation).ConfigureAwait(false);
                 return Results.Bytes(CustodyJson.Bytes(Sign("independent-observer",current,intent.RequestDigest,observation.Payload,issuance)),"application/json");
             }
-            var control = await originals.InvokeAsync<RetainedControlOriginal>("custody-control-original", originalScope, budget.Token);
+            var control = await originals.InvokeAsync<RetainedControlOriginal>("custody-control-original", originalScope, budget.Token).ConfigureAwait(false);
             if (control is null) return Results.StatusCode(503);
             string proofHash = CustodyJson.Hash(CustodyJson.Bytes(control.Proof));
             // Control is derived only from a currently signed independently retained guard/protection original.
@@ -107,14 +107,14 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
             {
                 if (installation.Role is not ("authorizer" or "control")) return Results.StatusCode(403);
                 var request = JsonSerializer.SerializeToElement(new { intent, prepared }, CustodyBindingContract.Json);
-                var admission = await originals.InvokeAsync<OriginalAdmission>("qualification-begin-original", new { role = installation.Role, requestId = id, original = request }, budget.Token);
+                var admission = await originals.InvokeAsync<OriginalAdmission>("qualification-begin-original", new { role = installation.Role, requestId = id, original = request }, budget.Token).ConfigureAwait(false);
                 if(admission is not { Exact:true }) return Results.StatusCode(503);
                 _=await Issue(prepared).ConfigureAwait(false);
                 return Results.Bytes(CustodyJson.Bytes(prepared),"application/json");
             }
             if (authorization is null || !CustodyBindingContract.Digest(authorization.RequestSha256) || authorization.Prepared != prepared)
                 return Results.StatusCode(403);
-            var retained = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original", new { role = installation.Role, requestId = id }, budget.Token);
+            var retained = await originals.InvokeAsync<IndependentOriginal>("qualification-lookup-original", new { role = installation.Role, requestId = id }, budget.Token).ConfigureAwait(false);
             if(retained is null || retained.Request.EnumerateObject().Count()!=2
                 || retained.Request.GetProperty("intent").Deserialize<CustodyCallIntent>(CustodyBindingContract.Json)!=intent
                 || retained.Request.GetProperty("prepared").Deserialize<CustodyPreparedCall>(CustodyBindingContract.Json)!=prepared)
@@ -130,7 +130,7 @@ internal sealed class CustodyIndependentRoleReceiver(ComponentProfile profile, C
                 metadata["custody-control-proof"] = Convert.ToBase64String(CustodyJson.Bytes(control.ControlStatement));
                 if (keyOperation)
                 {
-                    var observed = await originals.InvokeAsync<SignedStatement>("custody-native-observation-original", originalScope, budget.Token);
+                    var observed = await originals.InvokeAsync<SignedStatement>("custody-native-observation-original", originalScope, budget.Token).ConfigureAwait(false);
                     if (observed is null || !verifier.Verify(observed, "independent-observer", current,
                         CustodyJson.Hash(CustodyJson.Bytes(observed.Payload)), TimeSpan.FromSeconds(30))) return Results.StatusCode(503);
                     if (intent.Operation is "wrap" or "unwrap")

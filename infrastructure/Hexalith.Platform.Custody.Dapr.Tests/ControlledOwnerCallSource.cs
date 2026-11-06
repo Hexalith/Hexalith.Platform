@@ -21,7 +21,7 @@ internal sealed class ControlledOwnerCallSource(ICustodyOwnerCallSource inner) :
         if (Mode == "refuse") { return null; }
         if (Mode == "throw") { throw new InvalidOperationException("Independent private issuer unavailable."); }
         if (Mode == "cancel") { Cancellation!.Cancel(); return null; }
-        CustodyOwnerAuthorizedCall? result = await inner.AuthorizeAsync(phase, tenant, ownerScope, operationIdentity, transitionJson, token);
+        CustodyOwnerAuthorizedCall? result = await inner.AuthorizeAsync(phase, tenant, ownerScope, operationIdentity, transitionJson, token).ConfigureAwait(false);
         if (result is null || Mode == "normal") { return result; }
         CustodyBindingRequestV1 request = CustodyBindingContract.Decode(Encoding.UTF8.GetBytes(result.RequestJson))!;
         request = Mode == "foreign-tenant"

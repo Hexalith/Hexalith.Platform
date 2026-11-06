@@ -13,7 +13,7 @@ internal sealed class BindingService(ComponentProfile profile, SemanticProvider 
     {
         if (request.Metadata?.Properties is not { Count: 1 } values || !values.TryGetValue("profileDigest", out string? digest)
             || digest != profile.ProfileDigest) throw Closed("Init profile mismatch.");
-        try { foreach (string tenant in profile.Tenants) _ = await store.ReadAsync(tenant, context.CancellationToken); }
+        try { foreach (string tenant in profile.Tenants) _ = await store.ReadAsync(tenant, context.CancellationToken).ConfigureAwait(false); }
         catch { throw Closed("Surviving authority unavailable."); }
         Interlocked.Exchange(ref _initialized, 1); // Same-profile re-Init does not clear any durable state.
         return new();
@@ -40,7 +40,7 @@ internal sealed class BindingService(ComponentProfile profile, SemanticProvider 
             result = await provider.InvokeAsync(data, CustodyJson.Read<SignedStatement>(Convert.FromBase64String(operation)),
                 CustodyJson.Read<SignedStatement>(Convert.FromBase64String(control)), context.CancellationToken,
                 request.Metadata.TryGetValue("custody-key-admission", out string? keyAdmission)
-                    ? CustodyJson.Read<SignedStatement>(Convert.FromBase64String(keyAdmission)) : null);
+                    ? CustodyJson.Read<SignedStatement>(Convert.FromBase64String(keyAdmission)) : null).ConfigureAwait(false);
             result = provider.AuthenticateResponse(decoded, result);
             responseBytes = CustodyJson.Bytes(result);
             var response = new InvokeResponse { Data = ByteString.CopyFrom(responseBytes), ContentType = "application/json" };

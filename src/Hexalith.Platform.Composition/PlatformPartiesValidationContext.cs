@@ -7,7 +7,7 @@ using Hexalith.Builds.Tooling.Runtime;
 /// <summary>Recognizes only the existing published AppHost process that exits before Build/Run during validation.</summary>
 internal static class PlatformPartiesValidationContext
 {
-    /// <summary>Recognizes complete paired members of the authenticated signed 4.44.3/fc212, 4.44.4/5fa2, 4.44.5/afb2, 4.44.6/ad50, 4.44.7/0b086, 4.44.8/26b9 and 4.44.9/0577 archives.</summary>
+    /// <summary>Recognizes complete paired members of the authenticated signed Builds archives.</summary>
     /// <param name="appHostHash">The measured executing entry body.</param>
     /// <param name="toolingHash">The measured loaded Tooling body.</param>
     internal static bool IsPublishedPair(string? appHostHash, string? toolingHash)
@@ -18,7 +18,8 @@ internal static class PlatformPartiesValidationContext
             or ("2b746f7b8a91e70fe1e2a571dc4ca832c4cb18ca502b60a467347da32a4fe84c", "23ef9fa3ec8a6c85e91a08da434e0fd1990ff1f613e8f36e0951144b09a37b87")
             or ("f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911", "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90")
             or ("ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764", "f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9")
-            or ("672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0", "3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a");
+            or ("672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0", "3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a")
+            or ("0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf", "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632");
 
     /// <summary>Requires the genuine validation-only entry bytes, exact existing arguments and consumed parent environment handoff.</summary>
     internal static bool IsCurrentPublishedValidation(CompositionRunPlan plan)

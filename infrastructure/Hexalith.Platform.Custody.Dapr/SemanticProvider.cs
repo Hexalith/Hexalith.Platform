@@ -9,14 +9,14 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
     internal async Task<CustodyBindingResponseV1> InvokeAsync(byte[] exactBytes, SignedStatement operation, SignedStatement control, CancellationToken token, SignedStatement? keyAdmission = null)
     {
         var request = CustodyBindingContract.Decode(exactBytes) ?? throw new AuthorityUnavailableException("Invalid closed request.");
-        try { return await InvokeDecodedAsync(request, exactBytes, operation, control, token, keyAdmission); }
+        try { return await InvokeDecodedAsync(request, exactBytes, operation, control, token, keyAdmission).ConfigureAwait(false); }
         finally { if (request.WrapInput is { } input) CryptographicOperations.ZeroMemory(input.RootKey); }
     }
     private async Task<CustodyBindingResponseV1> InvokeDecodedAsync(CustodyBindingRequestV1 request, byte[] exactBytes,
         SignedStatement operation, SignedStatement control, CancellationToken token, SignedStatement? keyAdmission)
     {
         var e = request.Envelope;
-        CurrentState current = await store.ReadAsync(e.TenantId, token); // Every call, including duplicate read-current, reads fresh.
+        CurrentState current = await store.ReadAsync(e.TenantId, token).ConfigureAwait(false); // Every call, including duplicate read-current, reads fresh.
         if (!verifier.Authorize(request, exactBytes, operation, control, current)) throw new AuthorityUnavailableException("Current exact authorization missing.");
         CustodyBindingResponseV1 Reply() => new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest);
         if (e.Operation == "read-current")
@@ -32,26 +32,26 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 || retained.Response is null || retained.RequestDigest != e.RequestDigest
                 || page.Header.OriginalResultReference != retained.Response.Key || page.Header.OriginalSha256 != retained.Response.Sha256)
                 throw new AuthorityUnavailableException("Original page identity unavailable.");
-            byte[] original = await store.ReadImmutableAsync(retained.Response, token);
+            byte[] original = await store.ReadImmutableAsync(retained.Response, token).ConfigureAwait(false);
             var header = Header(retained.Manifest!, retained.Response, original.Length);
             if (header != page.Header) throw new AuthorityUnavailableException("Original header substitution.");
             byte[] slice = original.AsSpan(page.Offset, page.Length).ToArray();
             return Reply() with { Page = new(header, page.Offset, slice.Length, CustodyJson.Hash(slice), slice) };
         }
-        if (request.Transition is not null) return await TransitionAsync(request, current, token);
+        if (request.Transition is not null) return await TransitionAsync(request, current, token).ConfigureAwait(false);
         if(e.Operation=="lookup-original" && request.WrapOriginal is { } wrapIdentity)
         {
             if(!current.Checkpoint.Originals.TryGetValue(e.OperationId,out var admitted) || admitted.Operation!="wrap") return Pending(request);
             var intents=current.Checkpoint.NativeIntents.Values.Where(i=>i.OperationId==e.OperationId && current.Checkpoint.NativeResults.ContainsKey(i.IntentId+":plan")).ToArray();
             if(intents.Length!=1) throw new AuthorityUnavailableException("Unique original wrap intent required.");
             var intent=intents[0];
-            var plan=CustodyJson.Read<WrapPlan>(await store.ReadImmutableAsync(current.Checkpoint.NativeResults[intent.IntentId+":plan"],token));
+            var plan=CustodyJson.Read<WrapPlan>(await store.ReadImmutableAsync(current.Checkpoint.NativeResults[intent.IntentId+":plan"],token).ConfigureAwait(false));
             if(plan.Identity!=wrapIdentity.Identity || plan.OperationId!=wrapIdentity.OperationId || plan.ExpectedRevision!=wrapIdentity.ExpectedRevision
                 || plan.KekVersion!=wrapIdentity.KekVersion || plan.OpaqueReference!=wrapIdentity.OpaqueWrappedKeyReference || plan.RequestDigest!=admitted.RequestDigest)
                 throw new AuthorityUnavailableException("Original wrap identity substitution.");
-            var retained=await store.FindIntentResultAsync(CustodyJson.IntentLocator(e.TenantId,intent.IntentId),token);
+            var retained=await store.FindIntentResultAsync(CustodyJson.IntentLocator(e.TenantId,intent.IntentId),token).ConfigureAwait(false);
             if(retained is null) return Pending(request);
-            var wrapped=CustodyJson.Read<WrappedResult>(await store.ReadImmutableAsync(retained,token));var registration=wrapped.Registration.Registration;
+            var wrapped=CustodyJson.Read<WrappedResult>(await store.ReadImmutableAsync(retained,token).ConfigureAwait(false));var registration=wrapped.Registration.Registration;
             if(registration.Identity!=plan.Identity || registration.OperationId!=plan.OperationId || registration.ExpectedRevision!=plan.ExpectedRevision
                 || registration.KekVersion!=plan.KekVersion || registration.OpaqueWrappedKeyReference!=plan.OpaqueReference || wrapped.Registration.Epoch!=plan.Epoch
                 || wrapped.Response.WrappedRegistration!=registration || wrapped.Response.OperationId!=plan.OperationId || wrapped.Response.RequestDigest!=plan.RequestDigest
@@ -64,7 +64,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             // This lookup has the registration projection's digest, not the ephemeral wrap-input
             // digest. Authenticate both against the independently retained original before returning
             // its unchanged receipt. Lookup never reconstructs a root or invokes a native method.
-            _ = await ReadWrapOriginalAsync(store, current, requestedRegistration, token);
+            _ = await ReadWrapOriginalAsync(store, current, requestedRegistration, token).ConfigureAwait(false);
             return Reply() with { Lifecycle = new(requestedRegistration.Identity, e.OperationId, e.RequestDigest,
                 CustodyKeyLifecycleStatus.Wrapped, requestedRegistration.WrapReceiptId, null) };
         }
@@ -73,22 +73,22 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             if (originalOperation.RequestDigest != e.RequestDigest) throw new AuthorityUnavailableException("Permanent original operation conflict.");
             if (originalOperation.Response is { } reference)
             {
-                byte[] original = await store.ReadImmutableAsync(reference, token);
+                byte[] original = await store.ReadImmutableAsync(reference, token).ConfigureAwait(false);
                 return originalOperation.Manifest is not null
                     ? Reply() with { OriginalHeader = Header(originalOperation.Manifest, reference, original.Length) }
-                    : await RecoverOriginalResponseAsync(original, token);
+                    : await RecoverOriginalResponseAsync(original, token).ConfigureAwait(false);
             }
             return Pending(request); // An admitted uncertain original is never replayed or called NotStarted.
         }
         if (e.Operation is "wrap" or "unwrap")
         {
             if (keyExchange is null || keyAdmission is null) throw new AuthorityUnavailableException("Key execution installation missing.");
-            return await keyExchange.ExecuteAsync(request, current, keyAdmission, token);
+            return await keyExchange.ExecuteAsync(request, current, keyAdmission, token).ConfigureAwait(false);
         }
         if (e.Operation == "complete-key-use")
         {
             if (keyExchange is null || keyAdmission is null) throw new AuthorityUnavailableException("Independent completion missing.");
-            return await keyExchange.CompleteAsync(request, current, keyAdmission, token);
+            return await keyExchange.CompleteAsync(request, current, keyAdmission, token).ConfigureAwait(false);
         }
         if (e.Operation is "lookup-original" or "lookup-transition" or "verify-transition")
             return Pending(request); // No synthetic NotStarted proof.
@@ -115,9 +115,9 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                     throw new AuthorityUnavailableException("Hold already has a different original.");
                 var pinned = Reply() with { Lifecycle = new(holding.Identity, e.OperationId, e.RequestDigest,
                     CustodyKeyLifecycleStatus.Pinned, "pin-" + Guid.NewGuid().ToString("N"), null) };
-                var pinOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(pinned), "original", token);
+                var pinOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(pinned), "original", token).ConfigureAwait(false);
                 next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, pinOriginal, null));
-                await store.CommitAsync(current, next, token);
+                await store.CommitAsync(current, next, token).ConfigureAwait(false);
                 return pinned;
             case "destroy-manifest":
                 if (next.Cycle is not null || next.Frozen) throw new AuthorityUnavailableException("One physical cycle per tenant.");
@@ -139,14 +139,14 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                         manifest.ProtectionReservationReceiptId,Hexalith.EventStore.Contracts.Security.DeletionManifestProviderState.NotStarted,[]);
                     var status=new CustodyBindingManifestStatusV1(deniedResult,profile.Enrollment,manifest.Original.Capability.ManifestDigest,[],denial);
                     var denied=Reply() with { ManifestStatus=status with { Signature=Sign(CustodyJson.Bytes(status)) } };
-                    var deniedOriginal=await store.PutImmutableAsync(CustodyJson.Bytes(denied),"original",token);
+                    var deniedOriginal=await store.PutImmutableAsync(CustodyJson.Bytes(denied),"original",token).ConfigureAwait(false);
                     next.Originals.Add(e.OperationId,new(e.RequestDigest,e.Operation,deniedOriginal,null));
-                    await store.CommitAsync(current,next,token);return denied;
+                    await store.CommitAsync(current,next,token).ConfigureAwait(false); return denied;
                 }
                 next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, null, request));
                 next = next with { Cycle = new(e.OperationId, request, next.CurrentEpoch, null, CyclePhase.Reserved,
                     profile.Epochs.Where(epoch => epoch.TenantId == e.TenantId && epoch.OpaqueId != next.CurrentEpoch).Select(epoch => epoch.OpaqueId).ToArray(), [], null, null) };
-                await store.CommitAsync(current, next, token);
+                await store.CommitAsync(current, next, token).ConfigureAwait(false);
                 return Pending(request);
             case "unpin":
                 var lifecycle = request.Lifecycle!; string pinId = CustodyJson.Target(lifecycle.Identity) + ":" + lifecycle.HoldId;
@@ -157,9 +157,9 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 var result = new CustodyKeyLifecycleOutcome(lifecycle.Identity, e.OperationId, e.RequestDigest,
                     CustodyKeyLifecycleStatus.Unpinned, "release-" + Guid.NewGuid().ToString("N"), null);
                 var response = Reply() with { Lifecycle = result };
-                var reference = await store.PutImmutableAsync(CustodyJson.Bytes(response), "original", token);
+                var reference = await store.PutImmutableAsync(CustodyJson.Bytes(response), "original", token).ConfigureAwait(false);
                 next.Originals.Add(e.OperationId, new(e.RequestDigest, e.Operation, reference, null));
-                await store.CommitAsync(current, next, token);
+                await store.CommitAsync(current, next, token).ConfigureAwait(false);
                 return response;
             default:
                 // No unsupported effect is inferred from a successful transport/authentication check.
@@ -172,7 +172,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         if (original.WrappedRegistration is { } registration)
         {
             if (keyExchange is null) throw new AuthorityUnavailableException("Registration publisher installation missing.");
-            await keyExchange.PublishRegistrationAsync(registration, token);
+            await keyExchange.PublishRegistrationAsync(registration, token).ConfigureAwait(false);
         }
         return original;
     }
@@ -183,7 +183,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             || stored.Registration != registration || !current.Checkpoint.Originals.TryGetValue(registration.OperationId, out var wrap)
             || wrap.Operation != "wrap" || wrap.Manifest is not null || wrap.Response is null)
             throw new AuthorityUnavailableException("Exact original wrapped registration unavailable.");
-        var original = CustodyJson.Read<CustodyBindingResponseV1>(await source.ReadImmutableAsync(wrap.Response, token));
+        var original = CustodyJson.Read<CustodyBindingResponseV1>(await source.ReadImmutableAsync(wrap.Response, token).ConfigureAwait(false));
         if (original.ProtocolVersion != CustodyBindingContract.Protocol || original.OperationId != registration.OperationId
             || original.RequestDigest != wrap.RequestDigest || original.WrappedRegistration != registration
             || original.OriginalHeader is not null || original.Lifecycle is not null || original.Current is not null
@@ -209,7 +209,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
         if (anchor.Revision >= t.TargetRevision && current.Checkpoint.Originals.TryGetValue(originalId, out var original)
             && original.Operation == "admit-transition" && original.RequestDigest == e.RequestDigest && original.Response is not null)
         {
-            var retained = CustodyBindingContract.Decode(await store.ReadImmutableAsync(original.Response, token));
+            var retained = CustodyBindingContract.Decode(await store.ReadImmutableAsync(original.Response, token).ConfigureAwait(false));
             historical = retained?.Transition is { } exact && CustodyJson.Bytes(exact).AsSpan().SequenceEqual(CustodyJson.Bytes(t));
             if (!historical) throw new AuthorityUnavailableException("Retained owner transition substitution.");
             accepted = true;
@@ -225,7 +225,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
                 if (next.Originals.Count >= 10000) throw new AuthorityUnavailableException("Owner original capacity exhausted.");
                 if (!next.Originals.ContainsKey(originalId))
                 {
-                    var retained = await store.PutImmutableAsync(CustodyJson.Bytes(request), "journal", token);
+                    var retained = await store.PutImmutableAsync(CustodyJson.Bytes(request), "journal", token).ConfigureAwait(false);
                     next.Originals.Add(originalId, new(e.RequestDigest, e.Operation, retained, null));
                 }
                 next.Anchors[t.ScopeId] = anchor with { Admitted = t, AdmissionOperationId = e.OperationId };
@@ -233,7 +233,7 @@ internal sealed class SemanticProvider(ComponentProfile profile, IAuthorityStore
             else if (e.Operation is "record-transition" or "recover-transition" && same)
                 next.Anchors[t.ScopeId] = anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
             else throw new AuthorityUnavailableException("Record/recover requires the retained admitted original.");
-            await store.CommitAsync(current, next, token); accepted = true;
+            await store.CommitAsync(current, next, token).ConfigureAwait(false); accepted = true;
         }
         var observed = historical ? anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest }
             : read || !accepted ? anchor : e.Operation == "admit-transition" ? anchor : anchor with { Revision = t.TargetRevision, Digest = t.TargetDigest };
