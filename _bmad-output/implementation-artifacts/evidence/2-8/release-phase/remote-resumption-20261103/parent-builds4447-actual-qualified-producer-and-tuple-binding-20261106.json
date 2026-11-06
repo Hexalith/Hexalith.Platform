@@ -1,0 +1,70 @@
+{
+  "utc": "2026-11-06T05:59:41.069410+00:00",
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "0b08666cb2aac1264007564f86ca9c52376499e4",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "f109d49d49588fb83d25a5f417169b35f343976b",
+        "sha256": "e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a"
+      }
+    },
+    "publication": {
+      "version": "4.44.7",
+      "sourceRevision": "0b08666cb2aac1264007564f86ca9c52376499e4",
+      "releaseTag": "v4.44.7",
+      "catalogSha256": "e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a",
+      "archiveSha256": "8b9c455ac1dbb1cd9b1fe2bc0042894c6b2752485a10725eeb2068bd8c561353",
+      "toolingSha256": "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90",
+      "inventorySha256": "e5ce4b773cd4eee160045630a4d3af825d42c11d5422446c7a8ad4c8843ab8d0",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.7/g4-tool-package-inventory.json"
+    }
+  },
+  "actualNormalReleaseRun": 42169350830,
+  "actualQualifiedSourceCi": 42166762850,
+  "releaseId": 436145584,
+  "signedPackagesMembersVerified": [
+    41,
+    317
+  ],
+  "qualificationPayloadsVerified": 55,
+  "sourceFixtureBodiesVerified": 301,
+  "moduleBodyHashes": {
+    "Hexalith.Builds.Tooling.dll": [
+      {
+        "path": "tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+        "sha256": "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90"
+      },
+      {
+        "path": "tools/net10.0/any/g4-host/Hexalith.Builds.Tooling.dll",
+        "sha256": "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90"
+      }
+    ],
+    "Hexalith.Builds.Module.AppHost.dll": [
+      {
+        "path": "tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll",
+        "sha256": "f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911"
+      }
+    ],
+    "Hexalith.Builds.Module.Cli.dll": [
+      {
+        "path": "tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+        "sha256": "639cf11c211969c0359356ed680f304f679af9b7ff0face42953ddbd52875834"
+      }
+    ],
+    "Hexalith.Builds.Module.EventStoreHost.dll": [
+      {
+        "path": "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll",
+        "sha256": "476425d431e5ecb2a42987ab6ac39e3f0c06e2f776d43a28efde06cd791c34a0"
+      }
+    ]
+  },
+  "catalogUnchangedFromGenuine4446": true,
+  "scope": "Actual intermediate normal public4447/native-claims producer; no accepted pin or cohort change. Combined diagnostic source26b9 still needs its own mainCI and genuine publication.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

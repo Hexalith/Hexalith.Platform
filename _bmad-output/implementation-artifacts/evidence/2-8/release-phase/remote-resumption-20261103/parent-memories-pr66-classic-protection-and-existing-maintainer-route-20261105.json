@@ -1,0 +1,128 @@
+{
+  "utc": "2026-11-05T23:40:06.514996+00:00",
+  "repository": "Hexalith/Hexalith.Memories",
+  "actor": {
+    "login": "jpiquot",
+    "id": 6775094
+  },
+  "actualClassicProtection": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "build",
+        "test-unit-contract",
+        "integration-fast"
+      ],
+      "contexts_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "build",
+          "app_id": null
+        },
+        {
+          "context": "test-unit-contract",
+          "app_id": null
+        },
+        {
+          "context": "integration-fast",
+          "app_id": null
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": false,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 1,
+      "bypass_pull_request_allowances": {
+        "users": [
+          {
+            "login": "jpiquot",
+            "id": 6775094,
+            "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+            "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/jpiquot",
+            "html_url": "https://github.com/jpiquot",
+            "followers_url": "https://api.github.com/users/jpiquot/followers",
+            "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+            "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+            "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+            "repos_url": "https://api.github.com/users/jpiquot/repos",
+            "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          {
+            "login": "QuentinDV",
+            "id": 148322258,
+            "node_id": "U_kgDOCNc30g",
+            "avatar_url": "https://avatars.githubusercontent.com/u/148322258?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/QuentinDV",
+            "html_url": "https://github.com/QuentinDV",
+            "followers_url": "https://api.github.com/users/QuentinDV/followers",
+            "following_url": "https://api.github.com/users/QuentinDV/following{/other_user}",
+            "gists_url": "https://api.github.com/users/QuentinDV/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/QuentinDV/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/QuentinDV/subscriptions",
+            "organizations_url": "https://api.github.com/users/QuentinDV/orgs",
+            "repos_url": "https://api.github.com/users/QuentinDV/repos",
+            "events_url": "https://api.github.com/users/QuentinDV/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/QuentinDV/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          }
+        ],
+        "teams": [],
+        "apps": []
+      }
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches/main/protection/enforce_admins",
+      "enabled": false
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": false
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "actualReviews": [],
+  "existingNamedMaintainerReviewException": [
+    "jpiquot",
+    "QuentinDV"
+  ],
+  "normalMergeRouteAssessment": "The existing policy explicitly names the authenticated maintainer. User authorization covers normal PR merges. Use only the normal exact-head merge endpoint after all required checks pass; no admin flag, protection/credential/CODEOWNERS change, fabricated review or protected-main push. Do not assume this named exception applies to Platform, whose separate rules must be respected.",
+  "requiredChecksStillMandatory": true,
+  "mergeAttempted": false,
+  "automaticApprovalReviewRejection": false
+}

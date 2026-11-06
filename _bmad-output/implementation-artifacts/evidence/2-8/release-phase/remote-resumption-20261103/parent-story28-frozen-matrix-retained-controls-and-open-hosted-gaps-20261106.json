@@ -1,0 +1,118 @@
+{
+  "utc": "2026-11-06T05:08:24.985739+00:00",
+  "scope": "Preparation for final frozen matrix audit; explicitly not the final audit or a completion decision.",
+  "frozenPrefixSha256": "89fe71635d283b3d77c24ffb28c802a8a2a399d94551d1f3e9cca5b56cd86813",
+  "rows": [
+    {
+      "scenario": "Isolated failure",
+      "retainedHostedObservation": "parent-parties-9207-first-isolated-and-empty-cleanup-audit-20261105.json",
+      "actualHistoricalRun": 42020534835,
+      "actualSource": "9207f4839c7d6376a97c5ceefd8ca0f085329f66",
+      "observed": "One isolated failure blocked provisioning; native0 and cleanup status not-allocated.",
+      "remaining": "Preserve this first failure; verify unchanged final workflow gating and all final source criteria."
+    },
+    {
+      "scenario": "Integration success/failure",
+      "componentEvidence": {
+        "retainedXml": "coordinator-ci-tests.xml",
+        "actualPassedCaseNames": [
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"passed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"cancelled\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"partial-startup\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed-then-job-cancelled\\\")"
+        ],
+        "scope": "Historical component execution; final source and hosted acceptance still require separate proof."
+      },
+      "retainedHostedFailureAndCleanup": "parent-parties-fb66-first-hosted-outcome-and-cleanup-20261106.json",
+      "remaining": "Final passing native owner, active admission withdrawal-before-stop, real pass/fail lifecycle matrix and exact inventories."
+    },
+    {
+      "scenario": "Cancellation during startup/execution",
+      "componentEvidence": {
+        "retainedXml": "coordinator-ci-tests.xml",
+        "actualPassedCaseNames": [
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync"
+        ],
+        "scope": "Historical component execution; final source and hosted acceptance still require separate proof."
+      },
+      "remaining": "Two separate final source actual hosted cancellations, fresh readiness artifact audited before each exact cancel, signal-time phase/PID/hold and cleanup evidence."
+    },
+    {
+      "scenario": "Same-job/cross-job attachment",
+      "componentEvidence": {
+        "retainedXml": "release-phase/builds-foundation/runtime-tests-committed.xml",
+        "actualPassedCaseNames": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"attempt\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"run\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"repository\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.SameJobCiAttachmentIsAcceptedAsync",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"cleaned\\\", reason: \\\"owner-cleaned\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"passed\\\", reason: \\\"owner-passed\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"cross-job\\\", reason: \\\"cross-job\\\")"
+        ],
+        "scope": "Historical component execution; final source and hosted acceptance still require separate proof."
+      },
+      "remaining": "Real same-job active original hold, negative-only foreign job override, completed-owner refusal, retry/expiry and unchanged peer in final manual matrix."
+    },
+    {
+      "scenario": "Cleanup failure or unknown discovery",
+      "componentEvidence": {
+        "retainedXml": "release-phase/cleanup-contention/supported-owner-tests.xml",
+        "actualPassedCaseNames": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockDeadlineRefusesCleanupUntilExactRetryAsync",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"human\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"json\\\")"
+        ],
+        "scope": "Historical component execution; final source and hosted acceptance still require separate proof."
+      },
+      "remaining": "Real hosted OS metadata-lock refusal, exact retry, first outcome and expiry unchanged, untouched peer, SIGKILL partial startup and zero inventories."
+    },
+    {
+      "scenario": "Missing tool/suite/package preparation",
+      "componentEvidence": {
+        "retainedXml": "release-phase/builds-foundation/runtime-tests-committed.xml",
+        "actualPassedCaseNames": [
+          "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAppHostIsUnavailableBeforeAnyResourceAsync",
+          "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingAspireOrchestrationIsUnavailableBeforeAnyResourceAsync",
+          "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.MissingPrerequisitesStopBeforeAnyResourceAsync"
+        ],
+        "scope": "Historical component execution; final source and hosted acceptance still require separate proof."
+      },
+      "remaining": "Finish final source exact-tool/suite/package refusal and retired-input/no-legacy-fallback audit; component evidence alone does not close the row."
+    }
+  ],
+  "verifiedRetainedXmlInputs": {
+    "coordinator-ci-tests.xml": {
+      "sha256": "049dfd6863bcd39899adc811b86e2882d5a702827c1231018e40ce0cb1ebb564",
+      "actualSelectedPassed": 6
+    },
+    "release-phase/builds-foundation/runtime-tests-committed.xml": {
+      "sha256": "29503411a33e2701c7b0dc813a38af96fcb767d2c81c8cf69ccb3ddf70362cdf",
+      "actualSelectedPassed": 3
+    },
+    "release-phase/cleanup-contention/supported-owner-tests.xml": {
+      "sha256": "f57d154b7e14cca87ebf1789f796a59cd8b6148499f4dd07071e92e7416d738a",
+      "actualSelectedPassed": 3
+    }
+  },
+  "finalNativeRequirements": {
+    "partiesSuiteCases": 28,
+    "eventstoreSuiteCases": 9
+  },
+  "finalSequentialManualRunsRequired": [
+    "matrix",
+    "cancel-startup",
+    "cancel-execution"
+  ],
+  "manualRunsDispatchedByParent": 0,
+  "allRowsComplete": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

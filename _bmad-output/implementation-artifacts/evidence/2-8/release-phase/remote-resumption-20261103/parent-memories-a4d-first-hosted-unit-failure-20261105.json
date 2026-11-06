@@ -1,0 +1,652 @@
+{
+  "utc": "2026-11-05T22:51:46.268974+00:00",
+  "run": {
+    "id": 42122835816,
+    "name": "CI",
+    "node_id": "WFR_kwLORs_eOc8AAAAJzrd3aA",
+    "head_branch": "fix/production-domain-intent-adapters",
+    "head_sha": "a4d1baac8c732563b362f9af1d92633945134662",
+    "path": ".github/workflows/ci.yml",
+    "display_title": "fix(runtime): include the production Memories intent adapter",
+    "run_number": 951,
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "failure",
+    "workflow_id": 266538521,
+    "check_suite_id": 114142271564,
+    "check_suite_node_id": "CS_kwDORs_eOc8AAAAak2jYTA",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816",
+    "html_url": "https://github.com/Hexalith/Hexalith.Memories/actions/runs/42122835816",
+    "pull_requests": [
+      {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/pulls/66",
+        "id": 5178994640,
+        "number": 66,
+        "head": {
+          "ref": "fix/production-domain-intent-adapters",
+          "sha": "a4d1baac8c732563b362f9af1d92633945134662",
+          "repo": {
+            "id": 1188027961,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories",
+            "name": "Hexalith.Memories"
+          }
+        },
+        "base": {
+          "ref": "main",
+          "sha": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+          "repo": {
+            "id": 1188027961,
+            "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories",
+            "name": "Hexalith.Memories"
+          }
+        }
+      }
+    ],
+    "created_at": "2026-11-05T22:35:52Z",
+    "updated_at": "2026-11-05T22:51:07Z",
+    "actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [
+      {
+        "path": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci.yml@6e7011fc754e74ac2a8864da1ce0b6d8f7178a48",
+        "sha": "6e7011fc754e74ac2a8864da1ce0b6d8f7178a48"
+      }
+    ],
+    "run_started_at": "2026-11-05T22:35:52Z",
+    "triggering_actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816/jobs",
+    "logs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816/logs",
+    "check_suite_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/check-suites/114142271564",
+    "artifacts_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816/artifacts",
+    "cancel_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816/cancel",
+    "rerun_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/workflows/266538521",
+    "head_commit": {
+      "id": "a4d1baac8c732563b362f9af1d92633945134662",
+      "tree_id": "375645201578867d4f59c759d4c1a3514e4ec820",
+      "message": "ci(tests): enroll the DomainService project in hosted unit checks\n\nRun the existing DomainService test project through the shared Docker-free unit/contract inventory, retaining the original seven projects and runner filters.\n\nGuard all eight executable selections and their Release, MTP, TRX, and coverage options with a bounded runner fixture. Keep the production adapter fix and package/coverage policies unchanged.\n\nThis is the necessary CI enrollment follow-up for the authorized Platform Story 2.8 prerequisite. Local package outputs remain development-only.",
+      "timestamp": "2026-11-05T22:12:01Z",
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      }
+    },
+    "repository": {
+      "id": 1188027961,
+      "node_id": "R_kgDORs_eOQ",
+      "name": "Hexalith.Memories",
+      "full_name": "Hexalith/Hexalith.Memories",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Memories",
+      "description": "Hexalith Memory Module with syntactic and semantic search",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/deployments"
+    },
+    "head_repository": {
+      "id": 1188027961,
+      "node_id": "R_kgDORs_eOQ",
+      "name": "Hexalith.Memories",
+      "full_name": "Hexalith/Hexalith.Memories",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Memories",
+      "description": "Hexalith Memory Module with syntactic and semantic search",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/deployments"
+    }
+  },
+  "job": {
+    "id": 127579339756,
+    "run_id": 42122835816,
+    "workflow_name": "CI",
+    "head_branch": "fix/production-domain-intent-adapters",
+    "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs/42122835816",
+    "run_attempt": 1,
+    "node_id": "CR_kwDORs_eOc8AAAAdtFI77A",
+    "head_sha": "a4d1baac8c732563b362f9af1d92633945134662",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/jobs/127579339756",
+    "html_url": "https://github.com/Hexalith/Hexalith.Memories/actions/runs/42122835816/job/127579339756",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-11-05T22:35:53Z",
+    "started_at": "2026-11-05T22:35:58Z",
+    "completed_at": "2026-11-05T22:51:06Z",
+    "name": "test-unit-contract",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-05T22:35:59Z",
+        "completed_at": "2026-11-05T22:36:03Z"
+      },
+      {
+        "name": "Checkout repository",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-05T22:36:03Z",
+        "completed_at": "2026-11-05T22:36:06Z"
+      },
+      {
+        "name": "Initialize build submodules",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-05T22:36:06Z",
+        "completed_at": "2026-11-05T22:36:39Z"
+      },
+      {
+        "name": "Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-05T22:36:39Z",
+        "completed_at": "2026-11-05T22:36:39Z"
+      },
+      {
+        "name": "Initialize root release-tooling Node.js",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-05T22:36:39Z",
+        "completed_at": "2026-11-05T22:36:55Z"
+      },
+      {
+        "name": "Install root release tooling",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-05T22:36:55Z",
+        "completed_at": "2026-11-05T22:36:57Z"
+      },
+      {
+        "name": "Audit root release tooling",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-05T22:36:57Z",
+        "completed_at": "2026-11-05T22:36:59Z"
+      },
+      {
+        "name": "Verify semantic-release configuration offline",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-05T22:36:59Z",
+        "completed_at": "2026-11-05T22:37:00Z"
+      },
+      {
+        "name": "Run commitlint configuration fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-05T22:37:00Z",
+        "completed_at": "2026-11-05T22:37:11Z"
+      },
+      {
+        "name": "Restore solution",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-05T22:37:11Z",
+        "completed_at": "2026-11-05T22:37:31Z"
+      },
+      {
+        "name": "Build solution",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-05T22:37:31Z",
+        "completed_at": "2026-11-05T22:38:55Z"
+      },
+      {
+        "name": "Run BMad customization fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 12,
+        "started_at": "2026-11-05T22:38:55Z",
+        "completed_at": "2026-11-05T22:38:58Z"
+      },
+      {
+        "name": "Run tenant-isolation evidence gate fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-11-05T22:38:58Z",
+        "completed_at": "2026-11-05T22:39:01Z"
+      },
+      {
+        "name": "Verify repository line-ending policy",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-11-05T22:39:01Z",
+        "completed_at": "2026-11-05T22:39:01Z"
+      },
+      {
+        "name": "Run shared CI alignment fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-05T22:39:01Z",
+        "completed_at": "2026-11-05T22:39:06Z"
+      },
+      {
+        "name": "Run coverage gate fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-11-05T22:39:06Z",
+        "completed_at": "2026-11-05T22:39:19Z"
+      },
+      {
+        "name": "Run published host profile fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-11-05T22:39:19Z",
+        "completed_at": "2026-11-05T22:39:30Z"
+      },
+      {
+        "name": "Run release package fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 18,
+        "started_at": "2026-11-05T22:39:30Z",
+        "completed_at": "2026-11-05T22:39:58Z"
+      },
+      {
+        "name": "Run release preflight fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 19,
+        "started_at": "2026-11-05T22:39:58Z",
+        "completed_at": "2026-11-05T22:40:41Z"
+      },
+      {
+        "name": "Run guarded release dispatch fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 20,
+        "started_at": "2026-11-05T22:40:41Z",
+        "completed_at": "2026-11-05T22:40:41Z"
+      },
+      {
+        "name": "Run NuGet publish fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 21,
+        "started_at": "2026-11-05T22:40:41Z",
+        "completed_at": "2026-11-05T22:41:28Z"
+      },
+      {
+        "name": "Fetch historical Builds publication sources",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 22,
+        "started_at": "2026-11-05T22:41:28Z",
+        "completed_at": "2026-11-05T22:41:29Z"
+      },
+      {
+        "name": "Run container publish fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 23,
+        "started_at": "2026-11-05T22:41:29Z",
+        "completed_at": "2026-11-05T22:43:22Z"
+      },
+      {
+        "name": "Run Builds publication qualification fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 24,
+        "started_at": "2026-11-05T22:43:22Z",
+        "completed_at": "2026-11-05T22:43:59Z"
+      },
+      {
+        "name": "Run production deployment evidence fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 25,
+        "started_at": "2026-11-05T22:43:59Z",
+        "completed_at": "2026-11-05T22:45:23Z"
+      },
+      {
+        "name": "Initialize kubectl",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 26,
+        "started_at": "2026-11-05T22:45:23Z",
+        "completed_at": "2026-11-05T22:45:23Z"
+      },
+      {
+        "name": "Publish pinned kubectl at the owner-discovery path",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 27,
+        "started_at": "2026-11-05T22:45:23Z",
+        "completed_at": "2026-11-05T22:45:23Z"
+      },
+      {
+        "name": "Run access-telemetry owner discovery fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 28,
+        "started_at": "2026-11-05T22:45:23Z",
+        "completed_at": "2026-11-05T22:45:25Z"
+      },
+      {
+        "name": "Build source Debug descriptor reader",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 29,
+        "started_at": "2026-11-05T22:45:25Z",
+        "completed_at": "2026-11-05T22:45:31Z"
+      },
+      {
+        "name": "Run access-telemetry functional-retention safety fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 30,
+        "started_at": "2026-11-05T22:45:31Z",
+        "completed_at": "2026-11-05T22:48:21Z"
+      },
+      {
+        "name": "Initialize root Platform review-reader dependency",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 31,
+        "started_at": "2026-11-05T22:48:21Z",
+        "completed_at": "2026-11-05T22:48:21Z"
+      },
+      {
+        "name": "Run story file-scope gate fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 32,
+        "started_at": "2026-11-05T22:48:21Z",
+        "completed_at": "2026-11-05T22:48:26Z"
+      },
+      {
+        "name": "Run approved publication preflight fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 33,
+        "started_at": "2026-11-05T22:48:26Z",
+        "completed_at": "2026-11-05T22:48:31Z"
+      },
+      {
+        "name": "Run story slice-scope gate fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 34,
+        "started_at": "2026-11-05T22:48:31Z",
+        "completed_at": "2026-11-05T22:48:32Z"
+      },
+      {
+        "name": "Run story review-readiness gate fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 35,
+        "started_at": "2026-11-05T22:48:32Z",
+        "completed_at": "2026-11-05T22:48:53Z"
+      },
+      {
+        "name": "Run integration stub closure fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 36,
+        "started_at": "2026-11-05T22:48:53Z",
+        "completed_at": "2026-11-05T22:48:53Z"
+      },
+      {
+        "name": "Run integration-fast coverage verifier fixtures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 37,
+        "started_at": "2026-11-05T22:48:53Z",
+        "completed_at": "2026-11-05T22:48:53Z"
+      },
+      {
+        "name": "Pack and validate release packages",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 38,
+        "started_at": "2026-11-05T22:48:53Z",
+        "completed_at": "2026-11-05T22:49:36Z"
+      },
+      {
+        "name": "Run Docker-free unit and contract tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 39,
+        "started_at": "2026-11-05T22:49:36Z",
+        "completed_at": "2026-11-05T22:51:00Z"
+      },
+      {
+        "name": "Validate scoped line coverage",
+        "status": "completed",
+        "conclusion": "failure",
+        "number": 40,
+        "started_at": "2026-11-05T22:51:00Z",
+        "completed_at": "2026-11-05T22:51:00Z"
+      },
+      {
+        "name": "Upload unit and contract test results",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 41,
+        "started_at": "2026-11-05T22:51:00Z",
+        "completed_at": "2026-11-05T22:51:02Z"
+      },
+      {
+        "name": "Post Initialize root release-tooling Node.js",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 80,
+        "started_at": "2026-11-05T22:51:02Z",
+        "completed_at": "2026-11-05T22:51:02Z"
+      },
+      {
+        "name": "Post Initialize .NET",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 81,
+        "started_at": "2026-11-05T22:51:02Z",
+        "completed_at": "2026-11-05T22:51:02Z"
+      },
+      {
+        "name": "Post Checkout repository",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 82,
+        "started_at": "2026-11-05T22:51:02Z",
+        "completed_at": "2026-11-05T22:51:03Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 83,
+        "started_at": "2026-11-05T22:51:03Z",
+        "completed_at": "2026-11-05T22:51:03Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/check-runs/127579339756",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000073774,
+    "runner_name": "GitHub Actions 1000073774",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  "private_full_log": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/memories-a4d-hosted-20261105/first-unit-contract-failure.log",
+    "bytes": 165019,
+    "sha256": "b2175151504cce518c355dd05633c25fd2609c03e0913a5834406eeb163ab230"
+  },
+  "first_failure_excerpts": [
+    "2026-11-05T22:51:00.2235317Z   KIND_NODE_IMAGE: kindest/node:v1.35.0\n2026-11-05T22:51:00.2235946Z   OPENBAO_IMAGE: quay.io/openbao/openbao:2.6.4@sha256:cf2340fc9a22cb9358ca0defd1f39b65673836bd23fe2bb8984a07e11fe13ef4\n2026-11-05T22:51:00.2236410Z   MEMORIES_DAPR_PLACEMENT_HOST_ADDRESS: 127.0.0.1:50005\n2026-11-05T22:51:00.2236894Z   MEMORIES_DAPR_SCHEDULER_HOST_ADDRESS: 127.0.0.1:50006\n2026-11-05T22:51:00.2237148Z   DOTNET_ROOT: /usr/share/dotnet\n2026-11-05T22:51:00.2237349Z ##[endgroup]\n2026-11-05T22:51:00.2717713Z coverage validation failed:\n2026-11-05T22:51:00.2718378Z Cobertura reports found for unexpected result projects: Hexalith.Memories.DomainService.Tests\n2026-11-05T22:51:00.2796205Z ##[error]Process completed with exit code 1.\n2026-11-05T22:51:00.2852144Z ##[group]Run actions/upload-artifact@v7\n2026-11-05T22:51:00.2852383Z with:\n2026-11-05T22:51:00.2852567Z   name: test-unit-contract-results\n2026-11-05T22:51:00.2852799Z   path: TestResults/test-unit-contract/**\n2026-11-05T22:51:00.2853038Z   if-no-files-found: error\n2026-11-05T22:51:00.2853232Z   retention-days: 14\n2026-11-05T22:51:00.2853434Z   compression-level: 6\n2026-11-05T22:51:00.2853610Z   overwrite: false\n2026-11-05T22:51:00.2853790Z   include-hidden-files: false\n2026-11-05T22:51:00.2853989Z   archive: true\n2026-11-05T22:51:00.2854150Z env:\n2026-11-05T22:51:00.2854305Z   DAPR_CLI_VERSION: 1.18.2\n2026-11-05T22:51:00.2854493Z   DAPR_RUNTIME_VERSION: 1.18.7"
+  ]
+}

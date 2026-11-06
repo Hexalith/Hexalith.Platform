@@ -1,0 +1,168 @@
+{
+  "utc": "2026-11-05T23:02:51.774743+00:00",
+  "base": "f756111d2ed0f414268e882deb5c6da7a924576a",
+  "reviewed": "2d2c394ad6005e41fd8db3ab6c18dfd670f59518",
+  "commonAncestor": "8946209702a6c1c48239f206dd452ae7d729a307",
+  "head": "1d43dda5816b333e00d33b75e511997d8df7c636",
+  "tree": "0c799ac6b5ba1b1a24933036e858884fda52ee80",
+  "parents": [
+    "f756111d2ed0f414268e882deb5c6da7a924576a",
+    "2d2c394ad6005e41fd8db3ab6c18dfd670f59518"
+  ],
+  "clean": true,
+  "patchBytes": 64831,
+  "patchSha256": "c0b58ed9d73f3ba36d508795a21ecd1fbf070cc936365e2371d3a5728425d5f5",
+  "completePatchReadByParent": true,
+  "changedPaths": [
+    "README.md",
+    "docs/current-tuple-preparation.md",
+    "docs/domain-module-enrollment.md",
+    "docs/package-catalog-qualification.md",
+    "eng/tuple-ci-suites.json",
+    "src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs",
+    "src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs",
+    "src/Hexalith.Platform.Composition/PlatformCurrentOwnerSourceState.cs",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPreparationTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerSourceSealTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformMappedOwnerProcess.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs"
+  ],
+  "incomingOnlyPathsVerified": 483,
+  "reviewedOnlyPathsVerified": 8,
+  "overlapPaths": [
+    "README.md",
+    "docs/current-tuple-preparation.md",
+    "docs/domain-module-enrollment.md",
+    "docs/package-catalog-qualification.md",
+    "eng/legacy-tuple-source.json",
+    "src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs"
+  ],
+  "all17IncomingDirectGitlinksVerified": {
+    "references/Hexalith.AI.Tools": [
+      "160000",
+      "commit",
+      "1745b6663ad32bb1288167135ed0f979366c53a0"
+    ],
+    "references/Hexalith.Agents": [
+      "160000",
+      "commit",
+      "7957108c30d38b8e82eb072cf3437b6a67627cd7"
+    ],
+    "references/Hexalith.Builds": [
+      "160000",
+      "commit",
+      "afb2d4fd556b5d30a92734d21cb62bfe946ae958"
+    ],
+    "references/Hexalith.ChatBot": [
+      "160000",
+      "commit",
+      "b13c58006d292836a9c8b242de476765676e5fb2"
+    ],
+    "references/Hexalith.Commons": [
+      "160000",
+      "commit",
+      "11555ace9efcae2928a00122dcba91243e5a8a1a"
+    ],
+    "references/Hexalith.Conversations": [
+      "160000",
+      "commit",
+      "9a5c684de5ee4876448faa26737f6afd36cf33e7"
+    ],
+    "references/Hexalith.EventStore": [
+      "160000",
+      "commit",
+      "5df9640657dff0125b656f450a59e989485195dc"
+    ],
+    "references/Hexalith.Folders": [
+      "160000",
+      "commit",
+      "e88c940000446e13d17d86a7288649d8653a7138"
+    ],
+    "references/Hexalith.FrontComposer": [
+      "160000",
+      "commit",
+      "a1155aecb636348ce11de2d78e5b7a071a8c9c64"
+    ],
+    "references/Hexalith.McpCli": [
+      "160000",
+      "commit",
+      "0b526ab0efea4c4bfcc817d9009a4d4fddb1a7a8"
+    ],
+    "references/Hexalith.Memories": [
+      "160000",
+      "commit",
+      "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a"
+    ],
+    "references/Hexalith.Parties": [
+      "160000",
+      "commit",
+      "b74a12c54162dbc890accb483c6f97e3bf618eab"
+    ],
+    "references/Hexalith.PolymorphicSerializations": [
+      "160000",
+      "commit",
+      "bce4eb9f45c6b131b960ab4fa39e50ff01e51960"
+    ],
+    "references/Hexalith.Projects": [
+      "160000",
+      "commit",
+      "19a0548d0e84584092d9ca50693cedfa8805cb5c"
+    ],
+    "references/Hexalith.Tenants": [
+      "160000",
+      "commit",
+      "c1395216240a8971c3d27e10ac64d55ec5ea5980"
+    ],
+    "references/Hexalith.Timesheets": [
+      "160000",
+      "commit",
+      "f5bee2c91bec6e1e78d81b604cea6af0cee764fe"
+    ],
+    "references/Hexalith.Works": [
+      "160000",
+      "commit",
+      "2e9fafba151a184eb4552796db7eecc25ffaf8c7"
+    ]
+  },
+  "nineChangedIncomingGitlinksVerified": [
+    "references/Hexalith.Builds",
+    "references/Hexalith.EventStore",
+    "references/Hexalith.Folders",
+    "references/Hexalith.FrontComposer",
+    "references/Hexalith.McpCli",
+    "references/Hexalith.Memories",
+    "references/Hexalith.Parties",
+    "references/Hexalith.Projects",
+    "references/Hexalith.Tenants"
+  ],
+  "immutableLegacyProfileSha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
+  "currentProfileExactClosedReviewed": true,
+  "currentCount": 270,
+  "proofExactClosedSourcePlusTwoIncomingVersionConstants": true,
+  "commandReceipts": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-fresh-main-source-integration-20261105/evidence/merge-message-commitlint-before-command.json",
+      "sha256": "0908a6266d91ba48106f4cc244edb89780a6ad228935ec73e4b5539bf7b0dfe2",
+      "exitCode": 0
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-fresh-main-source-integration-20261105/evidence/merge-message-commitlint-after-command.json",
+      "sha256": "539c490b11d607889109e64239d738de07fc641fe07f06136973bf5f6d16c341",
+      "exitCode": 0
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/platform-fresh-main-source-integration-20261105/evidence/staged-crlf-aware-diff-check-command.json",
+      "sha256": "a35c70e62d3db73526a2900f3db5c67d9f0abf076e9a48455ca488fd97aabd00",
+      "exitCode": 0
+    }
+  ],
+  "rawCommitMessageSha256": "2e07bad29d32dfe62561cb3948ae4fdc9efd1cd84fde6d8bd6d009bbe869dac1",
+  "sourceAudit": "Parent read complete15-path64831-byte patch and three code overlaps against closed source. Exact current fixture matches incoming T704/M24; historical seven images retained. Legacy descriptor is pending real merged-code recut; source integration grants no functional qualification.",
+  "qualificationCredit": false,
+  "evidenceIndexAuditPending": true
+}

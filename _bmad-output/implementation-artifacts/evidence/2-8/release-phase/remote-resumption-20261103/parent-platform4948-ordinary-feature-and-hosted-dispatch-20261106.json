@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "candidateAcceptance": false,
+  "source": "49488595cf26ce7470da82a2ff18b9f0f63ede10",
+  "legacy": "6c46833fb6cc5c49aaa92acab1ba2941d70ec69f",
+  "featureBranch": "story-2-8/current-owner-325-49488595",
+  "featureRefVerified": "49488595cf26ce7470da82a2ff18b9f0f63ede10",
+  "ordinaryPush": {
+    "argv": [
+      "git",
+      "-c",
+      "submodule.recurse=false",
+      "push",
+      "https://github.com/Hexalith/Hexalith.Platform.git",
+      "49488595cf26ce7470da82a2ff18b9f0f63ede10:refs/heads/story-2-8/current-owner-325-49488595"
+    ],
+    "startedUtc": "2026-11-06T02:51:07.443645+00:00",
+    "endedUtc": "2026-11-06T02:51:09.833938+00:00",
+    "exitCode": 0,
+    "mainBefore": "e7e16f621365337e7d6f81c242c9e5c355b3556f",
+    "candidateAcceptance": false
+  },
+  "runs": [
+    {
+      "workflow": "tuple-ci.yml",
+      "run": 42152948110,
+      "dispatch": {
+        "workflow": "tuple-ci.yml",
+        "startedUtc": "2026-11-06T02:51:23.983857+00:00",
+        "endedUtc": "2026-11-06T02:51:25.344247+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/current-owner-325-49488595",
+          "inputs": {
+            "candidate-sha": "49488595cf26ce7470da82a2ff18b9f0f63ede10",
+            "legacy-source-sha": "6c46833fb6cc5c49aaa92acab1ba2941d70ec69f"
+          }
+        },
+        "candidateAcceptance": false
+      }
+    },
+    {
+      "workflow": "catalog-builder.yml",
+      "run": 42152950614,
+      "dispatch": {
+        "workflow": "catalog-builder.yml",
+        "startedUtc": "2026-11-06T02:51:25.344449+00:00",
+        "endedUtc": "2026-11-06T02:51:26.781254+00:00",
+        "exitCode": 0,
+        "body": {
+          "ref": "story-2-8/current-owner-325-49488595"
+        },
+        "candidateAcceptance": false
+      }
+    }
+  ],
+  "prCreated": false,
+  "mainChangedByParent": false,
+  "policiesChanged": false,
+  "sourcePubliclyQualified": false
+}

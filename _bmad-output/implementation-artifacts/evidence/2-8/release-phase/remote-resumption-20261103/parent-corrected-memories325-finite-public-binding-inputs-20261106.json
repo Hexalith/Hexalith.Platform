@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-06T01:02:52.002789+00:00",
+  "version": "3.0.25",
+  "source": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+  "normalPublisherRun": 42134622308,
+  "sourceCi": 42132182708,
+  "releaseId": 435930782,
+  "packages": [
+    {
+      "id": "Hexalith.Memories.Contracts",
+      "version": "3.0.25",
+      "publicUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.contracts/3.0.25/hexalith.memories.contracts.3.0.25.nupkg",
+      "signedArchiveSha256": "f6641cd477fd9524d43a9b4c683872ce7e76d0ace79901b4ff92a080edd72c35",
+      "assembly": {
+        "member": "lib/net10.0/Hexalith.Memories.Contracts.dll",
+        "sha256": "44b629fb573f0fcb161129c0e353dc5efdf72447550fa46352d773275a2954ca"
+      }
+    },
+    {
+      "id": "Hexalith.Memories.EventStore",
+      "version": "3.0.25",
+      "publicUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstore/3.0.25/hexalith.memories.eventstore.3.0.25.nupkg",
+      "signedArchiveSha256": "bab0db5d8c092cab96033b3a68a9b5b53126d9e81cb46cf5423876379008a76e",
+      "assembly": {
+        "member": "lib/net10.0/Hexalith.Memories.EventStore.dll",
+        "sha256": "b496cd070564f0377f5c01e7436326f1753fdb1790847dce719e6d875fa1daf4"
+      }
+    },
+    {
+      "id": "Hexalith.Memories.EventStoreExtensions",
+      "version": "3.0.25",
+      "publicUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.memories.eventstoreextensions/3.0.25/hexalith.memories.eventstoreextensions.3.0.25.nupkg",
+      "signedArchiveSha256": "a9d60a494e9bbccabf98b71206acc1df0cca4baeae4ea77e6675c5809800fa3f",
+      "assembly": {
+        "member": "lib/net10.0/Hexalith.Memories.EventStoreExtensions.dll",
+        "sha256": "333b469a1a40cc35bf6104e41ff49e84d6f9d4acd1e2a8e15b7cae8b4ebffcdb"
+      }
+    }
+  ],
+  "images": [
+    {
+      "name": "server",
+      "repository": "memories",
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "indexDigest": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+    },
+    {
+      "name": "mcp",
+      "repository": "memories-mcp",
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "indexDigest": "sha256:eabccac79d8aca34200abfcbf690ee172957191daa90c4078b04e84f80351d6d"
+    },
+    {
+      "name": "access-telemetry",
+      "repository": "memories-access-telemetry",
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "indexDigest": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+    },
+    {
+      "name": "access-telemetry-clock",
+      "repository": "memories-access-telemetry-clock",
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "indexDigest": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+    },
+    {
+      "name": "domain-service",
+      "repository": "memories-domain-service",
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "indexDigest": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+    }
+  ],
+  "sdkBodyAuthority": "parent-memories325-published-image-sdk410-public-body-equality-audit-20261106.json",
+  "derivedFrom": {
+    "packageAudit": "parent-memories325-normal-carrier-and-all-ten-public-package-audit-v2-20261106.json",
+    "packageAuditSha256": "8e0311a8135fb726c04ae4de9553ab78d4e55c60b8960bd6eac7d76708a45c2d",
+    "imageAudit": "parent-memories325-readonly-all-image-graphs-and-amd64-body-audit-20261106.json"
+  },
+  "scope": "Exact authenticated existing public inputs for later finite binding; not an adoption or runtime qualifier",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

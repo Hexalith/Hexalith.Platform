@@ -1,0 +1,2923 @@
+{
+  "utc": "2026-11-05T23:36:00.532315+00:00",
+  "head": "0da33b098a8e793da9de3135f6e351883eb70924",
+  "run": 42129498003,
+  "authenticatedSourceCatalogPasses": 3,
+  "authenticatedSharedReleaseContractPasses": 599,
+  "zeroFailuresErrorsSkipsNotRunInThoseReports": true,
+  "browserFiveJUnitCasesPass": {
+    "rootAttributes": {
+      "id": "",
+      "name": "",
+      "tests": "5",
+      "failures": "0",
+      "skipped": "0",
+      "errors": "0",
+      "time": "27.722943"
+    },
+    "suites": [
+      {
+        "name": "specimen-a11y.spec.ts",
+        "timestamp": "2026-11-05T23:29:59.353Z",
+        "hostname": "chromium",
+        "tests": "1",
+        "failures": "0",
+        "skipped": "0",
+        "time": "7.724",
+        "errors": "0"
+      },
+      {
+        "name": "specimen-artifacts.spec.ts",
+        "timestamp": "2026-11-05T23:29:59.353Z",
+        "hostname": "chromium",
+        "tests": "2",
+        "failures": "0",
+        "skipped": "0",
+        "time": "0.348",
+        "errors": "0"
+      },
+      {
+        "name": "specimen-media-layout.spec.ts",
+        "timestamp": "2026-11-05T23:29:59.353Z",
+        "hostname": "chromium",
+        "tests": "1",
+        "failures": "0",
+        "skipped": "0",
+        "time": "10.09",
+        "errors": "0"
+      },
+      {
+        "name": "specimen-smoke.spec.ts",
+        "timestamp": "2026-11-05T23:29:59.353Z",
+        "hostname": "chromium",
+        "tests": "1",
+        "failures": "0",
+        "skipped": "0",
+        "time": "0.977",
+        "errors": "0"
+      }
+    ],
+    "cases": [
+      {
+        "name": "specimen routes pass blocking axe checks with nonzero target nodes",
+        "classname": "specimen-a11y.spec.ts",
+        "time": "7.724"
+      },
+      {
+        "name": "redaction validator rejects restricted canaries and accepts sanitized text",
+        "classname": "specimen-artifacts.spec.ts",
+        "time": "0.002"
+      },
+      {
+        "name": "browser artifacts and manual checklist evidence stay bounded and redacted",
+        "classname": "specimen-artifacts.spec.ts",
+        "time": "0.346"
+      },
+      {
+        "name": "specimen routes keep required trust anchors reachable across viewports and media modes",
+        "classname": "specimen-media-layout.spec.ts",
+        "time": "10.09"
+      },
+      {
+        "name": "all specimen routes render required anchors and metadata",
+        "classname": "specimen-smoke.spec.ts",
+        "time": "0.977"
+      }
+    ]
+  },
+  "retainedBrowserSummaries": {
+    "test-results/evidence/artifact-summary.json": {
+      "generatedBy": "specimen-artifacts.spec.ts",
+      "artifacts": [
+        "test-results/evidence/axe-summary.json",
+        "test-results/evidence/copied-text-summary.json",
+        "test-results/evidence/evidence-cockpit.png",
+        "test-results/evidence/manual-at-checklist.json",
+        "test-results/evidence/trace-policy.json"
+      ],
+      "nonTextArtifacts": [
+        {
+          "path": "test-results/evidence/evidence-cockpit.png",
+          "source": "Evidence Cockpit complete fixture",
+          "redactionProof": "The screenshot is bounded to the complete fixture route and text artifacts independently validate no restricted canaries."
+        }
+      ],
+      "redactionScan": "passed"
+    },
+    "test-results/evidence/axe-summary.json": {
+      "generatedBy": "specimen-a11y.spec.ts",
+      "routeCount": 19,
+      "scans": [
+        {
+          "route": "/__memories/specimens/evidence-cockpit",
+          "surface": "Evidence Cockpit",
+          "scannedNodeCount": 165,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/trust-strip",
+          "surface": "Trust Strip",
+          "scannedNodeCount": 53,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/scope-header",
+          "surface": "Scope Header",
+          "scannedNodeCount": 26,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/source-citation-stack",
+          "surface": "Source Citation Stack",
+          "scannedNodeCount": 33,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/retrieval-axis-breakdown",
+          "surface": "Retrieval Axis Breakdown",
+          "scannedNodeCount": 28,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/graph-path-summary",
+          "surface": "Graph Path Summary",
+          "scannedNodeCount": 27,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/recovery-action-panel",
+          "surface": "Recovery Action Panel",
+          "scannedNodeCount": 55,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/case-activity-trail",
+          "surface": "Case Activity Trail",
+          "scannedNodeCount": 183,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/ingestion-lifecycle-tracker",
+          "surface": "Ingestion Lifecycle Tracker",
+          "scannedNodeCount": 98,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/operator-health-matrix",
+          "surface": "Operator Health Matrix",
+          "scannedNodeCount": 233,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/benchmark-result-comparator",
+          "surface": "Benchmark Result Comparator",
+          "scannedNodeCount": 78,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/agent-packet-inspector",
+          "surface": "Agent Packet Inspector",
+          "scannedNodeCount": 140,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/evidence-grid",
+          "surface": "Evidence Grid",
+          "scannedNodeCount": 217,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/command-surface",
+          "surface": "Command Surface",
+          "scannedNodeCount": 19,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/action-confirmation",
+          "surface": "Action Confirmation",
+          "scannedNodeCount": 24,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/context-navigation",
+          "surface": "Context Navigation",
+          "scannedNodeCount": 16,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/interaction-form",
+          "surface": "Interaction Form",
+          "scannedNodeCount": 30,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 0,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": []
+        },
+        {
+          "route": "/__memories/specimens/filter-summary",
+          "surface": "Filter Summary",
+          "scannedNodeCount": 70,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        },
+        {
+          "route": "/__memories/specimens/lens-shell",
+          "surface": "Lens Shell",
+          "scannedNodeCount": 66,
+          "violationCount": 0,
+          "blockingViolationCount": 0,
+          "reportOnlyViolationCount": 0,
+          "incompleteCount": 1,
+          "blockingViolationIds": [],
+          "reportOnlyViolationIds": [],
+          "incompleteIds": [
+            "aria-prohibited-attr"
+          ]
+        }
+      ]
+    },
+    "test-results/evidence/copied-text-summary.json": {
+      "generatedBy": "specimen-artifacts.spec.ts",
+      "route": "/__memories/specimens/agent-packet-inspector",
+      "copiedTextPolicy": "Browser copied-text scan is bounded to the clean AgentPacketInspectorMapper fixture; sensitive-payload sanitization of the trust components is proven by bUnit Epic17SanitizationCanaryTests, not by browser-rendered copy here.",
+      "copiedTextLength": 395
+    },
+    "test-results/evidence/manual-at-checklist.json": {
+      "generatedBy": "specimen-artifacts.spec.ts",
+      "workflow": "Epic 17 specimen trust-surface keyboard and AT checklist",
+      "viewport": "360, 768, 1024, 1440 Chromium automated; OS screen reader manual not available in unattended run",
+      "browser": "Chromium via Playwright",
+      "os": "linux",
+      "method": "Checklist-method evidence only; no NVDA/JAWS/VoiceOver process was launched by automation",
+      "tester": "BMad dev-auto automation",
+      "date": "2026-11-05",
+      "result": "Automated route/axe/media checks recorded; OS screen-reader dimension remains fail-closed",
+      "defects": [],
+      "severity": "High for unresolved OS screen-reader release claim",
+      "owner": "Memories web product owner + QA + accessibility tester",
+      "waiverState": "Not waived for product-route release claim",
+      "releaseDisposition": "Manual screen-reader pass required before product-route/full AT validation claim"
+    },
+    "test-results/evidence/media-layout-summary.json": {
+      "generatedBy": "specimen-media-layout.spec.ts",
+      "routeCount": 19,
+      "unsupportedDimensions": [
+        {
+          "dimension": "OS screen-reader browse/forms mode",
+          "reason": "Requires installed assistive technology and human tester in the target OS/browser pairing.",
+          "disposition": "fail-closed manual checklist required"
+        },
+        {
+          "dimension": "Firefox/WebKit browser matrix",
+          "reason": "Story 17.7 automated lane is bounded to Chromium for deterministic CI specimen evidence.",
+          "disposition": "fail-closed before product-route release claim"
+        }
+      ],
+      "routes": [
+        {
+          "route": "/__memories/specimens/evidence-cockpit",
+          "surface": "Evidence Cockpit",
+          "selectorAnchor": "mem-evidence-cockpit",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 800,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 728,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 728,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 728,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 728,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 728,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 818,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/trust-strip",
+          "surface": "Trust Strip",
+          "selectorAnchor": "mem-trust-strip",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 54,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 18,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 18,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 18,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 18,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 18,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 54,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/scope-header",
+          "surface": "Scope Header",
+          "selectorAnchor": "mem-evidence-scope",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 54,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 54,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 54,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 54,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 54,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 54,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 54,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/source-citation-stack",
+          "surface": "Source Citation Stack",
+          "selectorAnchor": "mem-source-stack",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 232,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 214,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 214,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 214,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 214,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 214,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 250,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/retrieval-axis-breakdown",
+          "surface": "Retrieval Axis Breakdown",
+          "selectorAnchor": "mem-axis-breakdown",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 212,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 194,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 194,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 194,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 194,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 194,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 212,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/graph-path-summary",
+          "surface": "Graph Path Summary",
+          "selectorAnchor": "mem-graph-summary",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 142,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 142,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 142,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 142,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 142,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 142,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 142,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 0,
+            "unmeasurableCount": 0,
+            "undersizedCount": 0,
+            "failClosed": false,
+            "disposition": "supported Chromium measurements meet 44x44 where controls are present",
+            "targets": []
+          }
+        },
+        {
+          "route": "/__memories/specimens/recovery-action-panel",
+          "surface": "Recovery Action Panel",
+          "selectorAnchor": "mem-evidence-recovery",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 240,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 150,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 114,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 96,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 96,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 96,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 258,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Increase token budget",
+                "width": 140,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/case-activity-trail",
+          "surface": "Case Activity Trail",
+          "selectorAnchor": "mem-activity-trail",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 342,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 180,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 144,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 126,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 126,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 126,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 432,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/ingestion-lifecycle-tracker",
+          "surface": "Ingestion Lifecycle Tracker",
+          "selectorAnchor": "mem-ingestion-tracker",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 126,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 72,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 72,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 72,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 72,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 72,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 126,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/operator-health-matrix",
+          "surface": "Operator Health Matrix",
+          "selectorAnchor": "mem-health-matrix",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 396,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 342,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 342,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 342,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 342,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 342,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 432,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 4,
+            "unmeasurableCount": 0,
+            "undersizedCount": 4,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Next action: Inspect backend health",
+                "width": 229,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Next action: Inspect backend health",
+                "width": 229,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Next action: Use graph traversal",
+                "width": 207,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/benchmark-result-comparator",
+          "surface": "Benchmark Result Comparator",
+          "selectorAnchor": "mem-benchmark-comparator",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 180,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 90,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 72,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 54,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 54,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 54,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 198,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/agent-packet-inspector",
+          "surface": "Agent Packet Inspector",
+          "selectorAnchor": "mem-packet-inspector",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 482,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 392,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 392,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 392,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 392,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 392,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 500,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 2,
+            "unmeasurableCount": 0,
+            "undersizedCount": 2,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Copy sanitized summary",
+                "width": 159,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/evidence-grid",
+          "surface": "Evidence Grid",
+          "selectorAnchor": "mem-evidence-grid",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": true,
+              "boundingBox": {
+                "width": 344,
+                "height": 118,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 110,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 110,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 110,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 110,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 110,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": true,
+            "boundingBox": {
+              "width": 304,
+              "height": 118,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 4,
+            "unmeasurableCount": 0,
+            "undersizedCount": 4,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Rank",
+                "width": 37,
+                "height": 18,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Annotations",
+                "width": 84,
+                "height": 18,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Inspect source",
+                "width": 46,
+                "height": 35,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Inspect source",
+                "width": 46,
+                "height": 35,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/command-surface",
+          "surface": "Command Surface",
+          "selectorAnchor": "mem-command-surface",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 54,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 18,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 18,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 18,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 18,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 18,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 54,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 8,
+            "unmeasurableCount": 0,
+            "undersizedCount": 8,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Search",
+                "width": 44,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Ingest",
+                "width": 43,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Inspect source",
+                "width": 96,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Verify tenant",
+                "width": 87,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Open graph",
+                "width": 308,
+                "height": 35,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Retry ingestion",
+                "width": 102,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Export packet",
+                "width": 93,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Inspect MCP payload",
+                "width": 319,
+                "height": 35,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/action-confirmation",
+          "surface": "Action Confirmation",
+          "selectorAnchor": "mem-action-confirmation",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 154.90625,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 100.90625,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 100.90625,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 82.90625,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 82.90625,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 82.90625,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 172.90625,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 2,
+            "unmeasurableCount": 0,
+            "undersizedCount": 2,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Cancel",
+                "width": 44,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Export packet",
+                "width": 89,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/context-navigation",
+          "surface": "Context Navigation",
+          "selectorAnchor": "mem-context-navigation",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 72,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 36,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 36,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 36,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 36,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 36,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 72,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 2,
+            "unmeasurableCount": 0,
+            "undersizedCount": 2,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Open target",
+                "width": 75,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/interaction-form",
+          "surface": "Interaction Form",
+          "selectorAnchor": "mem-interaction-form",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 108,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 90,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 90,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 90,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 90,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 90,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 108,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Submit",
+                "width": 46,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/filter-summary",
+          "surface": "Filter Summary",
+          "selectorAnchor": "mem-filter-summary",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 108,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 72,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 72,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 72,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 72,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 72,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 126,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 3,
+            "unmeasurableCount": 0,
+            "undersizedCount": 3,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Remove filter",
+                "width": 314,
+                "height": 35,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Remove filter",
+                "width": 92,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              },
+              {
+                "tagName": "fluent-button",
+                "text": "Reset filters",
+                "width": 77,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/__memories/specimens/lens-shell",
+          "surface": "Lens Shell",
+          "selectorAnchor": "mem-lens-shell",
+          "viewportEvidence": [
+            {
+              "viewport": {
+                "width": 360,
+                "height": 800
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 344,
+                "height": 198,
+                "left": 8,
+                "right": 352
+              }
+            },
+            {
+              "viewport": {
+                "width": 768,
+                "height": 1024
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 752,
+                "height": 144,
+                "left": 8,
+                "right": 760
+              }
+            },
+            {
+              "viewport": {
+                "width": 1024,
+                "height": 768
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1008,
+                "height": 144,
+                "left": 8,
+                "right": 1016
+              }
+            },
+            {
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "visible": true,
+              "horizontalOnly": false,
+              "documentOverflowsHorizontally": false,
+              "boundingBox": {
+                "width": 1424,
+                "height": 144,
+                "left": 8,
+                "right": 1432
+              }
+            }
+          ],
+          "forcedColors": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 144,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reducedMotion": {
+            "supported": true,
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 1424,
+              "height": 144,
+              "left": 8,
+              "right": 1432
+            }
+          },
+          "reflow": {
+            "visible": true,
+            "horizontalOnly": false,
+            "documentOverflowsHorizontally": false,
+            "boundingBox": {
+              "width": 304,
+              "height": 198,
+              "left": 8,
+              "right": 312
+            }
+          },
+          "touchTargets": {
+            "measuredCount": 1,
+            "unmeasurableCount": 0,
+            "undersizedCount": 1,
+            "failClosed": true,
+            "disposition": "fail-closed: measured Chromium controls below 44x44 or unmeasurable interactive controls need source-owned remediation or manual release waiver",
+            "targets": [
+              {
+                "tagName": "fluent-button",
+                "text": "Return to packet",
+                "width": 106,
+                "height": 17,
+                "measurable": true,
+                "meets44By44": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "test-results/evidence/route-metadata.json": {
+      "generatedBy": "specimen-smoke.spec.ts",
+      "routeCount": 19,
+      "routes": [
+        {
+          "route": "/__memories/specimens/evidence-cockpit",
+          "slug": "evidence-cockpit",
+          "surface": "Evidence Cockpit",
+          "selectorAnchor": "mem-evidence-cockpit",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/trust-strip",
+          "slug": "trust-strip",
+          "surface": "Trust Strip",
+          "selectorAnchor": "mem-trust-strip",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/scope-header",
+          "slug": "scope-header",
+          "surface": "Scope Header",
+          "selectorAnchor": "mem-evidence-scope",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/source-citation-stack",
+          "slug": "source-citation-stack",
+          "surface": "Source Citation Stack",
+          "selectorAnchor": "mem-source-stack",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/retrieval-axis-breakdown",
+          "slug": "retrieval-axis-breakdown",
+          "surface": "Retrieval Axis Breakdown",
+          "selectorAnchor": "mem-axis-breakdown",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/graph-path-summary",
+          "slug": "graph-path-summary",
+          "surface": "Graph Path Summary",
+          "selectorAnchor": "mem-graph-summary",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/recovery-action-panel",
+          "slug": "recovery-action-panel",
+          "surface": "Recovery Action Panel",
+          "selectorAnchor": "mem-evidence-recovery",
+          "fixtureFamily": "Epic17RecoveryPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/case-activity-trail",
+          "slug": "case-activity-trail",
+          "surface": "Case Activity Trail",
+          "selectorAnchor": "mem-activity-trail",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/ingestion-lifecycle-tracker",
+          "slug": "ingestion-lifecycle-tracker",
+          "surface": "Ingestion Lifecycle Tracker",
+          "selectorAnchor": "mem-ingestion-tracker",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/operator-health-matrix",
+          "slug": "operator-health-matrix",
+          "surface": "Operator Health Matrix",
+          "selectorAnchor": "mem-health-matrix",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/benchmark-result-comparator",
+          "slug": "benchmark-result-comparator",
+          "surface": "Benchmark Result Comparator",
+          "selectorAnchor": "mem-benchmark-comparator",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/agent-packet-inspector",
+          "slug": "agent-packet-inspector",
+          "surface": "Agent Packet Inspector",
+          "selectorAnchor": "mem-packet-inspector",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/evidence-grid",
+          "slug": "evidence-grid",
+          "surface": "Evidence Grid",
+          "selectorAnchor": "mem-evidence-grid",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/command-surface",
+          "slug": "command-surface",
+          "surface": "Command Surface",
+          "selectorAnchor": "mem-command-surface",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/action-confirmation",
+          "slug": "action-confirmation",
+          "surface": "Action Confirmation",
+          "selectorAnchor": "mem-action-confirmation",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/context-navigation",
+          "slug": "context-navigation",
+          "surface": "Context Navigation",
+          "selectorAnchor": "mem-context-navigation",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/interaction-form",
+          "slug": "interaction-form",
+          "surface": "Interaction Form",
+          "selectorAnchor": "mem-interaction-form",
+          "fixtureFamily": "Epic17FormFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/filter-summary",
+          "slug": "filter-summary",
+          "surface": "Filter Summary",
+          "selectorAnchor": "mem-filter-summary",
+          "fixtureFamily": "Epic17EvidencePacketFixtures",
+          "requiredSelectorCount": 1
+        },
+        {
+          "route": "/__memories/specimens/lens-shell",
+          "slug": "lens-shell",
+          "surface": "Lens Shell",
+          "selectorAnchor": "mem-lens-shell",
+          "fixtureFamily": "Epic17LensPacketFixtures",
+          "requiredSelectorCount": 1
+        }
+      ]
+    },
+    "test-results/evidence/trace-policy.json": {
+      "generatedBy": "specimen-artifacts.spec.ts",
+      "tracePolicy": "Playwright trace is retain-on-failure only and bounded under tests/Hexalith.Memories.Web.E2E/test-results",
+      "redactionPolicy": "Text artifacts are scanned for [REDACTED], local paths, [REDACTED] markers, provider diagnostics, stack traces, and restricted source details"
+    }
+  },
+  "allArchiveMembersAuthenticatedBy": "parent-memories-0da33-completed-small-gate-artifact-retrieval-20261105.json",
+  "browserAttemptLimitation": "JUnit success is authenticated; no independent per-attempt Playwright result list is retained here, so no single-attempt/no-retry claim.",
+  "scope": "Completed required owner jobs only. Overall/unit/main/publisher/native gates remain separate.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,25 @@
+{
+  "utc": "2026-11-06T07:14:05.938653+00:00",
+  "source": "e810be0356da55b6db1794262c722e358470a093",
+  "firstResultSha256": "5e2314787cd76c970feb592e0c3cec63deb58875092b5acda2cb5be7131f6aa3",
+  "actualCounts": {
+    "passed": 84,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0
+  },
+  "actualExecuted": 85,
+  "requiredNotExecuted": 186,
+  "failureCase": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+  "causalOutput": "Shouldly.ShouldAssertException : code\n    should be\n0\n    but was\n128\n\nAdditional Info:\n    v4.44.8^{commit}\nfatal: ambiguous argument 'v4.44.8^{commit}': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n   at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.GitAsync(String directory, String[] arguments) in /home/administrator/.cache/hexalith/story-2-8/platform-scoped-gateway-4448-source-union-20261106/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs:line 172\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\n   at Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync() in /home/administrator/.cache/hexalith/story-2-8/platform-scoped-gateway-4448-source-union-20261106/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs:line 60\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)",
+  "originalSourceAndOutputsUnchanged": true,
+  "officialTagRefsNowVerified": {
+    "v4.44.8": "26b9c1d192c844efe0e074cf91fc87afd1d43f4d",
+    "v4.44.3": "fc2122240a39f03628c04fa8433e5eece90b8b4c"
+  },
+  "correctedPreparationResult": "gateway-current-271-after-official-tag-preparation/result.json",
+  "sourceOrAssertionsChanged": false,
+  "sourceRecut": false,
+  "candidateAcceptance": false
+}

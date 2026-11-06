@@ -1,0 +1,20 @@
+{
+  "utc": "2026-11-06T04:49:54.756652+00:00",
+  "productionSource": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "originalTrackedBlobInputsVerifiedWithExactCheckoutAttributes": 3222,
+  "checkoutCRLFTransformInputs": 400,
+  "onlyTwoRegressionFixtureInputsChanged": [
+    "test/Hexalith.Builds.Module.Tests/CompositionEngineTests.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs"
+  ],
+  "allInputFilesVerified": 3224,
+  "actualPassed": 10,
+  "actualFailed": 1,
+  "soleFailure": "Hexalith.Builds.ModuleTool.Tests.CompositionEngineTests.ReadinessFailuresTearDownAndRetainFailedStateAsync(mode: \\\"status-unready\\\", expectedRuleId: \\\"HXR027\\\")",
+  "failureReason": "The existing diagnostic lacks the already-validated finite status.",
+  "xmlSha256": "fbef4efbeb4fbd31279561b5343175ce0b070f86c1761fca0b8e9f8033c3c1f9",
+  "commandStdoutStderrVerified": true,
+  "noUnderlyingNativeCauseClaimed": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

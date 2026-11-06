@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-06T04:45:20.554399+00:00",
+  "actualSource": "fb66dec0de39a15b348b7f4ec051af13e1fffdc0",
+  "scope": "Static declared-suite registration census only; actual hosted source bodies authenticated by Git blob ids.",
+  "files": [
+    {
+      "file": "FunctionalObservationWriterTests.cs",
+      "facts": 2,
+      "inlineDataRows": 0,
+      "declaredCases": 2,
+      "sha256": "68c354f7c14dd041626b62116bed8bfc223cb00f684c1f822114cae5cf5f5fc3"
+    },
+    {
+      "file": "MemoriesTenantObservationTests.cs",
+      "facts": 1,
+      "inlineDataRows": 3,
+      "declaredCases": 4,
+      "sha256": "1201add559c92ae10942f80c8bb5edffba48820f242a7409ac9bb190c1d5bba5"
+    },
+    {
+      "file": "NativeAssemblyObservationTests.cs",
+      "facts": 4,
+      "inlineDataRows": 0,
+      "declaredCases": 4,
+      "sha256": "ae7334b135f8034eaa3451d430e74a312192ae081ca05a8b07c06ae423b91b08"
+    },
+    {
+      "file": "NativeDiagnosticBindingTests.cs",
+      "facts": 0,
+      "inlineDataRows": 16,
+      "declaredCases": 16,
+      "sha256": "4f5ea8dc1a7c9b8e2a1e23eb72959d740198c1f3ce75c2a093b88c7be5d99ef8"
+    },
+    {
+      "file": "PartyEnvironmentTests.cs",
+      "facts": 2,
+      "inlineDataRows": 0,
+      "declaredCases": 2,
+      "sha256": "6eefc05c3448ea225efa44495280dfa29dec950351ef69ff3cb0630d7fb4f0c1"
+    }
+  ],
+  "declaredSuiteCases": 28,
+  "realServiceEntryFacts": [
+    "RealDependencies_CreateQueryAndPersistMatchingPartyEvents",
+    "GatewayRefusesAnonymousCommandStatusAsync"
+  ],
+  "remainingCases": "26 metadata, filesystem, diagnostic or dependency-assertion controls; must also actually execute in the native suite.",
+  "actualHostedNativeCasesExecutedOnFb66": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "futureSourceMustBeRechecked": true
+}

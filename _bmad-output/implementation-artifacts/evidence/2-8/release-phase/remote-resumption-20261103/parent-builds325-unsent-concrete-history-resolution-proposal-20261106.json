@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-06T00:55:17.537639+00:00",
+  "state": "PROPOSAL ONLY, NOT AUTHORIZED, NOT SENT",
+  "rulesetId": 19196298,
+  "sourceRuleUpdatedAt": "2026-10-07T16:10:50.202+02:00",
+  "soleProposedDelta": "pull_request.parameters.allowed_merge_methods: [squash] -> [squash,merge], then exact restoration",
+  "purpose": "Retain the actual catalog source ancestor through a reviewed normal merge; unchanged audit provenance and checks remain strict",
+  "reviewReadyAfter": "Complete actual source/evidence independent audit and actual current-head normal PR checks",
+  "requiresExplicitUserDecision": true,
+  "noOtherPolicyChange": true,
+  "noBypassProposed": true,
+  "preparedPayloads": {
+    "PROPOSED-NOT-SENT-allow-normal-merge-request.json": {
+      "bytes": 1581,
+      "sha256": "57904394d38932a8ccaa4e485416c62c611f412c4734b0af0c0a6bf5b4c52f39"
+    },
+    "PROPOSED-NOT-SENT-restore-squash-only-request.json": {
+      "bytes": 1562,
+      "sha256": "ad8dbdbdfebbe36fe4d00b1cf4a291e0e490392517eca5ac324991c3095644b9"
+    }
+  }
+}

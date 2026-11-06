@@ -1,0 +1,7 @@
+Ordinary DomainService publishing omitted the owner intent adapter, and catalog registration scanned only its declaration assembly. Include the adapter in the normal owner project graph and pass its actual factory assembly to SDK catalog registration.
+
+Enroll DomainService.Tests in the Docker-free unit/contract inventory so the existing command/replay tests and the new production discovery regression execute in hosted CI. Preserve the original seven projects, trait exclusions, TRX and canonical coverage requirements. A controlled executable wrapper regression verifies all eight selections and their evidence options.
+
+Release output consumes genuine public SDK 4.1.0 packages and the preparation dependency selects genuine Builds 4.44.4. Existing compatibility profiles and publication authorities remain intact.
+
+Local validation: all 13 DomainService cases pass through ordinary Release/package MTP with real TRX and Cobertura; three existing CLI inventory/script/release controls pass. The production discovery case resolves the real adapter assembly and invokes its six SDK factories with matching declarations. Selected public archive signatures and output bodies were verified. Fresh hosted CI on the updated head and normal protected publication remain required.

@@ -1,0 +1,49 @@
+{
+  "utc": "2026-11-06T03:56:09.095058+00:00",
+  "source": "4c6426c4e57a07e9947199d41b33a904b39d3e0e",
+  "run": 42157170062,
+  "artifact": 13475403751,
+  "artifactSha256": "sha256:25ace38d420e4a25f45884a0edf3bdcc0701e540260b43c440cbbb0069d290e4",
+  "handoffXmlSha256": "e773e21cfbf07e03c6fe48b9c8f5f1b949bd0234f1987710578705f62ea689d1",
+  "actualHandoffPassed": 7,
+  "cases": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"wrong-key-encoding\\\")",
+      "result": "Pass",
+      "time": "2.108"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"mixed-plan\\\")",
+      "result": "Pass",
+      "time": "1.508"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"stale-run\\\")",
+      "result": "Pass",
+      "time": "1.42"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"entry-body\\\")",
+      "result": "Pass",
+      "time": "1.445"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"source-binding\\\")",
+      "result": "Pass",
+      "time": "1.369"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "result": "Pass",
+      "time": "121.252"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "result": "Pass",
+      "time": "121.046"
+    }
+  ],
+  "scope": "Preliminary actual current hosted signed-handoff XML only. Full current/legacy source/binary/artifact audit waits for the dependent legacy job.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,1774 @@
+{
+  "utc": "2026-11-06T00:35:26.995505+00:00",
+  "source": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+  "version": "3.0.25",
+  "registry": "registry.hexalith.com",
+  "actualExistingOperatorPrincipal": "jpiquot@itaneo.com",
+  "credentialSource": "Existing Docker credential helper, only in process memory; no credential or policy changes and no CI credential delivery.",
+  "readOnlyTransport": "Exact approved helper uses only HTTP GET; no image startup, Docker daemon, provider or registry write.",
+  "approvedOciHelperSha256": "3f54edb036642551e64c180b4708a954d84bd55cac381a4459c3f75448488608",
+  "images": [
+    {
+      "name": "server",
+      "repository": "memories",
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "indexDigest": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:41a099ac9a60d97e6976b6e3620b8c5ec18a19b0c4f827e6afa997869d4cb06a",
+          "size": 1400,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+          "config_size": 3854,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:a64a9f9db67154787262345214d68c0bd6bb15c27e09f2aeaf415c633e48be27",
+          "size": 1400,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:80bd5df83f28c8dc578022a9cb5ced32bffc369314dda3d93c735511b37949a6",
+          "config_size": 3855,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        }
+      ],
+      "amd64RootfsChain": [
+        {
+          "compressedDigest": "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+          "compressedBytes": 3853673,
+          "actualDiffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+        },
+        {
+          "compressedDigest": "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+          "compressedBytes": 1111844,
+          "actualDiffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+        },
+        {
+          "compressedDigest": "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+          "compressedBytes": 954,
+          "actualDiffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+        },
+        {
+          "compressedDigest": "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+          "compressedBytes": 37581974,
+          "actualDiffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+        },
+        {
+          "compressedDigest": "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+          "compressedBytes": 166,
+          "actualDiffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+        },
+        {
+          "compressedDigest": "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+          "compressedBytes": 13087114,
+          "actualDiffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+        },
+        {
+          "compressedDigest": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "compressedBytes": 44292895,
+          "actualDiffId": "sha256:3c0998a143a55e149dfb6da54775056c03a56f23ebdf1d276fb17fb6a0e0e02e"
+        }
+      ],
+      "amd64ApplicationFiles": [
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Commons.UniqueIds.dll",
+          "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+          "bytes": 9728,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Commons.UniqueIds.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "bytes": 1288192,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.Client.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "bytes": 953344,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.EventStore.DomainService.dll",
+          "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+          "bytes": 1247744,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.DomainService.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.EventStore.ServiceDefaults.dll",
+          "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+          "bytes": 568320,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+          "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+          "bytes": 117760,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+          "bytes": 1305088,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.EventStore.dll",
+          "sha256": "d94de46a8b255c0de5a643c8109f65ded81bb8114f3554aa3b2db7485e649a36",
+          "bytes": 208384,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.EventStore.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.Server.deps.json",
+          "sha256": "71729c05798b01e8b3fa14d2cfe5e4d461f3b304152fe94434bc3e8ba52f1bac",
+          "bytes": 50631,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.deps.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.Server.dll",
+          "sha256": "16981abdc6ae5e309e438b7a44e77fc4084a85ee521bfaa0a246124c84d366a8",
+          "bytes": 2674176,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.Server.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.runtimeconfig.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+          "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+          "bytes": 47104,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories:3.0.25",
+          "path": "app/Hexalith.Memories.Telemetry.dll",
+          "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+          "bytes": 17408,
+          "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Telemetry.dll"
+        }
+      ],
+      "config": {
+        "config": {
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Labels": {
+            "org.opencontainers.image.authors": "Hexalith.Memories.Server",
+            "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+            "net.dot.runtime.majorminor": "10.0",
+            "net.dot.sdk.version": "10.0.403",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.image.base.digest": "sha256:fbad312ed75e0f10c4fcba4d48e0c0f133de07219bd0f78054e4a102501c0650"
+          },
+          "Env": [
+            "PATH=/app",
+            "APP_UID=1654",
+            "ASPNETCORE_HTTP_PORTS=8080",
+            "DOTNET_RUNNING_IN_CONTAINER=true",
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "DOTNET_VERSION=10.0.14",
+            "ASPNET_VERSION=10.0.14"
+          ],
+          "WorkingDir": "/app/",
+          "Entrypoint": [
+            "/usr/share/dotnet/dotnet",
+            "/app/Hexalith.Memories.Server.dll"
+          ],
+          "User": "1654"
+        },
+        "created": "2026-11-06T00:15:28.8779947Z",
+        "rootfs": {
+          "type": "layers",
+          "diff_ids": [
+            "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064",
+            "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d",
+            "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51",
+            "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67",
+            "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9",
+            "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7",
+            "sha256:3c0998a143a55e149dfb6da54775056c03a56f23ebdf1d276fb17fb6a0e0e02e"
+          ]
+        },
+        "architecture": "amd64",
+        "os": "linux",
+        "history": [
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz / # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "CMD [\"/bin/sh\"]",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "RUN /bin/sh -c apk add --upgrade --no-cache         ca-certificates-bundle                 libgcc         libssl3         libstdc++                 zlib # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:03.4483128Z",
+            "created_by": "RUN /bin/sh -c addgroup         --gid=$APP_UID         app     && adduser         --uid=$APP_UID         --ingroup=app         --disabled-password         app # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "ENV DOTNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:13.2535081Z",
+            "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "ENV ASPNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "author": ".NET SDK",
+            "created": "2026-11-06T00:15:28.8779853Z",
+            "created_by": ".NET SDK Container Tooling, version 10.0.403-servicing.26523.112+5a2162bea6845eabc1fc721624a43568c65db3b1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mcp",
+      "repository": "memories-mcp",
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "indexDigest": "sha256:eabccac79d8aca34200abfcbf690ee172957191daa90c4078b04e84f80351d6d",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:e4eb03b76399b0776c1010288df1403ef96f555202d4fd4d6031578f80c87a73",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:50c3ecb10e7a49944241cd63e5e0e37c0a86742f11914b86b9ae3a997358673e",
+          "config_size": 4532,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:e256cc6495fa28f3b5c412f6a7bef29ca0839deb4ac608dc59789d2232de689c",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:4164930dae3261aaa8fad8968c88adb781fa537c009ce101b86ace3a2de05ccc",
+          "config_size": 4533,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        }
+      ],
+      "amd64RootfsChain": [
+        {
+          "compressedDigest": "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+          "compressedBytes": 3853673,
+          "actualDiffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+        },
+        {
+          "compressedDigest": "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+          "compressedBytes": 1111844,
+          "actualDiffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+        },
+        {
+          "compressedDigest": "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+          "compressedBytes": 954,
+          "actualDiffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+        },
+        {
+          "compressedDigest": "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+          "compressedBytes": 37581974,
+          "actualDiffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+        },
+        {
+          "compressedDigest": "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+          "compressedBytes": 166,
+          "actualDiffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+        },
+        {
+          "compressedDigest": "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+          "compressedBytes": 13087114,
+          "actualDiffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+        },
+        {
+          "compressedDigest": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "compressedBytes": 4350504,
+          "actualDiffId": "sha256:0d080c405bc6e7513537daafd92f154ed118ba9fc951dbffb528398575a89b0c"
+        }
+      ],
+      "amd64ApplicationFiles": [
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Client.Rest.dll",
+          "sha256": "e2e66a1b6f1916a9774f8258ef6fe6b20428b46d047121b8cc795df2b28a28b1",
+          "bytes": 95744,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Client.Rest.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+          "bytes": 1305088,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Mcp.deps.json",
+          "sha256": "240d0dc4ca6aca37afdd9dba69e081c3675560d896479ec016f9385dc1ce9823",
+          "bytes": 36084,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.deps.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Mcp.dll",
+          "sha256": "385c703ee3d3a8bb70647282e4f3bf937bb5dc01e0476b5f2d38125fdc53bdf1",
+          "bytes": 74752,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Mcp.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.runtimeconfig.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+          "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+          "bytes": 47104,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-mcp:3.0.25",
+          "path": "app/Hexalith.Memories.Telemetry.dll",
+          "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+          "bytes": 17408,
+          "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Telemetry.dll"
+        }
+      ],
+      "config": {
+        "config": {
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Labels": {
+            "org.opencontainers.artifact.description": "MCP Server surface for Hexalith.Memories (LLM agent interface \u2014 Phase 1.5). Exposes\r\n      search_memory / ingest_content / traverse_relations / get_case_info tools over the Streamable\r\n      HTTP transport defined by the Model Context Protocol. Story 10.1.",
+            "org.opencontainers.image.description": "MCP Server surface for Hexalith.Memories (LLM agent interface \u2014 Phase 1.5). Exposes\r\n      search_memory / ingest_content / traverse_relations / get_case_info tools over the Streamable\r\n      HTTP transport defined by the Model Context Protocol. Story 10.1.",
+            "org.opencontainers.image.authors": "ITANEO",
+            "org.opencontainers.image.licenses": "MIT",
+            "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+            "net.dot.runtime.majorminor": "10.0",
+            "net.dot.sdk.version": "10.0.403",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.image.base.digest": "sha256:fbad312ed75e0f10c4fcba4d48e0c0f133de07219bd0f78054e4a102501c0650"
+          },
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "APP_UID=1654",
+            "ASPNETCORE_HTTP_PORTS=8080",
+            "DOTNET_RUNNING_IN_CONTAINER=true",
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "DOTNET_VERSION=10.0.14",
+            "ASPNET_VERSION=10.0.14"
+          ],
+          "WorkingDir": "/app/",
+          "Entrypoint": [
+            "dotnet",
+            "/app/Hexalith.Memories.Mcp.dll"
+          ],
+          "User": "1654"
+        },
+        "created": "2026-11-06T00:15:36.4718604Z",
+        "rootfs": {
+          "type": "layers",
+          "diff_ids": [
+            "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064",
+            "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d",
+            "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51",
+            "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67",
+            "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9",
+            "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7",
+            "sha256:0d080c405bc6e7513537daafd92f154ed118ba9fc951dbffb528398575a89b0c"
+          ]
+        },
+        "architecture": "amd64",
+        "os": "linux",
+        "history": [
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz / # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "CMD [\"/bin/sh\"]",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "RUN /bin/sh -c apk add --upgrade --no-cache         ca-certificates-bundle                 libgcc         libssl3         libstdc++                 zlib # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:03.4483128Z",
+            "created_by": "RUN /bin/sh -c addgroup         --gid=$APP_UID         app     && adduser         --uid=$APP_UID         --ingroup=app         --disabled-password         app # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "ENV DOTNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:13.2535081Z",
+            "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "ENV ASPNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "author": ".NET SDK",
+            "created": "2026-11-06T00:15:36.4718576Z",
+            "created_by": ".NET SDK Container Tooling, version 10.0.403-servicing.26523.112+5a2162bea6845eabc1fc721624a43568c65db3b1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "access-telemetry",
+      "repository": "memories-access-telemetry",
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "indexDigest": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:70d561e816de4a6bce56d4a61670f65435ebfc0d2d3342ac940653be6a3cd4ec",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+          "config_size": 3910,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:d7b9d5b550ac2a2dd96426665bfb3ccaa77003479d1664467295fdb67b34d6ba",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:467c2a194cc2eedf4bfa9a8623343373aea422ba4a9b82258445eb776fa94c50",
+          "config_size": 3911,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        }
+      ],
+      "amd64RootfsChain": [
+        {
+          "compressedDigest": "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+          "compressedBytes": 3853673,
+          "actualDiffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+        },
+        {
+          "compressedDigest": "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+          "compressedBytes": 1111844,
+          "actualDiffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+        },
+        {
+          "compressedDigest": "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+          "compressedBytes": 954,
+          "actualDiffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+        },
+        {
+          "compressedDigest": "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+          "compressedBytes": 37581974,
+          "actualDiffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+        },
+        {
+          "compressedDigest": "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+          "compressedBytes": 166,
+          "actualDiffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+        },
+        {
+          "compressedDigest": "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+          "compressedBytes": 13087114,
+          "actualDiffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+        },
+        {
+          "compressedDigest": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "compressedBytes": 3439535,
+          "actualDiffId": "sha256:d5b33d42e4a85827e2fbd5d61a45af4c2488cc5edc15d152acfbd9815d73f99e"
+        }
+      ],
+      "amd64ApplicationFiles": [
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+          "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+          "bytes": 117760,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.deps.json",
+          "sha256": "213ea46d8b321e3fa31382edaa6a663afab1be088f40c377a1f6987576902b20",
+          "bytes": 29055,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.deps.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.dll",
+          "sha256": "6bc8b22b83904a938e6ba754df8a728a4b16dd991cdfce64001db11d7becc4f8",
+          "bytes": 193024,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.runtimeconfig.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+          "bytes": 1305088,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+          "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+          "bytes": 47104,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+          "path": "app/Hexalith.Memories.Telemetry.dll",
+          "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+          "bytes": 17408,
+          "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.Telemetry.dll"
+        }
+      ],
+      "config": {
+        "config": {
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Labels": {
+            "org.opencontainers.image.authors": "Hexalith.Memories.AccessTelemetry",
+            "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+            "net.dot.runtime.majorminor": "10.0",
+            "net.dot.sdk.version": "10.0.403",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.image.base.digest": "sha256:fbad312ed75e0f10c4fcba4d48e0c0f133de07219bd0f78054e4a102501c0650"
+          },
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "APP_UID=1654",
+            "ASPNETCORE_HTTP_PORTS=8080",
+            "DOTNET_RUNNING_IN_CONTAINER=true",
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "DOTNET_VERSION=10.0.14",
+            "ASPNET_VERSION=10.0.14"
+          ],
+          "WorkingDir": "/app/",
+          "Entrypoint": [
+            "dotnet",
+            "/app/Hexalith.Memories.AccessTelemetry.dll"
+          ],
+          "User": "1654"
+        },
+        "created": "2026-11-06T00:15:42.8331210Z",
+        "rootfs": {
+          "type": "layers",
+          "diff_ids": [
+            "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064",
+            "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d",
+            "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51",
+            "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67",
+            "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9",
+            "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7",
+            "sha256:d5b33d42e4a85827e2fbd5d61a45af4c2488cc5edc15d152acfbd9815d73f99e"
+          ]
+        },
+        "architecture": "amd64",
+        "os": "linux",
+        "history": [
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz / # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "CMD [\"/bin/sh\"]",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "RUN /bin/sh -c apk add --upgrade --no-cache         ca-certificates-bundle                 libgcc         libssl3         libstdc++                 zlib # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:03.4483128Z",
+            "created_by": "RUN /bin/sh -c addgroup         --gid=$APP_UID         app     && adduser         --uid=$APP_UID         --ingroup=app         --disabled-password         app # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "ENV DOTNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:13.2535081Z",
+            "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "ENV ASPNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "author": ".NET SDK",
+            "created": "2026-11-06T00:15:42.8331186Z",
+            "created_by": ".NET SDK Container Tooling, version 10.0.403-servicing.26523.112+5a2162bea6845eabc1fc721624a43568c65db3b1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "access-telemetry-clock",
+      "repository": "memories-access-telemetry-clock",
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "indexDigest": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:b57aff58b209715e12a67c453c3a57e0f819d12af6ad630a31610a6733ee59c9",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+          "config_size": 3922,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:3e9322fa76913fe369431ead9481cc302520d89cee5538d3cd3c2fb53b9f5a01",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:2cb6ed936db03c8bc6cfd1cf03164c4a90860846d9c64c98c121b97c96d41b90",
+          "config_size": 3923,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        }
+      ],
+      "amd64RootfsChain": [
+        {
+          "compressedDigest": "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+          "compressedBytes": 3853673,
+          "actualDiffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+        },
+        {
+          "compressedDigest": "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+          "compressedBytes": 1111844,
+          "actualDiffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+        },
+        {
+          "compressedDigest": "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+          "compressedBytes": 954,
+          "actualDiffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+        },
+        {
+          "compressedDigest": "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+          "compressedBytes": 37581974,
+          "actualDiffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+        },
+        {
+          "compressedDigest": "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+          "compressedBytes": 166,
+          "actualDiffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+        },
+        {
+          "compressedDigest": "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+          "compressedBytes": 13087114,
+          "actualDiffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+        },
+        {
+          "compressedDigest": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "compressedBytes": 3233222,
+          "actualDiffId": "sha256:77222e48f06019774ecefffacecb7546350b3a8bca4416a9b2867db168a00462"
+        }
+      ],
+      "amd64ApplicationFiles": [
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Clock.deps.json",
+          "sha256": "62d05ac3fb9143b8ef6094aad2cf1c76f3bdf298e0ead4cb18461f15c8078390",
+          "bytes": 26583,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.deps.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Clock.dll",
+          "sha256": "03d5a44761b77f943375ca003a0c8a11d5ebd9addcfb17b5fe18b6fc8202c8b8",
+          "bytes": 35840,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Clock.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.runtimeconfig.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+          "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+          "bytes": 117760,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+          "bytes": 1305088,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+          "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+          "bytes": 47104,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+          "path": "app/Hexalith.Memories.Telemetry.dll",
+          "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+          "bytes": 17408,
+          "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.Telemetry.dll"
+        }
+      ],
+      "config": {
+        "config": {
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Labels": {
+            "org.opencontainers.image.authors": "Hexalith.Memories.AccessTelemetry.Clock",
+            "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+            "net.dot.runtime.majorminor": "10.0",
+            "net.dot.sdk.version": "10.0.403",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.image.base.digest": "sha256:fbad312ed75e0f10c4fcba4d48e0c0f133de07219bd0f78054e4a102501c0650"
+          },
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "APP_UID=1654",
+            "ASPNETCORE_HTTP_PORTS=8080",
+            "DOTNET_RUNNING_IN_CONTAINER=true",
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "DOTNET_VERSION=10.0.14",
+            "ASPNET_VERSION=10.0.14"
+          ],
+          "WorkingDir": "/app/",
+          "Entrypoint": [
+            "dotnet",
+            "/app/Hexalith.Memories.AccessTelemetry.Clock.dll"
+          ],
+          "User": "1654"
+        },
+        "created": "2026-11-06T00:15:49.0470414Z",
+        "rootfs": {
+          "type": "layers",
+          "diff_ids": [
+            "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064",
+            "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d",
+            "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51",
+            "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67",
+            "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9",
+            "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7",
+            "sha256:77222e48f06019774ecefffacecb7546350b3a8bca4416a9b2867db168a00462"
+          ]
+        },
+        "architecture": "amd64",
+        "os": "linux",
+        "history": [
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz / # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "CMD [\"/bin/sh\"]",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "RUN /bin/sh -c apk add --upgrade --no-cache         ca-certificates-bundle                 libgcc         libssl3         libstdc++                 zlib # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:03.4483128Z",
+            "created_by": "RUN /bin/sh -c addgroup         --gid=$APP_UID         app     && adduser         --uid=$APP_UID         --ingroup=app         --disabled-password         app # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "ENV DOTNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:13.2535081Z",
+            "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "ENV ASPNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "author": ".NET SDK",
+            "created": "2026-11-06T00:15:49.0470374Z",
+            "created_by": ".NET SDK Container Tooling, version 10.0.403-servicing.26523.112+5a2162bea6845eabc1fc721624a43568c65db3b1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "domain-service",
+      "repository": "memories-domain-service",
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "indexDigest": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:ccce280858041a4742600b31be0c792ee696145f4faa2013fb79189cca9b26ef",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+          "config_size": 3906,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:cc52db2176b8978e0c831ed3fb2ab91b5ea8bd06b83d3469c4fc76b5a67aa448",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:a3d0351f6a15893cc689ed2bd4b3ed85b6907daa6c7b6465a8b31d4d5702176c",
+          "config_size": 3907,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z"
+          }
+        }
+      ],
+      "amd64RootfsChain": [
+        {
+          "compressedDigest": "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+          "compressedBytes": 3853673,
+          "actualDiffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+        },
+        {
+          "compressedDigest": "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+          "compressedBytes": 1111844,
+          "actualDiffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+        },
+        {
+          "compressedDigest": "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+          "compressedBytes": 954,
+          "actualDiffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+        },
+        {
+          "compressedDigest": "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+          "compressedBytes": 37581974,
+          "actualDiffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+        },
+        {
+          "compressedDigest": "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+          "compressedBytes": 166,
+          "actualDiffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+        },
+        {
+          "compressedDigest": "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+          "compressedBytes": 13087114,
+          "actualDiffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+        },
+        {
+          "compressedDigest": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "compressedBytes": 6055859,
+          "actualDiffId": "sha256:bf8238148c8fb14f23c40763a756566b83451339213bc563a6e6fa2d9d6b8990"
+        }
+      ],
+      "amd64ApplicationFiles": [
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Commons.UniqueIds.dll",
+          "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+          "bytes": 9728,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Commons.UniqueIds.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "bytes": 1288192,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.Client.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "bytes": 953344,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.EventStore.DomainService.dll",
+          "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+          "bytes": 1247744,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.DomainService.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.EventStore.ServiceDefaults.dll",
+          "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+          "bytes": 568320,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.ServiceDefaults.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+          "bytes": 1305088,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.DomainService.deps.json",
+          "sha256": "2b916da28b96a45c3d2adc76f9629e0ed3557842f61e41296c18914f75aa7a57",
+          "bytes": 43079,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.deps.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.DomainService.dll",
+          "sha256": "b49841cc08d7fc1fb5e7cdf552d3bb5610da0a5a7754572a98ceec225bec918e",
+          "bytes": 12288,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.DomainService.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.runtimeconfig.json"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.EventStore.dll",
+          "sha256": "d94de46a8b255c0de5a643c8109f65ded81bb8114f3554aa3b2db7485e649a36",
+          "bytes": 208384,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.EventStore.dll"
+        },
+        {
+          "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+          "path": "app/Hexalith.Memories.EventStoreExtensions.dll",
+          "sha256": "879bedbd4dfd34a3ef377c62fffd8ff5895573bbfa58d57f4e72d0a55aa6aa5b",
+          "bytes": 10752,
+          "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.EventStoreExtensions.dll"
+        }
+      ],
+      "config": {
+        "config": {
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Labels": {
+            "org.opencontainers.image.authors": "Hexalith.Memories.DomainService",
+            "org.opencontainers.image.base.name": "mcr.microsoft.com/dotnet/aspnet",
+            "net.dot.runtime.majorminor": "10.0",
+            "net.dot.sdk.version": "10.0.403",
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Memories/blob/246157a7ff8e2dcd8d356c833a77a02514490d2f/README.md",
+            "org.opencontainers.image.revision": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+            "org.opencontainers.image.version": "3.0.25",
+            "org.opencontainers.image.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.artifact.created": "2026-11-06T00:14:48Z",
+            "org.opencontainers.image.base.digest": "sha256:fbad312ed75e0f10c4fcba4d48e0c0f133de07219bd0f78054e4a102501c0650"
+          },
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "APP_UID=1654",
+            "ASPNETCORE_HTTP_PORTS=8080",
+            "DOTNET_RUNNING_IN_CONTAINER=true",
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "DOTNET_VERSION=10.0.14",
+            "ASPNET_VERSION=10.0.14"
+          ],
+          "WorkingDir": "/app/",
+          "Entrypoint": [
+            "dotnet",
+            "/app/Hexalith.Memories.DomainService.dll"
+          ],
+          "User": "1654"
+        },
+        "created": "2026-11-06T00:15:54.6928526Z",
+        "rootfs": {
+          "type": "layers",
+          "diff_ids": [
+            "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064",
+            "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d",
+            "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51",
+            "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67",
+            "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9",
+            "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7",
+            "sha256:bf8238148c8fb14f23c40763a756566b83451339213bc563a6e6fa2d9d6b8990"
+          ]
+        },
+        "architecture": "amd64",
+        "os": "linux",
+        "history": [
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "ADD alpine-minirootfs-3.24.4-x86_64.tar.gz / # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T18:00:28.5837141Z",
+            "created_by": "CMD [\"/bin/sh\"]",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:02.4848926Z",
+            "created_by": "RUN /bin/sh -c apk add --upgrade --no-cache         ca-certificates-bundle                 libgcc         libssl3         libstdc++                 zlib # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:03.4483128Z",
+            "created_by": "RUN /bin/sh -c addgroup         --gid=$APP_UID         app     && adduser         --uid=$APP_UID         --ingroup=app         --disabled-password         app # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "ENV DOTNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:12.4861318Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:13.2535081Z",
+            "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit"
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "ENV ASPNET_VERSION=10.0.14",
+            "empty_layer": true
+          },
+          {
+            "comment": "buildkit.dockerfile.v0",
+            "created": "2026-11-05T22:57:24.4977336Z",
+            "created_by": "COPY /dotnet /usr/share/dotnet # buildkit"
+          },
+          {
+            "author": ".NET SDK",
+            "created": "2026-11-06T00:15:54.6928499Z",
+            "created_by": ".NET SDK Container Tooling, version 10.0.403-servicing.26523.112+5a2162bea6845eabc1fc721624a43568c65db3b1"
+          }
+        ]
+      }
+    }
+  ],
+  "uniqueAmd64LayerBlobs": {
+    "sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17",
+      "size": 3853673,
+      "diffId": "sha256:75f1d9657d880da5f75298e8f40e9928bb6e260c50d26f97af196845307e3064"
+    },
+    "sha256:a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/a40f1d3a6b081c9603427e9146eb6f7507667705c44fb9c93be0e2fbca75cc18",
+      "size": 1111844,
+      "diffId": "sha256:7179963c95b33f40bbfd6734896600aff2631b733f2c00a38a081591b88cdb9d"
+    },
+    "sha256:8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/8cfac5602c059b84aae3fef1fa3a207f8f88efd132ae72154cd071fea5f0e882",
+      "size": 954,
+      "diffId": "sha256:bbbd8ede3481fae877878ca2f3ecbc4dc306e1aad0c54b7e323515bbf2996d51"
+    },
+    "sha256:a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/a78c4f3fa4e0227b54eb49089a36d189dfae75e9329d3267e4eb282493fb4f41",
+      "size": 37581974,
+      "diffId": "sha256:caa285ab046924adb26df1a69da4480ca6d2048481f4162d7c8bdf0368cd8d67"
+    },
+    "sha256:8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/8a1d03f06376c08f3ab8decebbeb8872400c6bc48cb3c7a7876117613228c2ce",
+      "size": 166,
+      "diffId": "sha256:4f7116e513862a2462cfd758f4a7ad0aa89c7d72bbef3b97b87f695a66a2fae9"
+    },
+    "sha256:35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/35c33aa48398bd37aedc08bac6fb380c6b4ee449118e0523e9105ece3f326f25",
+      "size": 13087114,
+      "diffId": "sha256:71415bbbb9738cb340907a7b8c34cc6f209d1dca980a57070d2cb923675b69a7"
+    },
+    "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "size": 44292895,
+      "diffId": "sha256:3c0998a143a55e149dfb6da54775056c03a56f23ebdf1d276fb17fb6a0e0e02e"
+    },
+    "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "size": 4350504,
+      "diffId": "sha256:0d080c405bc6e7513537daafd92f154ed118ba9fc951dbffb528398575a89b0c"
+    },
+    "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "size": 3439535,
+      "diffId": "sha256:d5b33d42e4a85827e2fbd5d61a45af4c2488cc5edc15d152acfbd9815d73f99e"
+    },
+    "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "size": 3233222,
+      "diffId": "sha256:77222e48f06019774ecefffacecb7546350b3a8bca4416a9b2867db168a00462"
+    },
+    "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059": {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/blobs/205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "size": 6055859,
+      "diffId": "sha256:bf8238148c8fb14f23c40763a756566b83451339213bc563a6e6fa2d9d6b8990"
+    }
+  },
+  "allSelectedApplicationFiles": [
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Commons.UniqueIds.dll",
+      "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+      "bytes": 9728,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Commons.UniqueIds.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.EventStore.Client.dll",
+      "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "bytes": 1288192,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.Client.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.EventStore.Contracts.dll",
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "bytes": 953344,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.EventStore.DomainService.dll",
+      "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "bytes": 1247744,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.DomainService.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "bytes": 568320,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.EventStore.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+      "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+      "bytes": 117760,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.Contracts.dll",
+      "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+      "bytes": 1305088,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.EventStore.dll",
+      "sha256": "d94de46a8b255c0de5a643c8109f65ded81bb8114f3554aa3b2db7485e649a36",
+      "bytes": 208384,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.EventStore.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.Server.deps.json",
+      "sha256": "71729c05798b01e8b3fa14d2cfe5e4d461f3b304152fe94434bc3e8ba52f1bac",
+      "bytes": 50631,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.deps.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.Server.dll",
+      "sha256": "16981abdc6ae5e309e438b7a44e77fc4084a85ee521bfaa0a246124c84d366a8",
+      "bytes": 2674176,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.Server.runtimeconfig.json",
+      "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+      "bytes": 472,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Server.runtimeconfig.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+      "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+      "bytes": 47104,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories:3.0.25",
+      "path": "app/Hexalith.Memories.Telemetry.dll",
+      "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+      "bytes": 17408,
+      "sourceLayer": "sha256:2c49c83fb4fbd8502977d692c027e52c4611a2d56fdf1de510a9767af48b60fd",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories/app/Hexalith.Memories.Telemetry.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Client.Rest.dll",
+      "sha256": "e2e66a1b6f1916a9774f8258ef6fe6b20428b46d047121b8cc795df2b28a28b1",
+      "bytes": 95744,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Client.Rest.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Contracts.dll",
+      "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+      "bytes": 1305088,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Mcp.deps.json",
+      "sha256": "240d0dc4ca6aca37afdd9dba69e081c3675560d896479ec016f9385dc1ce9823",
+      "bytes": 36084,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.deps.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Mcp.dll",
+      "sha256": "385c703ee3d3a8bb70647282e4f3bf937bb5dc01e0476b5f2d38125fdc53bdf1",
+      "bytes": 74752,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Mcp.runtimeconfig.json",
+      "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+      "bytes": 472,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Mcp.runtimeconfig.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+      "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+      "bytes": 47104,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-mcp:3.0.25",
+      "path": "app/Hexalith.Memories.Telemetry.dll",
+      "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+      "bytes": 17408,
+      "sourceLayer": "sha256:704cb53cf655f5d5e8e2e79f17ecd393efb625bb63fc50f1efc58510be6cde9c",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-mcp/app/Hexalith.Memories.Telemetry.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+      "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+      "bytes": 117760,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.deps.json",
+      "sha256": "213ea46d8b321e3fa31382edaa6a663afab1be088f40c377a1f6987576902b20",
+      "bytes": 29055,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.deps.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.dll",
+      "sha256": "6bc8b22b83904a938e6ba754df8a728a4b16dd991cdfce64001db11d7becc4f8",
+      "bytes": 193024,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.runtimeconfig.json",
+      "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+      "bytes": 472,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.AccessTelemetry.runtimeconfig.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.Contracts.dll",
+      "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+      "bytes": 1305088,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+      "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+      "bytes": 47104,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry:3.0.25",
+      "path": "app/Hexalith.Memories.Telemetry.dll",
+      "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+      "bytes": 17408,
+      "sourceLayer": "sha256:43865d3e6fb105e3c35407fc536cc4bb7170de8d274af098507c571ecffb92d1",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry/app/Hexalith.Memories.Telemetry.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Clock.deps.json",
+      "sha256": "62d05ac3fb9143b8ef6094aad2cf1c76f3bdf298e0ead4cb18461f15c8078390",
+      "bytes": 26583,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.deps.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Clock.dll",
+      "sha256": "03d5a44761b77f943375ca003a0c8a11d5ebd9addcfb17b5fe18b6fc8202c8b8",
+      "bytes": 35840,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Clock.runtimeconfig.json",
+      "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+      "bytes": 472,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Clock.runtimeconfig.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.AccessTelemetry.Contracts.dll",
+      "sha256": "9f7321024d6725f2757df8e04a4ee8a53d27d19c3045aa359f7a95e65d050d1d",
+      "bytes": 117760,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.AccessTelemetry.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.Contracts.dll",
+      "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+      "bytes": 1305088,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.ServiceDefaults.dll",
+      "sha256": "9609c8d880c19d8e838cbb32bfcd198ae2a65b67535677646d5e07a605639ab1",
+      "bytes": 47104,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-access-telemetry-clock:3.0.25",
+      "path": "app/Hexalith.Memories.Telemetry.dll",
+      "sha256": "cecc3f451b753e0349a47aafbf2c3d23c8f1de6248b19384d192a7675091aa37",
+      "bytes": 17408,
+      "sourceLayer": "sha256:6cff9bcb4f3b3d81aac002d79418cbec00fbced6d839e2e839f18cb9ddedeebe",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-access-telemetry-clock/app/Hexalith.Memories.Telemetry.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Commons.UniqueIds.dll",
+      "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+      "bytes": 9728,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Commons.UniqueIds.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.EventStore.Client.dll",
+      "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "bytes": 1288192,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.Client.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.EventStore.Contracts.dll",
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "bytes": 953344,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.EventStore.DomainService.dll",
+      "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "bytes": 1247744,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.DomainService.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "bytes": 568320,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.EventStore.ServiceDefaults.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.Contracts.dll",
+      "sha256": "25fc40585b7097ec6a9d5c2c831df9fa247d419006dc2492e94bcd3ca876491d",
+      "bytes": 1305088,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.Contracts.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.DomainService.deps.json",
+      "sha256": "2b916da28b96a45c3d2adc76f9629e0ed3557842f61e41296c18914f75aa7a57",
+      "bytes": 43079,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.deps.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.DomainService.dll",
+      "sha256": "b49841cc08d7fc1fb5e7cdf552d3bb5610da0a5a7754572a98ceec225bec918e",
+      "bytes": 12288,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.DomainService.runtimeconfig.json",
+      "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+      "bytes": 472,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.DomainService.runtimeconfig.json"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.EventStore.dll",
+      "sha256": "d94de46a8b255c0de5a643c8109f65ded81bb8114f3554aa3b2db7485e649a36",
+      "bytes": 208384,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.EventStore.dll"
+    },
+    {
+      "image": "registry.hexalith.com/memories-domain-service:3.0.25",
+      "path": "app/Hexalith.Memories.EventStoreExtensions.dll",
+      "sha256": "879bedbd4dfd34a3ef377c62fffd8ff5895573bbfa58d57f4e72d0a55aa6aa5b",
+      "bytes": 10752,
+      "sourceLayer": "sha256:205be6a0568581e63db78b9930ea84231a519510e0ae9e24896549113a43b059",
+      "retained": "/home/administrator/.cache/hexalith/story-2-8/memories-325-image-bodies-20261106/images/memories-domain-service/app/Hexalith.Memories.EventStoreExtensions.dll"
+    }
+  ],
+  "domainAdapterArtifactAndDepsPresent": true,
+  "arm64LayerBytesFetched": false,
+  "scope": "Direct genuine public OCI graphs/configs and actual amd64 layer/rootfs/application bytes. SDK/body metadata still inspected separately. No native or Story acceptance.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+}

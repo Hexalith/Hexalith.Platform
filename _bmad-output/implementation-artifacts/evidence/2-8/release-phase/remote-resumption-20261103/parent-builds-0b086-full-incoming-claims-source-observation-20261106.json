@@ -1,0 +1,26 @@
+{
+  "utc": "2026-11-06T05:20:55.023951+00:00",
+  "actualSource": "0b08666cb2aac1264007564f86ca9c52376499e4",
+  "tree": "2381961e25b0f561b74c80d7938788602ea05d14",
+  "soleParent": "ad50acf920d78ee16033bdc1cf26c34e8275cdcb",
+  "completeIncomingDiff": {
+    "source": "0b08666cb2aac1264007564f86ca9c52376499e4",
+    "bytes": 6650,
+    "lines": 103,
+    "sha256": "fffe45d6923e0f4f5238655ed2032de81473414b2dbbb9991f081bd99071e0bc"
+  },
+  "all103LinesParentRead": true,
+  "actualFullMessagePassesOwningLockedCommitlint": true,
+  "changedPaths": [
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionTokenFactory.cs",
+    "test/Hexalith.Builds.Module.Tests/CompositionRedactionTests.cs"
+  ],
+  "newRegisteredCases": 7,
+  "behavior": "Retain legacy tenant/domain/permission aggregates and add exact canonical eventstore claim arrays without filtering or normalizing caller grant sets. Empty grants acquire no claims.",
+  "normalIncomingMainCi": 42166762850,
+  "mainCiStatusAtObservation": "in_progress",
+  "underlyingPartiesCauseProved": false,
+  "noParentMergeRequestOrProtectedMainPushSent": true,
+  "candidateAcceptance": false,
+  "nativeAcceptance": false
+}

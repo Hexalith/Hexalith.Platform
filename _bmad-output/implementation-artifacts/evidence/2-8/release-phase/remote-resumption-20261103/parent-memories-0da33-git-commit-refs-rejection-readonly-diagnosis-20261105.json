@@ -1,0 +1,48 @@
+{
+  "utc": "2026-11-05T23:23:51.331116+00:00",
+  "observations": {
+    "commit": {
+      "exitCode": 1,
+      "stdout": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest/git/commits#get-a-commit-object",
+        "status": "404"
+      },
+      "stderr": "gh: Not Found (HTTP 404)\n"
+    },
+    "feature": {
+      "exitCode": 0,
+      "stdout": {
+        "ref": "refs/heads/fix/production-domain-intent-adapters",
+        "node_id": "REF_kwDORs_eOdoAMHJlZnMvaGVhZHMvZml4L3Byb2R1Y3Rpb24tZG9tYWluLWludGVudC1hZGFwdGVycw",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/refs/heads/fix/production-domain-intent-adapters",
+        "object": {
+          "sha": "a4d1baac8c732563b362f9af1d92633945134662",
+          "type": "commit",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/commits/a4d1baac8c732563b362f9af1d92633945134662"
+        }
+      },
+      "stderr": ""
+    },
+    "main": {
+      "exitCode": 0,
+      "stdout": {
+        "ref": "refs/heads/main",
+        "node_id": "REF_kwDORs_eOa9yZWZzL2hlYWRzL21haW4",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/refs/heads/main",
+        "object": {
+          "sha": "859680b38a77f04cc8f81ab7a5fe7f40a617cc2a",
+          "type": "commit",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Memories/git/commits/859680b38a77f04cc8f81ab7a5fe7f40a617cc2a"
+        }
+      },
+      "stderr": ""
+    },
+    "featureRules": {
+      "exitCode": 0,
+      "stdout": [],
+      "stderr": ""
+    }
+  },
+  "scope": "Read-only source/ref/rule diagnosis after two rejected normal Git pushes. No force/main/policy/identity changes."
+}

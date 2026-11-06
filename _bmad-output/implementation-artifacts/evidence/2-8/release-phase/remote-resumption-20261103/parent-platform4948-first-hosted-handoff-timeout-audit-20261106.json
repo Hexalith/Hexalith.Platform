@@ -1,0 +1,243 @@
+{
+  "utc": "2026-11-06T03:06:24.367661+00:00",
+  "source": "49488595cf26ce7470da82a2ff18b9f0f63ede10",
+  "run": 42152948110,
+  "attempt": 1,
+  "status": "failed",
+  "artifactId": 13473698010,
+  "artifactSha256": "71594602b55e5c4a4363d37f34754ec140f3253b97c87b753aad6d6ae965220b",
+  "all21951InputsEqualIndependentlyAuditedLocalCommittedM": true,
+  "passed": 268,
+  "failed": [
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "result": "Fail",
+      "seconds": 46.348,
+      "message": "Shouldly.ShouldAssertException : result.TimedOut\n    should be\nFalse\n    but was\nTrue",
+      "stack": "   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.RunPublishedValidationAsync(Boolean completeCatalog, String signingKey) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 179\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync(String initialSigningKey) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs:line 69\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs:line 55\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)"
+    },
+    {
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "result": "Fail",
+      "seconds": 46.374,
+      "message": "Shouldly.ShouldAssertException : result.TimedOut\n    should be\nFalse\n    but was\nTrue",
+      "stack": "   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.RunPublishedValidationAsync(Boolean completeCatalog, String signingKey) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 179\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.AssertPublishedCurrentValidationThenFreshOrdinaryGenerateAsync(String initialSigningKey) in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs:line 69\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n   at Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync() in /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs:line 17\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)\n--- End of stack trace from previous location ---\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)"
+    }
+  ],
+  "notExecutedCurrentCaseNames": [
+    "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests.PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync"
+  ],
+  "legacyDependentJob": "skipped",
+  "groups": [
+    {
+      "file": "required-0.xml",
+      "sha256": "21016657dcc4598223e7d86f1af7f42a10fd3161b53c592dd92600f812cbde51",
+      "counts": {
+        "total": 83,
+        "passed": 83,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-1.xml",
+      "sha256": "5ac172eedecc55354935015b807538e5a42ee72c4ffbd5943419b1face466cbd",
+      "counts": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-2.xml",
+      "sha256": "1a4c7433253220829aa41415ab1e6dafe40f127e7e040f89583b4e28f179054b",
+      "counts": {
+        "total": 24,
+        "passed": 24,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-3.xml",
+      "sha256": "24ffc2bdd51b2be1d2654b769e3f44d3724bcdd8222af6221d1d38a98939c2a9",
+      "counts": {
+        "total": 44,
+        "passed": 44,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-4.xml",
+      "sha256": "37e61a69f0b8333f4fe39658ed6ec00e10bf7efee7d312c97dbd726423362d1d",
+      "counts": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-5.xml",
+      "sha256": "7489377c6712c15145384dd03f71edc810ddf75c0cfc1380a6a72d02258b9d7d",
+      "counts": {
+        "total": 28,
+        "passed": 28,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-6.xml",
+      "sha256": "e1dee5c857533dcb4a358ae995b7209012808ae232c779576853e13cc66b1f8d",
+      "counts": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-7.xml",
+      "sha256": "60b53934d1de995e87a6b9751ce3d5624fd405130cc289ca94fb08bea2f89537",
+      "counts": {
+        "total": 40,
+        "passed": 40,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-8.xml",
+      "sha256": "a33caa9d64b0296772119907bf4114df2511bf27838baef09f8a583a25f1e891",
+      "counts": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-9.xml",
+      "sha256": "3617d42a7b2ef2f242b47624f83eeb210bec84d09f603e84e78cf880ac526b2f",
+      "counts": {
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-10.xml",
+      "sha256": "776641fe95471d2981f62c1b5bef14a783a25641f646fc22ff42281f1f971bc6",
+      "counts": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-11.xml",
+      "sha256": "9e4963747d11f460e62513fe23665ae8d7490a9e1410bb93cdecd3ac5a7cc8be",
+      "counts": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-12.xml",
+      "sha256": "7df4322fe15098d930e2d77cacf06ec9a99fce1de571f3f1c557a1b859c529f5",
+      "counts": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-13.xml",
+      "sha256": "2ad100fbccf98cd445c190aeb800e922c06022be444f76fcdd14d54b94200a9f",
+      "counts": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-14.xml",
+      "sha256": "c28a226a44954818f94d919b346396b9e380166475a8adfaef8361de9d854646",
+      "counts": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-15.xml",
+      "sha256": "d45ed7d0d0bb9564d8f90a9facf7fd5960f97666bf6af838c14e848da9405729",
+      "counts": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    },
+    {
+      "file": "required-16.xml",
+      "sha256": "8ad2a5ef71b39ab17add1cd40e8379946f21b27639e8d634145a7136d3afff0f",
+      "counts": {
+        "total": 7,
+        "passed": 5,
+        "failed": 2,
+        "errors": 0,
+        "skipped": 0,
+        "not-run": 0
+      }
+    }
+  ],
+  "failureBoundary": "Both completeCatalog signed validation positives exceeded the fixture45second process wrapper; five malformed/changed-authority cases passed. The first timeout occurred before subsequent signed/ordinary reader assertions; inner phase/output was not retained because the helper asserts TimedOut before writing the already checked nonsecret output.",
+  "declaredExistingStartupBudgetSeconds": 600,
+  "productionBudgetChangeAuthorized": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "unchangedRetryAuthorized": false
+}

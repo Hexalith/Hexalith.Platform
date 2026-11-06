@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-06T01:59:47.131771+00:00",
+  "head": "3a6add8cae1fd574d8186bc8339705ccbe6bb59d",
+  "actualFullMergeMessage": "fix(platform): preserve reviewed and incoming source guards\n\nMerge the reviewed source sealing and trusted handoff controls with the\ncurrent finite preparation diagnostics and repeated reader regression.\nPreserve incoming producer bindings and the historical tuple descriptor;\nthis static source checkpoint grants no runtime qualification.\n",
+  "lockedCommitlintVersion": "21.2.4",
+  "independentRealMessageExit": 0,
+  "commonAncestor": "f756111d2ed0f414268e882deb5c6da7a924576a",
+  "actualThreeWayNonconflictingObjectsModesCompared": 21960,
+  "eightOverlappingPathsReadAndChecked": [
+    "eng/tuple-ci-suites.json",
+    "docs/current-tuple-preparation.md",
+    "src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs",
+    "docs/package-catalog-qualification.md",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs",
+    "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs",
+    "docs/domain-module-enrollment.md",
+    "README.md"
+  ],
+  "actualIncomingLegacySource": "7cf37c62408df24e103aec80678bce8e10dffaae",
+  "original349ProfileBodySha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
+  "newMergedLegacyEquivalenceClaimed": false,
+  "scope": "Supplement to complete source/index audit; static preparation only"
+}
