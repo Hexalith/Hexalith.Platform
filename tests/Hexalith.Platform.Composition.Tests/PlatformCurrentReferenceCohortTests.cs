@@ -38,6 +38,20 @@ public sealed class PlatformCurrentReferenceCohortTests
             }
         }
         finally { context.Unload(); }
+        var previous = new AssemblyLoadContext("previous-reference-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
+        try
+        {
+            foreach (string name in new[] { "Hexalith.Memories.Contracts", "Hexalith.Memories.EventStore", "Hexalith.Memories.EventStoreExtensions" })
+            {
+                string path = Path.Combine(cache, name.ToLowerInvariant(), "3.0.24", "lib", "net10.0", name + ".dll");
+                File.Exists(path).ShouldBeTrue("The previously qualified Memory reference body remains an explicit restore input.");
+                Assembly old = previous.LoadFromAssemblyPath(path);
+                PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.PreviousCurrentOwnerName).ShouldBe(path);
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+            }
+            Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.PreviousCurrentOwnerName));
+        }
+        finally { previous.Unload(); }
     }
 
     [Fact]

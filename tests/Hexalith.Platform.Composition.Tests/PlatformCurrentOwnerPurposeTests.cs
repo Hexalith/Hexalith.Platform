@@ -83,9 +83,9 @@ public sealed class PlatformCurrentOwnerPurposeTests
         PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
         const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.4</HexalithTenantsVersion><HexalithMemoriesVersion>";
         const string Suffix = "</HexalithMemoriesVersion></PropertyGroup></Project>";
-        File.WriteAllText(catalog, Prefix + "3.0.24" + Suffix);
+        File.WriteAllText(catalog, Prefix + "3.0.25" + Suffix);
         PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
-        foreach (string refused in new[] { "3.0.23", "3.0.240", "3.0.24+unqualified" })
+        foreach (string refused in new[] { "3.0.23", "3.0.24", "3.0.250", "3.0.25+unqualified", "3.0.26" })
         {
             File.WriteAllText(catalog, Prefix + refused + Suffix);
             PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
