@@ -7,8 +7,10 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.6` supplies
-this reference selection and its measured paired validation bodies. Publication
+while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+this reference selection and its measured paired validation bodies. The issuer
+retains legacy grant aggregates and supplies the exact canonical tenant, domain
+and permission sets requested by each caller; it adds no authority. Publication
 alone grants no M25 runtime acceptance.
 This publication does not replace fresh same-code current/legacy CI, unchanged
 native runtime execution, persisted effects or exact cleanup. Public artifact
@@ -17,11 +19,11 @@ measurement and source equivalence alone grant no current runtime qualification.
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
 Tenants `7.0.4` and Memories `3.0.25`, and 259 primary cases. M selects genuine
-[Builds v4.44.6](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.6)
-at `ad50acf920d78ee16033bdc1cf26c34e8275cdcb`, published by successful normal
-[release 42144370420](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42144370420)
-after exact-source [CI 42142102328](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42142102328),
-with exact tool pin and supported floor `4.44.6`. The committed tuple records
+[Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
+at `0b08666cb2aac1264007564f86ca9c52376499e4`, published by successful normal
+[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
+after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850),
+with exact tool pin and supported floor `4.44.7`. The committed tuple records
 catalog blob `f109d49d49588fb83d25a5f417169b35f343976b`, catalog SHA-256
 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`,
 and the actual signed archive, Tooling and inventory identities. Its measured
@@ -40,14 +42,28 @@ its exact descriptor in M. No nested checkout or dependency source fallback is
 permitted.
 
 The signed module archive SHA-256 is
-`4453c5e658b1b457d8215864f0e457539f4caaaa439df2b8d5d3e9cebaaf19c7`.
+`8b9c455ac1dbb1cd9b1fe2bc0042894c6b2752485a10725eeb2068bd8c561353`.
 Its AppHost body is
-`2b746f7b8a91e70fe1e2a571dc4ca832c4cb18ca502b60a467347da32a4fe84c`;
+`f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911`;
 its root and adjacent g4-host Tooling bodies both are
-`23ef9fa3ec8a6c85e91a08da434e0fd1990ff1f613e8f36e0951144b09a37b87`.
+`6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90`.
 Admission requires this complete pair or the separately retained historical
-4.44.5, 4.44.4 and 4.44.3 pairs;
+4.44.6, 4.44.5, 4.44.4 and 4.44.3 pairs;
 cross-pair mixtures and ordinary caller claim suppression remain refused.
+
+## Previous published Builds 4.44.6 tuple
+
+The earlier genuine [Builds v4.44.6](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.6)
+publication at `ad50acf920d78ee16033bdc1cf26c34e8275cdcb` remains historical,
+from normal [release 42144370420](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42144370420)
+after exact-source [CI 42142102328](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42142102328).
+Its signed archive SHA-256 is `4453c5e658b1b457d8215864f0e457539f4caaaa439df2b8d5d3e9cebaaf19c7`;
+AppHost `2b746f7b8a91e70fe1e2a571dc4ca832c4cb18ca502b60a467347da32a4fe84c`
+and Tooling `23ef9fa3ec8a6c85e91a08da434e0fd1990ff1f613e8f36e0951144b09a37b87`
+remain admitted only together. Its catalog blob is `f109d49d49588fb83d25a5f417169b35f343976b`,
+SHA-256 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`.
+The prior tool pin/floor was `4.44.6`; these receipts do not replace current
+producer/runtime evidence.
 
 ## Previous published Builds 4.44.5 tuple
 

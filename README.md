@@ -7,8 +7,10 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.6` supplies
-this reference selection and its measured paired validation bodies. Publication
+while the current private purpose refuses them. Genuine Builds `4.44.7` supplies
+this reference selection and its measured paired validation bodies. The issuer
+retains legacy grant aggregates and supplies the exact canonical tenant, domain
+and permission sets requested by each caller; it adds no authority. Publication
 alone grants no M25 runtime acceptance.
 This publication does not replace fresh same-code current/legacy CI, unchanged
 native runtime execution, persisted effects or exact cleanup. Public artifact
@@ -61,15 +63,18 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
-259 primary cases. M selects genuine [Builds v4.44.6](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.6)
-at `ad50acf920d78ee16033bdc1cf26c34e8275cdcb`, published by successful normal
-[release 42144370420](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42144370420)
-after exact-source [CI 42142102328](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42142102328).
-Its pin and supported floor are `4.44.6`; its catalog Git blob is
+259 primary cases. M selects genuine [Builds v4.44.7](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7)
+at `0b08666cb2aac1264007564f86ca9c52376499e4`, published by successful normal
+[release 42169350830](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42169350830)
+after exact-source [CI 42166762850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42166762850).
+Its pin and supported floor are `4.44.7`; its catalog Git blob is
 `f109d49d49588fb83d25a5f417169b35f343976b`, SHA-256
 `e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`.
 The tuple binds the observed signed archive, paired validation bodies and
 inventory; this publication does not establish current model/native acceptance.
+
+The previous Builds `4.44.6` producer and its complete signed pair remain
+historical evidence in [the retained tuple record](docs/current-tuple-preparation.md#previous-published-builds-4446-tuple).
 
 Both lanes must execute their actual committed source and tuple. Shared code,
 tests, helpers, workflows and documentation must match; only eight explicitly
