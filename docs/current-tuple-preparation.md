@@ -7,7 +7,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.9` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -19,13 +19,13 @@ measurement and source equivalence alone grant no current runtime qualification.
 The current model M prepares the explicit `platform-current-package` purpose:
 measured Release artifacts from the active Parties source, released SDK `4.1.0`,
 Tenants `7.0.4` and Memories `3.0.25`, and 271 primary cases. M selects genuine
-[Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
-at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, published by successful normal
-[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
-after exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850),
-with exact tool pin and supported floor `4.44.8`. The committed tuple records
-catalog blob `f109d49d49588fb83d25a5f417169b35f343976b`, catalog SHA-256
-`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`,
+[Builds v4.44.9](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.9)
+at `0577f0c2d70bd4c2999aa3d98a705c83919bfc00`, published by successful normal
+[release 42201011603](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42201011603)
+after exact-source [CI 42198245252](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42198245252),
+with exact tool pin and supported floor `4.44.9`. The committed tuple records
+catalog blob `b3b2258a4e51264cd675a6ae8a5e985fdcf06c50`, catalog SHA-256
+`f9bbef8913c39b6d7439b73b6762dcf2aa4518a1f8e0087f37c48f96235f8cd1`,
 and the actual signed archive, Tooling and inventory identities. Its measured
 validation pair is recorded below; hosted exact-source/native acceptance remains
 separate and required.
@@ -59,14 +59,31 @@ its exact descriptor in M. No nested checkout or dependency source fallback is
 permitted.
 
 The signed module archive SHA-256 is
-`b89616f914463be8a76e5b129c5028ea31ca532f008a97690b55d854f02f57cd`.
+`c49f153ea240be38c2eaf873f2db791605c55fc60aa37ba0fbea2ecd5dc95877`.
 Its AppHost body is
-`ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764`;
+`672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0`;
 its root and adjacent g4-host Tooling bodies both are
-`f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9`.
+`3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a`.
 Admission requires this complete pair or the separately retained historical
-4.44.7, 4.44.6, 4.44.5, 4.44.4 and 4.44.3 pairs;
+4.44.8, 4.44.7, 4.44.6, 4.44.5, 4.44.4 and 4.44.3 pairs;
 cross-pair mixtures and ordinary caller claim suppression remain refused.
+
+## Previous published Builds 4.44.8 tuple
+
+The previous genuine [Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
+at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d` remains historical, from normal
+[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
+after exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850).
+Its signed archive SHA-256 is `b89616f914463be8a76e5b129c5028ea31ca532f008a97690b55d854f02f57cd`;
+AppHost `ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764`
+and Tooling `f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9`
+remain admitted only together. Its inventory SHA-256 is
+`f9a7c617f28d554e025b550536f93fb81c2bbec992e393fa18f8d0b8990a04b2`;
+its catalog blob `f109d49d49588fb83d25a5f417169b35f343976b` and SHA-256
+`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`
+retain the earlier third-party dependency versions. Current 4.44.9 changes those
+third-party versions while preserving every finite Hexalith cohort. Neither
+publication supplies current Parties or native acceptance.
 
 ## Previous published Builds 4.44.7 tuple
 
@@ -79,7 +96,8 @@ AppHost `f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911`
 and Tooling `6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90`
 remain admitted only together. Its inventory SHA-256 is
 `e5ce4b773cd4eee160045630a4d3af825d42c11d5422446c7a8ad4c8843ab8d0`;
-the catalog blob and SHA-256 match the current catalog above. These historical
+its catalog blob is `f109d49d49588fb83d25a5f417169b35f343976b`, SHA-256
+`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`. These historical
 receipts do not replace the current producer or exact-source qualification.
 
 ## Previous published Builds 4.44.6 tuple
