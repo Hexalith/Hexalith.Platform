@@ -30,11 +30,16 @@ There is no npm/container publisher, version/changelog commit or main rewrite.
 The GitHub plugin's pinned success/failure conditions disable issue discovery,
 comments and labels; controls exercise its actual hooks against an in-memory API.
 
+Release notes pin Conventional Commits preset9.3.1 with notes-generator14.1.1
+and its writer8.4.0. Preset10 requires writer9 and cannot render with this
+generator. A direct generator regression renders controlled feature, fix and
+breaking descriptions plus repository, compare and commit links.
+
 Only the publisher job has contents-write; both jobs have actions-read. It uses
 the job's ordinary GitHub token, with no NuGet, registry or provider credentials.
-The existing tag-creation restriction currently admits only the human maintainer,
-so the Actions token cannot publish until that separate concrete authorization is
-resolved. This change edits no rule or credential and supplies no workaround.
+The approved numeric-version tag creation exception permits the ordinary Actions
+token to publish. Tag updates and deletion remain protected. This compatibility
+change edits no rule or credential.
 
 Receipts retain source, qualifying workflow/run/attempt URLs and required job IDs,
 computed version once known, outcome and explicit native/candidate/Story false.
