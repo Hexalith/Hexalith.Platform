@@ -162,6 +162,23 @@ public sealed class PlatformPublishedPartiesCohortTests
         options.PartiesRunProof.Matches(options).ShouldBeFalse();
     }
 
+    /// <summary>Static fixture selection requires the actual public Parties reader, preserving the historical image set for partial or old loaded owners.</summary>
+    [Fact]
+    public void OrdinaryFixtureUsesOnlyItsActualMeasuredOwnerAndImageCohort()
+    {
+        PlatformPartiesPackageFixture.PublishedImages.Count.ShouldBe(7);
+        PlatformPartiesPackageFixture.PublishedImages.ShouldContain("registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb");
+        PlatformPartiesPackageFixture.PublishedImages.Except(PlatformPartiesPackageFixture.CurrentImages, StringComparer.Ordinal).Count().ShouldBe(1);
+        bool published = PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
+        PlatformPartiesPackageFixture.Images.Count.ShouldBe(7);
+        PlatformPartiesPackageFixture.Images.ShouldContain(published
+            ? "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+            : "registry.hexalith.com/parties@sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b");
+        PlatformPartiesPackageFixture.Images.ShouldContain(published
+            ? "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+            : "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed");
+    }
+
     private static string Body(string name, string? version = null)
     {
         string root = typeof(PlatformPublishedPartiesCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()

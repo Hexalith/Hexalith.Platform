@@ -219,8 +219,17 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests"
       ],
-      "requiredCount": 30,
+      "requiredCount": 31,
       "purpose": "measured-public-parties-static-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
+      ],
+      "requiredCount": 21,
+      "purpose": "measured-public-parties-ordinary-entry-boundary"
     }
   ],
   "historicalPublicControls": {
