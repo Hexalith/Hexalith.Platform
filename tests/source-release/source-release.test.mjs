@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import yaml from 'js-yaml';
 import { analyzeCommits } from '@semantic-release/commit-analyzer';
+import { generateNotes as renderReleaseNotes } from '@semantic-release/release-notes-generator';
 import * as github from '@semantic-release/github';
 import config from '../../release.config.mjs';
 import { repository, workflows, qualify, githubReadApi, binding } from '../../eng/source-release/gate.mjs';
@@ -237,4 +238,31 @@ test('outer CLI failure preserves actual post-tag release failure phase/version/
   assert.deepEqual(receipt, first); assert.equal(receipt.reason, 'semantic-release-failed');
   const published = { ...first, status: 'published', releaseUrls: ['https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.2.4'] };
   assert.deepEqual(recordCliFailure(new Error('later failure'), { read: () => published, save() {}, source }), published);
+});
+
+
+test('actual pinned notes generator renders feature fix breaking notes and repository links', async () => {
+  const commits = [
+    { hash: '1'.repeat(40), message: 'feat(ci): describe fixture feature' },
+    { hash: '2'.repeat(40), message: 'fix(release): describe fixture correction' },
+    { hash: '3'.repeat(40), message: 'feat(api)!: replace fixture contract\n\nBREAKING CHANGE: fixture callers must use version two.' },
+  ];
+  const options = config.plugins[1][1];
+  assert.equal(options.preset, 'conventionalcommits');
+  const notes = await renderReleaseNotes(options, {
+    cwd: process.cwd(), commits, options: { repositoryUrl: config.repositoryUrl },
+    lastRelease: { gitTag: 'v1.2.3', gitHead: '4'.repeat(40) },
+    nextRelease: { version: '2.0.0', gitTag: 'v2.0.0', gitHead: '5'.repeat(40) },
+    logger: { log() {} },
+  });
+  assert.ok(notes.trim().length > 0);
+  for (const text of ['Features', 'Bug Fixes', 'BREAKING CHANGES', 'describe fixture feature',
+    'describe fixture correction', 'replace fixture contract', 'fixture callers must use version two.'])
+    assert.ok(notes.includes(text), `Missing rendered fixture content: ${text}`);
+  const repositoryUrl = config.repositoryUrl.replace(/\.git$/, '');
+  assert.ok(notes.includes(`${repositoryUrl}/compare/v1.2.3...v2.0.0`));
+  for (const commit of commits) assert.ok(notes.includes(`${repositoryUrl}/commit/${commit.hash}`));
+  const lock = JSON.parse(readFileSync('package-lock.json'));
+  assert.equal(lock.packages['node_modules/conventional-changelog-conventionalcommits'].version, '9.3.1');
+  assert.equal(lock.packages['node_modules/conventional-changelog-writer'].version, '8.4.0');
 });
