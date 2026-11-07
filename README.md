@@ -1,5 +1,42 @@
 # Hexalith.Platform
 
+## Current signed producer and Tenants 7.0.5 tuple
+
+The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
+at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
+[release 42245346373](https://github.com/Hexalith/Hexalith.Tenants/actions/runs/42245346373)
+after exact-source [CI 42239774184](https://github.com/Hexalith/Hexalith.Tenants/actions/runs/42239774184).
+The declaration remains byte-identical. Current-Parties uses a new private
+reference name with SDK `4.1.0`, Memories `3.0.25` and McpCli `2.0.1` unchanged.
+Both private Tenants `7.0.4` maps and all historical public maps remain separate.
+
+The distinct `private-eventstore-package-test-4.1.0-tenants-7.0.5` reader has
+only six signed bodies. Runner admission requires the actual parent-key proof,
+exact declared EventStore `platform-package` test, package mode, Development
+Linux/x64, tenants-only expansion, two authenticated declarations and three
+servers. Public version selection still refuses `4.1.0`/`7.0.5`; neither private
+purpose authorizes a full public Parties consumer or a general launch.
+
+The active producer is genuine [Builds v4.44.11](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.11)
+at `567604b616613ba429be0609636d805db776a709`, published by successful normal
+[release 42252030945](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42252030945)
+after exact-source [CI 42249566014](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42249566014).
+The exact tool pin and supported floor are `4.44.11`. The signed archive SHA-256 is
+`3fa63148745f75ac80bbb60bbf602b39a73bbf1ade07ffe9911f73937e0cfb89`; the complete admitted validation pair is
+AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and Tooling
+`c1d319f7c5a5f33219bbe8437f95ff169318ef5265c5827591c547623171c8db`. Catalog blob is
+`e47b3ff72c2d7adac0c100b38279ba069501cdc1`, catalog SHA-256
+`4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
+`a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
+
+The source inventories register 315 current cases and preserve all 349 original
+legacy controls. Fresh final same-code L/M source proof, exact-source hosted
+validation, native effects and complete cleanup remain separately required.
+Package measurement and component checks grant no public-consumer or candidate
+acceptance. The prior producer preparation below retains its own original facts.
+
+## Previous Builds 4.44.10 preparation
+
 The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
 at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
@@ -7,7 +44,7 @@ at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
 actually contain the measured public SDK `4.1.0` bodies. The historical public
 reader retains Memories `3.0.23` and McpCli `2.0.0` as explicit build inputs.
 The earlier measured Memories `3.0.24` reference bodies/images remain preserved,
-while the current private purpose refuses them. Genuine Builds `4.44.8` supplies
+while the current private purpose refuses them. Genuine Builds `4.44.10` supplies
 this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
@@ -63,13 +100,13 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The current model M prepares a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
-271 primary cases. M selects genuine [Builds v4.44.8](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8)
-at `26b9c1d192c844efe0e074cf91fc87afd1d43f4d`, published by successful normal
-[release 42173656418](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42173656418)
-after exact-source [CI 42171362850](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42171362850).
-Its pin and supported floor are `4.44.8`; its catalog Git blob is
-`f109d49d49588fb83d25a5f417169b35f343976b`, SHA-256
-`e0801ca6637e36ebbfebf6c275fdd18f1a50c82112384b9d0b3a70f83b62715a`.
+271 primary cases. M selects genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
+at `f4e908206f2d6481c0ced6b7d4e62e28dcf3b330`, published by successful normal
+[release 42223647770](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42223647770)
+after exact-source [CI 42221243284](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42221243284).
+Its pin and supported floor are `4.44.10`; its catalog Git blob is
+`2eccd7598d0e243b308fa504ef6f23724125d542`, SHA-256
+`91ad525c4eb88e21d5f168115c9ea2143f7996526032687ede99cfdc37647825`.
 The tuple binds the observed signed archive, paired validation bodies and
 inventory; this publication does not establish current model/native acceptance.
 
@@ -471,3 +508,11 @@ Platform Maintainer (Hexalith).
 The [package catalog qualification boundary](docs/package-catalog-qualification.md)
 documents the separate finite ordinary Parties source proposal, measured public
 and image roles, and pending genuine tuple/native qualification.
+
+## Automatic source releases
+
+After both main push qualifications succeed, [the source publisher](docs/source-releases.md)
+uses standard Conventional Commits to calculate a source tag and GitHub release.
+It publishes no packages or images and writes no version or changelog commit.
+Tag creation still requires the repository's separate automation authorization;
+this configuration does not change the existing tag rules.

@@ -12,10 +12,10 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         using var operationBudget=CancellationTokenSource.CreateLinkedTokenSource(token);operationBudget.CancelAfter(TimeSpan.FromSeconds(30));token=operationBudget.Token;
         if (!profile.Tenants.Contains(tenant, StringComparer.Ordinal)) throw new AuthorityUnavailableException("Tenant not enrolled.");
         await ValidateArchiveEnrollmentAsync(token).ConfigureAwait(false);
-        var (head, etag) = await dapr.GetStateAndETagAsync<AuthorityHead>(installation.AuthorityComponent, Key(tenant), ConsistencyMode.Strong, cancellationToken: token);
+        var (head, etag) = await dapr.GetStateAndETagAsync<AuthorityHead>(installation.AuthorityComponent, Key(tenant), ConsistencyMode.Strong, cancellationToken: token).ConfigureAwait(false);
         if (head is null || string.IsNullOrWhiteSpace(etag)) throw new AuthorityUnavailableException("Independent current authority/genesis unavailable.");
-        byte[] bytes = await ReadImmutableAsync(head.Checkpoint, token);
-        var checkpoint = await CheckpointArchive.DecodeAsync(bytes, ReadImmutableAsync, token);
+        byte[] bytes = await ReadImmutableAsync(head.Checkpoint, token).ConfigureAwait(false);
+        var checkpoint = await CheckpointArchive.DecodeAsync(bytes, ReadImmutableAsync, token).ConfigureAwait(false);
         if (head.EnrollmentDigest != profile.EnrollmentDigest || checkpoint.EnrollmentDigest != profile.EnrollmentDigest
             || checkpoint.Revision != head.Revision || checkpoint.TenantId != tenant || head.Checkpoint.Sha256 != head.Digest)
             throw new AuthorityUnavailableException("Current enrolled checkpoint mismatch.");
@@ -76,7 +76,7 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         await ValidateArchiveEnrollmentAsync(token).ConfigureAwait(false);
         if (version.VersionId != version.Sha256 || version.RetainUntil > profile.RetainUntil || version.RetainUntil <= clock.GetUtcNow())
             throw new AuthorityUnavailableException("Pinned retained original required.");
-        byte[] bytes = await ReadBoundedAsync(Resolve(version.Key), token);
+        byte[] bytes = await ReadBoundedAsync(Resolve(version.Key), token).ConfigureAwait(false);
         if (bytes.Length != version.Bytes || CustodyJson.Hash(bytes) != version.Sha256) throw new AuthorityUnavailableException("Original bytes substituted.");
         return bytes;
     }
@@ -107,8 +107,8 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
         var changedOriginals=next.Originals.Where(pair=>expected.Checkpoint.Originals.TryGetValue(pair.Key,out var prior) && prior.Response is null && prior.Response!=pair.Value.Response).Select(pair=>"original:"+pair.Key).ToArray();
         string? completion=!admission && changed.Length>0?changed[0]:!admission && changedOriginals.Length==1?changedOriginals[0]:!admission && next.Cycle?.OperationId is { } cycle && expected.Checkpoint.Originals.GetValueOrDefault(cycle) is { Response:null }?"original:"+cycle:null;
         Task<ObjectVersion> Put(ReadOnlyMemory<byte> body,string category,CancellationToken ct)=>completion is null?PutImmutableAsync(body,category,ct):PutAtAsync(body,category+"/"+CustodyJson.Hash(body.Span),ct,NativeArchiveCapacity.Key(next.TenantId,completion));
-        byte[] bytes = await CheckpointArchive.WriteAsync(plan, Put, token);
-        var version = await Put(bytes, "checkpoint", token);
+        byte[] bytes = await CheckpointArchive.WriteAsync(plan, Put, token).ConfigureAwait(false);
+        var version = await Put(bytes, "checkpoint", token).ConfigureAwait(false);
         var head = new AuthorityHead(next.Revision, version.Sha256, version, profile.EnrollmentDigest);
         return await capacity.WithFenceAsync(async state=>
         {
@@ -117,7 +117,7 @@ internal sealed class NativeDaprAuthorityStore(ComponentProfile profile, NativeI
             // while its archives were published. Re-establish them before admitting its head.
             await capacity.EnsurePendingAsync(state,next,effectToken).ConfigureAwait(false);
             if (!await dapr.TrySaveStateAsync(installation.AuthorityComponent, Key(next.TenantId), head, expected.ExactHeadAttribute,
-                new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, cancellationToken: effectToken))
+                new StateOptions { Concurrency = ConcurrencyMode.FirstWrite, Consistency = ConsistencyMode.Strong }, cancellationToken: effectToken).ConfigureAwait(false))
                 throw new AuthorityConflictException();
             // Commit, current reread and settlement share one fence. A later admission cannot have its
             // completion reserve released by this earlier snapshot. Lost acknowledgement remains charged.

@@ -486,7 +486,7 @@ public sealed partial class PlatformAppModelTests
     [InlineData(0, true)]
     public void QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources(int exit, bool timedOut)
     {
-        using PlatformQualificationPackageFixture fixture = new();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         int probes = 0;

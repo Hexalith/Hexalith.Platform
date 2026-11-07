@@ -142,7 +142,9 @@ public static class PlatformAppModel
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
-        if (catalogParticipants.Count > 0 && options.Mapping.Mode != WorkspaceMode.Source)
+        bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan is
+            { PlatformActiveModule: "eventstore", SelectedTest: { ModuleId: "eventstore", Name: "platform-package" } };
+        if (options.Mapping.Mode != WorkspaceMode.Source && (catalogParticipants.Count > 0 || eventStorePackageTest))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
             catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
@@ -378,7 +380,7 @@ public static class PlatformAppModel
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
-                        // Only a host process shares daprd's loopback; a Memories container keeps the routable gateway reference.
+                        // Host processes share daprd's loopback; the current-owner container binds its provider after Toolkit creates it.
                         if (hasGateway && server.ResourceId == "memories" && projects.ContainsKey(server.ResourceId))
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", "http://127.0.0.1:" + ports.Http);
                         else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
@@ -439,7 +441,7 @@ public static class PlatformAppModel
                     && !builder.Resources.Contains(ownedSidecar))
                     ownedSidecar.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
             }
-            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered));
+            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered, currentOwnerPackage: options.CurrentOwnerProof?.Matches(options) == true));
             if (options.RetentionProfile is not null)
             {
                 PlatformServerBinding owner = servers.First(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");

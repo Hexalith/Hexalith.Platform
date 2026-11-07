@@ -29,23 +29,23 @@ internal static class AwsKeyAdapterTests
         try
         {
             var epochs = new AwsEpochOperations(profile, kms); var keys = new AwsKeyAccess(profile, kms);
-            byte[] kek = await keys.ReadTenantKekAsync("tenant", "kek", default);
+            byte[] kek = await keys.ReadTenantKekAsync("tenant", "kek", default).ConfigureAwait(false);
             var input = fixture.Wrap("aws-root").WrapInput!;
-            var registration = await KeyEnvelopeBuilder.WrapAsync(input, kek, "e1", epochs, default);
-            byte[] outer = await keys.ReadOuterKeyAsync(registration, default);
+            var registration = await KeyEnvelopeBuilder.WrapAsync(input, kek, "e1", epochs, default).ConfigureAwait(false);
+            byte[] outer = await keys.ReadOuterKeyAsync(registration, default).ConfigureAwait(false);
             byte[] root = KeyEnvelopeBuilder.Unwrap(registration, outer, kek);
             if (!root.AsSpan().SequenceEqual(Fixture.Root)) throw new Exception("Real AWS adapter roundtrip changed root.");
             CryptographicOperations.ZeroMemory(root); CryptographicOperations.ZeroMemory(outer);
-            var copied = registration with { Epoch = "e2", EncryptedOuterKey = await epochs.ReencryptOuterKeyAsync("e1", "e2", "tenant", registration.EncryptedOuterKey, default) };
-            outer = await keys.ReadOuterKeyAsync(copied, default); root = KeyEnvelopeBuilder.Unwrap(copied, outer, kek);
+            var copied = registration with { Epoch = "e2", EncryptedOuterKey = await epochs.ReencryptOuterKeyAsync("e1", "e2", "tenant", registration.EncryptedOuterKey, default).ConfigureAwait(false) };
+            outer = await keys.ReadOuterKeyAsync(copied, default).ConfigureAwait(false); root = KeyEnvelopeBuilder.Unwrap(copied, outer, kek);
             if (!root.AsSpan().SequenceEqual(Fixture.Root) || encrypts != 1 || copies != 1) throw new Exception("Exact survivor context/copy changed root.");
             CryptographicOperations.ZeroMemory(root); CryptographicOperations.ZeroMemory(outer); CryptographicOperations.ZeroMemory(kek);
             substitute = true;
-            await Refused(() => epochs.EncryptOuterKeyAsync("e2", "tenant", Fixture.Root, default));
-            await Refused(() => keys.ReadTenantKekAsync("tenant", "kek", default));
+            await Refused(() => epochs.EncryptOuterKeyAsync("e2", "tenant", Fixture.Root, default)).ConfigureAwait(false);
+            await Refused(() => keys.ReadTenantKekAsync("tenant", "kek", default)).ConfigureAwait(false);
             substitute = false;
-            await epochs.ScheduleSourceCutAsync("e1", "tenant", default);
-            await Refused(() => keys.ReadOuterKeyAsync(registration, default));
+            await epochs.ScheduleSourceCutAsync("e1", "tenant", default).ConfigureAwait(false);
+            await Refused(() => keys.ReadOuterKeyAsync(registration, default)).ConfigureAwait(false);
             if (schedules != 1 || !pending.Contains(profile.Epochs.Single(e => e.OpaqueId == "e1").KeyArn) || encrypts != 1)
                 throw new Exception("Scheduling was replayed or substituted identity reached native encryption.");
         }
@@ -97,5 +97,5 @@ internal static class AwsKeyAdapterTests
             schedules++; pending.Add(request.KeyId); return Task.FromResult(new ScheduleKeyDeletionResponse { KeyId = request.KeyId, KeyState = KeyState.PendingDeletion });
         }
     }
-    private static async Task Refused(Func<Task> action) { try { await action(); } catch (AuthorityUnavailableException) { return; } throw new Exception("Substituted native key was accepted."); }
+    private static async Task Refused(Func<Task> action) { try { await action().ConfigureAwait(false); } catch (AuthorityUnavailableException) { return; } throw new Exception("Substituted native key was accepted."); }
 }

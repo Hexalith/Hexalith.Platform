@@ -23,7 +23,7 @@ internal sealed class CustodyOwnerOperationHandler(ComponentProfile profile, IAu
         AnchoredStateTransition? transition = input.transitionJson is null ? null : CustodyJson.Read<AnchoredStateTransition>(System.Text.Encoding.UTF8.GetBytes(input.transitionJson));
         if (input.phase == "read-current" ? transition is not null : transition is null || transition.ScopeId != input.ownerScope)
             throw new AuthorityUnavailableException("Owner transition substitution denied.");
-        var current = await store.ReadAsync(input.tenant, cancellationToken);
+        var current = await store.ReadAsync(input.tenant, cancellationToken).ConfigureAwait(false);
         string requestDigest = transition is not null ? CustodyJson.Hash(JsonSerializer.SerializeToUtf8Bytes(transition))
             : CustodyBindingContract.Hash(PlatformCanonicalBytes.Components([CustodyBindingContract.Protocol, input.tenant, input.ownerScope,
                 profile.Enrollment.AuthorityId, profile.Enrollment.AuthorityIncarnation]));
@@ -31,7 +31,7 @@ internal sealed class CustodyOwnerOperationHandler(ComponentProfile profile, IAu
         if (!CustodyBindingContract.Digest(operationId) || input.operationIdentity is not null && input.phase != "read-current")
             throw new AuthorityUnavailableException("Exact owner operation identity required.");
         var retained = await originals.InvokeAsync<RetainedControlOriginal>("custody-control-original", new { tenant = input.tenant, scope = input.ownerScope,
-            operationId, revision = current.Head.Revision, digest = current.Head.Digest }, cancellationToken);
+            operationId, revision = current.Head.Revision, digest = current.Head.Digest }, cancellationToken).ConfigureAwait(false);
         var verifier = new StatementVerifier(profile, clock);
         if (retained is null || retained.ControlStatement is null) throw new AuthorityUnavailableException("Independent original owner control unavailable.");
         string proofHash = CustodyJson.Hash(CustodyJson.Bytes(retained.Proof));

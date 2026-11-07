@@ -1,0 +1,83 @@
+name: Qualified Platform source release
+
+on:
+  workflow_run:
+    workflows: ['Platform tuple CI preflight', 'Catalog builder consumer binding']
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    if: >-
+      github.repository == 'Hexalith/Hexalith.Platform' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      eligible: ${{ steps.gate.outputs.eligible }}
+      source: ${{ steps.gate.outputs.source }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.workflow_sha }}
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Require both latest exact-source qualifications
+        id: gate
+        env:
+          SOURCE_RELEASE_RECEIPT: ${{ runner.temp }}/source-release-check.json
+          SOURCE_RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node eng/source-release/run.mjs --check
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: source-release-check-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/source-release-check.json
+          if-no-files-found: error
+
+  publish:
+    needs: verify
+    if: needs.verify.outputs.eligible == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: platform-source-release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: read
+    env:
+      SOURCE_RELEASE_SHA: ${{ needs.verify.outputs.source }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.verify.outputs.source }}
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm audit signatures
+      - name: Publish only the qualified source tag and GitHub release
+        env:
+          SOURCE_RELEASE_RECEIPT: ${{ runner.temp }}/source-release.json
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node eng/source-release/run.mjs
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: source-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/source-release.json
+          if-no-files-found: error

@@ -19,7 +19,7 @@ internal static class ClosureRules
     {
         foreach (var retained in state.NativeResults.Where(pair => pair.Key.EndsWith(":admission", StringComparison.Ordinal)))
         {
-            var statement = CustodyJson.Read<SignedStatement>(await store.ReadImmutableAsync(retained.Value, token));
+            var statement = CustodyJson.Read<SignedStatement>(await store.ReadImmutableAsync(retained.Value, token).ConfigureAwait(false));
             var admission = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(statement.Payload));
             foreach (var holder in admission.Holders)
             {

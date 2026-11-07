@@ -21,6 +21,8 @@ public sealed class PlatformCurrentReferenceCohortTests
             Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PublishedCatalogArtifactCohort.CurrentOwnerName));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.CurrentOwnerName));
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.4", fullParties: true).ShouldBeNull("The private current purpose does not grant a new public-consumer cohort.");
+        PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5").ShouldBeNull();
+        PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5", fullParties: true).ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.2", fullParties: true).ShouldBe(PublishedCatalogArtifactCohort.CurrentFullPartiesName);
         string cache = typeof(PlatformCurrentReferenceCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
             .Single(attribute => attribute.Key == "PlatformHistoricalPackageRoot").Value!;
@@ -52,6 +54,25 @@ public sealed class PlatformCurrentReferenceCohortTests
             Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.PreviousCurrentOwnerName));
         }
         finally { previous.Unload(); }
+        var tenants = new AssemblyLoadContext("historical-tenants-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
+        try
+        {
+            foreach (string name in new[] { "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server" })
+            {
+                string path = Path.Combine(cache, name.ToLowerInvariant(), "7.0.4", "lib", "net10.0", name + ".dll");
+                File.Exists(path).ShouldBeTrue("The genuine historical signed package remains an independent restore input.");
+                Assembly old = tenants.LoadFromAssemblyPath(path);
+                foreach (string cohort in new[] { PublishedCatalogArtifactCohort.PreviousCurrentOwnerName, PublishedCatalogArtifactCohort.Tenants704CurrentOwnerName })
+                {
+                    PublishedCatalogArtifactCohort.Verify(old, cohort).ShouldBe(path);
+                    Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), cohort));
+                    Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
+                }
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.EventStorePackageTestName));
+            }
+        }
+        finally { tenants.Unload(); }
     }
 
     [Fact]
@@ -61,6 +82,8 @@ public sealed class PlatformCurrentReferenceCohortTests
             .Select(path => (Path: path, Hash: Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))))).ToArray();
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Skip(1).ToArray()));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts, artifacts[0]]));
+        string foreign = typeof(PlatformCurrentReferenceCohortTests).Assembly.Location;
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts.Skip(1), (foreign, Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(foreign))))]));
         var changed = artifacts.Select((item, index) => index == 0 ? (item.Path, new string('0', 64)) : item).ToArray();
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(changed));
         string directory = Path.Combine(Path.GetTempPath(), "current-reference-body-" + Guid.NewGuid().ToString("N"));

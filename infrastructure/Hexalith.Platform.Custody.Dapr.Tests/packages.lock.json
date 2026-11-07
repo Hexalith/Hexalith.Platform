@@ -13,8 +13,8 @@
       },
       "AWSSDK.Core": {
         "type": "Transitive",
-        "resolved": "4.0.102.15",
-        "contentHash": "GGqiCBOGPKUkkSkTRB3oXcdvz7PzMEGwXu5WI4V+gDZQm0oPg+SGqKe+1OeMEnZmiIyqhIoYph3uI17HJZ2ynQ=="
+        "resolved": "4.0.102.18",
+        "contentHash": "NjdKTry9Jqm0jGM7Af8TxzDi01MmWmjbGDnc4178S2w6A8b1pSCU0enBEcRoHpyXLafHJUewqeetu+fep1l/pw=="
       },
       "Castle.Core": {
         "type": "Transitive",
@@ -336,22 +336,22 @@
         "dependencies": {
           "Dapr.Actors": "[1.19.0, )",
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Contracts": "[3.133.0, )"
+          "Hexalith.EventStore.Contracts": "[4.1.0, )"
         }
       },
       "hexalith.platform.custody.component": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Contracts": "[3.133.0, )",
+          "Hexalith.EventStore.Contracts": "[4.1.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )"
         }
       },
       "hexalith.platform.custody.dapr": {
         "type": "Project",
         "dependencies": {
-          "AWSSDK.DynamoDBv2": "[4.0.109.3, )",
-          "AWSSDK.KeyManagementService": "[4.0.101.1, )",
-          "AWSSDK.S3": "[4.0.104.8, )",
+          "AWSSDK.DynamoDBv2": "[4.0.110.1, )",
+          "AWSSDK.KeyManagementService": "[4.0.101.3, )",
+          "AWSSDK.S3": "[4.0.104.10, )",
           "Google.Protobuf": "[3.36.2, )",
           "Grpc.AspNetCore": "[2.85.0, )",
           "Grpc.AspNetCore.Server.Reflection": "[2.85.0, )",
@@ -361,7 +361,7 @@
       "hexalith.platform.protection": {
         "type": "Project",
         "dependencies": {
-          "Hexalith.EventStore.Server": "[3.133.0, )",
+          "Hexalith.EventStore.Server": "[4.1.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )",
           "Hexalith.Platform.Secrets.Runtime": "[1.0.0, )"
@@ -371,36 +371,36 @@
         "type": "Project",
         "dependencies": {
           "Dapr.Client": "[1.19.0, )",
-          "Hexalith.EventStore.Client": "[3.133.0, )",
+          "Hexalith.EventStore.Client": "[4.1.0, )",
           "Hexalith.Platform.Custody": "[1.0.0, )",
           "Hexalith.Platform.Custody.Component": "[1.0.0, )"
         }
       },
       "AWSSDK.DynamoDBv2": {
         "type": "CentralTransitive",
-        "requested": "[4.0.109.3, )",
-        "resolved": "4.0.109.3",
-        "contentHash": "xPZSBd65Qpxi2pXJOkTHxa1cb6cQKC0ociQ0NGzmxYHvgJtQ18aVfbYpoEh4zmYQ1LQq2U1Ch/kfV+aR3rjJWg==",
+        "requested": "[4.0.110.1, )",
+        "resolved": "4.0.110.1",
+        "contentHash": "AFK7WXW9Isrxv2KZ/7pfRrTo5ygWfDzzyxHn1qa+dW9V1TB+4KH33Wscx3jE/FDMfA3ZU6ejHKl4v3aINEbqVg==",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.102.14, 5.0.0)"
+          "AWSSDK.Core": "[4.0.102.18, 5.0.0)"
         }
       },
       "AWSSDK.KeyManagementService": {
         "type": "CentralTransitive",
-        "requested": "[4.0.101.1, )",
-        "resolved": "4.0.101.1",
-        "contentHash": "Qd6sFHxZwX80mBwikIgX/Wo8oGce79AtrQH/35OF4vx415XAWJQZ8mE2iDhaL7B24lfoiaXzC6UenNKra5O7wQ==",
+        "requested": "[4.0.101.3, )",
+        "resolved": "4.0.101.3",
+        "contentHash": "lTgtr6k9Xu81/dWoSpx/yydLQ4/0AoeIn7qe9flhqjFYh5uYu37dtoy6RBOK+MNezTyQKwDT8gbqT7DPCtcsQQ==",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.102.15, 5.0.0)"
+          "AWSSDK.Core": "[4.0.102.18, 5.0.0)"
         }
       },
       "AWSSDK.S3": {
         "type": "CentralTransitive",
-        "requested": "[4.0.104.8, )",
-        "resolved": "4.0.104.8",
-        "contentHash": "ER6j94bekBn/YWpcUFArckk+JSObzMZHqHvj1djy5KAMeaG71BBDOJvEQNGFRvc4CUITfJmD/9T87t8b+xnlkg==",
+        "requested": "[4.0.104.10, )",
+        "resolved": "4.0.104.10",
+        "contentHash": "clyJoY9Kvy7By4QMRkuXbwRGjamYpNCBmgubBur4FKk0kPuSDqq8sNFggIK//S3VJrdHDg/ZnJPqElU6FuBpoA==",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.102.14, 5.0.0)"
+          "AWSSDK.Core": "[4.0.102.18, 5.0.0)"
         }
       },
       "ByteAether.Ulid": {
@@ -536,14 +536,14 @@
       },
       "Hexalith.EventStore.Client": {
         "type": "CentralTransitive",
-        "requested": "[3.133.0, )",
-        "resolved": "3.133.0",
-        "contentHash": "6AwwPqwfhLFAWRXmKz5lBtN74pTsNHnI2KSHXGg4ZGuQnygSmKH/oSz4aZMKaxftMMgUnrMjryWMRo2pFyjNgg==",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "TcAH4XPfEbPTFeODo/1iT2c9ox3+ao0y7eyqQo+zMW5EIS8CCiDF0KpD0EqbCrPhBBjbo/teie/20f18VO7PDw==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Contracts": "3.133.0",
+          "Hexalith.EventStore.Contracts": "4.1.0",
           "Microsoft.AspNetCore.DataProtection.Abstractions": "10.0.14",
           "Microsoft.Extensions.Configuration": "10.0.14",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.14",
@@ -560,9 +560,9 @@
       },
       "Hexalith.EventStore.Contracts": {
         "type": "CentralTransitive",
-        "requested": "[3.133.0, )",
-        "resolved": "3.133.0",
-        "contentHash": "HEM8GPWUYjAA9KkUzCDKj3tb6Gp30DZaz3Kpy99SrozTTvNjrcwhF06FlDZlokNrcv3UxM9uSLPl4dzZij7uYg==",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "cScuZNhdvs8lz8c1fYm1mqUZl/zeUTz1DQNNFLFhkeSWkIKoblSDB4ArfOixecoowTXSlTi3tlnniSBSEqtnSA==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Hexalith.Commons.UniqueIds": "2.30.10"
@@ -570,9 +570,9 @@
       },
       "Hexalith.EventStore.DomainService": {
         "type": "CentralTransitive",
-        "requested": "[3.133.0, )",
-        "resolved": "3.133.0",
-        "contentHash": "rp3MQjFhCfBSfEng3+KqxROkcU0gyLoNL+cX2rGEvz4vSogb+ACrxKaF9KaxDIVOyQwJYor7+Rn0hS3mqZ/OyA==",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "wj/F/HeAYyiPkglD+kt7Pi0VA2s5k6kRlFhPOsomry+Eta4llKMD+jcz7WbgHDEzeqPFgw4/EVsHaz58tX74Tg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Actors": "1.19.0",
@@ -580,8 +580,8 @@
           "Dapr.AspNetCore": "1.19.0",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Client": "3.133.0",
-          "Hexalith.EventStore.ServiceDefaults": "3.133.0",
+          "Hexalith.EventStore.Client": "4.1.0",
+          "Hexalith.EventStore.ServiceDefaults": "4.1.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.Extensions.Http.Resilience": "10.11.0",
           "Microsoft.Extensions.ServiceDiscovery": "10.11.0",
@@ -602,9 +602,9 @@
       },
       "Hexalith.EventStore.Server": {
         "type": "CentralTransitive",
-        "requested": "[3.133.0, )",
-        "resolved": "3.133.0",
-        "contentHash": "5T8YCP8O8qL7E3PZ6C1sIapZzkzKpp/zAPj/U2T1dxOILLq8em01DZHRpdVJVa4YpYuFmwSHBZeESuQ1UN5FoA==",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "q2h5SgBA6qVPS+NBU8BG7CbvtV9cHHBX/K8L5E2H6kJL7NNrY0WJH3TkeU1IYsNfV04hMoRMGXyxaM7XEpJYwg==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Dapr.Actors": "1.19.0",
@@ -612,9 +612,9 @@
           "Dapr.AspNetCore": "1.19.0",
           "Dapr.Client": "1.19.0",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Client": "3.133.0",
-          "Hexalith.EventStore.Contracts": "3.133.0",
-          "Hexalith.EventStore.DomainService": "3.133.0",
+          "Hexalith.EventStore.Client": "4.1.0",
+          "Hexalith.EventStore.Contracts": "4.1.0",
+          "Hexalith.EventStore.DomainService": "4.1.0",
           "MediatR": "14.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.AspNetCore.DataProtection.Abstractions": "10.0.14",
@@ -648,13 +648,13 @@
       },
       "Hexalith.EventStore.ServiceDefaults": {
         "type": "CentralTransitive",
-        "requested": "[3.133.0, )",
-        "resolved": "3.133.0",
-        "contentHash": "TPg8cDv2HKLcIHXOoA0kV9Qh9WUEkS5K/wVK2iXxF1wDRs2WMuuuMP0sPlU6hCHsCuzt7MCihAodIAV+V366Ag==",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "xkdvSrksXj0JwzBDmK+CgJFwiwvjhvCTUZFpOLJbfYF9iWOiIIdMOqvgs9va2hYmtGdE06vnWFgThdgSg0D1cA==",
         "dependencies": {
           "ByteAether.Ulid": "1.4.2",
           "Hexalith.Commons.UniqueIds": "2.30.10",
-          "Hexalith.EventStore.Contracts": "3.133.0",
+          "Hexalith.EventStore.Contracts": "4.1.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.14",
           "Microsoft.Extensions.Http.Resilience": "10.11.0",
           "Microsoft.Extensions.ServiceDiscovery": "10.11.0",
@@ -675,9 +675,9 @@
       },
       "MediatR": {
         "type": "CentralTransitive",
-        "requested": "[14.2.0, )",
-        "resolved": "14.2.0",
-        "contentHash": "1vqNVS6ijU0IF78vDfIE99pi0iTa+M/1ztRlM98P+KL+Loi/O4knaR2+ex0AqbT5xBl01VFryjuYUAFtvGwzOQ==",
+        "requested": "[14.3.0, )",
+        "resolved": "14.3.0",
+        "contentHash": "KkbN/YTb7LUuPP3seJNoQgLaGsxZ86ol5ljECZx5lipBas8J4w722ziXWtZ5Mo37mYGBtOSUpBEHMwthNEg3Cg==",
         "dependencies": {
           "MediatR.Contracts": "[2.0.1, 3.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
@@ -921,18 +921,18 @@
       },
       "OpenTelemetry.Instrumentation.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[1.20.1, )",
-        "resolved": "1.20.1",
-        "contentHash": "pDO+Ed5iblMTvSVGcXzoLp8q20XHhXmK0wD/H3PGNHwDFlwZpV+bDWd/Euo6hNB4E0ruqzTFD76Btm+m0uCYNw==",
+        "requested": "[1.20.2, )",
+        "resolved": "1.20.2",
+        "contentHash": "WVCabg8epzvm3Ogvrz3AYlUnfgNpOnuCgkHpN9a78e7SCg9K1GDQYHKGjgV6QubHasi6toXdq1IrI9G5FIxL3Q==",
         "dependencies": {
           "OpenTelemetry.Api.ProviderBuilderExtensions": "[1.20.1, 2.0.0)"
         }
       },
       "OpenTelemetry.Instrumentation.Http": {
         "type": "CentralTransitive",
-        "requested": "[1.20.1, )",
-        "resolved": "1.20.1",
-        "contentHash": "XJTM6imVztxLraOrzsdlZf5shdH9TVeEWNBxpyepB5e3Gy+KNeQf2hyic398210UxqlPtt4iOkBELtjfIFTzug==",
+        "requested": "[1.20.2, )",
+        "resolved": "1.20.2",
+        "contentHash": "B84T2n4U7r3l+N5qP8vmoztGhbliWXc+vSz0BefjYNXbW9BA9q7iqU9+xn5dtCPlMNdHb+9Horgk8YhcO+eNTw==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "10.0.0",
           "Microsoft.Extensions.Options": "10.0.0",

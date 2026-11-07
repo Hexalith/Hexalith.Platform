@@ -26,34 +26,34 @@ internal static class EventStoreOwnerBridgeTests
             Encoding.UTF8.GetString(CustodyJson.Bytes(fixture.Profile.Enrollment)), fixture.Profile.ComponentPublicKeyPem, calls);
         var authority = new PublishedTrustDeletionConsumptionAuthority([], new UnavailableOwnerTestGuard(), null, null, [bridge]);
         Check(bridge.TenantId == tenant && bridge.ScopeId == scope, "Installed routing changed.");
-        Check(await authority.ValidateStateAsync(tenant, 0, genesis), "Exact independently enrolled signed genesis refused.");
-        Check(!await authority.ValidateStateAsync("foreign", 0, genesis), "Foreign tenant selected installed owner.");
-        Check(!await authority.ValidateStateAsync(tenant, 0, Fixture.Digest), "Changed genesis accepted.");
-        Check(await authority.AuthorizeOperationAsync(tenant, "original", "RegisterDeletionBatch"), "Exact private operation refused.");
+        Check(await authority.ValidateStateAsync(tenant, 0, genesis).ConfigureAwait(false), "Exact independently enrolled signed genesis refused.");
+        Check(!await authority.ValidateStateAsync("foreign", 0, genesis).ConfigureAwait(false), "Foreign tenant selected installed owner.");
+        Check(!await authority.ValidateStateAsync(tenant, 0, Fixture.Digest).ConfigureAwait(false), "Changed genesis accepted.");
+        Check(await authority.AuthorizeOperationAsync(tenant, "original", "RegisterDeletionBatch").ConfigureAwait(false), "Exact private operation refused.");
         string operationId = CustodyBindingContract.Hash(Hexalith.Platform.Custody.PlatformCanonicalBytes.Components(
             ["custody-owner-operation-v1", tenant, scope, "original", "RegisterDeletionBatch"]));
         Check(calls.Calls.Last().Identity == operationId, "Operation framing lost domain, tenant, scope or exact method.");
 
         byte[] firstBytes = "first-actual-owner-state"u8.ToArray();
         var first = new AnchoredStateTransition(scope, 0, 1, genesis, CustodyJson.Hash(firstBytes), firstBytes);
-        Check(!await authority.RecordRevisionAsync(tenant, 0, 1, first.TargetDigest), "Legacy hook advanced an unadmitted target.");
-        Check(!await authority.AdmitTransitionAsync(first with { ScopeId = "foreign" }), "Foreign transition scope selected owner.");
-        Check(await authority.AdmitTransitionAsync(first), "Exact first admission refused.");
-        Check(!await authority.VerifyTransitionAsync(first), "Admission advanced current owner.");
-        Check(await authority.RecoverTransitionAsync(first), "Exact admitted original recovery refused.");
-        Check(await authority.VerifyTransitionAsync(first), "Recovered original unavailable.");
-        Check(await authority.RecordRevisionAsync(tenant, 0, 1, first.TargetDigest), "Legacy retained target verification refused.");
-        Check(!await authority.ValidateStateAsync(tenant, 0, genesis), "Restored genesis revived after owner advancement.");
+        Check(!await authority.RecordRevisionAsync(tenant, 0, 1, first.TargetDigest).ConfigureAwait(false), "Legacy hook advanced an unadmitted target.");
+        Check(!await authority.AdmitTransitionAsync(first with { ScopeId = "foreign" }).ConfigureAwait(false), "Foreign transition scope selected owner.");
+        Check(await authority.AdmitTransitionAsync(first).ConfigureAwait(false), "Exact first admission refused.");
+        Check(!await authority.VerifyTransitionAsync(first).ConfigureAwait(false), "Admission advanced current owner.");
+        Check(await authority.RecoverTransitionAsync(first).ConfigureAwait(false), "Exact admitted original recovery refused.");
+        Check(await authority.VerifyTransitionAsync(first).ConfigureAwait(false), "Recovered original unavailable.");
+        Check(await authority.RecordRevisionAsync(tenant, 0, 1, first.TargetDigest).ConfigureAwait(false), "Legacy retained target verification refused.");
+        Check(!await authority.ValidateStateAsync(tenant, 0, genesis).ConfigureAwait(false), "Restored genesis revived after owner advancement.");
 
         byte[] secondBytes = "second-actual-owner-state"u8.ToArray();
         var second = new AnchoredStateTransition(scope, 1, 2, first.TargetDigest, CustodyJson.Hash(secondBytes), secondBytes);
-        Check(await authority.AdmitTransitionAsync(second), "Consecutive exact admission refused.");
+        Check(await authority.AdmitTransitionAsync(second).ConfigureAwait(false), "Consecutive exact admission refused.");
         handler.LoseNextRecordAcknowledgement = true;
-        Check(!await authority.RecordTransitionAsync(second), "Lost acknowledgement unexpectedly reported record success.");
-        Check(await authority.VerifyTransitionAsync(second), "Recorded original lost after acknowledgement loss.");
-        Check(await authority.RecoverTransitionAsync(second), "Exact lost-result recovery refused.");
-        Check(await authority.ValidateStateAsync(tenant, 2, second.TargetDigest), "Independent current owner target refused.");
-        Check(await authority.VerifyTransitionAsync(first), "Consecutive owner advance lost historical immutable original.");
+        Check(!await authority.RecordTransitionAsync(second).ConfigureAwait(false), "Lost acknowledgement unexpectedly reported record success.");
+        Check(await authority.VerifyTransitionAsync(second).ConfigureAwait(false), "Recorded original lost after acknowledgement loss.");
+        Check(await authority.RecoverTransitionAsync(second).ConfigureAwait(false), "Exact lost-result recovery refused.");
+        Check(await authority.ValidateStateAsync(tenant, 2, second.TargetDigest).ConfigureAwait(false), "Independent current owner target refused.");
+        Check(await authority.VerifyTransitionAsync(first).ConfigureAwait(false), "Consecutive owner advance lost historical immutable original.");
         foreach (var call in calls.Calls)
         {
             Check(call.Tenant == tenant && call.Scope == scope, "Private authorizer received substituted tenant/scope.");
@@ -69,17 +69,17 @@ internal static class EventStoreOwnerBridgeTests
         {
             calls.Mode = mode;
             int before = handler.Calls;
-            Check(!await authority.ValidateStateAsync(tenant, 2, second.TargetDigest), mode + " granted currentness.");
-            Check(!await authority.AuthorizeOperationAsync(tenant, "original", "RegisterDeletionBatch"), mode + " granted private operation.");
-            Check(!await authority.AdmitTransitionAsync(second), mode + " granted admission.");
-            Check(!await authority.RecordTransitionAsync(second), mode + " granted record.");
-            Check(!await authority.RecoverTransitionAsync(second), mode + " granted recovery.");
-            Check(!await authority.VerifyTransitionAsync(second), mode + " granted verify.");
+            Check(!await authority.ValidateStateAsync(tenant, 2, second.TargetDigest).ConfigureAwait(false), mode + " granted currentness.");
+            Check(!await authority.AuthorizeOperationAsync(tenant, "original", "RegisterDeletionBatch").ConfigureAwait(false), mode + " granted private operation.");
+            Check(!await authority.AdmitTransitionAsync(second).ConfigureAwait(false), mode + " granted admission.");
+            Check(!await authority.RecordTransitionAsync(second).ConfigureAwait(false), mode + " granted record.");
+            Check(!await authority.RecoverTransitionAsync(second).ConfigureAwait(false), mode + " granted recovery.");
+            Check(!await authority.VerifyTransitionAsync(second).ConfigureAwait(false), mode + " granted verify.");
             Check(handler.Calls == before, mode + " reached provider transport.");
         }
         calls.Mode = "normal";
         handler.CorruptSignature = true;
-        Check(!await authority.ValidateStateAsync(tenant, 2, second.TargetDigest), "Invalid current-state signature accepted.");
+        Check(!await authority.ValidateStateAsync(tenant, 2, second.TargetDigest).ConfigureAwait(false), "Invalid current-state signature accepted.");
         handler.CorruptSignature = false;
         foreach (string phase in new[] { "current", "operation", "admit", "record", "recover", "verify" })
         {
@@ -96,7 +96,7 @@ internal static class EventStoreOwnerBridgeTests
                 _ => bridge.VerifyTransitionAsync(second, cancellation.Token),
             };
             bool cancelled = false;
-            try { await pending; }
+            try { await pending.ConfigureAwait(false); }
             catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { cancelled = true; }
             Check(cancelled, "Explicit cancellation swallowed by " + phase);
             Check(calls.Calls.Last().Token == cancellation.Token, "Explicit cancellation token was substituted by " + phase);

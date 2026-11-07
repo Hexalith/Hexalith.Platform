@@ -11,37 +11,37 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
 {
     internal async Task VerifyIdentityAsync(CancellationToken token)
     {
-        var description = await dynamo.DescribeTableAsync(new DescribeTableRequest { TableName = profile.TableArn }, token);
+        var description = await dynamo.DescribeTableAsync(new DescribeTableRequest { TableName = profile.TableArn }, token).ConfigureAwait(false);
         var table = description.Table;
         if (table?.TableId != profile.TableId || table.TableArn != profile.TableArn || table.TableStatus != TableStatus.ACTIVE
             || table.Replicas is { Count: > 0 } || table.RestoreSummary?.RestoreInProgress == true)
             throw new AuthorityUnavailableException("Authority table incarnation changed or unavailable.");
         foreach (var bucket in new[] { profile.Checkpoints, profile.Originals })
         {
-            var versioning = await s3.GetBucketVersioningAsync(new GetBucketVersioningRequest { BucketName = bucket.Name, ExpectedBucketOwner = bucket.OwnerAccountId }, token);
+            var versioning = await s3.GetBucketVersioningAsync(new GetBucketVersioningRequest { BucketName = bucket.Name, ExpectedBucketOwner = bucket.OwnerAccountId }, token).ConfigureAwait(false);
             if (versioning.VersioningConfig?.Status != VersionStatus.Enabled) throw new AuthorityUnavailableException("Archive versioning is not enabled.");
             var enrolled = new ObjectVersion(bucket.EnrollmentKey, bucket.EnrollmentVersion, bucket.EnrollmentSha256, -1, profile.RetainUntil);
-            _ = await ReadObjectAsync(bucket, enrolled, token);
+            _ = await ReadObjectAsync(bucket, enrolled, token).ConfigureAwait(false);
         }
     }
     public async Task<CurrentState> ReadAsync(string tenant, CancellationToken token)
     {
         if (!profile.Tenants.Contains(tenant, StringComparer.Ordinal)) throw new AuthorityUnavailableException("Tenant not enrolled.");
-        await VerifyIdentityAsync(token);
-        var result = await dynamo.GetItemAsync(new GetItemRequest { TableName = profile.TableArn, Key = Key(tenant), ConsistentRead = true }, token);
+        await VerifyIdentityAsync(token).ConfigureAwait(false);
+        var result = await dynamo.GetItemAsync(new GetItemRequest { TableName = profile.TableArn, Key = Key(tenant), ConsistentRead = true }, token).ConfigureAwait(false);
         if (result.Item is null || !result.Item.TryGetValue("head", out var value) || string.IsNullOrWhiteSpace(value.S))
             throw new AuthorityUnavailableException("Surviving authority missing; genesis is never bootstrapped.");
         var head = CustodyJson.Read<AuthorityHead>(System.Text.Encoding.UTF8.GetBytes(value.S));
-        byte[] archiveBytes = await ReadImmutableAsync(head.Checkpoint, token);
+        byte[] archiveBytes = await ReadImmutableAsync(head.Checkpoint, token).ConfigureAwait(false);
         var archive = CustodyJson.Read<CheckpointArchiveV1>(archiveBytes);
-        var checkpoint = await CheckpointArchive.DecodeAsync(archiveBytes, ReadImmutableAsync, token);
+        var checkpoint = await CheckpointArchive.DecodeAsync(archiveBytes, ReadImmutableAsync, token).ConfigureAwait(false);
         if (head.EnrollmentDigest != profile.EnrollmentDigest || checkpoint.EnrollmentDigest != profile.EnrollmentDigest
             || head.Revision != checkpoint.Revision || head.Digest != head.Checkpoint.Sha256 || checkpoint.TenantId != tenant)
             throw new AuthorityUnavailableException("Current authority binding mismatch.");
         return new(head, checkpoint, value.S, archive);
     }
     public async Task<ObjectVersion> PutImmutableAsync(ReadOnlyMemory<byte> bytes, string category, CancellationToken token)
-        => await PutAtAsync(bytes, category, category + "/" + Guid.NewGuid().ToString("N") + "/" + CustodyJson.Hash(bytes.Span), token);
+        => await PutAtAsync(bytes, category, category + "/" + Guid.NewGuid().ToString("N") + "/" + CustodyJson.Hash(bytes.Span), token).ConfigureAwait(false);
     public Task<ObjectVersion> PutIntentResultAsync(ReadOnlyMemory<byte> bytes, string locator, CancellationToken token)
     {
         if (!locator.StartsWith("journal/native-result/", StringComparison.Ordinal)) throw new AuthorityUnavailableException("Invalid native-result locator.");
@@ -53,12 +53,12 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         try
         {
             using var result = await s3.GetObjectAsync(new GetObjectRequest { BucketName = profile.Originals.Name,
-                ExpectedBucketOwner = profile.Originals.OwnerAccountId, Key = locator }, token);
+                ExpectedBucketOwner = profile.Originals.OwnerAccountId, Key = locator }, token).ConfigureAwait(false);
             if (result.ContentLength is <= 0 or > CustodyBindingContract.MaximumOriginalBytes) throw new AuthorityUnavailableException("Result bounds invalid.");
-            using var output = new MemoryStream(); await result.ResponseStream.CopyToAsync(output, token);
+            using var output = new MemoryStream(); await result.ResponseStream.CopyToAsync(output, token).ConfigureAwait(false);
             if (output.Length != result.ContentLength) throw new AuthorityUnavailableException("Native result length mismatch.");
             var version = new ObjectVersion(locator, result.VersionId, CustodyJson.Hash(output.ToArray()), (int)output.Length, profile.RetainUntil);
-            _ = await ReadObjectAsync(profile.Originals, version, token);
+            _ = await ReadObjectAsync(profile.Originals, version, token).ConfigureAwait(false);
             return version;
         }
         catch (AmazonS3Exception e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound) { return null; }
@@ -76,10 +76,10 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
             IfNoneMatch = "*", AutoCloseStream = false, ContentType = "application/json", ChecksumSHA256 = Convert.ToBase64String(System.Security.Cryptography.SHA256.HashData(bytes.Span)),
             ObjectLockMode = ObjectLockMode.Compliance, ObjectLockRetainUntilDate = profile.RetainUntil.UtcDateTime,
             ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-        }, token);
+        }, token).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(result.VersionId) || result.VersionId == "null") throw new AuthorityUnavailableException("Immutable version missing.");
         var version = new ObjectVersion(key, result.VersionId, hash, bytes.Length, profile.RetainUntil);
-        _ = await ReadObjectAsync(bucket, version, token);
+        _ = await ReadObjectAsync(bucket, version, token).ConfigureAwait(false);
         return version;
     }
     public Task<byte[]> ReadImmutableAsync(ObjectVersion version, CancellationToken token)
@@ -89,14 +89,14 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         if (string.IsNullOrWhiteSpace(version.VersionId) || version.VersionId == "null" || !CustodyBindingContract.Digest(version.Sha256))
             throw new AuthorityUnavailableException("Unpinned archive version.");
         using var result = await s3.GetObjectAsync(new GetObjectRequest { BucketName = bucket.Name, ExpectedBucketOwner = bucket.OwnerAccountId,
-            Key = version.Key, VersionId = version.VersionId }, token);
+            Key = version.Key, VersionId = version.VersionId }, token).ConfigureAwait(false);
         if (result.VersionId != version.VersionId || result.ContentLength is <= 0 or > CustodyBindingContract.MaximumOriginalBytes
             || version.Bytes >= 0 && result.ContentLength != version.Bytes || result.ObjectLockMode != ObjectLockMode.Compliance
             || result.ObjectLockRetainUntilDate < version.RetainUntil.UtcDateTime || result.ObjectLockRetainUntilDate <= clock.GetUtcNow().UtcDateTime)
             throw new AuthorityUnavailableException("Immutable version/retention verification failed.");
         using var output = new MemoryStream();
         var buffer = new byte[64 * 1024]; int read;
-        while ((read = await result.ResponseStream.ReadAsync(buffer, token)) != 0)
+        while ((read = await result.ResponseStream.ReadAsync(buffer, token).ConfigureAwait(false)) != 0)
         {
             if (output.Length + read > CustodyBindingContract.MaximumOriginalBytes) throw new AuthorityUnavailableException("Archive too large.");
             output.Write(buffer, 0, read);
@@ -118,10 +118,10 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
         if (next.Registrations.Count > 1000 || next.Originals.Count > 10000 || next.Deliveries.Count > 10000 || next.NativeIntents.Count > 10000 || next.Anchors.Count > 10000)
             throw new AuthorityUnavailableException("Finite capacity exhausted; retained facts cannot be evicted.");
         var plan = CheckpointArchive.Prepare(next, expected.Archive, ceiling);
-        byte[] bytes = await CheckpointArchive.WriteAsync(plan, PutImmutableAsync, token);
-        var version = await PutImmutableAsync(bytes, "checkpoint", token);
+        byte[] bytes = await CheckpointArchive.WriteAsync(plan, PutImmutableAsync, token).ConfigureAwait(false);
+        var version = await PutImmutableAsync(bytes, "checkpoint", token).ConfigureAwait(false);
         var head = new AuthorityHead(next.Revision, version.Sha256, version, profile.EnrollmentDigest);
-        await VerifyIdentityAsync(token);
+        await VerifyIdentityAsync(token).ConfigureAwait(false);
         try
         {
             await dynamo.UpdateItemAsync(new UpdateItemRequest {
@@ -129,7 +129,7 @@ internal sealed class AwsAuthorityStore(ComponentProfile profile, IAmazonDynamoD
                 UpdateExpression = "SET #head = :next", ExpressionAttributeNames = new() { ["#head"] = "head" },
                 ExpressionAttributeValues = new() { [":previous"] = new AttributeValue { S = expected.ExactHeadAttribute },
                     [":next"] = new AttributeValue { S = System.Text.Encoding.UTF8.GetString(CustodyJson.Bytes(head)) } },
-            }, token);
+            }, token).ConfigureAwait(false);
         }
         catch (ConditionalCheckFailedException) { throw new AuthorityConflictException(); }
         // Lost acknowledgement is not retried. The next invocation reads the surviving head.

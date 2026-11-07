@@ -17,7 +17,12 @@ internal static class PublishedCatalogArtifactCohort
     internal const string CurrentFullPartiesName = "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memories-3.0.23";
     /// <summary>The prior private-purpose public references remain independently byte-authenticated.</summary>
     internal const string PreviousCurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.24-mcpcli-2.0.1";
-    internal const string CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The frozen Tenants7.0.4/Memory25 private reference cohort; retained only for historical byte authentication.</summary>
+    internal const string Tenants704CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.4-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The private current-Parties reference cohort; confers no full public Parties authority.</summary>
+    internal const string CurrentOwnerName = "current-parties-eventstore-4.1.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The separate private EventStore package-test reader cohort; confers no general launch authority.</summary>
+    internal const string EventStorePackageTestName = "private-eventstore-package-test-4.1.0-tenants-7.0.5";
     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
     {
         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
@@ -48,6 +53,14 @@ internal static class PublishedCatalogArtifactCohort
         ["Hexalith.Tenants.Server"] = "70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b",
     }.ToFrozenDictionary(StringComparer.Ordinal);
 
+    private static readonly FrozenDictionary<string, string> _eventStorePackageTestHashes = _currentHashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["Hexalith.Tenants.Contracts"] = "adedcc49d81f2ceb6855f365dddb05e8f1f550e303c5f0e92c4d3153ff672d45",
+            ["Hexalith.Tenants.Server"] = "e84f4b22485c5db4866636558488e387132369583483b0334839c1bcf66b95ad",
+        }).ToFrozenDictionary(StringComparer.Ordinal);
+
     // M23, P3 and Hexalith.McpCli2.0 remain the same authenticated public owners in both SDK/Tenants cohorts.
     private static readonly FrozenDictionary<string, string> _currentFullPartiesHashes = _currentHashes
         .Concat(_fullPartiesHashes.Where(pair => !_hashes.ContainsKey(pair.Key))).ToFrozenDictionary(StringComparer.Ordinal);
@@ -65,7 +78,7 @@ internal static class PublishedCatalogArtifactCohort
             ["Hexalith.McpCli.Abstractions"] = "aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e",
         }).ToFrozenDictionary(StringComparer.Ordinal);
 
-    private static readonly FrozenDictionary<string, string> _currentOwnerHashes = _previousCurrentOwnerHashes
+    private static readonly FrozenDictionary<string, string> _tenants704CurrentOwnerHashes = _previousCurrentOwnerHashes
         .Where(pair => !pair.Key.StartsWith("Hexalith.Memories.", StringComparison.Ordinal))
         .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -73,6 +86,11 @@ internal static class PublishedCatalogArtifactCohort
             ["Hexalith.Memories.EventStore"] = "b496cd070564f0377f5c01e7436326f1753fdb1790847dce719e6d875fa1daf4",
             ["Hexalith.Memories.EventStoreExtensions"] = "333b469a1a40cc35bf6104e41ff49e84d6f9d4acd1e2a8e15b7cae8b4ebffcdb",
         }).ToFrozenDictionary(StringComparer.Ordinal);
+
+    private static readonly FrozenDictionary<string, string> _currentOwnerHashes = _tenants704CurrentOwnerHashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .Concat(_eventStorePackageTestHashes.Where(pair => pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal)))
+        .ToFrozenDictionary(StringComparer.Ordinal);
 
     /// <summary>Selects only complete measured version pairs; unknown, mixed and near-match pairs carry no authority.</summary>
     internal static string? ForVersions(string sdk, string tenants, bool fullParties = false) => (sdk, tenants, fullParties) switch
@@ -160,7 +178,9 @@ internal static class PublishedCatalogArtifactCohort
         CurrentName => _currentHashes,
         CurrentFullPartiesName => _currentFullPartiesHashes,
         PreviousCurrentOwnerName => _previousCurrentOwnerHashes,
+        Tenants704CurrentOwnerName => _tenants704CurrentOwnerHashes,
         CurrentOwnerName => _currentOwnerHashes,
+        EventStorePackageTestName => _eventStorePackageTestHashes,
         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
     };
 }

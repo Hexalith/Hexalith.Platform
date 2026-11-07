@@ -14,7 +14,7 @@ internal sealed class RegistrationAuthorityStateTransport(IndependentAuthoritySt
     internal void Replace(IndependentAuthorityState state) { State=state;_etag++; }
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)
     {
-        byte[] frame=await request.Content!.ReadAsByteArrayAsync(token);
+        byte[] frame=await request.Content!.ReadAsByteArrayAsync(token).ConfigureAwait(false);
         IMessage result;
         if(request.RequestUri!.AbsolutePath.EndsWith("/GetState",StringComparison.Ordinal))
             result=new GetStateResponse { Data=ByteString.CopyFrom(JsonSerializer.SerializeToUtf8Bytes(State,CustodyBindingContract.Json)),Etag=_etag.ToString(System.Globalization.CultureInfo.InvariantCulture) };

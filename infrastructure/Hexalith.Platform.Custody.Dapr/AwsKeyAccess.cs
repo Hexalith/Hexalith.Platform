@@ -14,7 +14,7 @@ internal sealed class AwsKeyAccess(ComponentProfile profile, IAmazonKeyManagemen
             ?? throw new AuthorityUnavailableException("Original KEK not enrolled.");
         return await DecryptAsync(kek.ProtectorArn, kek.ProtectorKeyId, kek.EncryptedKey, new() {
             ["authority"] = profile.Enrollment.AuthorityId, ["tenant"] = tenant, ["kekVersion"] = version,
-            ["purpose"] = "custody-tenant-kek-v1" }, token);
+            ["purpose"] = "custody-tenant-kek-v1" }, token).ConfigureAwait(false);
     }
     public async Task<byte[]> ReadOuterKeyAsync(StoredRegistration registration, CancellationToken token)
     {
@@ -22,17 +22,17 @@ internal sealed class AwsKeyAccess(ComponentProfile profile, IAmazonKeyManagemen
             ?? throw new AuthorityUnavailableException("Original epoch not enrolled.");
         return await DecryptAsync(epoch.KeyArn, epoch.KeyId, registration.EncryptedOuterKey, new() {
             ["authority"] = profile.Enrollment.AuthorityId, ["incarnation"] = profile.Enrollment.AuthorityIncarnation,
-            ["tenant"] = epoch.TenantId, ["epoch"] = epoch.OpaqueId, ["purpose"] = "custody-outer-key-v1" }, token);
+            ["tenant"] = epoch.TenantId, ["epoch"] = epoch.OpaqueId, ["purpose"] = "custody-outer-key-v1" }, token).ConfigureAwait(false);
     }
     private async Task<byte[]> DecryptAsync(string arn, string id, byte[] encrypted, Dictionary<string, string> context, CancellationToken token)
     {
-        var response = await kms.DescribeKeyAsync(new DescribeKeyRequest { KeyId = arn }, token); var key = response.KeyMetadata;
+        var response = await kms.DescribeKeyAsync(new DescribeKeyRequest { KeyId = arn }, token).ConfigureAwait(false); var key = response.KeyMetadata;
         if (key?.Arn != arn || key.KeyId != id || key.MultiRegion != false || key.Origin != OriginType.AWS_KMS
             || key.KeySpec != KeySpec.SYMMETRIC_DEFAULT || key.KeyState != KeyState.Enabled || !string.IsNullOrEmpty(key.CustomKeyStoreId))
             throw new AuthorityUnavailableException("Key identity/origin mismatch.");
         using var ciphertext = new MemoryStream(encrypted, writable: false);
         var decrypted = await kms.DecryptAsync(new DecryptRequest { KeyId = arn, CiphertextBlob = ciphertext,
-            EncryptionContext = context, EncryptionAlgorithm = EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT }, token);
+            EncryptionContext = context, EncryptionAlgorithm = EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT }, token).ConfigureAwait(false);
         using var plaintext = decrypted.Plaintext;
         try
         {

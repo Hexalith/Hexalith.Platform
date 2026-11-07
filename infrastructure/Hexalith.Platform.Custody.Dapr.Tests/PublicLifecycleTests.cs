@@ -18,55 +18,55 @@ internal static class PublicLifecycleTests
         var identity = new CustodyKeyObjectIdentity("tenant", "public-root", PlatformKeyPurpose.InteractionRootDek, "alias", "v1", "lifecycle", "store", "contract");
         var wrapUse = new CustodyKeyUse("wrap-lease", "wrap-delivery", "recipient", "transport", "public-root");
         byte[] input = Fixture.Root.ToArray();
-        var registration = await client.WrapAsync(identity, "public-wrap", f.Store.State.Head.Revision, "kek", "public-root", wrapUse, input)
+        var registration = await client.WrapAsync(identity, "public-wrap", f.Store.State.Head.Revision, "kek", "public-root", wrapUse, input).ConfigureAwait(false)
             ?? throw new Exception("Public wrap unavailable.");
         Check(input.AsSpan().SequenceEqual(Fixture.Root) && f.Native.Encrypts == 1, "Public wrap failed or stole caller input.");
         Check(source.Requests.All(s => !s.Contains(Convert.ToBase64String(input), StringComparison.Ordinal) && !s.Contains("RootKey", StringComparison.Ordinal)), "Authorizer received key material.");
-        var lookup = await client.LookupOriginalAsync(registration!);
+        var lookup = await client.LookupOriginalAsync(registration!).ConfigureAwait(false);
         Check(lookup.Status == CustodyKeyLifecycleStatus.Wrapped && lookup.ReceiptId == registration!.WrapReceiptId, "Public original registration lookup failed.");
         var use = new CustodyKeyUse("unwrap-lease", "unwrap-delivery", "recipient", "transport", "public-root");
-        var released = await client.UnwrapAsync(registration, "public-unwrap", use);
+        var released = await client.UnwrapAsync(registration, "public-unwrap", use).ConfigureAwait(false);
         Check(released.State == "Released" && released.Key!.Bytes.Span.SequenceEqual(Fixture.Root), "Actual original root did not cross SDK/service boundary.");
         Check(!JsonSerializer.Serialize(released).Contains(Convert.ToBase64String(Fixture.Root), StringComparison.Ordinal)
             && !JsonSerializer.Serialize(released.Key).Contains("Bytes", StringComparison.Ordinal), "Public result serialization leaked key bytes.");
         var borrowed = released.Key!.Bytes; released.Key.Dispose();
         Check(borrowed.Span.IndexOfAnyExcept((byte)0) == -1, "Owned root was not zeroed.");
         handler.ReplayCapturedUnwrap = true;
-        var replayed = await client.UnwrapAsync(registration, "public-unwrap", use);
+        var replayed = await client.UnwrapAsync(registration, "public-unwrap", use).ConfigureAwait(false);
         Check(replayed.Key is null && replayed.State == "Unknown" && f.Native.Decrypts == 1,
             "A valid earlier signed unwrap response replayed against a fresh challenge exposed a key or repeated native release.");
         handler.ReplayCapturedUnwrap = false;
-        var duplicate = await client.UnwrapAsync(registration, "public-unwrap", use);
+        var duplicate = await client.UnwrapAsync(registration, "public-unwrap", use).ConfigureAwait(false);
         Check(duplicate.Key is null && duplicate.State == "ResultDurable" && f.Native.Decrypts == 1, "Duplicate delivery released a key twice.");
         source.Mode = "missing-completion";
-        Check(!(await client.CompleteKeyUseAsync(registration, "complete-public", use)).HoldersCompleted, "Local cleanup replaced independent completion.");
+        Check(!(await client.CompleteKeyUseAsync(registration, "complete-public", use).ConfigureAwait(false)).HoldersCompleted, "Local cleanup replaced independent completion.");
         source.Mode = "normal";
-        Check((await client.CompleteKeyUseAsync(registration, "complete-public", use)).HoldersCompleted, "Exact independent completion did not close holders.");
+        Check((await client.CompleteKeyUseAsync(registration, "complete-public", use).ConfigureAwait(false)).HoldersCompleted, "Exact independent completion did not close holders.");
         var pin = new CustodyKeyLifecycleRequest(identity, "public-pin", CustodyKeyLifecycleAction.Pin, f.Store.State.Head.Revision, "hold", "registered", 2, "decision");
-        var pinned = await client.ExecuteLifecycleAsync(registration, pin);
-        Check(pinned.Status == CustodyKeyLifecycleStatus.Pinned && (await client.LookupOriginalAsync(registration, pin)) == pinned, "Signed pin original failed.");
+        var pinned = await client.ExecuteLifecycleAsync(registration, pin).ConfigureAwait(false);
+        Check(pinned.Status == CustodyKeyLifecycleStatus.Pinned && (await client.LookupOriginalAsync(registration, pin).ConfigureAwait(false)) == pinned, "Signed pin original failed.");
         var port = new DaprCustodyKeyLifecycleProvider(client, new ManifestLocator(null));
         var owner = new CustodyOwnerAuthority(sdk, "custody", "tenant", f.OwnerScope, Encoding.UTF8.GetString(CustodyJson.Bytes(f.Profile.Enrollment)),
             f.Profile.ComponentPublicKeyPem, new OwnerCalls(f));
         var authority = new DaprCustodyKeyLifecycleAuthority("tenant", owner, client, port, new RegistrationLocator(registration));
-        Check(await authority.VerifyRegistrationAsync(registration) && await authority.VerifyOutcomeAsync(pin, pinned), "Independent Dapr lifecycle authority refused original.");
-        Check(!await authority.VerifyOutcomeAsync(pin, pinned with { ReceiptId = "forged" }) && !await authority.ValidateStateAsync("foreign", 0, Fixture.Digest), "Substituted authority evidence accepted.");
+        Check(await authority.VerifyRegistrationAsync(registration).ConfigureAwait(false) && await authority.VerifyOutcomeAsync(pin, pinned).ConfigureAwait(false), "Independent Dapr lifecycle authority refused original.");
+        Check(!await authority.VerifyOutcomeAsync(pin, pinned with { ReceiptId = "forged" }).ConfigureAwait(false) && !await authority.ValidateStateAsync("foreign", 0, Fixture.Digest).ConfigureAwait(false), "Substituted authority evidence accepted.");
         var unpin = pin with { OperationId = "public-unpin", Action = CustodyKeyLifecycleAction.Unpin, ExpectedRevision = f.Store.State.Head.Revision };
-        Check((await client.ExecuteLifecycleAsync(registration, unpin)).Status == CustodyKeyLifecycleStatus.Unpinned, "Public exact unpin failed.");
+        Check((await client.ExecuteLifecycleAsync(registration, unpin).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unpinned, "Public exact unpin failed.");
         int sends = handler.Calls;
         foreach (string mode in new[] { "refuse", "wrong-scope", "wrong-hash", "stale", "bad-signature" })
         {
             source.Mode = mode;
-            Check((await client.LookupOriginalAsync(registration)).Status == CustodyKeyLifecycleStatus.Unknown, mode + " granted an original.");
+            Check((await client.LookupOriginalAsync(registration).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unknown, mode + " granted an original.");
         }
         Check(f.Native.Encrypts == 1 && f.Native.Decrypts == 1 && f.Native.Schedules == 0, "Refused calls caused a physical effect.");
         Check(handler.Calls > sends, "Signed stale/refusal controls were not exercised at service boundary.");
         source.Mode = "normal"; handler.CorruptResultProof = true;
-        Check((await client.LookupOriginalAsync(registration)).Status == CustodyKeyLifecycleStatus.Unknown, "Forged response signature accepted.");
+        Check((await client.LookupOriginalAsync(registration).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unknown, "Forged response signature accepted.");
         handler.CorruptResultProof = false; handler.LoseNextKeyAcknowledgement = true;
         var lost = use with { KeyUseLeaseId = "lost-lease", DeliveryAttemptId = "lost-delivery" };
-        Check((await client.UnwrapAsync(registration, "lost-unwrapped", lost)).Key is null, "Lost response exposed a key.");
-        Check((await client.UnwrapAsync(registration, "lost-unwrapped", lost)).Key is null && f.Native.Decrypts == 2, "Lost response retry replayed release.");
+        Check((await client.UnwrapAsync(registration, "lost-unwrapped", lost).ConfigureAwait(false)).Key is null, "Lost response exposed a key.");
+        Check((await client.UnwrapAsync(registration, "lost-unwrapped", lost).ConfigureAwait(false)).Key is null && f.Native.Decrypts == 2, "Lost response retry replayed release.");
         Check(f.Store.Objects.Values.All(b => !Encoding.UTF8.GetString(b).Contains(Convert.ToBase64String(Fixture.Root), StringComparison.Ordinal)), "Public flow persisted plaintext key.");
         CryptographicOperations.ZeroMemory(input);
     }
@@ -75,7 +75,7 @@ internal static class PublicLifecycleTests
     {
         var handler = new SdkBridge(f); using var sdk = Sdk(handler); var client = Client(f, sdk, new LifecycleAuthorizer(f));
         var provider = new DaprAtomicDeletionManifestProvider(client);
-        var result = await provider.ConsumeAsync(original.Manifest!.Original, original.Manifest.ProtectionReservationReceiptId);
+        var result = await provider.ConsumeAsync(original.Manifest!.Original, original.Manifest.ProtectionReservationReceiptId).ConfigureAwait(false);
         Check(result.State == DeletionManifestProviderState.Unknown && result.TargetReceipts.Count == 0
             && f.Store.State.Checkpoint.Cycle?.Manifest.Manifest?.Original.Targets.Count == 2, "Public manifest admission did not reserve the complete vector and return signed Unknown.");
     }
@@ -86,7 +86,7 @@ internal static class PublicLifecycleTests
         // The fixture admitted its deterministic operation using the same public identity before B1.
 
         var client = Client(f, sdk, source); var provider = new DaprAtomicDeletionManifestProvider(client);
-        var result = await provider.LookupAsync(original.Manifest!.Original, original.Manifest.ProtectionReservationReceiptId);
+        var result = await provider.LookupAsync(original.Manifest!.Original, original.Manifest.ProtectionReservationReceiptId).ConfigureAwait(false);
         Check(result.State == DeletionManifestProviderState.Consumed && result.TargetReceipts.Count == 2, "Public provider failed complete signed original recovery.");
         var target = original.Manifest.Original.Targets[0];
         var registration = f.Store.State.Checkpoint.Registrations.Values.Single(r => r.Registration.Identity.ObjectId == target.AgentInteractionId).Registration;
@@ -94,10 +94,10 @@ internal static class PublicLifecycleTests
         var destroy = new CustodyKeyLifecycleRequest(registration.Identity, "per-key-original", CustodyKeyLifecycleAction.Destroy,
             f.Store.State.Head.Revision, null, "barrier", 3, "decision", original.Manifest.ProtectionReservationReceiptId);
         string digest = CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(destroy));
-        var perKey = await lifecycle.LookupAsync(registration, destroy, digest);
+        var perKey = await lifecycle.LookupAsync(registration, destroy, digest).ConfigureAwait(false);
         Check(perKey.Status == CustodyKeyLifecycleStatus.Destroyed && perKey.ReceiptId == result.TargetReceipts[0].ReceiptId
             && perKey.RestoreBarrierReceiptId == "restore", "Per-key destroy did not recover its complete original manifest/vector.");
-        Check(await lifecycle.ExecuteAsync(registration, destroy, digest) == perKey, "Per-key retry replaced the original complete manifest receipt.");
+        Check(await lifecycle.ExecuteAsync(registration, destroy, digest).ConfigureAwait(false) == perKey, "Per-key retry replaced the original complete manifest receipt.");
         foreach (var substituted in new[] {
             registration.Identity with { KeyVersion = "other-key" }, registration.Identity with { LifecycleVersion = "other-lifecycle" },
             registration.Identity with { StoreTarget = "other-store" }, registration.Identity with { ContractVersion = "other-contract" } })
@@ -105,12 +105,12 @@ internal static class PublicLifecycleTests
             var changedRegistration = registration with { Identity = substituted };
             var changedDestroy = destroy with { Identity = substituted };
             var changed = await lifecycle.LookupAsync(changedRegistration, changedDestroy,
-                CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(changedDestroy)));
+                CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(changedDestroy))).ConfigureAwait(false);
             Check(changed.Status == CustodyKeyLifecycleStatus.Unknown, "Changed complete root identity inherited target-triple destruction evidence.");
         }
         var subset = original.Manifest.Original with { Targets = [target] };
         var incomplete = new DaprCustodyKeyLifecycleProvider(client, new ManifestLocator(subset));
-        Check((await incomplete.ExecuteAsync(registration, destroy, digest)).Status == CustodyKeyLifecycleStatus.Unknown, "Subset manifest became per-key authority.");
+        Check((await incomplete.ExecuteAsync(registration, destroy, digest).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unknown, "Subset manifest became per-key authority.");
         // Exercise the actual qualification wrapper through the SDK/component boundary after losing the local case-result acknowledgement.
         var localOriginals=new QualificationOriginalFixture();
         var qualificationScope=new System.Text.Json.Nodes.JsonObject { ["tenantId"]=registration.Identity.TenantId };
@@ -118,19 +118,19 @@ internal static class PublicLifecycleTests
         var qualificationInput=new QualificationLifecycleCaseInput(registration,Convert.ToHexStringLower(SHA256.HashData(QualificationProofVerifier.CanonicalBytes(qualificationScope))),
             Manifest:original.Manifest.Original,ReservationReceiptId:original.Manifest.ProtectionReservationReceiptId);
         var wrapper=new QualificationLifecycleCaseWorkflow(client,localOriginals,new Dictionary<string,QualificationLifecycleCaseInput>{{"S3.lifecycle.destroy",qualificationInput}});
-        await localOriginals.BeginAsync("executor","fixture-wrapper-lost-result:case-result",qualificationRequest,default);
+        await localOriginals.BeginAsync("executor","fixture-wrapper-lost-result:case-result",qualificationRequest,default).ConfigureAwait(false);
         var originalHead=f.Store.State.Head;int originalSends=f.Native.Schedules,requests=source.Requests.Count;
-        var recoveredWrapper=await wrapper.LookupAsync(qualificationRequest,default)??throw new Exception("Qualification wrapper stranded an independently recoverable manifest original.");
+        var recoveredWrapper=await wrapper.LookupAsync(qualificationRequest,default).ConfigureAwait(false) ?? throw new Exception("Qualification wrapper stranded an independently recoverable manifest original.");
         Check(recoveredWrapper["actual"]!["Result"]!["TargetReceipts"]!.AsArray().Count==2,"Qualification wrapper dropped the original receipt vector.");
         Check(source.Requests.Skip(requests).Select(value=> { using var parsed=JsonDocument.Parse(value);var raw=parsed.RootElement;return (raw.TryGetProperty("Intent",out var intent)?intent:raw).Deserialize<CustodyCallIntent>(CustodyBindingContract.Json)!; }).All(value=>value.Operation is "lookup-original" or "read-original-page"),
             "Qualification recovery invoked an effect entrypoint instead of the exact original reader.");
         Check(f.Store.State.Head==originalHead && f.Native.Schedules==originalSends,"Qualification original recovery repeated native work.");
         var before = f.Store.State.Head; int sends = f.Native.Schedules;
         handler.CorruptPage = true;
-        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Unknown, "Corrupt original page yielded Consumed.");
+        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId).ConfigureAwait(false)).State == DeletionManifestProviderState.Unknown, "Corrupt original page yielded Consumed.");
         handler.CorruptPage = false; handler.LoseNextPage = true;
-        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Unknown, "Missing original page yielded Consumed.");
-        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId)).State == DeletionManifestProviderState.Consumed, "Lost page recovery changed original.");
+        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId).ConfigureAwait(false)).State == DeletionManifestProviderState.Unknown, "Missing original page yielded Consumed.");
+        Check((await provider.LookupAsync(original.Manifest.Original, original.Manifest.ProtectionReservationReceiptId).ConfigureAwait(false)).State == DeletionManifestProviderState.Consumed, "Lost page recovery changed original.");
         Check(f.Store.State.Head == before && f.Native.Schedules == sends, "Original recovery started a physical effect.");
     }
     private sealed class QualificationOriginalFixture:IQualificationOriginalStore
@@ -210,7 +210,7 @@ internal sealed class LifecycleAuthorizer(Fixture fixture) : ISecretsCredentialB
             {
                 string id = "key-" + CustodyJson.Hash(Encoding.UTF8.GetBytes(CustodyJson.DeliveryId(use)));
                 var reference = fixture.Store.State.Checkpoint.NativeResults[id + ":admission"];
-                var admitted = CustodyJson.Read<SignedStatement>(await fixture.Store.ReadImmutableAsync(reference, token));
+                var admitted = CustodyJson.Read<SignedStatement>(await fixture.Store.ReadImmutableAsync(reference, token).ConfigureAwait(false));
                 var holders = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(admitted.Payload)).Holders;
                 var complete = new KeyCompletion(use, reference.Sha256, holders.Select(h => new HolderCompletion(h.CopyId, h.ProcessIncarnation,
                     h.TransportIncarnation, Fixture.Digest, Fixture.Digest, "VerifiedZeroed")).ToArray());

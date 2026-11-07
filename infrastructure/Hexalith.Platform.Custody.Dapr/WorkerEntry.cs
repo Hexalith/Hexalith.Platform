@@ -23,7 +23,7 @@ internal static class WorkerEntry
     private static async Task RetainPreparedOriginalAsync(RecoverableLifecycle worker, WorkerPacket packet, CancellationToken token)
     {
         if (!Path.IsPathFullyQualified(packet.OutputPath!)) throw new AuthorityUnavailableException("Absolute new original output path required.");
-        byte[] bytes = await worker.PrepareOriginalAsync(packet.TenantId, packet.Evidence, token);
+        byte[] bytes = await worker.PrepareOriginalAsync(packet.TenantId, packet.Evidence, token).ConfigureAwait(false);
         try
         {
             _=await ArchiveVolumeFence.RunForPublicationAsync(Path.GetDirectoryName(packet.OutputPath!)!,async ct=>

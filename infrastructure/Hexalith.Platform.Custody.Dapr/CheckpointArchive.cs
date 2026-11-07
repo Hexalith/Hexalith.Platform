@@ -53,17 +53,17 @@ internal static class CheckpointArchive
     {
         using var gate = new SemaphoreSlim(Parallelism);
         var written = await Task.WhenAll(plan.NewPayloads.Select(async pair => {
-            await gate.WaitAsync(token);
+            await gate.WaitAsync(token).ConfigureAwait(false);
             try
             {
-                var version = await put(pair.Value, "journal", token);
+                var version = await put(pair.Value, "journal", token).ConfigureAwait(false);
                 if (version.Key.Length > 105 || string.IsNullOrWhiteSpace(version.VersionId) || Encoding.UTF8.GetByteCount(version.VersionId) > 1024
                     || version.Sha256 != pair.Key || version.Bytes != pair.Value.Length)
                     throw new AuthorityUnavailableException("Native payload reference exceeds its preflight reservation.");
                 return (pair.Key, Version: version);
             }
             finally { gate.Release(); }
-        }));
+        })).ConfigureAwait(false);
         var versions = written.ToDictionary(pair => pair.Key, pair => pair.Version, StringComparer.Ordinal);
         var archive = plan.Archive with { Payloads = plan.Archive.Payloads.Select(p => versions.TryGetValue(p.Object.Sha256, out var version) ? p with { Object = version } : p).ToArray() };
         byte[] bytes = CustodyJson.Bytes(archive);
@@ -89,14 +89,14 @@ internal static class CheckpointArchive
         using var gate = new SemaphoreSlim(Parallelism);
         var loaded = (await Task.WhenAll(archive.Payloads.Select(p => p.Object).Distinct().Select(async version => {
             if (version.Bytes is <= 0 or > CustodyBindingContract.MaximumOriginalBytes) throw new AuthorityUnavailableException("Invalid checkpoint payload size.");
-            await gate.WaitAsync(token);
+            await gate.WaitAsync(token).ConfigureAwait(false);
             try {
-                byte[] exact = await read(version, token);
+                byte[] exact = await read(version, token).ConfigureAwait(false);
                 if (exact.Length != version.Bytes || CustodyJson.Hash(exact) != version.Sha256) throw new AuthorityUnavailableException("Checkpoint payload version mismatch.");
                 return (Version: version, Bytes: exact);
             }
             finally { gate.Release(); }
-        })) ).ToDictionary(x => x.Version, x => x.Bytes);
+        })).ConfigureAwait(false)).ToDictionary(x => x.Version, x => x.Bytes);
         foreach (var payload in archive.Payloads)
         {
             (JsonObject parent, string property) = payload.Kind switch {

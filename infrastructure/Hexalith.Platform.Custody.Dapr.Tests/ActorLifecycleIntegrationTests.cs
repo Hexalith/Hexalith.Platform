@@ -30,38 +30,38 @@ internal static class ActorLifecycleIntegrationTests
         {
             var identity = new CustodyKeyObjectIdentity("tenant", "actor-" + revision, PlatformKeyPurpose.InteractionRootDek, "alias", "key", "lifecycle", "store", "contract");
             var use = new CustodyKeyUse("actor-wrap-" + revision, "actor-delivery-" + revision, "recipient", "transport", identity.ObjectId);
-            var registration = await client.WrapAsync(identity, "actor-wrap-" + revision, revision, "kek", identity.ObjectId, use, Fixture.Root)
+            var registration = await client.WrapAsync(identity, "actor-wrap-" + revision, revision, "kek", identity.ObjectId, use, Fixture.Root).ConfigureAwait(false)
                 ?? throw new Exception("Diverged owner revision failed wrap.");
             originals.Items.Add(identity, registration);
             Check(registration.ExpectedRevision == revision && f.Store.State.Head.Revision != revision, "Original registration revision was rewritten to custody head.");
-            Check((await actor.RegisterWrappedAsync(registration)).Status == CustodyKeyLifecycleStatus.Wrapped, "Actual actor rejected original registration with diverged revisions.");
+            Check((await actor.RegisterWrappedAsync(registration).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Wrapped, "Actual actor rejected original registration with diverged revisions.");
         }
         var registered = originals.Items.Values.First();
         var pin = new CustodyKeyLifecycleRequest(registered.Identity, "actor-pin", CustodyKeyLifecycleAction.Pin, 2, "hold", "registered", 2, "decision");
         byte[] originalBytes = JsonSerializer.SerializeToUtf8Bytes(pin);
-        Check((await actor.ApplyAsync(pin)).Status == CustodyKeyLifecycleStatus.Pinned, "Actual actor pin failed after pending-state transition advanced custody head.");
+        Check((await actor.ApplyAsync(pin).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Pinned, "Actual actor pin failed after pending-state transition advanced custody head.");
         Check(JsonSerializer.SerializeToUtf8Bytes(pin).AsSpan().SequenceEqual(originalBytes), "Original pin bytes were rewritten.");
-        var recovered = await actor.LookupAsync(pin);
+        var recovered = await actor.LookupAsync(pin).ConfigureAwait(false);
         Check(recovered.Status == CustodyKeyLifecycleStatus.Pinned && recovered.RequestDigest == CustodyBindingContract.Hash(originalBytes), "Actual actor original recovery changed request bytes.");
         var unpin = pin with { OperationId = "actor-unpin", Action = CustodyKeyLifecycleAction.Unpin, ExpectedRevision = 4 };
-        Check((await actor.ApplyAsync(unpin)).Status == CustodyKeyLifecycleStatus.Unpinned, "Actual actor unpin failed with independent revisions.");
+        Check((await actor.ApplyAsync(unpin).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unpinned, "Actual actor unpin failed with independent revisions.");
 
         // A pending pin may be cleared only by an exact retained authenticated never-performed original.
         var notPerformed = pin with { OperationId = "actor-never-performed", ExpectedRevision = 6 };
         gate.DeferNext = true;
-        Check((await actor.ApplyAsync(notPerformed)).Status == CustodyKeyLifecycleStatus.Unknown, "Deferred pin did not remain pending.");
+        Check((await actor.ApplyAsync(notPerformed).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Unknown, "Deferred pin did not remain pending.");
         Check(f.Store.State.Checkpoint.Pins.Count == 0, "Deferred fixture issued a native pin.");
         string digest = CustodyBindingContract.Hash(JsonSerializer.SerializeToUtf8Bytes(notPerformed));
         var outcome = new CustodyKeyLifecycleOutcome(registered.Identity, notPerformed.OperationId, digest, CustodyKeyLifecycleStatus.NotPerformed, "retained-never-performed");
         var response = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, outcome.OperationId, digest, Lifecycle: outcome);
-        var current = await f.Store.ReadAsync("tenant", default); var next = SemanticProvider.Clone(current);
-        var reference = await f.Store.PutImmutableAsync(CustodyJson.Bytes(response), "original", default);
-        next.Originals.Add(outcome.OperationId, new(digest, "pin", reference, null)); await f.Store.CommitAsync(current, next, default);
-        Check(await authority.VerifyOutcomeAsync(notPerformed, outcome), "Exact retained authenticated NotPerformed was rejected.");
-        Check(!await authority.VerifyOutcomeAsync(notPerformed, outcome with { ReceiptId = "invented-absence" }), "Changed never-performed receipt was accepted.");
-        Check((await actor.LookupAsync(notPerformed)) == outcome, "Actual actor could not retain never-performed original.");
+        var current = await f.Store.ReadAsync("tenant", default).ConfigureAwait(false); var next = SemanticProvider.Clone(current);
+        var reference = await f.Store.PutImmutableAsync(CustodyJson.Bytes(response), "original", default).ConfigureAwait(false);
+        next.Originals.Add(outcome.OperationId, new(digest, "pin", reference, null)); await f.Store.CommitAsync(current, next, default).ConfigureAwait(false);
+        Check(await authority.VerifyOutcomeAsync(notPerformed, outcome).ConfigureAwait(false), "Exact retained authenticated NotPerformed was rejected.");
+        Check(!await authority.VerifyOutcomeAsync(notPerformed, outcome with { ReceiptId = "invented-absence" }).ConfigureAwait(false), "Changed never-performed receipt was accepted.");
+        Check((await actor.LookupAsync(notPerformed).ConfigureAwait(false)) == outcome, "Actual actor could not retain never-performed original.");
         var again = pin with { OperationId = "actor-pin-after-cleanup", ExpectedRevision = 8 };
-        Check((await actor.ApplyAsync(again)).Status == CustodyKeyLifecycleStatus.Pinned, "Authenticated NotPerformed did not remove the pending pin.");
+        Check((await actor.ApplyAsync(again).ConfigureAwait(false)).Status == CustodyKeyLifecycleStatus.Pinned, "Authenticated NotPerformed did not remove the pending pin.");
         Check(f.Native.Encrypts == 2 && f.Native.Schedules == 0, "Actor integration regenerated roots or destroyed native keys.");
     }
     private static void Check(bool value, string message) { if (!value) throw new Exception(message); }
@@ -91,8 +91,9 @@ public class SerializedActorState : DispatchProxy
     private readonly HashSet<string> _removed = [];
     protected override object? Invoke(MethodInfo? method, object?[]? args)
     {
+        ArgumentNullException.ThrowIfNull(method);
         args ??= []; string name = args.Length > 0 && args[0] is string value ? value : "";
-        switch (method!.Name)
+        switch (method.Name)
         {
             case "ClearCacheAsync": _pending.Clear(); _removed.Clear(); return Task.CompletedTask;
             case "SetStateAsync": _pending[name] = JsonSerializer.SerializeToUtf8Bytes(args[1], method.GetGenericArguments()[0]); _removed.Remove(name); return Task.CompletedTask;

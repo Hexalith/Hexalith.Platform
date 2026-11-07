@@ -9,23 +9,23 @@ internal static class PublicLifecycleCancellationTests
 {
     internal static async Task Run()
     {
-        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("budget-root"))).WrappedRegistration!;
+        using var f = new Fixture(); var registration = (await f.Call(f.Wrap("budget-root")).ConfigureAwait(false)).WrappedRegistration!;
         var handler = new SdkBridge(f);
         using var sdk = new DaprClientBuilder().UseGrpcEndpoint("http://127.0.0.1:1").UseGrpcChannelOptions(new GrpcChannelOptions { HttpHandler = handler }).Build();
         using (var caller = new CancellationTokenSource())
         {
             var source = new LifecycleAuthorizer(f) { Stage = _ => caller.Cancel() };
-            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, source).LookupOriginalAsync(registration, cancellationToken: caller.Token), caller.Token);
+            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, source).LookupOriginalAsync(registration, cancellationToken: caller.Token), caller.Token).ConfigureAwait(false);
         }
         var use = new CustodyKeyUse("cancel-key-lease", "cancel-key-delivery", "recipient", "transport", registration.OpaqueWrappedKeyReference);
         using (var caller = new CancellationTokenSource())
         {
             handler.AfterResponse = caller.Cancel;
-            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use, caller.Token), caller.Token);
+            await Cancelled(() => PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use, caller.Token), caller.Token).ConfigureAwait(false);
             handler.AfterResponse = null;
         }
         if (f.Native.Decrypts != 1) throw new Exception("Cancellation test missed the actual key release boundary.");
-        var retry = await PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use);
+        var retry = await PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)).UnwrapAsync(registration, "cancel-key", use).ConfigureAwait(false);
         if (retry.Key is not null || f.Native.Decrypts != 1) throw new Exception("Cancelled key response retry repeated native release.");
 
         var original = f.Manifest([registration]).Manifest!.Original;
@@ -35,37 +35,37 @@ internal static class PublicLifecycleCancellationTests
         var locator = new CallbackManifestSource(() => { clock.Advance(TimeSpan.FromSeconds(9)); return Task.FromResult<DeletionBatchConsumptionRequest?>(original); });
         var provider = new DaprCustodyKeyLifecycleProvider(PublicLifecycleTests.Client(f, sdk, staged, clock), locator);
         int before = handler.Calls;
-        if ((await provider.ExecuteAsync(registration, request, digest)).Status != CustodyKeyLifecycleStatus.Unknown
+        if ((await provider.ExecuteAsync(registration, request, digest).ConfigureAwait(false)).Status != CustodyKeyLifecycleStatus.Unknown
             || locator.Calls != 1 || handler.Calls != before + 1 || f.Store.State.Checkpoint.Cycle is not null)
             throw new Exception("Nested registration/locator/manifest stages restarted the operation deadline.");
 
         clock = new BudgetClock(); var blocked = new CallbackManifestSource(() => { clock.Advance(TimeSpan.FromSeconds(31)); return new TaskCompletionSource<DeletionBatchConsumptionRequest?>().Task; });
         provider = new(PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f), clock), blocked);
-        if ((await provider.LookupAsync(registration, request, digest)).Status != CustodyKeyLifecycleStatus.Unknown) throw new Exception("Unresponsive locator did not end as Unknown at the shared deadline.");
+        if ((await provider.LookupAsync(registration, request, digest).ConfigureAwait(false)).Status != CustodyKeyLifecycleStatus.Unknown) throw new Exception("Unresponsive locator did not end as Unknown at the shared deadline.");
         using (var caller = new CancellationTokenSource())
         {
             var cancelled = new CallbackManifestSource(() => { caller.Cancel(); return Task.FromResult<DeletionBatchConsumptionRequest?>(null); });
             provider = new(PublicLifecycleTests.Client(f, sdk, new LifecycleAuthorizer(f)), cancelled);
-            await Cancelled(() => provider.LookupAsync(registration, request, digest, caller.Token), caller.Token);
+            await Cancelled(() => provider.LookupAsync(registration, request, digest, caller.Token), caller.Token).ConfigureAwait(false);
         }
 
         // Header lookup and every page share the original budget. The deliberately unfinished fixture
         // original must never be parsed/exposed after authorization has exhausted that budget.
         var pageRequest = f.Manifest([registration]);
-        var current = await f.Store.ReadAsync("tenant", default); var next = SemanticProvider.Clone(current);
-        var retained = await f.Store.PutImmutableAsync(new byte[600 * 1024], "original", default);
+        var current = await f.Store.ReadAsync("tenant", default).ConfigureAwait(false); var next = SemanticProvider.Clone(current);
+        var retained = await f.Store.PutImmutableAsync(new byte[600 * 1024], "original", default).ConfigureAwait(false);
         next.Originals.Add(pageRequest.Envelope.OperationId, new(pageRequest.Envelope.RequestDigest, "destroy-manifest", retained, pageRequest));
-        await f.Store.CommitAsync(current, next, default);
+        await f.Store.CommitAsync(current, next, default).ConfigureAwait(false);
         clock = new BudgetClock(); var pages = new LifecycleAuthorizer(f) { Stage = _ => clock.Advance(TimeSpan.FromSeconds(5)) };
         before = handler.Calls;
-        var assembled = await PublicLifecycleTests.Client(f, sdk, pages, clock).ExecuteManifestOriginalAsync(original, "reservation", true);
+        var assembled = await PublicLifecycleTests.Client(f, sdk, pages, clock).ExecuteManifestOriginalAsync(original, "reservation", true).ConfigureAwait(false);
         if (assembled.Result.State != DeletionManifestProviderState.Unknown || handler.Calls != before + 2
             || clock.GetTimestamp() != TimeSpan.FromSeconds(30).Ticks)
             throw new Exception("Original header/page stages restarted the shared operation deadline.");
     }
     private static async Task Cancelled(Func<Task> action, CancellationToken token)
     {
-        try { await action(); } catch (OperationCanceledException e) when (token.IsCancellationRequested && e.CancellationToken == token) { return; }
+        try { await action().ConfigureAwait(false); } catch (OperationCanceledException e) when (token.IsCancellationRequested && e.CancellationToken == token) { return; }
         throw new Exception("Explicit caller cancellation became a refusal or Unknown.");
     }
     private sealed class CallbackManifestSource(Func<Task<DeletionBatchConsumptionRequest?>> callback) : ICustodyReservedManifestSource

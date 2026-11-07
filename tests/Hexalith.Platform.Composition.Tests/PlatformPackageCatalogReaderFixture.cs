@@ -10,12 +10,14 @@ using Shouldly;
 /// <summary>Uses synthetic active-SDK entry metadata with a real Git catalog and genuine loaded public artifacts; never starts a fleet.</summary>
 internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
 {
-    private readonly PlatformQualificationPackageFixture _owner = new();
+    private readonly PlatformQualificationPackageFixture _owner;
     private readonly string _key;
 
     /// <summary>Selects genuine catalog/tool inputs and explicitly synthetic active-SDK entry files without starting resources.</summary>
-    internal PlatformPackageCatalogReaderFixture()
+    /// <param name="currentTest">Selects the separate current EventStore test inputs; historical callers keep the authentic public default.</param>
+    internal PlatformPackageCatalogReaderFixture(bool currentTest = false)
     {
+        _owner = currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
         string platform = PlatformTestRepository.Root;
         string root = Metadata("PlatformTestReaderWorkspaceRoot");
         if (string.IsNullOrWhiteSpace(root)) root = platform;

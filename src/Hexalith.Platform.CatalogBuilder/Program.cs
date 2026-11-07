@@ -27,7 +27,7 @@ if (qualified)
     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
     string[] expected = qualificationName switch
     {
-        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
         PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.CurrentOwnerName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
         _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
     };

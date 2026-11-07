@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using Hexalith.Platform.Secrets.Runtime;
 
 if (args.Length == 2 && args[0] == "--serve-independent-authority")
-    return await IndependentAuthorityHttpApplication.RunAsync(args[1]);
+    return await IndependentAuthorityHttpApplication.RunAsync(args[1]).ConfigureAwait(false);
 
 // No startup bootstrap, resource creation, fixture fallback, automatic worker or production DI registration.
 if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" or "--serve" or "--worker" or "--serve-role" or "--serve-owner-authority"))
@@ -19,12 +19,12 @@ if ((args.Length != 2 && args.Length != 3) || args[0] is not ("--check-profile" 
 try
 {
     using var startupBudget=new CancellationTokenSource(TimeSpan.FromSeconds(30));
-    var profile = CustodyJson.Read<ComponentProfile>(await BoundedRegularFile.ReadAsync(args[1],1024*1024,startupBudget.Token)); profile.Validate();
+    var profile = CustodyJson.Read<ComponentProfile>(await BoundedRegularFile.ReadAsync(args[1],1024*1024,startupBudget.Token).ConfigureAwait(false)); profile.Validate();
     if (args[0] == "--check-profile") { Console.WriteLine(profile.ProfileDigest); return 0; }
-    _=await BoundedDurableFileOperation.RunAsync(ct=> { StartupGuard.Validate(args[0],profile.SocketPath);ct.ThrowIfCancellationRequested();return Task.FromResult(true); },startupBudget.Token);
-    var roleInstallation = args[0] is "--serve-role" or "--serve-owner-authority" && args.Length == 3 ? CustodyJson.Read<CustodyRoleInstallation>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token)) : null;
+    _=await BoundedDurableFileOperation.RunAsync(ct=> { StartupGuard.Validate(args[0],profile.SocketPath);ct.ThrowIfCancellationRequested();return Task.FromResult(true); },startupBudget.Token).ConfigureAwait(false);
+    var roleInstallation = args[0] is "--serve-role" or "--serve-owner-authority" && args.Length == 3 ? CustodyJson.Read<CustodyRoleInstallation>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token).ConfigureAwait(false)) : null;
     if (args[0] == "--serve-role" && roleInstallation is null) throw new AuthorityUnavailableException("Independent role installation required.");
-    using var signer = ECDsa.Create(); await BoundedRegularFile.UseUtf8SpanAsync(roleInstallation?.SigningKeyFile ?? profile.ComponentSigningKeyPath,16384,value=>{ signer.ImportFromPem(value);return true; },startupBudget.Token);
+    using var signer = ECDsa.Create(); await BoundedRegularFile.UseUtf8SpanAsync(roleInstallation?.SigningKeyFile ?? profile.ComponentSigningKeyPath,16384,value=>{ signer.ImportFromPem(value);return true; },startupBudget.Token).ConfigureAwait(false);
     using var publicSigner = ECDsa.Create(); publicSigner.ImportFromPem(roleInstallation is null ? profile.ComponentPublicKeyPem :
         profile.Trust.Single(t => t.KeyId == roleInstallation.SignerId && t.Purpose == (roleInstallation.Role switch { "authorizer" => "private-operation", "observer" => "independent-observer", _ => roleInstallation.Role })).PublicKeyPem);
     if (!signer.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(publicSigner.ExportSubjectPublicKeyInfo()))
@@ -47,7 +47,7 @@ try
         roleBuilder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = CustodyBindingContract.CandidateRequestMessageBytes);
         var roleApp = roleBuilder.Build();
         roleApp.MapPost("/custody-lifecycle/{method}", (HttpContext context, string method, CancellationToken token) => receiver.HandleAsync(context, method, token));
-        await roleApp.RunAsync(); return 0;
+        await roleApp.RunAsync().ConfigureAwait(false); return 0;
     }
     if (args[0] == "--serve-owner-authority")
     {
@@ -57,7 +57,7 @@ try
             throw new AuthorityUnavailableException("Native owner authorizer and independent receiving installation required.");
         var originalAuthority = new IndependentDaprAuthority(new DaprSecretsInvoker(nativeDapr), roleInstallation.OriginalAuthority, TimeProvider.System);
         return await IndependentAuthorityHttpApplication.RunAsync(authorityInstallation, ownerHandlers:
-            [new CustodyOwnerOperationHandler(profile, store, originalAuthority, roleInstallation.SignerId, signer, TimeProvider.System)]);
+            [new CustodyOwnerOperationHandler(profile, store, originalAuthority, roleInstallation.SignerId, signer, TimeProvider.System)]).ConfigureAwait(false);
     }
     var verifier = new StatementVerifier(profile, TimeProvider.System);
     IEpochOperations epochs = native is not null ? native : new AwsEpochOperations(profile, kms!);
@@ -68,8 +68,8 @@ try
     if (args[0] == "--worker")
     {
         if (args.Length != 3) throw new AuthorityUnavailableException("Signed worker command required.");
-        var packet = CustodyJson.Read<WorkerPacket>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token));
-        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier, signer), packet, CancellationToken.None, exchange);
+        var packet = CustodyJson.Read<WorkerPacket>(await BoundedRegularFile.ReadAsync(args[2],1024*1024,startupBudget.Token).ConfigureAwait(false));
+        await WorkerEntry.ExecuteAsync(new RecoverableLifecycle(profile, store, epochs, verifier, signer), packet, CancellationToken.None, exchange).ConfigureAwait(false);
         Console.WriteLine("Worker command retained; only independently verified final publication establishes a terminal original."); return 0;
     }
     var provider = new SemanticProvider(profile, store, verifier, signer, exchange);
@@ -81,8 +81,8 @@ try
         options.MaxSendMessageSize = CustodyBindingContract.MaximumPageFrameBytes - 1; options.EnableDetailedErrors = false; });
     builder.Services.AddGrpcReflection();
     var app = builder.Build(); app.MapGrpcService<BindingService>(); app.MapGrpcReflectionService();
-    await app.StartAsync();
+    await app.StartAsync().ConfigureAwait(false);
     if (OperatingSystem.IsLinux()) File.SetUnixFileMode(profile.SocketPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.GroupWrite);
-    await app.WaitForShutdownAsync(); return 0;
+    await app.WaitForShutdownAsync().ConfigureAwait(false); return 0;
 }
 catch { Console.Error.WriteLine("Custody component closed: profile, trust, authority or socket initialization failed."); return 1; }

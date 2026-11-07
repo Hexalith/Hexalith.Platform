@@ -40,7 +40,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         }
         var next = SemanticProvider.Clone(current);
         next.Deliveries.Add(deliveryId, new(keyUse, CustodyBindingIntentPhase.SendCommitted, false, false, false, false));
-        var admissionOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(evidence), "journal", token);
+        var admissionOriginal = await store.PutImmutableAsync(CustodyJson.Bytes(evidence), "journal", token).ConfigureAwait(false);
         string intentId = "key-" + CustodyJson.Hash(System.Text.Encoding.UTF8.GetBytes(deliveryId));
         next.NativeResults.Add(intentId + ":admission", admissionOriginal);
         if (e.Operation == "wrap" && request.WrapInput is { } input)
@@ -53,28 +53,28 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             next.AllocationExclusions.Add(CustodyJson.Interaction(input.Identity)); next.AllocationExclusions.Add(CustodyJson.Target(input.Identity));
             next.Originals.Add(e.OperationId, new(e.RequestDigest, "wrap", null, null));
             var plan = new WrapPlan(input.Identity, e.OperationId, e.RequestDigest, input.ExpectedRevision, input.KekVersion, input.OpaqueWrappedKeyReference, next.CurrentEpoch);
-            next.NativeResults.Add(intentId + ":plan", await store.PutImmutableAsync(CustodyJson.Bytes(plan), "journal", token));
+            next.NativeResults.Add(intentId + ":plan", await store.PutImmutableAsync(CustodyJson.Bytes(plan), "journal", token).ConfigureAwait(false));
             next.NativeIntents.Add(intentId, new(e.TenantId, e.OperationId, intentId, e.RequestDigest, keyUse.RecipientProcessIncarnation,
                 next.CurrentEpoch, next.CurrentEpoch, e.Proof.TargetVectorDigest, current.Head.Revision, CustodyBindingIntentPhase.SendCommitted));
-            var admitted = await store.CommitAsync(current, next, token);
-            byte[] kek = await keys.ReadTenantKekAsync(e.TenantId, input.KekVersion, token);
+            var admitted = await store.CommitAsync(current, next, token).ConfigureAwait(false);
+            byte[] kek = await keys.ReadTenantKekAsync(e.TenantId, input.KekVersion, token).ConfigureAwait(false);
             try
             {
-                var registration = await KeyEnvelopeBuilder.WrapAsync(input, kek, admitted.Checkpoint.CurrentEpoch, epochs, token);
+                var registration = await KeyEnvelopeBuilder.WrapAsync(input, kek, admitted.Checkpoint.CurrentEpoch, epochs, token).ConfigureAwait(false);
                 var response = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, WrappedRegistration: registration.Registration);
                 // The deterministic locator is derived from the permanently retained intent before any send.
                 // Object/CAS acknowledgement loss can recover this exact registration, never re-encrypt.
-                _ = await store.PutIntentCompletionAsync(CustodyJson.Bytes(new WrappedResult(registration,response)),CustodyJson.IntentLocator(e.TenantId,intentId),e.TenantId,"intent:"+intentId,token);
-                var original = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(response),"original",e.TenantId,"intent:"+intentId,token);
+                _ = await store.PutIntentCompletionAsync(CustodyJson.Bytes(new WrappedResult(registration,response)),CustodyJson.IntentLocator(e.TenantId,intentId),e.TenantId,"intent:"+intentId,token).ConfigureAwait(false);
+                var original = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(response),"original",e.TenantId,"intent:"+intentId,token).ConfigureAwait(false);
                 var durable = SemanticProvider.Clone(admitted); durable.Registrations.Add(input.OpaqueWrappedKeyReference, registration);
                 durable.Originals[e.OperationId] = durable.Originals[e.OperationId] with { Response = original };
                 durable.NativeIntents[intentId] = durable.NativeIntents[intentId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
                 durable.NativeResults[intentId] = original;
                 durable.Deliveries[deliveryId] = durable.Deliveries[deliveryId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
-                await store.CommitAsync(admitted, durable, token);
+                await store.CommitAsync(admitted, durable, token).ConfigureAwait(false);
                 CryptographicOperations.ZeroMemory(kek);
                 CryptographicOperations.ZeroMemory(input.RootKey);
-                await PublishRegistrationAsync(registration.Registration, token);
+                await PublishRegistrationAsync(registration.Registration, token).ConfigureAwait(false);
                 return response;
             }
             finally { CryptographicOperations.ZeroMemory(kek); CryptographicOperations.ZeroMemory(input.RootKey); }
@@ -85,23 +85,23 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             throw new AuthorityUnavailableException("Exact live registration unavailable.");
         next.NativeIntents.Add(intentId, new(e.TenantId, e.OperationId, intentId, e.RequestDigest, keyUse.RecipientProcessIncarnation,
             stored.Epoch, keyUse.RecipientProcessIncarnation, e.Proof.TargetVectorDigest, current.Head.Revision, CustodyBindingIntentPhase.SendCommitted));
-        var released = await store.CommitAsync(current, next, token); // No raw response is ever stored after this permanent release admission.
+        var released = await store.CommitAsync(current, next, token).ConfigureAwait(false); // No raw response is ever stored after this permanent release admission.
         byte[] outerKey = [], tenantKek = [];
         try
         {
-            outerKey = await keys.ReadOuterKeyAsync(stored, token);
-            tenantKek = await keys.ReadTenantKekAsync(e.TenantId, stored.Registration.KekVersion, token);
+            outerKey = await keys.ReadOuterKeyAsync(stored, token).ConfigureAwait(false);
+            tenantKek = await keys.ReadTenantKekAsync(e.TenantId, stored.Registration.KekVersion, token).ConfigureAwait(false);
             byte[] root = KeyEnvelopeBuilder.Unwrap(stored, outerKey, tenantKek);
             try
             {
                 var durable = SemanticProvider.Clone(released);
                 var status = new CustodyBindingResponseV1(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest,
                     Delivery: durable.Deliveries[deliveryId] with { Phase = CustodyBindingIntentPhase.ResultDurable });
-                var result = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(status),"journal",e.TenantId,"intent:"+intentId,token);
+                var result = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(status),"journal",e.TenantId,"intent:"+intentId,token).ConfigureAwait(false);
                 durable.NativeResults[intentId] = result;
                 durable.NativeIntents[intentId] = durable.NativeIntents[intentId] with { Phase = CustodyBindingIntentPhase.ResultDurable };
                 durable.Deliveries[deliveryId] = status.Delivery!;
-                await store.CommitAsync(released, durable, token);
+                await store.CommitAsync(released, durable, token).ConfigureAwait(false);
                 return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, KeyDelivery: new(keyUse, root));
             }
             catch { CryptographicOperations.ZeroMemory(root); throw; }
@@ -110,17 +110,17 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
     }
     internal async Task RecoverWrapAsync(string tenant, WorkerOperation operation, SignedStatement permission, CancellationToken token)
     {
-        var current = await store.ReadAsync(tenant, token);
+        var current = await store.ReadAsync(tenant, token).ConfigureAwait(false);
         if (operation.Operation != "recover-wrap-result" || !verifier.Qualified(current,token)
             || !verifier.Verify(permission, "private-operation", current, CustodyJson.Hash(CustodyJson.Bytes(operation)), TimeSpan.FromSeconds(30))
             || !current.Checkpoint.NativeIntents.TryGetValue(operation.IntentId, out var intent) || intent.OperationId != operation.OriginalOperationId
             || intent.Phase is not (CustodyBindingIntentPhase.SendCommitted or CustodyBindingIntentPhase.ResultDurable or CustodyBindingIntentPhase.Closed)
             || !current.Checkpoint.NativeResults.TryGetValue(intent.IntentId + ":plan", out var planObject))
             throw new AuthorityUnavailableException("Exact admitted wrap recovery permission missing.");
-        var plan = CustodyJson.Read<WrapPlan>(await store.ReadImmutableAsync(planObject, token));
-        var resultObject = await store.FindIntentResultAsync(CustodyJson.IntentLocator(tenant, intent.IntentId), token)
+        var plan = CustodyJson.Read<WrapPlan>(await store.ReadImmutableAsync(planObject, token).ConfigureAwait(false));
+        var resultObject = await store.FindIntentResultAsync(CustodyJson.IntentLocator(tenant, intent.IntentId), token).ConfigureAwait(false)
             ?? throw new AuthorityUnavailableException("Native wrap result lost; identity stays burned and send is never repeated.");
-        var result = CustodyJson.Read<WrappedResult>(await store.ReadImmutableAsync(resultObject, token)); var r = result.Registration.Registration;
+        var result = CustodyJson.Read<WrappedResult>(await store.ReadImmutableAsync(resultObject, token).ConfigureAwait(false)); var r = result.Registration.Registration;
         if (r.Identity != plan.Identity || r.OperationId != plan.OperationId || r.ExpectedRevision != plan.ExpectedRevision
             || r.KekVersion != plan.KekVersion || r.OpaqueWrappedKeyReference != plan.OpaqueReference || result.Registration.Epoch != plan.Epoch
             || result.Response.WrappedRegistration != r || result.Response.OperationId != plan.OperationId || result.Response.RequestDigest != plan.RequestDigest)
@@ -129,21 +129,21 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         {
             var next = SemanticProvider.Clone(current);
             next.Registrations.Add(r.OpaqueWrappedKeyReference, result.Registration);
-            var response = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(result.Response),"original",tenant,"intent:"+intent.IntentId,token);
+            var response = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(result.Response),"original",tenant,"intent:"+intent.IntentId,token).ConfigureAwait(false);
             next.Originals[plan.OperationId] = next.Originals[plan.OperationId] with { Response = response };
             next.NativeResults[intent.IntentId] = resultObject;
             next.NativeIntents[intent.IntentId] = intent with { Phase = CustodyBindingIntentPhase.ResultDurable };
-            await store.CommitAsync(current, next, token);
+            await store.CommitAsync(current, next, token).ConfigureAwait(false);
         }
-        await PublishRegistrationAsync(r, token);
+        await PublishRegistrationAsync(r, token).ConfigureAwait(false);
     }
     internal async Task PublishRegistrationAsync(Hexalith.Platform.Custody.CustodyKeyRegistration registration, CancellationToken token)
     {
         if (publisher is null) throw new AuthorityUnavailableException("Independent registration publisher installation missing.");
-        var current = await store.ReadAsync(registration.Identity.TenantId, token);
-        var original = await SemanticProvider.ReadWrapOriginalAsync(store, current, registration, token);
+        var current = await store.ReadAsync(registration.Identity.TenantId, token).ConfigureAwait(false);
+        var original = await SemanticProvider.ReadWrapOriginalAsync(store, current, registration, token).ConfigureAwait(false);
         // Only the exact durable value-free wrap original crosses the independent publisher boundary.
-        var retained = await publisher.PublishAsync(original.WrappedRegistration!, token).WaitAsync(token);
+        var retained = await publisher.PublishAsync(original.WrappedRegistration!, token).WaitAsync(token).ConfigureAwait(false);
         token.ThrowIfCancellationRequested();
         if (retained != registration) throw new AuthorityUnavailableException("Independent registration publication unknown; recover this original only.");
     }
@@ -161,7 +161,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             throw new AuthorityUnavailableException("Exact independently observed holder completion missing.");
         if (delivery.Phase == CustodyBindingIntentPhase.Closed)
             return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, Delivery: delivery);
-        var admission = CustodyJson.Read<SignedStatement>(await store.ReadImmutableAsync(admissionObject, token));
+        var admission = CustodyJson.Read<SignedStatement>(await store.ReadImmutableAsync(admissionObject, token).ConfigureAwait(false));
         var holders = CustodyJson.Read<KeyAdmission>(CustodyJson.Bytes(admission.Payload)).Holders;
         if (completion.Holders.Length != holders.Length || completion.Holders.Select(h => h.CopyId).Distinct().Count() != holders.Length
             || holders.Any(h => !completion.Holders.Any(c => c.CopyId == h.CopyId && c.ProcessIncarnation == h.ProcessIncarnation
@@ -172,7 +172,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
         next.Deliveries[id] = delivery with { Phase = CustodyBindingIntentPhase.Closed,
             IoComplete = true, BuffersComplete = true, HolderInventoryComplete = true };
         // Completion can reconcile an uncertain unwrap, but never repairs an unknown native allocation/send.
-        var retained = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(evidence),"journal",e.TenantId,"intent:"+intentId,token);
+        var retained = await store.PutCompletionImmutableAsync(CustodyJson.Bytes(evidence),"journal",e.TenantId,"intent:"+intentId,token).ConfigureAwait(false);
         next.NativeResults[intentId + ":completion"] = retained;
         if (next.NativeIntents.TryGetValue(intentId, out var intent)
             && (intent.Phase == CustodyBindingIntentPhase.ResultDurable || !next.NativeResults.ContainsKey(intentId + ":plan")))
@@ -182,7 +182,7 @@ internal sealed class KeyExchange(ComponentProfile profile, IAuthorityStore stor
             if (!next.NativeResults.ContainsKey(intentId)) next.NativeResults[intentId] = retained;
             next.NativeIntents[intentId] = intent with { Phase = CustodyBindingIntentPhase.Closed };
         }
-        await store.CommitAsync(current, next, token);
+        await store.CommitAsync(current, next, token).ConfigureAwait(false);
         return new(CustodyBindingContract.Protocol, e.OperationId, e.RequestDigest, Delivery: next.Deliveries[id]);
     }
 }

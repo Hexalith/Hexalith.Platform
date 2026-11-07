@@ -54,6 +54,23 @@ public sealed class PlatformCurrentOwnerPackageTests
         var servers = PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true);
         foreach (var expected in new[]
         {
+            ("domain", "tenants", "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"),
+            ("api", "tenants-api", "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"),
+        })
+        {
+            var actual = servers.Single(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "tenants" && server.ServerId == expected.Item1);
+            actual.Image.ShouldBe("registry.hexalith.com/" + expected.Item2 + ":7.0.5");
+            actual.ImageDigest.ShouldBe(expected.Item3);
+            foreach (string staleVersion in new[] { "7.0.0", "7.0.2", "7.0.4" })
+            {
+                var stale = unbound.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "tenants" && server.ServerId == expected.Item1
+                    ? server with { Image = "registry.hexalith.com/" + expected.Item2 + ":" + staleVersion, ImageDigest = null } : server).ToArray();
+                Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, stale, developmentRun: true));
+                proof.Matches(options).ShouldBeTrue("Stale Tenants images cannot change the same measured private owner authority.");
+            }
+        }
+        foreach (var expected in new[]
+        {
             ("server", "memories", "a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"),
             ("domain", "memories-domain-service", "90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"),
             ("clock", "memories-access-telemetry-clock", "e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"),
