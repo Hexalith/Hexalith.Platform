@@ -56,8 +56,14 @@ internal static class PlatformPackageCatalogQualification
 
     /// <summary>Binds the selected SDK/Tenants versions to one complete measured public cohort; mixed pairs have no authority.</summary>
     internal static string? SelectCohort(PlatformCompositionOptions options, bool fullParties = false)
-        => PublishedCatalogArtifactCohort.ForVersions(PlatformServerBindings.Version(options, "eventstore", "qualification"),
-            PlatformServerBindings.Version(options, "tenants", "qualification"), fullParties);
+    {
+        string sdk = PlatformServerBindings.Version(options, "eventstore", "qualification");
+        string tenants = PlatformServerBindings.Version(options, "tenants", "qualification");
+        string? historical = PublishedCatalogArtifactCohort.ForVersions(sdk, tenants, fullParties);
+        return historical is not null || !fullParties ? historical
+            : PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants,
+                PlatformServerBindings.Version(options, "memories", "qualification"), PlatformServerBindings.Version(options, "parties", "qualification"));
+    }
 
     /// <summary>Selects old public pairs or the separately authenticated exact EventStore package-test purpose; performs no resource effects.</summary>
     internal static string? SelectTestCohort(PlatformCompositionOptions options)
