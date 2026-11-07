@@ -126,6 +126,27 @@ public sealed class PlatformPublishedPartiesCohortTests
         PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash.ShouldBe("d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348");
     }
 
+    /// <summary>The actual published OCI owner Contracts body is valid for its measured image role and cannot become a public package reader.</summary>
+    [Fact]
+    public void ActualPublishedImageOwnerBodyCannotAcquirePackageReaderAuthority()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "published-parties-image-role-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        AssemblyLoadContext context = new("published-parties-image-role-" + Guid.NewGuid().ToString("N"), isCollectible: true);
+        try
+        {
+            string path = Path.Combine(directory, "Hexalith.Parties.Contracts.dll");
+            using (Stream source = typeof(PlatformPublishedPartiesCohortTests).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures.public-parties310-image-contracts.dll")!)
+            using (FileStream target = File.Create(path)) source.CopyTo(target);
+            Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))).ShouldBe("b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6");
+            Assembly image = context.LoadFromAssemblyPath(path);
+            image.GetName().Name.ShouldBe("Hexalith.Parties.Contracts");
+            foreach (string cohort in new[] { PublishedCatalogArtifactCohort.PublishedPartiesName, PublishedCatalogArtifactCohort.CurrentFullPartiesName, PublishedCatalogArtifactCohort.CurrentOwnerName })
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(image, cohort));
+        }
+        finally { context.Unload(); Directory.Delete(directory, recursive: true); }
+    }
+
     /// <summary>The released declaration retains the complete ordinary parent/source proof and grants no private current profile.</summary>
     [Fact]
     public void ReleasedDeclarationPreservesTheOrdinarySourceAndPurposeBoundary()
