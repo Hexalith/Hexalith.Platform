@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the closed public-package reader without a runner, parent proof or services."""
+"""Exercise the retained P300/T702/M23 public reader; the current P310 boundaries remain separately required by the tuple profile."""
 
 import argparse
 import hashlib
@@ -63,7 +63,8 @@ def qualify(args):
             consumer.execute(["dotnet", "build", str(project), "-c", "Release", "--output", str(output),
                               "-m:1", "-nr:false", "--disable-build-servers", "-warnaserror",
                               *consumer.properties(args.builds_root, "4.1.0", "7.0.2"),
-                              "-p:HexalithMemoriesVersion=3.0.23", "-p:HexalithMcpCliVersion=2.0.0"], args.evidence / "build.log")
+                              "-p:HexalithMemoriesVersion=3.0.23", "-p:HexalithMcpCliVersion=2.0.0",
+                              "-p:HexalithPartiesVersion=3.0.0"], args.evidence / "build.log")
             report["executedArtifacts"] = consumer.retain_execution(project, output, "reader", args.evidence, "4.1.0", "7.0.2")
             retained = args.evidence / "reader-output"
             shutil.copytree(output, retained)
