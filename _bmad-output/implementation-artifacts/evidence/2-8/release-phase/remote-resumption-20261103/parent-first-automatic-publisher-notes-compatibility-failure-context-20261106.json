@@ -1,0 +1,34 @@
+{
+  "utc": "2026-11-06T23:54:14.299052+00:00",
+  "source": "4fe0e910f74530987065e67cb2def4d67595f6da",
+  "publisherRun": 42314507530,
+  "attempt": 1,
+  "qualifiedMainTuple": 42311304943,
+  "qualifiedMainCatalog": 42311304923,
+  "allMainCIPassed": true,
+  "mainSourceBlobsPerLane": 22279,
+  "mainPassed": [
+    315,
+    349
+  ],
+  "computedVersion": "1.6.0",
+  "firstFailedPhase": "@semantic-release/release-notes-generator.generateNotes",
+  "lastCompletedReceiptPhase": "qualified",
+  "cause": "Pinned release-notes-generator14.1.1 resolves writer8.4.0 but conventionalcommits10.4.1 requires writer>=9 rendering functions. Analyzer completed; release-notes rendering failed before prepare/tag creation.",
+  "actualTagRef404": true,
+  "actualRelease404": true,
+  "manualTagOrReleaseWrites": 0,
+  "policyChangesForRecovery": 0,
+  "firstFailedStepLog": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/approved-enable-20261106T222255Z/merged-main-4fe0e910f745/publisher-42314507530-attempt1/first-failed-publisher-only-step.log",
+  "firstFailedStepLogSha256": "855d86a503321fd284a08948ad82fb18518d65575161e07ddf52a1e374c22f4b",
+  "compatibleStablePresetCandidate": "9.3.1",
+  "candidateTarballIntegrityVerified": true,
+  "candidateRegistryUrl": "https://registry.npmjs.org/conventional-changelog-conventionalcommits/9.3.1",
+  "upstreamCompatibilitySources": [
+    "https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-conventionalcommits/CHANGELOG.md",
+    "https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-writer/CHANGELOG.md"
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

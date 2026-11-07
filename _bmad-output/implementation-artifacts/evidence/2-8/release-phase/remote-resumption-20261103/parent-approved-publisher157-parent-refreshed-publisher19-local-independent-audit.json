@@ -1,0 +1,66 @@
+{
+  "utc": "2026-11-06T22:53:11.015395+00:00",
+  "source": "9daaecd2aa78538373b10189bd8386604757da51",
+  "actualPublisherCases": [
+    "either final callback requires both latest successful main lanes and exact two/five jobs",
+    "earlier callback defers pending/missing counterpart; later callback can proceed",
+    "latest failed/cancelled/timed-out/skipped/neutral counterpart never borrows an earlier success",
+    "superseded callback, primary attempt race and latest pending attempt refuse",
+    "required job failure/cancellation/skip, missing/unknown and duplicate names refuse",
+    "wrong event/repository/branch/SHA/checkout/unknown workflow and incomplete API discovery refuse",
+    "main advancing during collection or immediately before mutation refuses without saving a ready phase",
+    "changed qualifying attempt cannot publish notes carrying the earlier run bindings",
+    "duplicate callbacks and standard no-release outcome do not force a publication",
+    "no-release return after main advance is refused and computed-version failure diagnostics survive",
+    "standard real analyzer computes patch/minor/major and declines build/docs/empty commits",
+    "explicit source-only plugins omit package publishing and source-main mutations",
+    "actual pinned GitHub hooks make no issue, PR, label, package or registry calls",
+    "GET transport binds official API and refuses redirects, errors and oversized bodies",
+    "workflow separates read-only verification from serialized contents-write publisher and binds callback checkout",
+    "real entry point refuses local execution without a positive CI identity or any network/write probe",
+    "actual release hook binds computed version/source and retains bounded public run notes",
+    "verifier uses the reviewed default-branch code to refuse an older callback before its helper existed",
+    "outer CLI failure preserves actual post-tag release failure phase/version/reason and prior published outcome"
+  ],
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "exit": 0,
+      "trackedInputs": 22279,
+      "gitlinks": 17,
+      "commandReceiptSha256": "4d80c13546eb451926995cc69fa692e818f39bd006465a35a0dbce40a004630a"
+    },
+    {
+      "command": [
+        "actionlint",
+        "-shellcheck=",
+        ".github/workflows/source-release.yml",
+        ".github/workflows/tuple-ci.yml"
+      ],
+      "exit": 0,
+      "trackedInputs": 22279,
+      "gitlinks": 17,
+      "commandReceiptSha256": "73f14797fb84118332364e65df223a9d613ec171bc340954349c49dddb5f5299"
+    },
+    {
+      "command": [
+        "npm",
+        "audit",
+        "signatures",
+        "--cache",
+        "../npm-cache"
+      ],
+      "exit": 0,
+      "trackedInputs": 22279,
+      "gitlinks": 17,
+      "commandReceiptSha256": "b36d69d77aa21c220e6305c86837ebfdbc3a7e8bc8cdd1581c9b97808494909c"
+    }
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

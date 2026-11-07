@@ -1,0 +1,178 @@
+{
+  "utc": "2026-11-07T02:45:37.151702+00:00",
+  "phase": "PR173 all-green; narrow existing-actor merge-method authorization requested and pending",
+  "source": "6bacac06d6b16482108b0a3cc6a130829dbaa941",
+  "base": "567604b616613ba429be0609636d805db776a709",
+  "reviewedTree": "0ac4939f6444bd130d20f335823422ab1cff2cd0",
+  "actualTestedMerge": "ac97932dc478d6d03d62c29b299a8203dabb122e",
+  "retainedCatalogOrigin": "8984471f75657cd24236cf2d04f470f8e2545ace",
+  "actualCiRun": 42328828382,
+  "attempt": 1,
+  "allSevenCiJobsPassed": true,
+  "allActualRequiredChecksPassed": [
+    {
+      "context": "Codacy Static Code Analysis",
+      "app": 56611,
+      "id": 128270909222,
+      "conclusion": "success"
+    },
+    {
+      "context": "SonarCloud Code Analysis",
+      "app": 12526,
+      "id": 128270680780,
+      "conclusion": "success"
+    },
+    {
+      "context": "commitlint / commitlint",
+      "app": 15368,
+      "id": 128270441164,
+      "conclusion": "success"
+    },
+    {
+      "context": "commitlint / commitlint",
+      "app": 15368,
+      "id": 128270401391,
+      "conclusion": "success"
+    },
+    {
+      "context": "commitlint / commitlint",
+      "app": 15368,
+      "id": 128270352615,
+      "conclusion": "success"
+    }
+  ],
+  "primaryArtifact": {
+    "id": 13557176773,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU1NzE3Njc3Mw==",
+    "name": "g4-ci-qualification-ac97932dc478d6d03d62c29b299a8203dabb122e-42328828382-1",
+    "size_in_bytes": 108665,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13557176773",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13557176773/zip",
+    "expired": false,
+    "digest": "sha256:31245c2d40c0d0885ba24a8a3dc7b0702c866dc4b5041fee5a0475f8605f7179",
+    "created_at": "2026-11-07T02:42:03Z",
+    "updated_at": "2026-11-07T02:42:03Z",
+    "expires_at": "2026-12-07T02:21:22Z",
+    "workflow_run": {
+      "id": 42328828382,
+      "repository_id": 952945989,
+      "head_repository_id": 952945989,
+      "head_branch": "fix/public-parties310-catalog-6bacac06",
+      "head_sha": "6bacac06d6b16482108b0a3cc6a130829dbaa941"
+    }
+  },
+  "downloadedPrimaryArtifact": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/actual-PR173-primary-CI-artifact.zip",
+    "bytes": 108665,
+    "sha256": "31245c2d40c0d0885ba24a8a3dc7b0702c866dc4b5041fee5a0475f8605f7179"
+  },
+  "qualificationPayloads": 55,
+  "negativePayloadsComparedWithExactCommittedExpectations": 45,
+  "producerVisibleTrackedFixturesIndependentlyHashed": 303,
+  "additionalHiddenTrackedFixture": {
+    "file": "test/fixtures/package-consumer/.config/dotnet-tools.json",
+    "sha256": "ce9f4d539428d221a70a893a250aec45d244694050dc9216b490f6517eb626f4",
+    "bytes": 362,
+    "role": "separately verified actual tracked hidden file; not counted in producer fixture manifest"
+  },
+  "actualLifecycleHelperPassedCases": 43,
+  "actualCoreCSharpSummary": {
+    "Module": {
+      "passed": 2834,
+      "failed": 0,
+      "skipped": 5
+    },
+    "Evidence": {
+      "passed": 191,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ToolingIntegration": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 12
+    }
+  },
+  "freshHostedCatalogScenarios": {
+    "generator": 114,
+    "validator": 102,
+    "authoritativeIdentities": 68,
+    "sharedVersions": 4,
+    "canonicalFamilies": 3
+  },
+  "freshHostedWorkflowContractAssertions": {
+    "legacy": 411,
+    "v2": 254
+  },
+  "optionalCursor": "three neutral due account usage/on-demand limits; no annotations, not counted as passed reviews",
+  "sourceCiEvidenceLimit": "Real PR temporary-merge identity; 0.0.0-ci.737 diagnostic inventory skips source validation and is release-ineligible. Contract publisher fixture messages and synthetic source-release fixture are not public publication or native evidence. No individual C# case XML retained by this normal CI carrier.",
+  "firstParentReaderRefusal": "Initial reader assumed only BaseName.expected.json; actual existing producer also permits FullName.expected.json. Original reader/refusal and immutable downloaded primary bytes retained. Reader corrected to exact committed fixture naming rules and independently validated all 45 negative outputs. No source change, test waiver, CI retry, new download or rewritten first outcome.",
+  "anchors": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/parent-PR173-all-green-concrete-merge-authorization-proposal.json",
+      "bytes": 3222,
+      "sha256": "8a90eabf4dc9e470fb34257ef718b31bfcdcb8f29758638263de9157005835a2"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/parent-actual-PR173-CI-primary-artifact-independent-audit.json",
+      "bytes": 142087,
+      "sha256": "c17e8f836150763205bf9a942c66dbcfe0445fa3fb6972e025d4339bbaa3652e"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/parent-actual-PR173-lifecycle-helper43-exact-case-independent-audit.json",
+      "bytes": 4283,
+      "sha256": "850d9d4917c2850e70d116b928d01c4d683c19e75f3d139605e4e4a63bbe889a"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/actual-PR173-dotnet-three-project-complete-summary-and-skips.json",
+      "bytes": 2177,
+      "sha256": "e57a216a63645c1f09d7d7c1e72a433b33acf1035c224bc610798547138a1f8c"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/actual-PR173-job-128270352601-bounded-summary.json",
+      "bytes": 15301,
+      "sha256": "b6a11bac840a3931aae67a3ff2274252319299b9afd24420d4232fb28ef83933"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/actual-PR173-job-128270352879-bounded-contract-summary.json",
+      "bytes": 21188,
+      "sha256": "17c4c17a86cabda5dd36bfd54806d460290dc9355254bfd5ba9dca030fe650f4"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/first-PR173-primary-CI-artifact-auditor-before-filename-correction.py",
+      "bytes": 15249,
+      "sha256": "89ec73c07e0c242823aeea8757950aabe6e20f6df65ae52150e4c946ec0c0221"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/audit-actual-PR173-ci-artifact.py",
+      "bytes": 16385,
+      "sha256": "4a9d372f09e6349fa7903edf0d44e55a8f6e941ac020289cc3a600ecfb3cf88a"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/proposed-normal-PR173-merge-full-message.txt",
+      "bytes": 199,
+      "sha256": "d249daa331bac0b47721aa0cd13a625adaba8804af4a161aadbc93f5c720a2b7"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/reviewable-PR173-proposed-exact-head-merge-payload.json",
+      "bytes": 326,
+      "sha256": "c22d2ad83ef54ff993dfc9a755f016eade3ea4b763f2d165012ace43ce8ca266"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/first-PR173-primary-CI-artifact-auditor-refusal-20261107T024246252577Z.txt",
+      "bytes": 1531,
+      "sha256": "47f911e00db53db6219686d833cf6753b80c2e1111143422fe1f47846a0c4b7b"
+    }
+  ],
+  "authorizationRequest": "Use only existing jpiquot/user6775094 always bypass on Builds19196298 to permit this exact-head normal merge commit after fresh unchanged source/rule/CI/required-check preflight. Preserve real C3 ancestry. No rule change, new actor/credential, failed/pending-check bypass, direct-main/force/history rewrite or tag/release write. If normal API refuses, preserve first refusal and do not broaden scope.",
+  "authorizationQuestionPresented": true,
+  "authorizationReceived": false,
+  "mainMergePerformed": false,
+  "freshMainCiPerformed": false,
+  "newPublicBuildsPublicationPerformed": false,
+  "platformAutomaticSourceRelease": "v1.6.0/source30c9e3a1052c54eb567f4330465a74c18e3e70a0 already COMPLETE/authenticated; do not repeat.",
+  "manualLifecycleDispatchesByParent": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "wholeStoryAcceptance": false
+}

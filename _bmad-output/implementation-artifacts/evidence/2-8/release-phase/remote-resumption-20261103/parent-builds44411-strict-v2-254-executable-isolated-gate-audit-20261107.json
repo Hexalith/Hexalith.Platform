@@ -1,0 +1,59 @@
+{
+  "utc": "2026-11-07T01:32:31.549350+00:00",
+  "source": "567604b616613ba429be0609636d805db776a709",
+  "normalSourceCI": 42249566014,
+  "attempt": 1,
+  "job": 128000724844,
+  "jobName": "Build and package contracts",
+  "stepName": "Test strict v2 workflow contracts",
+  "stepNumber": 5,
+  "stepConclusion": "success",
+  "actualStrictV2AssertionsPassed": 254,
+  "retainedOnlyV2ContractStep": true,
+  "retainedStepBytes": 548,
+  "retainedStepSha256": "9c95e8e28e4f53ca7c91c94a9e8dd5e7e60885cde79b1dad592923a84b0913c3",
+  "rawJobLogSha256": "330ac85844734839eae1f830a5573e06a58a20ce075a713cd5fb62f3f7930654",
+  "actualSourceInputs": {
+    "Tools/test-domain-workflow-test-platforms.ps1": {
+      "gitBlob": "2dc69e5c8316a2492c49b65e87d83b4cfb63147c",
+      "sha256": "00064559d1dd9b540bc0aa0e6b22f45065ef3f0e0fade6d4dbdfd133b8145d4d",
+      "bytes": 73900
+    },
+    ".github/workflows/domain-ci-v2.yml": {
+      "gitBlob": "a547d9148673118d758850c3c113d74959ee63a0",
+      "sha256": "3374b28aac7ae9468e24a7f437170972c204bf31fd6e5da5f817492b84f9b8f5",
+      "bytes": 39416
+    },
+    "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs": {
+      "gitBlob": "fd85fe258138570462bf319bda5b99e530a283b2",
+      "sha256": "fe26c1af19a052bb555d0453366490c30ad4ab2f9780ddc447c668784b3418d2",
+      "bytes": 39815
+    }
+  },
+  "unconditionallyExecutedIsolatedGateScenarios": [
+    "passed",
+    "failed",
+    "missing-count",
+    "missing-suite",
+    "missing-manifest",
+    "missing-units",
+    "legacy"
+  ],
+  "testMethod": "Actual workflow Bash body executed in controlled fixtures; asserts exit 0 only for passed. Separate assertions bind toolchain/registry/integration to actual isolated-gate success.",
+  "frozenRowCoveredByExecutableGateControl": "Isolated failure",
+  "gateFailureObservedByTest": "failed scenario UNIT_FAILURE_COUNT=1 returns nonzero",
+  "noClaimOfNewActualProvisionedFailureCampaign": true,
+  "ciLifecycleCSharpSourceAllRead": {
+    "bytes": 39815,
+    "lines": 639,
+    "sha256": "fe26c1af19a052bb555d0453366490c30ad4ab2f9780ddc447c668784b3418d2",
+    "individualCSharpExecutedNamesAuthenticated": false,
+    "limit": "Actual normal unfiltered Module suite passed, but no per-case C# report was retained here. Source-reading does not invent per-case pass evidence."
+  },
+  "earlierPartialInventoryRefinedNotOverwritten": "/home/administrator/.cache/hexalith/story-2-8/parent-builds44411-original-matrix-readonly-20261106/parent-original-six-row-matrix-partial-helper-evidence-inventory.json",
+  "remaining": "Fresh final public cohort native28+9, three sequential manual real-service lifecycle campaigns and final original-task/matrix audit.",
+  "wholeMatrixAccepted": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

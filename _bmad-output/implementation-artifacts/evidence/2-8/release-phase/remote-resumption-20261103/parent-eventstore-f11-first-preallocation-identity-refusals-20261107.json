@@ -1,0 +1,74 @@
+{
+  "utc": "2026-11-07T01:43:31.208423+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "source": "f11a18c9213e35e949d117fc7ed74bb1b0376432",
+  "normalCI": 42320674530,
+  "attempt": 1,
+  "job": 128244188589,
+  "phase": "Prepare module build before integration allocation",
+  "actualObservedDiagnostic": {
+    "status": "failed",
+    "outcome": {
+      "exitCode": "PrerequisiteUnavailable",
+      "phase": "Prerequisite",
+      "category": "PrerequisiteUnavailable",
+      "ruleId": "HXW011"
+    },
+    "diagnostics": [
+      {
+        "ruleId": "HXW011",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Platform identity 019f593544ad157036b7d12173ff89a16464f3cc has no local v<SemVer> release tag.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform",
+        "hint": "Fetch Platform tags, then retry.",
+        "source": null,
+        "location": null,
+        "row": null
+      },
+      {
+        "ruleId": "HXW009",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Builds catalog '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds' is staged beb85e497957fedc66854013efd2cc4bd216ecbc, checked out beb85e497957fedc66854013efd2cc4bd216ecbc; Platform 019f593544ad157036b7d12173ff89a16464f3cc pins 7c7c1b9646821174e013f6fffe75bb36ebf09c77.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds",
+        "hint": null,
+        "source": null,
+        "location": null,
+        "row": null
+      },
+      {
+        "ruleId": "HXW007",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "message": "Local Git inspection failed at '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds': show 7c7c1b9646821174e013f6fffe75bb36ebf09c77:Props/Directory.Packages.props.",
+        "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds",
+        "hint": null,
+        "source": null,
+        "location": null,
+        "row": null
+      }
+    ]
+  },
+  "locallySelectedPlatformSource": "019f593544ad157036b7d12173ff89a16464f3cc",
+  "locallySelectedBuildsSource": "beb85e497957fedc66854013efd2cc4bd216ecbc",
+  "thatPlatformPinnedBuildsSource": "7c7c1b9646821174e013f6fffe75bb36ebf09c77",
+  "scopeLimit": "The diagnostic proves absence of a tag in that hosted local checkout, not absence of a public tag globally. Catalog/source mismatch is explicit. No underlying runtime failure is inferred.",
+  "actualRetainedCleanupStatus": "not-allocated",
+  "selectedPreparationStep": {
+    "source": "f11a18c9213e35e949d117fc7ed74bb1b0376432",
+    "run": 42320674530,
+    "job": 128244188589,
+    "selectedStep": "ci _ build-and-test/10_Prepare module build.txt",
+    "rawArchiveDigestOnly": "fac78dab9f9d8fa73b200a0bbcd3beb86bf069ac72826c6614da55f2405b1771",
+    "retainedOnlyPreAllocationPreparationStep": true,
+    "selectedBytes": 3073,
+    "selectedSha256": "2bcce1ae1b288b69e6c3ddad73f5c7dc25c49600a1bc431e726755fc52108d1b",
+    "nativeAcceptance": false,
+    "storyAcceptance": false
+  },
+  "requiredNextAction": "Preserve first outcome and fresh newer EventStore source; after final genuine public producer/Platform cohort qualification, inspect necessary exact caller adoption and tag-fetch contract. No unchanged retry/manual tags/pin downgrade/source-built substitutes now.",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}

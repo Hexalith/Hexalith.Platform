@@ -1,0 +1,96 @@
+{
+  "utc": "2026-11-07T01:28:28.044329+00:00",
+  "repository": "Hexalith/Hexalith.Builds",
+  "source": "567604b616613ba429be0609636d805db776a709",
+  "ruleset": {
+    "id": 19196298,
+    "name": "Protect main",
+    "target": "branch",
+    "source_type": "Repository",
+    "source": "Hexalith/Hexalith.Builds",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~DEFAULT_BRANCH"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "pull_request",
+        "parameters": {
+          "required_approving_review_count": 0,
+          "dismiss_stale_reviews_on_push": false,
+          "required_reviewers": [],
+          "require_code_owner_review": false,
+          "dismissal_restriction": {
+            "enabled": false,
+            "allowed_actors": []
+          },
+          "require_last_push_approval": false,
+          "required_review_thread_resolution": false,
+          "require_extra_approval_for_unattributed_changes": true,
+          "allowed_merge_methods": [
+            "squash"
+          ]
+        }
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "Codacy Static Code Analysis",
+              "integration_id": 56611
+            },
+            {
+              "context": "SonarCloud Code Analysis",
+              "integration_id": 12526
+            },
+            {
+              "context": "commitlint / commitlint",
+              "integration_id": 15368
+            }
+          ]
+        }
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec44zM1FzgEk6Yo",
+    "created_at": "2026-07-20T09:31:13.745+02:00",
+    "updated_at": "2026-10-07T16:10:50.202+02:00",
+    "bypass_actors": [
+      {
+        "actor_id": 6775094,
+        "actor_type": "User",
+        "bypass_mode": "always"
+      }
+    ],
+    "current_user_can_bypass": "always",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Hexalith/Hexalith.Builds/rulesets/19196298"
+      },
+      "html": {
+        "href": "https://github.com/Hexalith/Hexalith.Builds/rules/19196298"
+      }
+    }
+  },
+  "catalogAuditContract": "generatedFromRevision binds a real ancestor whose committed raw catalog and tracked consumer blobs match. New catalog must retain its real origin commit C.",
+  "privateSourcePreparationAndPRChecksAuthorized": true,
+  "noNewBuildsPolicyOrMethodBypassAuthorization": true,
+  "parentPlan": "Prepare the minimal source change and real retained origin, independent review and CI first. If the squash-only rule remains, present the concrete merge boundary only after a fully reviewable passing PR; no policy mutation, bypass, fake origin, rebase/amend or assertion change now.",
+  "originalUnavailableReviewerBypassScope": "Platform ruleset24657106 only; do not transfer it to Builds19196298.",
+  "sourcePublicationComplete": true,
+  "nativeAcceptance": false,
+  "storyAcceptance": false
+}

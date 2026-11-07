@@ -1,0 +1,67 @@
+{
+  "utc": "2026-11-06T23:38:49.681665+00:00",
+  "scope": "Partial original frozen-matrix evidence inventory from actual existing Builds44411 source CI, not final matrix acceptance.",
+  "producerSource": "567604b616613ba429be0609636d805db776a709",
+  "sourceCiRun": 42249566014,
+  "unitPassed": 43,
+  "rows": [
+    {
+      "frozenScenario": "Isolated failure",
+      "actualPassedHelperCases": [],
+      "remainingOrLimit": "Hosted matrix must show isolated failure blocks provisioning; no receipt/tool unit control alone proves workflow gating.",
+      "rowFullyAccepted": false
+    },
+    {
+      "frozenScenario": "Integration success/failure",
+      "actualPassedHelperCases": [
+        "test_passing_execution_requires_verified_cleanup",
+        "test_execution_failure_preserved_and_finalized_after_partial_startup",
+        "test_cleanup_uses_exact_id_is_retryable_and_retains_only_safe_results"
+      ],
+      "remainingOrLimit": "Unit controls prove finalizer invocation, first outcome and exact cleanup identity. Actual attachment withdrawal before resource stop and zero owned leftovers remain hosted gates.",
+      "rowFullyAccepted": false
+    },
+    {
+      "frozenScenario": "Cancellation during startup/execution",
+      "actualPassedHelperCases": [
+        "test_constructor_time_cancellation_is_forwarded_after_child_assignment",
+        "test_real_helper_process_forwards_cancellation_and_finalizes_exact_receipt",
+        "test_cancellation_during_execution_runs_finalizer_and_preserves_cancel",
+        "test_actual_job_cancellation_reaches_exact_down_without_rewriting_first_result"
+      ],
+      "remainingOrLimit": "Actual separate startup and execution cancellation runs with ready-artifact-before-cancel proof remain required.",
+      "rowFullyAccepted": false
+    },
+    {
+      "frozenScenario": "Same-job/cross-job attachment",
+      "actualPassedHelperCases": [],
+      "remainingOrLimit": "Actual admission evidence is still required. A foreign-job cleanup refusal is deliberately not counted as an attachment-admission test.",
+      "rowFullyAccepted": false
+    },
+    {
+      "frozenScenario": "Cleanup failure or unknown discovery",
+      "actualPassedHelperCases": [
+        "test_unknown_discovery_or_any_owned_leftover_refuses_completion",
+        "test_cleanup_uses_exact_id_is_retryable_and_retains_only_safe_results",
+        "test_passing_execution_requires_verified_cleanup"
+      ],
+      "remainingOrLimit": "Unit controls cover unknown discovery, all six leftover forms, retry and refusal of a passing child without verified cleanup. Actual hosted cleanup remains required.",
+      "rowFullyAccepted": false
+    },
+    {
+      "frozenScenario": "Missing tool/suite/package preparation",
+      "actualPassedHelperCases": [
+        "test_missing_or_wrong_mode_suite_refuses_before_process",
+        "test_missing_package_preparation_refuses_before_process",
+        "test_preparation_binds_release_and_actual_package_mapping"
+      ],
+      "remainingOrLimit": "Suite and Release/package preparation unit controls pass. Missing-tool and no-legacy-fallback workflow/native evidence remain required.",
+      "rowFullyAccepted": false
+    }
+  ],
+  "wholeMatrixAccepted": false,
+  "manualCampaignDispatchesByThisParent": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}
