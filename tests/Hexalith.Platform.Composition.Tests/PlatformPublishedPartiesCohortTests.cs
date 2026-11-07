@@ -203,6 +203,26 @@ public sealed class PlatformPublishedPartiesCohortTests
     public void VersionCompatibilityPreservesEveryExactPurposeBoundary(string version, bool current, string cohort, bool accepted)
         => PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(version, current, cohort).ShouldBe(accepted);
 
+    /// <summary>An unproven, partial or mixed private purpose cannot select ordinary public authority, even before reading catalog data.</summary>
+    /// <param name="scope">Which private-purpose representation is present.</param>
+    [Theory]
+    [InlineData("primary")]
+    [InlineData("batch")]
+    [InlineData("both")]
+    public void PrivatePurposeCannotSelectOrdinaryPublicAuthority(string scope)
+    {
+        using PlatformPartiesProofFixture fixture = new(publishedDeclaration: true);
+        PlatformCompositionOptions options = fixture.Options;
+        Hexalith.Builds.Tooling.Runtime.ModuleTestSelection ordinary = options.RunPlan!.SelectedTest!;
+        Hexalith.Builds.Tooling.Runtime.ModuleTestSelection current = ordinary with { Name = PlatformCurrentOwnerProof.Profile };
+        Hexalith.Builds.Tooling.Runtime.CompositionRunPlan plan = options.RunPlan with
+        {
+            SelectedTest = scope == "batch" ? ordinary : current,
+            SelectedTests = scope == "primary" ? [ordinary] : scope == "batch" ? [ordinary, current] : [current],
+        };
+        PlatformPackageCatalogQualification.SelectCohort(options with { RunPlan = plan, PartiesRunProof = null }, fullParties: true).ShouldBeNull();
+    }
+
     private static string Body(string name, string? version = null)
     {
         string root = typeof(PlatformPublishedPartiesCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()

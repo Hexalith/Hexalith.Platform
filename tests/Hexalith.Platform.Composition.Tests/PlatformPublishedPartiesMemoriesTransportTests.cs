@@ -18,6 +18,10 @@ public sealed class PlatformPublishedPartiesMemoriesTransportTests
     {
         Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName).Count.ShouldBe(12);
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync().ConfigureAwait(true);
+        await fixture.PersistClaimStateAsync().ConfigureAwait(true);
+        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        CompositionProcessResult preflight = await fixture.RunPublishedValidationAsync(completeCatalog: true).ConfigureAwait(true);
+        preflight.ExitCode.ShouldBe(0);
         CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(fixture.Plan.DaprConfigPath)!);
         await File.WriteAllTextAsync(fixture.Plan.DaprConfigPath, CompositionDaprComponentRenderer.RenderConfiguration(fixture.Plan),
             TestContext.Current.CancellationToken).ConfigureAwait(true);

@@ -29,7 +29,7 @@ The M25 model uses its actual sidecar endpoint provider. Historical public cohor
 source/key/receipt/sealing checks remain; a private owner accepts only exact3.0.0 or3.1.0 catalog versions.
 The generic SDK/Tenants pair selector still refuses7.0.5, and private purposes grant no public or candidate authority.
 
-The current required union is409 cases, retaining all315 incoming cases and adding the measured public
+The current required union is412 cases, retaining all315 incoming cases and adding the measured public
 reader/version/ordinary-entry/signed-validation/catalog/model controls. The original349-case historical
 profile remains unchanged. Fresh same-code current/legacy qualification, five SDK gates, hosted source CI,
 real native execution and cleanup remain required; source preparation alone grants no acceptance.
