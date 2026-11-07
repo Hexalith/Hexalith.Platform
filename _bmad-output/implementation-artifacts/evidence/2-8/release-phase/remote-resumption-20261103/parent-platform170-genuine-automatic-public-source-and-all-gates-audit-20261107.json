@@ -1,0 +1,88 @@
+{
+  "utc": "2026-11-07T12:45:14.987073+00:00",
+  "source": "52bc7986170f268afaef6227d0519a1d662af256",
+  "tree": "f562aa0226ae3578771c8f0521857d37e179cc43",
+  "computedVersion": "1.7.0",
+  "tag": "v1.7.0",
+  "tagChain": [
+    {
+      "sha": "52bc7986170f268afaef6227d0519a1d662af256",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/52bc7986170f268afaef6227d0519a1d662af256"
+    }
+  ],
+  "releaseId": 437571384,
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.7.0",
+  "publishedAt": "2026-11-07T12:44:17Z",
+  "actualPublisherRun": 42373734291,
+  "attempt": 1,
+  "publisherJobs": [
+    {
+      "id": 128406967663,
+      "name": "verify",
+      "conclusion": "success"
+    },
+    {
+      "id": 128407052132,
+      "name": "publish",
+      "conclusion": "success"
+    }
+  ],
+  "qualifyingRuns": [
+    {
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "run": 42371632142,
+      "number": 106,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42371632142",
+      "jobs": [
+        {
+          "name": "Same changed source against the legacy public tuple",
+          "id": 128404681994
+        },
+        {
+          "name": "tuple",
+          "id": 128400789965
+        }
+      ]
+    },
+    {
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "run": 42371632124,
+      "number": 162,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42371632124",
+      "jobs": [
+        {
+          "name": "consumer-binding (3.130.0)",
+          "id": 128400790098
+        },
+        {
+          "name": "consumer-binding (3.130.1)",
+          "id": 128400790245
+        },
+        {
+          "name": "consumer-binding (3.130.2)",
+          "id": 128400790264
+        },
+        {
+          "name": "consumer-binding (3.132.1)",
+          "id": 128400790215
+        },
+        {
+          "name": "consumer-binding (4.1.0)",
+          "id": 128400790262
+        }
+      ]
+    }
+  ],
+  "publishedReceiptSha256": "40fde04f8d11f6ecc42c35062be8abc0ba978beac2e91b69335a08e16fcceb1c",
+  "earlyDeferralRun": 42371850045,
+  "bothRealMainSourceAuditsPassed": true,
+  "allRequiredPoliciesStillExact": true,
+  "parentManualTagOrReleaseWrites": 0,
+  "normalAutomaticSourcePublicationAuthenticated": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+}
