@@ -219,7 +219,7 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests"
       ],
-      "requiredCount": 31,
+      "requiredCount": 48,
       "purpose": "measured-public-parties-static-boundary"
     },
     {
@@ -230,6 +230,33 @@
       ],
       "requiredCount": 21,
       "purpose": "measured-public-parties-ordinary-entry-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests"
+      ],
+      "requiredCount": 1,
+      "purpose": "measured-public-parties-model-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
+      ],
+      "requiredCount": 22,
+      "purpose": "measured-public-parties-signed-validation-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests"
+      ],
+      "requiredCount": 2,
+      "purpose": "measured-public-parties-signed-catalog-boundary"
     }
   ],
   "historicalPublicControls": {

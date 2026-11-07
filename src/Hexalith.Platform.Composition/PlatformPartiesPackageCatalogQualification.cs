@@ -120,10 +120,19 @@ internal static class PlatformPartiesPackageCatalogQualification
         }).ToArray();
     }
 
-    private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort) => new[]
-        { ("memories", current || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? "3.0.25" : "3.0.23"),
-          ("parties", cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? "3.1.0" : "3.0.0") }
-        .All(item => PlatformServerBindings.Version(options, item.Item1, "full-Parties qualification") == item.Item2);
+    /// <summary>Retains exact historical and public versions and only the two measured private source-owner catalog versions.</summary>
+    internal static bool MatchesPartiesVersion(string version, bool current, string cohort) => (current, cohort, version) switch
+    {
+        (true, PublishedCatalogArtifactCohort.CurrentOwnerName, "3.0.0" or "3.1.0") => true,
+        (false, PublishedCatalogArtifactCohort.PublishedPartiesName, "3.1.0") => true,
+        (false, PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName, "3.0.0") => true,
+        _ => false,
+    };
+
+    private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort)
+        => PlatformServerBindings.Version(options, "memories", "full-Parties qualification")
+                == (current || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? "3.0.25" : "3.0.23")
+            && MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "full-Parties qualification"), current, cohort);
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)
     {

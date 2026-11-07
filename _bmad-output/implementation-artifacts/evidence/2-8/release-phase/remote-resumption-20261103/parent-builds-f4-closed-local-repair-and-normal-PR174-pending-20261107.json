@@ -1,0 +1,145 @@
+{
+  "utc": "2026-11-07T08:56:46.091378+00:00",
+  "source": "f4e5952881b426dcab4389ded266a422e58d8c7a",
+  "base": "053a02bfd8743279e7dd88065482dc132969e5c7",
+  "tree": "451359f9a396968c2f8dcb4b088349ad387ce686",
+  "actualNormalPR": 174,
+  "url": "https://github.com/Hexalith/Hexalith.Builds/pull/174",
+  "actualNormalCiRun": 42357190029,
+  "attempt": 1,
+  "actualTestedMerge": "f70ad6405b353e548dc911cb3368a8faf0d6a19c",
+  "actualMergeParents": [
+    "053a02bfd8743279e7dd88065482dc132969e5c7",
+    "f4e5952881b426dcab4389ded266a422e58d8c7a"
+  ],
+  "sourceEquivalentToReviewedTree": true,
+  "completeFourPathProposal": {
+    "bytes": 17917,
+    "lines": 359,
+    "sha256": "1bf213c812fd0375f691a059b03aa9e80252379291144bbe63710efe2c06cfc9"
+  },
+  "original27AndNew9ActualCasesAllPass": true,
+  "all3227SourceInputsAnd403OwningCRLFConversionsVerified": true,
+  "all438CompiledOutputBodiesVerified": true,
+  "boundedCausalObservation": {
+    "source": "053a02bfd8743279e7dd88065482dc132969e5c7",
+    "sequential": 64,
+    "concurrent": 1536,
+    "concurrency": 12,
+    "childSeconds": 5,
+    "lifetimeSeconds": 90,
+    "beforeConcurrentNative26Refusals": 26,
+    "matchedAfterRefusals": 0,
+    "all1600BodyPairsExact": true,
+    "originalHostedCauseEstablished": false
+  },
+  "closedRoot": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/builds-prerequisite-probe-first-main-failure-20261107",
+    "indexedFiles": 28101,
+    "indexedBytes": 1885901438,
+    "declaredLinks": 15,
+    "nonFileNodes": 0,
+    "anchors": 33,
+    "indexSha256": "2001c0c2320486a933ad21ffe4d8a2a38850d54b8771e4c27f46893338662af8",
+    "checkpointSha256": "0ea3b1416a583ec24dcb5900971ccdd59109e1f8e430f81ffa5690bc9d1fca93",
+    "reportSha256": "97b79296794621c52a5545531a056d70016d2da91e2da2b585ba34b0e1c876a7"
+  },
+  "aggregateClosedChain": {
+    "files": 1064128,
+    "bytes": 51429278142,
+    "links": 229
+  },
+  "firstParentReaderRefusals": "Archived C# -text exception corrected using actual Git attributes; owning commitlint requires a Git worktree CWD. First readers/refusals retained. Same source/control evidence re-read; no source/test/CI retry or assertion waiver.",
+  "anchors": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-preliminary-complete-four-path-f4-source-read.json",
+      "bytes": 1086,
+      "sha256": "9bf261b1544565a9484eb43ea9997de5a9cf6e2c181915a1385187b015f7c827"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-final-f4-all3227-inputs-and-actual36-local-independent-audit.json",
+      "bytes": 1593176,
+      "sha256": "c26586b90aeca57fc26f4ca6a3fa4ba52032431c4acac3289b03d16ea502e1a1"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-independent1600-before-and-after-causal-observation-audit.json",
+      "bytes": 8186,
+      "sha256": "9043abc01c2150a5d5a4db891ff1cd0cae6292b50fda97df97c5cc7344710264"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-f4-closed-root-census-and-all-anchors-independent-audit.json",
+      "bytes": 1087,
+      "sha256": "000923979ad9275f3db9d7f4dee4644860668e77a134d54d5b18ae39fa8a8b2c"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-actual-new-probe-repair-PR-created.json",
+      "bytes": 903,
+      "sha256": "1168c1d5ca964bb8f0382fe6884dfb03f39c744772a633e62596d1e028ec452f"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/parent-actual-PR174-temporary-merge-and-normal-CI-identity.json",
+      "bytes": 633,
+      "sha256": "45ca5bb402331c325ed5db30943d5a33c367f5208812de76fb3dfab7360ea61b"
+    }
+  ],
+  "laterIncomingPlatformMain": "d17f8743106ea6f0e14cce54e2d5446cec8048d7",
+  "all35OriginalRequestedPushFileBodiesPreservedInIncomingMain": true,
+  "sevenExternalReferenceUpdatesPreserved": [
+    {
+      "path": "references/Hexalith.EventStore",
+      "old": "10a335307e417ba339afeda6ad3e2a40bfe1f092",
+      "incomingPublishedMainPin": "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1",
+      "actualCheckout": "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.FrontComposer",
+      "old": "6059af7e68571af18846de831c8fe5884896425a",
+      "incomingPublishedMainPin": "e972d0f06a8eec3446db0b2270fdb14eef4c1186",
+      "actualCheckout": "e972d0f06a8eec3446db0b2270fdb14eef4c1186",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.McpCli",
+      "old": "a8792ab1c4843a102988f1ccb49fde5df01fd382",
+      "incomingPublishedMainPin": "fa7c51601041ee6cf0d2f9d4613fb405758f2f7c",
+      "actualCheckout": "fa7c51601041ee6cf0d2f9d4613fb405758f2f7c",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "old": "246157a7ff8e2dcd8d356c833a77a02514490d2f",
+      "incomingPublishedMainPin": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+      "actualCheckout": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.Parties",
+      "old": "9369516caeb1ef09da565289a3568a5906cc27ab",
+      "incomingPublishedMainPin": "8f56474c1032bdf96ab5042df8c606c99cf36b65",
+      "actualCheckout": "8f56474c1032bdf96ab5042df8c606c99cf36b65",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.Projects",
+      "old": "c12045db6e72095bc5ac01d6adce7f7783eb8f3c",
+      "incomingPublishedMainPin": "9ae0571529cb4a9f3ad9750c8b834e6284d4f76b",
+      "actualCheckout": "9ae0571529cb4a9f3ad9750c8b834e6284d4f76b",
+      "clean": true
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "old": "cf36618a2c27b5722a1ff811cfbbce4528c3c105",
+      "incomingPublishedMainPin": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+      "actualCheckout": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+      "clean": true
+    }
+  ],
+  "PlatformQualificationPairStillNeedsFreshRealLAndM": "PR31 legacy source guard actually refused the added documents; original349 did not run. Do not whitelist documents, relabel oldL, or cut duplicate bookkeeping-only pair. Fold latest operator records and all genuine incoming references into final Platform pair after new producer publication.",
+  "mainMergePerformedForPR174": false,
+  "newPolicyBypassNeeded": false,
+  "unchangedCIRepeated": false,
+  "publicationDispatched": false,
+  "nativeAcceptance": false,
+  "wholeStoryAcceptance": false
+}

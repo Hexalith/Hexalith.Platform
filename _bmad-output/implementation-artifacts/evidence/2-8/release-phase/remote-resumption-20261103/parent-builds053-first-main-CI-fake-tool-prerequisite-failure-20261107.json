@@ -1,0 +1,207 @@
+{
+  "utc": "2026-11-07T08:11:32.481601+00:00",
+  "source": "053a02bfd8743279e7dd88065482dc132969e5c7",
+  "run": 42353002509,
+  "attempt": 1,
+  "event": "push",
+  "headBranch": "main",
+  "conclusion": "failure",
+  "allActualJobs": [
+    {
+      "id": 128344950205,
+      "name": "Build and package contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128344950302,
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128344950312,
+      "name": "Python contract tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128344950391,
+      "name": ".NET tests",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128344950429,
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128344951187,
+      "name": "Dependency review",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 128348460394,
+      "name": "Build and test",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "failedCase": "Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.WrongRuntimeBinaryVersionIsUnavailableAsync",
+  "actualFailedCaseAndAssertion": [
+    {
+      "line": 438,
+      "text": "2026-11-07T07:55:34.6193118Z failed Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.WrongRuntimeBinaryVersionIsUnavailableAsync (246ms)"
+    },
+    {
+      "line": 439,
+      "text": "2026-11-07T07:55:34.6219651Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)"
+    },
+    {
+      "line": 440,
+      "text": "2026-11-07T07:55:34.6230981Z   Shouldly.ShouldAssertException : [\"HXR010\", \"HXR013\"]"
+    },
+    {
+      "line": 441,
+      "text": "2026-11-07T07:55:34.6248003Z       should be"
+    },
+    {
+      "line": 442,
+      "text": "2026-11-07T07:55:34.6277999Z   [\"HXR013\"]"
+    },
+    {
+      "line": 443,
+      "text": "2026-11-07T07:55:34.6303227Z       but was not (case sensitive comparison)"
+    },
+    {
+      "line": 444,
+      "text": "2026-11-07T07:55:34.6353661Z       difference"
+    },
+    {
+      "line": 445,
+      "text": "2026-11-07T07:55:34.6354658Z   [*\"HXR010\"*, *\"HXR013\"*]"
+    },
+    {
+      "line": 446,
+      "text": "2026-11-07T07:55:34.6357597Z     at Hexalith.Builds.ModuleTool.Tests.CompositionPrerequisiteProbeTests.WrongRuntimeBinaryVersionIsUnavailableAsync() in /_/test/Hexalith.Builds.Module.Tests/CompositionPrerequisiteProbeTests.cs:112"
+    },
+    {
+      "line": 447,
+      "text": "2026-11-07T07:55:34.6359909Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()"
+    },
+    {
+      "line": 448,
+      "text": "2026-11-07T07:55:34.6369209Z     at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)"
+    },
+    {
+      "line": 449,
+      "text": "2026-11-07T07:55:34.6398751Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)"
+    },
+    {
+      "line": 450,
+      "text": "2026-11-07T07:55:34.6416339Z     --- End of stack trace from previous location ---"
+    },
+    {
+      "line": 451,
+      "text": "2026-11-07T07:55:34.6440977Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()"
+    },
+    {
+      "line": 452,
+      "text": "2026-11-07T07:55:34.6473699Z     at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)"
+    },
+    {
+      "line": 453,
+      "text": "2026-11-07T07:55:34.6487775Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)"
+    }
+  ],
+  "observedDiagnostics": [
+    "HXR010",
+    "HXR013"
+  ],
+  "expectedExactDiagnostics": [
+    "HXR013"
+  ],
+  "moduleProjectCounts": {
+    "total": 2839,
+    "passed": 2833,
+    "failed": 1,
+    "skipped": 5
+  },
+  "laterProjectsActuallyNotRun": [
+    "Hexalith.Builds.Evidence.Tests",
+    "Hexalith.Builds.Tooling.IntegrationTests"
+  ],
+  "diagnosticMeaning": {
+    "HXR010": "Docker process did not start, exited nonzero or returned blank stdout; actual first-run process result was not retained by the generic probe diagnostic.",
+    "HXR013": "isolated Dapr runtime binaries do not report the selected runtime version; the fake scheduler is intentionally 1.18.4."
+  },
+  "cause": "unproved; do not infer transient launch/native error, race or production defect from the generic HXR010 alone",
+  "independentlySuccessfulContractCarrier": {
+    "primaryArtifact": {
+      "id": 13566947599,
+      "node_id": "MDg6QXJ0aWZhY3QxMzU2Njk0NzU5OQ==",
+      "name": "g4-ci-qualification-053a02bfd8743279e7dd88065482dc132969e5c7-42353002509-1",
+      "size_in_bytes": 108617,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13566947599",
+      "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13566947599/zip",
+      "expired": false,
+      "digest": "sha256:7c43c42dbf43f2efd76863b9232f58fe664a8035ba7ead07cb942c1e0521837f",
+      "created_at": "2026-11-07T08:07:48Z",
+      "updated_at": "2026-11-07T08:07:48Z",
+      "expires_at": "2026-12-07T07:51:26Z",
+      "workflow_run": {
+        "id": 42353002509,
+        "repository_id": 952945989,
+        "head_repository_id": 952945989,
+        "head_branch": "main",
+        "head_sha": "053a02bfd8743279e7dd88065482dc132969e5c7"
+      }
+    },
+    "all55PayloadsVerified": true,
+    "all45NegativeOutputsComparedWithCommittedExpectations": true,
+    "all303VisibleFixturesPlusHiddenTrackedFixtureVerified": true,
+    "diagnosticVersion": "0.0.0-ci.738",
+    "sourceValidation": "skipped",
+    "releaseEligible": false,
+    "actualSourceCiFailed": true,
+    "neverSuccessfulCiProof": true
+  },
+  "anchors": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/approved-PR173-normal-merge-20261107/final-main-CI-run.json",
+      "bytes": 14514,
+      "sha256": "6244ab1d5f49070ec27de172e0dbf0d87116312e1cadecf278d39bca9c6976b9"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/approved-PR173-normal-merge-20261107/final-main-CI-jobs.json",
+      "bytes": 31729,
+      "sha256": "e8351685e8387fe06703ce92fe50f8325667b4bafca5565436e6d231b41c4cff"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/approved-PR173-normal-merge-20261107/parent-first-main-CI-exact-failed-case-and-assertion.json",
+      "bytes": 3044,
+      "sha256": "3b0da2fc1a231adec9b66d69328d8f72cc4bf8bed2e41d273bc2b426fa78da51"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/approved-PR173-normal-merge-20261107/parent-first-actual-main-CI-dotnet-failure-bounded-diagnostics.json",
+      "bytes": 9065,
+      "sha256": "be35294dea60a8db022e053b7bf9881b26c239b789a4de7cecc391502e767595"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-parties310-hosted-20261107/approved-PR173-normal-merge-20261107/parent-actual-first-failed-main-053a-CI-primary-artifact-independent-audit.json",
+      "bytes": 142231,
+      "sha256": "c25d0e0c1ff782fc13457fe919a17b12571ddfec8a7b82a617f6069042e73be8"
+    }
+  ],
+  "ciRetryPerformed": false,
+  "normalReleaseWorkflowDispatched": false,
+  "manualTagOrReleaseWrite": false,
+  "rulesOrAcceptanceGuardsChanged": false,
+  "approvedPR173MergeStillValidAndC3Retained": true,
+  "workspacePushStillCompleteAtRecordedSnapshot": "Platform PR31/headbdc368b9d5c4720028947e3d3be94e95e184744d; new original-Story diagnostic work follows",
+  "nativeAcceptance": false,
+  "wholeStoryAcceptance": false
+}

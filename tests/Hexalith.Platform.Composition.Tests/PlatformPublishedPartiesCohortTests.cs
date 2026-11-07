@@ -179,6 +179,30 @@ public sealed class PlatformPublishedPartiesCohortTests
             : "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed");
     }
 
+    /// <summary>Private source owners retain exact old/new catalog versions without acquiring public or unknown purpose authority.</summary>
+    /// <param name="version">The catalog version.</param><param name="current">Whether the independently proven private purpose is selected.</param>
+    /// <param name="cohort">The exact reader authority.</param><param name="accepted">The finite expected version compatibility.</param>
+    [Theory]
+    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.PublishedPartiesName, true)]
+    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.FullPartiesName, true)]
+    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.CurrentFullPartiesName, true)]
+    [InlineData("3.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, true)]
+    [InlineData("3.1.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, true)]
+    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.PublishedPartiesName, false)]
+    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.FullPartiesName, false)]
+    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.CurrentFullPartiesName, false)]
+    [InlineData("3.1.0+metadata", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    [InlineData("3.1.1", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    [InlineData("4.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    [InlineData("unknown", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    [InlineData("3.1.0", true, PublishedCatalogArtifactCohort.PublishedPartiesName, false)]
+    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    [InlineData("3.0.0", false, "", false)]
+    [InlineData("3.0.0", false, "unknown", false)]
+    [InlineData("3.1.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
+    public void VersionCompatibilityPreservesEveryExactPurposeBoundary(string version, bool current, string cohort, bool accepted)
+        => PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(version, current, cohort).ShouldBe(accepted);
+
     private static string Body(string name, string? version = null)
     {
         string root = typeof(PlatformPublishedPartiesCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()

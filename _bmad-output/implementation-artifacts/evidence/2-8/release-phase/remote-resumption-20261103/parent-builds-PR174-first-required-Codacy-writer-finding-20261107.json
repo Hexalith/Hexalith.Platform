@@ -1,0 +1,42 @@
+{
+  "utc": "2026-11-07T09:02:39.929205+00:00",
+  "source": "f4e5952881b426dcab4389ded266a422e58d8c7a",
+  "pr": 174,
+  "sourceCiRun": 42357190029,
+  "attempt": 1,
+  "actualRequiredCheck": {
+    "id": 128358173447,
+    "appId": 56611,
+    "name": "Codacy Static Code Analysis",
+    "conclusion": "action_required",
+    "detailsUrl": "https://app.codacy.com/gh/Hexalith/Hexalith.Builds/pull-requests/174",
+    "output": {
+      "title": "1 new issue (0 max.) of at least minor severity.",
+      "summary": "\n![Codacy](https://app.codacy.com/assets/images/favicon.png) Here is an overview of what got changed by this pull request:\n\n\n```diff\n\nIssues\n======\n+ Solved 1\n- Added 1\n           \n\nComplexity increasing per file\n==============================\n- src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPrerequisiteProbe.cs  6\n- test/Hexalith.Builds.Module.Tests/CompositionPrerequisiteProbeTests.cs  12\n- test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs  4\n- test/Hexalith.Builds.Module.Tests/CompositionTestFilesTests.cs  5\n         \n\nClones added\n============\n- src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionPrerequisiteProbe.cs  2\n- test/Hexalith.Builds.Module.Tests/CompositionPrerequisiteProbeTests.cs  6\n         \n```\n\n\nSee the complete overview on [Codacy](https://app.codacy.com/gh/Hexalith/Hexalith.Builds/pull-requests/174)\n        ",
+      "text": null,
+      "annotations_count": 1,
+      "annotations_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/128358173447/annotations"
+    }
+  },
+  "actualAnnotations": [
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs",
+      "blob_href": "https://github.com/Hexalith/Hexalith.Builds/blob/f4e5952881b426dcab4389ded266a422e58d8c7a/test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs",
+      "start_line": 120,
+      "start_column": null,
+      "end_line": 120,
+      "end_column": null,
+      "annotation_level": "warning",
+      "title": "test/Hexalith.Builds.Module.Tests/CompositionTestFiles.cs#L120",
+      "message": "String argument root is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName.",
+      "raw_details": null
+    }
+  ],
+  "scopeLimit": "Existing private test-fixture path writer, not an external input boundary. Preserve the intended arbitrary nested private fixture path and original Windows writer behavior. Do not apply basename stripping blindly or ignore/suppress/dismiss/bypass a required finding. Resolve through minimal appropriate source refinement with actual analysis.",
+  "allFourPathF4SourceAnd36LocalControlsRemainAuthenticated": true,
+  "sourceChangedSinceF4": false,
+  "unchangedCiRetryPerformed": false,
+  "mergeOrPublicationPerformed": false,
+  "nativeAcceptance": false,
+  "wholeStoryAcceptance": false
+}

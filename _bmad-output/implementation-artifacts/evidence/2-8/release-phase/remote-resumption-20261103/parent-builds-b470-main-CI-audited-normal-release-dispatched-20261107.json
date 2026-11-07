@@ -1,0 +1,51 @@
+{
+  "utc": "2026-11-07T10:00:07.918594+00:00",
+  "source": "b4703ec2247321f867f14cd9caca43fa00190feb",
+  "mainCi": {
+    "run": 42360911358,
+    "attempt": 1,
+    "event": "push",
+    "conclusion": "success",
+    "sixValidationJobsActuallyPassed": true,
+    "seventhDeclaredDependencyReview": "skipped",
+    "actualDotnetPassed": 3035,
+    "failed": 0,
+    "existingSkipped": 17,
+    "primaryArtifactAudit": {
+      "bytes": 142015,
+      "sha256": "c56a557569dcacf011e0005699793f7b07167736248634c1b4441875b5d9a5bd"
+    },
+    "actualDotnetAudit": {
+      "bytes": 7465,
+      "sha256": "21eea394d81db3309d6a562ab4a13148b40bb4e8ddae62af46709bfd295656f2"
+    },
+    "payloadsVerified": 55,
+    "visibleFixturesVerified": 303,
+    "hiddenTrackedFixtureSeparatelyVerified": 1,
+    "diagnosticVersion": "0.0.0-ci.741",
+    "releaseEligible": false
+  },
+  "normalReleaseDispatch": {
+    "utc": "2026-11-07T09:59:45.497470+00:00",
+    "source": "b4703ec2247321f867f14cd9caca43fa00190feb",
+    "exactMainCiRun": 42360911358,
+    "exactMainCiAttempt": 1,
+    "allSixMainValidationJobsPassed": true,
+    "independentPrimaryArtifactAuditPassed": true,
+    "normalExistingReleaseDispatchPerformed": true,
+    "releaseRun": 42362019086,
+    "releaseAttempt": 1,
+    "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42362019086",
+    "computedVersion": "pending actual normal semantic-release result; no override or prediction",
+    "productionReviewerAction": "only ordinary existing authorized reviewer, if genuinely pending; no bypass or environment mutation",
+    "manualTagOrReleaseCreation": false,
+    "nativeAcceptance": false,
+    "wholeStoryAcceptance": false
+  },
+  "computedVersion": "pending actual publisher result",
+  "phaseAIndependentPlatformRootRemainsActive": true,
+  "phaseBActualProducerBindingAllowed": false,
+  "manualTagOrReleaseWrite": false,
+  "nativeAcceptance": false,
+  "wholeStoryAcceptance": false
+}
