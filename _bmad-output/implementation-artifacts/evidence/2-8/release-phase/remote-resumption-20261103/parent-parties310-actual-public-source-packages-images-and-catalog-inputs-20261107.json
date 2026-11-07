@@ -1,0 +1,929 @@
+{
+  "utc": "2026-11-07T01:28:28.044001+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "version": "3.1.0",
+  "actualPublicSource": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+  "actualRelease": 437088011,
+  "actualNormalReleaseRun": 42296293715,
+  "actualNormalSourceCI": 42292809228,
+  "allNineNormalSourceCIJobsPassed": true,
+  "actualPublisherSource": "11a3a79cfac4bba9548c6364a17a01ee9b561370",
+  "publisherHelpers": [
+    {
+      "path": "Github/publish-containers/oci_registry_validator.py",
+      "gitBlob": "999ecce2c564f892c8d61109a10f307847265e2d",
+      "sha256": "1913f75bdf39c494c5723bca5c04fcb2e6dc0474ad2d86c22e63aae96b9e850c"
+    },
+    {
+      "path": "Github/publish-containers/publication_preflight.py",
+      "gitBlob": "5ce39f7c33f0c89c009c20f7fd23ad52e2897500",
+      "sha256": "cfa1fd9747512e3a77b40ab2f9b02db0c5f7583609c190ffa127788ebb106a25"
+    },
+    {
+      "path": "Github/publish-containers/publish-containers.sh",
+      "gitBlob": "155966d9833110346878fc85cc20ce371184e108",
+      "sha256": "3f8b05e17cd0756cef23f07e2efb992ee76d7d2f59b9f1e1179e3da5d684441d"
+    },
+    {
+      "path": "Github/publish-containers/smoke-container-platforms.sh",
+      "gitBlob": "614ac5184c20fe46bf20d3cb460f2ee3a1b7a62c",
+      "sha256": "f11865658a24ecea906da087d8446c7f631dc5a9328e294676534d590ef0e89e"
+    },
+    {
+      "path": "Github/publish-containers/smoke_container_platforms.py",
+      "gitBlob": "973d86ef979999ceeef178321b47ce14db09b6ae",
+      "sha256": "7f1161d6f477c77ddf6a1e2f381df03451168565dd8cabc28010ab23db443491"
+    }
+  ],
+  "all11ActualNormallySignedPublicPackages": [
+    {
+      "id": "Hexalith.Parties.Contracts",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "2eaf319ea5ea53418435bb6b91096ff3baf23713fb109f99165c6cdedbf51a3d",
+      "signedBytes": 139134,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656155,
+      "unsignedSha256": "8bcc437a8b8166b505d866a1c38ccc5c4a97a2e1f71a9b6cf40b5f50cb18c2bd",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "7d46c4fa4b247a27f9acef782857d802b17a4f16d7a3a4ffb99f8df027671780",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "f3928604cc7b9bb4af3d156014ad0a7f8b84f3f61d738051f75f4aa4cac2a1ed",
+        "Hexalith.Parties.Contracts.nuspec": "e18e3f68542771b13a7eabdbd7618d0c0425ff2c0a70dd23e4d2e46cf72b04d6",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Contracts.dll": "99230b764de6769a803702170c174f9dbef9b0b5b0c2931b07e85045478cd654",
+        "lib/net10.0/Hexalith.Parties.Contracts.xml": "8811f162396eee4d3ae114c6113b634b812c8ee7920b526f9654a707184f8f40",
+        "[Content_Types].xml": "70b483c5066b0f062f2102cd8f0c4b2fde9e919b5a9204689dd67e64b0cc518e",
+        "package/services/metadata/core-properties/nuget.psmdcp": "7b7984eb18f1bad6c54071b5c734db75f91e487362626affec9290d475f4e939",
+        ".signature.p7s": "7bd33fa7f8fe63ffb87ec60f3573baa88dd073fb894c3bf11d9810795fa1d66f"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Client",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "78c2dd60992e093a670217e03747b612a2734100f62a2ef322d0270720f88522",
+      "signedBytes": 64282,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718655929,
+      "unsignedSha256": "35172ae7c6bbbeb95f97cfa1432b520e71fd15108a362bea766c5c47d94a4d69",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "a6ba1b992855f8bf8dd3294d96d22448e28b695738392941a6eef48605f5f76b",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "f1bd3a86bc9ad40971d8100aa87608a63968a16c4ad5105cf41bdb2bacb302fe",
+        "Hexalith.Parties.Client.nuspec": "a92f68d785734d2ffe165b5bce42fdedb8241c90db851a8564fa5fcf70e25099",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Client.dll": "379bd77754b4469fa7057d9f62a5df915359425e752d6a03e70ae247fca92c75",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "140887865f3579a28cab8a923d06dd5d29f4a610fefe1ea91170b1428ce18cde",
+        ".signature.p7s": "3674a169e6e5663efebf19c7b8d24b1f36988952198abf77bd2ab02fcfa11cc1"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.AdminPortal",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "6bbba169f1ecf1d5015fe78996a2c74fb15575c6defc1a60938cba241fd6f5a3",
+      "signedBytes": 153960,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718655970,
+      "unsignedSha256": "961fdae78492119eda34231d63e5112f43094d96284901743d09670691a5c566",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "6c1232d9a005b6f7ac823bafb081e9071efb95c60898f2a6483953cf45f94e1a",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "bf4c8a2c69c6a2f6e96fe89f8e9394a2079fe4030c7278950d0d527045126041",
+        "Hexalith.Parties.AdminPortal.nuspec": "843d625a2d64c3c4f4e9d03223426c750bb292185e0bef4244d945e70885379e",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "build/Hexalith.Parties.AdminPortal.props": "01abcf003fb124a7d214a8898c2932c11b9aeaf0a8ecbd16bbca184f5d4b859b",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props": "c2203d26f0603a05bc58cefc503f1fcff28644d1bcb989bb2141affab0ebbf64",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props": "7eef6e84968d1665eaa2b5f46f0d5688f051c4aa9d032e4c3a9e6d5c224072ee",
+        "buildMultiTargeting/Hexalith.Parties.AdminPortal.props": "fb165e7e57e725b7c5731590c5e06b1003a19830171a2ef618335b23140e03d9",
+        "buildTransitive/Hexalith.Parties.AdminPortal.props": "3996f133d62ecee2723a79fc525b3397af2409cee41d2a9e0d5fd4d0c2e1a6fd",
+        "lib/net10.0/Hexalith.Parties.AdminPortal.dll": "03c91bc6e147e63e9b25640e403fe0e0cc91fc25ab6838b80787c343e232bf43",
+        "staticwebassets/Hexalith.Parties.AdminPortal.vx2qkx16jd.bundle.scp.css": "63d95d64f0a07b2c592d467e3467822ac00ad29ac223ebe5fbb0e9983f891391",
+        "staticwebassets/party-form-picker.js": "21ce56e4de2752128ded1c8dec0bb16fe20f768da2970fc8e9e24ad1ce9763c6",
+        "staticwebassets/portal-dropdowns.js": "c99c1731a147f7df6fbf23b6d4fbf3ee197f8a398830fc1de9fbc0d31ad8a461",
+        "[Content_Types].xml": "9a100590f3e6ec4a51bab7fb5745e768ca4e408e48d2cc8fcda4a3e0c919decb",
+        "package/services/metadata/core-properties/nuget.psmdcp": "786a23ace49c001ef276d23d024b7c8d527c75d85c42ddf072ce2442539cfa78",
+        ".signature.p7s": "4cc1994ca57cc5a3e01544f818e2017b56878469a6bb29f257e1bddb9d66f229"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.ConsumerPortal",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "2d384f2898efe805a8acd97b83ad27870b75ed48528e77f914c9ed420b52878f",
+      "signedBytes": 86656,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656073,
+      "unsignedSha256": "dce5085d489336b43909fb2f41d23c8facf728546d4d7755fd037ab1cda3ca6e",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "61405743608d9c215d5aad7563fd48f6a270431cb55cf2a085007638d6623aff",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "aa2a940da552510463aa4d46e8426b57e2bd9c54293362058e21397969ca7b76",
+        "Hexalith.Parties.ConsumerPortal.nuspec": "ec644425165bc6983aea98bd55314a4cb8e1496a5e3f06a494a1cc33ebdc93d0",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "build/Hexalith.Parties.ConsumerPortal.props": "01abcf003fb124a7d214a8898c2932c11b9aeaf0a8ecbd16bbca184f5d4b859b",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props": "31b9c6812847782bf930b47d2b2bd3836d38596f3696ce88042a784a24bfd399",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props": "df4a1773b3ba8ab28fd816cabd395d3f3b9ea0b5608b73296b77f25a59a14daa",
+        "buildMultiTargeting/Hexalith.Parties.ConsumerPortal.props": "2d176746ba7ccb3bd0ea2cb760892dd2939ba5e2b81a90f68b5e1c0c0bf52f3e",
+        "buildTransitive/Hexalith.Parties.ConsumerPortal.props": "a4108677d936d586a321cd6baf04b1a391460a48054b171581cee5b55cb460e2",
+        "lib/net10.0/Hexalith.Parties.ConsumerPortal.dll": "e466ab0069e3e150be1d15e910e74b5aae000010a3473d02897168d8e1f21237",
+        "staticwebassets/Hexalith.Parties.ConsumerPortal.a8hxkjz0ca.bundle.scp.css": "7ac5e5de96a029c71f822df84f4bc7670871e10aa08ad4c5b9f4cd594918f5bc",
+        "[Content_Types].xml": "ef48754eda1478c18ac5185f4db3311e19a4dd4ca263139b91c1f8a43f6d5096",
+        "package/services/metadata/core-properties/nuget.psmdcp": "cca323fee7b449c13b6c4bfc50da8162fb74d6c0285530ec741a3fb86123cbf9",
+        ".signature.p7s": "d12e772a72e6f3bf561308ac5194e5508e4a05d21d8539ca27e49425bde5f280"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Picker",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "4aea46c1efc140ff046c8f18a5e47c758339245199dc8df487ffe28879178324",
+      "signedBytes": 61501,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656120,
+      "unsignedSha256": "3c3fba84a7e9ee8f3be8c0570bc0d4bbc1ab25da83c5cb4900c905086da02ee2",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "2cc79567328ed63c1e2ef9886b6d339ea7014bfd2e1afb5a7ac85026fab5dfc4",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "1c8128025c322a8d10d040ee0a0a2210810655bc2c801ecd3916c8e0427b8dc0",
+        "Hexalith.Parties.Picker.nuspec": "b6654b03de8ff9e710d685fb0b16547fa0cf3ed91251a6b362d83bdfa8b2b1ec",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "build/Hexalith.Parties.Picker.props": "01abcf003fb124a7d214a8898c2932c11b9aeaf0a8ecbd16bbca184f5d4b859b",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props": "92572403f52ffc7c9f73cbb02807e16de2aa7f940f9225d908dcc70762e3cb97",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props": "dcb3ebad8bd0f8ef1af0f70043c6914517a078f434ee56c34f3c8d7e945052d3",
+        "buildMultiTargeting/Hexalith.Parties.Picker.props": "ebcf105eed2a3cc8ea32bb2ba6c4a751650d413a7f4978ff76dd1f14824060f4",
+        "buildTransitive/Hexalith.Parties.Picker.props": "500e592eb919e71bc3e90849ca34346d1b824cc13bea26a79b2f4048010a4254",
+        "lib/net10.0/Hexalith.Parties.Picker.dll": "d5bb5b48188115e1fb8c3639d5787da97905cb2f91eccf425db9e800138ad127",
+        "staticwebassets/Hexalith.Parties.Picker.d9xtguv0by.bundle.scp.css": "a185640c36414b763feb2d4cb5acb341b1d67a1462663281e11e878071750b07",
+        "staticwebassets/hexalith-parties-picker.js": "ba901cba459ad3b5372836d8202d1d21f4ffb4ff7fa089645eaee1a91c2c6486",
+        "[Content_Types].xml": "9a100590f3e6ec4a51bab7fb5745e768ca4e408e48d2cc8fcda4a3e0c919decb",
+        "package/services/metadata/core-properties/nuget.psmdcp": "85b0c9667914dbc61cd6f7ce00d8918e1cf14f68f03eec0cfa8de293e4371f6d",
+        ".signature.p7s": "f7ad7e81accea3874b29d88d4696903a90bea1ce053962d38600af671c9c99d4"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Authentication",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "2aa4f424b07d8e1604819d672cdcfd33d3f50db60bf4b2d48b29b47967d87b60",
+      "signedBytes": 28456,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718655832,
+      "unsignedSha256": "8564dd98b50f7682793c8090e1389353a9653593750a4b3f0835cb095d58ec50",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "b539042fc0bf77960cf797c269dbf7f311c8b7104859a4963e0e5502d675a82d",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "a50d55019f84d2c56b7bb14abcd4398ad7263e58092bd607b84a4ea0a890ed61",
+        "Hexalith.Parties.Authentication.nuspec": "7a1ce6f5ad750336feebd0134e11a731e6ce1ae5bb382037d88344f769fc4c95",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Authentication.dll": "449a47ba2cc812e1c65065a8e6a86f12035f0bf636274f57349828db4f00963e",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "00bddda3f2b9ba35ddfa9b5f1f18c0e8e6ce49bb8250013d5b99b2ef6f682ac8",
+        ".signature.p7s": "7bdd0f1c220040cf500980385010fadc7e88ec62d1b25c7e6225509fa4c2b196"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Projections",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "da9cf6924d2c39b413edaeb220322a4c53fb3b2d4ecb1c414007a36dc858954e",
+      "signedBytes": 83456,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656220,
+      "unsignedSha256": "bb5f4db0862dbf1d97dbc08a80f29570178ea690a300816c37b45cdc6117d8e0",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "2f5a1cf3be8c1fc7c10db41f6c6da47f927b515f69f79c644a0aeeb6cfabc5a6",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "222cec854fd21db6ece326dca0acc8dd01ad253eaac5dd3110eb72ab383ecd2c",
+        "Hexalith.Parties.Projections.nuspec": "03e1231a5c051a2f9d15cb08c406765995dcb346840428c4e4b51780b55d16ff",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Projections.dll": "78ee97260a6d65a190bbf44156de8ffd9eb23d8a5454c02d94247aad98585ef1",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "1907ba325dea0fd4f784c10b48d620e384cea70f54def0f34ef7c6c7c26e0526",
+        ".signature.p7s": "84253c4c33cb88b5daa3acdf7ec8a2937d0e2d3a2a525009ca58a980eef70e02"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Security",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "42bff9e12282a76a7c6d9fc1b3901284302a9214f98d1956a0722f5529f3f629",
+      "signedBytes": 90863,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656283,
+      "unsignedSha256": "37f121a28da53bab62c69ef66faa6e2995004396f73fc73c4577c16fd60e5fcf",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "0da74fbcf38d28d6a667dce02835ff994c248b1876ecfaf81dbcb1d0127ac763",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "e9f5c5ee771655c88fc0155921e7a61b60a10010f3f4f0375ce988e2109ca624",
+        "Hexalith.Parties.Security.nuspec": "23769c7d6f18e38fd97264f1f4bd0638c62f34e4271f91bf45b45ed5613adf25",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Security.dll": "d4b596bc6b250be8923650aabfb99edb3ab61445fa984c76a4b79eb06764afec",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "b1b1bca3b6d305c7470e79a84579034befc14196d157be3e735d1948547ea9a0",
+        ".signature.p7s": "89a764727eb62307cd970f670176e077b75296e2bc5ab871909fb148589e00f5"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Testing",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "51e0f7f556dc42dad1ae23a3e0b8535ef44d7f4bbc746911a68e74540acd9cb3",
+      "signedBytes": 33995,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656186,
+      "unsignedSha256": "e0679ea077321ed1c1f1b04bb2908ff0cada153f97dce19bbc26ddaf1a66184c",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "f88b76dcb62c99e781a92d063b0dfaac74ced9754ef57757563fcc8bfd711719",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "31bd42a8a8f6e2cbf29eeadd1ef66eb4301ddd6f30a6f773628d3175693fa192",
+        "Hexalith.Parties.Testing.nuspec": "9e9c1f274664970d9d13aa58abc60b9b5bba9c917c1ca712c8182b0e78774937",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Testing.dll": "32aed86ef159ea0a73013c64844ee95cefad0d6cfb1932c16240a261cbbe693b",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "e082a972c8887155814de2c267903ca6632e43f942734329cffe459708a5e39d",
+        ".signature.p7s": "9dd594db18ffdce8c25686bc351e17d6c0fb8593395abe53196f5f57387a7df6"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.Aspire",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "37ec7539e9da3552d40ee4613b9c20ccbfc0696a8fb34941bdf8c5f4d280a8e4",
+      "signedBytes": 27806,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718655876,
+      "unsignedSha256": "a8330b882effaaa471232766a20a00fbea11e04f46126553dc1dce3ad8e1e544",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "e4c9df7c25cc58423be39c2c6c0d000217c6125edb6125b045446d8010ba61fb",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "1ee5659edfef1af9b5550b150d4845a277edc8a436ec75989648b3ed3d92fb08",
+        "Hexalith.Parties.Aspire.nuspec": "3fdfd1df512c8c7dfa68544e8466cf0f6f5456add420571cfb5040e0d95836e7",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.Aspire.dll": "a889e81592a4a0276baca4eb206913e95a23bf2d5953b2d673a192d4134afbdd",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "39b2d60a96910dfd29a8b794a5e862b7f418e82a8710da3267cf9a7f26e55fd5",
+        ".signature.p7s": "df45d297fa2ae17a96dc710fc435eb7730c8f4aa8899c1b4abf187ac3e03ad78"
+      }
+    },
+    {
+      "id": "Hexalith.Parties.EventStoreExtensions",
+      "version": "3.1.0",
+      "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "signedArchiveSha256": "f09f84ef6f2d803f1bbfc0811b9c8753d77730f0a8a6369de89201731a46917f",
+      "signedBytes": 30483,
+      "retainedOfficialVerificationBytesEqual": true,
+      "unsignedAssetId": 718656023,
+      "unsignedSha256": "be308a9a2639a34d810610f431b6dc65781623058f98f37f1038808496eb066e",
+      "exactUnsignedArchiveReconstruction": true,
+      "normalSignatureExitCode": 0,
+      "normalSignatureLogSha256": "e23832e7eaf7c544ca1ff2f5dcef9e3be85c151943535cded903eb762244f197",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Parties",
+        "commit": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3"
+      },
+      "memberHashes": {
+        "_rels/.rels": "5997522a199b65e63b5c7ee2664ccaa535a2fc05f7b6945d86f6b1a343b6b163",
+        "Hexalith.Parties.EventStoreExtensions.nuspec": "fe7fd34523d288f79e7903deee75c8bbb75a27ffa8f00dbd70f7469a698d4e58",
+        "README.md": "5d53138d87bbb039ac4f43e132e3d84d08299c2af1aa4f22b9fc3f902d4c0786",
+        "lib/net10.0/Hexalith.Parties.EventStoreExtensions.dll": "a48612597603ce5b8d743e28e91236a51e561369c6bcd2d9fcca092dd78f1c06",
+        "[Content_Types].xml": "1a6670ec6cb20a6520f5d6b9be859fcd7416bef2ba0e8e40bfbf0aaab5409e4f",
+        "package/services/metadata/core-properties/nuget.psmdcp": "cc0e561ecf2cbf1af21af5f19b4e0160c725c731bcedfce364381643c024b1d2",
+        ".signature.p7s": "6c385310687a92e3f0e3d898b85ca6e3b7b3b2284f55a3e97f790dd5c83dfc53"
+      }
+    }
+  ],
+  "all3ActualPublicImages": [
+    {
+      "repository": "parties",
+      "image": "registry.hexalith.com/parties:3.1.0",
+      "indexDigest": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:6457bde4e1c99119fe9cc6bc58654a0c618e42c59bfc37ed67d4b7410cecb263",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+          "config_size": 4149,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:0560fde84e43fefe9450f111245555f232cf306ca4b00408bb65fe9fa03971d4",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:edd6896a4ace4f784cf537887bff1065934174006cf39d0b7f8f47f23be72d0b",
+          "config_size": 4150,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        }
+      ],
+      "actualAmd64ApplicationFiles": [
+        {
+          "path": "app/Hexalith.Commons.Http.dll",
+          "sha256": "2b5f054572c1835d47b97afba832089325ea3d30affaf9e9a7cf6e8ea215e94a",
+          "bytes": 21504,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Commons.Http.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.UniqueIds.dll",
+          "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+          "bytes": 9728,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Commons.UniqueIds.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.dll",
+          "sha256": "7efc39b11543355e9270a104bf691945ad934b8c2154821f70e57265a3a21d2a",
+          "bytes": 38400,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Commons.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "bytes": 1288192,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.EventStore.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "bytes": 953344,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.EventStore.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.DomainService.dll",
+          "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+          "bytes": 1247744,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.EventStore.DomainService.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.ServiceDefaults.dll",
+          "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+          "bytes": 568320,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.EventStore.ServiceDefaults.dll"
+        },
+        {
+          "path": "app/Hexalith.McpCli.Abstractions.dll",
+          "sha256": "aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e",
+          "bytes": 10752,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.McpCli.Abstractions.dll"
+        },
+        {
+          "path": "app/Hexalith.Memories.Client.Rest.dll",
+          "sha256": "822c9bc6273ceff270f58c0b4417a9b683cc82e6359bb7e4bc0f2e4be04dbbef",
+          "bytes": 96256,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Memories.Client.Rest.dll"
+        },
+        {
+          "path": "app/Hexalith.Memories.Contracts.dll",
+          "sha256": "44b629fb573f0fcb161129c0e353dc5efdf72447550fa46352d773275a2954ca",
+          "bytes": 1305600,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Memories.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Authentication.dll",
+          "sha256": "10db7f60ce594129f769ef3ad724ce850342ac5fa91af9cd7bc1f2e3196173cc",
+          "bytes": 7168,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.Authentication.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Contracts.dll",
+          "sha256": "b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6",
+          "bytes": 304640,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Projections.dll",
+          "sha256": "d69172b7da32d6b827aaf8f0b6a0cc294d054acbd43796cd0bc59c2ee2ccf1d8",
+          "bytes": 143872,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.Projections.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Security.dll",
+          "sha256": "7976eb693f334f3f470fcc961dbf09655f43a698e7c029a63c7617f3d8bcbf21",
+          "bytes": 165376,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.Security.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.deps.json",
+          "sha256": "913a6db21a1dd2ef5426af52f65fc2fceadc155418f2cd967bff1ba82c7c0a6a",
+          "bytes": 81570,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.deps.json"
+        },
+        {
+          "path": "app/Hexalith.Parties.dll",
+          "sha256": "51b77231b4974b0fe57bf243835695e42097a39ceb10210223594a7b12027e7d",
+          "bytes": 519680,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Parties.runtimeconfig.json"
+        },
+        {
+          "path": "app/Hexalith.Tenants.Client.dll",
+          "sha256": "6c1547a2a2c86bed736e52f5d834f1152c75d4c0ad7bdb928a68e1ef4bd36b4e",
+          "bytes": 40960,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Tenants.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.Tenants.Contracts.dll",
+          "sha256": "adedcc49d81f2ceb6855f365dddb05e8f1f550e303c5f0e92c4d3153ff672d45",
+          "bytes": 116224,
+          "sourceLayer": "sha256:c9278b151089a1daf3f22c84f8bb5f5f71e749799eff6ca5f221f29d15fe052e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties/app/Hexalith.Tenants.Contracts.dll"
+        }
+      ]
+    },
+    {
+      "repository": "parties-mcp",
+      "image": "registry.hexalith.com/parties-mcp:3.1.0",
+      "indexDigest": "sha256:b98d9b4ec952399b61ab4ea03435e0b7b253302fdb22e70f99ca15ac079882aa",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:bac3d92b67a705f5b12bba0c61202c9fe22959f19de5f850cd6067e7795234f8",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:53d5d2c57d6bbe058f80b48707a16ad1d1b199cf29bd08f2ea66f8d8f6852376",
+          "config_size": 4153,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:ca31214acda0e6306140e0a4e4f6a2f9bbfe39210f24ceae7afaeea762e3c5f0",
+          "size": 1399,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:7fb5f0099619dbc8434c4479da9854e748c5c26f87089ab4cfd96c87d4b48ea2",
+          "config_size": 4154,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        }
+      ],
+      "actualAmd64ApplicationFiles": [
+        {
+          "path": "app/Hexalith.Commons.Http.dll",
+          "sha256": "2b5f054572c1835d47b97afba832089325ea3d30affaf9e9a7cf6e8ea215e94a",
+          "bytes": 21504,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Commons.Http.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.ServiceDefaults.dll",
+          "sha256": "4d9f04eddaa9304d0426a6f3c6022f7fa374926663fd4c293ed60935b4036563",
+          "bytes": 24064,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Commons.ServiceDefaults.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.UniqueIds.dll",
+          "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+          "bytes": 9728,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Commons.UniqueIds.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "bytes": 953344,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.EventStore.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.McpCli.Abstractions.dll",
+          "sha256": "aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e",
+          "bytes": 10752,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.McpCli.Abstractions.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Client.dll",
+          "sha256": "67b552999c5c874d472389539da5e0fd541eb3a5f44943870dd7f17800d9f7c7",
+          "bytes": 97280,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Parties.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Contracts.dll",
+          "sha256": "b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6",
+          "bytes": 304640,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Parties.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Mcp.deps.json",
+          "sha256": "fe201aefe55b04098277c023499b787122a3d18c3f8cb0dc1d7c725157cc281c",
+          "bytes": 23925,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Parties.Mcp.deps.json"
+        },
+        {
+          "path": "app/Hexalith.Parties.Mcp.dll",
+          "sha256": "a54c7ad730e3c4adec0b972a704e19870cb22346b5827ee39def980f704193cd",
+          "bytes": 61952,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Parties.Mcp.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Mcp.runtimeconfig.json",
+          "sha256": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+          "bytes": 472,
+          "sourceLayer": "sha256:a17d62afc2ffd6557928acbb53fe1fef39b354cfc51ce60d57f136da4756239e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-mcp/app/Hexalith.Parties.Mcp.runtimeconfig.json"
+        }
+      ]
+    },
+    {
+      "repository": "parties-ui",
+      "image": "registry.hexalith.com/parties-ui:3.1.0",
+      "indexDigest": "sha256:66dd933f58b53ef438714e4e4bfc2fc7e5621bfdc770afd96932a545b86625c7",
+      "bothPlatformGraphsVerified": [
+        {
+          "platform": "linux/amd64",
+          "digest": "sha256:fdf422ea7c9cbd6f67069d042971e1a700dd1991d32c341204ad87bedee06d3f",
+          "size": 1401,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:cca3b1befb678595f976183a9b6a0bae9305b7a8a27eb9ec2384dc8dc7d018aa",
+          "config_size": 4118,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        },
+        {
+          "platform": "linux/arm64",
+          "digest": "sha256:c9bb95307accf95feec458bfa39db4a14bf44ce8fc963d68e673cfea7839b908",
+          "size": 1401,
+          "media_type": "application/vnd.oci.image.manifest.v1+json",
+          "config_digest": "sha256:f372d041f75fe562991a4b8be8b3551ac9510368af59d6e8d95a05508a07ade7",
+          "config_size": 4119,
+          "config_media_type": "application/vnd.oci.image.config.v1+json",
+          "provenance_labels": {
+            "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Parties",
+            "org.opencontainers.image.url": "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0",
+            "org.opencontainers.image.documentation": "https://github.com/Hexalith/Hexalith.Parties/blob/50904cc4ba53c9b0b2c082d5872a0d276be8f5c3/README.md",
+            "org.opencontainers.image.revision": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+            "org.opencontainers.image.version": "3.1.0",
+            "org.opencontainers.image.created": "2026-11-06T21:33:09Z",
+            "org.opencontainers.artifact.created": "2026-11-06T21:33:09Z"
+          }
+        }
+      ],
+      "actualAmd64ApplicationFiles": [
+        {
+          "path": "app/Hexalith.Commons.Http.dll",
+          "sha256": "2b5f054572c1835d47b97afba832089325ea3d30affaf9e9a7cf6e8ea215e94a",
+          "bytes": 21504,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Commons.Http.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.ServiceDefaults.dll",
+          "sha256": "4d9f04eddaa9304d0426a6f3c6022f7fa374926663fd4c293ed60935b4036563",
+          "bytes": 24064,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Commons.ServiceDefaults.dll"
+        },
+        {
+          "path": "app/Hexalith.Commons.UniqueIds.dll",
+          "sha256": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+          "bytes": 9728,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Commons.UniqueIds.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.Client.dll",
+          "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+          "bytes": 1288192,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.EventStore.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.Contracts.dll",
+          "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+          "bytes": 953344,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.EventStore.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.EventStore.SignalR.dll",
+          "sha256": "e1a701ccc0a66fb1756dc8215826b0f1461f2779f839f7d5136c778ca67b6e02",
+          "bytes": 57856,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.EventStore.SignalR.dll"
+        },
+        {
+          "path": "app/Hexalith.FrontComposer.Contracts.UI.dll",
+          "sha256": "049b625720dc21bd19664a49143dfb0804e399e8945fe03661cc6d01d1c334f4",
+          "bytes": 33280,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.FrontComposer.Contracts.UI.dll"
+        },
+        {
+          "path": "app/Hexalith.FrontComposer.Contracts.dll",
+          "sha256": "f4ca12ff83ef24b734012c5023fff3a62cbb67c7f19a40649400482c427bbe08",
+          "bytes": 225792,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.FrontComposer.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.FrontComposer.Mcp.dll",
+          "sha256": "d6515d5c674e39532ed5fce17d431b8d9f4fde256076f720899ae87a8b5e58b5",
+          "bytes": 315392,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.FrontComposer.Mcp.dll"
+        },
+        {
+          "path": "app/Hexalith.FrontComposer.Schema.dll",
+          "sha256": "9e79c64106f5e22091670424a5f8079a55411c8ab9389a05ad4a497a6dd58dbd",
+          "bytes": 19968,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.FrontComposer.Schema.dll"
+        },
+        {
+          "path": "app/Hexalith.FrontComposer.Shell.dll",
+          "sha256": "5fa05b3698eacdcc3c0d5f2e5309ea591dabe359191a8581fde497692032d5c1",
+          "bytes": 1891840,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.FrontComposer.Shell.dll"
+        },
+        {
+          "path": "app/Hexalith.McpCli.Abstractions.dll",
+          "sha256": "aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e",
+          "bytes": 10752,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.McpCli.Abstractions.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.AdminPortal.dll",
+          "sha256": "185db0c0bb16d6995b83b408202dd32dfc55d2ef952e983b31c116f3fd742047",
+          "bytes": 337920,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.AdminPortal.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Authentication.dll",
+          "sha256": "10db7f60ce594129f769ef3ad724ce850342ac5fa91af9cd7bc1f2e3196173cc",
+          "bytes": 7168,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.Authentication.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Client.dll",
+          "sha256": "67b552999c5c874d472389539da5e0fd541eb3a5f44943870dd7f17800d9f7c7",
+          "bytes": 97280,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.ConsumerPortal.dll",
+          "sha256": "8ede7a6f129bbbd462e555b2863a3dc62172e123e5fb5cd51845e469b395d696",
+          "bytes": 165888,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.ConsumerPortal.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Contracts.dll",
+          "sha256": "b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6",
+          "bytes": 304640,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.Contracts.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.Picker.dll",
+          "sha256": "e8ec300439d70ab9370aedcc3c7c9f0961eb14e1c4701a35f902509ad313f32e",
+          "bytes": 81408,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.Picker.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.UI.deps.json",
+          "sha256": "cdea3968759ff6d27327df2b10eb595217e3655f773d2ff9d8fef627277ebc9c",
+          "bytes": 59005,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.UI.deps.json"
+        },
+        {
+          "path": "app/Hexalith.Parties.UI.dll",
+          "sha256": "4fa8f642205f60837dacbdf1ec32d17d52acaf858ca65e3a815e4b6dc5bd86f4",
+          "bytes": 225280,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.UI.dll"
+        },
+        {
+          "path": "app/Hexalith.Parties.UI.runtimeconfig.json",
+          "sha256": "8e356aba9de149647aa940c86d4024dbbcd89c05c22bc243a96dbb745bd1485a",
+          "bytes": 521,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Parties.UI.runtimeconfig.json"
+        },
+        {
+          "path": "app/Hexalith.Tenants.Client.dll",
+          "sha256": "6c1547a2a2c86bed736e52f5d834f1152c75d4c0ad7bdb928a68e1ef4bd36b4e",
+          "bytes": 40960,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Tenants.Client.dll"
+        },
+        {
+          "path": "app/Hexalith.Tenants.Contracts.dll",
+          "sha256": "adedcc49d81f2ceb6855f365dddb05e8f1f550e303c5f0e92c4d3153ff672d45",
+          "bytes": 116224,
+          "sourceLayer": "sha256:04eae8f1c7458900bc2d15fef920ab883883bd450061e637975a150481c0454e",
+          "retained": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parties310-images/images/parties-ui/app/Hexalith.Tenants.Contracts.dll"
+        }
+      ]
+    }
+  ],
+  "all7ImageSDK410OccurrencesMatchGenuineSignedPackages": [
+    {
+      "image": "parties",
+      "file": "Hexalith.EventStore.Client.dll",
+      "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "publicSignedArchiveSha256": "efab5fd7b4e7d5bbafc2a09adc92e98b985ca750ee888323585892c33cab50cc"
+    },
+    {
+      "image": "parties",
+      "file": "Hexalith.EventStore.Contracts.dll",
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "publicSignedArchiveSha256": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70"
+    },
+    {
+      "image": "parties",
+      "file": "Hexalith.EventStore.DomainService.dll",
+      "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78",
+      "publicSignedArchiveSha256": "da40e1e05461bac67bbbf9f3a839085e0f8c65e726168b33f2dc955e0c2d1fb0"
+    },
+    {
+      "image": "parties",
+      "file": "Hexalith.EventStore.ServiceDefaults.dll",
+      "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d",
+      "publicSignedArchiveSha256": "bdd2fd1e6eb19e45f488da2654673acc662a4d3c8e4b5e8465e90aac3ce901d5"
+    },
+    {
+      "image": "parties-mcp",
+      "file": "Hexalith.EventStore.Contracts.dll",
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "publicSignedArchiveSha256": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70"
+    },
+    {
+      "image": "parties-ui",
+      "file": "Hexalith.EventStore.Client.dll",
+      "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6",
+      "publicSignedArchiveSha256": "efab5fd7b4e7d5bbafc2a09adc92e98b985ca750ee888323585892c33cab50cc"
+    },
+    {
+      "image": "parties-ui",
+      "file": "Hexalith.EventStore.Contracts.dll",
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739",
+      "publicSignedArchiveSha256": "e2c09e4f00340f26dd3c1509167c83f41ca757f2442f6624bc58edace1fe9a70"
+    }
+  ],
+  "actualReleasedV2Declaration": {
+    "path": "parties310-actual-released-module-declaration-20261107.json",
+    "bytes": 14217,
+    "sha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+    "source": "50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+    "sourcePath": "module/hexalith.module-manifest.v2.json",
+    "gitBlob": "755dd00f91faed58951300b480826dab4cfcfc47",
+    "packageEmbeddedDeclaration": false
+  },
+  "freshObservedMain": "7c5abd3b57ee2f391a00fcdd4349703127a71c05",
+  "freshObservedMainNormalCI": 42307453918,
+  "existingMainPrivateNative28ArtifactValidatedButFinalPublicCohortPending": true,
+  "existingMainPlatformSource": "ed991837945571a12743214fc18a87fbd323fc30",
+  "currentBuildsSource": "567604b616613ba429be0609636d805db776a709",
+  "currentBuildsVersion": "4.44.11",
+  "currentBuildsDefaultParties": "3.0.0",
+  "publicPackageAndImageOwnerBodiesAreMeasuredDistinctRoles": true,
+  "firstGenericCrossRoleBodyEqualityAssumptionRefusal": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parent-first-package-image-body-equality-assumption-refusal.json",
+  "allMeasuredRoleBodies": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z/parent-parties310-measured-public-package-and-image-distinct-body-observations.json",
+  "noCrossRoleByteEquivalenceClaim": true,
+  "staticAuthenticationOnly": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false,
+  "privateAuditRoot": "/home/administrator/.cache/hexalith/story-2-8/parent-final-public-cohort-readonly-20261107T011339Z"
+}

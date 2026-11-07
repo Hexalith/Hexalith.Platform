@@ -1,0 +1,115 @@
+{
+  "utc": "2026-11-07T01:25:16.040169+00:00",
+  "source": "30c9e3a1052c54eb567f4330465a74c18e3e70a0",
+  "tree": "4cbd479ce5940cecb70789fd4e170fe37c1263e2",
+  "computedVersion": "1.6.0",
+  "tag": "v1.6.0",
+  "tagChain": [
+    {
+      "sha": "30c9e3a1052c54eb567f4330465a74c18e3e70a0",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/30c9e3a1052c54eb567f4330465a74c18e3e70a0"
+    }
+  ],
+  "releaseId": 437237461,
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.6.0",
+  "publishedAt": "2026-11-07T01:23:44Z",
+  "actualPublisherRun": 42323747209,
+  "attempt": 1,
+  "publisherJobs": [
+    {
+      "id": 128254095546,
+      "name": "verify",
+      "conclusion": "success"
+    },
+    {
+      "id": 128254207360,
+      "name": "publish",
+      "conclusion": "success"
+    }
+  ],
+  "qualifyingRuns": [
+    {
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "run": 42321199221,
+      "number": 101,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42321199221",
+      "jobs": [
+        {
+          "name": "Same changed source against the legacy public tuple",
+          "id": 128250968628
+        },
+        {
+          "name": "tuple",
+          "id": 128245904057
+        }
+      ]
+    },
+    {
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "run": 42321199523,
+      "number": 157,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42321199523",
+      "jobs": [
+        {
+          "name": "consumer-binding (3.130.0)",
+          "id": 128245905663
+        },
+        {
+          "name": "consumer-binding (3.130.1)",
+          "id": 128245905520
+        },
+        {
+          "name": "consumer-binding (3.130.2)",
+          "id": 128245905537
+        },
+        {
+          "name": "consumer-binding (3.132.1)",
+          "id": 128245905229
+        },
+        {
+          "name": "consumer-binding (4.1.0)",
+          "id": 128245905517
+        }
+      ]
+    }
+  ],
+  "publishedReceiptSha256": "431eb2d9c0c54a468797f6de3eb723c0b7ffd356ed358343272bbe99c21fd573",
+  "earlyDeferralRun": 42321390998,
+  "bothRealMainSourceAuditsPassed": true,
+  "allRequiredPoliciesStillExact": true,
+  "parentManualTagOrReleaseWrites": 0,
+  "normalAutomaticSourcePublicationAuthenticated": true,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false,
+  "supportingParentAudits": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/notes-compatibility-fix-20261107/merged-main-30c9e3a1052c/parent-automatic-publisher-current315-and-original349-merged-main-hosted-audit.json",
+      "bytes": 129126,
+      "sha256": "2a1008206b497ebeb0e1c160e68d35090ea8d92dcaa33f48788e7cd54e5118ea"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/notes-compatibility-fix-20261107/merged-main-30c9e3a1052c/parent-automatic-publisher-sdk-catalog-merged-main-hosted-audit.json",
+      "bytes": 235545,
+      "sha256": "267d9913ce7ae2f35c9061021d24ad7e88424030a1a0cd6ceb218dbeef88c520"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/notes-compatibility-fix-20261107/merged-main-30c9e3a1052c/parent-automatic-publisher20-merged-main-hosted-audit.json",
+      "bytes": 2777,
+      "sha256": "f138bfd3fa8e9299ff8321df8bca1a4ec15ea370c59cb7a0155032ac1bfbe31b"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-automatic-source-release-20261106/notes-compatibility-fix-20261107/merged-main-30c9e3a1052c/parent-actual-automatic-platform-source-publication-independent-audit.json",
+      "bytes": 2466,
+      "sha256": "93f84569c0976d0631703192564dc225ca55b9a125aa80b91f2d83f731911a43"
+    }
+  ],
+  "endedMainSessions": [
+    72188,
+    67097,
+    85056
+  ]
+}
