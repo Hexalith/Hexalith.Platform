@@ -95,7 +95,10 @@ public sealed class PlatformPartiesCatalogHandoffTests
         original["ProjectVersions"]!.AsObject().ContainsKey(consumer).ShouldBeFalse();
         JsonObject versions = derived["ProjectVersions"]!.AsObject();
         versions.Count.ShouldBe(original["ProjectVersions"]!.AsObject().Count + 1);
-        versions[consumer]!["Hexalith.Memories.EventStore"]!.GetValue<string>().ShouldBe("3.0.23");
+        if (Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName))
+            versions[consumer]!["Hexalith.Memories.EventStore"]!.GetValue<string>().ShouldBe("3.0.25");
+        else
+            versions[consumer]!["Hexalith.Memories.EventStore"]!.GetValue<string>().ShouldBe("3.0.23");
         versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(warm)!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,

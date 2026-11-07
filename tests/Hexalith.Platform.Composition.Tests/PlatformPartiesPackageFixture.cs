@@ -22,7 +22,10 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     }
 
     /// <summary>The seven authenticated Linux/amd64 identities expected at the real image-preflight boundary.</summary>
-    internal static IReadOnlySet<string> Images { get; } = new HashSet<string>(StringComparer.Ordinal)
+    internal static IReadOnlySet<string> Images => PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName)
+        ? PublishedImages : HistoricalImages;
+
+    private static IReadOnlySet<string> HistoricalImages { get; } = new HashSet<string>(StringComparer.Ordinal)
     {
         "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed",
         "registry.hexalith.com/tenants-api@sha256:2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4",
@@ -44,6 +47,11 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
     };
 
+    /// <summary>The seven separately measured images for the genuine complete public Parties3.1 profile.</summary>
+    internal static IReadOnlySet<string> PublishedImages { get; } = CurrentImages
+        .Append("registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb")
+        .ToHashSet(StringComparer.Ordinal);
+
     private IReadOnlySet<string> SelectedImages => Plan.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile ? CurrentImages : Images;
 
     /// <summary>Gets the independently owned private workspace; no source checkout is copied or edited.</summary>
@@ -64,14 +72,16 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
-        string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
+        bool published = !current && PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
+        string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName
+            : published ? PublishedCatalogArtifactCohort.PublishedPartiesName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
         PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
-            .ShouldBeTrue(current
+            .ShouldBeTrue(current || published
                 ? "Current Parties preparation requires the genuine published M25/SDK4.1 tuple and loaded public Contracts body."
                 : "Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
-        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", current ? PublishedCatalogArtifactCohort.CurrentOwnerName : PublishedCatalogArtifactCohort.CurrentName).ShouldBeTrue();
-        if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBeTrue();
+        PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort).ShouldBeTrue();
+        if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort).ShouldBeTrue();
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -80,7 +90,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             (File.Exists(marker) || Directory.Exists(marker)).ShouldBeTrue("Direct dependencies must already be prepared; this test must not initialize them.");
         }
         string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
-        Hash(manifest).ShouldBe(current ? PlatformCurrentOwnerProof.DeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
+        Hash(manifest).ShouldBe(current ? PlatformCurrentOwnerProof.DeclarationHash
+            : published ? PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
         mapping.Root.ShouldBe(root);
         mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
@@ -113,7 +124,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current ? "7.0.5" : "7.0.2"), ("memories", current ? "3.0.25" : "3.0.23"), ("parties", "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current || published ? "7.0.5" : "7.0.2"), ("memories", current || published ? "3.0.25" : "3.0.23"), ("parties", published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

@@ -1,6 +1,40 @@
 # Current tuple preparation
 
-## Current signed producer and Tenants 7.0.5 tuple
+## Current signed Builds4.44.12 and public Parties3.1.0 tuple
+
+The selected producer is genuine [Builds v4.44.12](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.12)
+at `b4703ec2247321f867f14cd9caca43fa00190feb`, published by normal
+[release42362019086](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42362019086)
+after exact-source [CI42360911358](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42360911358).
+The exact tool pin and range floor are `4.44.12`, retaining the existing upper bound.
+Signed archive SHA-256 is `739526e59205844fb4b4d9c5abcabec95acb6af7d458d7eb662dfcbe71f19b8b`;
+the complete admitted validation pair is AppHost
+`ac1b7477337c3921a77e1ca527cf3d76c7feeb2f5c8019bd14c1da9222581d8e` and Tooling
+`1bd228fc084776f48ad9faff8ac0c614e0c6dc0c2f03f309d325e0e90cbc1870`.
+Catalog blob `b45555806e78ea6ce66ad6a8f0fcc5f7c70b691d` has raw Git SHA-256
+`c66fb47d42633dd51bdfa6f31216ee22412e0137a664bf472edf72ac103ad5d1`; inventory SHA-256 is
+`4deeb13bdff8605f4778a60deeb5a6a8d5cfdf412cdbaa2948e32bc7f241ebef`.
+Its audit retains actual catalog-origin ancestor `8984471f75657cd24236cf2d04f470f8e2545ace`.
+
+The complete ordinary public cohort selects genuine [Parties3.1.0](https://github.com/Hexalith/Hexalith.Parties/releases/tag/v3.1.0)
+from `50904cc4ba53c9b0b2c082d5872a0d276be8f5c3`, SDK4.1.0, Tenants7.0.5,
+Memories3.0.25 and McpCli2.0.1. It requires all twelve measured signed NuGet reader bodies,
+released declaration `d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`,
+and the seven exact measured images. Parties image index is
+`48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb`.
+The package Contracts reader body `99230b764de6769a803702170c174f9dbef9b0b5b0c2931b07e85045478cd654`
+and actual OCI owner Contracts body `b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6`
+retain distinct roles. The real image body is a static negative reader fixture, never a package substitute.
+The M25 model uses its actual sidecar endpoint provider. Historical public cohorts and all private-purpose
+source/key/receipt/sealing checks remain; a private owner accepts only exact3.0.0 or3.1.0 catalog versions.
+The generic SDK/Tenants pair selector still refuses7.0.5, and private purposes grant no public or candidate authority.
+
+The current required union is412 cases, retaining all315 incoming cases and adding the measured public
+reader/version/ordinary-entry/signed-validation/catalog/model controls. The original349-case historical
+profile remains unchanged. Fresh same-code current/legacy qualification, five SDK gates, hosted source CI,
+real native execution and cleanup remain required; source preparation alone grants no acceptance.
+
+## Previous signed Builds4.44.11 and Tenants7.0.5 tuple
 
 The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
 at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal

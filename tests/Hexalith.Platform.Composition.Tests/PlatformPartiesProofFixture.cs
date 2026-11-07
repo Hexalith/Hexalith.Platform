@@ -11,7 +11,8 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
 {
     /// <summary>Creates clean local histories and private parent handoff files without invoking a service or granting cohort authority.</summary>
     /// <param name="platformOwned">Whether the actual owner is a direct Git child of the outer Platform root, with a package-mode Builds entry.</param>
-    internal PlatformPartiesProofFixture(bool platformOwned = false)
+    /// <param name="publishedDeclaration">Selects exact released3.1 declaration bytes while retaining explicitly synthetic local source history.</param>
+    internal PlatformPartiesProofFixture(bool platformOwned = false, bool publishedDeclaration = false)
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-parties-proof-" + Guid.NewGuid().ToString("N"));
         string active = platformOwned ? Path.Combine(Root, "platform", "references", "Hexalith.Parties") : Path.Combine(Root, "parties");
@@ -21,9 +22,10 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
         foreach (string root in new[] { active, platform, builds }) Directory.CreateDirectory(root);
         string declaration = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(declaration)!);
-        using (Stream source = typeof(PlatformPartiesProofFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures.parties-active-declaration.json")!)
+        string fixture = publishedDeclaration ? "parties-current-declaration.json" : "parties-active-declaration.json";
+        using (Stream source = typeof(PlatformPartiesProofFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures." + fixture)!)
         using (FileStream target = File.Create(declaration)) source.CopyTo(target);
-        Hash(declaration).ShouldBe(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
+        Hash(declaration).ShouldBe(publishedDeclaration ? PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
         JsonElement suite = document.RootElement.GetProperty("modules")[0].GetProperty("tests")
             .EnumerateArray().Single(test => test.GetProperty("name").GetString() == "platform-package");

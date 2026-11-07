@@ -1,0 +1,127 @@
+{
+  "utc": "2026-11-07T09:54:57.051384+00:00",
+  "Parties": {
+    "source": "8f56474c1032bdf96ab5042df8c606c99cf36b65",
+    "run": 42353187283,
+    "event": "schedule",
+    "attempt": 1,
+    "allNineJobsPassed": true,
+    "actualPassedNativeCases": 28,
+    "actualCaseNames": [
+      "Hexalith.Parties.Platform.IntegrationTests.FunctionalObservationWriterTests.RecheckRequiresOriginalAndPreservesOutputOwnershipBoundsAsync",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRetainsFirstBytesAndRefusesOverwrite",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRefusesSymbolicDirectory",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeAssemblyObservationTests.CopiedOutputRefusesLinkedAssembly",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeAssemblyObservationTests.CopiedOutputReportsActualFileHashWithoutLoadingIt",
+      "Hexalith.Parties.Platform.IntegrationTests.MemoriesTenantObservationTests.ActiveCurrentTenantPasses",
+      "Hexalith.Parties.Platform.IntegrationTests.FunctionalObservationWriterTests.DuplicateCanonicalWriteRefusesWhileRecheckPreservesOriginalBytesAsync",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"valid-local\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"lifecycle-foreign-source\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-attempt\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"lifecycle-foreign-receipt\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-mapping\")",
+      "Hexalith.Parties.Platform.IntegrationTests.MemoriesTenantObservationTests.InactiveCurrentTenantFails(status: \"provisioning\")",
+      "Hexalith.Parties.Platform.IntegrationTests.MemoriesTenantObservationTests.InactiveCurrentTenantFails(status: \"deleting\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"lifecycle-local\")",
+      "Hexalith.Parties.Platform.IntegrationTests.MemoriesTenantObservationTests.InactiveCurrentTenantFails(status: \"failed\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"current-valid-local\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-model-output\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-run\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-context\")",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-package\", profiles: \"platform-package,platform-current-package\", accepted: False)",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-package\", profiles: \"platform-package,lifecycle-package\", accepted: True)",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-package\", profiles: \"lifecycle-package\", accepted: False)",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-current-package\", profiles: \"platform-current-package\", accepted: True)",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-current-package\", profiles: \"platform-current-package,platform-current-package\", accepted: False)",
+      "Hexalith.Parties.Platform.IntegrationTests.NativeDiagnosticBindingTests.InvocationPreservesOrdinaryBatchesAndRefusesMixedCurrentPurpose(profile: \"platform-current-package\", profiles: \"platform-current-package,platform-package\", accepted: False)",
+      "Hexalith.Parties.Platform.IntegrationTests.PartyEnvironmentTests.RealDependencies_CreateQueryAndPersistMatchingPartyEvents",
+      "Hexalith.Parties.Platform.IntegrationTests.PartyEnvironmentTests.GatewayRefusesAnonymousCommandStatusAsync"
+    ],
+    "actualOwner": "416db41c62c14368dd5b8d0275939502",
+    "platform": "ed991837945571a12743214fc18a87fbd323fc30",
+    "builds": "567604b616613ba429be0609636d805db776a709",
+    "profile": "platform-current-package",
+    "qualificationCredit": false,
+    "diagnosticArchiveSha256": "71a1f2b5671bc984b2d7516879f3abd4bb53ecaee3332631a4c9b8e205d5c1a2",
+    "actualCommittedValidatorSha256": "1ca12e6d4f7bbbe315884c28ae82d27582dd21ba4e865c173c40b1b03e4a53f5",
+    "actualImmutableFirstOutcomeAndEndstateAndSdkBodiesAndDeclaredDiagnosticHashesAndZeroOwnedCleanupVerified": true,
+    "separateFirstPushRun": 42353068024,
+    "firstPushConclusion": "cancelled",
+    "firstPushCleanup": "not-allocated",
+    "firstPushNotCancellationQualification": true,
+    "finalPublicParties310CohortAcceptance": false
+  },
+  "EventStore": {
+    "source": "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1",
+    "run": 42323484508,
+    "attempt": 1,
+    "conclusion": "failure",
+    "firstFailedStep": "Prepare module build",
+    "laterAggregateFailureStep": "Fail on blocking test failures",
+    "actualPreparationRefusal": {
+      "status": "failed",
+      "outcome": {
+        "exitCode": "PrerequisiteUnavailable",
+        "phase": "Prerequisite",
+        "category": "PrerequisiteUnavailable",
+        "ruleId": "HXW011"
+      },
+      "diagnostics": [
+        {
+          "ruleId": "HXW011",
+          "phase": "Prerequisite",
+          "category": "PrerequisiteUnavailable",
+          "message": "Platform identity 019f593544ad157036b7d12173ff89a16464f3cc has no local v<SemVer> release tag.",
+          "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Platform",
+          "hint": "Fetch Platform tags, then retry.",
+          "source": null,
+          "location": null,
+          "row": null
+        },
+        {
+          "ruleId": "HXW009",
+          "phase": "Prerequisite",
+          "category": "PrerequisiteUnavailable",
+          "message": "Builds catalog '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds' is staged beb85e497957fedc66854013efd2cc4bd216ecbc, checked out beb85e497957fedc66854013efd2cc4bd216ecbc; Platform 019f593544ad157036b7d12173ff89a16464f3cc pins 7c7c1b9646821174e013f6fffe75bb36ebf09c77.",
+          "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds",
+          "hint": null,
+          "source": null,
+          "location": null,
+          "row": null
+        },
+        {
+          "ruleId": "HXW007",
+          "phase": "Prerequisite",
+          "category": "PrerequisiteUnavailable",
+          "message": "Local Git inspection failed at '/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds': show 7c7c1b9646821174e013f6fffe75bb36ebf09c77:Props/Directory.Packages.props.",
+          "field": "/home/runner/work/Hexalith.EventStore/Hexalith.EventStore/references/Hexalith.Builds",
+          "hint": null,
+          "source": null,
+          "location": null,
+          "row": null
+        }
+      ]
+    },
+    "diagnosticArchiveSha256": "e0d3b3175ce8be5d03da35d02b7cf5d11ce36f0fd30a06f58e59afe942a0f57d",
+    "cleanup": "not-allocated",
+    "nativeCasesRun": 0,
+    "limit": "Actual local missing-tag and mismatched/unavailable pinned catalog observations; no claim that the Platform tag is globally absent or a runtime service failed.",
+    "firstParentSingleFailedStepAssumptionRefusalRetained": true
+  },
+  "primaryParentAudits": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/codacy-continuation/incoming-reference-observations/parent-actual-incoming-Parties8f-scheduled-current-owner28-independent-audit.json",
+      "bytes": 7259,
+      "sha256": "2e876074c63b519971e56d413a8029de8de5410163cbaa48f6061e86f5de1ff5"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-prerequisite-probe-hosted-20261107/codacy-continuation/incoming-reference-observations/Hexalith.EventStore-42323484508/parent-actual-newer-E2bd-first-prepare-failure.json",
+      "bytes": 12024,
+      "sha256": "d2c7bba21f51440dca4fcacbb3bcac9acab48857111b14e3012e911c9dd67cf2"
+    }
+  ],
+  "parentManualLifecycleRunsDispatched": 0,
+  "parentUnchangedCiReruns": 0,
+  "keepNewerIncomingSource": true,
+  "wholeStoryAcceptance": false
+}
