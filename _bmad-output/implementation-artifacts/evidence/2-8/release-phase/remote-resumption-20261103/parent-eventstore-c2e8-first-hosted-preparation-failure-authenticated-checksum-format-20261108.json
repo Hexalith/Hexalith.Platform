@@ -1,0 +1,73 @@
+{
+  "utc": "2026-11-08T13:52:19.437087+00:00",
+  "source": "c2e852e4b619a4edd6796d070f57c65349ec993e",
+  "run": 42486546472,
+  "attempt": 1,
+  "failedCompatibilityJob": 128749564058,
+  "firstFailedStep": "Prepare the original pinned private runtime archives",
+  "runtimeProvisioningAndAll444TestsNotStarted": true,
+  "parentActualOriginalSixPublicBodiesIndependentlyRehashed": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/daprd_linux_amd64.tar.gz",
+      "name": "daprd_linux_amd64.tar.gz",
+      "bytes": 63795845,
+      "sha256": "d679a47789cddacc8cd38d96d0da7a75514475146ca3da3e5b02bff1ad259dfb"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/daprd_linux_amd64.tar.gz.sha256",
+      "name": "daprd_linux_amd64.tar.gz.sha256",
+      "bytes": 91,
+      "sha256": "c548bfdb129da03a2cc497360e963aa0f50ea64b08e4752c8cdb905637af5a48"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/placement_linux_amd64.tar.gz",
+      "name": "placement_linux_amd64.tar.gz",
+      "bytes": 14384564,
+      "sha256": "81e515f5ef14ee8534696edc614593d3cf500f5b02d054c44339b297ff4277b5"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/placement_linux_amd64.tar.gz.sha256",
+      "name": "placement_linux_amd64.tar.gz.sha256",
+      "bytes": 95,
+      "sha256": "b8aadcd569ed06462c8dfabed51c4e7ccf78162a9fb50759860e88159c082c2d"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/scheduler_linux_amd64.tar.gz",
+      "name": "scheduler_linux_amd64.tar.gz",
+      "bytes": 18467814,
+      "sha256": "7a206972e0066da1508def6f18fbe92324a89b9cb50cc5c0b0c44f5397da7eff"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-recovery-public-assets/scheduler_linux_amd64.tar.gz.sha256",
+      "name": "scheduler_linux_amd64.tar.gz.sha256",
+      "bytes": 95,
+      "sha256": "4ca24aba2743ef52d684a2e61e9b87c4640d39d065b1ea1646926428976d1a11"
+    }
+  ],
+  "actualAllSixSizesAndFixedPinsPass": true,
+  "actualOriginalChecksumRecordFormats": [
+    {
+      "name": "daprd_linux_amd64.tar.gz",
+      "record": "d679a47789cddacc8cd38d96d0da7a75514475146ca3da3e5b02bff1ad259dfb *daprd_linux_amd64.tar.gz\n",
+      "exactGnuBinaryRecord": true
+    },
+    {
+      "name": "placement_linux_amd64.tar.gz",
+      "record": "81e515f5ef14ee8534696edc614593d3cf500f5b02d054c44339b297ff4277b5 *placement_linux_amd64.tar.gz\n",
+      "exactGnuBinaryRecord": true
+    },
+    {
+      "name": "scheduler_linux_amd64.tar.gz",
+      "record": "7a206972e0066da1508def6f18fbe92324a89b9cb50cc5c0b0c44f5397da7eff *scheduler_linux_amd64.tar.gz\n",
+      "exactGnuBinaryRecord": true
+    }
+  ],
+  "exactActualInputRefusalReproduced": "Upstream archive checksum disagreement: daprd_linux_amd64.tar.gz",
+  "rootCause": "Semantic checksum parser assumes GNU text-mode filename; original authenticated release uses GNU binary marker *filename. Synthetic controls modeled text form.",
+  "noChangedPinVersionBudgetOrUpstreamBodyRequired": true,
+  "noNetworkArchiveExtractionOrExecution": true,
+  "firstFailurePreserved": true,
+  "mergeOrRerunSent": false,
+  "parentFirstReaderDraftSyntaxRefusalBeforeAnyExecutionPreserved": true,
+  "wholeStoryAcceptance": false
+}
