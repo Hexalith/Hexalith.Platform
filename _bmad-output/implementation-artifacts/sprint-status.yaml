@@ -62,9 +62,12 @@ development_status:
   2-5-apply-outcome-retention-and-cleanup-rules-to-local-runs: done
   2-6-attach-a-run-to-a-compatible-environment: done
   2-7-withdraw-attached-runs-and-keep-failure-retention: done
+  # Approved 2026-11-08 correction: bounded CI implementation/proof; original six matrix rows remain required.
   2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: in-progress
+  # Fixture migration remains complete; do not repeat it inside 2.8.
   2-9-migrate-eventstore-and-parties-test-fixtures-to-the-environm: done
-  2-10-qualify-the-runner-lifecycle-on-the-reference-composition: backlog
+  # New spec owns complete reference qualification, broad manual matrix and final accepted-tool enrollment.
+  2-10-qualify-the-runner-lifecycle-on-the-reference-composition: ready-for-dev
   epic-2-retrospective: optional
 
   epic-3: in-progress

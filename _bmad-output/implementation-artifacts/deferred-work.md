@@ -1806,3 +1806,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: After an EventStore release carrying story 3.2, enable package-mode extensions.
   evidence: `HEXALITH_PLATFORM_EXTENSION_SDK` is defined only in source mode, so a package-built Composition or host refuses declared extensions (`eventstore-extension-api-unavailable`) until it is also defined for the released `HexalithEventStoreVersion`. The same switch gates the package catalog lookup, so the composition also builds against published Builds tools that predate it. The pinned-tool adoption expectation (11 rows) was updated when Platform pinned the Builds release that carries story 3.2.
+
+## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages (2026-11-08, iteration 1)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Record the composed gateway's extension set in `selected-closure.json` (Story 3.9 candidate artifact identity).
+  evidence: `PlatformRoutingCatalogBootstrap.cs:118-126` records the gateway as `artifact = ProjectPath` with `artifactSha256` over the Platform host csproj only. The extension package ids, project paths or versions and the generated `bindings.props` are absent, so two runs with different extension sets record the same gateway identity. Hashing only the csproj is the existing rule for every mapped project.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Test that an extension's generated AD-9 secret equals the owner servers' secret when Memories adopts extensions.
+  evidence: `AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret` seeds `secretValues` by hand with `memories/PlatformTestExtension:Marker` and never runs `PlatformLocalProfile.Bind`. Nothing ties the extension identity (`<module>/<key>`) to the owner-side `id + "/" + key` format.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: When enabling package-mode extensions, also admit the composed host in the package qualification gate.
+  evidence: `PlatformPackageCatalogQualification.cs:47` accepts a gateway only when `server.ProjectPath == options.EventStoreSeedProject`. With a declared extension, `ProjectPath` is `src/Hexalith.Platform.EventStoreHost`, so a qualified package cohort would refuse it. This adds to the package-mode qualification and enablement entries above.

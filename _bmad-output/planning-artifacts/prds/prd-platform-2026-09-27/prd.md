@@ -2,7 +2,7 @@
 title: Hexalith Platform Product Requirements
 status: final
 created: 2026-09-27
-updated: 2026-10-01
+updated: 2026-11-08
 ---
 
 # PRD: Hexalith Platform
@@ -156,6 +156,8 @@ A module developer can run isolated tests directly from the module's test projec
 - Isolated tests can execute without starting the configured domain-module servers.
 - CI runs isolated tests first and real-service integration tests afterward; passing isolated tests alone does not satisfy the module's integration acceptance.
 - Platform development and integration environments continue to run their configured real services regardless of test doubles used inside isolated tests.
+
+**Execution clarification (2026-11-08):** The [approved sprint correction](../../sprint-change-proposal-2026-11-08.md) bounds Story 2.8 to CI lifecycle implementation and focused proof, preserves the completed fixture migration in 2.9, and assigns complete reference qualification to 2.10. MVP scope and FR/NFR/SM acceptance remain unchanged. Pin qualification inputs for each campaign, use focused checks before broad acceptance runs, and preserve evidence through verifiable immutable receipts. Reusing downloaded setup assets or rereading an original result does not authorize test-result reuse across acceptance decisions: the published candidate-and-attachment policy v1 continues to require fresh qualifying runs. Full reference qualification remains necessary before accepting runner lifecycle capability.
 
 ### Staging validation and production promotion
 

@@ -1495,6 +1495,8 @@ So that CI evidence is trustworthy and CI never leaks resources or touches hoste
 
 **Repo:** Hexalith.Builds (reusable workflows, runner) · **Covers:** FR-4 (CI rules), FR-5, AR-12, AR-53 (blocking CI tier), SM-C4
 
+**Execution boundary (2026-11-08 course correction):** Deliver the CI runner/workflow contract and prove its six original edge-case rows, including real startup and execution cancellation. Consume the completed Story 2.9 fixture migration. Story 2.10 owns the complete reference lifecycle matrix, local retention/collision/expiry qualification and final Platform-accepted tool enrollment. Necessary producer fixes remain prerequisites only when they block these CI cases; unrelated publications, newer module enrollment and exhaustive historical archive reading are outside this story. Preserve all original acceptance criteria below. See the [approved correction](sprint-change-proposal-2026-11-08.md) and the [active execution spec](../implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md).
+
 **Acceptance Criteria:**
 
 **Given** a module's CI
@@ -1525,6 +1527,8 @@ So that my tests run in Platform-owned environments instead of starting their ow
 
 **Repo:** Hexalith.EventStore, Hexalith.Parties (owner review) · **Covers:** FR-4, FR-5, AR-13
 
+**Execution boundary (2026-11-08):** Preserve this story's recorded `done` status and its existing evidence. Story 2.8 consumes that implementation; it does not repeat the migration. A demonstrated regression is a bounded owner fix with its own affected checks, rather than an automatic reopening of every fixture and release campaign.
+
 **Acceptance Criteria:**
 
 **Given** `EventStore.Testing` and `EventStore.Testing.Integration`
@@ -1547,6 +1551,8 @@ I want the runner lifecycle proven by recorded scenarios on the reference compos
 So that local and CI integration evidence can be accepted.
 
 **Repo:** Hexalith.Platform, Hexalith.Builds · **Covers:** FR-4, FR-5, SM-3 (proven on the reference composition), SM-C4, SM-C5
+
+**Execution boundary (2026-11-08 course correction):** Own the full reference matrix, including the manual `matrix` controller's metadata-lock retry, peer-preservation and partial-startup scenarios, plus local failure retention, collision, expiry and failure-followed-by-cancellation. Account for the focused CI proofs delivered by 2.8 under their original identities. Keep missing or failed rows open. Final tool acceptance and pins remain gated here; completing 2.8 alone grants no candidate, SM-3 or tool acceptance. The [implementation spec](../implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md) records the transferred work and bounded optimization tasks.
 
 **Acceptance Criteria:**
 

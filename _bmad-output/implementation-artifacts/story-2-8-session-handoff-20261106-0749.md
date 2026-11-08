@@ -1,5 +1,7 @@
 # Story 2.8 session handoff
 
+> Execution authority updated: use the [2026-11-08 course correction](../planning-artifacts/sprint-change-proposal-2026-11-08.md) and [compact active spec](spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md). This file is a historical checkpoint; do not resume its superseded scopes.
+
 The user explicitly requested **“stop and save. I will continue in a new session”**. Work is stopped. Do not resume implementation, tests, publications or remote mutations until the user asks to continue. The one implementation agent is idle; no owned local process or parent monitor remains running. External hosted runs were left untouched.
 
 ## Resume from this state

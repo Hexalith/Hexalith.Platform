@@ -1,5 +1,7 @@
 # Story 2.8 stop/save handoff — 2026-11-08
 
+> Superseded for execution by the user-authorized [2026-11-08 course correction](../planning-artifacts/sprint-change-proposal-2026-11-08.md) and the [compact active Story 2.8 spec](spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md). The body below remains the historical stop/save record. Its expanding archive-reading queue, latest-main prerequisite chain and whole-reference-matrix scope are no longer instructions to resume. Historical outcomes, preservation requirements and mutation receipts remain valid under their original identities.
+
 The user explicitly requested: **“stop and save. I will continue in a new session.”** Work is stopped. Story 2.8 remains incomplete, BMAD Step 03 remains active, and no acceptance boxes or sprint status have changed. Resume the entire original `$bmad-build 2.8` only when the user continues it.
 
 The sole implementation source of truth is [the Story 2.8 spec](spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md), including its append-only scope history. Load its frontmatter contexts before implementation. The already rendered workflow is `_bmad/render/bmad-build/platform-fcb6e4841134/df57414dae3b284c0fb7/workflow.md`; current step is `step-03-implement.md` in that directory. Rendering already happened for this workflow run; do not restart the workflow or load Step 04 early.

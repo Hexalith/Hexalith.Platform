@@ -1,3 +1,5 @@
+> Execution authority updated: use the [2026-11-08 course correction](../planning-artifacts/sprint-change-proposal-2026-11-08.md) and [compact active spec](spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md). This file is a historical checkpoint; do not resume its superseded scopes.
+
 Story 2.8 session handoff — stopped at the user's request, 2026-11-08 08:56 UTC.
 
 The user said: “stop and save. I will continue in a new session.” Do not resume task work until the user continues. The local read-only CI watcher was terminated and reaped (session10006, PID2788619, exit143). GitHub workflows were NOT cancelled. They and the configured automatic publisher may finish while this session is stopped. Implementation agent `/root/implement_story_2_8` is completed/idle. No local compiler, test, service, publisher or campaign is active.
