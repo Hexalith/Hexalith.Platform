@@ -1,0 +1,95 @@
+{
+  "utc": "2026-11-08T04:17:30.856659+00:00",
+  "source": "6c153e487fee48cd5ba13edb4b59f99cb0a3c0f0",
+  "tree": "fb814510d09068ba5360501f3f22343b085f2496",
+  "parent": "64e18232bf40c28b367cce7d1297630b42021512",
+  "completeProposal": {
+    "bytes": 3721,
+    "sha256": "c7fc09bb2d060ff21848bedb0e1055d0514a40c382f9db1211100b095c865c34",
+    "uniqueTemp": "/tmp/story28-platform44413-pair-complete-v29y_ii4.diff",
+    "actuallyReadFullyByParent": true
+  },
+  "sourceDelta": {
+    "changedPaths": [
+      "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs"
+    ],
+    "allOther22321BlobsAnd17GitlinksExact": true,
+    "onlyOneCompleteAuthenticatedPairAdded": true,
+    "allOtherProductionBytesExact": true,
+    "testDeltaExactlyTwoConstantsAndOneCrossProductTuple": true,
+    "completePairCrossProduct": {
+      "pairs": 11,
+      "combinations": 121,
+      "accepted": 11,
+      "rejectedMixed": 110
+    },
+    "fullMessageBytes": 303,
+    "fullMessageSha256": "2053588afc1bf1875d2d48aa4d132d0615d7df8ecbfd88da72785e3a9ee16a3f",
+    "parentOwningCommitlintBeforeAfter": true
+  },
+  "parentInputOutputAudit": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/two-file-source-review/parent-independent-input-output-and-actual-pure-case-audit.json",
+    "sha256": "5172369130e8510cd24730f0826201a3a7e737bc520b16f8c359663fad254385",
+    "sourceFiles": 22323,
+    "allCommandsIncludingEarlierPreparation": 25,
+    "compilerBodies": 2482,
+    "compilerBytes": 469821264,
+    "generatedVersions": 18,
+    "neededEventStoreRootBodies": 10295,
+    "faithfulFirstPureRed": {
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"platform-package\\\")": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"lifecycle-package\\\")": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.ProducerUppercaseHashesRetainTheSameFiniteDeclaration": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.OnlyTheTwoMeasuredDeclarationsAreCompatible": "Fail"
+    },
+    "actualFinalFourCaseGreen": {
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.OnlyTheTwoMeasuredDeclarationsAreCompatible": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"platform-package\\\")": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.UpdatedDeclarationRetainsOrdinaryPurpose(profile: \\\"lifecycle-package\\\")": "Pass",
+      "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.ProducerUppercaseHashesRetainTheSameFiniteDeclaration": "Pass"
+    },
+    "buildWarnings": 0,
+    "buildErrors": 0
+  },
+  "fullNewIndexAudit": {
+    "utc": "2026-11-08T04:14:40.796155+00:00",
+    "source": "6c153e487fee48cd5ba13edb4b59f99cb0a3c0f0",
+    "files": 2893,
+    "bytes": 714284280,
+    "anchors": 10,
+    "allMatched": true,
+    "indexSha256": "afeb2261dc1e04fed1c3fbd12995ff82248e93c97efe0f376ee14aa7717ec775",
+    "checkpointSha256": "877551fb1eb9938cd834baa894ab1262336ccf65faaefaa84de9f1d556a6667c",
+    "agentRootUnwrittenByParent": true
+  },
+  "retainedFirstOutcomes": [
+    "Initial CS1566 missing uninitialized exact EventStore resource; no test ran",
+    "Agent initial dependency mapper followed symlink as data, then represented actual literal link; explicit compiler-directory reuse limitation",
+    "Parent initial proof-envelope equality reader refused on three extra identity fields; all original fields exact; original reader/finite observed tool error preserved. Original PTY bytes remain in tool record, not claimed as separately captured raw stream. Corrected reader passed without product/test replay."
+  ],
+  "newSourceScope": {
+    "utc": "2026-11-08T04:15:55.183044+00:00",
+    "beforeBytes": 547700,
+    "beforeSha256": "5b958b10f235b14a91f778e233dd7867feebfbece2f850cc782f28fec3615c05",
+    "appendBytes": 7216,
+    "afterBytes": 554916,
+    "afterSha256": "19b658542eb8c83ac5c2f66dbf3eb7002d005dd58237e866fe95a59856d1aebf",
+    "entirePriorPrefixPreserved": true,
+    "commonQ": "6c153e487fee48cd5ba13edb4b59f99cb0a3c0f0",
+    "currentMutableInputsProtectedButDeferredToFinalFunctionalEnrollment": true
+  },
+  "minimalPrerequisite": {
+    "commonQ": "6c153e487fee48cd5ba13edb4b59f99cb0a3c0f0",
+    "realNewLegacyAndCurrentDescendantsPending": true,
+    "currentBuildsCatalogAndTool": "b470/4.44.12 retained",
+    "currentMutableSpecAndUntrackedFiniteReceipts": "Protected canonical inputs deferred to later final functional E7d8 common source; not claimed pushed or excluded from final diff",
+    "noLocalWholeTupleOrPackagedProbe": true
+  },
+  "actualFirstHostedHxp020PredicateObserved": false,
+  "hostedNativeCredit": false,
+  "physicalCampaignCredit": false,
+  "wholeStoryAcceptance": false,
+  "originalRaw421mbReviewException": "UNANSWERED",
+  "step": "03 in progress"
+}

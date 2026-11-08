@@ -1,0 +1,166 @@
+{
+  "utc": "2026-11-07T18:07:07.633254+00:00",
+  "source": "a77067de1d9eb83fa3c9d42a453c5661fab19acb",
+  "actualPrTestMerge": "e62b95349122bfd1e9ac0abe9ed374bdd057a7fa",
+  "run": 42394838056,
+  "attempt": 1,
+  "liveJob": 128469876473,
+  "actualArtifact": {
+    "id": 13584731336,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU4NDczMTMzNg==",
+    "name": "live-sidecar-test-results",
+    "size_in_bytes": 1418284,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13584731336",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13584731336/zip",
+    "expired": false,
+    "digest": "sha256:46df8f238ff2e952f793147b860c90273bd3bddb0ce0ab454bf13d5611ea0edd",
+    "created_at": "2026-11-07T18:02:53Z",
+    "updated_at": "2026-11-07T18:02:53Z",
+    "expires_at": "2026-11-14T18:02:51Z",
+    "workflow_run": {
+      "id": 42394838056,
+      "repository_id": 1155154671,
+      "head_repository_id": 1155154671,
+      "head_branch": "fix/public-platform170-builds44412-a4d95c8a",
+      "head_sha": "a77067de1d9eb83fa3c9d42a453c5661fab19acb"
+    }
+  },
+  "all62ArtifactMembersSafeAndFullyHashed": true,
+  "actualTrx": {
+    "bytes": 1028095,
+    "sha256": "a55ad528d4d22ee9a1bf453031f2d3da19cec4b2e46f2bcffcf44f129dcb1c40"
+  },
+  "counters": {
+    "total": "334",
+    "executed": "330",
+    "passed": "321",
+    "failed": "9",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "4",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "all334OriginalCaseNamesAnd4ExistingNotExecutedPreserved": true,
+  "newActualNineFailures": [
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: True)",
+      "duration": "00:00:02.1090000",
+      "messageBytes": 251,
+      "messageSha256": "0bac162fdb965d87c3a207ff60cfe4522d90e01f9aa80ed70fd26ab657dc7df3",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:38545: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: False)",
+      "duration": "00:00:01.0260000",
+      "messageBytes": 251,
+      "messageSha256": "3419f0188b8615105fb38ac29760b560038a2d4db1a7bd3eec8320c0f597a06b",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:46525: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: False)",
+      "duration": "00:00:01.0270000",
+      "messageBytes": 251,
+      "messageSha256": "5074b48126748cca47874ba0120b6708cd9cbdfefc4097504030dd11a052f1f3",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:44149: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: False)",
+      "duration": "00:00:00.9250000",
+      "messageBytes": 251,
+      "messageSha256": "bdf18b6b88a1f8d1def8e448f2030d5933165720bfe57b83f1613e661c4735e4",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:36815: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: True)",
+      "duration": "00:00:00.9270000",
+      "messageBytes": 251,
+      "messageSha256": "7974ca88223d1403ff025edcd6eedddccea3fc9d9106707de737a6e498e2bf59",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:43929: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: True)",
+      "duration": "00:00:00.9350000",
+      "messageBytes": 251,
+      "messageSha256": "d7008f4563d7357fc36b94e42011763504ef8df58570e6a480ec62f3e23cc86d",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:46491: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyCallbackCaughtETagLossRetainsItsExactFenceAndRefusesSuccessor",
+      "duration": "00:00:00.9120000",
+      "messageBytes": 251,
+      "messageSha256": "c5b4869b405d18bcbd13ec47b6981333879ccff3f09f6fd8e53695380ca5a328",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:40325: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"escaping-pipeline\")",
+      "duration": "00:00:00.9170000",
+      "messageBytes": 251,
+      "messageSha256": "8cc13ac5d5813375de6b23f0909418475af3431530c88065b0c5a83eae6a731f",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:34545: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    },
+    {
+      "name": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"dapr-error-header\")",
+      "duration": "00:00:00.8850000",
+      "messageBytes": 251,
+      "messageSha256": "407a7a44ed1515edfa6be0a2b3c0586266ac885879d73de6f13e59d44a77276a",
+      "firstMessageLine": "System.IO.IOException : Failed to bind to address http://127.0.0.1:39749: address already in use.",
+      "deadlineOrTimeout": false,
+      "nativeGrpcBindSignaturePresent": false,
+      "applicationBindAddressInUse": true,
+      "stackSite": "NativeActorCatalogLiveTests.RunNativeBoundariesAsync:227"
+    }
+  ],
+  "allNinePassedOnPreviousFf8Source": true,
+  "previousSingleMutualTlsFailurePassedOnNewA770Source": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogHostedLiveTests.HostedTargetsAndProtectedDaprReadbackAgreeAcrossPrepareCommitAndRollback(mutualTls: True)",
+  "actualApplicationCallerPath": "tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NativeActorCatalogLiveTests.cs",
+  "callerActualBlob": "e52b870c49d0e1cce23676b4cbc614f0f91025cc",
+  "callerBlobUnchangedAtEarlierSources": {
+    "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1": "e52b870c49d0e1cce23676b4cbc614f0f91025cc",
+    "a4d95c8aecf927f6a1871dce653234a1f89048bf": "e52b870c49d0e1cce23676b4cbc614f0f91025cc",
+    "ff8f8aab70cbdad1bf06fe8f71b0666c25239967": "e52b870c49d0e1cce23676b4cbc614f0f91025cc"
+  },
+  "sourceFinding": "Shared helper now retains app port5 until StartApplicationAsync. NativeActorCatalogLiveTests starts sidecar first, then calls app.StartAsync directly at line227 without handing over its own still-reserved app port. All nine failures are that same application bind path. This is a missed caller in the a770 fixture adaptation; no third-party holder is needed to explain it.",
+  "otherCurrentSourceProofs": "CI all6 jobs/original20 projects/native9/newpure20/verified empty cleanup/PF0263/published-compatibility444 PASS; live334 overall FAILED321passed9failed4existingNotExecuted",
+  "rootMainManualOrStoryAcceptance": false,
+  "noUnchangedRetryMergeRuleWriteOrFailedGateWaiver": true
+}

@@ -1,0 +1,70 @@
+{
+  "utc": "2026-11-08T04:02:50Z",
+  "actualFailedCallerSource": "d94e7be2f9337b6dfab49ae7c7fe01b285eaa435",
+  "actualFailedCallerRun": 42442761252,
+  "actualFailedCallerAttempt": 1,
+  "actualNativeRule": "HXP020",
+  "actualFirstFailedRunProofPredicate": "UNOBSERVED; generic trusted-parent refusal only",
+  "all15UnitCaseNameOutcomeMultisetsExactToQualifiedF064": true,
+  "actualUnitPasses": 6393,
+  "actualUnitFailures": 0,
+  "actualUnchangedOptionalSkips": 14,
+  "actualUnitComparisonProof": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-d94e-first-failed-ci-primary/blocking-test-results/parent-independent-all15-case-identities-exact-to-qualified-f064.json",
+    "sha256": "1da28a549b7def5a8a6c711fee30453a22fc8af6d0bbd1633f6bf2906f978d35"
+  },
+  "publishedPlatformSource": "52bc7986170f268afaef6227d0519a1d662af256",
+  "publishedBuildsSource": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "publishedBuildsVersion": "4.44.13",
+  "authenticatedPublishedPair": {
+    "appHostSha256": "5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252",
+    "toolingSha256": "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d"
+  },
+  "staticFinding": "The ten-pair published Platform allowlist lacks this complete pair. Published CompositionEngine persists the non-null state directory before invoking --validate-platform; published AppHost projects only that directory to null. Platform requires the exact recognized published pair for this exception to full persisted-plan equality. A correctly formed new-pair projected validation therefore cannot pass the unchanged exception.",
+  "parentActuallyRead": [
+    "complete PlatformPartiesValidationContext.cs",
+    "complete PlatformOrdinaryDeclarationCompatibilityTests.cs",
+    "complete PlatformPartiesValidationHandoffTests.cs",
+    "published CompositionEngine state-directory assignment, plan persistence and preflight invocation",
+    "published AppHost compose-before-Build-and-stdin control flow",
+    "PlatformPartiesRunProof exact persisted-plan rejection",
+    "complete 5347-byte read-only finding",
+    "complete 7020-byte final enrollment preparation plan"
+  ],
+  "readOnlyExtensionIndependentHashAudit": {
+    "files": 282,
+    "bytes": 14414386,
+    "allBodiesMatched": true,
+    "indexSha256": "d4d62db9187866427c0a375c2fac364a171518875096dd9c3794c7811141b373",
+    "checkpointSha256": "93d128a6e023601451716dbf3722b13c5676373680792d7e65629644fa70cf02"
+  },
+  "authorizedFix": "Only one authenticated complete-pair production addition and the existing complete cross-pair security matrix extension. Preserve first pure regression red and final exact four-case green; owning Release/package compiler on final committed source. No guard/key/source/plan/declaration/budget relaxation.",
+  "unselectedProposal": "Local actual published AppHost validation control: existing no-local-AppHost/executable-probe restriction remains.",
+  "soleSpecScope": {
+    "beforeBytes": 540838,
+    "beforeSha256": "54f90f333ddd2ead1ff303c071b2980f77a557aa33b729517cf7ca19ed3d4104",
+    "afterBytes": 547700,
+    "afterSha256": "5b958b10f235b14a91f778e233dd7867feebfbece2f850cc782f28fec3615c05",
+    "entirePriorPrefixPreserved": true,
+    "frozenBlockUnchanged": true
+  },
+  "initialRemoteReadOnlyPreflight": {
+    "actualMain": "64e18232bf40c28b367cce7d1297630b42021512",
+    "actualActor": "jpiquot",
+    "actualActorId": 6775094,
+    "openPlatformPullRequests": 0,
+    "requiredApprovingReviews": 1,
+    "codeOwnerReviewRequired": true,
+    "codeOwner": "jpiquot",
+    "rulesetsUnchanged": [24657106, 24657217, 24657570],
+    "normalSourceReleaseWorkflow": 409894074,
+    "tagCreationPrefixRemainsPreviouslyAuthorized": "refs/tags/v[0-9]*",
+    "immutableTagsHaveNoBypass": true,
+    "sourceAndFullCommandReceipts": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108"
+  },
+  "nativeOrLifecycleCredit": false,
+  "newPublicationOrSourceCutsInThisScope": false,
+  "wholeStoryAcceptance": false,
+  "originalRawBaselineModelReadException": "UNANSWERED, not inferred from older specific bypass approvals",
+  "step": "03 in progress"
+}

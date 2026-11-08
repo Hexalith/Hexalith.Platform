@@ -1,0 +1,95 @@
+{
+  "utc": "2026-11-08T04:34:58.454151+00:00",
+  "source": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+  "actualTestedTemporaryMerge": "9ffa6688e111bb0e906f3938eb79cc903fd29617",
+  "run": 42446877905,
+  "attempt": 1,
+  "event": "pull_request",
+  "primaryAudit": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/pr-catalog-first-success-primary/parent-PR33-first-success-primary-sdk-catalog-hosted-audit.json",
+    "bytes": 235742,
+    "sha256": "f5b2fc61d11b9ad226e76735b62ffd51bcf333c376e1bf58a84af6abd02056a4"
+  },
+  "all5ApiArchivesAll698MemberBodiesAuthenticated": [
+    {
+      "name": "catalog-builder-consumer-binding-4.1.0",
+      "id": 13604305204,
+      "archiveSha256": "sha256:13831b1db68644ba3ef421f9f5cb9baa181e835b729a554c45152685e16ff0e8",
+      "members": 237,
+      "memberBytes": 42613860
+    },
+    {
+      "name": "catalog-builder-consumer-binding-3.130.1",
+      "id": 13604171361,
+      "archiveSha256": "sha256:93a50cb4e3aa8e603532ee4b7c5a149d4f408a22c91b660bc16c238150e40975",
+      "members": 115,
+      "memberBytes": 16605168
+    },
+    {
+      "name": "catalog-builder-consumer-binding-3.132.1",
+      "id": 13604135936,
+      "archiveSha256": "sha256:0344f29c6780dff71573904d99281d75e09543de214addf66eceda3c451a0ba3",
+      "members": 116,
+      "memberBytes": 17611745
+    },
+    {
+      "name": "catalog-builder-consumer-binding-3.130.2",
+      "id": 13603913025,
+      "archiveSha256": "sha256:74199ea1ab14eb913b4455ee85799f84d050a337021719d7295f86a14416869c",
+      "members": 115,
+      "memberBytes": 16612848
+    },
+    {
+      "name": "catalog-builder-consumer-binding-3.130.0",
+      "id": 13603304682,
+      "archiveSha256": "sha256:f217d0b76f006fa7ff1eb627fa2d16bb2cc5b74777958286fd05d2c0562d434b",
+      "members": 115,
+      "memberBytes": 16605168
+    }
+  ],
+  "sdkResults": [
+    {
+      "sdk": "3.130.0",
+      "cases": 15,
+      "retainedBinaryBodiesHashed": 49,
+      "manifestOnlyBodies": 307
+    },
+    {
+      "sdk": "3.130.1",
+      "cases": 15,
+      "retainedBinaryBodiesHashed": 49,
+      "manifestOnlyBodies": 307
+    },
+    {
+      "sdk": "3.130.2",
+      "cases": 15,
+      "retainedBinaryBodiesHashed": 49,
+      "manifestOnlyBodies": 307
+    },
+    {
+      "sdk": "3.132.1",
+      "cases": 15,
+      "retainedBinaryBodiesHashed": 49,
+      "manifestOnlyBodies": 307
+    },
+    {
+      "sdk": "4.1.0",
+      "cases": 15,
+      "retainedBinaryBodiesHashed": 49,
+      "manifestOnlyBodies": 307
+    }
+  ],
+  "finiteCapabilityCases": 236,
+  "publicOwnerCases": 14,
+  "actualRetainedPublicOwnerBodies": 75,
+  "actualSourceClosureAndExactPublicBodiesVerified": true,
+  "allLoadedArtifactRolesPreserved": true,
+  "limitations": [
+    "Only retained binary bodies were rehashed; all absent bodies are explicitly manifest-only.",
+    "Legacy baseline receipt omits loadedArtifacts; its retained executable bodies were independently hashed against the identity manifest.",
+    "Existing sample/Tenants catalog fixture controls; these are not reference native services.",
+    "All reports explicitly refuse candidate acceptance; consumer binding checks do not confer runtime acceptance."
+  ],
+  "otherCurrentLegacySourceAndFreshMainPublicationStillPending": true,
+  "nativeOrWholeStoryCredit": false
+}

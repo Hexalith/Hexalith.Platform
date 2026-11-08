@@ -1,0 +1,181 @@
+{
+  "utc": "2026-11-07T18:43:03.497803+00:00",
+  "source": "af13e0aa4f02a97457afa03a19055f6c2320e55a",
+  "pr": "https://github.com/Hexalith/Hexalith.EventStore/pull/396",
+  "allIndependentProofs": [
+    {
+      "parentPath": "eventstore-native-app-handoff-review/parent-independent-closed-root-body-link-census-audit.json",
+      "bytes": 1091,
+      "sha256": "8c8411f84e3a8f858a3ff6659269a17c078311a70fa61add2da6a05031fb2302",
+      "actualReceipt": {
+        "startedUtc": "2026-11-07T18:22:29.925683+00:00",
+        "finishedUtc": "2026-11-07T18:22:44.868536+00:00",
+        "closedRoot": "/home/administrator/.cache/hexalith/story-2-8/eventstore-final-public-caller-native-app-handoff-first-failure-20261107",
+        "indexSha256": "df996aa373537d6871fbede8785bc29e3e78e308d61fcdfe8e982a6591dcec87",
+        "checkpointSha256": "6af34de19a6ea644d11c1ca02b463cc212423a2fcf38842b762bd7d9288be3b8",
+        "reportSha256": "aefb80a6dd6dcc7ae69a981aaa8145868b063b2e9348fed9cff290f3b90ab867",
+        "allActualIndexedBodyHashesAndSizesVerified": true,
+        "files": 39567,
+        "bytes": 2038356290,
+        "declaredLinks": 21,
+        "exactNonGitCensusAndAllDeclaredLinkTargets": true,
+        "statOnlyFifosNeverOpened": 0,
+        "allAnchorsVerifiedIncludingCircularIndexSeal": 27,
+        "anchorsInVerifiedRegularBodyIndex": 26,
+        "circularIndexSealAnchorVerifiedSeparately": true,
+        "implementationRootNeverWrittenByThisAudit": true,
+        "scope": "Independent sealed-body/census audit. Separate command/XML/source-role audit still required before caller delivery.",
+        "hostedNativeManualStoryAcceptance": false
+      }
+    },
+    {
+      "parentPath": "eventstore-native-app-handoff-review/parent-independent-source-input-output-and-one-line-handoff-audit.json",
+      "bytes": 1903,
+      "sha256": "6652100f971a299d66f56e32c6590d9708e78496e4f9bd5c4036ea45ba622a50",
+      "actualReceipt": {
+        "utc": "2026-11-07T18:27:01.234350+00:00",
+        "source": "af13e0aa4f02a97457afa03a19055f6c2320e55a",
+        "tree": "1a05f9c2a7c9fc9962188f4d78d00f9a162c069c",
+        "parent": "a77067de1d9eb83fa3c9d42a453c5661fab19acb",
+        "entire72818ByteCombinedProposalAll7ChunksAnd10166ByteReportRead": true,
+        "entire1404ByteAdditiveRead": true,
+        "exactOneLineCallbackAndCancellationOrderingPreserved": true,
+        "all10307OtherObjectsModesAndAllPinsExact": true,
+        "all334RegistrationsAssertions4GuardsAndExistingNineFailedRegressionsPreserved": true,
+        "all11ConstructorExpressionsAnd3ActualAppConsumerFilesAudited": [
+          "tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/NativeActorCatalogLiveTests.cs",
+          "tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/RouteCatalogHostedLiveTests.Transport.cs",
+          "tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/RouteCatalogHostedLiveTests.cs"
+        ],
+        "actualFullCompileArgvAndPrivateControlsAndBothStreamsVerified": true,
+        "all10299ActualInputsMappedToGitIncludingOneResolvedDocLink": true,
+        "explicitActualCrlfRenderedInputs": [
+          {
+            "path": "global.json",
+            "actualBytes": 148,
+            "actualSha256": "8f1a6f3d126acf6d138769cb8c312eae3bbecdd07f64b43bb482b1e088e1e765",
+            "canonicalGitObject": "100644 blob bad1806f68f26e0e8c3af8a2a5d65689e51c9e1d",
+            "actualGitAttributes": [
+              "global.json: text: set",
+              "global.json: eol: crlf"
+            ]
+          }
+        ],
+        "all1557CompiledBodies310760486BytesAndExactCensusVerified": true,
+        "actualGeneratedInformationalVersion": "4.1.0+af13e0aa4f02a97457afa03a19055f6c2320e55a",
+        "compileWarnings": 0,
+        "compileErrors": 0,
+        "meaningfulLocalTestsRun": 0,
+        "allPreviousActualFirstFailuresAndOldPassingCampaignsRetainedNoCreditTransfer": true,
+        "parentSelectedSourceFindings": [],
+        "closedRootWritten": false,
+        "freshHostedLiveNativeManualOrStoryAcceptance": false
+      }
+    },
+    {
+      "parentPath": "eventstore-native-app-handoff-review/proposal-read-index.json",
+      "bytes": 3836,
+      "sha256": "c8c31478060803e11fde5131a661a42a0b3f8e1b43a71f6e9110ab9273659094",
+      "actualReceipt": {
+        "actualRoot": "/home/administrator/.cache/hexalith/story-2-8/eventstore-final-public-caller-native-app-handoff-first-failure-20261107/Hexalith.EventStore",
+        "base": "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1",
+        "prior": "a77067de1d9eb83fa3c9d42a453c5661fab19acb",
+        "head": "af13e0aa4f02a97457afa03a19055f6c2320e55a",
+        "systemTempDiffFile": "/tmp/story-2-8-parent-E396-af13-complete-ky4xg5xg.diff",
+        "completeCombinedBytes": 72818,
+        "completeCombinedLines": 1246,
+        "completeCombinedSha256": "66f76401b7935d979d017835ce39181e5d652eb0410b5d718df325f7736da676",
+        "actualAdditiveBytes": 1404,
+        "actualAdditiveSha256": "aec1ce605d7f3428c0dbf6c53c7efdfe83cdcf8a3fa2f51632084db3b0ffb8a9",
+        "canonicalShortGitlinkHunksAndAllSourceFromReadOnlyImmutableGitObjects": true,
+        "chunks": [
+          {
+            "chunk": 0,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0000.txt",
+            "bytes": 12000,
+            "sha256": "ddb719ae681745cda7cbc1122e2b4eccec7c3a8ad6dbd59515faf6883b8f96c8",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:43.083000+00:00"
+          },
+          {
+            "chunk": 1,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0001.txt",
+            "bytes": 12000,
+            "sha256": "869e87b746b5112d11298b1783c13ad408de3e61e9f966e97b7613cb5d935fbd",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:43.083023+00:00"
+          },
+          {
+            "chunk": 2,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0002.txt",
+            "bytes": 12000,
+            "sha256": "96ebe7ac134d2168996bc389765dbf160e7ab934735130716370510a17e6f53a",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:51.736240+00:00"
+          },
+          {
+            "chunk": 3,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0003.txt",
+            "bytes": 12000,
+            "sha256": "faa42f92edeeca7f915d287ef044f0e54853010bee03c2c03852ba62ebbf5e74",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:51.736268+00:00"
+          },
+          {
+            "chunk": 4,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0004.txt",
+            "bytes": 12000,
+            "sha256": "af89705b5bbd9dbd56bcaa4fcbda6ad8d605016e66c5bc955ee0f9a881509eee",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:59.891025+00:00"
+          },
+          {
+            "chunk": 5,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0005.txt",
+            "bytes": 12000,
+            "sha256": "6d1875bee5eb779e36123b8784e546bf6f426526f2df9eb602fa916db01cdc8e",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:21:59.891051+00:00"
+          },
+          {
+            "chunk": 6,
+            "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-native-app-handoff-review/complete-combined-chunks/0006.txt",
+            "bytes": 818,
+            "sha256": "5874db036035b3419ef048d6518d08015c676b8b6e67d3439a70fc5fce7d5352",
+            "readIntoParentContext": true,
+            "readUtc": "2026-11-07T18:22:10.125445+00:00"
+          }
+        ],
+        "allChunksActuallyRead": true,
+        "entireReportActuallyReadIntoParentContext": true,
+        "reportBytes": 10166,
+        "reportSha256": "aefb80a6dd6dcc7ae69a981aaa8145868b063b2e9348fed9cff290f3b90ab867"
+      }
+    },
+    {
+      "parentPath": "eventstore-native-app-handoff-af13-delivery/actual-af13-source-delivery.json",
+      "bytes": 964,
+      "sha256": "75feb7a1eb9ad008f2255d04c8d07626b974cf9fb6f5803fe45c503ad974701e",
+      "actualReceipt": {
+        "utc": "2026-11-07T18:28:58.125586+00:00",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore/pull/396",
+        "source": "af13e0aa4f02a97457afa03a19055f6c2320e55a",
+        "parent": "a77067de1d9eb83fa3c9d42a453c5661fab19acb",
+        "incomingMain": "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1",
+        "tree": "1a05f9c2a7c9fc9962188f4d78d00f9a162c069c",
+        "ordinaryFeatureFastForwardPushes": 1,
+        "normalPrMetadataUpdates": 1,
+        "exactOneLineAppHandoffOnly": true,
+        "all334OriginalRegistrationsAssertionsAndNineLiveRegressionsPreserved": true,
+        "allClosedBodiesSourceInputsAndCompiledOutputsParentIndependentlyVerified": true,
+        "rulesUnchangedAndWrittenZero": true,
+        "allExactFullSourceMessageAndCurrentTitleOwningLocked21ChecksPassed": true,
+        "allFirstA770OutcomesRetained": "CI all6/native9/pure20/PF0263/compat444 PASS; live334:321pass9missed-app-handoff-fail4existingNotExecuted",
+        "unchangedFailedRunRetried": false,
+        "newHostedNativeOrStoryAcceptance": false
+      }
+    }
+  ],
+  "freshSourceHostedAcceptancePending": true,
+  "wholeStoryOrCandidateAcceptance": false
+}

@@ -1,0 +1,86 @@
+{
+  "utc": "2026-11-07T20:16:38.298464+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "pr": 396,
+  "actualSource": "f42a26e846bcffa052ede7a5ee890d078fca18ac",
+  "actualPrTestMerge": "b7c9a7a0fafc4b7c43fa366f8c41fd0f2b81f75e",
+  "actualTree": "da38fbf1c24b8ad7d431abe5f6f449b30db678fc",
+  "run": 42407851396,
+  "attempt": 1,
+  "ordinaryJob": 128509329556,
+  "all6OrdinarySourceJobsPassed": true,
+  "all20OriginalIsolatedProjectCountsAndNamesRetainedInPrimary": true,
+  "actualOriginalNative9NamesAllPassed": [
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRefusesSymbolicDirectory",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeAssemblyObservationTests.PrivateDiagnosticRetainsFirstBytesAndRefusesOverwrite",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-attempt\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-context\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"foreign-run\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"changed-mapping\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.NativeDiagnosticBindingTests.PublishedMappingRoutesScrubbedLocalControlsAndRefusesMismatches(mutation: \"valid-local\")",
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayReadinessAndOwnedPersistenceEndStateAsync",
+    "Hexalith.EventStore.Platform.IntegrationTests.GatewayPersistenceTests.GatewayRefusesAnonymousCommandStatusAsync"
+  ],
+  "actualNew20PortOwnershipControlsAllPassed": [
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.AcquisitionFailureIsNotOverwrittenByCleanupFailure",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.AppReservationReleaseFailurePreventsStartupAndCleansOtherPortsAsync",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.AppStartupCannotStealAnySidecarReservationAsync",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ApplicationFailureIsNotOverwrittenByCleanupFailureAsync",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ApplicationFailurePreservesFirstOutcomeAndReleasesPendingSidecarPortsAsync(synchronous: False)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ApplicationFailurePreservesFirstOutcomeAndReleasesPendingSidecarPortsAsync(synchronous: True)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ApplicationHandoffReleasesOnlyItsPortAtConsumerStartupAsync",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ConstructionRetainsAllSixReservations",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.DisposalAttemptsAllReleasesAndPreservesFirstReleaseFailure",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.DisposalBeforeStartupReleasesEveryOwnedReservationExactlyOnce",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.DisposalNeverReleasesAnotherFixturesReservations",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 0)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 1)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 2)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 3)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 4)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.PartialAcquisitionReleasesExactlyAlreadyAcquiredReservations(failAt: 5)",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.ProcessLaunchFailurePreservesFirstOutcomeAndReleasesUnusedAppPort",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.SidecarHandoffReleasesOnlyItsFivePortsAtConsumerStartup",
+    "Hexalith.EventStore.Server.Tests.Routing.RouteCatalogPortReservationTests.SidecarReservationReleaseFailurePreventsLaunchAndCleansOtherPorts"
+  ],
+  "allDeclaredDiagnosticHashesAndBothNativeCopiesExact": true,
+  "all6OwnedInventoriesVerifiedEmpty": true,
+  "originalExistingNotExecutedAcross20": 49,
+  "loadedTestingAssembliesActual": [
+    {
+      "identity": "Hexalith.EventStore.Platform.IntegrationTests, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+      "informationalVersion": "4.1.0+b7c9a7a0fafc4b7c43fa366f8c41fd0f2b81f75e",
+      "moduleVersionId": "f526b8c7-42cd-49e1-a5d4-598f1dc339df",
+      "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/04750871fbba5ce20dab62cbb682ebef/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Platform.IntegrationTests.dll",
+      "sha256": "de8d0f629d69f01ad73032f9d19093d7027392dda85c0a5423aeaee9fa6fe363"
+    },
+    {
+      "identity": "Hexalith.EventStore.Testing, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+      "informationalVersion": "4.1.0+b7c9a7a0fafc4b7c43fa366f8c41fd0f2b81f75e",
+      "moduleVersionId": "c59c22ae-7945-446c-be05-1344a5075186",
+      "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/04750871fbba5ce20dab62cbb682ebef/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.dll",
+      "sha256": "0a536f88ace84fbb13f0b487de30c12024fb5856f2129cbf6f9cc61d45a33d29"
+    },
+    {
+      "identity": "Hexalith.EventStore.Testing.Integration, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null",
+      "informationalVersion": "4.1.0+b7c9a7a0fafc4b7c43fa366f8c41fd0f2b81f75e",
+      "moduleVersionId": "8fb605f6-ac8a-4ca9-a8f5-8233bfc278ee",
+      "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/04750871fbba5ce20dab62cbb682ebef/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/Hexalith.EventStore.Testing.Integration.dll",
+      "sha256": "f02e3c12a1cf068a22fe0fe1b80583f90672f30d3dfe5515b4b1d315b9d8a656"
+    },
+    {
+      "identity": "StackExchange.Redis, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46",
+      "informationalVersion": "3.4.31+9d17974fca",
+      "moduleVersionId": "789a4301-495e-461c-8124-1ae65e18ed80",
+      "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/04750871fbba5ce20dab62cbb682ebef/test-builds/bin/Hexalith.EventStore.Platform.IntegrationTests/release/StackExchange.Redis.dll",
+      "sha256": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909"
+    }
+  ],
+  "loadedTestingAssembliesAreCallerSourceRoleNotPublicSdkAuthority": true,
+  "firstOldLifecycle29Pass2FailPreserved": true,
+  "changedSourceLifecycle63ActualPassedReceipt": "parent-eventstore-pr396-f42-first-pf02-63-primary-audit-20261107.json",
+  "additionalSidecarAcceptanceNotGrantedByThisOrdinaryPrimaryAudit": true,
+  "newCallerMainOrManualOrWholeStoryAcceptance": false,
+  "all21ProjectCaseNamesAndOutcomesExactToPreviousAf13": true,
+  "allFourActualArtifactMemberBodiesIndependentlyVerified": true
+}

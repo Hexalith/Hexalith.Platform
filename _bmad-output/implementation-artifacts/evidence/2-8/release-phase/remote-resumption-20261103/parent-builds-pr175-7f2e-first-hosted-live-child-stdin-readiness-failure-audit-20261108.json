@@ -1,0 +1,40 @@
+{
+  "utc": "2026-11-08T00:17:14.464077+00:00",
+  "source": "7f2e0a79b0fbb8808fecd439bf323946ec7f0e67",
+  "run": 42427555992,
+  "attempt": 1,
+  "dotnetJob": 128568999658,
+  "status": "failure",
+  "actualFailedCase": "StandardInputDisposalDrainsWhileOwnerWriterRemainsOpenAsync",
+  "actualFailureTimeUtc": "2026-11-08T00:10:08.3106183Z",
+  "actualDuration": "10s564ms",
+  "actualDiagnostic": "stdin-control readiness timed out; childExited=False.",
+  "actualStackSites": [
+    "ReadReadinessFromChildAsync:342 inner333",
+    "RunPendingReadDisposalOwnerAsync:302/316",
+    "StandardInputDisposalDrainsWhileOwnerWriterRemainsOpenAsync:36"
+  ],
+  "moduleCounts": {
+    "total": 2850,
+    "passed": 2844,
+    "failed": 1,
+    "originalOptionalSkipped": 5
+  },
+  "build": "passed",
+  "laterEvidenceAndToolingProjects": "skipped after actual Module failure; no pass credit",
+  "fullLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/7f2e-first-dotnet-failure-log.stdout",
+    "bytes": 60774,
+    "sha256": "1a5a030ce3a39371c052fff7410063d4c9f6e42c799980366ad7fc66f8e91dcd"
+  },
+  "newOwnedStdoutDidNotResolveActualHostedFailure": true,
+  "actualChildStageAndHostedCauseUnobserved": true,
+  "hostedImage": "ubuntu-26.04 image20261101.186.1",
+  "hostedSdkObserved": "10.0.403",
+  "actualHostedRuntimeVersionAndProcessorCountNotInThisLog": true,
+  "noUnchangedRerunCancelMergeReleaseOrWaiver": true,
+  "codacyNowSuccessZeroAnnotations": true,
+  "sourcePackageJobsStillObservedInProgress": true,
+  "physicalManualDispatches": 3,
+  "actualCancellationRequests": 0
+}

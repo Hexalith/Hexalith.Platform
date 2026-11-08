@@ -1,0 +1,93 @@
+{
+  "utc": "2026-11-07T19:19:34.280502+00:00",
+  "source": "af13e0aa4f02a97457afa03a19055f6c2320e55a",
+  "pr": 396,
+  "integrationRun": 42401498916,
+  "attempt": 1,
+  "actualLiveJob": 128490061684,
+  "actualJobConclusion": "failure",
+  "actualOriginal334NamesExact": true,
+  "actualCounters": {
+    "total": "334",
+    "executed": "330",
+    "passed": "321",
+    "failed": "9",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "4",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "actualAllNineFailedNamesExactAsPreviousA770": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyCallbackCaughtETagLossRetainsItsExactFenceAndRefusesSuccessor",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"dapr-error-header\")",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"escaping-pipeline\")",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: True)"
+  ],
+  "actualEachNineFailureErrorInfo": "Dapr.DaprApiException : error invoke actor method: failed to lookup actor: api error: code = FailedPrecondition desc = did not find address for actor 'ETagActor/counter:tenant-a'",
+  "actualEachNinePriorContention": {
+    "attempts": 64,
+    "acquired": 64,
+    "refused": 0,
+    "cancelled": 0,
+    "remainingFences": 0
+  },
+  "actualEachNineFailureSourceLine": 332,
+  "previousNineApplicationBindErrorsNoLongerObserved": true,
+  "actualFourOriginalNotExecutedNames": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionBoundedIdentityProcessWorkerTests.RunBoundedOwnerWorkerAsync",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionRetiredInstallerProcessWorkerTests.InstallOrRecoverExactRetiredParticipant",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionScratchProcessWorkerTests.PersistOrRecoverOriginalNamedOwnerScratch",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionWatermarkProcessWorkerTests.ApplyPersistedHistoryAsync"
+  ],
+  "firstFf8MutualTlsFailurePassed": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogHostedLiveTests.HostedTargetsAndProtectedDaprReadbackAgreeAcrossPrepareCommitAndRollback(mutualTls: True)",
+  "artifact": {
+    "id": 13586493682,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU4NjQ5MzY4Mg==",
+    "name": "live-sidecar-test-results",
+    "size_in_bytes": 1417891,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13586493682",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13586493682/zip",
+    "expired": false,
+    "digest": "sha256:4016bbe06a80d79eb8a6963e89d2e124843bb2cc87844750c53e5255782adac8",
+    "created_at": "2026-11-07T19:11:51Z",
+    "updated_at": "2026-11-07T19:11:51Z",
+    "expires_at": "2026-11-14T19:11:50Z",
+    "workflow_run": {
+      "id": 42401498916,
+      "repository_id": 1155154671,
+      "head_repository_id": 1155154671,
+      "head_branch": "fix/public-platform170-builds44412-a4d95c8a",
+      "head_sha": "af13e0aa4f02a97457afa03a19055f6c2320e55a"
+    }
+  },
+  "actualArchiveAndAll62BodiesIndependentlyVerified": true,
+  "actualTrx": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-af13-first-live-sidecar-failure/extracted/live-sidecar/live-sidecar-results.trx",
+    "bytes": 1013112,
+    "sha256": "addb744dd0e531c5872043fb82a66fd12539f8d1863257180d938d52263f4198"
+  },
+  "retainedFullJobLog": {
+    "bytes": 12175921,
+    "sha256": "214f0a52ce5ce922815187a93c8ee9bf05d7b7e27c167f146479862fa12e3333"
+  },
+  "initialParentReaderMistookTextMessagesAsErrorInfo": true,
+  "correctedReaderUsesExactOutputErrorInfoMessageWithoutSourceOrTestReplay": true,
+  "actorRegistrationRootCauseNotYetProved": true,
+  "placeholderTcpReservationMaySatisfyDaprAppProbeIsHypothesisOnly": true,
+  "noUnchangedRetryOrFailureWaiver": true,
+  "otherCompatibilityJobStillRunningAtCapture": true,
+  "newSourceMergeMainManualOrStoryAcceptance": false
+}

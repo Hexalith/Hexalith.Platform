@@ -1,0 +1,89 @@
+{
+  "utc": "2026-11-08T04:31:18.702708+00:00",
+  "sourceConfiguration": {
+    "phase": "pr",
+    "source": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+    "legacy": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+    "testMerge": "9ffa6688e111bb0e906f3938eb79cc903fd29617",
+    "tree": "b076dd6bea20c1613fe24b1c44f522801c7a6c50",
+    "event": "pull_request",
+    "branch": "fix/admit-builds44413-validation-cc0b961",
+    "pr": 33,
+    "tupleRun": 42446877813,
+    "catalogRun": 42446877905
+  },
+  "normalDelivery": {
+    "utc": "2026-11-08T04:27:12.278037+00:00",
+    "source": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+    "branch": "fix/admit-builds44413-validation-cc0b961",
+    "pr": 33,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/33",
+    "normalPushAndPrCreatedOnce": true,
+    "branchRulesetBeforePushExactToInitial": true,
+    "noPolicyWritesPerformed": true,
+    "mergeBypassUsed": false,
+    "freshHostedSourceQualificationPending": true,
+    "wholeStoryAcceptance": false
+  },
+  "parentLocalAudit": {
+    "utc": "2026-11-08T04:26:56.970584+00:00",
+    "Q": "6c153e487fee48cd5ba13edb4b59f99cb0a3c0f0",
+    "L": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+    "M": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+    "allLocalSourceAndDocumentaryChecksPassed": true,
+    "extensionFiles": 168,
+    "extensionBytes": 104227724,
+    "anchorsVerified": 14,
+    "physicalCanonicalMBlobs": 22323,
+    "allActualCommandCapsulesAndInputMaps": 15,
+    "actualPureGuard": {
+      "allowedMetadataDifferences": [
+        ".config/dotnet-tools.json",
+        "eng/builds-tuple.json",
+        "eng/legacy-tuple-source.json",
+        "eng/tuple-ci-suites.json",
+        "hexalith-platform.json",
+        "references/Hexalith.Builds",
+        "references/Hexalith.Parties",
+        "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+      ],
+      "binaryEquivalenceClaimed": false,
+      "currentSource": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+      "legacySource": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+      "purpose": "same-code-legacy-tuple-regression",
+      "qualificationCredit": false,
+      "requiredCount": 349,
+      "sourceEquivalence": "verified"
+    },
+    "fullBothProposalsAndReportReadByParent": true,
+    "allEightHistoricalEntriesAndNonEightCommonObjectsVerified": true,
+    "currentMutableInputsProtectedAndDeferredToFinalFunctionalEnrollment": true,
+    "honestFirstStagedReaderRefusalRetained": true,
+    "hostedQualification": false,
+    "runtimeCasesReplayedByParent": false,
+    "nativeOrWholeStoryCredit": false,
+    "agentCheckpointSha256": "1ce594e756c10539c0abb02cc2136145ad57e13fa4b0a87ae852e0925bc4973c"
+  },
+  "netProposal": {
+    "bytes": 4396,
+    "sha256": "c30e0d5272f5251c371e8cf11a36893629e944452968c827c83a969abaf5b096"
+  },
+  "legacyToCurrentProposal": {
+    "bytes": 18130,
+    "sha256": "904a041cc8479552f03b28ac2f808d6e4676f5dcf0934f15a1a9d86779a070ea"
+  },
+  "bothProposalsAllFullMessagesAndReportActuallyReadByParent": true,
+  "parentLocalFinalAuditSha256": "bf9b5ed4773c115715c1866576570083a4af9eb6ceb033b1c064ab9a37f71ee8",
+  "agentExtension": {
+    "files": 168,
+    "bytes": 104227724,
+    "anchors": 14,
+    "indexSha256": "15e1923311eb9f4fc6f83a5aff69410cdf335e20ac21576f9afcd78e41a29567",
+    "checkpointSha256": "1ce594e756c10539c0abb02cc2136145ad57e13fa4b0a87ae852e0925bc4973c"
+  },
+  "firstStagedReaderRefusal": "IndexError before checking; next normal L commit ran. Actual committed L entries verified afterward; no successful pre-commit proof/history rewrite claimed.",
+  "soleLiveExternalWatcherSession": 30638,
+  "sourceHostedQualification": "RUNNING",
+  "mergeBypassPolicyPublicationCampaignAction": false,
+  "wholeStoryAcceptance": false
+}

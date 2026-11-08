@@ -1,0 +1,238 @@
+{
+  "utc": "2026-11-07T22:29:36.956826+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "source": "f0640604f85d7f3f59abad65beb649d55578f29c",
+  "run": 42418257508,
+  "attempt": 1,
+  "baselineJob": 128540927320,
+  "qualificationJob": 128544109042,
+  "overallConclusion": "failure",
+  "firstFailure": {
+    "checkpoint": {
+      "scenario": "retry",
+      "step": "cleanup-retry"
+    },
+    "failureType": "ValueError",
+    "observedAtUtc": "2026-11-07T22:22:31.230194+00:00",
+    "phase": "scenario"
+  },
+  "actualCheckpoint": {
+    "scenario": "retry",
+    "step": "cleanup-retry"
+  },
+  "exactPrimaryArtifact": {
+    "id": 13592194981,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU5MjE5NDk4MQ==",
+    "name": "ci-lifecycle-observations",
+    "size_in_bytes": 70711,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13592194981",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13592194981/zip",
+    "expired": false,
+    "digest": "sha256:ab132624acd6ce29e2869e8a336095f77495f681c5b996de3d52a256957b5fdf",
+    "created_at": "2026-11-07T22:22:45Z",
+    "updated_at": "2026-11-07T22:22:45Z",
+    "expires_at": "2026-11-21T22:22:43Z",
+    "workflow_run": {
+      "id": 42418257508,
+      "repository_id": 1170072276,
+      "head_repository_id": 1170072276,
+      "head_branch": "main",
+      "head_sha": "f0640604f85d7f3f59abad65beb649d55578f29c"
+    }
+  },
+  "all49ActualPrimaryMemberBodiesVerified": true,
+  "actualPrimaryMemberBytes": 292746,
+  "actualObservations": 60,
+  "wholeToolManifestSha256": "cf290cd6a94b5f7a0c240122335c1046fae5711f20667b3d129b94ab7b52aabe",
+  "mappingHash": "fc25c8e713a9b815b6a62b5ef90c62506a5914eef3d63027e586bbad0000fd8a",
+  "actualOwnerIds": {
+    "passing": "281b2c1a5946dcf9bbbc9a29d1f3ecc0",
+    "failing": "a8cd30650162084bb6d5936280a00e02",
+    "retry": "c70cb88218d6a1c70df616895ba48813",
+    "peer": "2e33368e3c238980e269456f958c8142"
+  },
+  "actualPassingAndIntentionalFailingNativeResults": [
+    {
+      "label": "passing",
+      "case": "Hexalith.Parties.Platform.LifecycleTests.LifecycleQualificationTests.PersistRealPartyThenObserveExplicitQualificationControl",
+      "outcome": "Passed",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualPublicTerminal": {
+        "cause": "tests-completed",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "passed",
+        "recordedAt": "2026-11-07T22:15:11.0437861Z"
+      }
+    },
+    {
+      "label": "failing",
+      "case": "Hexalith.Parties.Platform.LifecycleTests.LifecycleQualificationTests.PersistRealPartyThenObserveExplicitQualificationControl",
+      "outcome": "Failed",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actualPublicTerminal": {
+        "cause": "test-failure",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "failed",
+        "recordedAt": "2026-11-07T22:18:11.9618520Z"
+      }
+    }
+  ],
+  "actualFailedNativeTrxHasNoErrorInfoFailureTextNotClaimedObserved": true,
+  "requestedFailureBoundByActualFailControlHashAndPrecedingRealPersistenceCheckpoint": true,
+  "bothRealMetadataLockRefusalsReached": true,
+  "actualFirstRefusal": "HXR037",
+  "actualSecondRefusal": "HXR023",
+  "nullableFirstOutcomeAndExactTimePreservedAcrossBothRefusals": {
+    "ownerId": "c70cb88218d6a1c70df616895ba48813",
+    "runId": "c70cb88218d6a1c70df616895ba48813",
+    "sourceMappingHash": null,
+    "terminalAtUtc": "2026-11-07T22:22:12.0242305+00:00",
+    "terminalCause": "run-cancelled",
+    "terminalOutcome": {
+      "category": "Cancelled",
+      "exitCode": "Cancelled",
+      "phase": "Cleanup",
+      "ruleId": "HXC130"
+    },
+    "terminalStatus": "cancelled"
+  },
+  "actualWholeOriginalMappingComparisonPassedAtDurableBoundaryInSourceBoundController": true,
+  "rawMappingBodyNotSeparatelyExportedOrClaimedParentHashed": true,
+  "actualRetryAdmissionAndWithdrawal": {
+    "admission": {
+      "acceptedAtUtc": "2026-11-07T22:22:11.4062064+00:00",
+      "attachedRunId": "9c9b0b72465f1a941b3d3b678df10781",
+      "effectiveHoldSeconds": 240,
+      "endReason": null,
+      "endedAtUtc": null,
+      "environmentId": "75dc96057cfcf1a3fc801fd21d87a1ca",
+      "expiresAtUtc": "2026-11-07T22:26:11.4062064+00:00",
+      "originalAttachmentRequestId": "fd0bc253688c13b0e20e267b41dabbbd",
+      "outcome": null,
+      "ownerRunId": "c70cb88218d6a1c70df616895ba48813",
+      "requestedHoldSeconds": 240
+    },
+    "withdrawal": {
+      "acceptedAtUtc": "2026-11-07T22:22:11.4062064+00:00",
+      "attachedRunId": "9c9b0b72465f1a941b3d3b678df10781",
+      "effectiveHoldSeconds": 240,
+      "endReason": "ci-job-cancelled",
+      "endedAtUtc": "2026-11-07T22:22:18.0244078+00:00",
+      "environmentId": "75dc96057cfcf1a3fc801fd21d87a1ca",
+      "expiresAtUtc": "2026-11-07T22:26:11.4062064+00:00",
+      "originalAttachmentRequestId": "fd0bc253688c13b0e20e267b41dabbbd",
+      "outcome": "withdrawn",
+      "ownerRunId": "c70cb88218d6a1c70df616895ba48813",
+      "requestedHoldSeconds": 240
+    }
+  },
+  "actual13LiveOwnedContainersObservedAfterWithdrawalBeforeStop": true,
+  "peerScopePreservedBeforeCleanupRetryButAfterRetryComparisonNotReached": true,
+  "unexpectedExactCleanupRetryExitCode": 3,
+  "unexpectedExactCleanupRetryOutcome": {
+    "category": "TopologyOrLifecycle",
+    "exitCode": "TopologyOrLifecycle",
+    "phase": "Topology",
+    "ruleId": "HXR028"
+  },
+  "unexpectedRetryDiagnostic": [
+    {
+      "category": "None",
+      "field": "ci-job-cancelled",
+      "hint": null,
+      "location": null,
+      "message": "Attached runs withdrawn (ci-job-cancelled): 9c9b0b72465f1a941b3d3b678df10781.",
+      "phase": "Cleanup",
+      "row": null,
+      "ruleId": "HXI011",
+      "source": null
+    },
+    {
+      "category": "TopologyOrLifecycle",
+      "field": "stdin-listener",
+      "hint": "Inspect the preserved startup diagnostics.",
+      "location": null,
+      "message": "Readiness stalled at resource 'stdin-listener' (app ID '-', status 'blocked-after-stop').",
+      "phase": "Topology",
+      "row": null,
+      "ruleId": "HXR028",
+      "source": null
+    }
+  ],
+  "allSixRetryInventoriesActuallyEmptyDespiteFailure": true,
+  "peerFirstFinalizationAlsoHxr028DespiteEmptyInventories": true,
+  "bothActualFinalizerSnapshots": [
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [
+        {
+          "failureType": "ValueError",
+          "label": "peer"
+        }
+      ],
+      "issuedOwners": 4,
+      "issuedOwnersCleanupVerified": false,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T22:22:40.391497+00:00"
+    },
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [],
+      "issuedOwners": 4,
+      "issuedOwnersCleanupVerified": true,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T22:22:43.594252+00:00"
+    }
+  ],
+  "lastIndependentFinalizerAllFourIssuedOwnersCompleteAndSixInventoriesEmpty": true,
+  "allPublicDiagnosticContentHashesAndTerminalRolesVerified": true,
+  "ownedPrivateReaderRemovalActuallySucceeded": true,
+  "newPartialStartupOwnerNotCreatedOrExecuted": true,
+  "actualGithubCancellationRequests": 0,
+  "noGithubCancellationCreditFromExplicitDownCancelledTerminals": true,
+  "physicalManualDispatches": 3,
+  "producerVersusCallerStdinCauseStillRequiresControlledSourceInvestigation": true,
+  "existingThreeSecondBlockedListenerRefusalAndFailureEvenWithZeroLeftoversMustBePreserved": true,
+  "noUnchangedF064MatrixRetry": true,
+  "matrixStartupCancellationExecutionCancellationAndWholeStoryAcceptance": false
+}

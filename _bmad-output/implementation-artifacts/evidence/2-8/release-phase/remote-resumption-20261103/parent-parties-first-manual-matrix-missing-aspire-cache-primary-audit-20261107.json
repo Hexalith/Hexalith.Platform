@@ -1,0 +1,221 @@
+{
+  "utc": "2026-11-07T18:33:27.546417+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "actualRun": 42400061797,
+  "attempt": 1,
+  "source": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+  "actualDispatches": 1,
+  "actualCancelRequests": 0,
+  "scenario": "matrix",
+  "actualBaselineJobSucceeded": 128485700527,
+  "qualificationJobFailed": 128489572224,
+  "allQualificationSetupStepsPassedBeforeActualMatrixInvocation": true,
+  "firstActualPublicResult": {
+    "exitCode": 2,
+    "kind": "public-execution-result",
+    "observedAtUtc": "2026-11-07T18:28:24.328333+00:00",
+    "ownerRunId": null,
+    "result": {
+      "diagnostics": [
+        {
+          "category": "PrerequisiteUnavailable",
+          "field": "/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.4/tools/dcp",
+          "hint": "Restore an AppHost that uses Aspire.AppHost.Sdk/13.6.4 on this machine (for example build the Platform apphost.cs), or set NUGET_PACKAGES to the folder that holds aspire.hosting.orchestration.linux-x64 and aspire.dashboard.sdk.linux-x64 13.6.4, then retry.",
+          "location": null,
+          "message": "Aspire 13.6.4 orchestration for linux-x64 is not in the NuGet global packages folder '/home/runner/.nuget/packages': missing '/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.4/tools/dcp', '/home/runner/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools/Aspire.Dashboard'.",
+          "phase": "Prerequisite",
+          "row": null,
+          "ruleId": "HXR016",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "PrerequisiteUnavailable",
+        "exitCode": "PrerequisiteUnavailable",
+        "phase": "Prerequisite",
+        "ruleId": "HXR016"
+      },
+      "status": "unavailable"
+    }
+  },
+  "bothActualFinalizersConservativelyRefusedUnverifiedUnissuedLaunch": [
+    {
+      "allocationStatus": "unverified",
+      "candidateAcceptance": false,
+      "failures": [
+        {
+          "failureType": "ValueError",
+          "label": "passing"
+        }
+      ],
+      "issuedOwners": 0,
+      "issuedOwnersCleanupVerified": false,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T18:28:24.330086+00:00"
+    },
+    {
+      "allocationStatus": "unverified",
+      "candidateAcceptance": false,
+      "failures": [
+        {
+          "failureType": "ValueError",
+          "label": "passing"
+        }
+      ],
+      "issuedOwners": 0,
+      "issuedOwnersCleanupVerified": false,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T18:28:24.696113+00:00"
+    }
+  ],
+  "actualArtifact": {
+    "id": 13585900511,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU4NTkwMDUxMQ==",
+    "name": "ci-lifecycle-observations",
+    "size_in_bytes": 1913,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13585900511",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13585900511/zip",
+    "expired": false,
+    "digest": "sha256:46e60a2855cb1f8d4c530b6fb7a7546bd7540755c102fd0ffa1f12e3678a22ac",
+    "created_at": "2026-11-07T18:28:25Z",
+    "updated_at": "2026-11-07T18:28:25Z",
+    "expires_at": "2026-11-21T18:28:24Z",
+    "workflow_run": {
+      "id": 42400061797,
+      "repository_id": 1170072276,
+      "head_repository_id": 1170072276,
+      "head_branch": "main",
+      "head_sha": "a1da73f5018bf6aa87c07c9bd899aa191c18b948"
+    }
+  },
+  "allArtifactMembersVerified": [
+    {
+      "path": "inputs.json",
+      "bytes": 1168,
+      "sha256": "f2f5c02e00e154c6cf41c550b0bda6692a1728119a51ddba66aef95264c3614a"
+    },
+    {
+      "path": "observations.json",
+      "bytes": 3117,
+      "sha256": "f92caccdbc0f4f1e345ae5fbc72d218f70a19cf4543bf4eb7dd9e366c59dbcbc"
+    }
+  ],
+  "actualWholeToolAndPlatformInputs": {
+    "candidateAcceptance": false,
+    "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42400061797"
+    },
+    "mappingHash": "fc25c8e713a9b815b6a62b5ef90c62506a5914eef3d63027e586bbad0000fd8a",
+    "platformIdentity": {
+      "CatalogCommit": "b4703ec2247321f867f14cd9caca43fa00190feb",
+      "CheckoutCommit": "52bc7986170f268afaef6227d0519a1d662af256",
+      "Commit": "52bc7986170f268afaef6227d0519a1d662af256",
+      "CompositionCommit": "52bc7986170f268afaef6227d0519a1d662af256",
+      "IsPlatformRepository": false,
+      "PlatformPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform",
+      "RecordPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/hexalith-platform.json",
+      "ReleaseTag": "v1.7.0",
+      "ToolVersionRange": "[4.44.12, 5.0.0-0)"
+    },
+    "source": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+    "toolManifestSha256": "cf290cd6a94b5f7a0c240122335c1046fae5711f20667b3d129b94ab7b52aabe"
+  },
+  "actualObservationBody": {
+    "classification": "baseline-only",
+    "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42400061797"
+    },
+    "mappingHash": "fc25c8e713a9b815b6a62b5ef90c62506a5914eef3d63027e586bbad0000fd8a",
+    "observations": [
+      {
+        "exitCode": 2,
+        "kind": "public-execution-result",
+        "observedAtUtc": "2026-11-07T18:28:24.328333+00:00",
+        "ownerRunId": null,
+        "result": {
+          "diagnostics": [
+            {
+              "category": "PrerequisiteUnavailable",
+              "field": "/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.4/tools/dcp",
+              "hint": "Restore an AppHost that uses Aspire.AppHost.Sdk/13.6.4 on this machine (for example build the Platform apphost.cs), or set NUGET_PACKAGES to the folder that holds aspire.hosting.orchestration.linux-x64 and aspire.dashboard.sdk.linux-x64 13.6.4, then retry.",
+              "location": null,
+              "message": "Aspire 13.6.4 orchestration for linux-x64 is not in the NuGet global packages folder '/home/runner/.nuget/packages': missing '/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/13.6.4/tools/dcp', '/home/runner/.nuget/packages/aspire.dashboard.sdk.linux-x64/13.6.4/tools/Aspire.Dashboard'.",
+              "phase": "Prerequisite",
+              "row": null,
+              "ruleId": "HXR016",
+              "source": null
+            }
+          ],
+          "outcome": {
+            "category": "PrerequisiteUnavailable",
+            "exitCode": "PrerequisiteUnavailable",
+            "phase": "Prerequisite",
+            "ruleId": "HXR016"
+          },
+          "status": "unavailable"
+        }
+      },
+      {
+        "allocationStatus": "unverified",
+        "candidateAcceptance": false,
+        "failures": [
+          {
+            "failureType": "ValueError",
+            "label": "passing"
+          }
+        ],
+        "issuedOwners": 0,
+        "issuedOwnersCleanupVerified": false,
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-07T18:28:24.330086+00:00"
+      },
+      {
+        "allocationStatus": "unverified",
+        "candidateAcceptance": false,
+        "failures": [
+          {
+            "failureType": "ValueError",
+            "label": "passing"
+          }
+        ],
+        "issuedOwners": 0,
+        "issuedOwnersCleanupVerified": false,
+        "kind": "finalizer-result",
+        "observedAtUtc": "2026-11-07T18:28:24.696113+00:00"
+      }
+    ],
+    "owners": [
+      {
+        "birth": "10703",
+        "label": "passing",
+        "launchGateStatus": "released",
+        "launchRecord": "/home/runner/work/_temp/hexalith-ci-qualification/passing/launch.json",
+        "pid": 3614,
+        "processGroup": 3614,
+        "publicResult": "/home/runner/work/_temp/hexalith-ci-qualification/passing/public-result.json",
+        "receipt": "/home/runner/work/_temp/hexalith-ci-qualification/passing/receipt.json"
+      }
+    ],
+    "schema": "hexalith.ci-lifecycle-qualification.v1",
+    "source": "a1da73f5018bf6aa87c07c9bd899aa191c18b948"
+  },
+  "concreteFinding": "Fresh qualification job installs Aspire.Cli13.6.4 but does not materialize Aspire.Hosting.Orchestration.linux-x64 or Aspire.Dashboard.Sdk.linux-x6413.6.4 NuGet assets. HXR016 names both missing files; baseline is a separate runner and cannot supply its cache. Restore exact verified catalog toolchain assets in qualification job before any controller launch.",
+  "zeroOwnedCleanupOrSuccessfulManualQualificationNotClaimed": true,
+  "oldFirstOutcomeNotRetriedOrRelabeled": true,
+  "startupAndExecutionStillUndispatched": true,
+  "candidateOrWholeStoryAcceptance": false
+}

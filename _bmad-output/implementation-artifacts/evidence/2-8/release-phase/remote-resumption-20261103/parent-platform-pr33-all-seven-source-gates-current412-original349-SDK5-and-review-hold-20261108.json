@@ -1,0 +1,126 @@
+{
+  "utc": "2026-11-08T05:07:37.621737+00:00",
+  "pr": 33,
+  "url": "https://github.com/Hexalith/Hexalith.Platform/pull/33",
+  "source": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+  "actualTestMerge": "9ffa6688e111bb0e906f3938eb79cc903fd29617",
+  "actualLegacy": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+  "allSevenSourceJobsPassed": [
+    {
+      "id": 128631958804,
+      "name": "Same changed source against the legacy public tuple"
+    },
+    {
+      "id": 128627560541,
+      "name": "consumer-binding (3.130.2)"
+    },
+    {
+      "id": 128627560537,
+      "name": "consumer-binding (4.1.0)"
+    },
+    {
+      "id": 128627560517,
+      "name": "consumer-binding (3.132.1)"
+    },
+    {
+      "id": 128627560486,
+      "name": "consumer-binding (3.130.0)"
+    },
+    {
+      "id": 128627560328,
+      "name": "consumer-binding (3.130.1)"
+    },
+    {
+      "id": 128627560063,
+      "name": "tuple"
+    }
+  ],
+  "currentCases": 412,
+  "originalLegacyCases": 349,
+  "requiredSkippedOrFailed": 0,
+  "allCurrentAndLegacy22323SourceInputsAndExactPackageMembersVerified": true,
+  "sdkCases": 75,
+  "sdkCapabilityCases": 236,
+  "sdkOwnerCases": 14,
+  "primaryAudits": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/pr-tuple-primary/parent-PR33-first-success-current-primary-hosted-audit.json",
+      "bytes": 82624,
+      "sha256": "dc23779747c0d0789dbad428d871138e921899af62c126405a194b9e5f5fe7a5"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/pr-tuple-primary/parent-PR33-first-success-legacy-primary-hosted-audit.json",
+      "bytes": 69003,
+      "sha256": "3191c97bff33b0b495bcd7c9ab0751bbbbc9ee4913e183203d43b8e59089bcf2"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/pr-catalog-first-success-primary/parent-PR33-first-success-primary-sdk-catalog-hosted-audit.json",
+      "bytes": 235742,
+      "sha256": "f5b2fc61d11b9ad226e76735b62ffd51bcf333c376e1bf58a84af6abd02056a4"
+    }
+  ],
+  "legacyArtifact": {
+    "id": 13604583403,
+    "sha256": "ab1c44db7b9226757e737abb884ab2bb63fe7aba355d802ed99b0a60edb4984f",
+    "members": 513,
+    "memberBytes": 174068212
+  },
+  "neutralCursorChecksUnavailableAndNotReviewCredit": [
+    {
+      "id": 128627587125,
+      "name": "Cursor Bugbot",
+      "output": {
+        "title": "Error",
+        "summary": "Bugbot Analysis Progress (9s elapsed)\n\n\u2705 Gathered PR context (7s)\n\u2705 \u274c Bugbot run failed (2s)\n\n**Result:** Bugbot failed to run\n\nRequest ID: 28780c11-0630-4efe-b376-c4506806b366",
+        "text": "### Bugbot couldn't run - usage limit reached\n\nBugbot is counted against Cursor usage for this user or team, and this run hit a usage or spend limit.\n\nA user or team admin can review and increase usage limits in the [Cursor dashboard](https://www.cursor.com/dashboard/spending).\n\n(requestId: 28780c11-0630-4efe-b376-c4506806b366)\n\n",
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/128627587125/annotations"
+      }
+    },
+    {
+      "id": 128627559974,
+      "name": "Cursor Approval Agent: Pull Request Router",
+      "output": {
+        "title": "Cursor Approval Agent: Pull Request Router",
+        "summary": "Approval Agent run failed to start: Automation GitHub integration validation failed: On-demand usage is required. Enable on-demand usage at https://www.cursor.com/dashboard?tab=settings to continue using Background Agents.\n\n[View agent](https://cursor.com/agents/bc-3a7944a7-b055-4b18-8e5b-bb257cdd047c)",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/128627559974/annotations"
+      }
+    },
+    {
+      "id": 128627559507,
+      "name": "Cursor Security Agent: Security Reviewer",
+      "output": {
+        "title": "Cursor Security Agent: Security Reviewer",
+        "summary": "Security Review run failed to start: Automation GitHub integration validation failed: On-demand usage is required. Enable on-demand usage at https://www.cursor.com/dashboard?tab=settings to continue using Background Agents.\n\n[View agent](https://cursor.com/agents/bc-44d1847f-cdee-404e-b8f4-3d22b781d992)",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/128627559507/annotations"
+      }
+    }
+  ],
+  "sourceJobAnnotations": {
+    "count": 7,
+    "level": "notice",
+    "scope": "Hosted ubuntu-latest migration notice only; every entry read."
+  },
+  "allThreeRulesetsExactToInitial": true,
+  "actor": {
+    "login": "jpiquot",
+    "id": 6775094
+  },
+  "actualApprovingReviews": 0,
+  "requiredCodeOwnerReviews": 1,
+  "soleCodeOwnerAndPrAuthor": "jpiquot",
+  "actualMergeableState": "blocked",
+  "existingActorReviewBypassAvailable": true,
+  "newSpecificUserAuthorization": "PENDING; not inferred from previous concrete PR bypasses",
+  "preparedNormalMergePayload": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/prepared-pr33-normal-merge/exact-normal-merge-request.json",
+  "allExternalWatcherAndCollectorsReaped": true,
+  "mergeOrPolicyWriteOrPublicationPerformed": false,
+  "freshMergedMainAndAutomaticPublicationStillRequired": true,
+  "callerPreparation": "READY/HOLD; exact eleven paths, actual future public identity UNKNOWN",
+  "nativeOrWholeStoryAcceptance": false,
+  "originalRaw421mbReviewException": "Still unanswered; no waiver inferred"
+}

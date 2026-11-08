@@ -1,0 +1,57 @@
+{
+  "utc": "2026-11-08T01:19:12.924780+00:00",
+  "source": "3c36dcea843c0deea017de00e47cbd352c79f4d7",
+  "run": 42432421354,
+  "attempt": 1,
+  "job": 128584006040,
+  "actualModuleCounts": {
+    "total": 2854,
+    "passed": 2848,
+    "failed": 1,
+    "sameOldOptionalSkipped": 5
+  },
+  "actualFailedCase": "StandardInputDisposalDrainsWhileOwnerWriterRemainsOpenAsync",
+  "actualFailureUtc": "2026-11-08T01:11:54.7296394Z",
+  "duration": "10s487ms",
+  "preKillObservation": {
+    "childExited": false,
+    "driver": "await-stop-command",
+    "io": "input-disposed",
+    "retained": false,
+    "runtime": "10.0.14",
+    "processors": 4,
+    "minimumWorkers": 4,
+    "maximumWorkers": 32767
+  },
+  "postKillFinallyObservation": {
+    "childExited": true,
+    "driver": "await-stop-command",
+    "io": "input-disposed",
+    "retained": false,
+    "runtime": "10.0.14",
+    "processors": 4,
+    "minimumWorkers": 4,
+    "maximumWorkers": 32767
+  },
+  "postKillTrueNotNaturalCompletion": true,
+  "executedSourceBoundInference": [
+    "Both retainfalse/retaintrue pending ValueTask assertions and actual signal disposals completed without startup-failure marker.",
+    "Subsequent default listener constructed and owned stdout WriteLine/Flush returned.",
+    "Child reached waiting for real stop command, while parent exact-line acknowledgement loop timed out."
+  ],
+  "observedRootBoundary": "test acknowledgement communication/recognition; no production disposal failure on this actual child path",
+  "notProved": [
+    "actual raw marker line in parent output",
+    "specific ANSI framing, runner-capture or fd-capture mechanism",
+    "all underlying production/native scenarios qualified"
+  ],
+  "laterEvidenceAndToolingProjects": "skipped after Module failure",
+  "actualLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/3c36-first-dotnet-failure-log.stdout",
+    "bytes": 61493,
+    "sha256": "a432079a41f366750791d2f918f24340253ca6cbcadfd904fb35e80241a4a35b"
+  },
+  "readScope": "Complete finite failed case/stack/actual stage fields and aggregate/steps read; whole raw log retained and hashed, not wholly model read.",
+  "codacyOtherActualFinding": "Describe complexity22 limit15; active draft correction independent",
+  "wholeSourceMainReleaseAndStoryAcceptance": false
+}

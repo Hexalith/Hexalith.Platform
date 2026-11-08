@@ -1,0 +1,172 @@
+{
+  "utc": "2026-11-08T03:11:38.686037+00:00",
+  "source": "8fb7f15c8bc8134493ad5f11a05f7ac5bdc59126",
+  "actualPrTestMerge": "64c19551794cfb463bd6011343633862a9abd53b",
+  "run": 42440472375,
+  "attempt": 1,
+  "all15OriginalIsolatedProjectNamesAndCaseNameSetsVerified": true,
+  "passed": 6392,
+  "failed": 1,
+  "same14OldOptionalNotExecuted": 14,
+  "soleActualOutcomeDifference": [
+    {
+      "project": "Hexalith.Parties.Tests.trx",
+      "name": "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests.LocalRunDocumentationUsesPinnedPlatformToolAndDirectReferencesOnly",
+      "before": "Passed",
+      "actual": "Failed"
+    }
+  ],
+  "actualFailedCaseErrorInfo": [
+    {
+      "name": "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests.LocalRunDocumentationUsesPinnedPlatformToolAndDirectReferencesOnly",
+      "outcome": "Failed",
+      "xml": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-failed-ci-primary/blocking-test-results/extracted/Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx",
+      "message": "Shouldly.ShouldAssertException : document\n    should contain (case insensitive comparison)\n\"4.44.13\"\n    but was actually\n\"# Hexalith.Parties\n\nHexalith.Parties is a ready-to-deploy party management domain service for people...\"",
+      "stack": "   at Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests.LocalRunDocumentationUsesPinnedPlatformToolAndDirectReferencesOnly() in /home/runner/work/Hexalith.Parties/Hexalith.Parties/tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs:line 295\n   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)\n   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+    }
+  ],
+  "allFiveOldHostListenerCasesActuallyPassed": [
+    "Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleLoadsCopiedConfigurationWithNormalProviderPrecedence",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"duplicate\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"valid\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"missing\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"wrong\")"
+  ],
+  "artifacts": [
+    {
+      "name": "blocking-test-results",
+      "id": 13601278927,
+      "archiveBytes": 937522,
+      "digest": "sha256:60e5638ec65b202d824b8f1a9e15f10fb13fb89843639f9bdd2920e2594dedee",
+      "members": 15,
+      "memberBytes": 9960936,
+      "proof": {
+        "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-failed-ci-primary/blocking-test-results/actual-artifact-and-all-member-audit.json",
+        "bytes": 4027,
+        "sha256": "980c2f9249b216650c345b13206da84b0cb098e3823021c7fde2ac936f4177e5"
+      }
+    },
+    {
+      "name": "ui-a11y-results",
+      "id": 13601107372,
+      "archiveBytes": 359734,
+      "digest": "sha256:31ad39a82bcdeaccd2540ecf71b3c88ce3f7b998c29b8f6b986b8eb6f8d4b83e",
+      "members": 26,
+      "memberBytes": 738875,
+      "proof": {
+        "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-failed-ci-primary/ui-a11y-results/actual-artifact-and-all-member-audit.json",
+        "bytes": 7124,
+        "sha256": "877198ed6b3b842a4b4525816a6368793915dc0bfcb214ed0e3c7b671e362dfd"
+      }
+    },
+    {
+      "name": "module-integration-diagnostics",
+      "id": 13601039847,
+      "archiveBytes": 342,
+      "digest": "sha256:31a20fbeda9b312df487eb1450fb46590c82ae8ba82a78df70351e1cbac1e7a4",
+      "members": 1,
+      "memberBytes": 309,
+      "proof": {
+        "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-failed-ci-primary/module-integration-diagnostics/actual-artifact-and-all-member-audit.json",
+        "bytes": 1151,
+        "sha256": "38121e1683e205832bdd0f78e1155ad3879f95199deb173258dd8ea9c121be66"
+      }
+    }
+  ],
+  "actualNotAllocatedDiagnostic": [
+    {
+      "path": "cleanup.json",
+      "bytes": 309,
+      "sha256": "710d88b0d6752311f404b292ddf2f18e6cdb345fe3ff1a6149f48dfc8dad0e36",
+      "body": {
+        "executionContext": {
+          "disposable": true,
+          "jobId": "build-and-test",
+          "kind": "ci",
+          "operatingSystem": "Linux",
+          "repository": "Hexalith/Hexalith.Parties",
+          "runnerKind": "github-hosted",
+          "workflowAttempt": 1,
+          "workflowRunId": "42440472375"
+        },
+        "status": "not-allocated"
+      }
+    }
+  ],
+  "nativeCasesExecuted": 0,
+  "cleanupCredit": false,
+  "publicRoleAcceptance": false,
+  "firstNonSuccessSourceHeadRetainedNotRerun": true,
+  "allNineCIOutcomes": [
+    {
+      "id": 128608423556,
+      "name": "Owner publisher qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423678,
+      "name": "EventStore 4.1.0 package cohort (offline)",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423685,
+      "name": "UI accessibility",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423705,
+      "name": "Memories 3.0.18 package protocol",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423714,
+      "name": "EventStore 4.0.4 package cohort (offline)",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423719,
+      "name": "BMAD configuration tests",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423765,
+      "name": "ci / build-and-test",
+      "status": "completed",
+      "conclusion": "failure",
+      "activeSteps": []
+    },
+    {
+      "id": 128608423779,
+      "name": "Parties Platform declaration",
+      "status": "completed",
+      "conclusion": "success",
+      "activeSteps": []
+    },
+    {
+      "id": 128610263657,
+      "name": "verify-public-package-integration",
+      "status": "completed",
+      "conclusion": "failure",
+      "activeSteps": []
+    }
+  ],
+  "sourceXmlAudit": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-failed-ci-primary/parent-independent-all15-original-projects-and-sole-doc-failure-actual-xml-audit.json",
+    "bytes": 1546045,
+    "sha256": "8b4788d348aa76506d0e3094d2518c1a9d585fdf02b77c562cb200a435c730c5"
+  },
+  "newDocsRootAgent": "active from8fb7 under sole spec529270",
+  "noSourceMainManualOrStoryAcceptance": true
+}

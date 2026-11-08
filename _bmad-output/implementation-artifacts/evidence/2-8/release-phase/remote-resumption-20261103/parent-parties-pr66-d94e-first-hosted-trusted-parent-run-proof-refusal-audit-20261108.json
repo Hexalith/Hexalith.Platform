@@ -1,0 +1,230 @@
+{
+  "utc": "2026-11-08T03:48:42.699173+00:00",
+  "source": "d94e7be2f9337b6dfab49ae7c7fe01b285eaa435",
+  "actualPrTestMerge": "baae0b493371073fe62dadac967509048bf39254",
+  "run": 42442761252,
+  "attempt": 1,
+  "job": 128615288551,
+  "actualCiConclusion": "failure",
+  "isolatedProjects": 15,
+  "actualUnitPassed": 6393,
+  "actualOldOptionalSkipped": 14,
+  "actualUnitFailed": 0,
+  "actualFirstIntegrationExit": 3,
+  "actualFirstRule": "HXP020",
+  "actualExecution": {
+    "diagnostics": [
+      {
+        "category": "TopologyOrLifecycle",
+        "field": "platform",
+        "hint": "Supply the named owner input; no resources were started.",
+        "location": null,
+        "message": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/c602f761e206b6a9059a58462ab787e3'.",
+        "phase": "Topology",
+        "row": null,
+        "ruleId": "HXP020",
+        "source": null
+      }
+    ],
+    "outcome": {
+      "category": "TopologyOrLifecycle",
+      "exitCode": "TopologyOrLifecycle",
+      "phase": "Topology",
+      "ruleId": "HXP020"
+    },
+    "remainingResources": {
+      "claimIds": [],
+      "containerIds": [],
+      "discoveryFailures": [],
+      "isEmpty": true,
+      "processIds": [],
+      "resourceIds": [],
+      "unverified": false,
+      "workspaceIds": []
+    },
+    "runId": "c602f761e206b6a9059a58462ab787e3",
+    "status": "failed",
+    "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/c602f761e206b6a9059a58462ab787e3/test-result.json"
+  },
+  "actualTestResult": {
+    "bindings": {
+      "artifacts": {
+        "expected": {
+          "state": "not-yet-populated"
+        },
+        "loaded": {
+          "state": "not-yet-populated"
+        }
+      },
+      "attachments": {
+        "holds": [],
+        "state": "populated"
+      },
+      "candidate": {
+        "classification": "baseline-only",
+        "reason": "No authenticated candidate request was selected.",
+        "state": "populated"
+      },
+      "deadlines": {
+        "execution": {
+          "state": "not-yet-populated"
+        },
+        "startup": {
+          "effectiveSeconds": 600,
+          "expiresAt": "2026-11-08T03:46:02.8148275Z",
+          "origin": "environment-requested",
+          "originAt": "2026-11-08T03:36:02.8148275Z",
+          "override": {
+            "state": "not-overridden"
+          },
+          "state": "populated"
+        }
+      },
+      "decision": {
+        "state": "not-yet-populated"
+      },
+      "environment": {
+        "catalog": {
+          "state": "not-yet-populated"
+        },
+        "composition": {
+          "state": "not-yet-populated"
+        },
+        "executionContext": {
+          "disposable": true,
+          "jobId": "build-and-test",
+          "kind": "ci",
+          "operatingSystem": "Linux",
+          "repository": "Hexalith/Hexalith.Parties",
+          "runnerKind": "github-hosted",
+          "workflowAttempt": 1,
+          "workflowRunId": "42442761252"
+        },
+        "isolation": {
+          "state": "not-yet-populated"
+        },
+        "mode": "package",
+        "readiness": {
+          "state": "not-yet-populated"
+        },
+        "resources": {
+          "state": "not-yet-populated"
+        },
+        "startupTasks": {
+          "state": "not-yet-populated"
+        }
+      },
+      "reuseLineage": {
+        "state": "not-yet-populated"
+      },
+      "run": {
+        "attemptId": "854db49efa7b15c9771e392f6766ff30",
+        "attemptSequence": 1,
+        "environmentId": "f04199509c836113e834f2545a1933a1",
+        "ownerRunId": "c602f761e206b6a9059a58462ab787e3",
+        "role": "owner",
+        "runId": "c602f761e206b6a9059a58462ab787e3"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "tool": {
+        "state": "not-yet-populated"
+      }
+    },
+    "cleanup": {
+      "attemptId": "08c112ab9a879f23cdc701e5c8c23491",
+      "diagnosticIds": [
+        "lifecycle"
+      ],
+      "disposition": "complete",
+      "failures": [],
+      "leftoverResourceIds": [],
+      "observedAt": "2026-11-08T03:36:20.1253045Z",
+      "ownedResourceIds": [],
+      "state": "populated"
+    },
+    "diagnostics": [
+      {
+        "classification": "internal",
+        "contentIdentity": "sha256:8c82a760d04121dc04d1680200384d1f3b1b9dad4d73e3e3408c4c4d41cf99df",
+        "id": "lifecycle",
+        "redacted": true,
+        "reference": "lifecycle-8c82a760d04121dc04d1680200384d1f3b1b9dad4d73e3e3408c4c4d41cf99df.json"
+      }
+    ],
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+    "retention": {
+      "disposition": "not-retained",
+      "failureRunIds": [],
+      "reason": "local-failure-retention-not-established",
+      "recordedAt": "2026-11-08T03:36:20.1253045Z",
+      "retainedResourceIds": [],
+      "state": "populated"
+    },
+    "schema": "hexalith.test-result.v1",
+    "terminal": {
+      "cause": "startup-failure",
+      "diagnosticIds": [
+        "lifecycle"
+      ],
+      "outcome": "failed",
+      "recordedAt": "2026-11-08T03:36:18.6929029Z"
+    },
+    "termination": {
+      "state": "not-yet-populated"
+    }
+  },
+  "actualCleanup": {
+    "diagnostics": [
+      {
+        "category": "None",
+        "field": "down",
+        "hint": null,
+        "location": null,
+        "message": "Runner-owned invocation cleanup completed.",
+        "phase": "Cleanup",
+        "row": null,
+        "ruleId": "HXI001",
+        "source": null
+      }
+    ],
+    "outcome": {
+      "category": "None",
+      "exitCode": "Success",
+      "phase": "None",
+      "ruleId": null
+    },
+    "remainingResources": {
+      "claimIds": [],
+      "containerIds": [],
+      "discoveryFailures": [],
+      "isEmpty": true,
+      "processIds": [],
+      "resourceIds": [],
+      "unverified": false,
+      "workspaceIds": []
+    },
+    "runId": "c602f761e206b6a9059a58462ab787e3",
+    "status": "completed",
+    "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/c602f761e206b6a9059a58462ab787e3/test-result.json"
+  },
+  "nativeCasesExecuted": 0,
+  "resourceStartCredit": false,
+  "nativeLifecycleCleanupCredit": false,
+  "specificFailedRunProofPredicate": "UNOBSERVED; generic guard refusal only",
+  "fullActualLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-d94e-first-actual-failed-build-log.stdout",
+    "bytes": 219067,
+    "sha256": "f7bd0e10e0f6fb7f77981bd9a96b99aa99a50307be80545cc28936ee26faf55c"
+  },
+  "readScope": "Finite complete five structured diagnostic members and bounded actual native invocation/error window read; whole219KB log retained/authenticated, not wholly model-read.",
+  "noRerunMergeOrManualCampaign": true,
+  "allHistoricalFirstOutcomesPreserved": true,
+  "wholeStoryAcceptance": false
+}

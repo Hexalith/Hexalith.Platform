@@ -1,0 +1,75 @@
+{
+  "actualRun": 42382457253,
+  "actualAttempt": 1,
+  "source": "a4d95c8aecf927f6a1871dce653234a1f89048bf",
+  "testedTemporaryMerge": "874e912a654d47a1e9d68c0f03e7a55b59a1cea3",
+  "artifactId": 13578416684,
+  "artifactApiDigestMatched": true,
+  "zip": {
+    "argv": [
+      "gh",
+      "api",
+      "repos/Hexalith/Hexalith.EventStore/actions/artifacts/13578416684/zip"
+    ],
+    "startedUtc": "2026-11-07T14:48:05.059621+00:00",
+    "finishedUtc": "2026-11-07T14:48:05.785372+00:00",
+    "exitCode": 0,
+    "bytes": 5193,
+    "sha256": "dc7f013945c0671b03c6cd3f978ced4420f024a98f5cb6fd65cdccea99afaf09"
+  },
+  "member": {
+    "name": "payload-protection-lifecycle-results.trx",
+    "bytes": 57456,
+    "sha256": "02a334659335d1d7a1a368e82e519b74818ab61d129ae430c8c87873f1bdeab0"
+  },
+  "counters": [
+    {
+      "total": "31",
+      "executed": "31",
+      "passed": "29",
+      "failed": "2",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    }
+  ],
+  "cases": 31,
+  "failedCases": [
+    {
+      "name": "Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests.PayloadProtectionOperationalLiveTests.ExactChargedTransactionBoundaryCommitsAndOneByteOverIsRejectedBeforeMutation",
+      "outcome": "Failed",
+      "exceptionTypes": [
+        "System.InvalidOperationException"
+      ],
+      "assertionMessageFirstLineOnly": "Class fixture type 'Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests.PayloadProtectionDaprFixture' threw in InitializeAsync"
+    },
+    {
+      "name": "Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests.PayloadProtectionOperationalLiveTests.QualifiedWriterPreservesTwoPageIndexesAt257KeysAndRetainedMemberIncarnations",
+      "outcome": "Failed",
+      "exceptionTypes": [
+        "System.InvalidOperationException"
+      ],
+      "assertionMessageFirstLineOnly": "Class fixture type 'Hexalith.EventStore.PayloadProtection.LiveSidecar.Tests.PayloadProtectionDaprFixture' threw in InitializeAsync"
+    }
+  ],
+  "sourceCorrectionSelected": true,
+  "rerunsRequested": 0,
+  "fixtureByteExactIncoming2bd": true,
+  "fixtureGitBlob": "ff287cb35beee28c770c6be689cd4f797ef64a36",
+  "actualFixtureStackSourceLine": 34,
+  "knownFailurePhase": "Docker run for the exact fixture-owned PostgreSQL container",
+  "stderrSha256": "40908b9d1dac7959b7ca19c8aa1bbea64f2322ce46d2c9d7f59924ad0e838c77",
+  "underlyingDockerErrorClassification": "UNPROVED; only original stderr hash retained",
+  "causalRelationToTupleAdoption": "UNPROVED",
+  "sourceInspectionFinding": "Ports(5) closes all temporary reservations before Docker attempts a fixed host port; container-start tracking is set only after Docker run succeeds. Controlled allocation and partial-launch cleanup proofs are required for any repair.",
+  "selectedScope": "Narrow fixture-owned PostgreSQL allocation/failure-cleanup refinement with finite diagnostics and pure controlled tests; no production semantics, producer release, assertion waiver or unchanged CI retry."
+}

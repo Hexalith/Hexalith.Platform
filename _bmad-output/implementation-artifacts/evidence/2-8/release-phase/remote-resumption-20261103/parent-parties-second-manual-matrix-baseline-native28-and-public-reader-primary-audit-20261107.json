@@ -1,0 +1,95 @@
+{
+  "utc": "2026-11-07T20:14:40.212588+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "manualScenario": "matrix",
+  "overallManualRunStatusAtBaselineCapture": "in_progress",
+  "overallManualRunConclusionAtBaselineCapture": null,
+  "actualSource": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+  "actualMainSource": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+  "actualTree": "5d97fb7f34d943cf240ffdbddcd5fd2fcaab7df8",
+  "run": 42408333976,
+  "attempt": 1,
+  "baselineJob": 128510804713,
+  "publicVerifierJob": null,
+  "actualBaselineJobPassed": true,
+  "strictActualCurrentPublicValidatorReadOnlyArtifactAudit": {
+    "profile": "platform-package",
+    "source": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+    "runId": "2f76d0bb0f8d575bcc73ab7843b79824",
+    "nativeCases": 28,
+    "readerRoles": {
+      "loadedContracts": "caller-source-test-dto",
+      "copiedContracts": "public-nuget"
+    },
+    "qualificationCredit": false
+  },
+  "original15IsolatedProjectsActuallyExecuted": true,
+  "allOriginal28NativeNamesPassed": true,
+  "allFivePreviouslyLocalExcludedListenerCasesActuallyPassed": [
+    "Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.PackageSampleLoadsCopiedConfigurationWithNormalProviderPrecedence",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"duplicate\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"valid\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"missing\")",
+    "Hexalith.Parties.Tests.Gateway.PartiesDomainServiceSecurityTests.ActorDelivery_ActualRegisteredRoute_RequiresChannelAndCommitsState(channel: \"wrong\")"
+  ],
+  "actual14ExistingOptionalNotExecuted": 14,
+  "allDeclaredDiagnosticsHashAndBothNativeCopiesVerified": true,
+  "persistedStreamProjectionReferenceOwnersAndAnonymousChecksPassed": true,
+  "allSixOwnedInventoriesVerifiedEmpty": true,
+  "actualCallerSourceVersusPublicContractsRoles": {
+    "loaded": {
+      "scope": "loaded-native-test-process",
+      "identity": "Hexalith.Parties.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "informationalVersion": "1.0.0+9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+      "moduleVersionId": "03834da4-8c18-44a6-bca3-acd64a370a76",
+      "loadedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/2f76d0bb0f8d575bcc73ab7843b79824/test-builds/bin/Hexalith.Parties.Platform.IntegrationTests/release/Hexalith.Parties.Contracts.dll",
+      "sha256": "91f0e238a2c5a3518fcc82b172f67bc6916ecd08af616076294cc0558903a6b2"
+    },
+    "copied": {
+      "scope": "copied-native-composition-output",
+      "identity": "Hexalith.Parties.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "informationalVersion": "1.0.0+50904cc4ba53c9b0b2c082d5872a0d276be8f5c3",
+      "copiedPath": "/home/runner/.local/share/hexalith-builds/g4-workspaces/2f76d0bb0f8d575bcc73ab7843b79824/hosts/platform-model/Hexalith.Parties.Contracts.dll",
+      "sha256": "99230b764de6769a803702170c174f9dbef9b0b5b0c2931b07e85045478cd654"
+    }
+  },
+  "runningImageIndex": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+  "actualRunningImageBodies": {
+    "Hexalith.Parties.Contracts": {
+      "role": "running-public-image-file",
+      "path": "/app/Hexalith.Parties.Contracts.dll",
+      "bytes": 304640,
+      "sha256": "b2ddfb18a7719b171ab9cf8b846675c4556d4d683ba0b5ebe8a503a6ae73d2f6"
+    },
+    "Hexalith.EventStore.Contracts": {
+      "role": "running-public-image-file",
+      "path": "/app/Hexalith.EventStore.Contracts.dll",
+      "bytes": 953344,
+      "sha256": "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739"
+    },
+    "Hexalith.EventStore.Client": {
+      "role": "running-public-image-file",
+      "path": "/app/Hexalith.EventStore.Client.dll",
+      "bytes": 1288192,
+      "sha256": "702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6"
+    },
+    "Hexalith.EventStore.DomainService": {
+      "role": "running-public-image-file",
+      "path": "/app/Hexalith.EventStore.DomainService.dll",
+      "bytes": 1247744,
+      "sha256": "5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78"
+    },
+    "Hexalith.EventStore.ServiceDefaults": {
+      "role": "running-public-image-file",
+      "path": "/app/Hexalith.EventStore.ServiceDefaults.dll",
+      "bytes": 568320,
+      "sha256": "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d"
+    }
+  },
+  "originalOverallFirst610HostedFailureRetained": true,
+  "differentRolesNotPromotedToPublicEquivalence": true,
+  "candidateAcceptance": false,
+  "manualOrWholeStoryAcceptance": false,
+  "all16CaseTablesNamesOutcomesExactToQualifiedMain": true,
+  "actualBothBaselineArchiveMemberBodiesVerified": true
+}

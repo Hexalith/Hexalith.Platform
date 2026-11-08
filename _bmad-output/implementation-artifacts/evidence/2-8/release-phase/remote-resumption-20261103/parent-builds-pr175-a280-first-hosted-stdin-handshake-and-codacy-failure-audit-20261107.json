@@ -1,0 +1,53 @@
+{
+  "utc": "2026-11-07T23:31:28.000815+00:00",
+  "source": "a280de3ded74ec9ab09505cc6f7f0c0781d55ee4",
+  "pr": 175,
+  "run": 42424437412,
+  "attempt": 1,
+  "dotnetJob": 128559573893,
+  "headTreeAuthenticated": "6f4aa76d22fc38475b938fe398becad294a39711",
+  "actualPrTestMerge": "7f54722c9ab00d5205443525aef77ce891f7742c",
+  "jobOutcome": "failure",
+  "restoreAndReleaseBuild": "success",
+  "moduleTests": {
+    "total": 2850,
+    "passed": 2844,
+    "failed": 1,
+    "skipped": 5,
+    "actualFailureLines": [
+      "2026-11-07T23:24:27.1687782Z failed Hexalith.Builds.ModuleTool.Tests.Workspace.StopSignalTests.StandardInputDisposalDrainsWhileOwnerWriterRemainsOpenAsync (10s 331ms)"
+    ],
+    "actualSkipLines": [
+      "2026-11-07T23:20:19.6971880Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+      "2026-11-07T23:21:24.2171835Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+      "2026-11-07T23:21:46.8181494Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync",
+      "2026-11-07T23:26:48.0840152Z skipped Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+      "2026-11-07T23:26:59.5439314Z skipped Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync"
+    ],
+    "failure": "new StandardInputDisposalDrainsWhileOwnerWriterRemainsOpenAsync timed out at parent child StandardOutput.ReadLineAsync readiness wait (source91,finally110), 10s331ms",
+    "specificChildCauseNotRetained": true
+  },
+  "laterEvidenceAndToolingTests": "skipped after Module failure; no pass credit",
+  "actualLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/a280-first-dotnet-failure-log.stdout",
+    "bytes": 59916,
+    "sha256": "dad86f3d91307824a95c273b5360c903693e90a2f29bce5f6defe9a3e1c05f08"
+  },
+  "readScope": "Full finite failed case/stack, owning invocation, aggregate and five skip names; complete log retained and hashed, no complete raw-model-read claim.",
+  "actualCodacy": {
+    "check": 128560039115,
+    "app": 56611,
+    "conclusion": "action_required",
+    "newTestMethodsOver50Lines": [
+      81,
+      84
+    ]
+  },
+  "nextStep": "same sole implementation agent; narrow helper extraction and actual child-handshake investigation in new root; production and original assertions/bounds unchanged; require fresh full hosted source CI",
+  "soleSpecBytes": 459700,
+  "soleSpecSha256": "6a00664d7d10b7feeadde7f1a0f28d07615d51575fb561c7fc4eb1c9a1e74bd1",
+  "noRerunOrCancellationOrMergeOrWaiver": true,
+  "physicalManualDispatches": 3,
+  "actualCancellationRequests": 0,
+  "wholeStoryStillInProgress": true
+}

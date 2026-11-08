@@ -1,0 +1,48 @@
+{
+  "utc": "2026-11-08T03:08:53.800408+00:00",
+  "source": "8fb7f15c8bc8134493ad5f11a05f7ac5bdc59126",
+  "run": 42440472375,
+  "attempt": 1,
+  "job": 128608423765,
+  "actualCiConclusion": "failure",
+  "actualFailedCase": "Hexalith.Parties.Tests.FitnessTests.AppHostTenantsTopologyTests.LocalRunDocumentationUsesPinnedPlatformToolAndDirectReferencesOnly",
+  "actualFailureUtc": "2026-11-08T03:00:58.1115743Z",
+  "duration": "1ms",
+  "actualAssertion": "document should contain 4.44.13; actual document is README.md which still states independent-repository module tool4.44.12",
+  "actualSourceLine": "tests/Hexalith.Parties.Tests/FitnessTests/AppHostTenantsTopologyTests.cs:295",
+  "actualFullLog": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-8fb7-first-actual-tier-one-failure-log.stdout",
+    "bytes": 1187791,
+    "sha256": "882bd3b4d62955e64cc24ba8522ffd487240489d71dae399a4a9af52e1699371"
+  },
+  "readScope": "Complete finite actual failure/assertion/stack and exact unchanged method were model-read. Whole1.187MB log is retained/authenticated, not wholly model-read; first broad reader output was truncated and supplies no full-read credit.",
+  "actualPartiesTestsCounts": {
+    "total": 2865,
+    "passed": 2851,
+    "failed": 1,
+    "sameOptionalSkipped": 13
+  },
+  "actualSampleTests": {
+    "total": 66,
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualCiTests": {
+    "total": 614,
+    "passed": 614,
+    "failed": 0,
+    "skipped": 0
+  },
+  "buildPackagePreparationConsumerValidation": "success",
+  "isolatedBarrier": "failure correctly blocks integration",
+  "integrationToolchainPreparationAndNativeExecution": "skipped; no native credit",
+  "alwaysFinalizer": "success with no admitted native owner; not cleanup credit",
+  "publicVerifier": "failure from absent required native evidence, not caller acceptance",
+  "allSourceGates": false,
+  "nextPhysicalMatrixOrCancellationDispatched": false,
+  "allThreeHistoricalManualMatricesStillFailed": true,
+  "actualParentCancellationRequests": 0,
+  "implementationAgent": "old root CLOSED/IDLE; next docs scope in sole spec",
+  "storyAcceptance": false
+}

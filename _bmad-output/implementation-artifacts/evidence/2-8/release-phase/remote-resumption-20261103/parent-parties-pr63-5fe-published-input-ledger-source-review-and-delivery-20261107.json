@@ -1,0 +1,93 @@
+{
+  "utc": "2026-11-07T17:39:01.055078+00:00",
+  "source": "5fe6afea206f569971a9405ba47708f2272f0eb3",
+  "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/63",
+  "independentProofs": [
+    {
+      "relativeParentPath": "parties-published-pin-ledger-review/parent-independent-closed-root-body-link-census-audit.json",
+      "bytes": 1080,
+      "sha256": "3f061f176777e525b3a467a781b92d8cb7e210aa24c03a6f0cccd5396d24fa7d",
+      "actualReceipt": {
+        "startedUtc": "2026-11-07T17:10:41.359840+00:00",
+        "finishedUtc": "2026-11-07T17:10:51.330578+00:00",
+        "closedRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-final-published-pin-ledger-first-main-failure-20261107",
+        "indexSha256": "eaab7660922e0f43c909dc4e403c8339895ec47b3c395cb27d2d6734a7dcbce1",
+        "checkpointSha256": "dd5507123995f55971318737794d5835c2ef4f9f8fdf02e416f1a0ceeb3a44bd",
+        "reportSha256": "e5acfad06f11a72bc4a8cc4e5c7194ac5be7702b235bdce481853d943f61e46d",
+        "allActualIndexedBodyHashesAndSizesVerified": true,
+        "files": 26444,
+        "bytes": 505937680,
+        "declaredLinks": 19,
+        "exactNonGitCensusAndAllDeclaredLinkTargets": true,
+        "statOnlyFifosNeverOpened": 0,
+        "allAnchorsVerifiedIncludingCircularIndexSeal": 24,
+        "anchorsInVerifiedRegularBodyIndex": 23,
+        "circularIndexSealAnchorVerifiedSeparately": true,
+        "implementationRootNeverWrittenByThisAudit": true,
+        "scope": "Independent sealed-body/census audit. Separate command/XML/source-role audit still required before caller delivery.",
+        "hostedNativeManualStoryAcceptance": false
+      }
+    },
+    {
+      "relativeParentPath": "parties-published-pin-ledger-review/parent-independent-source-prefix-gate-input-output-audit.json",
+      "bytes": 868,
+      "sha256": "5626f34a8416fb208b05d495c165fccd1ac2a3b8c7bfae56a339705fe333d5fd",
+      "actualReceipt": {
+        "utc": "2026-11-07T17:14:14.897874+00:00",
+        "source": "5fe6afea206f569971a9405ba47708f2272f0eb3",
+        "parent": "ebcd0e250c989720e2cdbc5cd3922482ae7f68f3",
+        "tree": "58f8ec39a8fcf66eb25ec88664218f5c13260e39",
+        "complete1021ByteProposalReadIntoParentContext": true,
+        "onlyLedgerChanged495ByteAppend": true,
+        "entire62361BytePrefixByteExact": true,
+        "allOther8279SourceObjectsAndModesAndEveryPinExact": true,
+        "all6CommandsBothStreamsAnd6x8270InputBodiesVerified": true,
+        "realNonemptyOriginalRangeAndRealReleaseFloorBothPass4AdvancesEach": true,
+        "all4IsolatedMissingOrMismatchControlsActuallyRefuse": true,
+        "full6ActualArgumentsReadIntoParentContext": true,
+        "historicalHumanParityCandidateAndOldFailedRunNotRelabeled": true,
+        "sourceTestsOrCompilationsReplayed": false,
+        "closedRootWritten": false,
+        "newSourceHostedNativeOrStoryAcceptance": false
+      }
+    },
+    {
+      "relativeParentPath": "parties-published-pin-ledger-review/proposal-read-index.json",
+      "bytes": 527,
+      "sha256": "d59377cc288f5ef4020c65ca29f809fe6593ada51f68b54b609ebb5d60cdd551",
+      "actualReceipt": {
+        "sourceRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-final-published-pin-ledger-first-main-failure-20261107/Hexalith.Parties",
+        "head": "5fe6afea206f569971a9405ba47708f2272f0eb3",
+        "base": "ebcd0e250c989720e2cdbc5cd3922482ae7f68f3",
+        "actualSystemTempDiffFile": "/tmp/story-2-8-parent-P-ledger-full-2u888e6i.diff",
+        "bytes": 1021,
+        "sha256": "8f7a74d9b92b50ef0a20d114ba50fd6fd82f2b5406454d0e0caea6a0e250352b",
+        "fullReadIntoParentContext": true,
+        "completedUtc": "2026-11-07T17:14:14.897695+00:00"
+      }
+    },
+    {
+      "relativeParentPath": "parties-ledger-5fe-delivery/actual-source-delivery.json",
+      "bytes": 589,
+      "sha256": "7b42cb4a9121eb4f984d715fcff01eed59ad3f2d1dbf78849112dac097cffc3d",
+      "actualReceipt": {
+        "utc": "2026-11-07T17:26:25.676154+00:00",
+        "url": "https://github.com/Hexalith/Hexalith.Parties/pull/63",
+        "pr": 63,
+        "source": "5fe6afea206f569971a9405ba47708f2272f0eb3",
+        "parent": "ebcd0e250c989720e2cdbc5cd3922482ae7f68f3",
+        "tree": "58f8ec39a8fcf66eb25ec88664218f5c13260e39",
+        "ordinaryFeaturePushes": 1,
+        "newNormalPrCreates": 1,
+        "onlyLedgerAppend495Bytes": true,
+        "originalMainFailurePreserved": 42393198540,
+        "allExactMessagesAndTitlesOwningLocked21Pass": true,
+        "releaseCandidateLabelAdded": false,
+        "rulesWritten": false,
+        "newHostedOrStoryAcceptance": false
+      }
+    }
+  ],
+  "freshHostedCiStillPending": 42396321458,
+  "sourceSelectionDoesNotGrantHumanParityCandidateOrRuntimeAcceptance": true
+}

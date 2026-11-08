@@ -1,0 +1,144 @@
+{
+  "utc": "2026-11-07T20:47:25.724380+00:00",
+  "source": "f42a26e846bcffa052ede7a5ee890d078fca18ac",
+  "pr": 396,
+  "run": 42407850993,
+  "attempt": 1,
+  "actualBothIntegrationJobsPassed": true,
+  "actualJobs": [
+    {
+      "id": 128509328088,
+      "name": "published-compatibility",
+      "conclusion": "success"
+    },
+    {
+      "id": 128509328253,
+      "name": "live-sidecar",
+      "conclusion": "success"
+    }
+  ],
+  "actualOriginal334NamesExact": true,
+  "actualSeparateAssemblyParallelizationGuardOnePassed": true,
+  "additionalGuardTrxNotConfusedWithOriginal334Primary": true,
+  "actualA770NineAppBindFailuresAllPassed": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyCallbackCaughtETagLossRetainsItsExactFenceAndRefusesSuccessor",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"escaping-pipeline\")",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"dapr-error-header\")"
+  ],
+  "actualAf13NineActorAddressFailuresAllPassed": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: True, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: False)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"in-memory-events\", declarative: False, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.NativeQueryRegisteredActorsAndLifecycleKeepActualChannelCatalogAndMethodBoundaries(component: \"pubsub\", declarative: False, legacyFinite: True)",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyCallbackCaughtETagLossRetainsItsExactFenceAndRefusesSuccessor",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"escaping-pipeline\")",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.NativeActorCatalogLiveTests.LegacyNativeAmbiguityRetainsItsExactFenceAndRefusesSuccessor(failure: \"dapr-error-header\")"
+  ],
+  "actualLive330ExecutedAllPassed": true,
+  "actualFourExistingNotExecutedNames": [
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionBoundedIdentityProcessWorkerTests.RunBoundedOwnerWorkerAsync",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionRetiredInstallerProcessWorkerTests.InstallOrRecoverExactRetiredParticipant",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionScratchProcessWorkerTests.PersistOrRecoverOriginalNamedOwnerScratch",
+    "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.ProjectionWatermarkProcessWorkerTests.ApplyPersistedHistoryAsync"
+  ],
+  "firstOldMutualTlsFailureNowPassedOnDistinctChangedSource": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogHostedLiveTests.HostedTargetsAndProtectedDaprReadbackAgreeAcrossPrepareCommitAndRollback(mutualTls: True)",
+  "actualCompatibility444AllPassedNamesExact": true,
+  "liveCounters": {
+    "total": "334",
+    "executed": "330",
+    "passed": "330",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "4",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "compatibilityCounters": {
+    "total": "444",
+    "executed": "444",
+    "passed": "444",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "archives": [
+    {
+      "artifact": {
+        "id": 13589583313,
+        "node_id": "MDg6QXJ0aWZhY3QxMzU4OTU4MzMxMw==",
+        "name": "live-sidecar-test-results",
+        "size_in_bytes": 1418147,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13589583313",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13589583313/zip",
+        "expired": false,
+        "digest": "sha256:ae09e34e9224d90c384e602a54fb17e46d0e7d182e2ab14c9a977d385edc93c5",
+        "created_at": "2026-11-07T20:43:53Z",
+        "updated_at": "2026-11-07T20:43:53Z",
+        "expires_at": "2026-11-14T20:43:52Z",
+        "workflow_run": {
+          "id": 42407850993,
+          "repository_id": 1155154671,
+          "head_repository_id": 1155154671,
+          "head_branch": "fix/public-platform170-builds44412-a4d95c8a",
+          "head_sha": "f42a26e846bcffa052ede7a5ee890d078fca18ac"
+        }
+      },
+      "allArchiveAndMemberBodyHashesVerified": true,
+      "members": 63,
+      "memberBytes": 30172819
+    },
+    {
+      "artifact": {
+        "id": 13589901017,
+        "node_id": "MDg6QXJ0aWZhY3QxMzU4OTkwMTAxNw==",
+        "name": "published-compatibility-results",
+        "size_in_bytes": 12763153,
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13589901017",
+        "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13589901017/zip",
+        "expired": false,
+        "digest": "sha256:da3be29bf4d083fe9aad728ab9ef8dbacc87bbf67842fe6d72b20818a7336019",
+        "created_at": "2026-11-07T20:29:45Z",
+        "updated_at": "2026-11-07T20:29:45Z",
+        "expires_at": "2026-11-14T20:29:42Z",
+        "workflow_run": {
+          "id": 42407850993,
+          "repository_id": 1155154671,
+          "head_repository_id": 1155154671,
+          "head_branch": "fix/public-platform170-builds44412-a4d95c8a",
+          "head_sha": "f42a26e846bcffa052ede7a5ee890d078fca18ac"
+        }
+      },
+      "allArchiveAndMemberBodyHashesVerified": true,
+      "members": 8001,
+      "memberBytes": 143589192
+    }
+  ],
+  "oldFirstRunFailureRetainedWithoutUnchangedRetry": true,
+  "newMainManualOrWholeStoryAcceptance": false
+}

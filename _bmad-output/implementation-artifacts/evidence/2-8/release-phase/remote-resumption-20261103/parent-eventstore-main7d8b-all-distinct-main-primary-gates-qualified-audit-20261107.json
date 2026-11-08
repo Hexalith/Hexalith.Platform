@@ -1,0 +1,172 @@
+{
+  "utc": "2026-11-07T21:50:07.615730+00:00",
+  "source": "7d8b483ffe3ac31cbf1410c1cacf120d747a8ecb",
+  "tree": "da38fbf1c24b8ad7d431abe5f6f449b30db678fc",
+  "all8DistinctMainPushWorkflowsPassed": true,
+  "all14ExecutedMainChecksSucceededOneExistingConditionalAuthorizedServiceSkipped": true,
+  "allOriginal20ProjectsNative9AndPure20PrimaryVerified": true,
+  "allLifecycle63OriginalNamesPassed": true,
+  "allOriginal334LiveNamesRetained330PassedFourExistingNotExecuted": true,
+  "allOriginal444CompatibilityNamesPassedNoSkips": true,
+  "separateAssemblyParallelizationGuardOnePassed": true,
+  "actualNative9NotConfusedWithNineLiveActorCases": true,
+  "allOldNineAppBindAndNineActorAddressFailuresNowPassedOnDistinctSourceAndMain": true,
+  "allActualArtifactsArchiveSizesDigestsAnd8064IntegrationMemberBodiesVerified": true,
+  "sourceTestingAssemblyRoleNotPublicSdkAuthority": true,
+  "mainSourceCurrentAtQualification": true,
+  "mainRuns": [
+    {
+      "id": 42412772962,
+      "path": ".github/workflows/codeql.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412773030,
+      "path": ".github/workflows/commitlint.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412772601,
+      "path": ".github/workflows/payload-protection-azure.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412772588,
+      "path": ".github/workflows/advisory-tests.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412772681,
+      "path": ".github/workflows/payload-protection-lifecycle.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412772595,
+      "path": ".github/workflows/payload-protection.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412773089,
+      "path": ".github/workflows/ci.yml",
+      "conclusion": "success"
+    },
+    {
+      "id": 42412772600,
+      "path": ".github/workflows/integration.yml",
+      "conclusion": "success"
+    }
+  ],
+  "actualChecks": [
+    {
+      "id": 128524681230,
+      "name": "authorized-service",
+      "app": 15368,
+      "conclusion": "skipped"
+    },
+    {
+      "id": 128524275920,
+      "name": "ci / checkpointed process packages",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275860,
+      "name": "ci / semantic-release-governance",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275832,
+      "name": "ci / folded-snapshot-compatibility",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275829,
+      "name": "ci / build-and-test",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275795,
+      "name": "ci / contracts",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275577,
+      "name": "ci / tenants-source-mode",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275403,
+      "name": "commitlint / commitlint",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524275118,
+      "name": "codeql / analyze",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524274416,
+      "name": "payload-protection-lifecycle",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524274229,
+      "name": "live-sidecar",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524274113,
+      "name": "payload-protection",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524274079,
+      "name": "adapter-unit",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524274055,
+      "name": "published-compatibility",
+      "app": 15368,
+      "conclusion": "success"
+    },
+    {
+      "id": 128524273963,
+      "name": "advisory",
+      "app": 15368,
+      "conclusion": "success"
+    }
+  ],
+  "primaryProofs": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-main7d8b-first-ci-primary/parent-independent-all-original-projects-native9-and-extra-primary-audit.json",
+      "bytes": 4142402,
+      "sha256": "a56eaccd1f67b692122682279d81ee46fa827654e5476dfe589484419051bddf"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-main7d8b-first-pf02-primary-success/parent-independent-actual63-primary-audit.json",
+      "bytes": 1846,
+      "sha256": "1d82970676c09ddd8d87c3244c89e4ca5e3d8483037645f5dde101cb486819eb"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/eventstore-main7d8b-first-integration-primary/parent-independent-live334-and-compatibility444-primary-audit.json",
+      "bytes": 199381,
+      "sha256": "c61204a0b12cedb2976c73823a5ea0eb982630503c2315f704ed9c3767f63962"
+    }
+  ],
+  "rulesFreshlyReadNotWritten": true,
+  "noUnchangedFailureRerun": true,
+  "finalPlatformReferenceEnrollmentNotYetPerformed": true,
+  "manualAndWholeStoryAcceptance": false
+}

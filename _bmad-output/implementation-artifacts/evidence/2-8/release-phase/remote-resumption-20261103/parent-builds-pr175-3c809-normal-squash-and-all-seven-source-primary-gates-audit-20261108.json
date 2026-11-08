@@ -1,0 +1,140 @@
+{
+  "utc": "2026-11-08T02:04:14.236068+00:00",
+  "source": "d0867f6cb60fbdd207f4fe1075097784a7a06264",
+  "sourceRun": 42435323602,
+  "sourceAttempt": 1,
+  "allSevenActualSourceJobs": [
+    {
+      "id": 128592800317,
+      "name": "Package catalog contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 128592800426,
+      "name": "Python contract tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 128592800452,
+      "name": ".NET tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 128592800477,
+      "name": "Build and package contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 128592800547,
+      "name": "CodeQL / analyze",
+      "conclusion": "success"
+    },
+    {
+      "id": 128592800633,
+      "name": "Dependency review / dependency-review",
+      "conclusion": "success"
+    },
+    {
+      "id": 128597058906,
+      "name": "Build and test",
+      "conclusion": "success"
+    }
+  ],
+  "allStrictRequiredAppChecksActuallySuccess": true,
+  "requiredAppIds": {
+    "Codacy": 56611,
+    "SonarCloud": 12526,
+    "commitlint": 15368
+  },
+  "allActualReviewsAndInlineCommentsEmptyAtMerge": true,
+  "actualDotnetPasses": 3048,
+  "sameOldOptionalSkips": 17,
+  "actualPythonLifecycleNamedPasses": 43,
+  "actualSourceDiagnosticArtifact": {
+    "id": 13598998921,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU5ODk5ODkyMQ==",
+    "name": "g4-ci-qualification-1aeb6353572d7fb05269c39ef588c5f3d24d7029-42435323602-1",
+    "size_in_bytes": 108668,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13598998921",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/artifacts/13598998921/zip",
+    "expired": false,
+    "digest": "sha256:95a5c52253f05accbfb304965bae3902e54454fded9c298c511f425aad836cd0",
+    "created_at": "2026-11-08T02:01:13Z",
+    "updated_at": "2026-11-08T02:01:13Z",
+    "expires_at": "2026-12-08T01:41:18Z",
+    "workflow_run": {
+      "id": 42435323602,
+      "repository_id": 952945989,
+      "head_repository_id": 952945989,
+      "head_branch": "fix/cancellable-stdin-a280de3d",
+      "head_sha": "d0867f6cb60fbdd207f4fe1075097784a7a06264"
+    }
+  },
+  "all55QualificationPayloadsAnd303VisibleFixturesPlusHiddenTrackedFixtureVerified": true,
+  "sourceDiagnosticVersionNotPublicOrReleaseEligible": true,
+  "normalMerge": {
+    "utc": "2026-11-08T02:02:40.238472+00:00",
+    "PR": 175,
+    "head": "d0867f6cb60fbdd207f4fe1075097784a7a06264",
+    "base": "b4703ec2247321f867f14cd9caca43fa00190feb",
+    "actualMergedMain": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "actualTree": "7416e80349ddfe3393b1a26701085d4d28219b87",
+    "orderedParents": [
+      "b4703ec2247321f867f14cd9caca43fa00190feb"
+    ],
+    "method": "squash",
+    "requiredChecksAndAllSevenSourceCiJobsActuallyPassed": true,
+    "actualDotnetPassed": 3048,
+    "actualExistingSkipped": 17,
+    "independentArtifactPassed": true,
+    "realCatalogOriginAncestor": "8984471f75657cd24236cf2d04f470f8e2545ace",
+    "exactFullMergeMessageLocked21BeforeAndAfterPassed": true,
+    "ruleUnchanged": true,
+    "failedCheckOrMergeMethodBypass": false,
+    "mainPushCiAndPublication": "pending fresh actual source",
+    "nativeAcceptance": false,
+    "wholeStoryAcceptance": false
+  },
+  "fullExactNormalSquashMessage": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-normal-merge/actual-full-normal-squash-message.txt",
+    "bytes": 538,
+    "sha256": "0488ea0067a23e998910bafdec23f4759b97e1f56f42684a312c5b741303f85b"
+  },
+  "actualMainCi": {
+    "utc": "2026-11-08T02:02:50.677131+00:00",
+    "source": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "tree": "7416e80349ddfe3393b1a26701085d4d28219b87",
+    "base": "b4703ec2247321f867f14cd9caca43fa00190feb",
+    "ci": 42436815567,
+    "attempt": 1,
+    "run_number": 746,
+    "dotnetJob": 128597308928,
+    "pythonJob": 128597308622,
+    "directory": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/actual-main-3c809618-first-success-ci-primary",
+    "discoveredActualRunNotAssumed": true,
+    "allMainGatesStillRequired": true,
+    "noReleaseDispatchOrApprovalPerformed": true
+  },
+  "primaryProofs": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-first-success-ci-primary/parent-actual-PR175-CI-primary-artifact-independent-audit.json",
+      "bytes": 142108,
+      "sha256": "52b04d197e308968db026c5ce55e36d3ef495f1a04de58963d97d24f45cedad6"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-normal-merge/parent-actual-normal-allowed-PR175-squash-merge-independent-audit.json",
+      "bytes": 879,
+      "sha256": "e54904752073068032c1da398ab50bf3eeed126747d686ae82f62eaa0f40e1e1"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/actual-merged-main-first-ci-reader-binding.json",
+      "bytes": 604,
+      "sha256": "a4a9d1094906186a21c30a560c5a289dac758789bcabcc411f35de012d7e2730"
+    }
+  ],
+  "rulesUnchanged": true,
+  "bypass": false,
+  "onlyLiveExternalWatcher": 82856,
+  "sourceWatchSession23503Reaped": true,
+  "mainCiPublicationManualStoryAcceptance": false
+}

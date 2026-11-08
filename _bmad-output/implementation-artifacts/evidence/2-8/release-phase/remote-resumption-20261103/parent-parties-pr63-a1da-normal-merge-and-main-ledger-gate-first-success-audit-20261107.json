@@ -1,0 +1,37 @@
+{
+  "utc": "2026-11-07T18:02:29.023549+00:00",
+  "actualMainSource": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+  "run": 42397873677,
+  "attempt": 1,
+  "actualJob": 128479049828,
+  "result": "success",
+  "rawPrimaryLog": {
+    "bytes": 17632,
+    "sha256": "c57e16468b867391978b7652fe9a4f633b9514c5bb327accda2acaf5ec36f033"
+  },
+  "normalMergeReceipt": {
+    "utc": "2026-11-07T17:45:29.855960+00:00",
+    "pr": "https://github.com/Hexalith/Hexalith.Parties/pull/63",
+    "merged": true,
+    "actualMergeSource": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+    "tree": "58f8ec39a8fcf66eb25ec88664218f5c13260e39",
+    "parents": [
+      "ebcd0e250c989720e2cdbc5cd3922482ae7f68f3",
+      "5fe6afea206f569971a9405ba47708f2272f0eb3"
+    ],
+    "allSourceNativeAndPublicRolesGatesPassedBeforeMerge": true,
+    "allOrdinaryCommitsRetained": true,
+    "normalMergeNoBypass": true,
+    "ruleWrites": 0,
+    "allRulesUnchanged": true,
+    "actualFullMessageBytes": 202,
+    "actualFullMessageSha256": "bc6c7bae65df3fc800a53754ad4a961e44a27ea5373042bbed817195371f44d2",
+    "proposedAndActualFullMessagesOwningLocked21LintPassed": true,
+    "newMainCiAndManualQualificationStillPending": true,
+    "wholeStoryAcceptance": false
+  },
+  "originalEbcdFirstFailurePreserved": 42393198540,
+  "originalNonempty8fPushRangeAndPublic509FloorBothFourAdvancesIndependentlyPassed": "parties-published-pin-ledger-review/parent-independent-source-prefix-gate-input-output-audit.json",
+  "newA1MainGateDoesNotRelabelOldFailedAttempt": "a1 push contains ledger records and no additional dependency pointer changes",
+  "mainOrdinaryNativeAndManualAcceptanceStillPending": true
+}

@@ -1,0 +1,54 @@
+{
+  "utc": "2026-11-07T16:31:09.773806+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "pr": 396,
+  "actualSource": "ff8f8aab70cbdad1bf06fe8f71b0666c25239967",
+  "actualTestMerge": "bb250b91026bfd9b5d4ad0a8858f9eea92b95952",
+  "workflowRun": 42387745874,
+  "attempt": 1,
+  "job": 128448633531,
+  "failedStep": "Run Live-Sidecar Integration Tests",
+  "primaryArtifact": 13582220198,
+  "zipBytes": 1418687,
+  "zipSha256": "3ec8d1d9bd8c862d8521238e2d2aa9ebc0e505b611de972c90d08ee4d67fc318",
+  "counters": {
+    "total": 334,
+    "executed": 330,
+    "passed": 329,
+    "failed": 1,
+    "errors": 0,
+    "notExecuted": 4
+  },
+  "failedCase": "Hexalith.EventStore.Server.LiveSidecar.Tests.Integration.RouteCatalogHostedLiveTests.HostedTargetsAndProtectedDaprReadbackAgreeAcrossPrepareCommitAndRollback(mutualTls: True)",
+  "failedFixtureMethod": "RouteCatalogDevelopmentSidecar.StartAsync",
+  "sourceLine": 81,
+  "failureMessageBytes": 10025,
+  "failureMessageSha256": "ba94a2f6e220be1ccf7f5d298c1228b4a0e1da0008317af7608d551f299baeb3",
+  "boundedActualCause": [
+    {
+      "loggerScopes": [
+        "dapr.runtime.grpc.api"
+      ],
+      "containsGrpcApi": true,
+      "containsGrpcInternal": false,
+      "actualAddressAlreadyInUse": true,
+      "loopbackPorts": [
+        "42177",
+        "42177"
+      ],
+      "rawStartupLineEmitted": false
+    }
+  ],
+  "knownActualFailure": "Owned daprd process exited after gRPC listener bind address already in use on127.0.0.1:42177. This cause is measured in this new run; the earlier separate PostgreSQL Docker exit125 cause remains UNPROVED.",
+  "whoHeldThePort": "UNPROVED",
+  "sourceFixtureBlobsAcrossIncomingAndBothProposals": {
+    "2bd75f6b26a41cc58fc69e991ebf87b106ce7eb1": "eb35ca100ab9c1b090d23f1935bd6a63a48863e3",
+    "a4d95c8aecf927f6a1871dce653234a1f89048bf": "eb35ca100ab9c1b090d23f1935bd6a63a48863e3",
+    "ff8f8aab70cbdad1bf06fe8f71b0666c25239967": "eb35ca100ab9c1b090d23f1935bd6a63a48863e3"
+  },
+  "sourceObservedAllocationGap": "Constructor stops six loopback socket reservations before caller applications and owned sidecar claim those ports; repeated fixture objects can lose their selected ports before launch.",
+  "tupleOrPf02Causality": "UNPROVED; this source fixture was untouched by both changes",
+  "unchangedFailedWorkflowRetried": false,
+  "pendingOtherJob": "published-compatibility still running; preserve its actual eventual result",
+  "newNativeOrManualOrStoryAcceptance": false
+}

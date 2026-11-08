@@ -1,0 +1,403 @@
+{
+  "utc": "2026-11-08T02:38:42.352442+00:00",
+  "source": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "version": "4.44.13",
+  "releaseId": 437988798,
+  "releaseRun": 42438005017,
+  "releaseAttempt": 1,
+  "actualSourceCi": 42436815567,
+  "actualSourceCiAttempt": 1,
+  "publicTag": "v4.44.13",
+  "actualPublisher": {
+    "id": 41898282,
+    "login": "github-actions[bot]"
+  },
+  "producer": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_RUN_ID": "42438005017",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "release",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/build-release.yml@refs/heads/main",
+    "GITHUB_WORKFLOW_SHA": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "GITHUB_EVENT_NAME": "workflow_dispatch",
+    "schema": "hexalith.g4-qualification-carrier.v1",
+    "kind": "release",
+    "version": "4.44.13",
+    "sourceRevision": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "inventorySha256": "887866d05fda3b6283dd3ea34b3e605f7f403c8df504eefdd095b3cc62f56717",
+    "qualificationEvidenceFiles": 55
+  },
+  "diagnosticAttempt": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Builds",
+    "GITHUB_SHA": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "GITHUB_RUN_ID": "42438005017",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "release",
+    "GITHUB_WORKFLOW_REF": "Hexalith/Hexalith.Builds/.github/workflows/build-release.yml@refs/heads/main",
+    "GITHUB_WORKFLOW_SHA": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "GITHUB_EVENT_NAME": "workflow_dispatch",
+    "schema": "hexalith.g4-qualification-attempt.v1",
+    "kind": "release",
+    "producerStepOutcome": "success",
+    "qualificationCredit": false,
+    "purpose": "diagnostic identity; not completed qualification evidence"
+  },
+  "primaryArtifactId": 13601230673,
+  "primaryArtifactSha256": "58df0745332c6078d82da5f7abb6dd9b28811edfd76592c003d8b1a728633da0",
+  "primaryOuterFilesVerified": 58,
+  "publicAssetAndPrimaryInventoryAndCarrierAndAllPayloadsExact": true,
+  "innerCarrierFilesVerified": 57,
+  "qualificationPayloads": [
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-command-filter-mismatch-output.json",
+      "bytes": 696,
+      "sha256": "43b4403957c144e16c1336cda259ec54993683cc3a5ea6cbfd061351f86aacbb",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-command-filter-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-command-manifest-mismatch-output.json",
+      "bytes": 700,
+      "sha256": "80ab4e0c12a49df7b3d41ef849b3278d0bef2134ca8903bf3d22372e9bd18e54",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-command-manifest-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-command-profile-mismatch-output.json",
+      "bytes": 698,
+      "sha256": "fd33602fa1288c1b0c0ae9883b82edadaea3ee6a462a17b508334e51010bdb09",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-command-profile-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-duplicate-option-mismatch-output.json",
+      "bytes": 708,
+      "sha256": "46270271c03cd72072499393d8b46d349d05cf20a3328c876d0c136f5361c2ce",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-duplicate-option-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-hash-mismatch-output.json",
+      "bytes": 497,
+      "sha256": "bc1f644e1746b224506ba5d8d860263d3e15fab22347c604e6db40c0081457b8",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-hash-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-raw-filter-equals-mismatch-output.json",
+      "bytes": 710,
+      "sha256": "7152ab78185e588d46f94df60899055e5d26bf496ba7c6e9093872b9ff35a022",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-raw-filter-equals-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-artifact-raw-filter-mismatch-output.json",
+      "bytes": 696,
+      "sha256": "7a575b69f487cad3b5525c72baaa284c4ace108ef492f03901586055a28b1c58",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/artifact-raw-filter-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-binding-mismatch-output.json",
+      "bytes": 672,
+      "sha256": "fa7d0ce70844abd512961ee59a20030b008db0df3fa1a31f47ce0f04831dd073",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/binding-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-coverage-shortfall-output.json",
+      "bytes": 485,
+      "sha256": "3edb90d45371b0dc5131459a1f78e59e1e653a963d7baeb3e18790b803acb34b",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/coverage-shortfall.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-duplicate-key-output.json",
+      "bytes": 448,
+      "sha256": "c83aceb948685902032666a9fd0ace2b18a4c44c7eba9bbd194df8201447b355",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/duplicate-key.yaml.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-filter-hash-mismatch-output.json",
+      "bytes": 680,
+      "sha256": "6d51a763f41594ea7aad8589ac900e648d7581da1829a3507f9e72cd8d8e6deb",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/filter-hash-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-fixture-hash-mismatch-output.json",
+      "bytes": 682,
+      "sha256": "82ae1cd04130462f15bb2201a2e2de9bd9848c4cb002e92d2be945aa4b95af5d",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/fixture-hash-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-fixture-path-mismatch-output.json",
+      "bytes": 682,
+      "sha256": "add0b71e109c8408cafdd1a156e46ce702e8e3dfc194322367e3d86c8417533e",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/fixture-path-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-invalid-artifact-output.json",
+      "bytes": 510,
+      "sha256": "acc944160c82558089cba27d76c6f057c2feb3fd301830b3c0ab0db389fc03e0",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/invalid-artifact.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-malformed-row-option-mismatch-output.json",
+      "bytes": 698,
+      "sha256": "e0033ddae5c96697864e1af133fac44dd8ca1b238fe504ccd84cc65733e86180",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/malformed-row-option-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-manifest-hash-mismatch-output.json",
+      "bytes": 684,
+      "sha256": "2335dbe9c3bd8cd0043916fa9a1ac7ca934c7bd0746b27e74847b39176831b13",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/manifest-hash-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-manifest-path-mismatch-output.json",
+      "bytes": 684,
+      "sha256": "44c2339eb3b845b76e63cdf7cea171fa9df788c445de9c69186ec4b46bd4c340",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/manifest-path-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-manifest-profile-fixture-mismatch-output.json",
+      "bytes": 706,
+      "sha256": "c70e96808d2eb68f4ace6179ab86266d32cb077093cf0b149240ed5d651a9066",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/manifest-profile-fixture-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-missing-artifact-metadata-output.json",
+      "bytes": 507,
+      "sha256": "b864df33388d942f3beb78f1c65cafa99e7a7e666c2c43c31bf7abc8c889ee82",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/missing-artifact-metadata.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-no-executed-tests-output.json",
+      "bytes": 526,
+      "sha256": "c1600c1d9a68d15dce78ed021d9d8a9634ff4867c0f2835525a9fef1aa960231",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/no-executed-tests.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-outcome-mismatch-output.json",
+      "bytes": 465,
+      "sha256": "ce00006b4bae7beeb5549680ada25ad097a77e98475b0b1741843551fcaa3eb7",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/outcome-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-policy-controls-output.json",
+      "bytes": 3192,
+      "sha256": "a98b43a1e85a1dddc7265c63aff9dbf1ada9122be9df135fe847449926b605c8",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/policy-controls.yaml.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-row-duplicate-option-mismatch-output.json",
+      "bytes": 698,
+      "sha256": "28420206801221fd634cc3d95d783bd291f09db37a3fe85be30763a006c30ac7",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/row-duplicate-option-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-row-missing-filter-mismatch-output.json",
+      "bytes": 694,
+      "sha256": "c74e6de65025cb8681e7292fa72949aaa11184be4d3627c9798aed2651b73d4b",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/row-missing-filter-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-row-missing-manifest-mismatch-output.json",
+      "bytes": 698,
+      "sha256": "753813a24b3859e32503aa2c596e6479959b11f574eb0121846ec1ac942e52eb",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/row-missing-manifest-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-row-profile-mismatch-output.json",
+      "bytes": 680,
+      "sha256": "3b9fc32475257d7fdd62e523c565b2bcead1e70c5f664298f829682624d3a1e1",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/row-profile-mismatch.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-secret-metadata-output.json",
+      "bytes": 499,
+      "sha256": "446bf4ba80b577a8bc843f7c23c8aa23ebd4c81ae93a8eb6ef8b114223daec9e",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/secret-metadata.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-unknown-field-output.json",
+      "bytes": 1902,
+      "sha256": "5e84fe9093a836b9eae3f6689958c03dee31dd87a370f667868e8607e0b406c4",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/unknown-field.yaml.expected.json"
+    },
+    {
+      "file": "qualification-evidence/evidence-negative-unsupported-schema-output.json",
+      "bytes": 2200,
+      "sha256": "5cc7344698ae18c1dcfca987b8b68f07165c96a678ac8619ba8406cfbfd6104d",
+      "actualCommittedExpectation": "test/fixtures/evidence/negative/unsupported-schema.yaml.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-absolute-path-output.json",
+      "bytes": 426,
+      "sha256": "4f10f5547ee25817ed75622a4d9754212587ef6bfccb55234266822f72ab2e3f",
+      "actualCommittedExpectation": "test/fixtures/module/negative/absolute-path.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-duplicate-id-output.json",
+      "bytes": 378,
+      "sha256": "612bd4adc29270225992534f2974e282a9a2779080275fcfc4ce4db894b6b8fe",
+      "actualCommittedExpectation": "test/fixtures/module/negative/duplicate-id.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-duplicate-json-key-output.json",
+      "bytes": 364,
+      "sha256": "6f666c2ced51dfdfe955dc07506694f6cad06eb185de7ee9721362fa8f9162d1",
+      "actualCommittedExpectation": "test/fixtures/module/negative/duplicate-json-key.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-invalid-profile-output.json",
+      "bytes": 392,
+      "sha256": "1cadce9a8508ba7d4b201854fe1f3639b4e2ace8cb0c579f45384c344afe855f",
+      "actualCommittedExpectation": "test/fixtures/module/negative/invalid-profile.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-malformed-dependency-output.json",
+      "bytes": 399,
+      "sha256": "f3c8ad178d40897a33c5c8285b6f021849a00f32e54a67f303d71350b3fba51b",
+      "actualCommittedExpectation": "test/fixtures/module/negative/malformed-dependency.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-missing-descriptor-output.json",
+      "bytes": 416,
+      "sha256": "d77ab16bd3d8e80f49f5be5db3d5248aa828880b1b5cda9689ac7c56e5ae1798",
+      "actualCommittedExpectation": "test/fixtures/module/negative/missing-descriptor.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-missing-required-value-output.json",
+      "bytes": 369,
+      "sha256": "23c286d6a4067ed450a0c051a87b6d06f6e9bcd5b81030aa05b2f59d6d93f50a",
+      "actualCommittedExpectation": "test/fixtures/module/negative/missing-required-value.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-path-escape-output.json",
+      "bytes": 426,
+      "sha256": "4f10f5547ee25817ed75622a4d9754212587ef6bfccb55234266822f72ab2e3f",
+      "actualCommittedExpectation": "test/fixtures/module/negative/path-escape.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-placeholder-output.json",
+      "bytes": 370,
+      "sha256": "b879d28f56205da197ad4bdfed0ea5b51f9d51d8d37941e4297cb6cfe411dba3",
+      "actualCommittedExpectation": "test/fixtures/module/negative/placeholder.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-secret-bearing-output.json",
+      "bytes": 392,
+      "sha256": "c5ca6eb5c7b0ca93e3e495b6767d6587dbf4ed61e062e527a2ffe678db8371b2",
+      "actualCommittedExpectation": "test/fixtures/module/negative/secret-bearing.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-superseded-frontcomposer-pin-output.json",
+      "bytes": 428,
+      "sha256": "e871f92724e5e88e9ba7e4e843c938306948afc1b4977d78ff7b27a051b9f5d9",
+      "actualCommittedExpectation": "test/fixtures/module/negative/superseded-frontcomposer-pin.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-superseded-platform-pin-output.json",
+      "bytes": 425,
+      "sha256": "846ad454e9b7ef3c8fccd413ce21c81898fa6ee547f265398993663250eee953",
+      "actualCommittedExpectation": "test/fixtures/module/negative/superseded-platform-pin.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-tampered-platform-pin-output.json",
+      "bytes": 425,
+      "sha256": "846ad454e9b7ef3c8fccd413ce21c81898fa6ee547f265398993663250eee953",
+      "actualCommittedExpectation": "test/fixtures/module/negative/tampered-platform-pin.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-unknown-field-output.json",
+      "bytes": 370,
+      "sha256": "2952195d8f141e0e715fa4e71dcc341d6d821a255074c4e61632bbd12dbca067",
+      "actualCommittedExpectation": "test/fixtures/module/negative/unknown-field.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-unknown-schema-output.json",
+      "bytes": 345,
+      "sha256": "d6e150761cbb232e34af9b5767e56f330da29e75077bcfc7c5d5505f06653d64",
+      "actualCommittedExpectation": "test/fixtures/module/negative/unknown-schema.expected.json"
+    },
+    {
+      "file": "qualification-evidence/module-negative-unsupported-profile-class-output.json",
+      "bytes": 378,
+      "sha256": "9846c3837c5ef4b0175adb8c360c294cd6759ead3f9b3a40f15dda701f8fe578",
+      "actualCommittedExpectation": "test/fixtures/module/negative/unsupported-profile-class.expected.json"
+    },
+    {
+      "file": "qualification-evidence/packaged-down-evidence.json",
+      "bytes": 1951,
+      "sha256": "7c479f01f9bb9cb3b2065ce2b3a0e331677ec6645788465ceedce3e9214d18d1"
+    },
+    {
+      "file": "qualification-evidence/packaged-down-output.json",
+      "bytes": 298,
+      "sha256": "b9780d4ebe1ac8a4257c7804ef3cb5154f10416e6e34b14be743682136c3707d"
+    },
+    {
+      "file": "qualification-evidence/packaged-readiness-output.json",
+      "bytes": 117,
+      "sha256": "af53783c40a07275d1701a7493907bcee2b7d8fe50c1bf571c33bd7c4b241ba1"
+    },
+    {
+      "file": "qualification-evidence/packaged-seed-subscriptions.json",
+      "bytes": 1180,
+      "sha256": "76ba817e31d3b3b2e977e27aabc445a2d06141e0375eb36db6c410dae779487c"
+    },
+    {
+      "file": "qualification-evidence/packaged-test-evidence.json",
+      "bytes": 2010,
+      "sha256": "f1e2cc7194eb5756ec4d86751acb04ca6216ad81b7aafeeee8fce01810fffc97"
+    },
+    {
+      "file": "qualification-evidence/packaged-test-output.json",
+      "bytes": 460,
+      "sha256": "bb9f45b31f341bf2ef83142c24bea6b0045ddf58a0b395507708a1e2da5ddf66"
+    },
+    {
+      "file": "qualification-evidence/packaged-unavailable-evidence.json",
+      "bytes": 1871,
+      "sha256": "c7c400f8d1ad4741a5294344fed27752e9ad71ea38cd7b400538eb5e2551e695"
+    },
+    {
+      "file": "qualification-evidence/packaged-unavailable-output.json",
+      "bytes": 460,
+      "sha256": "bb9f45b31f341bf2ef83142c24bea6b0045ddf58a0b395507708a1e2da5ddf66"
+    },
+    {
+      "file": "qualification-evidence/qualification.log",
+      "bytes": 186031,
+      "sha256": "b1b592d1ed6dde48d677768166138fafd6d5b09a1498907500ab9cf9f43574f2",
+      "role": "byte-verified producer qualification command log; not printed"
+    },
+    {
+      "file": "qualification-evidence/source-release-passed.json",
+      "bytes": 1833,
+      "sha256": "555a684597e428f510d6cb1ac8e7cbdb66e3e01c5c25b08d9ff456eee2d27668",
+      "role": "existing synthetic source-release fixture, not an actual native run"
+    }
+  ],
+  "actual45NegativeExpectationsVerified": 45,
+  "all303VisibleFixturesExactlyEqualPassingMainCi": true,
+  "hiddenTrackedFixtureSeparatelyVerifiedInMainAudit": {
+    "file": "test/fixtures/package-consumer/.config/dotnet-tools.json",
+    "sha256": "ce9f4d539428d221a70a893a250aec45d244694050dc9216b490f6517eb626f4",
+    "bytes": 362,
+    "role": "separately verified actual tracked hidden file; not counted in producer fixture manifest"
+  },
+  "normallySignedPublicPackagesAndExactQualifiedUnsignedAndAllMemberBodiesVerified": true,
+  "moduleArchiveSha256": "036d32fb2c7ea961d4ec055ad59a70f2cdd6377ab034d67f2b82e01e16b62bec",
+  "evidenceArchiveSha256": "7f7a929aed620cb9495b6a9563427118d8241914c3c4b601950ca1ffececa642",
+  "toolingSha256": "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d",
+  "appHostSha256": "5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252",
+  "bothAdjacentToolingCopiesExact": true,
+  "inventorySha256": "887866d05fda3b6283dd3ea34b3e605f7f403c8df504eefdd095b3cc62f56717",
+  "catalog": {
+    "path": "Props/Directory.Packages.props",
+    "blob": "b45555806e78ea6ce66ad6a8f0fcc5f7c70b691d",
+    "sha256": "c66fb47d42633dd51bdfa6f31216ee22412e0137a664bf472edf72ac103ad5d1"
+  },
+  "retainedRealCatalogOrigin": "8984471f75657cd24236cf2d04f470f8e2545ace",
+  "authenticParties310DeclarationSha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+  "privateOfficialCache": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/actual-main-3c809618-first-success-ci-primary/official-4.44.13",
+  "actualOrdinaryProductionApprovalSentOnce": true,
+  "manualTagReleaseOrPolicyMutation": false,
+  "sourceValidationMode": "actual exact successful push CI reuse",
+  "releaseEligible": true,
+  "nativeAcceptance": false,
+  "wholeStoryAcceptance": false
+}

@@ -1,0 +1,178 @@
+{
+  "utc": "2026-11-07T19:29:06.865199+00:00",
+  "actualSource": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+  "actualPr": 64,
+  "parentIndependentAuditsAndNormalSourceDelivery": [
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-manual-aspire-cache-review/parent-independent-closed-root-body-link-census-audit.json",
+      "bytes": 1075,
+      "sha256": "fb3a186d45ec8ecf0a2a5dcfd9ce79ae6d16382f88e28dc8ea393f8a3007bc91",
+      "actualRecord": {
+        "startedUtc": "2026-11-07T19:05:50.059276+00:00",
+        "finishedUtc": "2026-11-07T19:06:11.349570+00:00",
+        "closedRoot": "/home/administrator/.cache/hexalith/story-2-8/parties-final-manual-aspire-cache-first-failure-20261107",
+        "indexSha256": "5e71a84e00a6bb0160d3def692e150e360e162c91a4750cc2fb9696c242a0268",
+        "checkpointSha256": "cabf60c086df5e49b2488122ac3263bb36b56c803288ab5c332b7ab45d9a25f3",
+        "reportSha256": "66e5fc47ebb93caf0963012bdc0548147e4f5a71bdeb4a1dee2152e32c1505a5",
+        "allActualIndexedBodyHashesAndSizesVerified": true,
+        "files": 55806,
+        "bytes": 2616961233,
+        "declaredLinks": 19,
+        "exactNonGitCensusAndAllDeclaredLinkTargets": true,
+        "statOnlyFifosNeverOpened": 0,
+        "allAnchorsVerifiedIncludingCircularIndexSeal": 29,
+        "anchorsInVerifiedRegularBodyIndex": 28,
+        "circularIndexSealAnchorVerifiedSeparately": true,
+        "implementationRootNeverWrittenByThisAudit": true,
+        "scope": "Independent sealed-body/census audit. Separate command/XML/source-role audit still required before caller delivery.",
+        "hostedNativeManualStoryAcceptance": false
+      }
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-manual-aspire-cache-review/parent-independent-source-preparation-input-output-audit.json",
+      "bytes": 4062,
+      "sha256": "b11409ca25f5446013ef16907f75535ddabb4618db2979bb6dd0fead94827d0d",
+      "actualRecord": {
+        "utc": "2026-11-07T19:09:52.626533+00:00",
+        "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+        "tree": "5d97fb7f34d943cf240ffdbddcd5fd2fcaab7df8",
+        "parent": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+        "complete1716ByteProposalAnd10305ByteReportRead": true,
+        "onlyOneWorkflowStepChangedAll8279OtherObjectsModesPinsExact": true,
+        "controllerAndWholeToolManifestByteExact": true,
+        "all7ActualFullArgvAndPrivateControlsAndStreamsAnd7x8270InputsVerified": true,
+        "actualThreeExistingWorkflowNamesAndActionlintPassed": true,
+        "exactCommittedRunLiteralTested": true,
+        "bothGenuineFilesInitiallyAbsentAndRestoredExecutableWithoutLaunch": true,
+        "allSevenGenuinePreparedImportsPreservedAndSameLiteralPassed": true,
+        "actualBothNormalAuthorAndRepositoryNugetSignaturesPassed": true,
+        "all514SignedArchiveMembersAnd508InstalledBodiesIndependentlyVerified": true,
+        "signedWholeZipSha512AndDistinctMetadataContentHashKeptSeparate": true,
+        "all3307CacheBodies1010590099BytesAndFullCensusVerified": true,
+        "actualSevenCommands": [
+          {
+            "label": "affected-existing-workflow-boundaries3",
+            "argv": [
+              "python3",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tests/ci-lifecycle",
+              "-p",
+              "test_workflow_boundaries.py",
+              "-v"
+            ],
+            "source": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+            "exitCode": 0
+          },
+          {
+            "label": "changed-manual-workflow-actionlint",
+            "argv": [
+              "../private/tools/actionlint",
+              ".github/workflows/ci-lifecycle-qualification.yml"
+            ],
+            "source": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+            "exitCode": 0
+          },
+          {
+            "label": "actual-committed-clean-cache-restore",
+            "argv": [
+              "python3",
+              "../run-actual-workflow-cache-restore.py"
+            ],
+            "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+            "exitCode": 0
+          },
+          {
+            "label": "exact-pinned-public-tool-restore",
+            "argv": [
+              "dotnet",
+              "tool",
+              "restore",
+              "--tool-manifest",
+              ".config/dotnet-tools.json"
+            ],
+            "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+            "exitCode": 0
+          },
+          {
+            "label": "genuine-runtime-free-package-build-preparation",
+            "argv": [
+              "dotnet",
+              "tool",
+              "run",
+              "hexalith-module",
+              "--",
+              "prepare-build",
+              "--manifest",
+              "module/hexalith.module-manifest.v2.json",
+              "--mode",
+              "package",
+              "--workspace",
+              "/home/administrator/.cache/hexalith/story-2-8/parties-final-manual-aspire-cache-first-failure-20261107/private/prepared-package-context",
+              "--output",
+              "json"
+            ],
+            "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+            "exitCode": 0
+          },
+          {
+            "label": "corrected-prepared-import-cache-check",
+            "argv": [
+              "python3",
+              "../check-workflow-restore-with-prepared-imports.py"
+            ],
+            "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+            "exitCode": 0
+          },
+          {
+            "label": "genuine-aspire-package-signature-verification",
+            "argv": [
+              "dotnet",
+              "nuget",
+              "verify",
+              "--all",
+              "/home/administrator/.cache/hexalith/story-2-8/parties-final-manual-aspire-cache-first-failure-20261107/private/Hexalith.Parties/nuget-packages/aspire.hosting.orchestration.linux-x64/13.6.4/aspire.hosting.orchestration.linux-x64.13.6.4.nupkg",
+              "/home/administrator/.cache/hexalith/story-2-8/parties-final-manual-aspire-cache-first-failure-20261107/private/Hexalith.Parties/nuget-packages/aspire.dashboard.sdk.linux-x64/13.6.4/aspire.dashboard.sdk.linux-x64.13.6.4.nupkg"
+            ],
+            "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+            "exitCode": 0
+          }
+        ],
+        "newWorkflowBytes": 9996,
+        "newWorkflowSha256": "552bd242f2519538c39f77dc6569361e578dbbec6eecc8302a59f83cddea423c",
+        "parentSelectedSourceFindings": [],
+        "closedRootWritten": false,
+        "freshHostedOrManualOrWholeStoryAcceptance": false
+      }
+    },
+    {
+      "file": "/home/administrator/.cache/hexalith/story-2-8/parent-final-reference-callers-hosted-20261107/parties-manual-cache-1c9-delivery/actual-source-delivery.json",
+      "bytes": 771,
+      "sha256": "d53f10454820d49d2737e91622ead6fdc7a0f853538539acc2610614abc20921",
+      "actualRecord": {
+        "utc": "2026-11-07T19:11:37.775178+00:00",
+        "url": "https://github.com/Hexalith/Hexalith.Parties/pull/64",
+        "pr": 64,
+        "source": "1c9f2f035845df6d2fdc3bf1643d22d8936fb8ef",
+        "parent": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+        "tree": "5d97fb7f34d943cf240ffdbddcd5fd2fcaab7df8",
+        "ordinaryFeaturePushes": 1,
+        "newNormalPrCreates": 1,
+        "onlyManualWorkflowPreparationChanged": true,
+        "controllerAndWholeToolManifestExact": true,
+        "allClosedBodiesSourceInputsCachePayloadsAndActualPreparationResultsParentVerified": true,
+        "originalFirstManualMatrixFailurePreserved": 42400061797,
+        "allExactMessagesAndTitlesOwningLocked21PassBeforeAfter": true,
+        "releaseCandidateLabelAdded": false,
+        "rulesWritten": false,
+        "newHostedManualOrStoryAcceptance": false
+      }
+    }
+  ],
+  "firstFailedManualMatrixRetained": 42400061797,
+  "freshPrMainAndChangedSourceManualQualificationStillRequired": true,
+  "storyOrCandidateAcceptance": false
+}

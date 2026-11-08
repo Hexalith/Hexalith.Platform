@@ -1,0 +1,34 @@
+{
+  "utc": "2026-11-07T16:54:01.291300+00:00",
+  "repository": "Hexalith/Hexalith.Parties",
+  "actualMain": "ebcd0e250c989720e2cdbc5cd3922482ae7f68f3",
+  "pr62WasNormallyMergedAfterAllPrGatesPassed": true,
+  "run": 42393198540,
+  "attempt": 1,
+  "job": 128464927709,
+  "failedStep": "Root gitlink RC gate",
+  "primaryArtifactCount": 0,
+  "completeJobLog": {
+    "bytes": 18330,
+    "sha256": "49e6ab8408ef49ec28cb7d78d56249c07d15f7bccb5ea69b3bb83208ccbfa203"
+  },
+  "finiteActualFailureLines": [
+    "2026-11-07T16:49:21.0574173Z echo \"Checking root gitlinks against: $base ($mode)\"",
+    "2026-11-07T16:49:21.0806028Z Checking root gitlinks against: 8f56474c1032bdf96ab5042df8c606c99cf36b65 (push-range)",
+    "2026-11-07T16:49:21.2821725Z   references/Hexalith.Builds                    BUMP UNVALIDATED @ b4703ec22473 in 71f61d89cf9a \u2014 add ledger entry",
+    "2026-11-07T16:49:21.3449343Z   references/Hexalith.Platform                  BUMP UNVALIDATED @ 52bc7986170f in 71f61d89cf9a \u2014 add ledger entry",
+    "2026-11-07T16:49:21.8296814Z   references/Hexalith.Builds                    BUMP UNVALIDATED @ b4703ec22473 in ebcd0e250c98 \u2014 add ledger entry",
+    "2026-11-07T16:49:21.8944748Z   references/Hexalith.Platform                  BUMP UNVALIDATED @ 52bc7986170f in ebcd0e250c98 \u2014 add ledger entry",
+    "2026-11-07T16:49:21.9133140Z gitlink-rc-gate: FAIL \u2014 resolve each push-range pointer above before tagging."
+  ],
+  "requiredMissingSourceSelectionRows": {
+    "references/Hexalith.Builds": "b4703ec2247321f867f14cd9caca43fa00190feb",
+    "references/Hexalith.Platform": "52bc7986170f268afaef6227d0519a1d662af256"
+  },
+  "ledgerBeforeBytes": 62361,
+  "ledgerBeforeSha256": "c743ccb55c8398b84a672d6185bddf4b3bdc69ca010323ec86ecc3f5f064ab56",
+  "existingLedgerPrecedent": "Real codex-agent source-selection records under explicit user delegation, distinct from historical human/parity/candidate acceptance. Last actual recorded published pins are Builds4.44.11/567 and Platform1.5.7/ed991.",
+  "currentUserSessionAlreadyAuthorizesTheseTwoPublishedSelections": true,
+  "correction": "Append only the two actual qualified published source selections with real codex-agent/date, preserving all history/guards; normal reviewed additive source PR and fresh owner CI. No gate bypass, old run retry or human-ratification claim.",
+  "wholeStoryOrManualAcceptance": false
+}

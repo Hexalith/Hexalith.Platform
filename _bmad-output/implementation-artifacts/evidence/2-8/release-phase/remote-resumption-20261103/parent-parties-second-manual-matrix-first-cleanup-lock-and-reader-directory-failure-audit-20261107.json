@@ -1,0 +1,231 @@
+{
+  "utc": "2026-11-07T20:32:20.943030+00:00",
+  "source": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+  "run": 42408333976,
+  "attempt": 1,
+  "baselineJob": 128510804713,
+  "qualificationJob": 128515203707,
+  "actualOverallConclusion": "failure",
+  "baselineOriginal15Native28PublicRolesSeparatelyPrimaryPassed": true,
+  "actualCachePreparationStepPassed": true,
+  "actualArtifact": {
+    "id": 13589178269,
+    "node_id": "MDg6QXJ0aWZhY3QxMzU4OTE3ODI2OQ==",
+    "name": "ci-lifecycle-observations",
+    "size_in_bytes": 61926,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13589178269",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/artifacts/13589178269/zip",
+    "expired": false,
+    "digest": "sha256:85dc25bde025894951c9e09efe19e482daef191e1efffa4f3970504be0af1c43",
+    "created_at": "2026-11-07T20:26:01Z",
+    "updated_at": "2026-11-07T20:26:01Z",
+    "expires_at": "2026-11-21T20:26:01Z",
+    "workflow_run": {
+      "id": 42408333976,
+      "repository_id": 1170072276,
+      "head_repository_id": 1170072276,
+      "head_branch": "main",
+      "head_sha": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760"
+    }
+  },
+  "all49ActualMemberBodies248346BytesVerified": true,
+  "actualExecutionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42408333976"
+  },
+  "actualMappingHash": "fc25c8e713a9b815b6a62b5ef90c62506a5914eef3d63027e586bbad0000fd8a",
+  "actualFourIssuedOwners": [
+    {
+      "label": "passing",
+      "runId": "13116291ed531bde5cead2d8138cf7df",
+      "actualFinalDownVerified": true,
+      "actualTerminal": {
+        "cause": "tests-completed",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "passed",
+        "recordedAt": "2026-11-07T20:15:50.4358297Z"
+      }
+    },
+    {
+      "label": "failing",
+      "runId": "19d89ee175519d5e54a823e5984a5fa0",
+      "actualFinalDownVerified": true,
+      "actualTerminal": {
+        "cause": "test-failure",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "failed",
+        "recordedAt": "2026-11-07T20:19:03.7551502Z"
+      }
+    },
+    {
+      "label": "peer",
+      "runId": "51026ae3a0f0888f9e89c1168b4d0482",
+      "actualFinalDownVerified": true,
+      "actualTerminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-07T20:25:48.1057251Z"
+      }
+    },
+    {
+      "label": "retry",
+      "runId": "ee96fcf3022af0c33ea8a994e9757e93",
+      "actualFinalDownVerified": true,
+      "actualTerminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-07T20:25:33.0921453Z"
+      }
+    }
+  ],
+  "actualPassingAndIntentionallyFailingSuiteCases": [
+    {
+      "label": "passing",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "name": "Hexalith.Parties.Platform.LifecycleTests.LifecycleQualificationTests.PersistRealPartyThenObserveExplicitQualificationControl",
+      "outcome": "Passed"
+    },
+    {
+      "label": "failing",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "name": "Hexalith.Parties.Platform.LifecycleTests.LifecycleQualificationTests.PersistRealPartyThenObserveExplicitQualificationControl",
+      "outcome": "Failed"
+    }
+  ],
+  "actualBothSameJobAdmissionsCrossJobRefusalsIdempotentHoldAndCompletedOwnerRefusalsReached": true,
+  "actualWithdrawalLockRefusal": {
+    "exitCode": 3,
+    "kind": "withdrawal-lock-refusal",
+    "observedAtUtc": "2026-11-07T20:25:38.454442+00:00",
+    "ownerRunId": "ee96fcf3022af0c33ea8a994e9757e93",
+    "result": {
+      "diagnostics": [
+        {
+          "category": "TopologyOrLifecycle",
+          "field": "down",
+          "hint": "Retry down for the same owner run identity.",
+          "location": null,
+          "message": "Owner cleanup state or attachment withdrawal/report could not be durably recorded; no cleanup started.",
+          "phase": "Cleanup",
+          "row": null,
+          "ruleId": "HXR037",
+          "source": null
+        }
+      ],
+      "outcome": {
+        "category": "TopologyOrLifecycle",
+        "exitCode": "TopologyOrLifecycle",
+        "phase": "Cleanup",
+        "ruleId": "HXR037"
+      },
+      "remainingResources": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": false,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": true,
+        "workspaceIds": []
+      },
+      "runId": "ee96fcf3022af0c33ea8a994e9757e93",
+      "status": "failed",
+      "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/ee96fcf3022af0c33ea8a994e9757e93/test-result.json"
+    }
+  },
+  "actualFirstExceptionOnlyGenericValueErrorRetained": true,
+  "preciseFailingAssertionNotObserved": true,
+  "noProvisioningLockStagePeerPreservationOrPartialOwnerReached": true,
+  "actualBothFinalizerObservations": [
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [
+        {
+          "failureType": "ValueError",
+          "label": "retry"
+        },
+        {
+          "failureType": "ValueError",
+          "label": "peer"
+        }
+      ],
+      "issuedOwners": 4,
+      "issuedOwnersCleanupVerified": false,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T20:25:57.057319+00:00"
+    },
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [],
+      "issuedOwners": 4,
+      "issuedOwnersCleanupVerified": true,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-07T20:26:01.096022+00:00"
+    }
+  ],
+  "firstFinalizerTwoFailuresPreservedDespiteSecondFourOwnerCleanupVerified": true,
+  "allFourFinalDownResultsHaveSixExplicitEmptyInventories": true,
+  "actualReaderConfigUnlinkPrecededRmdirErrno39": true,
+  "remainingReaderDirectoryEntryNamesAndCauseNotObserved": true,
+  "actualCompleteQualificationJobLog": {
+    "bytes": 106668,
+    "sha256": "c0c89d460528d7d925730e4eae610e35eed95fd0ecc9614aa4a8cb26e7e975c3"
+  },
+  "wholeLogNotClaimedModelContextRead": true,
+  "manualDispatches": 2,
+  "cancellationRequests": 0,
+  "noUnchangedRetry": true,
+  "successfulMatrixStartupCancelExecutionCancelAndStoryAcceptance": false
+}

@@ -1,0 +1,147 @@
+{
+  "utc": "2026-11-08T01:54:57.349148+00:00",
+  "source": "d0867f6cb60fbdd207f4fe1075097784a7a06264",
+  "run": 42435323602,
+  "attempt": 1,
+  "actualTestMerge": "1aeb6353572d7fb05269c39ef588c5f3d24d7029",
+  "dotnetJob": 128592800452,
+  "allThreeFullUnfilteredProjectCommandsPassed": true,
+  "actualDotnetCounts": [
+    {
+      "total": 2861,
+      "failed": 0,
+      "succeeded": 2856,
+      "skipped": 5
+    },
+    {
+      "total": 191,
+      "failed": 0,
+      "succeeded": 191,
+      "skipped": 0
+    },
+    {
+      "total": 13,
+      "failed": 0,
+      "succeeded": 1,
+      "skipped": 12
+    }
+  ],
+  "passed": 3048,
+  "failed": 0,
+  "sameOld17SkipNamesExact": [
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.FrontComposerHostShowsBothBoundedContextsAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-inventory\", commandType: \"ReserveStock\", eventType: \"Hexalith.Builds.P0Fixture.Inventory.StockReserved\")",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-orders\", commandType: \"PlaceOrder\", eventType: \"Hexalith.Builds.P0Fixture.Orders.OrderPlaced\")",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.IdentityRejectsAnonymousForeignKeyAndForeignTenantAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.EventStoreInvokesModulesThroughDaprSidecarsAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LiveRunIsolationTests.ConcurrentRunsAreIsolatedAndDownOfOneLeavesTheOtherHealthyAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LivePublicCommandTests.RunDownAndTestUseRunScopedLiveCompositionAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LiveCancellationTests.CancellingMidStartupLeavesNoProcessOrContainerAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.RunStartsHealthyCarriesRunIdentityAndStopsAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.DownLeavesNothingTaggedAndIsIdempotentAsync",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full\", platform: \"vstest\")",
+    "Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full-mtp\", platform: \"mtp\")"
+  ],
+  "actualDotnetLog": {
+    "bytes": 62127,
+    "sha256": "0759098884738b6e6bf52d10d8cc2d53fe617f145756c24dbbbfd0155fa0490f"
+  },
+  "directHostedIndividualCaseXmlClaimed": false,
+  "executionInference": "The source preserves original registrations and the new cases; full unfiltered project success with all expected counts and unchanged17 optional skips implies their execution. Individual hosted C# case XML is not retained or claimed observed. Separate final committed local MTP XML directly retains all nineteen affected named results.",
+  "all43ActualNamedPythonLifecycleControlsPassed": [
+    "test_actual_collector_kill_after_publication_keeps_one_link_and_allows_identical_retry",
+    "test_actual_job_cancellation_reaches_exact_down_without_rewriting_first_result",
+    "test_additive_owners_use_canonical_literal_arguments_and_are_recorded",
+    "test_cancellation_during_execution_runs_finalizer_and_preserves_cancel",
+    "test_cleanup_keeps_leading_zeroes_in_the_exact_canonical_owner_identity",
+    "test_cleanup_uses_exact_id_is_retryable_and_retains_only_safe_results",
+    "test_collection_refusal_preserves_native_failure_and_still_finishes_exact_cleanup",
+    "test_concurrent_different_publication_is_never_overwritten",
+    "test_constructor_time_cancellation_is_forwarded_after_child_assignment",
+    "test_declared_dash_control_or_unicode_profile_cannot_turn_into_a_tool_option",
+    "test_default_invocation_has_no_owner_request_or_arguments",
+    "test_diagnostic_destination_is_private_immutable_and_never_follows_links",
+    "test_diagnostic_directory_symlinks_and_unrelated_metadata_never_escape_the_artifact_boundary",
+    "test_digit_shorthand_keeps_owner_attempt_and_version_identities_ascii_only",
+    "test_duplicate_or_excess_diagnostic_references_refuse_after_exact_cleanup",
+    "test_evidence_refuses_file_links_without_truncating_the_external_file",
+    "test_evidence_refuses_parent_traversal_and_foreign_roots_before_creating_directories",
+    "test_evidence_rejects_a_symlinked_ancestor_and_an_unlisted_filename",
+    "test_execution_failure_preserved_and_finalized_after_partial_startup",
+    "test_failed_atomic_publication_cleans_temporary_bytes_and_identical_retry_succeeds",
+    "test_failed_diagnostic_flush_never_publishes_a_final_name_and_identical_retry_succeeds",
+    "test_fixed_job_receipt_rejects_a_different_name_and_a_canonical_symlink",
+    "test_fixed_metadata_above_one_mib_retains_the_owning_four_mib_bound",
+    "test_foreign_diagnostic_owner_bindings_refuse_after_exact_cleanup",
+    "test_foreign_repository_run_attempt_or_job_cannot_cleanup",
+    "test_invalid_child_output_still_finalizes",
+    "test_invalid_owners_refuse_before_context_paths_tool_or_evidence_effects",
+    "test_manifest_looking_like_an_option_is_bound_to_one_literal_manifest_value",
+    "test_mismatching_durable_owner_cannot_cleanup",
+    "test_missing_changed_foreign_oversized_or_nonprivate_diagnostic_bytes_refuse",
+    "test_missing_or_wrong_mode_suite_refuses_before_process",
+    "test_missing_package_preparation_refuses_before_process",
+    "test_native_and_functional_report_size_bounds_follow_the_actual_writers",
+    "test_no_receipt_means_no_allocation_and_does_not_invoke_tool",
+    "test_partial_diagnostic_write_never_strands_a_final_name_and_identical_retry_succeeds",
+    "test_passing_execution_requires_verified_cleanup",
+    "test_preparation_binds_release_and_actual_package_mapping",
+    "test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry",
+    "test_real_helper_process_forwards_cancellation_and_finalizes_exact_receipt",
+    "test_receipt_must_stay_under_actual_runner_temp_without_link_ancestors",
+    "test_unclassified_or_unsafe_diagnostic_references_refuse_after_exact_cleanup",
+    "test_uncreated_temporary_name_is_never_removed",
+    "test_unknown_discovery_or_any_owned_leftover_refuses_completion"
+  ],
+  "codacy": {
+    "utc": "2026-11-08T01:44:33.940221+00:00",
+    "source": "d0867f6cb60fbdd207f4fe1075097784a7a06264",
+    "codacyId": 128593238691,
+    "app": 56611,
+    "actualConclusion": "success",
+    "annotations": [],
+    "reviewCount": 0,
+    "inlineCommentCount": 0,
+    "fullCiPending": true
+  },
+  "primaryProofs": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-first-success-ci-primary/parent-actual-PR175-d086-hosted-three-dotnet-projects-audit.json",
+      "bytes": 10439,
+      "sha256": "cda4e1a33ab5c9af504d5be8e50a3a32bbe1418daa4f3cbafd58e1072f3971fc"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-first-success-ci-primary/parent-actual-PR175-d086-source-python43-primary-audit.json",
+      "bytes": 4212,
+      "sha256": "4efcfc0f73b7b8d9d9e220edcab95d1debe18c808bd51d5083ade766a23bcb64"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-first-actual-codacy-success-no-annotations-and-review-state.json",
+      "bytes": 274,
+      "sha256": "2fbf6f8da371fadab830b93350e566a3cb19939546807bb22c6e44f53341901d"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-unchanged-producer-workflows-catalog-and-minimal-adoption-source-role-audit.json",
+      "bytes": 1632,
+      "sha256": "e3371b8a1b110a2fdd6ea27c44f87f739e451b317e41c7497488b445d8fcfcce"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/d086-original-lifecycle-controller-and-frozen-matrix-source-preservation.json",
+      "bytes": 445,
+      "sha256": "6f89a65f8eb0ef6530055c468295729567a0796d5d675f024b321760968197f0"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-builds-stdin-fix-hosted-20261107/parties-f064-four-operational-version-occurrences-and-three-minimal-tool-adoption-paths.json",
+      "bytes": 1696,
+      "sha256": "d279af6489acbaf660052450622fb72bea1a4b68069fbb9e62fdaaed57ed7e33"
+    }
+  ],
+  "remainingSourceJobs": "catalog and build/package contracts in progress; umbrella not yet created",
+  "sourceQualificationComplete": false,
+  "mergeOrPublicationOrManualStoryAcceptance": false
+}
