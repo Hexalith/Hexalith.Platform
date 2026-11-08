@@ -106,7 +106,7 @@ internal static class PlatformEventStoreExtensionBindings
             string scoped = extension.Module + "/" + extension.ExtensionId + "/" + key;
             string source = input.GetProperty("source").GetString()!;
             if (!options.Configuration.TryGetValue(scoped, out string? value) && !defaults.TryGetValue(scoped, out value))
-                throw new InvalidDataException($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: binding is unavailable.");
+                throw new InvalidDataException($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-input-unbound: binding is unavailable.");
             if (source == "secret" && string.IsNullOrEmpty(value))
             {
                 string identity = extension.Module + "/" + key;
@@ -127,7 +127,7 @@ internal static class PlatformEventStoreExtensionBindings
                 }
                 catch (JsonException exception)
                 {
-                    throw new InvalidDataException($"{extension.Source}: {scoped}: structured configuration is invalid: {exception.Message}", exception);
+                    throw new InvalidDataException($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-input-invalid: structured configuration is invalid: {exception.Message}", exception);
                 }
             }
             else bound[key.Replace(":", "__", StringComparison.Ordinal)] = value;
