@@ -107,7 +107,7 @@ public static class PlatformServerBindings
             {
                 // AD-13: one Platform-composed host, assembled from the selected EventStore server plus the declared packages.
                 string composed = PlatformEventStoreExtensionBindings.HostProjectPath(options);
-                if (project is null || !File.Exists(composed)) throw Failure(module, identity, composed, "the Platform-composed EventStore host is unavailable");
+                if (project is null || !File.Exists(composed)) throw Failure(module, identity, composed, "eventstore-extension-host-unavailable: the Platform-composed EventStore host is unavailable");
                 host = new PlatformEventStoreHostBinding(project, extensions);
                 project = composed;
             }
@@ -126,7 +126,7 @@ public static class PlatformServerBindings
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
         if (extensions.Count > 0 && !result.Any(s => s.EventStoreHost is not null))
-            throw new InvalidDataException($"{extensions[0].Source}: {extensions[0].Module}: runtime.eventStoreExtensions: the selected composition has no eventstore gateway to host the declared extensions.");
+            throw new InvalidDataException($"{extensions[0].Source}: {extensions[0].Module}: runtime.eventStoreExtensions: eventstore-extension-gateway-unavailable: the selected composition has no eventstore gateway to host the declared extensions.");
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);
         return result;
     }

@@ -289,8 +289,62 @@ public sealed class EventStoreExtensionCompositionTests
         options = options with { Configuration = options.Configuration.Where(pair => !pair.Key.EndsWith("PlatformTestExtension:Marker", StringComparison.Ordinal)).ToDictionary() };
         InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
         refusal.Message.ShouldContain(Module + "/platform-test/PlatformTestExtension:Marker");
-        refusal.Message.ShouldContain("binding is unavailable");
+        refusal.Message.ShouldContain("eventstore-extension-input-unbound: binding is unavailable");
         builder.Resources.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone()
+    {
+        using PlatformOwnerFixture owner = Owner(Extension());
+        PlatformCompositionOptions options = SourceOptions(owner);
+        IReadOnlyList<PlatformEventStoreExtensionBinding> bindings = PlatformEventStoreExtensionBindings.Resolve(options, Declarations(owner));
+        string profileRoot = Path.Combine(Path.GetTempPath(), "platform-extension-profile-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            string declarations = Path.Combine(profileRoot, "src", "Hexalith.Platform.Composition", "Declarations");
+            Directory.CreateDirectory(declarations);
+            File.WriteAllText(Path.Combine(declarations, "local-profile.json"), new JsonObject { [Module + "/platform-test/PlatformTestExtension:Marker"] = "profile-marker" }.ToJsonString());
+            // The real entry points pass no extension values through configuration, so the Platform-owned profile is the only source.
+            Dictionary<string, string> environment = new(StringComparer.Ordinal);
+            PlatformEventStoreExtensionBindings.Bind(environment, options with { PlatformRoot = profileRoot, Configuration = new Dictionary<string, string>() }, bindings,
+                new Dictionary<string, string>(StringComparer.Ordinal));
+            environment["PlatformTestExtension__Marker"].ShouldBe("profile-marker");
+        }
+        finally
+        {
+            if (Directory.Exists(profileRoot)) Directory.Delete(profileRoot, true);
+        }
+    }
+
+    [Theory]
+    [InlineData("PlatformTestExtension:Marker", """{"Name":"first","Nested":{"Level":2}}""", "PlatformTestExtension__Marker__Name=first;PlatformTestExtension__Marker__Nested__Level=2", null)]
+    [InlineData("PlatformTestExtension:Marker", """["alpha","beta"]""", "PlatformTestExtension__Marker__0=alpha;PlatformTestExtension__Marker__1=beta", null)]
+    [InlineData("PlatformTestExtension:Marker", """{"Name":""", null, "eventstore-extension-input-invalid")]
+    [InlineData("Authentication", """{"JwtBearer":{"Issuer":"forged"}}""", null, "eventstore-extension-configuration-conflict")]
+    public void StructuredExtensionInputFlattensOrIsRefused(string key, string value, string? expected, string? condition)
+    {
+        JsonObject extension = Extension();
+        extension["configurationInputs"]![0]!["key"] = key;
+        using PlatformOwnerFixture owner = Owner(extension);
+        PlatformCompositionOptions options = SourceOptions(owner);
+        options = options with { Configuration = new Dictionary<string, string>(options.Configuration) { [Module + "/platform-test/" + key] = value } };
+        IReadOnlyList<PlatformEventStoreExtensionBinding> bindings = PlatformEventStoreExtensionBindings.Resolve(options, Declarations(owner));
+        // The flattened keys, not the declared key, meet the gateway's own bindings.
+        Dictionary<string, string> environment = new(StringComparer.Ordinal) { ["Authentication__JwtBearer__Issuer"] = "gateway-issuer" };
+        if (condition is not null)
+        {
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() =>
+                PlatformEventStoreExtensionBindings.Bind(environment, options, bindings, new Dictionary<string, string>(StringComparer.Ordinal)));
+            refusal.Message.ShouldContain(condition);
+            refusal.Message.ShouldContain(Module + "/platform-test/" + key);
+            environment["Authentication__JwtBearer__Issuer"].ShouldBe("gateway-issuer");
+            return;
+        }
+        PlatformEventStoreExtensionBindings.Bind(environment, options, bindings, new Dictionary<string, string>(StringComparer.Ordinal));
+        foreach (string[] pair in expected!.Split(';').Select(item => item.Split('=')))
+            environment[pair[0]].ShouldBe(pair[1]);
+        environment.ShouldNotContainKey("PlatformTestExtension__Marker");
     }
 
     [Theory]

@@ -1818,6 +1818,11 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: When enabling package-mode extensions, also admit the composed host in the package qualification gate.
   evidence: `PlatformPackageCatalogQualification.cs:47` accepts a gateway only when `server.ProjectPath == options.EventStoreSeedProject`. With a declared extension, `ProjectPath` is `src/Hexalith.Platform.EventStoreHost`, so a qualified package cohort would refuse it. This adds to the package-mode qualification and enablement entries above.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Decide which path registers a module's adapters once it declares an EventStore extension that 3.3's Development bootstrap already loads.
+  evidence: Medium. `RunScopedRouteCatalogGateway.cs:61-68` registers every `EventStore:RouteCatalog:DevelopmentBootstrap:AdapterAssemblies` adapter as `IIdempotencyIntentAdapter`, and the qualified catalog cohorts list `Hexalith.Parties.EventStoreExtensions` and `Hexalith.Memories.EventStoreExtensions` there. `AddEventStoreExtensions` registers the same adapters again, and the shared registry refuses overlapping adapters at host start (see EventStore's `DuplicateAdaptersAcrossExtensionsFailTheSharedRegistry`). Deferred by the maintainer on 2026-11-08: it fails loudly, nobody declares an extension today, and the owner of registration is decided in the Parties/Memories adoption story.
+  status: resolved
+  resolution: Superseded by the maintainer's subsequent extension-loader ownership decision and the source fixes in EventStore PR #399 plus the companion Platform branch; package rollout remains separate.
 
 ## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages (2026-11-08, iteration 2)
 
@@ -1841,3 +1846,4 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W6 — Verify snapshot-selected extension package versions through an actual restore/build (medium; VG3).
   evidence: PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference sets no RunPlan and checks generated XML only. Ignoring Workspace would leave it green. Retains the earlier package qualification follow-up: choose a snapshot pin different from the live catalog, restore/build a supported host, and assert the resolved package version.
+
