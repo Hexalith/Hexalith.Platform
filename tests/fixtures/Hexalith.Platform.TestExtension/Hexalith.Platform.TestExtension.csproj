@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
+  </PropertyGroup>
+  <!-- The extension API ships in the source-selected EventStore SDK; no released package carries it yet. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+    <ProjectReference Include="$(HexalithEventStoreRoot)/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+    <PackageReference Include="Hexalith.EventStore.DomainService" />
+  </ItemGroup>
+</Project>

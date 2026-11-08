@@ -275,6 +275,72 @@ nested level. Human source review must inspect unusual configuration filenames,
 indirection, unsupported languages, generated code and any constructs outside that
 bound. Passing rows cannot prove runtime behavior or replace SM-2.
 
+### Contribute EventStore extension packages
+
+A module contributes trusted idempotency-intent adapters to the single
+Platform-composed `eventstore` gateway only by declaring their package in
+`runtime.eventStoreExtensions`. The gateway registers adapters only; extension
+packages carry no other policies. Never build or publish a web project or image
+named `eventstore`. `runtime.extensions` keeps naming owner server and hosting
+packages and never enrolls a gateway extension.
+
+```json
+"eventStoreExtensions": [
+  {
+    "packageId": "Hexalith.Sample.EventStoreExtensions",
+    "extensionId": "sample",
+    "extensionApiMajor": 1,
+    "configurationInputs": [
+      { "key": "Sample:ExtensionSetting", "source": "configuration", "reference": "sample-extension-setting" }
+    ]
+  }
+]
+```
+
+- Put the package at `src/<packageId>/<packageId>.csproj` and reference only the
+  EventStore extension API (`Hexalith.EventStore.DomainService`). Declare its identity
+  with `[assembly: EventStoreExtension("<extensionId>", <major>)]` and its adapters
+  with `[assembly: RouteCatalogAdapterSource(typeof(...))]`. Each named source type
+  must be defined in the package itself and expose a public static parameterless
+  `Create()` that returns its `IDeclaredIdempotencyIntentAdapter` instances; a source
+  outside the package or without that method stops the host
+  (`eventstore-extension-adapter-source-unavailable`).
+- EventStore owns `EventStoreExtensionApi.SupportedMajors` (the current and previous
+  majors). Platform refuses a declared major outside them before any resource starts
+  (`eventstore-extension-unsupported-major`), and refuses a duplicate extension id or
+  package across the declaration set (`eventstore-extension-duplicate`).
+- When at least one extension is declared, Platform runs its own
+  `src/Hexalith.Platform.EventStoreHost` with the EventStore server's settings. Source
+  mode adds a project reference to the mapped owner project; package mode adds a package
+  reference at the Builds catalog version and refuses an unpinned package
+  (`eventstore-extension-unpinned`). Without a declared extension, gateway selection is
+  unchanged.
+- The composed host loads each package, compares its attribute with the declaration
+  (`eventstore-extension-declaration-drift` stops the host), registers its adapters
+  through the trusted adapter registry and lists the loaded ids and majors in the
+  `eventstore-extensions` readiness check.
+- Inputs are `configuration` only. Platform reads each value from its configuration,
+  or from `src/Hexalith.Platform.Composition/Declarations/local-profile.json`, under
+  `<moduleId>/<extensionId>/<key>`; an unbound input is refused. Structured values
+  flatten exactly as owner inputs do. A key that equals, contains or is contained in a
+  key already bound on the gateway, compared without case, is refused
+  (`eventstore-extension-configuration-conflict`).
+- Secret inputs and direct provider-SDK references are admitted only for an entry that
+  names a spine-admitted AD-9 `providerException` owned by the declaring module (all
+  four current exceptions belong to `memories`), and only for that exception's own SDK
+  and its own secret (`<exception>` or `<exception>-<purpose>`). Admitted secrets follow
+  the owner-input rules: an empty value is generated once per `<moduleId>/<key>` and
+  shared with the module's own servers. Dapr client references are never admitted.
+- From the Builds release that carries this field, `hexalith-module validate` reports
+  `HXP025` (secret input), `HXP026` (Dapr role), `HXP027` (AD-9 exception not admitted for the module) and
+  `HXP028` (duplicate), and `--adoption` adds the `eventstore-image` and
+  `eventstore-extensions` requirements, which name the module and the offending project
+  or direct dependency.
+
+Package-mode qualification of extensions waits for the EventStore and Builds releases
+that carry this API; until then a package-mode host refuses declared extensions
+(`eventstore-extension-api-unavailable`).
+
 ## 5. Complete the accountable Platform registration handoff
 
 Create `module/platform-handoff.md` from the copied template and identify the module

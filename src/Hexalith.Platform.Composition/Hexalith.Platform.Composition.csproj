@@ -5,7 +5,8 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
-    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+    <!-- The EventStore extension API ships in the source-selected SDK; no qualified package cohort carries it yet. -->
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG;HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
     <HexalithTenantPreparationRoot Condition="'$(HexalithTenantsRoot)' != ''">$(HexalithTenantsRoot)</HexalithTenantPreparationRoot>
     <HexalithTenantPreparationRoot Condition="'$(HexalithTenantPreparationRoot)' == ''">$(MSBuildThisFileDirectory)../../references/Hexalith.Tenants</HexalithTenantPreparationRoot>
     <HexalithMemoriesPreparationRoot Condition="'$(HexalithMemoriesRoot)' != ''">$(HexalithMemoriesRoot)</HexalithMemoriesPreparationRoot>

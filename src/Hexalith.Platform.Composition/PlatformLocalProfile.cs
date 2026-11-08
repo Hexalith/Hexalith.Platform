@@ -124,7 +124,7 @@ public static class PlatformLocalProfile
                 throw new InvalidDataException($"{source}: {module}/{server}/Clock:Sources:{id}: authentication token is unavailable.");
     }
 
-    private static void Flatten(Dictionary<string, string> environment, string key, JsonElement value)
+    internal static void Flatten(Dictionary<string, string> environment, string key, JsonElement value)
     {
         if (value.ValueKind == JsonValueKind.Object) foreach (JsonProperty property in value.EnumerateObject()) Flatten(environment, key + ":" + property.Name, property.Value);
         else if (value.ValueKind == JsonValueKind.Array)

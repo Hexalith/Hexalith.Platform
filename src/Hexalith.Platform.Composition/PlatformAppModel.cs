@@ -220,8 +220,12 @@ public static class PlatformAppModel
 
             string schedulerData = Path.Combine(rendered, "scheduler-data");
             CompositionWorkspace.CreatePrivateDirectory(schedulerData);
-            string? gatewayContentRoot = servers.FirstOrDefault(server => server.ResourceId == "eventstore")?.ProjectPath is { } gatewayProject
-                ? PlatformGatewayConfiguration.Create(gatewayProject, rendered, servers) : null;
+            PlatformServerBinding? gatewayBinding = servers.FirstOrDefault(server => server.ResourceId == "eventstore");
+            // A composed host keeps the EventStore server's own settings; its generated bindings add only the declared packages.
+            string? gatewayContentRoot = gatewayBinding?.ProjectPath is { } gatewayProject
+                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers) : null;
+            string? gatewayExtensionBindings = gatewayBinding?.EventStoreHost is { } composedHost
+                ? PlatformEventStoreExtensionBindings.Write(composedHost, Path.Combine(rendered, "eventstore-extensions")) : null;
 
             var (sentry, certificates) = DaprSelfHostedMtls.AddSentry(builder, sentryConfiguration, options.PlatformRoot, rendered, sentryPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion, checkouts);
             // An explicitly selected parent can live outside the workspace. Dispose only this run's child.
@@ -285,6 +289,7 @@ public static class PlatformAppModel
                         .WithAnnotation(new PlatformServerAnnotation(server))
                         .WithAnnotation(new ExecutableAnnotation { Command = "dotnet", WorkingDirectory = Path.GetDirectoryName(projectPath)! })
                         .WithArgs("run", "--project", projectPath, "--configuration", options.Mapping.Mode == WorkspaceMode.Source ? "Debug" : "Release", "--no-launch-profile", "-p:GeneratePackageOnBuild=false");
+                    if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
                     if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));

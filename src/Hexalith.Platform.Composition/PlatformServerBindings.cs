@@ -48,6 +48,8 @@ public static class PlatformServerBindings
             if (PlatformDeclarationSet.Id(module.Declaration) == "timesheets" && !options.TimesheetsEnabled)
                 throw Failure(module, "timesheets/host", "Platform:Timesheets:Enabled", "explicit Development/source opt-in is required");
         dapr ??= PlatformDaprBindings.Resolve(declarations);
+        // Declared extension majors and duplicates are refused here, before any resource is added.
+        IReadOnlyList<PlatformEventStoreExtensionBinding> extensions = PlatformEventStoreExtensionBindings.Resolve(options, declarations);
         List<PlatformServerBinding> result = [];
         Dictionary<string, string> secretValues = new(StringComparer.Ordinal);
         PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(declarations, dapr);
@@ -100,9 +102,19 @@ public static class PlatformServerBindings
                 if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
                 image = repository + ":" + Version(options, id, module.Source);
             }
+            PlatformEventStoreHostBinding? host = null;
+            if (identity == "eventstore/gateway" && extensions.Count > 0)
+            {
+                // AD-13: one Platform-composed host, assembled from the selected EventStore server plus the declared packages.
+                string composed = PlatformEventStoreExtensionBindings.HostProjectPath(options);
+                if (project is null || !File.Exists(composed)) throw Failure(module, identity, composed, "the Platform-composed EventStore host is unavailable");
+                host = new PlatformEventStoreHostBinding(project, extensions);
+                project = composed;
+            }
             Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
             foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
             environment["Dapr__DeclarativeSubscriptions"] = "true";
+            if (host is not null) PlatformEventStoreExtensionBindings.Bind(environment, options, host.Extensions, secretValues);
             IReadOnlyList<JsonElement> tasks = workload.Tasks;
             foreach (JsonElement task in tasks)
             {
@@ -110,9 +122,11 @@ public static class PlatformServerBindings
                 string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
                 if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
             }
-            result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks));
+            result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks) { EventStoreHost = host });
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
+        if (extensions.Count > 0 && !result.Any(s => s.EventStoreHost is not null))
+            throw new InvalidDataException($"{extensions[0].Source}: {extensions[0].Module}: runtime.eventStoreExtensions: the selected composition has no eventstore gateway to host the declared extensions.");
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);
         return result;
     }
