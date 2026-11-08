@@ -1,6 +1,33 @@
 # Hexalith.Platform
 
-## Current signed Builds4.44.13 and public Parties3.1.0 tuple
+## Current signed Builds4.45.0 and public Parties3.1.0 tuple
+
+This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
+at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal
+[publisher42501966448](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42501966448)
+after exact-source [mainCI42496435539](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42496435539).
+Its publication, exact module-tool pin and supported range floor are `4.45.0`;
+the upper bound remains `5.0.0-0` and tool roll-forward remains disabled.
+The signed module archive SHA-256 is
+`dd99ad612367d6b0ffba69e24f93f16dcae649fb8edeb213f226f6c8864bc498`.
+The complete validation pair is AppHost
+`0afbfd9bfe10a6d28cce6b09e375e1cfbbd581bcc6d501157eccacd3e3cc2954` and Tooling
+`0c8c00e5563730f953f24b19b777dedd1887f4d186e92347145e55783d4d4981`.
+Catalog blob `b45555806e78ea6ce66ad6a8f0fcc5f7c70b691d` and its raw SHA-256
+`c66fb47d42633dd51bdfa6f31216ee22412e0137a664bf472edf72ac103ad5d1`
+are unchanged from 4.44.13. The actual inventory SHA-256 is
+`a428251a7546bb483ef5cdf8295adbd76df9b9e12bc487b0d391ac853f8ec08e`
+([official release asset](https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.45.0/g4-tool-package-inventory.json)).
+The module tool now reports 11 adoption requirements, adding `eventstore-image` and
+`eventstore-extensions`, and validates `runtime.eventStoreExtensions` (HXP025-HXP028).
+
+SDK4.1.0, public Parties3.1.0 and the measured public package/image/declaration
+identities remain unchanged. Package-mode EventStore extensions still wait for an
+EventStore release carrying the extension API. This prerequisite source preparation
+grants no new Platform publication, caller/native qualification or candidate acceptance.
+The previous producer sections below retain their own historical facts.
+
+## Previous signed Builds4.44.13 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.44.13](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13)
 at `3c8096180ecf2aa539ac454815efbfceb8a92822`, from normal
