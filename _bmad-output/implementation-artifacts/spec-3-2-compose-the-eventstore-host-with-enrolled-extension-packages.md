@@ -2,7 +2,7 @@
 title: '3.2 Compose the eventstore host with enrolled extension packages'
 type: 'feature'
 created: '2026-11-08'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'f7c68398cdcb494d535e789e3d9577af9e8d5d36'
@@ -186,13 +186,17 @@ Verification on the reviewed local checkout:
 - dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -method Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync — 1 failed, expected release source 3c809618, actual gitlink 27145e52. Remote CI: https://github.com/Hexalith/Hexalith.Platform/actions/runs/42502023209.
 - Total focused checks: 267 passed, 1 failed. Owner test assemblies were rebuilt before the counted runs; stale pre-existing binaries were excluded. No full suite or live package-mode qualification is claimed.
 
+#### Review completion — 2026-11-08
+
+The user selected **Leave as action items** for P1–P4. Retain all four as unchecked patch items; no deferral reason is required because these remain open actions rather than deferred findings. All three decision directions are resolved. P5 and P6 are implemented and verified locally; P4's forward tuple candidate is prepared, with adoption still pending for this checkout. Story status and its sprint entry are both **in-progress** because unresolved action items remain.
+
+Review outcome: **2 issues fixed locally, 4 open action items, 6 deferred, 3 rejected**. The implementation follow-ups retain their 82-test focused verification and separate SDK release/adoption requirements. The full story is not marked complete.
+
 Rejected appendix:
 
 - BH10 — low: throwing deferred adapter inventory still stops startup; wrapping another uncommon failure adds catch branches without changing fail-closed behavior.
 - ECH1 — low: sibling configuration leaves require a Platform-owned value; a new reserved-section policy is not a direct correction and repeats the earlier rejected finding.
 - ECH2 — low: scalar-only raw Packages configuration is not emitted by the composer; adding a guard for this manually malformed shape is not warranted.
-
-D1 direction is resolved and its existing forward candidate is verified as prepared; P4 landing remains pending. D2 and D3 are resolved and implemented locally as P5 and P6; no ownership decisions remain. P1–P4 remain unapplied in this checkout. Story/sprint status reconciliation follows the workflow's decision/action checkpoint; no completion is claimed.
 
 ## Implementation Notes
 
