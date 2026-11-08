@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-08T08:43:58.526762+00:00",
+  "approval": {
+    "utc": "2026-11-08T08:39:07.687880+00:00",
+    "userReply": "approve",
+    "approvedQuestion": "One-time CODEOWNER-review bypass to merge Platform PR33 at cc0b961 using existing jpiquot bypass after all seven CI/primary gates.",
+    "pr": 33,
+    "source": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+    "rule": 24657106,
+    "actor": "jpiquot",
+    "actorId": 6775094,
+    "noPolicyOrFailedCheckWaiver": true,
+    "specAfterBytes": 565751,
+    "specAfterSha256": "aab0108f756d9f2daf3a8c5d5e32e0a1fa60e9e2f4f5adfc87e498db2c9ca64e"
+  },
+  "actualNormalMerge": {
+    "utc": "2026-11-08T08:41:35.939896+00:00",
+    "pr": 33,
+    "sourceHead": "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8",
+    "actualMergedMain": "6131512e945e7a5ef164215ddf5a720e516275e4",
+    "tree": "b076dd6bea20c1613fe24b1c44f522801c7a6c50",
+    "orderedParents": [
+      "64e18232bf40c28b367cce7d1297630b42021512",
+      "cc0b961b32a6ca1aff25931a0fdbb624f0c1dbc8"
+    ],
+    "legacyAncestor": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+    "normalMergePerformedOnce": true,
+    "specificUserReviewBypassApplied": true,
+    "precheckedCandidateMessageBytes": 374,
+    "actualMessageBytes": 373,
+    "actualMessageSha256": "538790e3a0f52373d8085ada0581c33c603c5140ea500462cd8978f4d519d9e7",
+    "terminalLfOnlyDifference": true,
+    "actualTitleBodyExactlyApprovedApiPayload": true,
+    "owningLockedMessageLintBeforeAndAfterPassed": true,
+    "rawCandidateActualByteEquality": false,
+    "firstPostMergeReaderRefusalRetained": true,
+    "policyWritesOrManualTags": false,
+    "distinctMainQualificationAndAutomaticPublicationPending": true,
+    "wholeStoryAcceptance": false
+  },
+  "distinctMainSourceConfiguration": {
+    "phase": "main",
+    "source": "6131512e945e7a5ef164215ddf5a720e516275e4",
+    "legacy": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+    "testMerge": "6131512e945e7a5ef164215ddf5a720e516275e4",
+    "tree": "b076dd6bea20c1613fe24b1c44f522801c7a6c50",
+    "event": "push",
+    "branch": "main",
+    "pr": 33,
+    "tupleRun": 42463839760,
+    "catalogRun": 42463839709
+  },
+  "soleLiveExternalWatcherSession": 10006,
+  "automaticPublication": "Await actual existing workflow-run source publisher after distinct exact main gates; no version guessed or manual tag/dispatch",
+  "callerAdoption": "Eleven-path preparation READY/HOLD, actual new Platform public source/tag/proofs still pending",
+  "allOriginalFinalStoryNativeCampaignEnrollmentBaselineReviewWorkStillRequired": true,
+  "wholeStoryAcceptance": false
+}
