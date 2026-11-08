@@ -1,6 +1,35 @@
 # Current tuple preparation
 
-## Current signed Builds4.44.12 and public Parties3.1.0 tuple
+## Current signed Builds4.44.13 and public Parties3.1.0 tuple
+
+This source prepares the exact published [Builds v4.44.13](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13)
+at `3c8096180ecf2aa539ac454815efbfceb8a92822`, from normal
+[publisher42438005017](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42438005017)
+after exact-source [mainCI42436815567](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42436815567).
+Its publication, exact module-tool pin and supported range floor are `4.44.13`;
+the upper bound remains `5.0.0-0` and tool roll-forward remains disabled.
+The signed module archive SHA-256 is
+`036d32fb2c7ea961d4ec055ad59a70f2cdd6377ab034d67f2b82e01e16b62bec`.
+The already admitted complete validation pair is AppHost
+`5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252` and Tooling
+`39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d`.
+Catalog blob `b45555806e78ea6ce66ad6a8f0fcc5f7c70b691d` and its raw SHA-256
+`c66fb47d42633dd51bdfa6f31216ee22412e0137a664bf472edf72ac103ad5d1`
+are unchanged. The actual inventory SHA-256 is
+`887866d05fda3b6283dd3ea34b3e605f7f403c8df504eefdd095b3cc62f56717`;
+its [official release asset](https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.13/g4-tool-package-inventory.json)
+retains catalog-origin ancestor `8984471f75657cd24236cf2d04f470f8e2545ace`.
+
+SDK4.1.0, public Parties3.1.0 and the measured public package/image/declaration
+identities remain unchanged. Private source preparation and public reader,
+image and runtime roles remain separate. The current profile still requires412
+cases and the historical profile all349 original controls. Fresh genuine same-code
+current/legacy source qualification, all five SDK gates, native execution and
+verified cleanup remain required. This prerequisite source preparation grants
+no new Platform publication, caller/native qualification or candidate acceptance.
+The previous producer sections below retain their own historical facts.
+
+## Previous signed Builds4.44.12 and public Parties3.1.0 tuple
 
 The selected producer is genuine [Builds v4.44.12](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.12)
 at `b4703ec2247321f867f14cd9caca43fa00190feb`, published by normal
