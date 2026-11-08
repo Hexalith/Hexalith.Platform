@@ -98,6 +98,7 @@ internal static class PlatformEventStoreExtensionBindings
             environment[prefix + "PackageId"] = extension.PackageId;
             environment[prefix + "ExtensionId"] = extension.ExtensionId;
             environment[prefix + "ApiMajor"] = extension.ApiMajor.ToString(CultureInfo.InvariantCulture);
+            environment[prefix + "ModuleId"] = extension.Module;
         }
         foreach (PlatformEventStoreExtensionBinding extension in extensions)
         foreach (JsonElement input in extension.ConfigurationInputs)

@@ -75,6 +75,7 @@ public sealed class EventStoreExtensionCompositionTests
         binding.Environment["EventStore__Extensions__Packages__0__PackageId"].ShouldBe(Package);
         binding.Environment["EventStore__Extensions__Packages__0__ExtensionId"].ShouldBe("platform-test");
         binding.Environment["EventStore__Extensions__Packages__0__ApiMajor"].ShouldBe("1");
+        binding.Environment["EventStore__Extensions__Packages__0__ModuleId"].ShouldBe(Module);
         binding.Environment["PlatformTestExtension__Marker"].ShouldBe("bound-marker");
 
         string[] arguments = await ArgumentsAsync(gateway);
@@ -406,6 +407,7 @@ public sealed class EventStoreExtensionCompositionTests
         Exception failure = Should.Throw<Exception>(() => factory.CreateClient());
         EventStoreExtensionException refusal = Chain(failure).OfType<EventStoreExtensionException>().ShouldHaveSingleItem();
         refusal.Condition.ShouldBe(EventStoreExtensionConditions.DeclarationDrift);
+        refusal.Message.ShouldContain("Module '" + Module + "'");
         refusal.Message.ShouldContain("'" + Package + "' is declared as 'drifted-id' major 1");
         refusal.Message.ShouldContain("declares 'platform-test' major 1");
     }
@@ -436,6 +438,7 @@ public sealed class EventStoreExtensionCompositionTests
         ["EventStore__Extensions__Packages__0__PackageId"] = Package,
         ["EventStore__Extensions__Packages__0__ExtensionId"] = extensionId,
         ["EventStore__Extensions__Packages__0__ApiMajor"] = "1",
+        ["EventStore__Extensions__Packages__0__ModuleId"] = Module,
     };
 
     private static WebApplicationFactory<platformseed::Program> Factory(GatewaySeedProtectionInstallation installation) => new WebApplicationFactory<platformseed::Program>().WithWebHostBuilder(builder =>
