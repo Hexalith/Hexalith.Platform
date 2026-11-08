@@ -1,0 +1,70 @@
+{
+  "utc": "2026-11-08T15:05:21.848173+00:00",
+  "reviewedFeatureSource": "bebce14225eea8f60eb01dba81438cccc3882fbc",
+  "testedPrMerge": "7ca4f98546d67b104553a5a952cd6501304fced6",
+  "actualMain": "b0ea2fce1d03ab8b90c44415128e2e60c64cd614",
+  "tree": "f91200d435c32880a6d78989fd56e0da232ee635",
+  "parents": [
+    "e1980560934736688a05a53a0aadc9397277afae"
+  ],
+  "allOriginal20ProjectsAndNative9PrimaryAudited": true,
+  "pure20AndPreparation25ControlsPassed": true,
+  "allOriginal63Pf02NamesActuallyPassed": true,
+  "sevenExtraTrxPassed": 1382,
+  "sevenExtraOriginalOptionalNotExecuted": 21,
+  "compatibilityOriginal444AllExecutedPassed": true,
+  "liveOriginal334Cases": {
+    "passed": 330,
+    "originalOptionalNotExecuted": 4
+  },
+  "separateSerializationGuardPassed": true,
+  "actualServiceArchives": {
+    "published-compatibility": {
+      "job": 128753923293,
+      "artifact": 13621861588,
+      "digest": "sha256:737c977174249f95b740aed26977a7141389fe28f8d26405a89c7d463b9bd9f5",
+      "allMembers": 8028,
+      "memberBytes": 143607396,
+      "allMemberBodiesRehashed": true
+    },
+    "live-sidecar": {
+      "job": 128753923300,
+      "artifact": 13622515438,
+      "digest": "sha256:a3aedfda8c92e9a044568f8aa40a29436bc9a256924f1a8d8f67705513728abb",
+      "allMembers": 63,
+      "memberBytes": 30172871,
+      "allMemberBodiesRehashed": true
+    }
+  },
+  "sourcePrimaryReceipts": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore-bebc-first-source-ci-native9-and-pure20-primary-audit-20261108.json",
+      "sha256": "ce5ce5fc779e13691cdc8f0b9da5682af00b6a43d10c8c6726c47c3d46309a55"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore-bebc-extra-primary-and-original63-pf02-audit.json",
+      "sha256": "dae9a8730efb005a7237919f2b0318603f0fe649ae8ec1dac194f2c5b25d249a"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore-bebc-source-original-live334-and-compat444-primary-audit-20261108.json",
+      "sha256": "2cd3fe260f86104c80fbb75b3aee59db61b95bb22fff8bce67acfb72c2ec6690"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore-bebc-normal-exact-head-squash-result.json",
+      "sha256": "4c97bdbf0fd18704d9db02434cefe6e12d362dce9f451a41e000dacd09bf5253"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore-bebc-first-premerge-cursor-name-reader-refusal-and-correction.json",
+      "sha256": "96c4a8da5bcff3c4b99d5572d4d6a8b9c6f78860fe16e87fd252333aa2f5969d"
+    }
+  ],
+  "oneNormalSquashWithAllSevenRequiredAndAdditionalChecks": true,
+  "rawActualFullGitMessageOwnLocked2124LintPass": true,
+  "firstPremergeReaderRefusalPreservedAndNoFirstMutationSent": true,
+  "policyBypassOrMainPushOrTagOrDispatchOrCancellationSent": false,
+  "freshDistinctMainPrimaryRequired": true,
+  "mainAutomaticRunsConfiguration": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore-mainb0ea-source-configuration.json",
+  "manualLifecycleDispatchesSent": 0,
+  "parentGithubCancellationRequestsSent": 0,
+  "wholeStoryAcceptance": false
+}

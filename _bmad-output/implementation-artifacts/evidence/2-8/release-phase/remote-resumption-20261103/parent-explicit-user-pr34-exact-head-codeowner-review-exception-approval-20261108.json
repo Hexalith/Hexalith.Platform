@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-08T10:47:44.670370+00:00",
+  "explicitUserAnswer": "Approve PR #34 merge exception",
+  "scope": "One normal PR34 merge of exact approved head using the existing jpiquot CODEOWNER-review bypass after fresh actual required-check preflight",
+  "repository": "Hexalith/Hexalith.Platform",
+  "pr": 34,
+  "head": "870e48b9f19b243c98bd28c585d4561b8fa8d0b6",
+  "reviewRule": 24657106,
+  "actor": {
+    "login": "jpiquot",
+    "id": 6775094
+  },
+  "doesNotAuthorize": [
+    "future PR review exceptions",
+    "failed or pending check bypass",
+    "policy or credential changes",
+    "protected-main push",
+    "manual publication tag"
+  ],
+  "normalMergeRequest": "proposed-pr34-normal-merge-request.json"
+}

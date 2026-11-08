@@ -1,0 +1,19 @@
+{
+  "observedUtc": "2026-11-08T10:36:52.522737+00:00",
+  "authorization": "Explicit user answer to the final-audit-method question",
+  "answer": "Approve this audit method",
+  "approvedMethod": {
+    "readEveryCodeConfigurationDocumentationChangeInFull": true,
+    "archivedEvidence": "Verify through complete manifests, hashes and original CI receipts",
+    "allTestsAndAcceptanceGatesRemainRequired": true
+  },
+  "limits": [
+    "This changes the archived-evidence review method only.",
+    "No CODEOWNER-review exception, merge/policy/credential bypass, assertion waiver or acceptance is authorized by this answer.",
+    "The final complete new-file-inclusive original-baseline diffs and full manifest/source review still need to be generated and performed."
+  ],
+  "originalBaselines": {
+    "Platform": "03a099bba258c37a8f16c8b2e842ae842b1ad6d6",
+    "Builds": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364"
+  }
+}

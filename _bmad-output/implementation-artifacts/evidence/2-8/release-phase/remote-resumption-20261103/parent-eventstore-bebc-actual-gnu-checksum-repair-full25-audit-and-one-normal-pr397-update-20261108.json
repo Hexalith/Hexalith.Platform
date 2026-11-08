@@ -1,0 +1,102 @@
+{
+  "utc": "2026-11-08T14:06:53.218047+00:00",
+  "source": "bebce14225eea8f60eb01dba81438cccc3882fbc",
+  "tree": "f91200d435c32880a6d78989fd56e0da232ee635",
+  "parent": "c2e852e4b619a4edd6796d070f57c65349ec993e",
+  "actualTemporaryMerge": "7ca4f98546d67b104553a5a952cd6501304fced6",
+  "completeIndependentAudit": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore-bebc-complete-proposal-seals-and25-controls-independent-audit.json",
+    "bytes": 1244,
+    "sha256": "594cf8fab5d69fd4a408335786039fb8a8c8512611d558f0d881f1ad9b530e36"
+  },
+  "completeReport": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/eventstore-original-gnu-binary-checksum-preparation-repair-20261108/evidence/focused-gnu-binary-checksum-implementation-report.md",
+    "bytes": 3748,
+    "sha256": "6833d6a04bc3a384e6eb1416d834eaa88e933200d6dfb55befc032e7509051e2"
+  },
+  "completeIndex": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/eventstore-original-gnu-binary-checksum-preparation-repair-20261108/evidence/complete-additive-body-index.json",
+    "bytes": 4167068,
+    "sha256": "d1b514ac0aa2e5193837e910121ef89a380761db1512fa0a030b56c15bddd998"
+  },
+  "checkpoint": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/eventstore-original-gnu-binary-checksum-preparation-repair-20261108/evidence/OPEN-IDLE-checkpoint.json",
+    "bytes": 3358,
+    "sha256": "074e83909bf9b727ae66a5be230f7d6325112694ee60b445a6a091ee12e998fe"
+  },
+  "normalDelivery": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore-bebc-normal-existing-feature-and-pr397-update-result.json",
+    "bytes": 614,
+    "sha256": "fbccce654a3b0ee78582ef5a678c07bbee66dbf08e0583f20d8477118adb4cd4"
+  },
+  "firstParentReaderRefusal": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/commands/eventstore-bebc-parent-complete-independent-local-audit-first.command.json",
+    "bytes": 663,
+    "sha256": "3b7eeabefe201da98a40cb1b0869ca22c58c787972d0a1b334fe76334200ff2a"
+  },
+  "firstPostPushReadRetained": {
+    "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/api/eventstore-bebc-after-push-pr397.command.json",
+    "bytes": 584,
+    "sha256": "d166cbdf9ba42e7f9a019df02c50b02512acd4272527eb62de1595cf6d785699"
+  },
+  "pushNeverReplayed": true,
+  "all25LocalControlsPassed": true,
+  "freshSourceWorkflows": [
+    {
+      "id": 42488025393,
+      "workflow_id": 305921075,
+      "path": ".github/workflows/commitlint.yml",
+      "name": "Commitlint"
+    },
+    {
+      "id": 42487954965,
+      "workflow_id": 359890992,
+      "path": ".github/workflows/payload-protection.yml",
+      "name": "Payload Protection"
+    },
+    {
+      "id": 42487954960,
+      "workflow_id": 394397333,
+      "path": ".github/workflows/payload-protection-lifecycle.yml",
+      "name": "Payload Protection Lifecycle"
+    },
+    {
+      "id": 42487954922,
+      "workflow_id": 310020568,
+      "path": ".github/workflows/advisory-tests.yml",
+      "name": "Advisory Tests"
+    },
+    {
+      "id": 42487955301,
+      "workflow_id": 305921074,
+      "path": ".github/workflows/codeql.yml",
+      "name": "CodeQL"
+    },
+    {
+      "id": 42487954967,
+      "workflow_id": 300068044,
+      "path": ".github/workflows/integration.yml",
+      "name": "Integration Tests"
+    },
+    {
+      "id": 42487954917,
+      "workflow_id": 405652427,
+      "path": ".github/workflows/payload-protection-azure.yml",
+      "name": "Payload Protection Azure"
+    },
+    {
+      "id": 42487955336,
+      "workflow_id": 305921076,
+      "path": ".github/workflows/dependency-review.yml",
+      "name": "Dependency Review"
+    },
+    {
+      "id": 42487955346,
+      "workflow_id": 238596342,
+      "path": ".github/workflows/ci.yml",
+      "name": "CI"
+    }
+  ],
+  "hostedSourceAcceptance": false,
+  "wholeStoryAcceptance": false
+}

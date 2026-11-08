@@ -1,0 +1,62 @@
+{
+  "utc": "2026-11-08T12:05:51.120876+00:00",
+  "pr": 397,
+  "source": "4915587a1f605a7707a2815a2f43bd5f58d17580",
+  "run": 42472364033,
+  "actualSuccessfulLiveExecution": {
+    "attempt": 2,
+    "job": 128713830618,
+    "started": "2026-11-08T11:14:39Z",
+    "completed": "2026-11-08T11:57:02Z",
+    "registered": 334,
+    "executedPassed": 330,
+    "originalOptionalNotExecuted": 4,
+    "serializedGuardPassed": 1,
+    "allNamesAndOutcomesExactToQualifiedPriorSource": true,
+    "artifactId": 13616710514,
+    "archiveDigest": "sha256:cad6593b1ea72c4e719ba2e74224c7e133c29db011cf75e2d48049fdf356d6ba",
+    "all63MemberBodiesVerified": true
+  },
+  "targetedCompatibilityPrerequisiteRetry": {
+    "postStatus": 201,
+    "currentInheritedOriginalFailedJob": 128713832228,
+    "actualNewAttempt": 3,
+    "actualNewJob": 128724422024,
+    "started": "2026-11-08T12:01:23Z",
+    "status": "in_progress",
+    "first439Pass5DownloadFailuresPreserved": true,
+    "allSixExactEndpointsImmediateHttp200": true,
+    "oneRequestOnly": true
+  },
+  "attempt3InheritedLiveLogicalJob": {
+    "id": 128724423772,
+    "sameActualExecutionAsAttempt2": true,
+    "notRerun": true
+  },
+  "parentGitHubCancellationRequests": 0,
+  "parentMergeRequests": 0,
+  "noSourceOrPinBudgetVersionOrAssertionChange": true,
+  "compatibilityMainOrStoryAcceptance": false,
+  "anchors": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore397-recovered-cli-first-success-live334-primary-audit.json",
+      "bytes": 95024,
+      "sha256": "903e76288c5ddc3f2ad8fd614a2fb5b026528faac5c0310991ade48d4027f635"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore397-one-recovered-runtime-compatibility-prerequisite-retry-intent.json",
+      "bytes": 852,
+      "sha256": "3037db2fee51de925ef718545340be2e969df2c482482b5937a9bb4de32456c7"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-immediate-six-endpoint-head-preflight-before-one-compat-retry.json",
+      "bytes": 2670,
+      "sha256": "1b22886e696e9046d8cff7c964daf73dd6922a102293dd14ef86f695a044f319"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-six-public-assets-recovery-audit.json",
+      "bytes": 3034,
+      "sha256": "19da80032410b06dac01fcb711b209b9885a686c62649d5819d8e3d5aad45ac4"
+    }
+  ]
+}

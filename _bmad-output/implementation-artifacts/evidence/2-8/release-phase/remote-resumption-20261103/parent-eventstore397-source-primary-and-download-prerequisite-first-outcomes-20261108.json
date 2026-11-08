@@ -1,0 +1,92 @@
+{
+  "utc": "2026-11-08T11:35:33.183094+00:00",
+  "pr": 397,
+  "source": "4915587a1f605a7707a2815a2f43bd5f58d17580",
+  "actualTestedPrMerge": "83d08dd6cf185792975308b6120ca4fd775553c2",
+  "firstCi": 42472364385,
+  "attempt": 1,
+  "allSixCiJobsPassed": true,
+  "allTwentyOriginalProjectsAndExactNativeNinePassed": true,
+  "portOwnershipControlsPassed": 20,
+  "requiredNativeSkips": 0,
+  "preexistingOptionalNotExecuted": 49,
+  "sixOwnedInventoriesVerifiedEmpty": true,
+  "actualPf02CasesPassed": 63,
+  "allPf02NamesExactToQualifiedPriorSource": true,
+  "firstLiveFailure": "Official CLI1.18.0 artifact HTTP502/503 before initialization or tests. Exact public artifact recovery independently authenticated.",
+  "liveTargetedSetupRetry": {
+    "run": 42472364033,
+    "originalJob": 128705926529,
+    "postStatus": 201,
+    "postResponseDate": "2026-11-08T11:14:34Z",
+    "actualAttempt": 2,
+    "actualJob": 128713830618,
+    "initializeDapr": "success",
+    "realLiveTests": "in_progress; no acceptance yet"
+  },
+  "inheritedCompatibilityAttempt2Job": {
+    "id": 128713832228,
+    "started": "2026-11-08T10:39:49Z",
+    "completed": "2026-11-08T11:12:06Z",
+    "newExecution": false
+  },
+  "firstCompatibility": {
+    "actualCases": 444,
+    "passed": 439,
+    "failed": 5,
+    "skips": 0,
+    "fourDirectHttpStackFailures": 4,
+    "matrixIncompleteDueToPinnedArchiveHttpTimeout": true,
+    "privatePinnedRuntime": "1.18.4",
+    "allThreeArchivesAndThreeChecksumsRecoveredAndApiDigestVerified": true,
+    "locallyExtractedOrExecuted": false,
+    "targetedCompatibilityRetryRequests": 0
+  },
+  "parentGitHubCancellationRequests": 0,
+  "parentMergeRequests": 0,
+  "noVersionBudgetExpectationOrSourceChangeForDownloads": true,
+  "mainSidecarCompatibilityManualCandidateOrStoryAcceptance": false,
+  "proofLimits": [
+    "Required native coverage is exact9; existing49 optional skipped cases are preserved, not counted as required coverage.",
+    "Full first HTTP status is observed for CLI only; compatibility direct stacks establish download/checksum GET failure, and selected matrix summary establishes actual90second timeout. No unobserved status code is inferred.",
+    "Five selected cleanup.json arrays are empty; missing summary files in some direct-failure invocations are not invented.",
+    "Parent reader first expected seven CI jobs incorrectly, refused before acceptance; corrected reader uses actual six jobs without source or hosted replay."
+  ],
+  "anchors": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore397-first-source-ci-native9-and-pure20-primary-audit-20261108.json",
+      "bytes": 8314,
+      "sha256": "919da0178e35bcec2479ff10da4ed14a5f1e5eaf59b8ae1e5368cbd065dfe2a1"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent-eventstore397-extra-primary-and-original63-pf02-audit.json",
+      "bytes": 330042,
+      "sha256": "32da10052763a3f80c0a31eb9c4cc8cb04b7a659adeef00bdb23c08f74548fc7"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore397-first-parent-reader-wrong-ci-job-count-refusal.json",
+      "bytes": 503,
+      "sha256": "dbfd0fbe46f4bbcd36accea9d5356dab56540d0177fe54fca5d428d01b5d7890"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore397-first-published-compatibility-finite-failure-observations.json",
+      "bytes": 8316,
+      "sha256": "ad07da380db9007761da2bae53b25644a1042d4ea6bedd05607d25730c69156e"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-cli-v1180-actual-archive-availability.json",
+      "bytes": 920,
+      "sha256": "0a5776ca00ff61080ca04559882008f855a89c9477e1b274f03d080a03f85318"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/eventstore397-one-recovered-cli-prerequisite-job-retry-intent.json",
+      "bytes": 1616,
+      "sha256": "a56647778346f0aa935ea4bb0b5b1918024ba617c9b9120ff221c3f87a271462"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/official-dapr-runtime1184-six-public-assets-recovery-audit.json",
+      "bytes": 3034,
+      "sha256": "19da80032410b06dac01fcb711b209b9885a686c62649d5819d8e3d5aad45ac4"
+    }
+  ]
+}

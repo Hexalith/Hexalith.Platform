@@ -1,0 +1,74 @@
+{
+  "utc": "2026-11-08T12:48:49.515999+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "pr": 397,
+  "source": "4915587a1f605a7707a2815a2f43bd5f58d17580",
+  "actualTestedPrMerge": "83d08dd6cf185792975308b6120ca4fd775553c2",
+  "run": 42472364033,
+  "attempt": 3,
+  "job": 128724422024,
+  "startedAt": "2026-11-08T12:01:23Z",
+  "completedAt": "2026-11-08T12:44:11Z",
+  "original444NamesExact": true,
+  "actualCounts": {
+    "total": "444",
+    "executed": "444",
+    "passed": "442",
+    "failed": "2",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "firstAttempt439Pass5DownloadFailuresPreserved": true,
+  "current442Passed2ArchiveDownloadTimeouts": [
+    {
+      "case": "Hexalith.EventStore.PublishedCompatibility.Tests.QualificationSelectedCaptureTests.ActualSelectedProbeAndRestartedSecurityWriterProduceOnlySafeBoundReceipts",
+      "actualErrorInfo": "System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 90 seconds elapsing.\n---- System.TimeoutException : The operation was canceled.\n-------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.\n------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.\n---------------- System.Net.Sockets.SocketException : Operation canceled",
+      "firstOwnerCodeFrame": "PublishedCluster.InitializeAsync at PublishedCluster.cs:line 61",
+      "originalPublicArchiveGetTimedOutBeforePrivateRuntimeStartup": true
+    },
+    {
+      "case": "Hexalith.EventStore.PublishedCompatibility.Tests.PublishedReviewedBoundaryTests.DeclaredHandlerTransportAndNaturalReminderHaveIndependentOriginEvidenceAsync",
+      "actualErrorInfo": "System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 90 seconds elapsing.\n---- System.TimeoutException : The operation was canceled.\n-------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.\n------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.\n---------------- System.Net.Sockets.SocketException : Operation canceled",
+      "firstOwnerCodeFrame": "PublishedCluster.InitializeAsync at PublishedCluster.cs:line 61",
+      "originalPublicArchiveGetTimedOutBeforePrivateRuntimeStartup": true
+    }
+  ],
+  "all7731ActualMembersIndependentlyAuthenticated": true,
+  "actualArchive": {
+    "id": 13617647633,
+    "node_id": "MDg6QXJ0aWZhY3QxMzYxNzY0NzYzMw==",
+    "name": "published-compatibility-results",
+    "size_in_bytes": 12329049,
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13617647633",
+    "archive_download_url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/artifacts/13617647633/zip",
+    "expired": false,
+    "digest": "sha256:9e5e956f2c5e01a006759a3e0767e2c2a69c1d64175213de29fdcdb5daac032e",
+    "created_at": "2026-11-08T12:44:09Z",
+    "updated_at": "2026-11-08T12:44:09Z",
+    "expires_at": "2026-11-15T12:44:05Z",
+    "workflow_run": {
+      "id": 42472364033,
+      "repository_id": 1155154671,
+      "head_repository_id": 1155154671,
+      "head_branch": "fix/reconcile-qualified-fixtures-4915587a",
+      "head_sha": "4915587a1f605a7707a2815a2f43bd5f58d17580"
+    }
+  },
+  "memberBytes": 138764006,
+  "firstPreservedFiveFailuresNotOverwritten": true,
+  "newUnchangedSourceRetrySent": false,
+  "normalMergeSent": false,
+  "preparedSuccessfulOnlyCollectorAndSquashHelperRemainUnexecuted": true,
+  "nativeLive334EarlierSeparateSuccessRetained": true,
+  "sourceNativeMainManualOrStoryAcceptance": false
+}
