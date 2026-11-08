@@ -1,0 +1,98 @@
+{
+  "schema": "hexalith.story28.resumption-audit.v1",
+  "observedUtc": "2026-11-08T09:45:52.733167+00:00",
+  "actualCanonicalAndOfficialMain": "bdc4547cf68a3f3c960f8c1b59c3ec5455608ce2",
+  "main613": {
+    "source": "6131512e945e7a5ef164215ddf5a720e516275e4",
+    "run": 42463839760,
+    "attempt": 1,
+    "conclusion": "success",
+    "sourceAndPackagePrimaryAudits": [
+      {
+        "lane": "current",
+        "actualSource": "6131512e945e7a5ef164215ddf5a720e516275e4",
+        "actualPassed": 412,
+        "sourceInputsMatchedGit": 22323,
+        "signedPackageMembersMatched": 317,
+        "artifactId": 13611337589,
+        "artifactSha256": "0846cdf53026a086897ef132f773c1a6e428e1af0fdc8ed4a654c04cf813e702",
+        "primaryAuditFile": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/main-tuple-primary/parent-main613-first-success-current-primary-hosted-audit.json",
+        "primaryAuditSha256": "0f607db7b2b6d76788459a42084e8e1831c317fe55e2fc82bb529d688d439926"
+      },
+      {
+        "lane": "legacy",
+        "actualSource": "8d2be9f94b631876b15e4ad0ced71340f39344e4",
+        "actualPassed": 349,
+        "sourceInputsMatchedGit": 22323,
+        "signedPackageMembersMatched": 317,
+        "artifactId": 13611279198,
+        "artifactSha256": "5bcd7d800d4cea5cd2fe4f11f8f7dec03212fe0e7b8fa7f89d1c8c46f5451587",
+        "primaryAuditFile": "/home/administrator/.cache/hexalith/story-2-8/parent-platform44413-validation-pair-hosted-20261108/main-tuple-primary/parent-main613-first-success-legacy-primary-hosted-audit.json",
+        "primaryAuditSha256": "94d3eff426ab911b9652ef5d774b967568c5f0675d0f4bb536189dc508cbef9b"
+      }
+    ],
+    "fiveSdkAuditRetained": "parent-platform-main613-first-five-SDK-primary-audit-20261108.json"
+  },
+  "subsequentFailures": {
+    "613Publisher": {
+      "run": 42465961033,
+      "reason": "main-advanced"
+    },
+    "bdcTuple": {
+      "run": 42467953387,
+      "phase": "dependencies before SDK/preflight",
+      "actualBootstrapExit": 1,
+      "staticPinMismatch": {
+        "gitlink": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+        "tupleProducer": "b4703ec2247321f867f14cd9caca43fa00190feb"
+      }
+    },
+    "bdcPublisher": {
+      "run": 42468109885,
+      "reason": "unsuccessful-latest-run"
+    }
+  },
+  "retainedDirectBodies": [
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/current-tuple-artifact-13612720498/extracted/_temp/platform-tuple-bootstrap/bootstrap.json",
+      "bytes": 560,
+      "sha256": "5d13253a98acaecc1f13853ff8edf1c19cd53ef857f9166eb8afe2be2a8489af"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/current-tuple-artifact-13612720498/extracted/_temp/platform-tuple-bootstrap/initialize.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/current-tuple-artifact-13612720498/extracted/_temp/platform-tuple-bootstrap/initialize.stderr",
+      "bytes": 109,
+      "sha256": "00b5d34b54d7b6872a1d7a3812f4d02e7b3d03fbd4adce5b43e02d2dc13e96f0"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/current-tuple-artifact-13612720498/extracted/_temp/platform-tuple-bootstrap/initialize.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/latest-publisher-artifact-13612342925/extracted/source-release-check.json",
+      "bytes": 261,
+      "sha256": "e8e2ac516d24594693ef285c884d79ad0c17f58fa15f15c12b15933dc4dc7416"
+    },
+    {
+      "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/613-post-tuple-publisher-artifact-13611717234/extracted/source-release-check.json",
+      "bytes": 251,
+      "sha256": "0dcf68d218a071f234f768b72627ba16cc42894ecb6fe2ec145fee2cbef7dddf"
+    }
+  ],
+  "actualLatestPublicPlatform": "v1.7.0",
+  "limits": [
+    "Main613 results are real merged-main executions. An obsolete prepared auditor limit sentence still calls its scope PR; the primary run source/event checks prove push/main, and this receipt corrects only that description.",
+    "Neither earlier source success nor newer catalog success supplies bdc tuple/native/publication authority.",
+    "Incoming Parties PR66 was externally merged to6f8cd; current CI42464347889 failed. EventStore incominge198 CI42463767316 failed. No acceptance is transferred from earlier qualified heads.",
+    "No remote mutation, rerun, cancellation, services or public binary execution by this resume audit."
+  ],
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false,
+  "operationalCache": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z"
+}
