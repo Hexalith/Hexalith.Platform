@@ -1826,7 +1826,7 @@
 
 ## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages (2026-11-08, iteration 2)
 
-These entries retain or refine existing follow-ups; they do not claim a working released package-mode extension cohort. Review scope was local Platform 769507aa, EventStore b13271ba1, Builds 27145e52. Builds v4.45.0 is now published and EventStore remote main contains the extension API; Platform's reviewed local tool/tuple still selects 4.44.13.
+These entries retain or refine existing follow-ups; they do not claim a working released package-mode extension cohort. Review scope was local Platform 769507aa, EventStore b13271ba1, Builds 27145e52. Builds v4.45.0 is now published and EventStore remote main contains the extension API; Platform's reviewed local tool/tuple selected 4.44.13 at that time. Upstream PR #37 subsequently merged the published Builds 4.45.0 alignment and is integrated into the companion fixes branch.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W1 — Qualify conditions, imports and property evaluation in extension package pin lookup (medium, unverified; BH4).
@@ -1846,4 +1846,3 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W6 — Verify snapshot-selected extension package versions through an actual restore/build (medium; VG3).
   evidence: PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference sets no RunPlan and checks generated XML only. Ignoring Workspace would leave it green. Retains the earlier package qualification follow-up: choose a snapshot pin different from the live catalog, restore/build a supported host, and assert the resolved package version.
-
