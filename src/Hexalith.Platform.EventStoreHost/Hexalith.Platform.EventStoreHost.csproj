@@ -11,8 +11,11 @@
     <ProjectReference Include="../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
-    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants>
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG;HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>
+  <!-- Platform composition generates the declared EventStore extension bindings through the AD-4 mapping:
+       project references in source mode, catalog-pinned package references in package mode. -->
+  <Import Project="$(PlatformEventStoreExtensionBindings)" Condition="'$(PlatformEventStoreExtensionBindings)' != ''" />
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK</DefineConstants>
   </PropertyGroup>

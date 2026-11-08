@@ -7,7 +7,7 @@
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants></PropertyGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_V2_CATALOG</DefineConstants></PropertyGroup>
   <!-- Source-only owner parity controls remain available alongside native preparation in both modes. -->
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG</DefineConstants></PropertyGroup>
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG;HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants></PropertyGroup>
   <ItemGroup>
     <AssemblyMetadata Include="PlatformTestRoot:Hexalith.Builds" Value="$(HexalithBuildsResolvedRoot)" />
     <AssemblyMetadata Include="PlatformTestRoot:Hexalith.EventStore" Value="$(HexalithEventStoreRoot)" />
@@ -33,6 +33,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj" Aliases="platformseed" />
+    <!-- The Platform-owned extension fixture deploys beside the seed host so its readiness proof loads the package by name. -->
+    <ProjectReference Include="../fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj" />
     <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj" Aliases="buildsseed" Condition="'$(BuildsEventStoreHostAssemblyPath)' == ''" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
   </ItemGroup>

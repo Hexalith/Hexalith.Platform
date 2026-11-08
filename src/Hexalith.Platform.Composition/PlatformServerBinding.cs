@@ -18,4 +18,8 @@ public sealed record PlatformServerBinding(
     /// <summary>Gets the independently qualified immutable image digest, absent for unchanged default/source bindings.</summary>
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public string? ImageDigest { get; init; }
+
+    /// <summary>Gets the Platform-composed eventstore host binding; absent unless a module declares an EventStore extension.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public PlatformEventStoreHostBinding? EventStoreHost { get; init; }
 }

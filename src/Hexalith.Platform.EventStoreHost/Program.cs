@@ -35,6 +35,14 @@ if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:Develop
 if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:Directory"]))
     throw new InvalidOperationException("Development catalog bootstrap requires the authoritative published owner SDK and adapters before package qualification.");
 #endif
+// Story 3.2 (AD-13): load the Platform-declared extension packages referenced by the generated bindings,
+// verify each assembly identity against its declaration and report them in the eventstore-extensions readiness check.
+#if HEXALITH_PLATFORM_EXTENSION_SDK
+Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions.AddEventStoreExtensions(builder.Services, builder.Configuration);
+#else
+if (builder.Configuration.GetSection("EventStore:Extensions:Packages").GetChildren().Any())
+    throw new InvalidOperationException("eventstore-extension-api-unavailable: Declared EventStore extensions require an EventStore server SDK that carries the extension API; package-mode qualification awaits its release.");
+#endif
 
 WebApplication app = builder.Build();
 

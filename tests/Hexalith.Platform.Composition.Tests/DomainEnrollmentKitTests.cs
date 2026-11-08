@@ -120,7 +120,7 @@ public sealed class DomainEnrollmentKitTests
             if (format == "json")
             {
                 using JsonDocument report = JsonDocument.Parse(output);
-                report.RootElement.GetProperty("adoption").GetArrayLength().ShouldBe(9);
+                report.RootElement.GetProperty("adoption").GetArrayLength().ShouldBe(11);
             }
             else output.ShouldContain("PASS hosting-inventory");
             (await GitAsync(temporary, "status", "--porcelain=v1", "--untracked-files=all")).ShouldBe(before);
@@ -137,7 +137,8 @@ public sealed class DomainEnrollmentKitTests
                 failedRoot.GetProperty("adoptionScope").GetString().ShouldBe(PlatformAdoptionValidator.Scope);
                 JsonElement[] failedRows = [.. failedRoot.GetProperty("adoption").EnumerateArray()];
                 failedRows.Select(row => row.GetProperty("requirement").GetString()).Distinct().ShouldBe(
-                    ["workspace", "declaration", "references", "gitlinks", "nested-references", "tool-pin", "hosting-inventory", "dependency-selectors", "dapr-subscriptions"], ignoreOrder: true);
+                    ["workspace", "declaration", "references", "gitlinks", "nested-references", "tool-pin", "hosting-inventory", "dependency-selectors", "dapr-subscriptions",
+                     "eventstore-image", "eventstore-extensions"], ignoreOrder: true);
                 foreach (JsonElement row in failedRows)
                 {
                     row.GetProperty("file").GetString().ShouldNotBeNullOrWhiteSpace();
