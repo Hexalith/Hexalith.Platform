@@ -1,0 +1,44 @@
+{
+  "utc": "2026-11-08T08:53:51.782220+00:00",
+  "automaticWorkflowRun": 42464041205,
+  "attempt": 1,
+  "source": "6131512e945e7a5ef164215ddf5a720e516275e4",
+  "verifyJob": 128679324754,
+  "verifyConclusion": "success",
+  "publishJob": 128679425703,
+  "publishConclusion": "skipped",
+  "actualGate": {
+    "schema": "hexalith.platform.source-release.v1",
+    "source": "6131512e945e7a5ef164215ddf5a720e516275e4",
+    "eligible": false,
+    "status": "deferred",
+    "executingWorkflow": {
+      "ref": "Hexalith/Hexalith.Platform/.github/workflows/source-release.yml@refs/heads/main",
+      "sha": "6131512e945e7a5ef164215ddf5a720e516275e4",
+      "checkout": "6131512e945e7a5ef164215ddf5a720e516275e4",
+      "job": "verify"
+    },
+    "callback": {
+      "run": 42463839709,
+      "attempt": 1,
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42463839709"
+    },
+    "qualifyingRuns": [],
+    "computedVersion": null,
+    "nativeAcceptance": false,
+    "candidateAcceptance": false,
+    "storyAcceptance": false,
+    "reason": "counterpart-pending"
+  },
+  "artifact": {
+    "id": 13610563011,
+    "archiveBytes": 549,
+    "archiveSha256": "70717397251149b270b9972586c9638a08865377b70f2c22d15ee92f2b9e9d7d",
+    "memberBytes": 793,
+    "memberSha256": "dda1e15c86a32534b33a8101f25a8da9e8136d1088b10f824e9b59d11a419d13"
+  },
+  "publicationPerformed": false,
+  "manualDispatchOrTag": false,
+  "nextGate": "Actual normal callback after remaining tuple qualification completes; no version assumed"
+}
