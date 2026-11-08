@@ -1818,3 +1818,26 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: When enabling package-mode extensions, also admit the composed host in the package qualification gate.
   evidence: `PlatformPackageCatalogQualification.cs:47` accepts a gateway only when `server.ProjectPath == options.EventStoreSeedProject`. With a declared extension, `ProjectPath` is `src/Hexalith.Platform.EventStoreHost`, so a qualified package cohort would refuse it. This adds to the package-mode qualification and enablement entries above.
+
+## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages (2026-11-08, iteration 2)
+
+These entries retain or refine existing follow-ups; they do not claim a working released package-mode extension cohort. Review scope was local Platform 769507aa, EventStore b13271ba1, Builds 27145e52. Builds v4.45.0 is now published and EventStore remote main contains the extension API; Platform's reviewed local tool/tuple still selects 4.44.13.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W1 — Qualify conditions, imports and property evaluation in extension package pin lookup (medium, unverified; BH4).
+  evidence: CompositionDeclarationOptions.ReadCatalogPackageVersion reads the first raw XML PackageVersion/property. The current extension pins are unconditional, so no active incorrect selection was demonstrated. A supported package-mode host build with conditioned/repeated/imported pins would settle whether the lookup disagrees with the effective catalog. Refines the earlier package qualification follow-up.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W2 — Qualify generated PackageVersion Update against the host's central package items (medium, unverified; BH5).
+  evidence: PlatformEventStoreExtensionBindings.Write updates existing central items without creating absent ones. A snapshot-pinned restore including a package absent from the live host catalog would demonstrate or disprove the proposed NU1010/wrong-version failure. Refines the earlier package qualification follow-up.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W3 — Check the composed host's project-specific snapshot package view (medium, unverified; BH6).
+  evidence: Extension lookup reads snapshot.Versions without selecting ProjectVersions. Current extension pins do not override the composed host's view. A valid host-conditioned snapshot followed by restore/resolved-version assertions would settle this additional package qualification boundary.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W4 — Execute extension composition/readiness tests in CI (medium; BH7+VG2).
+  evidence: Tuple CI uses package references and selects no EventStoreExtension suite, so source-only Platform feature tests do not run there. Retains the earlier CI follow-up: qualify/select the feature tests with a released package cohort. A source-mode CI job requires an explicit exception to repository CI guidance.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W5 — Exercise actual owner/extension generated-secret sharing when Memories adopts (medium; BH9).
+  evidence: AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret seeds secretValues directly and never calls PlatformLocalProfile.Bind. Retains the earlier adoption follow-up: run both binders with empty admitted secrets and assert identical owner/gateway values.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: W6 — Verify snapshot-selected extension package versions through an actual restore/build (medium; VG3).
+  evidence: PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference sets no RunPlan and checks generated XML only. Ignoring Workspace would leave it green. Retains the earlier package qualification follow-up: choose a snapshot pin different from the live catalog, restore/build a supported host, and assert the resolved package version.
