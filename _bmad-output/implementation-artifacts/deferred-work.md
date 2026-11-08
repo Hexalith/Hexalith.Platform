@@ -1794,3 +1794,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-27-record-drain-publisher-absence.md`
   summary: Make McpCli operator-environment approvals, and any other EventStore-publishing workflow, check for an open 4.27 recovery window before deploying.
   evidence: The 4.18 environment was approved and deployed 53 minutes into recovery attempt `20261101t131121z`. Its EventStore Pod then failed the global `dapr.io/app-id=eventstore` drain predicate.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Qualify the package-mode EventStore extension bindings once the EventStore and Builds releases carrying the extension API exist.
+  evidence: Unverified medium. Three things are untested: the run-plan snapshot (`catalog-versions.json`) branch of `CompositionDeclarationOptions.CatalogPackageVersion`, whether the generated `PackageVersion Update` matches an item under the composed host's central package management (else NU1010 or another version), and conditioned or repeated catalog items. The 3.2 package tests set no `RunPlan` and never restore the props. A restored package-mode host build with a snapshot-pinned extension would settle all three.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Add a CI path that compiles and runs `EventStoreExtensionCompositionTests`.
+  evidence: Tuple CI builds with `-p:UseHexalithProjectReferences=false`, which compiles out every `HEXALITH_PLATFORM_EXTENSION_SDK` test. `eng/tuple-ci-suites.json` (hash-pinned for legacy equivalence) also selects no `EventStoreExtension` suite. The 3.2 tests ran only in a local source-mode run.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Decide which gateway a parties selected-test run uses once Parties declares EventStore extensions.
+  evidence: Unverified medium. `PlatformServerBindings` replaces the runner-owned Builds seed (`privateRunnerGateway`) with `src/Hexalith.Platform.EventStoreHost` whenever any extension is declared. Nobody declares one today, so whether the selected-test runner should keep its verified seed is settled in the Parties adoption story.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: After the EventStore and Builds releases carrying story 3.2, enable package-mode extensions and update the pinned-tool adoption expectation.
+  evidence: `HEXALITH_PLATFORM_EXTENSION_SDK` is defined only in source mode, so a package-built Composition or host refuses declared extensions (`eventstore-extension-api-unavailable`) until it is also defined for the released `HexalithEventStoreVersion`. `DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites` still expects 9 adoption rows from the released tool and needs 11 once that Builds release is pinned.
