@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 #if HEXALITH_PLATFORM_EXTENSION_SDK
+using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.EventStore.DomainService;
 using Hexalith.EventStore.Server.Extensions;
 using Hexalith.Platform.TestExtension;
@@ -74,6 +75,7 @@ public sealed class EventStoreExtensionCompositionTests
         binding.Environment["EventStore__Extensions__Packages__0__PackageId"].ShouldBe(Package);
         binding.Environment["EventStore__Extensions__Packages__0__ExtensionId"].ShouldBe("platform-test");
         binding.Environment["EventStore__Extensions__Packages__0__ApiMajor"].ShouldBe("1");
+        binding.Environment["EventStore__Extensions__Packages__0__ModuleId"].ShouldBe(Module);
         binding.Environment["PlatformTestExtension__Marker"].ShouldBe("bound-marker");
 
         string[] arguments = await ArgumentsAsync(gateway);
@@ -387,6 +389,47 @@ public sealed class EventStoreExtensionCompositionTests
     }
 
     [Fact]
+    public async Task PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync()
+    {
+        using PlatformOwnerFixture owner = Owner(Extension());
+        string directory = Directory.CreateDirectory(Path.Combine(owner.Root, "bootstrap")).FullName;
+        byte[] bytes = File.ReadAllBytes(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.EventStore"),
+            "deploy", "dapr", "eventstore-routing-catalog.json"));
+        string digest = RouteCatalogCodec.ComputeRootDigest(RouteCatalogCodec.Decode(bytes));
+        File.WriteAllBytes(Path.Combine(directory, "catalog.json"), bytes);
+        File.WriteAllText(Path.Combine(directory, "receipt.json"), JsonSerializer.Serialize(new { instanceId = "registration-test", rootDigest = digest }));
+        const string section = "EventStore__RouteCatalog__DevelopmentBootstrap__";
+        Dictionary<string, string?> configuration = ExtensionEnvironment(PlatformTestExtensionAdapters.ExtensionId);
+        configuration[section + "Directory"] = directory;
+        configuration[section + "CatalogPath"] = Path.Combine(directory, "catalog.json");
+        configuration[section + "RootDigest"] = digest;
+        configuration[section + "InstanceId"] = "registration-test";
+        configuration[section + "HostId"] = "eventstore";
+        configuration[section + "CoordinatorHostId"] = "eventstore";
+        configuration[section + "AttemptId"] = "registration-test";
+        configuration[section + "RequiredHostIds__0"] = "eventstore";
+        configuration[section + "OwnerAssemblies__0"] = typeof(PlatformTestExtensionAdapters).Assembly.Location;
+        configuration[section + "AdapterAssemblies__0"] = typeof(PlatformTestExtensionAdapters).Assembly.Location;
+        configuration["EventStore__DomainService__AppId"] = "eventstore";
+        using GatewaySeedProtectionInstallation installation = new();
+        using EnvironmentScope environment = new(configuration);
+        bool inspected = false;
+        WebApplicationFactory<platformseed::Program> factory = Factory(installation).WithWebHostBuilder(builder => builder.ConfigureServices(services =>
+        {
+            services.Where(descriptor => descriptor.ServiceType == typeof(IIdempotencyIntentAdapter))
+                .Select(descriptor => descriptor.ImplementationInstance).OfType<IIdempotencyIntentAdapter>()
+                .Where(adapter => adapter.AdapterId == PlatformTestExtensionAdapters.AdapterId).ShouldHaveSingleItem();
+            inspected = true;
+            // This check covers the actual Program registration order before distributed catalog activation starts.
+            throw new OperationCanceledException("gateway-registration-inspected");
+        }));
+        await using var factoryLifetime = factory.ConfigureAwait(true);
+        Exception stopped = Should.Throw<Exception>(() => factory.CreateClient());
+        inspected.ShouldBeTrue();
+        Chain(stopped).ShouldContain(exception => exception is OperationCanceledException && exception.Message == "gateway-registration-inspected");
+    }
+
+    [Fact]
     public async Task PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync()
     {
         using GatewaySeedProtectionInstallation installation = new();
@@ -418,6 +461,7 @@ public sealed class EventStoreExtensionCompositionTests
         Exception failure = Should.Throw<Exception>(() => factory.CreateClient());
         EventStoreExtensionException refusal = Chain(failure).OfType<EventStoreExtensionException>().ShouldHaveSingleItem();
         refusal.Condition.ShouldBe(EventStoreExtensionConditions.DeclarationDrift);
+        refusal.Message.ShouldContain("Module '" + Module + "'");
         refusal.Message.ShouldContain("'" + Package + "' is declared as 'drifted-id' major 1");
         refusal.Message.ShouldContain("declares 'platform-test' major 1");
     }
@@ -448,6 +492,7 @@ public sealed class EventStoreExtensionCompositionTests
         ["EventStore__Extensions__Packages__0__PackageId"] = Package,
         ["EventStore__Extensions__Packages__0__ExtensionId"] = extensionId,
         ["EventStore__Extensions__Packages__0__ApiMajor"] = "1",
+        ["EventStore__Extensions__Packages__0__ModuleId"] = Module,
     };
 
     private static WebApplicationFactory<platformseed::Program> Factory(GatewaySeedProtectionInstallation installation) => new WebApplicationFactory<platformseed::Program>().WithWebHostBuilder(builder =>

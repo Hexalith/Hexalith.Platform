@@ -23,10 +23,16 @@ public static class PlatformTestExtensionAdapters
     public const string AdapterId = "platform-test:adapter";
 
 #if HEXALITH_PLATFORM_EXTENSION_SDK
+    private static int _creationCount;
+
+    /// <summary>Gets how often the fixture's adapter factory was invoked.</summary>
+    public static int CreationCount => Volatile.Read(ref _creationCount);
+
     /// <summary>Creates the complete adapter inventory; this does not register it or enable admission.</summary>
     /// <returns>The single probe adapter.</returns>
     public static IReadOnlyList<IDeclaredIdempotencyIntentAdapter> Create()
     {
+        Interlocked.Increment(ref _creationCount);
         RouteContractDeclaration route = new("platform-test-probe", "command", "platform-test", nameof(PlatformTestProbeCommand), null,
             "v1", 1, "workload", EventStoreOperationIdentifiers.DomainServiceProcess, null, [],
             new(typeof(PlatformTestProbeCommand).FullName!, "clr-short-name-v1", [nameof(PlatformTestProbeCommand)], "domain-service", null, []));
