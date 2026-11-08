@@ -198,9 +198,9 @@ Review outcome: **2 issues fixed locally, 4 open action items, 6 deferred, 3 rej
 
 Upstream Platform PR #37 merged as e39a9a2587ec150d550510763ab69db305d13fdb and was integrated into this branch. It independently resolves P1–P4: stable refusal conditions, profile/structured-input coverage, bounded enrollment guidance, and the published Builds 4.45.0 tuple. The historical review-completion decision above records the earlier state; those four actions are now complete without duplicating the upstream changes.
 
-P5/P6 are proposed in EventStore PR #399 and this companion Platform change. The Platform source gitlink follows the pushed EventStore PR head for a reproducible review checkout. Before landing, require the owner PR to merge and replace that pointer with its accepted main revision; the tuple source pair must then be refreshed for that exact source. EventStore's required build check currently fails before compilation on its existing Platform/Builds prerequisite tuple, including HXW011 for an untagged Platform identity and HXW009 for mismatched Builds sources. No dependency admission or branch protection was weakened.
+P5/P6 landed in EventStore PR #399 as cab8363c2b6e2c0588efc8ca9c2e09fab0006841. Its resulting tree was verified against the reviewed fixes combined with main at merge time. The Platform source gitlink now records that accepted main revision, and the legacy/current source pair is refreshed for these exact inputs. On the user's renewed instruction to merge all branches, the available administrator merge option was used despite EventStore's existing pre-compilation prerequisite failure (HXW011 untagged Platform identity and HXW009 mismatched Builds sources). The dependency admission checks and branch protection configuration were retained; this records an administrative merge, not successful hosted qualification.
 
-Story status remains **in-progress** while owner landing and the recorded package-mode/CI qualification follow-ups remain outstanding. This preparation does not publish an SDK or enable package-mode extensions.
+Story status remains **in-progress** while the recorded package-mode/CI qualification follow-ups remain outstanding. This preparation does not publish an SDK or enable package-mode extensions.
 
 Rejected appendix:
 
