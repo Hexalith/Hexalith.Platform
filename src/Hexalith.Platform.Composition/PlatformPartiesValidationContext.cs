@@ -21,7 +21,8 @@ internal static class PlatformPartiesValidationContext
             or ("672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0", "3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a")
             or ("0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf", "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632")
             or ("f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d", "c1d319f7c5a5f33219bbe8437f95ff169318ef5265c5827591c547623171c8db")
-            or ("ac1b7477337c3921a77e1ca527cf3d76c7feeb2f5c8019bd14c1da9222581d8e", "1bd228fc084776f48ad9faff8ac0c614e0c6dc0c2f03f309d325e0e90cbc1870");
+            or ("ac1b7477337c3921a77e1ca527cf3d76c7feeb2f5c8019bd14c1da9222581d8e", "1bd228fc084776f48ad9faff8ac0c614e0c6dc0c2f03f309d325e0e90cbc1870")
+            or ("5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252", "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d");
 
     /// <summary>Requires the genuine validation-only entry bytes, exact existing arguments and consumed parent environment handoff.</summary>
     internal static bool IsCurrentPublishedValidation(CompositionRunPlan plan)
