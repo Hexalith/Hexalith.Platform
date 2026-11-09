@@ -1,0 +1,13 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync [FAIL]
+      System.IO.InvalidDataException : Owner routing catalog generation refused; see /tmp/platform-full-parties-92080230b267401ea6dcc4e06756cd03/platform-components/catalog-reader/generation.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(97,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs(47,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '030c007d0d10dfef81722714cbf32df4b86bbee488b147ab87a027f688e32757')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 38.669s
