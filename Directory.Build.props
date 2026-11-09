@@ -19,4 +19,5 @@
     <BuildsToolingAssemblyPath Condition="'$(HexalithBuildsPublishedToolRoot)' != ''">$(HexalithBuildsPublishedToolRoot)/Hexalith.Builds.Tooling.dll</BuildsToolingAssemblyPath>
     <BuildsEventStoreHostAssemblyPath Condition="'$(HexalithBuildsPublishedToolRoot)' != ''">$(HexalithBuildsPublishedToolRoot)/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll</BuildsEventStoreHostAssemblyPath>
   </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)eng/SourceRestore.props" />
 </Project>

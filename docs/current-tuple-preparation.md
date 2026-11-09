@@ -90,12 +90,16 @@ reader/owner entries and both owner models. The
 confers no hosted or signed-fixture acceptance. The fully integrated source still
 requires fresh qualification of every current and historical profile.
 
-Plain Debug source builds propagate the SDK selected by the owning Builds catalog
-through direct and SDK-promoted project references. Explicit global and per-edge
-SDK choices remain intact, as does authenticated mapping authority. Nine real
-MSBuild metadata controls run after restore in every tuple lane. Package selection
-is unchanged, and no AssemblyVersion override is used. Source-host regression
-results and failed harness attempts remain separately recorded.
+Plain Debug source builds propagate source mode and the SDK selected by the owning
+Builds catalog through direct and SDK-promoted project references. Explicit global
+and per-edge mode and SDK choices remain intact, as does authenticated mapping
+authority. Standard static graph restore preserves the per-edge context for both
+project and solution entry points; the default applies only to unmapped source
+builds when no restore engine was selected. Twenty-five real MSBuild metadata and
+restore controls run in every tuple lane. Package selection and explicit restore
+engine choices remain intact, and no AssemblyVersion override is used. Cold plain
+Debug project and solution build observations, source regressions and earlier
+failed attempts remain separately recorded.
 
 The Platform-owned extension fixture and its supported MTP test entry are
 prepublication inputs only. Platform maintains no fixture adoption pin. The actual

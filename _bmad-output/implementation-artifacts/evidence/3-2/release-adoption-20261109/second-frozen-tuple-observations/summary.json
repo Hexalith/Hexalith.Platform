@@ -1,0 +1,62 @@
+{
+  "recordedUtc": "2026-11-09T21:09:27.299161+00:00",
+  "scope": "Append-only observations of the second frozen source and an isolated default-source repair. These observations do not qualify the forthcoming changed tuple.",
+  "frozenCurrentSource": "862fd14f17bf48432c76993afd668b5a067e887d",
+  "historicalSources": {
+    "L": "91abcb2379f913d40174797a9af431821041c71d",
+    "N": "a409d45f57d3f3e3876c2aa669aa307833aea094"
+  },
+  "hostedTuple": {
+    "run": 42687905237,
+    "allFiveJobs": "success",
+    "currentExecutions": 562,
+    "currentUnique": 559,
+    "L": 349,
+    "N": 412,
+    "failSkipNotRun": 0
+  },
+  "hostedCatalog": {
+    "run": 42687905029,
+    "allSixJobs": "success"
+  },
+  "broadExplicitSource": {
+    "total": 958,
+    "passed": 786,
+    "failed": 160,
+    "skipped": 12,
+    "notRun": 0,
+    "versusOriginal": {
+      "commonFailures": 159,
+      "resolved": 4,
+      "regression": "Story 2.8 genuine published M23 tuple and loaded public Contracts prerequisite; baseline Pass and retained previous/current source Fail.",
+      "addedPassed": 39,
+      "removed": 0,
+      "addedFailures": 0,
+      "addedSkips": 0
+    },
+    "versusPrevious955": {
+      "commonFailures": 160,
+      "resolved": 1,
+      "addedPassed": 3,
+      "newRegressions": 0,
+      "removed": 0,
+      "skips": "same 12 exact cases"
+    },
+    "duplicateDisplayGroups": "4 groups have identical multiplicity with every occurrence Pass; no normalization or ambiguous inference."
+  },
+  "separateStory28Observations": "Retain original genuine M23 Contracts prerequisite, earlier modified-input guard result and actual package-mode single Pass at 53db as separate observations. The broad current source failure does not negate that package result or establish fixture/native qualification.",
+  "defaultSourceRegression": "Plain default Debug did not pass source mode to child owners; standard dynamic NuGet restore also lost per-edge context. The frozen head must not be merged despite its passing package lanes.",
+  "isolatedRepair": {
+    "actualMsbuildRestoreControls": 25,
+    "coldProject": "0 warnings/errors, initially empty private cache, no source/SDK/restore/version flag",
+    "coldSolution": "0 warnings/errors, independently empty private cache, no source/SDK/restore/version flag",
+    "actualDomainService": "4.2.0.0 and 4.2.0+aa16227bd07f0564a3026d619a5abd973e02656f; project dependency identities 4.2.0",
+    "sourceFocused": "48 Pass, 0 Fail/Skip/NotRun with unchanged full inputs and outputs"
+  },
+  "preserveOldRefs": true,
+  "freshReplaysAndHostedGatesRequired": true,
+  "exactMainSourceReleaseCredit": false,
+  "signedFixtureCredit": false,
+  "candidateAcceptance": false,
+  "story32Done": false
+}

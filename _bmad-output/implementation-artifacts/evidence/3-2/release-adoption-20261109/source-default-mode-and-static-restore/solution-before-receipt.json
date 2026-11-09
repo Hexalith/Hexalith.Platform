@@ -1,0 +1,21 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "Hexalith.Platform.slnx",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "--artifacts-path",
+    "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/plain-solution-before",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+  ],
+  "cacheInitiallyEmpty": true,
+  "privateCache": "/tmp/story32-default-source-mode-probe-_o2d3b9r/nuget-cold-solution-before",
+  "outputInitiallyAbsent": true,
+  "qualificationCredit": false,
+  "recordedUtc": "2026-11-09T20:53:42.979058+00:00",
+  "exitCode": 1
+}

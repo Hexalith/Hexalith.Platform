@@ -1,0 +1,27 @@
+{
+  "recordedUtc": "2026-11-09T20:51:57.643657+00:00",
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "--artifacts-path",
+    "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/cold-plain-debug-source",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+  ],
+  "privatePackageCache": "/tmp/story32-default-source-mode-probe-_o2d3b9r/nuget-cold-plain-debug",
+  "cacheInitiallyEmpty": true,
+  "artifactsInitiallyAbsent": true,
+  "qualificationCredit": false,
+  "sourceFiles": {
+    "Directory.Build.props": "c96c0547d0e8b4350975287121ac07e036e312ae7cc16b9d40051ae8fee2ddc6",
+    "Directory.Build.targets": "bcfb7aab6ba9ac5f74bc10b1e8cc3c7113bdece4b9dfa543aa06fdeb0ff98b1e",
+    "eng/test_source_sdk_propagation.py": "f9c0cb2799ba61b898ea9ba725c90f1c4940980705aef3875c252e734cf073d4"
+  },
+  "exitCode": 0,
+  "completedUtc": "2026-11-09T20:53:21.138400+00:00"
+}

@@ -1,0 +1,142 @@
+{
+  "scope": "Actual cold plain Debug assembly and project dependency coherence only. Source-built artifacts are unsigned and grant no fixture or runtime admission.",
+  "qualificationCredit": false,
+  "groups": [
+    {
+      "name": "project",
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/final-cold-default-project/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.EventStore.DomainService.dll",
+        "-s",
+        "Library Info,Metadata: Assembly",
+        "--json"
+      ],
+      "actualAssembly": {
+        "assembly_name": "Hexalith.EventStore.DomainService",
+        "assembly_version": "4.2.0.0",
+        "file_version": "4.2.0.0",
+        "informational_version": "4.2.0+aa16227bd07f0564a3026d619a5abd973e02656f"
+      },
+      "bodySha256": "b2b9c6a3d001dd104a98b6cd51784654565bd9c156b7316efc49d8ff2e7f2787",
+      "eventStoreDepsLibraries": {
+        "Hexalith.EventStore.Admin.Abstractions/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Aspire/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Client/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Contracts/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.DomainService/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Gateway/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Server/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.ServiceDefaults/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        }
+      },
+      "metadataFile": {
+        "path": "project-domainservice-metadata.json",
+        "sha256": "afc8c47e21e62a818e131953fdac001bba009035facce22599948905de080ed8",
+        "bytes": 37812
+      }
+    },
+    {
+      "name": "solution",
+      "command": [
+        "dnx",
+        "dotnet-inspect",
+        "-y",
+        "--",
+        "library",
+        "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/final-cold-default-solution/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.EventStore.DomainService.dll",
+        "--json"
+      ],
+      "actualAssembly": {
+        "assembly_name": "Hexalith.EventStore.DomainService",
+        "assembly_version": "4.2.0.0",
+        "file_version": "4.2.0.0",
+        "informational_version": "4.2.0+aa16227bd07f0564a3026d619a5abd973e02656f"
+      },
+      "bodySha256": "be1d3fd20399e9c11508cfeac6433ed3a21c12e1519c640141b569342fd845c4",
+      "eventStoreDepsLibraries": {
+        "Hexalith.EventStore.Admin.Abstractions/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Aspire/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Client/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Contracts/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.DomainService/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Gateway/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.Server/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        },
+        "Hexalith.EventStore.ServiceDefaults/4.2.0": {
+          "type": "project",
+          "serviceable": false,
+          "sha512": ""
+        }
+      },
+      "metadataFile": {
+        "path": "solution-domainservice-metadata.json",
+        "sha256": "ef46cf1748063caf25ed49d44bb46cf6a80cbc27322bb017b79ddd6064a4198e",
+        "bytes": 37872
+      }
+    }
+  ],
+  "sourceUnchanged": true,
+  "passed": true
+}

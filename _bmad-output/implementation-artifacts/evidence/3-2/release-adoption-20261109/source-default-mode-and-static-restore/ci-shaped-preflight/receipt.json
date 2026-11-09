@@ -1,0 +1,30 @@
+{
+  "commands": [
+    {
+      "label": "restore",
+      "command": [
+        "dotnet",
+        "restore",
+        "Hexalith.Platform.slnx",
+        "-p:Configuration=Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "controls",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_source_sdk_propagation.py",
+        "--evidence",
+        "/tmp/story32-default-source-mode-ci-shaped-preflight/controls",
+        "--published-tool-root",
+        "/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "qualificationCredit": false
+}

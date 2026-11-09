@@ -1,0 +1,914 @@
+{
+  "ecosystem_dependencies": {
+    "status": "complete",
+    "issue_count": 0,
+    "ecosystems": [
+      ".NET Runtime",
+      "Microsoft.Extensions"
+    ],
+    "candidate_ecosystems": [
+      ".NET Runtime",
+      "Microsoft.Extensions",
+      "ASP.NET Core"
+    ],
+    "dependencies": [
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Runtime.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 1
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Collections.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 2
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Net.Http, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Net.Http.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 14
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Threading, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Threading.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 17
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.ComponentModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.ComponentModel.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 24
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Collections.Concurrent, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Collections.Concurrent.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 41
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "System.Runtime.InteropServices, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "assembly_evidence": "Microsoft.NETCore.App.Ref@10.0.0/ref/net10.0/System.Runtime.InteropServices.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 47
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Options, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "assembly_evidence": "Microsoft.Extensions.Options@10.0.0/lib/net10.0/Microsoft.Extensions.Options.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 15
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "assembly_evidence": "Microsoft.Extensions.DependencyInjection.Abstractions@10.0.0/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 18
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "assembly_evidence": "Microsoft.Extensions.Primitives@10.0.0/lib/net10.0/Microsoft.Extensions.Primitives.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 28
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Catalog-backed",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "assembly_evidence": "Microsoft.Extensions.Logging.Abstractions@10.0.0/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 33
+      }
+    ],
+    "candidates": [
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Text.RegularExpressions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 3
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Linq, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 5
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Text.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 6
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Text.Encoding.Extensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 8
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Collections.Immutable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 9
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Security.Cryptography, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 13
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Net.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 16
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Security.Claims, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 19
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Xml.XDocument, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 26
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Diagnostics.DiagnosticSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 36
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 44
+      },
+      {
+        "ecosystem": ".NET Runtime",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "System.Net.Http.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: System",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 55
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Http, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 11
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 21
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Diagnostics.HealthChecks, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 23
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Configuration.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 27
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Telemetry.Abstractions, Version=10.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.11.0.0",
+        "occurrence": 35
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Hosting.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 37
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Configuration, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 45
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Configuration.Binder, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 49
+      },
+      {
+        "ecosystem": "Microsoft.Extensions",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.Extensions.Options.ConfigurationExtensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.Extensions",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 50
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Http.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 10
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.DataProtection, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 25
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 29
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Routing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 30
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Metadata, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 31
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Http.Features, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 32
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Authorization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 38
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Mvc.Core, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 39
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Hosting.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 42
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Http, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 46
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Http.Results, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 48
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Authorization.Policy, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 51
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.Authentication, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 52
+      },
+      {
+        "ecosystem": "ASP.NET Core",
+        "recognition": "Candidate",
+        "kind": "Assembly reference",
+        "dependency": "Microsoft.AspNetCore.DataProtection.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60",
+        "declared_by": "Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null",
+        "matching_bases": "Assembly name family: Microsoft.AspNetCore",
+        "version_or_range": "10.0.0.0",
+        "occurrence": 56
+      }
+    ]
+  },
+  "file_name": "Hexalith.EventStore.DomainService.dll",
+  "file_type": "dll",
+  "pdb_format": "Portable",
+  "pdb_location": "Standalone",
+  "pdb_path": "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/final-cold-default-project/obj/Hexalith.EventStore.DomainService/debug/Hexalith.EventStore.DomainService.pdb",
+  "has_embedded_pdb": false,
+  "has_reproducible_flag": true,
+  "has_normalized_paths": false,
+  "has_source_link": true,
+  "is_deterministic": false,
+  "windows_pdb_detected": false,
+  "source": "File",
+  "source_link_json": "{\u0022documents\u0022:{\u0022/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/references/Hexalith.EventStore/*\u0022:\u0022https://raw.githubusercontent.com/Hexalith/Hexalith.EventStore/aa16227bd07f0564a3026d619a5abd973e02656f/*\u0022}}",
+  "source_link_map": {
+    "status": "Usable",
+    "rejected_keys": []
+  },
+  "non_normalized_paths": [
+    "PDB Path: /tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/final-cold-default-project/obj/Hexalith.EventStore.DomainService/debug/Hexalith.EventStore.DomainService.pdb",
+    "SourceLink: /tmp/story32-default-source-mode-probe-_o2d3b9r/repository/references/Hexalith.EventStore/*"
+  ],
+  "assembly_info": {
+    "assembly_name": "Hexalith.EventStore.DomainService",
+    "assembly_version": "4.2.0.0",
+    "file_version": "4.2.0.0",
+    "informational_version": "4.2.0\u002Baa16227bd07f0564a3026d619a5abd973e02656f",
+    "product": "Hexalith.EventStore.DomainService",
+    "company": "Hexalith",
+    "description": "Domain-service host SDK for the Hexalith event store. A domain module references this package and writes only its domain code plus a two-line host (AddEventStoreDomainService / UseEventStoreDomainService) \u2014 all hosting, DAPR-endpoint, observability, and discovery boilerplate is provided here.",
+    "target_framework": ".NETCoreApp,Version=v10.0",
+    "culture": "neutral",
+    "architecture": "AnyCPU",
+    "is_any_cpu": true,
+    "prefers32_bit": false,
+    "is_executable": false,
+    "is_dll": true,
+    "is_signed": false,
+    "has_unsafe_code": false,
+    "runtime_version": "v4.0.30319",
+    "metadata_version": 0,
+    "compilation_type": "CoreCLR",
+    "is_native_aot": false,
+    "is_ready_to_run": false,
+    "has_managed_metadata": true,
+    "has_cor_header": true,
+    "has_il_code": true,
+    "type_definition_count": 848,
+    "method_definition_count": 5048,
+    "references": [
+      {
+        "name": "System.Runtime",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Collections",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Text.RegularExpressions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Hexalith.EventStore.Client",
+        "version": "4.2.0.0",
+        "culture": "neutral"
+      },
+      {
+        "name": "System.Linq",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Text.Json",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "cc7b13ffcd2ddd51"
+      },
+      {
+        "name": "Hexalith.EventStore.Contracts",
+        "version": "4.2.0.0",
+        "culture": "neutral"
+      },
+      {
+        "name": "System.Text.Encoding.Extensions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Collections.Immutable",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Http.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.Extensions.Http",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Hexalith.EventStore.ServiceDefaults",
+        "version": "4.2.0.0",
+        "culture": "neutral"
+      },
+      {
+        "name": "System.Security.Cryptography",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Net.Http",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.Extensions.Options",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "System.Net.Primitives",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "System.Threading",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "System.Security.Claims",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Dapr.Actors",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "a686d5d635c0f0e6"
+      },
+      {
+        "name": "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Dapr.Client",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "a686d5d635c0f0e6"
+      },
+      {
+        "name": "Microsoft.Extensions.Diagnostics.HealthChecks",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "System.ComponentModel",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.AspNetCore.DataProtection",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "System.Xml.XDocument",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.Extensions.Configuration.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.Extensions.Primitives",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Routing",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Metadata",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Http.Features",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.Extensions.Logging.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Dapr.AspNetCore",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "a686d5d635c0f0e6"
+      },
+      {
+        "name": "Microsoft.Extensions.Telemetry.Abstractions",
+        "version": "10.11.0.0",
+        "culture": "neutral",
+        "public_key_token": "31bf3856ad364e35"
+      },
+      {
+        "name": "System.Diagnostics.DiagnosticSource",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "cc7b13ffcd2ddd51"
+      },
+      {
+        "name": "Microsoft.Extensions.Hosting.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Authorization",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Mvc.Core",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "OpenTelemetry.Api",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "7bd6737fe5b67e3c"
+      },
+      {
+        "name": "System.Collections.Concurrent",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Hosting.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Dapr.Common",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "a686d5d635c0f0e6"
+      },
+      {
+        "name": "System.Memory",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "cc7b13ffcd2ddd51"
+      },
+      {
+        "name": "Microsoft.Extensions.Configuration",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Http",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "System.Runtime.InteropServices",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "b03f5f7f11d50a3a"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Http.Results",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.Extensions.Configuration.Binder",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Authorization.Policy",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "Microsoft.AspNetCore.Authentication",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      },
+      {
+        "name": "OpenTelemetry.Api.ProviderBuilderExtensions",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "7bd6737fe5b67e3c"
+      },
+      {
+        "name": "Dapr.Actors.AspNetCore",
+        "version": "1.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "a686d5d635c0f0e6"
+      },
+      {
+        "name": "System.Net.Http.Json",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "cc7b13ffcd2ddd51"
+      },
+      {
+        "name": "Microsoft.AspNetCore.DataProtection.Abstractions",
+        "version": "10.0.0.0",
+        "culture": "neutral",
+        "public_key_token": "adb9793829ddae60"
+      }
+    ]
+  },
+  "async_method_count": 67,
+  "extension_method_count": 45,
+  "file_size": 1390592,
+  "custom_attributes": [
+    {
+      "name": "AssemblyMetadata(RepositoryUrl)",
+      "target": "Assembly",
+      "value": "https://github.com/Hexalith/Hexalith.EventStore"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.EventStore.DomainService.Tests"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.Parties.Tests"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.EventStore.Server"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.EventStore.Server.Tests"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.EventStore.Server.LiveSidecar.Tests"
+    },
+    {
+      "name": "InternalsVisibleTo",
+      "target": "Assembly",
+      "value": "Hexalith.EventStore.Testing.Integration"
+    }
+  ]
+}
