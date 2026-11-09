@@ -1,0 +1,37 @@
+{
+  "scope": "Append-only third frozen observations and import-closure correction; no transfer of acceptance to changed source.",
+  "thirdFrozenSource": "9ea927c0733a6ac4acdfd25dc6e513b1c5e7be4f",
+  "thirdHistories": {
+    "L": {
+      "source": "a64a9ea4028a842d73cae8831303664f1620fc9c",
+      "passed": 349
+    },
+    "N": {
+      "source": "044e94ae08c29bdc2c7a133e5b2c223ac4298aed",
+      "passed": 412
+    }
+  },
+  "hostedTuple": {
+    "run": 42700690055,
+    "status": "failure",
+    "reason": "Copied fixture build props omitted their new unconditional eng/SourceRestore.props import; each lane stops at binding-regressions before restore/25-controls/xUnit."
+  },
+  "hostedCatalog": {
+    "run": 42700690154,
+    "allSixJobs": "success"
+  },
+  "thirdBroad": "Still running externally under P guard; deliberately not copied before it closes. A fresh changed-candidate full broad run is required.",
+  "correction": "Copy actual import closure into both temporary fixtures; hash SourceRestore.props and actual automatically imported Directory.Build.targets in the operator source inventory. Original assertions, unconditional imports and admission guards remain.",
+  "localCorrection": {
+    "bindingCases": 15,
+    "operatorCases": 21,
+    "existingCsharpFixtureCases": 4,
+    "completePreflightCommands": 14,
+    "allPass": true,
+    "skipped": 0
+  },
+  "hostedQualification": false,
+  "signedFixtureCredit": false,
+  "candidateAcceptance": false,
+  "story32Done": false
+}

@@ -21,8 +21,10 @@ class HostBuildsResolutionTests(unittest.TestCase):
         self.platform = self.workspace / "Hexalith.Platform"
         self.project = self.platform / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
         self.project.parent.mkdir(parents=True)
-        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets"):
-            shutil.copyfile(ROOT / name, self.platform / name)
+        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets", "eng/SourceRestore.props"):
+            destination = self.platform / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / name, destination)
         shutil.copyfile(ROOT / self.project.relative_to(self.platform), self.project)
         self.test_project = self.platform / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
         self.test_project.parent.mkdir(parents=True)

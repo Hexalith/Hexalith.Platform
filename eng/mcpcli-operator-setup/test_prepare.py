@@ -63,5 +63,36 @@ class PreparationTests(unittest.TestCase):
             network.assert_not_called()
 
 
+    def imported_build_input_change_refuses(self, fault):
+        from guard_fixtures import Control
+        for name in ('eng/SourceRestore.props', 'Directory.Build.targets'):
+            with self.subTest(input=name), Control() as control, patch.object(
+                    prepare, 'subprocess_git_revision', return_value='a' * 40), patch.object(prepare, 'run') as run:
+                path = control.root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                if fault != 'added':
+                    path.write_bytes((prepare.ROOT / name).read_bytes())
+                    control.rebind_source()
+                prepare.validate_profile(control.profile, control.root, control.graph)
+                if fault == 'deleted':
+                    path.unlink()
+                elif fault == 'modified':
+                    path.write_bytes(path.read_bytes() + b'\n<!-- changed imported build context -->\n')
+                else:
+                    path.write_bytes((prepare.ROOT / name).read_bytes())
+                with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+                    prepare.validate_profile(control.profile, control.root, control.graph)
+                run.assert_not_called()
+
+    def test_modified_imported_source_restore_and_targets_refuse(self):
+        self.imported_build_input_change_refuses('modified')
+
+    def test_added_imported_source_restore_and_targets_refuse(self):
+        self.imported_build_input_change_refuses('added')
+
+    def test_deleted_imported_source_restore_and_targets_refuse(self):
+        self.imported_build_input_change_refuses('deleted')
+
+
 if __name__ == '__main__':
     unittest.main()

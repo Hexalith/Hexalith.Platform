@@ -1,0 +1,35 @@
+test_incomplete_execution_is_refused_even_without_failure (test_controls.ExecutionInventoryTests.test_incomplete_execution_is_refused_even_without_failure) ... ok
+test_missing_discovered_case_is_refused (test_controls.ExecutionInventoryTests.test_missing_discovered_case_is_refused) ... ok
+test_skipped_discovered_control_is_refused (test_controls.ExecutionInventoryTests.test_skipped_discovered_control_is_refused) ... ok
+test_successful_exact_inventory_passes (test_controls.ExecutionInventoryTests.test_successful_exact_inventory_passes) ... ok
+test_actual_sdk_uppercase_hash_handoff_passes (test_host_entry.HostEntryTests.test_actual_sdk_uppercase_hash_handoff_passes) ... ok
+test_authentication_failure_cannot_become_a_healthy_extension (test_host_entry.HostEntryTests.test_authentication_failure_cannot_become_a_healthy_extension) ... ok
+test_boolean_is_not_an_api_major (test_host_entry.HostEntryTests.test_boolean_is_not_an_api_major) ... ok
+test_changed_source_hashes_are_refused_before_http (test_host_entry.HostEntryTests.test_changed_source_hashes_are_refused_before_http) ... ok
+test_declared_major_mismatch_is_refused (test_host_entry.HostEntryTests.test_declared_major_mismatch_is_refused) ... ok
+test_existing_report_is_never_overwritten (test_host_entry.HostEntryTests.test_existing_report_is_never_overwritten) ... ok
+test_expiry_during_http_cannot_emit_a_passing_report (test_host_entry.HostEntryTests.test_expiry_during_http_cannot_emit_a_passing_report) ... ok
+test_foreign_producer_is_refused_before_http (test_host_entry.HostEntryTests.test_foreign_producer_is_refused_before_http) ... ok
+test_healthy_extension_is_independent_of_overall_distributed_readiness (test_host_entry.HostEntryTests.test_healthy_extension_is_independent_of_overall_distributed_readiness) ... ok
+test_healthy_extension_with_http200_also_passes (test_host_entry.HostEntryTests.test_healthy_extension_with_http200_also_passes) ... ok
+test_invalid_or_expired_run_is_refused_before_http (test_host_entry.HostEntryTests.test_invalid_or_expired_run_is_refused_before_http) ... ok
+test_malformed_or_oversized_health_body_fails (test_host_entry.HostEntryTests.test_malformed_or_oversized_health_body_fails) ... ok
+test_redirect_to_healthy_target_is_refused_without_second_request (test_host_entry.HostEntryTests.test_redirect_to_healthy_target_is_refused_without_second_request) ... ok
+test_unhealthy_extension_fails_and_retains_a_failed_report (test_host_entry.HostEntryTests.test_unhealthy_extension_fails_and_retains_a_failed_report) ... ok
+test_wrong_extension_or_package_is_refused (test_host_entry.HostEntryTests.test_wrong_extension_or_package_is_refused) ... ok
+test_wrong_native_owner_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_native_owner_is_refused_before_http) ... ok
+test_wrong_profile_or_mode_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_profile_or_mode_is_refused_before_http) ... ok
+test_accepts_only_the_declared_source_and_fixture (test_package.PackageIdentityTests.test_accepts_only_the_declared_source_and_fixture) ... ok
+test_refuses_altered_declaration_or_foreign_producer (test_package.PackageIdentityTests.test_refuses_altered_declaration_or_foreign_producer) ... ok
+test_refuses_consistently_rebound_foreign_owner_metadata (test_package.PackageIdentityTests.test_refuses_consistently_rebound_foreign_owner_metadata) ... ok
+test_refuses_consistently_rebound_test_profile (test_package.PackageIdentityTests.test_refuses_consistently_rebound_test_profile) ... ok
+test_refuses_different_source (test_package.PackageIdentityTests.test_refuses_different_source) ... ok
+test_refuses_fixture_built_without_extension_api (test_package.PackageIdentityTests.test_refuses_fixture_built_without_extension_api) ... ok
+test_refuses_foreign_dependency (test_package.PackageIdentityTests.test_refuses_foreign_dependency) ... ok
+test_refuses_missing_declaration_or_producer (test_package.PackageIdentityTests.test_refuses_missing_declaration_or_producer) ... ok
+test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent (test_package.PackageIdentityTests.test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 9.082s
+
+OK

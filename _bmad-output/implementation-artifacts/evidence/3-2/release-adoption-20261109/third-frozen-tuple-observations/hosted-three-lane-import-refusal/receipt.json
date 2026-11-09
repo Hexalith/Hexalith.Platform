@@ -1,0 +1,123 @@
+{
+  "run": 42700690055,
+  "head": "9ea927c0733a6ac4acdfd25dc6e513b1c5e7be4f",
+  "scope": "Exact official hosted failures plus unchanged local reproduction; no qualification credit.",
+  "allSixCatalogJobs": {
+    "run": 42700690154,
+    "conclusion": "success"
+  },
+  "lanes": [
+    {
+      "artifactPath": "/tmp/story32-hosted-refusal-42700690055/artifacts/platform-legacy-public-42700690055-1/legacy-public-cohort",
+      "resultKeys": [
+        "kind",
+        "candidateAcceptance",
+        "status",
+        "tests",
+        "commands",
+        "suite",
+        "eventStoreSdk",
+        "historicalSdkRegression",
+        "platformRevision",
+        "platformSourceState",
+        "python",
+        "platform",
+        "runner",
+        "tupleBinding",
+        "toolRoot",
+        "blocker",
+        "limitation"
+      ],
+      "files": {
+        "binding-regressions.stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "binding-regressions.stderr": {
+          "sha256": "ddd81bc7f200eadb8656123a54fbb7b44104391a2bee645da76cbfaa4c2ebe5a",
+          "bytes": 23249
+        },
+        "tuple-ci-result.json": {
+          "sha256": "7ed08660dd2c2f21788c74ff3f5fc9e5f7e26ed677322c7bed64b0391f4fa1fe",
+          "bytes": 4759546
+        }
+      },
+      "diagnosis": "Copied Platform Directory.Build.props imports an absent eng/SourceRestore.props. 15 tests, 18 subtest/assertion failures, each MSB4019. No xUnit/profile execution reached."
+    },
+    {
+      "artifactPath": "/tmp/story32-hosted-refusal-42700690055/artifacts/platform-pre-extension-public-42700690055-1/pre-extension-public-cohort",
+      "resultKeys": [
+        "kind",
+        "candidateAcceptance",
+        "status",
+        "tests",
+        "commands",
+        "suite",
+        "eventStoreSdk",
+        "historicalSdkRegression",
+        "platformRevision",
+        "platformSourceState",
+        "python",
+        "platform",
+        "runner",
+        "tupleBinding",
+        "toolRoot",
+        "blocker",
+        "limitation"
+      ],
+      "files": {
+        "binding-regressions.stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "binding-regressions.stderr": {
+          "sha256": "859e64158834ea2d7fedd2d8be091bddc4beaa9de8fb3b0f2ff0fd1c4c5638aa",
+          "bytes": 23249
+        },
+        "tuple-ci-result.json": {
+          "sha256": "6105ec1128a9e8f0af602415405c9bb9d440e1a59df7b422ec4b7c5768fa41a8",
+          "bytes": 4761205
+        }
+      },
+      "diagnosis": "Copied Platform Directory.Build.props imports an absent eng/SourceRestore.props. 15 tests, 18 subtest/assertion failures, each MSB4019. No xUnit/profile execution reached."
+    },
+    {
+      "artifactPath": "/tmp/story32-hosted-refusal-42700690055/artifacts/platform-tuple-42700690055-1/Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current",
+      "resultKeys": [
+        "kind",
+        "candidateAcceptance",
+        "status",
+        "tests",
+        "commands",
+        "suite",
+        "eventStoreSdk",
+        "historicalSdkRegression",
+        "platformRevision",
+        "platformSourceState",
+        "python",
+        "platform",
+        "runner",
+        "tupleBinding",
+        "toolRoot",
+        "blocker",
+        "limitation"
+      ],
+      "files": {
+        "binding-regressions.stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "binding-regressions.stderr": {
+          "sha256": "5f8223a8f59988e71f62640dcd7f1644be587c72508095972e2832f25082e470",
+          "bytes": 23249
+        },
+        "tuple-ci-result.json": {
+          "sha256": "24fb7e97b5309f95689f5527273449ec4e1d6e27735b9f092710f0d9360cf102",
+          "bytes": 4760845
+        }
+      },
+      "diagnosis": "Copied Platform Directory.Build.props imports an absent eng/SourceRestore.props. 15 tests, 18 subtest/assertion failures, each MSB4019. No xUnit/profile execution reached."
+    }
+  ],
+  "qualificationCredit": false
+}

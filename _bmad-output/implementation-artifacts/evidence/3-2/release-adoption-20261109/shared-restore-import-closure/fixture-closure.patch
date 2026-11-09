@@ -1,0 +1,26 @@
+--- a/eng/test_host_builds_resolution.py
++++ b/eng/test_host_builds_resolution.py
+@@ -21,8 +21,10 @@
+         self.platform = self.workspace / "Hexalith.Platform"
+         self.project = self.platform / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+         self.project.parent.mkdir(parents=True)
+-        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets"):
+-            shutil.copyfile(ROOT / name, self.platform / name)
++        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets", "eng/SourceRestore.props"):
++            destination = self.platform / name
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / name, destination)
+         shutil.copyfile(ROOT / self.project.relative_to(self.platform), self.project)
+         self.test_project = self.platform / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
+         self.test_project.parent.mkdir(parents=True)
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs
+@@ -18,6 +18,8 @@
+         File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
+         foreach (string file in new[] { "Directory.Build.props", "Directory.Packages.props" })
+             File.Copy(Path.Combine(platformRoot, file), Path.Combine(Root, file));
++        Directory.CreateDirectory(Path.Combine(Root, "eng"));
++        File.Copy(Path.Combine(platformRoot, "eng", "SourceRestore.props"), Path.Combine(Root, "eng", "SourceRestore.props"));
+         string reader = Path.Combine(Root, "src", "Hexalith.Platform.CatalogBuilder");
+         Directory.CreateDirectory(reader);
+         foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs" })
