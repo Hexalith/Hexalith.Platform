@@ -1,0 +1,749 @@
+{
+ "schema": "hexalith.story-2-8.bs4-v2-late-startup-proof.v1",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 amended v2 late-startup hosted proof; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+   "branch": "proof/story-2-8-v2-late-startup-bde7fd4f-attempt-2",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "tool": "hexalith.builds.module.cli 4.44.13 (caller .config/dotnet-tools.json at 42af924a, unchanged from 4c0167b8)",
+   "unchangedInputs": "module manifest, suites and every test project are byte-identical to 4c0167b8"
+  },
+  "reusableWorkflow": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+   "path": ".github/workflows/domain-ci-v2.yml",
+   "namedInJobLog": true,
+   "release": "Called by full SHA. v4.45.1 (25de7a74) contains bde7fd4f with byte-identical helper and v2 workflow; bde7fd4f itself is untagged."
+  }
+ },
+ "run": {
+  "id": 42598774773,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-09T10:09:14Z",
+  "updated_at": "2026-11-09T10:17:14Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42598774773",
+  "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml"
+ },
+ "job": {
+  "id": 129097814069,
+  "name": "ci / build-and-test",
+  "conclusion": "cancelled"
+ },
+ "steps": {
+  "Validate declared integration inputs": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:09:23Z",
+   "completed_at": "2026-11-09T10:09:23Z"
+  },
+  "Prepare package dependencies": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:10:25Z",
+   "completed_at": "2026-11-09T10:13:07Z"
+  },
+  "Prepare integration binaries": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:14:38Z",
+   "completed_at": "2026-11-09T10:14:47Z"
+  },
+  "Runner-owned package integration": {
+   "conclusion": "cancelled",
+   "started_at": "2026-11-09T10:14:49Z",
+   "completed_at": "2026-11-09T10:17:05Z"
+  },
+  "Finalize exact CI owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:17:05Z",
+   "completed_at": "2026-11-09T10:17:07Z"
+  },
+  "Upload classified integration diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:17:07Z",
+   "completed_at": "2026-11-09T10:17:08Z"
+  }
+ },
+ "readyCheck": {
+  "targetStepAgeSeconds": 130,
+  "observedStepAgeSeconds": 132.039415,
+  "requestStepOffsetSeconds": 132.039427
+ },
+ "cancellation": {
+  "checkedAtUtc": "2026-11-09T10:17:01.039427+00:00",
+  "run": 42598774773,
+  "attempt": 1,
+  "source": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+  "branch": "proof/story-2-8-v2-late-startup-bde7fd4f-attempt-2",
+  "workflowPath": ".github/workflows/story-2-8-v2-late-startup-proof.yml",
+  "jobId": 129097814069,
+  "jobName": "ci / build-and-test",
+  "step": "Runner-owned package integration",
+  "stepStartedAtUtc": "2026-11-09T10:14:49Z",
+  "stepAgeSeconds": 132.039415,
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42598774773/cancel",
+  "responseStatusLine": "HTTP/2.0 202 Accepted",
+  "requestsForThisRun": 1
+ },
+ "finalizer": {
+  "helperProcessIds": [
+   9635
+  ],
+  "signals": [],
+  "ownedSurvivorsAtFinalizerStart": {
+   "processRoles": [],
+   "runningContainers": []
+  },
+  "ownedSurvivorsLeftToTheDown": false
+ },
+ "outsideRuntimeSignalsToComposedAnyTime": [],
+ "kernelSignalsAfterRequest": [
+  {
+   "utc": "2026-11-09T10:17:01.944188+00:00",
+   "signal": 2,
+   "targetPid": 5310,
+   "targetComm": "python3",
+   "targetClass": "helper",
+   "senderComm": "<...>",
+   "senderPid": 2062
+  },
+  {
+   "utc": "2026-11-09T10:17:01.949105+00:00",
+   "signal": 2,
+   "targetPid": 5339,
+   "targetComm": "dotnet",
+   "targetClass": "tool",
+   "senderComm": "<...>",
+   "senderPid": 5310
+  },
+  {
+   "utc": "2026-11-09T10:17:01.949161+00:00",
+   "signal": 2,
+   "targetPid": 5357,
+   "targetComm": "dotnet",
+   "targetClass": "tool",
+   "senderComm": "<...>",
+   "senderPid": 5310
+  },
+  {
+   "utc": "2026-11-09T10:17:02.831620+00:00",
+   "signal": 9,
+   "targetPid": 7814,
+   "targetComm": "catatonit",
+   "targetClass": "environment",
+   "senderComm": "<...>",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:02.909819+00:00",
+   "signal": 9,
+   "targetPid": 7836,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:02.932025+00:00",
+   "signal": 9,
+   "targetPid": 7858,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:02.957521+00:00",
+   "signal": 9,
+   "targetPid": 7942,
+   "targetComm": "docker",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:02.979712+00:00",
+   "signal": 9,
+   "targetPid": 7943,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.001894+00:00",
+   "signal": 9,
+   "targetPid": 8002,
+   "targetComm": "docker",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.023005+00:00",
+   "signal": 9,
+   "targetPid": 8003,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.045722+00:00",
+   "signal": 9,
+   "targetPid": 8395,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.072254+00:00",
+   "signal": 9,
+   "targetPid": 8420,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.102983+00:00",
+   "signal": 9,
+   "targetPid": 8724,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.123647+00:00",
+   "signal": 9,
+   "targetPid": 8887,
+   "targetComm": "dcp",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.145334+00:00",
+   "signal": 9,
+   "targetPid": 9199,
+   "targetComm": "docker",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.166823+00:00",
+   "signal": 9,
+   "targetPid": 9200,
+   "targetComm": "docker",
+   "targetClass": "environment",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 6779
+  },
+  {
+   "utc": "2026-11-09T10:17:03.213482+00:00",
+   "signal": 9,
+   "targetPid": 8829,
+   "targetComm": "redis-server",
+   "targetClass": "other",
+   "senderComm": "runc",
+   "senderPid": 9392
+  },
+  {
+   "utc": "2026-11-09T10:17:03.215575+00:00",
+   "signal": 9,
+   "targetPid": 8988,
+   "targetComm": "entrypoint.sh",
+   "targetClass": "other",
+   "senderComm": "runc",
+   "senderPid": 9393
+  },
+  {
+   "utc": "2026-11-09T10:17:03.215742+00:00",
+   "signal": 9,
+   "targetPid": 8561,
+   "targetComm": "redis-server",
+   "targetClass": "other",
+   "senderComm": "runc",
+   "senderPid": 9391
+  },
+  {
+   "utc": "2026-11-09T10:17:03.215829+00:00",
+   "signal": 9,
+   "targetPid": 9050,
+   "targetComm": "sh",
+   "targetClass": "other",
+   "senderComm": "entrypoint.sh",
+   "senderPid": 8988
+  },
+  {
+   "utc": "2026-11-09T10:17:03.215851+00:00",
+   "signal": 9,
+   "targetPid": 9052,
+   "targetComm": "redis-server",
+   "targetClass": "other",
+   "senderComm": "entrypoint.sh",
+   "senderPid": 8988
+  },
+  {
+   "utc": "2026-11-09T10:17:03.216012+00:00",
+   "signal": 9,
+   "targetPid": 8562,
+   "targetComm": "sentry",
+   "targetClass": "other",
+   "senderComm": "runc",
+   "senderPid": 9397
+  },
+  {
+   "utc": "2026-11-09T10:17:03.216841+00:00",
+   "signal": 9,
+   "targetPid": 8911,
+   "targetComm": "next-server (v",
+   "targetClass": "other",
+   "senderComm": "redis-server",
+   "senderPid": 8956
+  },
+  {
+   "utc": "2026-11-09T10:17:03.216842+00:00",
+   "signal": 9,
+   "targetPid": 8956,
+   "targetComm": "redis-server",
+   "targetClass": "other",
+   "senderComm": "redis-server",
+   "senderPid": 8956
+  },
+  {
+   "utc": "2026-11-09T10:17:03.216844+00:00",
+   "signal": 9,
+   "targetPid": 8962,
+   "targetComm": "node-V8Worker",
+   "targetClass": "other",
+   "senderComm": "redis-server",
+   "senderPid": 8956
+  },
+  {
+   "utc": "2026-11-09T10:17:03.218149+00:00",
+   "signal": 9,
+   "targetPid": 8696,
+   "targetComm": "bio_close_file",
+   "targetClass": "other",
+   "senderComm": "bio_close_file",
+   "senderPid": 8696
+  },
+  {
+   "utc": "2026-11-09T10:17:03.220412+00:00",
+   "signal": 9,
+   "targetPid": 8800,
+   "targetComm": "sentry",
+   "targetClass": "other",
+   "senderComm": "sentry",
+   "senderPid": 8800
+  },
+  {
+   "utc": "2026-11-09T10:17:03.259598+00:00",
+   "signal": 2,
+   "targetPid": 8687,
+   "targetComm": "docker-proxy",
+   "targetClass": "other",
+   "senderComm": "dockerd",
+   "senderPid": 8238
+  },
+  {
+   "utc": "2026-11-09T10:17:03.260512+00:00",
+   "signal": 2,
+   "targetPid": 8709,
+   "targetComm": "docker-proxy",
+   "targetClass": "other",
+   "senderComm": "dockerd",
+   "senderPid": 1340
+  },
+  {
+   "utc": "2026-11-09T10:17:03.330153+00:00",
+   "signal": 2,
+   "targetPid": 9037,
+   "targetComm": "docker-proxy",
+   "targetClass": "other",
+   "senderComm": "dockerd",
+   "senderPid": 8238
+  },
+  {
+   "utc": "2026-11-09T10:17:03.373969+00:00",
+   "signal": 2,
+   "targetPid": 8863,
+   "targetComm": "docker-proxy",
+   "targetClass": "other",
+   "senderComm": "dockerd",
+   "senderPid": 1340
+  },
+  {
+   "utc": "2026-11-09T10:17:03.416633+00:00",
+   "signal": 2,
+   "targetPid": 8644,
+   "targetComm": "docker-proxy",
+   "targetClass": "other",
+   "senderComm": "dockerd",
+   "senderPid": 1338
+  }
+ ],
+ "signalDelivery": {
+  "runnerSignalToHelper": [
+   {
+    "utc": "2026-11-09T10:17:01.944188+00:00",
+    "wallNs": 1794219421944187709,
+    "signal": 2,
+    "targetPid": 5310,
+    "targetComm": "python3",
+    "targetRole": "integration-helper",
+    "targetClass": "helper",
+    "senderComm": "<...>",
+    "senderPid": 2062
+   }
+  ],
+  "helperProcessIds": [
+   5310
+  ],
+  "gatedMuxer": 5339,
+  "toolProcessIds": [
+   5339,
+   5357
+  ],
+  "helperSignals": [
+   {
+    "utc": "2026-11-09T10:17:01.949105+00:00",
+    "signal": 2,
+    "targetPid": 5339,
+    "targetComm": "dotnet",
+    "targetClass": "tool"
+   },
+   {
+    "utc": "2026-11-09T10:17:01.949161+00:00",
+    "signal": 2,
+    "targetPid": 5357,
+    "targetComm": "dotnet",
+    "targetClass": "tool"
+   }
+  ]
+ },
+ "liveAtSignal": {
+  "utc": "2026-11-09T10:17:01.944188+00:00",
+  "ownerStatus": "Starting",
+  "appHostProcesses": [
+   6783
+  ],
+  "dcpProcesses": [
+   7836,
+   7858,
+   7943,
+   8003,
+   8395,
+   8420,
+   8724,
+   8887
+  ],
+  "runningContainers": [
+   "dapr-sentry-hetwjfxb",
+   "hexalith-g4-e48e744a3886a97c5eae4969404e809c-redis",
+   "memories-graph-ebdkavav",
+   "memories-vectors-amtandzx"
+  ],
+  "composedProcessRoles": [
+   "apphost",
+   "catatonit",
+   "dcp",
+   "docker"
+  ]
+ },
+ "toolsOwnFirstStop": "2026-11-09T10:17:02.764268+00:00",
+ "outsideRuntimeSignalsToComposedBeforeToolStop": [],
+ "firstEnvironmentSignalsAfterRequest": [
+  {
+   "utc": "2026-11-09T10:17:02.831620+00:00",
+   "signal": 9,
+   "targetComm": "catatonit",
+   "targetRole": "catatonit",
+   "senderComm": "<...>"
+  },
+  {
+   "utc": "2026-11-09T10:17:02.909819+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:02.932025+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:02.957521+00:00",
+   "signal": 9,
+   "targetComm": "docker",
+   "targetRole": "docker",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:02.979712+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:03.001894+00:00",
+   "signal": 9,
+   "targetComm": "docker",
+   "targetRole": "docker",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:03.023005+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:03.045722+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:03.072254+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  },
+  {
+   "utc": "2026-11-09T10:17:03.102983+00:00",
+   "signal": 9,
+   "targetComm": "dcp",
+   "targetRole": "dcp",
+   "senderComm": ".NET TP Worker"
+  }
+ ],
+ "helperExecution": {
+  "processExitCode": 130,
+  "launched": true,
+  "cancelled": true,
+  "timedOut": false,
+  "signals": [
+   2
+  ],
+  "outputParsed": true,
+  "toolOutcome": {
+   "category": "Cancelled",
+   "exitCode": "Cancelled",
+   "phase": "Cleanup",
+   "ruleId": "HXC130"
+  }
+ },
+ "invocation": {
+  "classification": "baseline-only",
+  "executionContext": {
+   "disposable": true,
+   "jobId": "build-and-test",
+   "kind": "ci",
+   "operatingSystem": "Linux",
+   "repository": "Hexalith/Hexalith.Parties",
+   "runnerKind": "github-hosted",
+   "workflowAttempt": 1,
+   "workflowRunId": "42598774773"
+  },
+  "profiles": [
+   "platform-package"
+  ],
+  "timeoutSeconds": 2000
+ },
+ "cleanupRecords": {
+  "cleanup-1.json": {
+   "status": "completed",
+   "jobStatus": "cancelled",
+   "processExitCode": 0,
+   "verified": true,
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   }
+  }
+ },
+ "firstOutcome": {
+  "cause": "run-cancelled",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "outcome": "cancelled",
+  "recordedAt": "2026-11-09T10:17:01.9674121Z"
+ },
+ "cleanup": {
+  "attemptId": "34e68d9448304596459c6a24ccd2a0d8",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "disposition": "complete",
+  "failures": [],
+  "leftoverResourceIds": [],
+  "observedAt": "2026-11-09T10:17:06.6934704Z",
+  "ownedResourceIds": [
+   "resource:eventstore",
+   "resource:dapr-placement-mtls",
+   "resource:dapr-scheduler-mtls",
+   "resource:dapr-sentry",
+   "resource:eventstore-dapr-cli",
+   "resource:memories",
+   "resource:memories-access-telemetry",
+   "resource:memories-access-telemetry-clock",
+   "resource:memories-access-telemetry-clock-dapr-cli",
+   "resource:memories-access-telemetry-dapr-cli",
+   "resource:memories-dapr-cli",
+   "resource:memories-domain-service",
+   "resource:memories-domain-service-dapr-cli",
+   "resource:memories-graph",
+   "resource:memories-vectors",
+   "resource:parties",
+   "resource:parties-dapr-cli",
+   "resource:tenants",
+   "resource:tenants-api",
+   "resource:tenants-api-dapr-cli",
+   "resource:tenants-dapr-cli"
+  ],
+  "state": "populated"
+ },
+ "attachmentWithdrawals": null,
+ "durableChannel": {
+  "medium": "job log of the always() finalizer step (and, if needed, the next workflow-owned step), written through the step process stdout",
+  "records": {
+   "observer.jsonl": {
+    "lines": 740,
+    "contiguous": true,
+    "logLineRange": [
+     1881,
+     2688
+    ],
+    "summary": {
+     "lines": "740",
+     "bytes": "100795",
+     "sha256": "47562c0de596e0b9e666c43ec099a48bcba26ee185c66a3a02212d29607fa6df",
+     "logLine": 2689
+    },
+    "sha256Rebuilt": "47562c0de596e0b9e666c43ec099a48bcba26ee185c66a3a02212d29607fa6df",
+    "verified": true
+   },
+   "signals.trace": {
+    "lines": 44,
+    "contiguous": true,
+    "logLineRange": [
+     2609,
+     2652
+    ],
+    "summary": {
+     "lines": "44",
+     "bytes": "5528",
+     "sha256": "4a39a389055f1b0e0dc7d6cc0e3d6a459ee5bb24c63ccc24fe7df398c18f4bf3",
+     "logLine": 2690
+    },
+    "sha256Rebuilt": "4a39a389055f1b0e0dc7d6cc0e3d6a459ee5bb24c63ccc24fe7df398c18f4bf3",
+    "verified": true
+   },
+   "docker-events.jsonl": {
+    "lines": 24,
+    "contiguous": true,
+    "logLineRange": [
+     2653,
+     2676
+    ],
+    "summary": {
+     "lines": "24",
+     "bytes": "30171",
+     "sha256": "d34144b53cbd57d3393d1e329e1419c923bcda55ffa41e161f754096e3381835",
+     "logLine": 2691
+    },
+    "sha256Rebuilt": "d34144b53cbd57d3393d1e329e1419c923bcda55ffa41e161f754096e3381835",
+    "verified": true
+   }
+  },
+  "channelContinuationLines": [],
+  "endMarkerLine": 2692,
+  "jobLog": "primary/job.log",
+  "allVerified": true
+ },
+ "checks": {
+  "helperSignalledOnlyTheMuxerAndTheTool": true,
+  "noComposedProcessSignalledFromOutsideTheRuntimeBeforeTheToolsOwnStop": true,
+  "finalizerExactDownVerifiedEmpty": true,
+  "ownedComposedResourceLiveAtSignal": true
+ },
+ "achieved": true,
+ "artifacts": {
+  "blocking-test-results": {
+   "id": 13664917690,
+   "bytes": 1874,
+   "digest": "sha256:3d7b1c00f20d3a9be42ec185ac06f699cac34aa215775ffc8ee178996c3d2414"
+  },
+  "module-integration-diagnostics": {
+   "id": 13664907665,
+   "bytes": 3795,
+   "digest": "sha256:3328d478b440618a89a265bae214c54c64d5b5c8d2897e3328dd0f29f1efdc02"
+  }
+ },
+ "jobLogSha256": "6723fde64e52e45a547851ef5881af7bd3872b27e9c0cc2b1b318317be724291",
+ "candidateAcceptance": false,
+ "attempt": "Authorized rerun of the rebound v2 late-startup proof for the instrumentation defect of 42596887673, which stays recorded as not achieved: a missing durable observer record, while that run itself behaved correctly.",
+ "observerWriteLocations": {
+  "files": "$RUNNER_TEMP/story-2-8-proof/{observer.jsonl,signals.trace,docker-events.jsonl} only (see proof-diff-42af924a.patch)",
+  "otherWrites": "The observer writes only to the stdout pipes of the always() finalizer step process and the next workflow-owned step process (/proc/<pid>/fd/1). It reads the owner state under $HOME/.local/share, the helper process record under $RUNNER_TEMP, /proc, tracefs and docker events. It never writes inside the Parties, Platform or Builds checkouts. It runs with python3 -B, so no bytecode cache is written, and it uses no virtual environment.",
+  "compositionAccepted": "No HXP020: the clean-checkout and ordinary-declaration checks passed, and the owner reached late startup."
+ },
+ "timeline": {
+  "integrationStepStarted": "2026-11-09T10:14:49Z",
+  "cancellationRequested": "2026-11-09T10:17:01.039427+00:00",
+  "runnerSigintToHelper": "2026-11-09T10:17:01.944188+00:00",
+  "helperSigintToMuxerAndTool": [
+   "2026-11-09T10:17:01.949105+00:00",
+   "2026-11-09T10:17:01.949161+00:00"
+  ],
+  "firstOutcomeCancelled": "2026-11-09T10:17:01.9674121Z",
+  "toolsOwnFirstEnvironmentStop": "2026-11-09T10:17:02.764268+00:00",
+  "firstEnvironmentKernelSignal": "2026-11-09T10:17:02.831620+00:00",
+  "finalizerStepStarted": "2026-11-09T10:17:05Z"
+ },
+ "finalizerOwnedSurvivors": "None found. At the always() finalizer start, no owned composed process or container was live: the tool had stopped them itself after it recorded its cancelled first outcome. The finalizer therefore had nothing to leave to the down. Its single exact down, with job status cancelled, verified empty inventories, and the finalizer sent no signal.",
+ "jobLogCitation": {
+  "file": "downloaded job log of job 129097814069 (private copy at primary/job.log)",
+  "observer.jsonl": [
+   1881,
+   2688
+  ],
+  "signals.trace": [
+   2609,
+   2652
+  ],
+  "docker-events.jsonl": [
+   2653,
+   2676
+  ],
+  "summaryLines": [
+   2689,
+   2690,
+   2691
+  ],
+  "endMarkerLine": 2692
+ },
+ "privateRoot": "/home/administrator/.cache/hexalith/story-2-8/review-loop-2-20261109/v2-proof-42af924a0d6e",
+ "sourceCorrection": "2026-11-09: corrected stale tool 4.45.1 / tag v4.45.1 labels copied from the earlier 42593223538 template; the caller pin and the job log (Builds v4.44.13 tag checkout) show tool 4.44.13. No observation changed."
+}

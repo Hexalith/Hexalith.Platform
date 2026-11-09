@@ -1,0 +1,342 @@
+diff --git a/.github/workflows/story-2-8-v2-late-startup-proof.yml b/.github/workflows/story-2-8-v2-late-startup-proof.yml
+new file mode 100644
+index 00000000..2f3fddb2
+--- /dev/null
++++ b/.github/workflows/story-2-8-v2-late-startup-proof.yml
+@@ -0,0 +1,33 @@
++name: Story 2.8 v2 late-startup cancellation proof
++
++# Proof branch only; never merged. One push runs one v2 caller of the patched Builds domain-ci-v2.yml at bde7fd4f, whose
++# integration step is cancelled once late in startup while the AppHost, DCP and owned containers are live
++# (Story 2.8 review loop 2, BS-4 second owner amendment). Tool, gitlinks, manifest, suites and tests are unchanged.
++on:
++  push:
++    branches: ['proof/story-2-8-v2-late-startup-*']
++
++permissions:
++  contents: read
++
++concurrency:
++  group: story-2-8-v2-late-startup-proof-${{ github.run_id }}
++  cancel-in-progress: false
++
++jobs:
++  ci:
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@bde7fd4f875ae147c0631b97c349ef9b73561ed4
++    with:
++      solution: Hexalith.Parties.Standalone.slnx
++      module-manifest: module/hexalith.module-manifest.v2.json
++      integration-test-profiles: platform-package
++      package-prepare-script: scripts/prepare-ci-package-dependencies.sh
++      test-platform: microsoft-testing-platform
++      run-consumer-validation: false
++      run-coverage-gate: false
++      unit-test-projects: |
++        tests/Hexalith.Parties.Aspire.Tests
++      build-timeout-minutes: 60
++    secrets:
++      registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}
++      registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}
+diff --git a/scripts/prepare-ci-package-dependencies.sh b/scripts/prepare-ci-package-dependencies.sh
+index 26cc6c36..fe76a18e 100755
+--- a/scripts/prepare-ci-package-dependencies.sh
++++ b/scripts/prepare-ci-package-dependencies.sh
+@@ -2,6 +2,10 @@
+ # Prepare historical test inputs and the Aspire binaries required by the package integration gate.
+ set -euo pipefail
+ 
++# Story 2.8 loop-2 proof branch only (never merged): record signal, container and owner events for this job.
++# The observer writes files only under $RUNNER_TEMP and publishes its records through the job log; no checkout is touched.
++setsid nohup python3 -B "$(dirname "${BASH_SOURCE[0]}")/story-2-8-proof-observer.py" v2 >/dev/null 2>&1 </dev/null &
++
+ bash "$(dirname "${BASH_SOURCE[0]}")/prepare-ci-git-history.sh"
+ 
+ scratch="$(mktemp -d "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/parties-aspire-restore.XXXXXX")"
+diff --git a/scripts/story-2-8-proof-observer.py b/scripts/story-2-8-proof-observer.py
+new file mode 100644
+index 00000000..3124cae1
+--- /dev/null
++++ b/scripts/story-2-8-proof-observer.py
+@@ -0,0 +1,282 @@
++"""Proof branch only (Story 2.8 review loop 2; never merged).
++
++Records, in one job, the order of three durable events for the BS-4 hosted proofs:
++1. the owner's admission-closing status write (owner state and first outcome);
++2. the attachment withdrawal commit;
++3. the first stop of a composed resource: a Docker kill/stop/die of a container created by this owner, a kernel
++   signal_generate event (SIGHUP/INT/QUIT/KILL/TERM) aimed at a process carrying the owner's run tag or descending
++   from one, or such a process disappearing.
++It never records environment values, command lines or credentials: only process roles, pids and times.
++It writes files only under $RUNNER_TEMP and never inside any checkout. Its records become durable through the job log:
++once the recorded tool session has exited and the always() finalizer step process runs, it streams every record line,
++prefixed "story-2-8-proof|", into that workflow-owned step process's stdout (/proc/<pid>/fd/1). After the finalizer exits
++it writes the remaining lines and a SHA-256 summary into the next workflow-owned step process the same way.
++"""
++import json
++import os
++import pathlib
++import shutil
++import subprocess
++import sys
++import hashlib
++import time
++
++MODE = sys.argv[1]
++assert MODE in ('v2', 'lifecycle')
++WORKSPACE = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
++RUNNER_TEMP = pathlib.Path(os.environ['RUNNER_TEMP'])
++OUT = RUNNER_TEMP / 'story-2-8-proof'
++OUT.mkdir(exist_ok=True)
++STATE = pathlib.Path(os.environ.get('XDG_DATA_HOME', str(pathlib.Path.home() / '.local' / 'share'))) / 'hexalith-builds' / 'g4-runs'
++TAG = b'HEXALITH_G4_RUN_ID='
++MARKER = pathlib.Path('/tmp/story-2-8-proof-native-live')
++log = open(OUT / 'observer.jsonl', 'a', buffering=1)
++
++
++def record(kind, **fields):
++    log.write(json.dumps({'kind': kind, 'wallNs': time.time_ns(), 'monoNs': time.monotonic_ns(), **fields}, sort_keys=True) + '\n')
++
++
++def sudo(script):
++    return subprocess.run(['sudo', '-n', 'sh', '-c', script], capture_output=True, text=True, timeout=30)
++
++
++def start_trace():
++    found = sudo('for d in /sys/kernel/tracing /sys/kernel/debug/tracing; do [ -e "$d/trace_pipe" ] && echo "$d" && exit 0; done; '
++                 'mount -t tracefs nodev /sys/kernel/tracing && echo /sys/kernel/tracing')
++    base = found.stdout.strip().splitlines()[-1] if found.returncode == 0 and found.stdout.strip() else ''
++    if not base:
++        record('trace-unavailable', code=found.returncode)
++        return None
++    setup = sudo(f'cd {base} && echo 0 > tracing_on && echo mono > trace_clock && echo > trace && '
++                 "echo 'sig==1||sig==2||sig==3||sig==9||sig==15' > events/signal/signal_generate/filter && "
++                 'echo 1 > events/signal/signal_generate/enable && echo 1 > tracing_on')
++    record('trace-started', base=base, code=setup.returncode, clock='mono')
++    if setup.returncode:
++        return None
++    return subprocess.Popen(['sudo', '-n', 'cat', base + '/trace_pipe'], stdout=open(OUT / 'signals.trace', 'ab'),
++                            stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True), base
++
++
++def stat(pid):
++    try:
++        fields = pathlib.Path(f'/proc/{pid}/stat').read_text(errors='replace').rpartition(')')[2].split()
++        return int(fields[1]), int(fields[3]), fields[19]
++    except (OSError, IndexError, ValueError):
++        return None
++
++
++def role(pid):
++    """A coarse role from argv[0..2] basenames only; the command line itself is never retained."""
++    try:
++        full = pathlib.Path(f'/proc/{pid}/cmdline').read_bytes().split(b'\0')
++    except OSError:
++        return None
++    every = ' '.join(os.path.basename(part.decode(errors='replace')) for part in full if part).lower()
++    if 'run_module_integration.py' in every:
++        return 'integration-finalizer' if ' finalize' in every else 'integration-helper'
++    if 'hexalith-module' in every or 'hexalith.builds.module.cli' in every:
++        return 'tool-or-muxer'
++    argv = full[:3]
++    names = [os.path.basename(part.decode(errors='replace')) for part in argv if part]
++    text = ' '.join(names).lower()
++    for needle, label in (('hexalith-module', 'tool-or-muxer'), ('apphost', 'apphost'), ('dcp', 'dcp'), ('daprd', 'daprd'),
++                          ('testhost', 'native-test-host'), ('integrationtests', 'native-test-host'), ('placement', 'dapr-placement'),
++                          ('scheduler', 'dapr-scheduler'), ('dotnet', 'dotnet')):
++        if needle in text:
++            return label
++    return names[0][:40] if names else None
++
++
++def tagged(pid):
++    try:
++        for entry in pathlib.Path(f'/proc/{pid}/environ').read_bytes().split(b'\0'):
++            if entry.startswith(TAG):
++                return entry[len(TAG):].decode('ascii', 'replace')[:32]
++    except OSError:
++        return None
++    return None
++
++
++known, composed, states, files = {}, set(), {}, {}
++channel = None
++runner_parent = None
++NAMES = ('observer.jsonl', 'signals.trace', 'docker-events.jsonl')
++
++
++class LogChannel:
++    """Stream the records, line by line, into one workflow-owned step process's stdout (it lands in the job log)."""
++
++    def __init__(self, pid):
++        self.pid = pid
++        self.offsets = {name: 0 for name in NAMES}
++        self.lines = {name: 0 for name in NAMES}
++        self.handle = self.open(pid)
++
++    @staticmethod
++    def open(pid):
++        try:
++            return open(f'/proc/{pid}/fd/1', 'w', buffering=1)
++        except OSError:
++            return None
++
++    def alive(self):
++        try:
++            state = pathlib.Path(f'/proc/{self.pid}/stat').read_text(errors='replace').rpartition(')')[2].split()[0]
++        except (OSError, IndexError):
++            return False
++        return state not in ('Z', 'X')
++
++    def emit(self, text):
++        try:
++            self.handle.write(text + '\n')
++            return True
++        except (OSError, ValueError):
++            self.handle = None
++            return False
++
++    def stream(self, final=False):
++        if self.handle is None:
++            return False
++        for name in NAMES:
++            path = OUT / name
++            if not path.exists():
++                continue
++            with open(path, 'rb') as stream:
++                stream.seek(self.offsets[name])
++                chunk = stream.read()
++            complete = chunk if final else chunk[:chunk.rfind(b'\n') + 1]
++            for line in complete.splitlines():
++                self.lines[name] += 1
++                if not self.emit(f'story-2-8-proof|{name}|{self.lines[name]}|' + line.decode('utf-8', 'replace')):
++                    self.lines[name] -= 1
++                    return False
++                self.offsets[name] += len(line) + 1
++            if final and complete and not complete.endswith(b'\n'):
++                self.offsets[name] = self.offsets[name] - 1
++        return True
++
++    def finish(self):
++        """Write the remaining lines, then each full record's size and SHA-256, then the end marker."""
++        if not self.stream(final=True):
++            return False
++        for name in NAMES:
++            path = OUT / name
++            body = path.read_bytes() if path.exists() else b''
++            if not self.emit(f'story-2-8-proof|summary|{name}|lines={self.lines[name]}|bytes={len(body)}|sha256={hashlib.sha256(body).hexdigest()}'):
++                return False
++        return self.emit('story-2-8-proof|end')
++
++
++attached = False
++trace = start_trace()
++docker = subprocess.Popen(['docker', 'events', '--format', '{{json .}}', '--filter', 'type=container'],
++                          stdout=open(OUT / 'docker-events.jsonl', 'ab'), stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL,
++                          start_new_session=True)
++record('observer-started', mode=MODE, pid=os.getpid())
++deadline = time.monotonic() + 75 * 60
++last_mirror = last_clock = 0.0
++finished_at = None
++while time.monotonic() < deadline:
++    now = time.monotonic()
++    live = set()
++    for entry in os.scandir('/proc'):
++        if not entry.name.isdigit():
++            continue
++        pid = int(entry.name)
++        live.add(pid)
++        if pid in known:
++            continue
++        identity = stat(pid)
++        if identity is None:
++            continue
++        parent, session, start = identity
++        tag = tagged(pid)
++        is_composed = tag is not None or parent in composed
++        info = {'pid': pid, 'parent': parent, 'session': session, 'startTime': start, 'role': role(pid), 'runTag': tag,
++                'composed': is_composed}
++        known[pid] = info
++        if is_composed:
++            composed.add(pid)
++        if is_composed or info['role'] in ('tool-or-muxer', 'native-test-host', 'integration-helper', 'integration-finalizer'):
++            record('process-seen', **info)
++    for pid in [pid for pid in known if pid not in live]:
++        info = known.pop(pid)
++        if info['composed'] or info['role'] in ('tool-or-muxer', 'native-test-host', 'integration-helper', 'integration-finalizer'):
++            record('process-gone', **info)
++    for path in STATE.glob('*.json') if STATE.is_dir() else []:
++        try:
++            value = json.loads(path.read_text())
++        except (OSError, ValueError):
++            continue
++        if not isinstance(value, dict):
++            continue
++        test_run = value.get('testRun') or {}
++        summary = (value.get('status'), value.get('cleanupDisposition'), test_run.get('terminalStatus'))
++        if states.get(path.name) != summary:
++            states[path.name] = summary
++            record('owner-state', runId=value.get('runId'), status=summary[0], cleanupDisposition=summary[1],
++                   terminalStatus=summary[2], updatedAt=value.get('updatedAt'))
++        run_id = value.get('runId')
++        for name in ('attachments.json', 'attachment-withdrawals.json', 'test-result.json'):
++            candidate = STATE / 'diagnostics' / str(run_id) / name
++            try:
++                mtime = candidate.stat().st_mtime_ns
++            except OSError:
++                continue
++            if files.get(str(candidate)) != mtime:
++                files[str(candidate)] = mtime
++                record('owner-file', runId=run_id, name=name, mtimeNs=mtime)
++    process_record = RUNNER_TEMP / 'hexalith-ci-owner.process.json'
++    if 'process_record_seen' not in globals() and process_record.is_file():
++        try:
++            value = json.loads(process_record.read_text())
++            process_record_seen = True
++            record('helper-process-record', pid=value.get('pid'), session=value.get('session'), startTime=value.get('startTime'))
++        except (OSError, ValueError):
++            pass
++    if now - last_clock >= 1:
++        last_clock = now
++        record('clock')
++    finalizer = next((info for info in known.values() if info['role'] == 'integration-finalizer'), None)
++    if channel is None and finalizer is not None:
++        channel = LogChannel(finalizer['pid'])
++        runner_parent = finalizer['parent']
++        record('log-channel-opened', pid=finalizer['pid'], target='always() finalizer step process', opened=channel.handle is not None)
++    if channel is not None:
++        channel.stream()
++        if not channel.alive():
++            break
++    time.sleep(0.05)
++record('observer-stopping')
++log.flush()
++if trace:
++    sudo(f'echo 0 > {trace[1]}/tracing_on')
++    subprocess.run(['sudo', '-n', 'kill', str(trace[0].pid)], capture_output=True)
++docker.terminate()
++time.sleep(0.2)
++record('observer-stopped')
++log.flush()
++# The finalizer step process has exited; its stdout pipe stays open through this handle, so the rest still reaches its log.
++finished = channel is not None and channel.finish()
++if channel is not None and not finished:
++    deadline = time.monotonic() + 30
++    while not finished and time.monotonic() < deadline:
++        successor = None
++        for entry in os.scandir('/proc'):
++            if entry.name.isdigit() and int(entry.name) not in known and int(entry.name) != channel.pid:
++                identity = stat(int(entry.name))
++                if identity is not None and identity[0] == runner_parent:
++                    successor = int(entry.name)
++                    break
++        if successor is not None:
++            channel.pid = successor
++            channel.handle = LogChannel.open(successor)
++            if channel.handle is not None and channel.emit(f'story-2-8-proof|channel|continued in workflow-owned step process {successor}'):
++                finished = channel.finish()
++        time.sleep(0.02)
++if channel is not None and channel.handle is not None:
++    try:
++        channel.handle.close()
++    except OSError:
++        pass

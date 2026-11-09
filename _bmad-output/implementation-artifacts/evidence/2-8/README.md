@@ -35,6 +35,14 @@ This continuation implements the spec's *Review loop 2 tasks* under the same rem
     - the muxer leads the recorded session, the tool is its direct child, and the run-tagged AppHost is the tool's child;
     - the only signals were the tool's own startup-teardown SIGKILLs;
     - both downs verified empty inventories.
+- **BS-4 rebound v2 late-startup proof (second owner amendment): passed.**
+  - The first attempt, 42596887673 ([audit](review-loop-2-20261109/hosted-v2-late-startup-42596887673.json)), was not achieved because of an observer instrumentation defect. The run itself was correct.
+  - The authorized rerun, [42598774773](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42598774773) ([audit](review-loop-2-20261109/hosted-v2-late-startup-42598774773.json)), passed. It ran `domain-ci-v2.yml@bde7fd4f` with tool 4.44.13, and its gitlinks, suites and tests were unchanged from `4c0167b8`.
+  - Its records reached the finalizer's job log, and their SHA-256 values match. The observer never wrote inside a checkout.
+  - The helper sent SIGINT only to the gated muxer and the tool, while the AppHost, DCP and four owned containers were live.
+  - No signal from outside the runtime reached any composed process. The first outcome was `cancelled`/HXC130.
+  - The finalizer's exact down verified empty inventories.
+  - Lifecycle on patched Builds is deferred to the post-review re-pin chain.
 - **Two lifecycle setup attempts also failed before any owner existed:**
   - Run 42583201444 failed with HXW009: Platform pins Builds `3c80`.
   - Run 42584756093 failed with HXT007 after a submodule overlay.
@@ -43,7 +51,7 @@ This continuation implements the spec's *Review loop 2 tasks* under the same rem
 
 Open, not claimed:
 
-- the amended BS-4 proofs, which need a Platform release that pins Builds v4.45.1, or an owner decision to run v2 with tool 4.44.13;
+- the deferred lifecycle `cancel-execution` gate on patched Builds, after Platform pins such a release through L/M;
 - the test-host ruling;
 - PB-9 execution, which is a gate for Platform L/M delivery;
 - adopting a Builds release that carries the digest file;

@@ -50,9 +50,18 @@
       "verdict": "not reached: HXP020 at owner startup 0.2 s after the AppHost started, before the 130 s ready point; tool 4.45.1 and Dapr 1.19.1 against the Platform 0f4e27f1 / Builds 3c80 tuple; no cancellation sent",
       "observed": "muxer leads the recorded session, the tool is its direct child, the tagged AppHost is the tool child; only the tool signalled (its own startup-failure SIGKILLs); both downs verified empty inventories"
      }
+    },
+    "reboundV2LateStartup": {
+     "runs": {
+      "42596887673": "not achieved: observer instrumentation defect (records lost before upload); the run itself behaved correctly",
+      "42598774773": "passed"
+     },
+     "record": "hosted-v2-late-startup-42598774773.json",
+     "verdict": "helper SIGINT only to the gated muxer 5339 and the tool 5357 at 10:17:01.949Z; no outside-runtime signal to any composed process; AppHost, eight DCP processes and four owned containers live at the signal; first outcome cancelled/HXC130 at 10:17:01.967Z; the always() finalizer exact down verified empty inventories",
+     "bindings": "domain-ci-v2.yml@bde7fd4f, tool 4.44.13, Builds 3c80 / Platform 0f4e27f1 gitlinks and all suite/test inputs unchanged from 4c0167b8"
     }
    },
-   "status": "covered locally; L hosted proof 42587199919 passed (pinned 4.44.13 tool); amended v4.45.1 proofs blocked by the Platform/Builds pin tuple"
+   "status": "covered: local controls, L hosted controller proof 42587199919 and rebound v2 late-startup proof 42598774773; L on patched Builds deferred to the post-review re-pin chain"
   },
   {
    "row": "Same-job/cross-job attachment",

@@ -2,7 +2,7 @@
 title: '2.8 Run CI integration on disposable runners with guaranteed cleanup'
 type: 'feature'
 created: '2026-10-31'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '03a099bba258c37a8f16c8b2e842ae842b1ad6d6'
@@ -208,7 +208,7 @@ The original four acceptance criteria and six matrix rows above stay unchanged. 
 
 The owner adopted all recommendations: a **targeted fix with no revert**. Continue on the same branches: Builds `fix/ci-v2-cancellation-and-cleanup-27145e52` (PR #177, still draft) from `b411bafb`, Parties `fix/lifecycle-cancel-signal-566b9bfc` from `2849c5b4`, and Platform in the canonical working tree. The remote-operation boundary is unchanged: no merges, no `main` pushes, no publication, tags or pin changes. Abbreviations are as in loop 1, plus S = Parties `.github/workflows/current-owner-startup-diagnostics.yml` and the observer `scripts/observe-current-owner-startup.py`.
 
-- [ ] **BS-4, withdraw before stop under signals: H, V2, Q, plus their tests.** A runner cancellation must never stop a composed resource before the tool has recorded attachment withdrawal.
+- [x] **BS-4, withdraw before stop under signals: H, V2, Q, plus their tests.** A runner cancellation must never stop a composed resource before the tool has recorded attachment withdrawal.
   - The first interrupt goes only to the tool's own processes: the gate/muxer session leader and the tool process it runs. It must not reach the AppHost, DCP, the native test host or any other composed process. Both H's `ToolSession` and Q's `process_signal` currently `killpg` the whole group, and both must change.
   - Escalation inside the runner grace targets the tool first. Signal the whole recorded session only once the tool has exited, or at the final in-grace step. The runner's own hard kill after its grace is outside our control. After it, the always() finalizer's exact down still withdraws before stopping what remains, so record that limit honestly in `domain-ci-v2.md` and the contract.
   - Finalizer: when a receipt exists, stop only the surviving *tool* processes before deciding. Those are processes that could still allocate or hold `provisioning.lock`. Owned composed processes that the owner state records, such as the AppHost after a refused CI withdrawal (PA-13), must be left for the exact down, which withdraws first. Without a receipt, every surviving recorded-session process is still terminated before any `not-allocated` decision. The BS-1 guarantees stand.
@@ -375,12 +375,14 @@ This loop made no merges, `main` pushes, tags, publications or pin changes. Ever
   - The v2 execution-cancellation proof was not achieved. Two attempts failed on HTTP 504 Dapr downloads, and one on HXP020 because the proof instrumentation changed the suite inputs. No cancellation was sent.
   - Two lifecycle setup attempts also failed before any owner existed: HXW009 under the Platform Builds pin, and HXT007 after a submodule overlay.
 - **Still open:**
-  - BS-4 stays unticked. The owner amendment's two v4.45.1 proofs both ran, and neither reached a cancellation:
-    - Lifecycle rerun 42593229291 was refused with HXW009 and HXW007. The staged Builds `25de7a74` must equal the Platform `0f4e27f1` pin `3c80`, and no Platform release pins v4.45.1.
-    - v2 late-startup run 42593223538 had unchanged test inputs. HXP020 refused it 0.2 s after the AppHost started, before the 130 s ready point. The likely cause is tool 4.45.1 and Dapr 1.19.1 against the Platform `0f4e27f1`/Builds `3c80` tuple.
-    - Its kernel trace still confirmed the process structure the tool-only signals rely on: the muxer leads the session, the tool is its child, and the tagged AppHost is the tool's child. The only signals were the tool's own, and both downs verified empty inventories.
-    - Neither run had a live owned resource at a signal time, so the further run allowed by the amendment was not spent. It would be refused the same way.
-    - Either proof needs a Platform release that pins Builds v4.45.1, which is a pin change outside this boundary, or an owner decision to run v2 with tool 4.44.13.
+  - **BS-4 is complete under the second owner amendment.**
+    - The two v4.45.1 runs (42593229291 and 42593223538) were refused before any cancellation: HXW009/HXW007 under the Platform pin `3c80`, and HXP020. They stay recorded failures.
+    - The rebound v2 late-startup run first ran as 42596887673. That run was not achieved because the observer's records were lost before upload. The run itself behaved correctly.
+    - The one authorized rerun, [42598774773](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42598774773), passed. It used `domain-ci-v2.yml@bde7fd4f` and tool 4.44.13, with the gitlinks and every suite and test input unchanged. The observer wrote only under `$RUNNER_TEMP` and streamed its records into the finalizer step's job log, where line counts and SHA-256 are verified.
+    - At 10:17:01.949Z the helper sent SIGINT only to the gated muxer and the tool. At that moment the AppHost, eight DCP processes and four owned containers were live.
+    - No signal from outside the runtime reached any composed process. The first outcome was `cancelled`/HXC130 at 10:17:01.967Z, the tool's own first stop came at 10:17:02.764Z, and the `always()` finalizer's exact down verified empty inventories.
+    - Lifecycle run 42587199919 stands as the hosted controller proof.
+    - Lifecycle `cancel-execution` on patched Builds is a deferred delivery gate in the post-review re-pin chain. Until it runs, the finalizer's owned-process exclusion is covered by the local process-level test and this v2 run's finalizer.
   - Step 04 should rule on one observation: the tool SIGKILLed its own native test host (08:59:34.138–.203Z) before the admission-closing and withdrawal marks.
   - PB-9 execution remains a gate for Platform L/M delivery.
   - Delivery waits for Step 04: Task 134, adoption of a Builds release with the digest file, Parties PR delivery, and a repair of the externally pushed Platform tuple.
@@ -720,3 +722,110 @@ Route groups:
 | ECHP-7 | Signal before handlers during interpreter startup | low | RJ | Fails closed and the finalizer cleans. The fix needs a new readiness marker in the cancel protocol. |
 
 **Outcome:** three bad_spec groups (BS-4 high, BS-5 and BS-2b medium), so the cascade loops back to Step 03. The PB-1 to PB-16 patches are carried into that loop's tasks. Nothing was deferred. `review_loop_iteration` becomes 2. How to re-derive is the owner's decision.
+
+### Iteration 2, 2026-11-09 (loop-2 fix-delta review)
+
+Scope: the loop-2 fix delta only. Area B is Builds `b411bafb..bde7fd4f` (86 KB; the helper and v2 workflow are byte-identical in released v4.45.1). Area P is Parties `2849c5b4..4c0167b8` plus the Platform Story 2.8 paths `7fbe852f..HEAD` (63 KB). Three layers ran on each area: blind hunter (BHB2/BHP2), edge-case hunter (ECHB2/ECHP2) and verification gap (VGB2/VGP2). Claims were verified read-only against Builds `bde7fd4f`, Parties `4c0167b8` and Platform `HEAD`, with one mutation run on an exported helper tree. Rows matching an earlier row's location and claim are marked carried.
+
+Route groups:
+- **PC-n:** patches (no intent_gap or bad_spec entry, so no loopback).
+- **DF:** defer.
+- **RJ:** reject.
+
+| ID | Claim | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| BHB2-1 | Helper timeout sends SIGTERM first, which ends the real tool without withdrawal | high | PC-1 | `ToolCommandHost.RunWithConsoleCancellationAsync` registers only `PosixSignal.SIGINT` and `CancelKeyPress`; nothing handles SIGTERM, so the runtime default ends the tool. `StopSignal` stops a nonpersistent AppHost when it loses stdin (`PersistAfterParentExit` is false for CI `test`), so composed resources stop before any withdrawal, and only the later exact down records it. The timeout, `wait` and `muxer-apphost` fakes treat SIGTERM like SIGINT and hide this. The spec never prescribed SIGTERM here. |
+| VGB2-2 | Timeout stop of tool-only targets is untested | medium | PC-1 | Pre-verified: restoring `signal_groups` in `stop_after_timeout` keeps 65/65 green. |
+| BHB2-12 | No timeout test with an owned AppHost; no muxer-dies-first test; no reparented untagged descendant test | low | PC-1, PC-2, PC-4 | Same gaps as VGB2-2, VGB2-1 and VGB2-3. |
+| BHB2-2 | Leader gone but tool alive: the no-receipt branch can record verified `not-allocated` after the tool writes its receipt | medium | PC-2 | `tool_processes` returns `{}` without the leader (`:635-637`). `finalize` checks `receipt.exists()`, stops `session_processes`, then writes `not-allocated` without re-reading the receipt. Loop 1 terminated the whole session before reading it. Reachable only when the muxer dies before the tool. |
+| ECHB2-1 | Same as BHB2-2 | medium | PC-2 | Same evidence as BHB2-2. |
+| ECHB2-18 | Same as BHB2-2 (claim form) | medium | PC-2 | Same evidence as BHB2-2. |
+| VGB2-1 | No-receipt sweep with a surviving tool is untested | medium | PC-2 | Pre-verified: deleting the `session_processes` stop keeps 65/65 green. |
+| VGB2-6 | `verify_tool` raises before `exact_down`, so a missing tool writes no `tool-unavailable` record, retains nothing, and turns timeout 124 into 1 | medium | PC-3 | Pre-verified probe: an unpatched `finalize` with no `dotnet` raised `FileNotFoundError` from `verify_tool` (`:752`) and left the evidence empty. PB-13 required unverified cleanup with diagnostics retained. |
+| ECHB2-5 | Same as VGB2-6 | medium | PC-3 | Same evidence as VGB2-6. |
+| ECHB2-17 | Same as VGB2-6 (claim form) | medium | PC-3 | Same evidence as VGB2-6. |
+| VGB2-5 | Missing-tool test patches `verify_tool` away | medium | PC-3 | Pre-verified; the test patches both calls. |
+| VGB2-3 | Protection of owned descendants is untested | medium | PC-4 | Pre-verified: replacing the parent walk in `protected()` keeps 65/65 green. |
+| VGB2-4 | Only a failure of the first cleanup-record write is tested | low | PC-5 | Pre-verified: ignoring the final write's result keeps 65/65 green. |
+| BHB2-4 | A timed-out down kills only its process group; the post-kill `communicate()` is unbounded | low | PC-6 | `run_down` uses `killpg(child.pid)`, then `communicate()` with no timeout. A descendant in another group holding the pipes blocks it. The docs say "session". |
+| ECHB2-3 | Same as BHB2-4 | low | PC-6 | Same evidence as BHB2-4. |
+| BHB2-9 | camelCase secret keys (`dbPassword`, `clientSecret`, `accessToken`) survive redaction | low | PC-7 | `(?<![a-z])` under `(?i)` rejects any letter before the keyword. Direct fix: drop the left boundary. |
+| ECHB2-6 | Same as BHB2-9 | low | PC-7 | Same evidence as BHB2-9. |
+| BHB2-8 | Validator pins helper source text; "Job start is recorded first" compares positions in the whole file | low | PC-8 | Ordering part: a non-checkout step inserted before the input step passes. Direct fix: assert the job's first step. The source-pinning part is rejected: the spec's "derive from the helper's constants" is met, and the alternative is a redesign. |
+| ECHB2-10 | Same as BHB2-8 ordering part | low | PC-8 | Same evidence as BHB2-8. |
+| BHB2-11 | New tests prove less than their names | low | PC-9, PC-10 | The v2-step test asserts only upper bounds (PC-9). `CancelAfter(5 s)` plus `IsCancellationRequested.ShouldBeFalse()` is load-sensitive (PC-10). The `StoppingTimestamp` range part is rejected: PB-6 asked only for the assertion. |
+| ECHB2-13 | Same as BHB2-11 `CancelAfter` part | low | PC-10 | Same evidence as BHB2-11. |
+| ECHB2-12 | Escalation test asserts SIGTERM below 0.6 s on two runner signals | low | PC-11 | Load-sensitive under the known cross-session load. Direct fix: larger patched constants. |
+| ECHB2-11 | Exhausted-budget process test does not prove the budget refusal | low | PC-12 | Mutation: with the refusals in `derived_timeout` removed, the test still passes (it fails for missing preparation environment); only the unit test fails. |
+| ECHB2-16 | `recorded_session_members` has no callers | low | PC-13 | `git grep` finds only its definition. |
+| BHB2-13 | `domain-ci-v2.md`: "never signalled by the helper" contradicts the finalizer bullets; a glued sentence and an unwrapped line | low | PC-14 | Direct doc fix. |
+| BHB2-3 | Nothing guards against composed processes being direct children of the leader | low | RJ | Hosted run 42598774773 traced the real layout (muxer leads, tool is its child, AppHost is the tool's child). A guard adds complexity. |
+| BHB2-5 | `signal_processes` catches only `ProcessLookupError` | false | RJ | Same reasoning as ECHB-10: no privileged process runs in the tool session, and kill(2) allows a sender with the target's real uid. |
+| ECHB2-2 | Same as BHB2-5 | false | RJ | Same as BHB2-5. |
+| BHB2-6 | Job budget does not reserve the always() steps after the finalizer | low | RJ | It only bites when every bounded wait hits its maximum, and on a disposable runner. BS-5's reserve list is met. The fix adds a budget input. |
+| ECHB2-9 | Same as BHB2-6 | low | RJ | Same as BHB2-6. |
+| BHB2-7 | Validator digest scenarios degrade when CLI and runtime share a version | low | RJ | At `bde7fd4f` the versions differ (1.18.2/1.18.7). On the 1.19.1 catalog the scenario still refuses. The fix needs JSON editing in PowerShell. |
+| BHB2-10 | `invocation.json` omits the derivation inputs | low | RJ | Not required. New fields would be refused by the Parties verifiers (PB-1). |
+| BHB2-14 | Dependabot guidance omits exposure and mapping | low | RJ | The reader is pull-only, and explicit caller mapping is already documented. |
+| BHB2-15 | `MINIMUM_TIMEOUT_SECONDS = 60` is unrealistic | low | RJ | The spec leaves the minimum open; a too-short run ends as a classified timeout. |
+| ECHB2-4 | Invalid UTF-8 inside valid JSON can be recorded as verified | false | RJ | Replacement characters cannot satisfy `cleanup_verified`'s run identity and empty-inventory checks; a corrupted message string changes no verified field. |
+| ECHB2-7 | The fixed 60 s setup allowance can be exceeded | low | RJ | "Set up job" took about 1 s in the recorded hosted runs, and the 30 s margin remains. |
+| ECHB2-8 | Fractional or over-360 `build-timeout-minutes` | low | RJ | A fractional value fails closed in argparse before allocation. Above 360, the step bound dominates. |
+| ECHB2-14 | An interrupted `run_down` orphans its down | low | RJ | The orphan is the exact cleanup itself. Any competing down fails closed on the lock, and the job is already being cancelled. |
+| ECHB2-15 | A refused receipt leaves non-tool session processes running | false | RJ | Refusing destructive commands for a foreign or malformed receipt is the documented behavior, and the result is non-success. |
+| BHP2-16 | PB-9 test cannot pass, and its "before resources" check is vacuous | medium | PC-15 | `Compose` reads `RunPlan.DaprConfigPath` (`PlatformAppModel.cs:194`). Every passing `fixture.Compose` caller writes it first, plus the `daprd` marker and DCP paths (`PlatformPublishedPartiesMemoriesTransportTests.cs:20-36`); this test writes none. `ExpectedHosts` is the whole participant cohort (`PlatformRoutingCatalogBootstrap.cs:28`), which the source catalog test pins as six (`PlatformAppModelCatalogReviewTests.cs:98`), not three. `builder.Resources.ShouldBeEmpty()` runs in the options callback, before binding. Loop 1's version also never set up the config. |
+| ECHP2-7 | Same as BHP2-16 (participant set) | medium | PC-15 | Same evidence as BHP2-16. |
+| ECHP2-8 | Same as BHP2-16 (Dapr config) | medium | PC-15 | Same evidence as BHP2-16. |
+| ECHP2-12 | Same as BHP2-16 (claim form) | medium | PC-15 | Same evidence as BHP2-16. |
+| BHP2-3 | Contract list swallows the following paragraph | low | PC-16 | `test-environment-v1.md:390-392`: no blank line, so the verification rule renders inside the "With a receipt" bullet. |
+| BHP2-4 | Stale "`withdrawn` remains reserved for future attached runs" | low | PC-16 | `test-environment-v1.md:410` (Story 2.5 text) now contradicts `owner-withdrawn` and the CI hold rules. |
+| BHP2-14 | Partial-startup test patches an attribute of the lazy `HELPER`, forcing the real import | low | PC-17 | Reproduced by two layers: `FileNotFoundError` without the submodule. Direct fix: patch `Q.HELPER` itself. The other test-strength parts are rejected as negligible. |
+| ECHP2-9 | Same as BHP2-14 | low | PC-17 | Same evidence as BHP2-14. |
+| VGP2-1 | Timed invocation with a raw layout is not refused by any test | low | PC-18 | Pre-verified: removing `and not timed` keeps 29/29 green. |
+| VGP2-2 | The reader-file writer heredoc is never executed | low | PC-19 | Pre-verified: two heredoc mutations keep 95/95 green. |
+| ECHP2-5 | A resumed partial-startup AppHost can keep provisioning while the down runs | maybe-false | DF | Medium if true (late resources could escape discovery). Settle by confirming that `down` stops run-tagged processes before its final discovery, or by the deferred L matrix on patched Builds. |
+| BHP2-1 | S and L cannot pass at the pinned Builds `3c80` | false | RJ | Fail-closed by design until the delivery-chain repin (BS-2b; execution records). |
+| ECHP2-1 | Same as BHP2-1 | false | RJ | Same as BHP2-1. |
+| VGP2-3 | Same as BHP2-1; tests use synthetic Props | false | RJ | Same as BHP2-1. Synthetic catalogs exercise the step logic by design. |
+| BHP2-2 | Contract describes Builds behavior the Platform pin lacks | false | RJ | carried BHP-9: ships with the Builds repin in L/M delivery. |
+| BHP2-5 | Contract omits the evidence layout | low | RJ | Documented in `domain-ci-v2.md`. |
+| BHP2-6 | `invocation_accepted` refuses `qualificationOwners` | low | RJ | PB-1 accepts only `timeoutSeconds`, and ordinary profiles forbid qualification owners (`PlatformPartiesRunProof`). |
+| BHP2-7 | Per-record runId check misreports an `allocation-unverified` record; `jobStatus` unchecked | low | RJ | Fails closed on abnormal evidence; the message is the only harm. |
+| BHP2-8 | Wrapped-execution checks omit `launched`/`signals`; no `timedOut` test | low | RJ | The `cancelled`, `timedOut` and integer exit-code checks already require a normal completion. |
+| BHP2-9 | `process_signal` can deliver to nobody | low | RJ | Q signals only after readiness, when the tool runs. A lost signal fails closed on the required cancelled outcome. The fix adds a guard. |
+| ECHP2-2 | Same as BHP2-9 | low | RJ | Same as BHP2-9. |
+| BHP2-10 | Partial startup no longer exercises the whole-tree kill | low | RJ | Hosted matrix 42521615234 keeps that evidence, and BS-4 mandates tool-only signalling for Q. |
+| BHP2-11 | `tool_processes` duplicated in Q and H | low | RJ | Q cannot use H's version until Parties pins a Builds release that has it. |
+| BHP2-12 | Digest code duplicated in L and S | low | RJ | Refactor only. |
+| BHP2-13 | S no longer validates the reader credential | low | RJ | Diagnostics-only workflow; a bad credential still shows as a pull failure. Validation would add a step. |
+| ECHP2-10 | Same as BHP2-13 | low | RJ | Same as BHP2-13. |
+| BHP2-15 | Missing refusal cases in the digest readers | low | RJ | Each fails closed on Builds-owned pinned data. |
+| BHP2-17 | `ExpectedCatalogHosts` doc omits the app-id values | low | RJ | Negligible. |
+| ECHP2-3 | PID reuse between the birth check and `os.kill` | low | RJ | Microsecond window; `pidfd` adds complexity. |
+| ECHP2-4 | `PermissionError` reading `/proc/<pid>/stat` | false | RJ | Hosted runners do not mount `/proc` with `hidepid`, and `stat` is world-readable. |
+| ECHP2-6 | Dict equality treats `True` as `1` | low | RJ | Records come only from the helper; forging needs write access to the evidence. |
+| ECHP2-11 | Partial-startup SIGKILL spares untagged tool children | low | RJ | Disposable runner; nothing they hold blocks the exact down. |
+| OBS2-1 | The tool killed its own native test host before admission closed (run 42587199919) | false | RJ | Orchestrator ruling requested by Step 03. The test host is the owner's test execution, not a composed resource or an attachment. BS-4's known-bad list governs signals from H and Q, which reached only the muxer and tool. |
+| OBS2-2 | V2 exports `DOCKER_CONFIG` through `GITHUB_ENV` | false | RJ | Orchestrator ruling. The export follows every caller-supplied step, and an always() step removes the config. The loop-2 known-bad wording targets L and S, where test code runs after the export. |
+
+**Outcome:** no intent_gap or bad_spec entry, so there is no loopback and `review_loop_iteration` stays 2. Nineteen patch groups (PC-1 to PC-19) go to the implementation agent; ECHP2-5 is deferred.
+
+**Patches applied, 2026-11-09:** the implementation agent applied PC-1 to PC-19.
+- Builds `194e87da` is on the new branch `fix/ci-v2-review-fixes-bde7fd4f`, because `fix/ci-v2-cancellation-and-cleanup-27145e52` was merged into `main` and deleted externally. No PR is open.
+- Parties `11053e56` is on `fix/lifecycle-cancel-signal-566b9bfc`.
+- The Platform edits are in the working tree.
+
+The orchestrator re-verified at those revisions, in fresh worktrees:
+
+| Check | Result |
+| --- | --- |
+| Builds helper suite | 68/68 |
+| Builds `prepare-module-build` | 16/16, after a locked `npm ci` |
+| Builds governed provenance | 95/95 |
+| Workflow validator | legacy 411 and v2 302 assertions |
+| Seven focused xUnit classes | 351/351 |
+| Parties ci-lifecycle | 97/97, with the pinned Builds helper |
+| Parties integration scripts | 46/46, with the pinned Builds helper |
+| Platform composition tests | compile with 0 errors |
+
+PC-15 (the PB-9 test) still executes only in Platform L/M delivery, which will also prove that its image-probe check runs before the first resource is added. Step 04 is complete.

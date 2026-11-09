@@ -389,6 +389,7 @@ the receipt:
   `not-allocated`.
 - With a receipt, it leaves owned composed processes, which carry the owner's run tag,
   to the exact `down`.
+
 Before invoking down, it verifies repository/run/attempt/job and durable owner
 bindings. Cleanup completion requires zero owned resources and verified discovery.
 Unknown discovery or leftovers fail with retryable metadata. Only classified,
@@ -407,7 +408,9 @@ archives. It reuses the immutable pre-launch descriptor bindings held by the
 runner; partial startup uses the original issued run/attempt/environment identities
 and explicit unavailable observations. The first outcome/cause/time survives
 cancellation, explicit stop, cleanup errors and retries. Owner cancellation is
-`cancelled`; `withdrawn` remains reserved for future attached runs.
+`cancelled`. `withdrawn` ends attached runs and their holds when their environment is
+withdrawn, never an owner; a later attach to such an owner is refused as
+`owner-withdrawn`.
 
 Command terminal status and outcome preserve that committed observation. Later
 archive and cleanup errors remain visible as diagnostics and cleanup disposition;
