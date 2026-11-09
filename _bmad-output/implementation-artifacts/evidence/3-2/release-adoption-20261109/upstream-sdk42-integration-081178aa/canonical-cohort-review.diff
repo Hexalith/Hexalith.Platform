@@ -1,0 +1,40 @@
+diff --git a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+index e7854bac..156f5cff 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+@@ -31,6 +31,27 @@ internal static class PublishedCatalogArtifactCohort
+     internal const string CurrentOwnerSdk420Name = "current-parties-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+     /// <summary>The SDK4.2 private EventStore package-test purpose; never general launch authority.</summary>
+     internal const string EventStorePackageTestSdk420Name = "private-eventstore-package-test-4.2.0-tenants-7.0.5";
++    /// <summary>The signed extension SDK bodies only; confers no owner or composed-host cohort admission.</summary>
++    internal const string ExtensionSdkName = "extension-sdk-eventstore-4.2.0";
++    private static readonly FrozenDictionary<string, string> _extensionSdkHashes = new Dictionary<string, string>(StringComparer.Ordinal)
++    {
++        ["Hexalith.EventStore.Admin.Abstractions"] = "9b1edf00cc5e31ace475c851587876a4dc0321fab9d1e2af0aa771b114cfb584",
++        ["Hexalith.EventStore.Contracts"] = "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
++        ["Hexalith.EventStore.ServiceDefaults"] = "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
++        ["Hexalith.EventStore.Client"] = "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
++        ["Hexalith.EventStore.DomainService"] = "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646",
++        ["Hexalith.EventStore.Server"] = "95038655c275192a4971ea8f74a1a3748be15793736ed5914813614b84cf6cf1",
++        ["Hexalith.EventStore.Gateway"] = "a7038a4e7858aca19c78cf2489fbffd5bd78925b956a96f2473d854127ed0b46",
++        ["Hexalith.EventStore.Aspire"] = "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a",
++    }.ToFrozenDictionary(StringComparer.Ordinal);
++
++    /// <summary>The exact canonical SDK4.2 private test identity, retained for the additive extension controls.</summary>
++    internal const string Sdk42EventStorePackageTestName = EventStorePackageTestSdk420Name;
++    /// <summary>The exact canonical SDK4.2 source-owner identity, retained for the additive extension controls.</summary>
++    internal const string Sdk42CurrentOwnerName = CurrentOwnerSdk420Name;
++    /// <summary>The exact canonical SDK4.2 public reader identity, retained for the additive extension controls.</summary>
++    internal const string Sdk42PublishedPartiesName = PublishedPartiesSdk420Name;
++
+     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+@@ -249,6 +270,7 @@ internal static class PublishedCatalogArtifactCohort
+         PublishedPartiesSdk420Name => _publishedPartiesSdk420Hashes,
+         EventStorePackageTestName => _eventStorePackageTestHashes,
+         EventStorePackageTestSdk420Name => _eventStorePackageTestSdk420Hashes,
++        ExtensionSdkName => _extensionSdkHashes,
+         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
+     };
+ }

@@ -11,7 +11,7 @@ using Hexalith.Platform.CatalogArtifacts;
 /// <summary>Admits only the independently measured published SDK/Tenants qualification cohort.</summary>
 internal static class PlatformPackageCatalogQualification
 {
-    private const string _refusal = "Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable.";
+    private const string _refusal = "Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable.";
 
     /// <summary>Checks all finite inputs before image probes, filesystem rendering or resource allocation.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
@@ -31,9 +31,9 @@ internal static class PlatformPackageCatalogQualification
             || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
             || (cohort = SelectTestCohort(options)) is null
-            || (cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName) && servers.Any(server => server.ImageDigest is not null)
+            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name && servers.Any(server => server.ImageDigest is not null)
             || !HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
-            || (cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName) && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
+            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
             throw new InvalidDataException(_refusal);
 
         return servers.Select(server => (cohort, server.ServerId, server.Image) switch
@@ -42,8 +42,8 @@ internal static class PlatformPackageCatalogQualification
             (PublishedCatalogArtifactCohort.Name, "api", "registry.hexalith.com/tenants-api:7.0.0") => server with { ImageDigest = "2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6" },
             (PublishedCatalogArtifactCohort.CurrentName, "domain", "registry.hexalith.com/tenants:7.0.2") => server with { ImageDigest = "adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed" },
             (PublishedCatalogArtifactCohort.CurrentName, "api", "registry.hexalith.com/tenants-api:7.0.2") => server with { ImageDigest = "2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4" },
-            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
-            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
+            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
+            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
             (_, "gateway", null) when server.ProjectPath == options.EventStoreSeedProject => server,
             _ => throw new InvalidDataException(_refusal),
         }).ToArray();
@@ -84,24 +84,17 @@ internal static class PlatformPackageCatalogQualification
             && string.Equals(plan.PlatformDeclarationHash, "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495", StringComparison.OrdinalIgnoreCase)
             && MatchesTestSource(options, selected)
             && CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
+            && PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") is "4.1.0" or "4.2.0"
             && PlatformServerBindings.Version(options, "tenants", "private EventStore package test") == "7.0.5"
-            ? PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") switch
-            {
-                "4.1.0" => PublishedCatalogArtifactCohort.EventStorePackageTestName,
-                "4.2.0" => PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName,
-                _ => null,
-            } : null;
+            ? PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") == "4.2.0"
+                ? PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name : PublishedCatalogArtifactCohort.EventStorePackageTestName : null;
     }
 
     internal static string? SelectCurrentOwnerCohort(PlatformCompositionOptions options)
-        => PlatformServerBindings.Version(options, "tenants", "current qualification") == "7.0.5"
-            && PlatformServerBindings.Version(options, "memories", "current qualification") == "3.0.25"
-            ? PlatformServerBindings.Version(options, "eventstore", "current qualification") switch
-            {
-                "4.1.0" => PublishedCatalogArtifactCohort.CurrentOwnerName,
-                "4.2.0" => PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName,
-                _ => null,
-            } : null;
+        => PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(
+            PlatformServerBindings.Version(options, "eventstore", "current qualification"),
+            PlatformServerBindings.Version(options, "tenants", "current qualification"),
+            PlatformServerBindings.Version(options, "memories", "current qualification"));
 
     private static bool MatchesTestSource(PlatformCompositionOptions options, ModuleTestSelection selected)
     {

@@ -187,7 +187,7 @@ public sealed class PlatformSdk42PublishedPartiesCohortTests
     [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName, true)]
     [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.FullPartiesName, true)]
     [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.CurrentFullPartiesName, true)]
-    [InlineData("3.0.0", true, PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName, true)]
+    [InlineData("3.0.0", true, PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName, false)]
     [InlineData("3.1.0", true, PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName, true)]
     [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName, false)]
     [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.FullPartiesName, false)]

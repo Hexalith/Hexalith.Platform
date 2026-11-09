@@ -111,6 +111,7 @@ jobs:
         id: preflight
         run: |
           set -euo pipefail
+          python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-current --suite current42 --eventstore-sdk 4.2.0
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci --suite base42 --eventstore-sdk 4.2.0
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-extensions --suite extensions --eventstore-sdk 4.2.0
       - name: Retain bootstrap and preflight outcomes
@@ -139,6 +140,7 @@ jobs:
           name: platform-tuple-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/platform-tuple-bootstrap
+            artifacts/tuple-ci-current
             artifacts/tuple-ci
             artifacts/tuple-ci-extensions
           if-no-files-found: error

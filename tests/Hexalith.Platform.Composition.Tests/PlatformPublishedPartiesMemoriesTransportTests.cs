@@ -16,7 +16,7 @@ public sealed class PlatformPublishedPartiesMemoriesTransportTests
     [Fact]
     public async Task PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync()
     {
-        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName).Count.ShouldBe(12);
+        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(PlatformPartiesPackageFixture.PublishedCohort).Count.ShouldBe(12);
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync().ConfigureAwait(true);
         await fixture.PersistClaimStateAsync().ConfigureAwait(true);
         await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken).ConfigureAwait(true);

@@ -28,6 +28,14 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(version=version), self.assertRaises(ValueError):
                 sdk_suite("base42", version)
 
+    def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
+        self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
+        profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
+        self.assertEqual(validate_profile(profile), 456)
+        for version in [None, "4.1.0", "4.2.1"]:
+            with self.subTest(version=version), self.assertRaises(ValueError):
+                sdk_suite("current42", version)
+
     def test_unknown_or_mixed_suite_selection_never_substitutes(self):
         for suite, version in [("extensions", None), ("extensions", "4.1.0"), ("extensions", "4.2.1"),
                                ("current", "4.2.0"), ("arbitrary", "4.2.0")]:

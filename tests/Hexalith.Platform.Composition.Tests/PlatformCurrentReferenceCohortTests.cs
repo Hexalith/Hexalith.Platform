@@ -13,13 +13,13 @@ public sealed class PlatformCurrentReferenceCohortTests
     [Fact]
     public void CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority()
     {
-        IReadOnlyList<string> paths = PublishedCatalogArtifactCohort.VerifyCurrentReferences();
+        IReadOnlyList<string> paths = PublishedCatalogArtifactCohort.VerifyCurrentReferences(PlatformPartiesPackageFixture.CurrentCohort);
         paths.Count.ShouldBe(10);
         var artifacts = paths.Select(path => (path, Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))))).ToArray();
-        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts);
+        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts, PlatformPartiesPackageFixture.CurrentCohort);
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
-            Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PublishedCatalogArtifactCohort.CurrentOwnerName));
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.CurrentOwnerName));
+            Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PlatformPartiesPackageFixture.CurrentCohort));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PlatformPartiesPackageFixture.CurrentCohort));
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.4", fullParties: true).ShouldBeNull("The private current purpose does not grant a new public-consumer cohort.");
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5").ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5", fullParties: true).ShouldBeNull();
@@ -36,7 +36,7 @@ public sealed class PlatformCurrentReferenceCohortTests
                 File.Exists(path).ShouldBeTrue("The original public package is a required restore input; no synthetic or current-body substitution.");
                 Assembly old = context.LoadFromAssemblyPath(path);
                 PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentFullPartiesName).ShouldBe(path);
-                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PlatformPartiesPackageFixture.CurrentCohort));
             }
         }
         finally { context.Unload(); }
@@ -49,7 +49,7 @@ public sealed class PlatformCurrentReferenceCohortTests
                 File.Exists(path).ShouldBeTrue("The previously qualified Memory reference body remains an explicit restore input.");
                 Assembly old = previous.LoadFromAssemblyPath(path);
                 PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.PreviousCurrentOwnerName).ShouldBe(path);
-                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PlatformPartiesPackageFixture.CurrentCohort));
             }
             Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.PreviousCurrentOwnerName));
         }
@@ -68,7 +68,7 @@ public sealed class PlatformCurrentReferenceCohortTests
                     Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), cohort));
                     Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
                 }
-                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.CurrentOwnerName));
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PlatformPartiesPackageFixture.CurrentCohort));
                 Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, PublishedCatalogArtifactCohort.EventStorePackageTestName));
             }
         }
@@ -78,14 +78,14 @@ public sealed class PlatformCurrentReferenceCohortTests
     [Fact]
     public void CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies()
     {
-        var artifacts = PublishedCatalogArtifactCohort.VerifyCurrentReferences()
+        var artifacts = PublishedCatalogArtifactCohort.VerifyCurrentReferences(PlatformPartiesPackageFixture.CurrentCohort)
             .Select(path => (Path: path, Hash: Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))))).ToArray();
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Skip(1).ToArray()));
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts, artifacts[0]]));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Skip(1).ToArray(), PlatformPartiesPackageFixture.CurrentCohort));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts, artifacts[0]], PlatformPartiesPackageFixture.CurrentCohort));
         string foreign = typeof(PlatformCurrentReferenceCohortTests).Assembly.Location;
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts.Skip(1), (foreign, Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(foreign))))]));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt([.. artifacts.Skip(1), (foreign, Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(foreign))))], PlatformPartiesPackageFixture.CurrentCohort));
         var changed = artifacts.Select((item, index) => index == 0 ? (item.Path, new string('0', 64)) : item).ToArray();
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(changed));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(changed, PlatformPartiesPackageFixture.CurrentCohort));
         string directory = Path.Combine(Path.GetTempPath(), "current-reference-body-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
         try
@@ -93,7 +93,7 @@ public sealed class PlatformCurrentReferenceCohortTests
             string path = Path.Combine(directory, Path.GetFileName(artifacts[0].Path));
             File.WriteAllBytes(path, [.. File.ReadAllBytes(artifacts[0].Path), 0]);
             changed = artifacts.Select((item, index) => index == 0 ? (path, item.Hash) : item).ToArray();
-            Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(changed));
+            Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(changed, PlatformPartiesPackageFixture.CurrentCohort));
         }
         finally { Directory.Delete(directory, recursive: true); }
     }

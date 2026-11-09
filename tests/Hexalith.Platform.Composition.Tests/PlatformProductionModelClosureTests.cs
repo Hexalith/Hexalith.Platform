@@ -77,7 +77,7 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                 {
                     Type authority = production.GetType("Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort", throwOnError: true)!;
                     bool matched = (bool)authority.GetMethod("Matches", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
-                        ["Hexalith.Tenants.Server", "private-eventstore-package-test-4.1.0-tenants-7.0.5"])!;
+                        ["Hexalith.Tenants.Server", PlatformPartiesPackageFixture.EventStoreTestCohort])!;
                     matched.ShouldBeTrue("The actual production authority must verify the body from its own isolated model directory.");
                 }
                 context.Assemblies.Single(assembly => assembly.GetName().Name == "Hexalith.Tenants.Server").Location.ShouldBe(server);

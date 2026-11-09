@@ -25,6 +25,12 @@ internal static class PublishedCatalogArtifactCohort
     internal const string EventStorePackageTestName = "private-eventstore-package-test-4.1.0-tenants-7.0.5";
     /// <summary>The complete authenticated public Parties3.1 reader; independent from every private purpose.</summary>
     internal const string PublishedPartiesName = "parties-3.1.0-eventstore-4.1.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The independently measured SDK4.2 public reader; released owner images retain their original provenance.</summary>
+    internal const string PublishedPartiesSdk420Name = "parties-3.1.0-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The separately authenticated SDK4.2 private current-owner references; never full public owner authority.</summary>
+    internal const string CurrentOwnerSdk420Name = "current-parties-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The SDK4.2 private EventStore package-test purpose; never general launch authority.</summary>
+    internal const string EventStorePackageTestSdk420Name = "private-eventstore-package-test-4.2.0-tenants-7.0.5";
     /// <summary>The signed extension SDK bodies only; confers no owner or composed-host cohort admission.</summary>
     internal const string ExtensionSdkName = "extension-sdk-eventstore-4.2.0";
     private static readonly FrozenDictionary<string, string> _extensionSdkHashes = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -39,12 +45,12 @@ internal static class PublishedCatalogArtifactCohort
         ["Hexalith.EventStore.Aspire"] = "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a",
     }.ToFrozenDictionary(StringComparer.Ordinal);
 
-    /// <summary>The separate signed SDK4.2 private EventStore test reader; no extension host authority.</summary>
-    internal const string Sdk42EventStorePackageTestName = "private-eventstore-package-test-4.2.0-tenants-7.0.5";
-    /// <summary>The SDK4.2 source-owner reference reader, bound to the existing private owner proof.</summary>
-    internal const string Sdk42CurrentOwnerName = "current-parties-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
-    /// <summary>The complete published Parties3.1 reader with the independently released SDK4.2.</summary>
-    internal const string Sdk42PublishedPartiesName = "parties-3.1.0-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
+    /// <summary>The exact canonical SDK4.2 private test identity, retained for the additive extension controls.</summary>
+    internal const string Sdk42EventStorePackageTestName = EventStorePackageTestSdk420Name;
+    /// <summary>The exact canonical SDK4.2 source-owner identity, retained for the additive extension controls.</summary>
+    internal const string Sdk42CurrentOwnerName = CurrentOwnerSdk420Name;
+    /// <summary>The exact canonical SDK4.2 public reader identity, retained for the additive extension controls.</summary>
+    internal const string Sdk42PublishedPartiesName = PublishedPartiesSdk420Name;
 
     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
     {
@@ -122,23 +128,49 @@ internal static class PublishedCatalogArtifactCohort
             ["Hexalith.Parties.EventStoreExtensions"] = "a48612597603ce5b8d743e28e91236a51e561369c6bcd2d9fcca092dd78f1c06",
         }).ToFrozenDictionary(StringComparer.Ordinal);
 
-    // The owner bodies and producer bindings retain their independent published authority.
-    // Only the four reader SDK bodies change; this does not admit any extension or host.
-    private static readonly FrozenDictionary<string, string> _sdk42EventStorePackageTestHashes = WithSdk42(_eventStorePackageTestHashes);
-    private static readonly FrozenDictionary<string, string> _sdk42CurrentOwnerHashes = WithSdk42(_currentOwnerHashes);
-    private static readonly FrozenDictionary<string, string> _sdk42PublishedPartiesHashes = WithSdk42(_publishedPartiesHashes);
+    // Only the four SDK reader bodies change. The independently signed public owner packages remain byte-identical.
+    private static readonly FrozenDictionary<string, string> _publishedPartiesSdk420Hashes = _publishedPartiesHashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["Hexalith.EventStore.Contracts"] = "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
+            ["Hexalith.EventStore.ServiceDefaults"] = "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
+            ["Hexalith.EventStore.Client"] = "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
+            ["Hexalith.EventStore.DomainService"] = "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646",
+        }).ToFrozenDictionary(StringComparer.Ordinal);
 
-    private static FrozenDictionary<string, string> WithSdk42(IReadOnlyDictionary<string, string> previous)
-        => previous.Where(pair => !pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
-            .Concat(_extensionSdkHashes.Where(pair => _currentHashes.ContainsKey(pair.Key)))
-            .ToFrozenDictionary(StringComparer.Ordinal);
+    private static readonly FrozenDictionary<string, string> _currentOwnerSdk420Hashes = _publishedPartiesSdk420Hashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)).ToFrozenDictionary(StringComparer.Ordinal);
 
-    /// <summary>Selects only the complete measured public Parties3.1 versions, without granting a general SDK/Tenants pair.</summary>
+    private static readonly FrozenDictionary<string, string> _eventStorePackageTestSdk420Hashes = _currentOwnerSdk420Hashes
+        .Where(pair => pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .ToFrozenDictionary(StringComparer.Ordinal);
+
+    /// <summary>Selects only the two exact private current-owner reference tuples.</summary>
+    internal static string? ForCurrentOwnerVersions(string sdk, string tenants, string memories) => (sdk, tenants, memories) switch
+    {
+        ("4.1.0", "7.0.5", "3.0.25") => CurrentOwnerName,
+        ("4.2.0", "7.0.5", "3.0.25") => CurrentOwnerSdk420Name,
+        _ => null,
+    };
+
+    /// <summary>Recognizes only the finite private reference authorities.</summary>
+    internal static bool IsCurrentOwnerCohort(string? cohort) => cohort is CurrentOwnerName or CurrentOwnerSdk420Name;
+
+    /// <summary>Returns the SDK bound to the exact private reference authority.</summary>
+    internal static string CurrentOwnerSdkVersion(string cohort) => cohort switch
+    {
+        CurrentOwnerName => "4.1.0",
+        CurrentOwnerSdk420Name => "4.2.0",
+        _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
+    };
+
+    /// <summary>Selects only complete measured public Parties3.1 readers, without granting a general SDK/Tenants pair.</summary>
     internal static string? ForPublishedPartiesVersions(string sdk, string tenants, string memories, string parties)
         => (sdk, tenants, memories, parties) switch
         {
             ("4.1.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesName,
-            ("4.2.0", "7.0.5", "3.0.25", "3.1.0") => Sdk42PublishedPartiesName,
+            ("4.2.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesSdk420Name,
             _ => null,
         };
 
@@ -185,14 +217,11 @@ internal static class PublishedCatalogArtifactCohort
         .Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray();
 
     /// <summary>Checks every measured public dependency before any full-owner attribute or factory is consumed.</summary>
-    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName or Sdk42PublishedPartiesName
+    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName or PublishedPartiesSdk420Name
         ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
         : throw new InvalidDataException("The requested full public artifact cohort is unavailable.");
 
-    internal static IReadOnlyList<string> VerifyCurrentReferences(string cohort = CurrentOwnerName)
-        => cohort is CurrentOwnerName or Sdk42CurrentOwnerName
-            ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
-            : throw new InvalidDataException("The requested private current owner cohort is unavailable.");
+    internal static IReadOnlyList<string> VerifyCurrentReferences(string cohort = CurrentOwnerName) => CurrentReferenceHashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray();
 
     /// <summary>Verifies a loaded owner or SDK artifact before reading its attributes or invoking its factory.</summary>
     internal static string Verify(Assembly assembly, string cohort = Name)
@@ -208,14 +237,14 @@ internal static class PublishedCatalogArtifactCohort
     internal static void VerifyCurrentSdkFile(string path, string digest, string cohort = CurrentOwnerName)
     {
         string name = AssemblyName.GetAssemblyName(path).Name!;
-        if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !Hashes(cohort).TryGetValue(name, out string? expected)
+        if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !CurrentReferenceHashes(cohort).TryGetValue(name, out string? expected)
             || digest != expected || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))) != expected)
             throw new InvalidDataException("The current owner must load the exact public SDK bodies.");
     }
 
     internal static void VerifyCurrentReferenceReceipt(IReadOnlyList<(string Path, string Hash)> artifacts, string cohort = CurrentOwnerName)
     {
-        foreach (var expected in Hashes(cohort))
+        foreach (var expected in CurrentReferenceHashes(cohort))
         {
             var matches = artifacts.Where(item => AssemblyName.GetAssemblyName(item.Path).Name == expected.Key).ToArray();
             if (matches.Length != 1 || matches[0].Hash != expected.Value
@@ -223,6 +252,9 @@ internal static class PublishedCatalogArtifactCohort
                 throw new InvalidDataException("The current reader receipt differs from the immutable public reference cohort.");
         }
     }
+
+    private static IReadOnlyDictionary<string, string> CurrentReferenceHashes(string cohort) => IsCurrentOwnerCohort(cohort)
+        ? Hashes(cohort) : throw new InvalidDataException("The requested private current-owner cohort is unavailable.");
 
     private static IReadOnlyDictionary<string, string> Hashes(string cohort) => cohort switch
     {
@@ -233,12 +265,12 @@ internal static class PublishedCatalogArtifactCohort
         PreviousCurrentOwnerName => _previousCurrentOwnerHashes,
         Tenants704CurrentOwnerName => _tenants704CurrentOwnerHashes,
         CurrentOwnerName => _currentOwnerHashes,
+        CurrentOwnerSdk420Name => _currentOwnerSdk420Hashes,
         PublishedPartiesName => _publishedPartiesHashes,
+        PublishedPartiesSdk420Name => _publishedPartiesSdk420Hashes,
         EventStorePackageTestName => _eventStorePackageTestHashes,
+        EventStorePackageTestSdk420Name => _eventStorePackageTestSdk420Hashes,
         ExtensionSdkName => _extensionSdkHashes,
-        Sdk42EventStorePackageTestName => _sdk42EventStorePackageTestHashes,
-        Sdk42CurrentOwnerName => _sdk42CurrentOwnerHashes,
-        Sdk42PublishedPartiesName => _sdk42PublishedPartiesHashes,
         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
     };
 }

@@ -210,6 +210,42 @@ class LegacyTupleSourceTests(unittest.TestCase):
         with self.assertRaises(ValueError): legacy.verify(self.root, self.current, self.old)
         self.assertEqual(self.git("rev-parse", "HEAD"), self.current)
 
+    def test_exact_sdk420_tuple_is_accepted_without_relaxing_legacy_or_crossed_provenance(self):
+        self.git("checkout", "-q", self.old)
+        (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
+        historical = self.commit()
+        self.git("checkout", "-q", self.current)
+        self.descriptor["sourceRevision"] = historical
+        self.write_descriptor()
+        (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+        document = json.loads(self.current_provenance)
+        document["tenants"].update(version="7.0.5", commit=legacy.TENANTS_705_SOURCE)
+        document["eventstore"].update(version="4.2.0", commit=legacy.EVENTSTORE_420_SOURCE)
+        self.write(legacy.PROVENANCE, json.dumps(document).encode())
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.EVENTSTORE_420_SOURCE + ",references/Hexalith.EventStore")
+        released = self.commit()
+        self.git("checkout", "-q", historical)
+        result = legacy.verify(self.root, released, historical)
+        self.assertEqual(result["requiredCount"], 349)
+        self.assertFalse(result["qualificationCredit"])
+        self.assertFalse(result["binaryEquivalenceClaimed"])
+        mutations = [("eventstore", "version", value) for value in
+                     ("4.2.0-preview.1", "4.2.0+metadata", "4.2.0.0", "4.2.1", "4.3.0", "4.1.0")]
+        mutations += [("eventstore", "commit", "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"),
+                      ("eventstore", "sha256", "0" * 64), ("tenants", "version", "7.0.4"),
+                      ("tenants", "commit", legacy.TENANTS_CURRENT_SOURCE), ("memories", "version", "3.0.24")]
+        for owner, field, value in mutations:
+            with self.subTest(owner=owner, field=field, value=value):
+                self.git("checkout", "-q", released)
+                changed = copy.deepcopy(document)
+                changed[owner][field] = value
+                self.write(legacy.PROVENANCE, json.dumps(changed).encode())
+                crossed = self.commit()
+                self.git("checkout", "-q", historical)
+                with self.assertRaisesRegex(ValueError, "more than the authenticated"):
+                    legacy.verify(self.root, crossed, historical)
+
     def test_production_helpers_tests_build_instructions_and_workflow_changes_refuse(self):
         for name in ("src/Owner.cs", "tests/Control.cs", "DaprSelfHostedMtls.cs", "Directory.Build.props", ".github/workflows/tuple-ci.yml", "eng/other.json", "README.md", "docs/current-tuple-preparation.md"):
             with self.subTest(name=name):

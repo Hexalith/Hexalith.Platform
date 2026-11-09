@@ -99,7 +99,7 @@ public sealed class PlatformPartiesCatalogHandoffTests
             versions[consumer]!["Hexalith.Memories.EventStore"]!.GetValue<string>().ShouldBe("3.0.25");
         else
             versions[consumer]!["Hexalith.Memories.EventStore"]!.GetValue<string>().ShouldBe("3.0.23");
-        versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
+        versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe(PlatformPartiesPackageFixture.SelectedSdkVersion);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(warm)!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,
             snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));

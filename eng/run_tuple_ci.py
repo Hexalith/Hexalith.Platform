@@ -75,10 +75,10 @@ def verify_composition_test_outputs_unchanged(record):
 
 def sdk_suite(suite, version):
     """Select only the measured new SDK suite or the retained exact historical SDK controls."""
-    if suite in ("extensions", "base42"):
+    if suite in ("extensions", "base42", "current42"):
         if version != "4.2.0":
             raise ValueError("The extension suite requires the measured EventStore 4.2.0 SDK.")
-        return ("eng/tuple-ci-extension-suites.json" if suite == "extensions" else "eng/tuple-ci-sdk42-base-suites.json"), ["-p:HexalithEventStoreVersion=4.2.0"]
+        return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
     if suite != "current" or version not in (None, "4.1.0"):
         raise ValueError("The retained suite accepts only its exact historical SDK or the recorded catalog default.")
     return "eng/tuple-ci-suites.json", [] if version is None else ["-p:HexalithEventStoreVersion=4.1.0"]
@@ -116,7 +116,7 @@ def main():
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path)
     parser.add_argument("--audit-only", action="store_true")
-    parser.add_argument("--suite", choices=["current", "extensions", "base42"], default="current")
+    parser.add_argument("--suite", choices=["current", "extensions", "base42", "current42"], default="current")
     parser.add_argument("--eventstore-sdk", choices=["4.1.0", "4.2.0"])
     args = parser.parse_args()
     profile_path, sdk_properties = sdk_suite(args.suite, args.eventstore_sdk)
@@ -173,7 +173,7 @@ def main():
         validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
         builds_root = resolve_builds_root(ROOT)
         catalog = verify_catalog(binding, builds_root)
-        if args.suite in ("extensions", "base42"):
+        if args.suite in ("extensions", "base42", "current42"):
             verify_extension_catalog_pin(catalog)
         else:
             verify_historical_catalog_pin(catalog)
@@ -181,6 +181,8 @@ def main():
         required_total = validate_profile(profile)
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
+        if args.suite == "current42" and required_total != 456:
+            raise ValueError("The upstream SDK4.2 current suite must retain all456 required cases.")
         if args.suite == "extensions" and required_total != 9:
             raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:

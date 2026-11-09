@@ -74,6 +74,14 @@ jobs:
           python3 tests/catalog-builder/verify_sdk42_owner_cohorts.py
           --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
           --evidence "$RUNNER_TEMP/catalog-sdk42-owner-evidence"
+      - name: Verify the distinct SDK4.2 public Parties reader without image relabeling
+        if: matrix.sdk == '4.2.0'
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
+        run: >-
+          python3 tests/catalog-builder/verify_sdk420_public_parties.py
+          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
+          --evidence "$RUNNER_TEMP/catalog-sdk420-public-parties-evidence"
       - name: Retain executable and refusal evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -84,4 +92,5 @@ jobs:
             ${{ runner.temp }}/catalog-sdk-gates.json
             ${{ runner.temp }}/catalog-public-owner-evidence
             ${{ runner.temp }}/catalog-sdk42-owner-evidence
+            ${{ runner.temp }}/catalog-sdk420-public-parties-evidence
           if-no-files-found: error

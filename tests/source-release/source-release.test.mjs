@@ -50,6 +50,25 @@ test('either final callback requires both latest successful main lanes and exact
     assert.ok(Buffer.byteLength(JSON.stringify(result)) < 16384);
   }
 });
+test('the exact SDK 4.2 job is required alongside every historical catalog row', async () => {
+  const catalog = yaml.load(readFileSync('.github/workflows/catalog-builder.yml', 'utf8'));
+  const sdks = catalog.jobs['consumer-binding'].strategy.matrix.sdk;
+  assert.deepEqual(sdks, ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0', '4.2.0']);
+  assert.deepEqual(workflows[1].jobs, sdks.map(sdk => `consumer-binding (${sdk})`));
+  const qualification = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_catalog_builder.py'));
+  assert.ok(qualification.run.includes("matrix.sdk == '4.2.0' && '7.0.5'"));
+  const historical = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_public_owner_cohorts.py'));
+  assert.equal(historical.if, "matrix.sdk == '4.1.0'");
+  const sdk420 = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_sdk420_public_parties.py'));
+  assert.equal(sdk420.if, "matrix.sdk == '4.2.0'");
+  for (const replacement of [null, 'consumer-binding (4.2.0-preview.1)', 'consumer-binding (4.2.0+metadata)', 'consumer-binding (4.2.0.0)', 'consumer-binding (4.2.1)']) {
+    const f = fixture();
+    const index = f.state.jobs[1].findIndex(job => job.name === 'consumer-binding (4.2.0)');
+    if (replacement === null) f.state.jobs[1].splice(index, 1);
+    else f.state.jobs[1][index].name = replacement;
+    await assert.rejects(qualify(f.inputs), replacement === null ? /missing-or-extra-jobs/ : /wrong-required-jobs/);
+  }
+});
 test('earlier callback defers pending/missing counterpart; later callback can proceed', async () => {
   const f = fixture(); f.state.runs[1].status = 'in_progress'; f.state.runs[1].conclusion = null;
   assert.equal((await qualify(f.inputs)).reason, 'counterpart-pending');

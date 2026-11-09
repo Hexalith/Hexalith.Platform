@@ -18,16 +18,16 @@ public sealed class PlatformEventStorePackageTestCohortTests
     [Fact]
     public void ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities()
     {
-        const string Cohort = PublishedCatalogArtifactCohort.EventStorePackageTestName;
-        string[] paths = [.. PublishedCatalogArtifactCohort.VerifySdk(Cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Contracts"), Cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Server"), Cohort)];
+        string cohort = PlatformPartiesPackageFixture.EventStoreTestCohort;
+        string[] paths = [.. PublishedCatalogArtifactCohort.VerifySdk(cohort),
+            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Contracts"), cohort),
+            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Server"), cohort)];
         paths.Length.ShouldBe(6);
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5").ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5", fullParties: true).ShouldBeNull();
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(Cohort));
-        Cohort.ShouldNotBe(PublishedCatalogArtifactCohort.CurrentOwnerName);
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformEventStorePackageTestCohortTests).Assembly, Cohort));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
+        cohort.ShouldNotBe(PublishedCatalogArtifactCohort.CurrentOwnerName);
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformEventStorePackageTestCohortTests).Assembly, cohort));
         string cache = typeof(PlatformEventStorePackageTestCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
             .Single(attribute => attribute.Key == "PlatformHistoricalPackageRoot").Value!;
         foreach (string version in new[] { "7.0.0", "7.0.2", "7.0.4" })
@@ -43,7 +43,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
                     string historical = version == "7.0.0" ? PublishedCatalogArtifactCohort.Name : version == "7.0.2"
                         ? PublishedCatalogArtifactCohort.CurrentName : PublishedCatalogArtifactCohort.Tenants704CurrentOwnerName;
                     PublishedCatalogArtifactCohort.Verify(old, historical).ShouldBe(path);
-                    Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, Cohort));
+                    Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, cohort));
                 }
             }
             finally { context.Unload(); }
@@ -58,7 +58,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
                 string path = Path.Combine(directory, Path.GetFileName(original));
                 File.WriteAllBytes(path, [.. File.ReadAllBytes(original), 0]);
                 Assembly changed = context.LoadFromAssemblyPath(path);
-                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(changed, Cohort));
+                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(changed, cohort));
             }
             finally { context.Unload(); Directory.Delete(directory, recursive: true); }
         }
@@ -162,7 +162,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
         if (fault == "missing-proof") plan = plan with { QualificationOwners = null, QualificationOwnersBinding = null };
         string catalog = Path.Combine(fixture.Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
         if (fault == "catalog") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.4", StringComparison.Ordinal));
-        if (fault == "sdk") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("4.1.0", "4.0.4", StringComparison.Ordinal));
+        if (fault == "sdk") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace(PlatformPartiesPackageFixture.SelectedSdkVersion, "4.0.4", StringComparison.Ordinal));
         if (fault == "near-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.50", StringComparison.Ordinal));
         if (fault == "metadata-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.5+foreign", StringComparison.Ordinal));
         if (fault == "snapshot") File.AppendAllText(Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"), " ");
@@ -245,7 +245,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
 
     private static void RequireBaseline(PlatformQualificationPackageFixture fixture)
     {
-        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestName);
+        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PlatformPartiesPackageFixture.EventStoreTestCohort);
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true).Count.ShouldBe(3);
