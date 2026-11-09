@@ -1,0 +1,117 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "attempt": "amended L rerun on Builds v4.45.1: refused before the qualification job",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 amended hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+   "branch": "proof/story-2-8-lifecycle-cancel-execution-25de7a74",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "tool": "hexalith.builds.module.cli 4.45.1 (.config/dotnet-tools.json SHA-256 3ff233c9ea31d8ca13f39b7b7c6543106ca694ea0ab3da3be9b9f32e0c702d16)",
+   "buildsGitlink": "25de7a74d14d099faf7baea5da0cbb0b40264592 (v4.45.1), clean checkout",
+   "platformGitlink": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44 (Platform v1.7.1), unchanged"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+   "tag": "v4.45.1"
+  }
+ },
+ "dispatch": {
+  "schema": "hexalith.story-2-8.dispatch-receipt.v1",
+  "scenario": "cancel-execution",
+  "requestedAtUtc": "2026-11-09T09:24:44.842550+00:00",
+  "responseReceivedAtUtc": "2026-11-09T09:24:46.805507+00:00",
+  "httpStatusLine": "HTTP/2.0 204 No Content",
+  "endpoint": "POST repos/Hexalith/Hexalith.Parties/actions/workflows/406038512/dispatches",
+  "ref": "proof/story-2-8-lifecycle-cancel-execution-25de7a74",
+  "inputs": {
+   "scenario": "cancel-execution"
+  },
+  "run": {
+   "id": 42593229291,
+   "run_attempt": 1,
+   "head_sha": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+   "head_branch": "proof/story-2-8-lifecycle-cancel-execution-25de7a74",
+   "event": "workflow_dispatch",
+   "path": ".github/workflows/ci-lifecycle-qualification.yml",
+   "created_at": "2026-11-09T09:24:48Z",
+   "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42593229291"
+  },
+  "repository": "Hexalith/Hexalith.Parties",
+  "candidateAcceptance": false
+ },
+ "run": {
+  "id": 42593229291,
+  "run_attempt": 1,
+  "event": "workflow_dispatch",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T09:24:48Z",
+  "updated_at": "2026-11-09T09:25:57Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42593229291",
+  "path": ".github/workflows/ci-lifecycle-qualification.yml"
+ },
+ "jobs": [
+  {
+   "id": 129079638378,
+   "name": "baseline / build-and-test",
+   "conclusion": "failure",
+   "failedSteps": [
+    "Prepare module build",
+    "Fail on blocking test failures"
+   ]
+  },
+  {
+   "id": 129080098020,
+   "name": "qualification",
+   "conclusion": "skipped",
+   "failedSteps": []
+  }
+ ],
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "The baseline job refused before the qualification job, so no ready artifact existed and no request was sent."
+ },
+ "refusal": {
+  "step": "baseline / build-and-test: Prepare module build",
+  "diagnostics": [
+   {
+    "ruleId": "HXW009",
+    "phase": "Prerequisite",
+    "category": "PrerequisiteUnavailable",
+    "message": "Builds catalog '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds' is staged 25de7a74d14d099faf7baea5da0cbb0b40264592, checked out 25de7a74d14d099faf7baea5da0cbb0b40264592; Platform 0f4e27f1f78310bd731c10c19dc51bb1e0345d44 pins 3c8096180ecf2aa539ac454815efbfceb8a92822.",
+    "field": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds",
+    "hint": null,
+    "source": null,
+    "location": null,
+    "row": null
+   },
+   {
+    "ruleId": "HXW007",
+    "phase": "Prerequisite",
+    "category": "PrerequisiteUnavailable",
+    "message": "Local Git inspection failed at '/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds': show 3c8096180ecf2aa539ac454815efbfceb8a92822:Props/Directory.Packages.props.",
+    "field": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds",
+    "hint": null,
+    "source": null,
+    "location": null,
+    "row": null
+   }
+  ],
+  "outcome": {
+   "exitCode": "PrerequisiteUnavailable",
+   "phase": "Prerequisite",
+   "category": "PrerequisiteUnavailable",
+   "ruleId": "HXW009"
+  }
+ },
+ "cause": "HXW009 from PlatformIdentityResolver: the Builds catalog must be staged at exactly the Builds commit that the Parties Platform gitlink pins. Platform 0f4e27f1 (v1.7.1) pins Builds 3c80, so staging 25de7a74 is refused. HXW007 follows: the depth-1 Builds checkout cannot show 3c80:Props/Directory.Packages.props. No HXW010: Platform v1.7.1 toolVersionRange is [4.44.13, 5.0.0-0), which admits 4.45.1. No Platform release tag pins Builds 25de7a74; the newest tag, v1.8.1, is 7fbe852f. Running on v4.45.1 therefore needs a released Platform that pins it, and that pin change was not made (instruction: do not change any Platform pin).",
+ "defectClass": "prerequisite refusal by the Platform tuple pin, recorded without a workaround",
+ "orderingVerdict": {
+  "passed": null,
+  "reason": "not reached"
+ },
+ "jobLogSha256": "62a0a70b026108e04fab142a71236bf9e9827715c2a7d707e4c926c818b4f666",
+ "candidateAcceptance": false
+}

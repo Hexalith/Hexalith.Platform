@@ -1,0 +1,311 @@
+{
+ "schema": "hexalith.story-2-8.bs4-v2-late-startup-proof.v1",
+ "attempt": "amended v2 late-startup run 1 of 2 permitted: refused at AppHost start, before the cancellation point",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 amended hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+   "branch": "proof/story-2-8-v2-late-startup-25de7a74",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "tool": "hexalith.builds.module.cli 4.45.1",
+   "buildsGitlink": "3c8096180ecf2aa539ac454815efbfceb8a92822 (unchanged)",
+   "platformGitlink": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44 (v1.7.1, unchanged)",
+   "unchangedInputs": "module manifest, suites and every test project are byte-identical to 4c0167b8"
+  },
+  "reusableWorkflow": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+   "tag": "v4.45.1",
+   "path": ".github/workflows/domain-ci-v2.yml",
+   "namedInJobLog": true
+  }
+ },
+ "run": {
+  "id": 42593223538,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T09:24:45Z",
+  "updated_at": "2026-11-09T09:30:29Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42593223538",
+  "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml"
+ },
+ "job": {
+  "id": 129079612913,
+  "name": "ci / build-and-test",
+  "conclusion": "failure"
+ },
+ "steps": {
+  "Prepare integration binaries": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T09:29:50Z",
+   "completed_at": "2026-11-09T09:29:57Z"
+  },
+  "Runner-owned package integration": {
+   "conclusion": "failure",
+   "started_at": "2026-11-09T09:29:58Z",
+   "completed_at": "2026-11-09T09:30:22Z"
+  },
+  "Finalize exact CI owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T09:30:22Z",
+   "completed_at": "2026-11-09T09:30:22Z"
+  },
+  "Upload classified integration diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T09:30:23Z",
+   "completed_at": "2026-11-09T09:30:24Z"
+  }
+ },
+ "readyCheck": {
+  "targetStepAgeSeconds": 130,
+  "rationale": "CI 42479678863 (Parties v2, Builds 3c80): the integration step started 12:29:19Z and readiness came at 12:32:02.0Z, 163 s. In the passing L run 42587199919, measured from the first owner Starting state, the AppHost appeared at 73.9 s (39 % of the 188.1 s to Ready), DCP at 110.0 s (58 %), the first owned container start at 117.3 s (62 %) and the last at 169.9 s (90 %). Scaled to 163 s, that gives the AppHost at about 64 s, DCP at about 96 s, the first owned container at about 102 s and the last at about 147 s. 130 s leaves about 28 s after the first container and about 33 s before readiness. The runner delivered its signal 2.3 s after the request in run 42587199919.",
+  "outcome": "Not reached. The integration step ended 24 s after it started (09:29:58Z to 09:30:22Z)."
+ },
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "The integration step failed before the 130-second ready point; the watcher sent no request."
+ },
+ "cause": "The tool refused the owner with HXP020 at AppHost start: \"The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.\" The suite, test and manifest inputs are unchanged (proof diff), so that is not the cause here. The AppHost lived 0.2 s and the refusal reports no sub-check. Two version skews are present and unresolved. First, tool 4.45.1, whose Tooling contracts include the CompositionDeclarationOptions and engine changes since 3c80, against a Platform v1.7.1 model built on the Parties Builds catalog 3c80 (4.44.13). Second, the Dapr 1.19.1 toolchain installed by domain-ci-v2.yml at 25de7a74 against the 1.18.7 catalog that Platform v1.7.1 and Builds 3c80 pin. Platform v1.7.1 PlatformPartiesRunProof refuses any mismatch between the plan it re-reads and the one it received, and any dirty or skewed checkout.",
+ "defectClass": "environment tuple skew (tool 4.45.1 and catalog 3c80 under Platform v1.7.1); a further run with the same pins would refuse identically, so it was not spent",
+ "helperExecution": {
+  "processExitCode": 3,
+  "launched": true,
+  "cancelled": false,
+  "timedOut": false,
+  "signals": [],
+  "outputParsed": true,
+  "toolOutcome": {
+   "category": "TopologyOrLifecycle",
+   "exitCode": "TopologyOrLifecycle",
+   "phase": "Topology",
+   "ruleId": "HXP020"
+  }
+ },
+ "invocation": {
+  "classification": "baseline-only",
+  "executionContext": {
+   "disposable": true,
+   "jobId": "build-and-test",
+   "kind": "ci",
+   "operatingSystem": "Linux",
+   "repository": "Hexalith/Hexalith.Parties",
+   "runnerKind": "github-hosted",
+   "workflowAttempt": 1,
+   "workflowRunId": "42593223538"
+  },
+  "profiles": [
+   "platform-package"
+  ],
+  "timeoutSeconds": 2000
+ },
+ "cleanupRecords": {
+  "cleanup-1.json": {
+   "status": "completed",
+   "jobStatus": "",
+   "processExitCode": 0,
+   "verified": true,
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   }
+  },
+  "cleanup-2.json": {
+   "status": "completed",
+   "jobStatus": "failure",
+   "processExitCode": 0,
+   "verified": true,
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   }
+  }
+ },
+ "firstOutcome": {
+  "cause": "startup-failure",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "outcome": "failed",
+  "recordedAt": "2026-11-09T09:30:21.1008004Z"
+ },
+ "cleanup": {
+  "attemptId": "2d2687288cd506313e526aefa59057f6",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "disposition": "complete",
+  "failures": [],
+  "leftoverResourceIds": [],
+  "observedAt": "2026-11-09T09:30:22.9436687Z",
+  "ownedResourceIds": [],
+  "state": "populated"
+ },
+ "observerEvidence": {
+  "traceStarted": {
+   "base": "/sys/kernel/tracing",
+   "clock": "mono",
+   "code": 0,
+   "kind": "trace-started",
+   "monoNs": 147666991360,
+   "wallNs": 1794216380525115618
+  },
+  "helperProcessRecord": {
+   "kind": "helper-process-record",
+   "monoNs": 366431427046,
+   "pid": 5304,
+   "session": 5304,
+   "startTime": "36641",
+   "wallNs": 1794216599289555503
+  },
+  "processStructure": [
+   {
+    "kind": "process-seen",
+    "pid": 5275,
+    "parent": 2046,
+    "session": 1971,
+    "role": "integration-helper",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5276,
+    "parent": 5275,
+    "session": 1971,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5294,
+    "parent": 5276,
+    "session": 1971,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5304,
+    "parent": 5275,
+    "session": 5304,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5322,
+    "parent": 5304,
+    "session": 5304,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5728,
+    "parent": 5322,
+    "session": 5304,
+    "role": "apphost",
+    "composed": true,
+    "runTagPresent": true
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5750,
+    "parent": 5275,
+    "session": 1971,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5769,
+    "parent": 5750,
+    "session": 1971,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5778,
+    "parent": 5275,
+    "session": 5778,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5796,
+    "parent": 5778,
+    "session": 5778,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5824,
+    "parent": 2046,
+    "session": 1971,
+    "role": "integration-helper",
+    "composed": false,
+    "runTagPresent": false
+   },
+   {
+    "kind": "process-seen",
+    "pid": 5825,
+    "parent": 5824,
+    "session": 1971,
+    "role": "tool-or-muxer",
+    "composed": false,
+    "runTagPresent": false
+   }
+  ],
+  "kernelSignals": [
+   "  .NET TP Worker-5344    [000] dl.3.   367.507572: signal_generate: sig=9 errno=0 code=0 comm=placement pid=5458 grp=1 res=0",
+   "  .NET TP Worker-5344    [003] dl.3.   367.546576: signal_generate: sig=9 errno=0 code=0 comm=scheduler pid=5467 grp=1 res=0"
+  ],
+  "note": "Hosted confirmation of the BS-4 process structure: the integration helper 5275 starts the gated muxer 5304, which leads its own session and matches the helper's process record. The muxer runs the tool 5322, a direct child, and the tool starts the AppHost 5728, which carries the run tag. The AppHost is therefore never a direct child of the leader. No cancellation was sent, so the only kernel signals were the tool's own SIGKILLs to placement and scheduler during its startup-failure teardown. The helper ran its exact down, and the always() finalizer ran a second one with job status failure; both verified empty inventories."
+ },
+ "checks": {
+  "helperSignalledOnlyTheMuxerAndTheTool": null,
+  "noComposedProcessSignalledFromOutsideTheRuntimeBeforeTheToolsOwnStop": null,
+  "finalizerExactDownVerifiedEmpty": null,
+  "ownedComposedResourceLiveAtSignal": false
+ },
+ "achieved": false,
+ "artifacts": {
+  "module-integration-diagnostics": {
+   "id": 13662661738,
+   "bytes": 10181,
+   "digest": "sha256:99f152e2e57f05f06ecd9bb176aee90c174fe2c659c9576f7b2123a6e0d043f1"
+  },
+  "blocking-test-results": {
+   "id": 13661863320,
+   "bytes": 1879,
+   "digest": "sha256:0a087a40bad154cef0162e1de234f248b754e19940e50dfa174cbb06b77ed899"
+  }
+ },
+ "jobLogSha256": "cbc30bdcc0bf068d8cd1e1ecde306c5894f7820466e9bf64f6bd58a24d12532f",
+ "candidateAcceptance": false
+}

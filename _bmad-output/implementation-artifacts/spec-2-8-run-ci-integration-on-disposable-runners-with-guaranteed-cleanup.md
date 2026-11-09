@@ -223,13 +223,18 @@ The owner adopted all recommendations: a **targeted fix with no revert**. Contin
     For each run, take three timestamps from durable evidence and require the first two before the third: the owner's admission-closing status write, the attachment withdrawal commit, and the first composed-resource stop. Use, for example, owned-container `docker events` and the AppHost's own signal observation. Bind both runs to exact source revisions and label them focused and baseline-only.
 
     The 2026-11-08 Parties execution-cancellation run keeps its result and label, but its withdraw-before-stop ordering is now recorded as unproven.
-- [ ] **BS-5, timeout budget: V2, H, `B/Tools/test-domain-workflow-test-platforms.ps1`.** The helper's timeout path must fire and finish inside both the step and the job.
+  - *Owner amendment, 2026-11-09 (Step 03 verification; see Spec Change Log "Loop 2 amendment"). It replaces the two hosted runs above.* The v2 execution-phase run is not achievable as written. Parties v2 native tests are live for about 11 s after about 163 s of startup (CI 42479678863: readiness 12:32:02.0Z, terminal 12:32:13.5Z). Lengthening them changes the suite inputs, which the package profile refuses with HXP020 (attempt 42587081454). Builds v4.45.1 (`25de7a74`, which contains `bde7fd4f` with an unchanged helper and v2 workflow) is now released, so the remaining BS-4 hosted proof is:
+    - **L rerun:** `cancel-execution` with an active same-job hold, on a Parties proof branch based on `4c0167b8`. The branch adopts v4.45.1 for both the pinned tool and the `references/Hexalith.Builds` gitlink. It must exercise the patched Q, the patched H finalizer and the loop-1 runtime. Apply the same three-timestamp rule and kernel-signal origin check as run 42587199919.
+    - **V2 late-startup run:** a Parties proof caller of `domain-ci-v2.yml` at v4.45.1, pinning tool 4.45.1, with unchanged suite and test inputs. A kernel-signal observer is started from the caller's prepare script, not from a test change. Exactly one cancellation is sent, after the ready check: the "Runner-owned package integration" step is in progress and its age has reached a target chosen from retained startup timelines so that the AppHost, DCP and at least one owned container are live before readiness. Durable evidence must show that the helper signalled only the gated muxer and the tool, that no composed process was signalled from outside the runtime before the tool's own stop, and that the always() finalizer's exact down verified empty inventories. If the evidence shows no owned composed resource existed at signal time, the run counts as not achieved; one further run is allowed.
+    - Execution-phase v2 ordering is covered by the L run, which applies the same tool-only rule to the same muxer-and-tool process structure, plus the local H process-level test.
+    - Each run gets one audited cancellation, uses proof branches only (deleted afterwards), and is labelled focused and baseline-only. This is no pin change on `main`.
+- [x] **BS-5, timeout budget: V2, H, `B/Tools/test-domain-workflow-test-platforms.ps1`.** The helper's timeout path must fire and finish inside both the step and the job.
   - Derive the helper timeout from the time actually left in the job when the integration step starts. Also keep it below the step `timeout-minutes`. Reserve every bounded wait on the timeout path: the pre-launch `verify_tool`, `TIMEOUT_STOP_SECONDS` plus the post-kill wait, session termination, the finalize-time `verify_tool`, the exact down and the 4-minute finalizer step.
   - If the remaining time cannot hold the minimum helper timeout, refuse before allocation.
   - Keep `build-timeout-minutes`, its default of 45 and every other original budget unchanged (loop-1 KEEP).
   - The validator must compute the budget from the helper's own constants rather than hard-coded numbers.
-- [ ] **BS-2b, S Dapr digests and credentials.** Apply the BS-2 digest verification from L, before any extraction, to S's Dapr CLI and runtime archives. Also apply the PA-20 credential scoping to S: no `DOCKER_CONFIG` or registry config exported through `GITHUB_ENV`. Add executed refusal tests in the Parties suite.
-- [ ] **Patches (PB-1 to PB-16, from the Review Triage Log, iteration 1):**
+- [x] **BS-2b, S Dapr digests and credentials.** Apply the BS-2 digest verification from L, before any extraction, to S's Dapr CLI and runtime archives. Also apply the PA-20 credential scoping to S: no `DOCKER_CONFIG` or registry config exported through `GITHUB_ENV`. Add executed refusal tests in the Parties suite.
+- [x] **Patches (PB-1 to PB-16, from the Review Triage Log, iteration 1):**
   - PB-1, Parties `scripts/verify-public-package-integration.py` and `scripts/verify-current-owner-integration.py`: accept the new helper's integer `timeoutSeconds` in `invocation.json`, and nothing else new. Add tests built on real new-helper output.
   - PB-2, H `exact_down` and `finalize`: a failure to write a cleanup record never prevents the exact down. Run it, then record on a best-effort basis, and keep the result non-success if recording failed.
   - PB-3, helper tests: cover the cancellation escalation with a tool that ignores SIGINT and SIGTERM (patched small constants), and the second-signal SIGTERM.
@@ -254,7 +259,7 @@ The owner adopted all recommendations: a **targeted fix with no revert**. Contin
     - L: correct the reader-file comment;
     - `docs/contracts/test-environment-v1.md`: list the exact current HXR035 reason strings.
   - PB-16: covered by BS-2b.
-- [ ] **Verification (loop 2):**
+- [x] **Verification (loop 2):**
   - Run the focused Builds xUnit lifecycle classes, the helper and provenance Python suites, both validator modes, the Parties ci-lifecycle suite and its integration-script tests, and compile the Platform composition tests.
   - Every changed behavior needs an executed passing test.
   - Re-run the six-row index for the touched rows.
@@ -328,6 +333,54 @@ There were no merges, `main` pushes, tags, publications or pin changes. Every re
   - **L refuses until Parties adopts a Builds release that carries `Props/dapr-toolchain-sha256.json`.** This is fail-closed by design.
   - **Task 134 and normal PR delivery** of Builds, Parties and Platform wait for Step 04. Parties `main` is still red from external commits: `f2570a7a` (CI 42532583143) now fails HXW010 because its tool, 4.44.13, is below the Platform range `[4.45.0, 5.0.0-0)`. A `/pushall` must not merge either fix branch.
 
+### Execution record — 2026-11-09 review loop 2
+
+This run executed the *Review loop 2 tasks* under the remote-operation authorization above. Remote actions:
+
+- fast-forward pushes to Builds PR #177;
+- one Parties fix-branch push;
+- proof-branch pushes and dispatches, each followed by deleting the proof branch;
+- exactly one audited cancellation request in the one run that reached its ready check.
+
+This loop made no merges, `main` pushes, tags, publications or pin changes. Every result is `baseline-only`. The records are in [review-loop-2-20261109](evidence/2-8/review-loop-2-20261109/) and are summarized in the [evidence README](evidence/2-8/README.md).
+
+- **External delivery, not by this loop:** an external `/pushall` under the owner account did both of the following.
+  - It merged PR #177 into Builds `main` (`494c96a9`, 08:13Z).
+  - It committed and pushed this Platform working tree as `6381fd6f` (08:39Z). That commit carries the loop-1 and PB-9 edits, and its tuple-CI preflight failed in the legacy lane.
+
+  Both are outside this run's authority and are reported, not repaired.
+- **Builds** `b411bafb` → `95b65d45` → `54970a7a` → `bde7fd4f`:
+  - BS-4 tool-only signals and the finalizer's owned-process exclusion;
+  - BS-5 derived budget;
+  - PB-2 to PB-6, PB-12 to PB-15;
+  - Codacy docstring and suppression fixes.
+
+  Every PR check passes at `bde7fd4f`.
+- **Parties** `2849c5b4` → `4c0167b8`: the Q part of BS-4, BS-2b, PB-1, PB-7, PB-8, PB-10, PB-11 and the L part of PB-15.
+- **Platform:** PB-9 (the test observes the composed preparation through a read-only accessor), and PB-15 plus the BS-4 limit in the contract.
+- **Local checks:**
+  - 232 Python tests with 626 subtests (11 new helper controls);
+  - the validator, legacy 411 and v2 302 assertions;
+  - 351/351 focused xUnit cases;
+  - Parties 95/95 and 46/46, with the pinned and the patched helper;
+  - the Platform composition tests compile.
+
+  The new controls fail against the previous sources, except the PB-3 escalation coverage.
+- **BS-4 hosted proofs:**
+  - Lifecycle cancel-execution [42587199919](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42587199919) passed the ordering rule. The admission-closing write (08:59:34.220Z) and the withdrawal commit (08:59:34.463Z) both came before the first composed-environment stop (08:59:34.662Z), and inventories ended empty. It exercised the controller with the pinned 4.44.13 tool and the `3c80` helper.
+  - The v2 execution-cancellation proof was not achieved. Two attempts failed on HTTP 504 Dapr downloads, and one on HXP020 because the proof instrumentation changed the suite inputs. No cancellation was sent.
+  - Two lifecycle setup attempts also failed before any owner existed: HXW009 under the Platform Builds pin, and HXT007 after a submodule overlay.
+- **Still open:**
+  - BS-4 stays unticked. The owner amendment's two v4.45.1 proofs both ran, and neither reached a cancellation:
+    - Lifecycle rerun 42593229291 was refused with HXW009 and HXW007. The staged Builds `25de7a74` must equal the Platform `0f4e27f1` pin `3c80`, and no Platform release pins v4.45.1.
+    - v2 late-startup run 42593223538 had unchanged test inputs. HXP020 refused it 0.2 s after the AppHost started, before the 130 s ready point. The likely cause is tool 4.45.1 and Dapr 1.19.1 against the Platform `0f4e27f1`/Builds `3c80` tuple.
+    - Its kernel trace still confirmed the process structure the tool-only signals rely on: the muxer leads the session, the tool is its child, and the tagged AppHost is the tool's child. The only signals were the tool's own, and both downs verified empty inventories.
+    - Neither run had a live owned resource at a signal time, so the further run allowed by the amendment was not spent. It would be refused the same way.
+    - Either proof needs a Platform release that pins Builds v4.45.1, which is a pin change outside this boundary, or an owner decision to run v2 with tool 4.44.13.
+  - Step 04 should rule on one observation: the tool SIGKILLed its own native test host (08:59:34.138–.203Z) before the admission-closing and withdrawal marks.
+  - PB-9 execution remains a gate for Platform L/M delivery.
+  - Delivery waits for Step 04: Task 134, adoption of a Builds release with the digest file, Parties PR delivery, and a repair of the externally pushed Platform tuple.
+
 ### Resume entry point
 
 Read this active spec plus its frontmatter contexts, inspect the actual workspace and required original receipts, then perform the one-time input inventory. Do not restart old monitors, replay completed merges/cancellations, assume a run still active or resume a stale archive-reading queue. No runtime process or remote campaign was started by this course correction. The historical handoff is supporting evidence, not the current task list.
@@ -391,6 +444,14 @@ Read this active spec plus its frontmatter contexts, inspect the actual workspac
   - Parties PA-16 to PA-23;
   - the two loop-1 hosted v2 proofs, with their labels;
   - the 2026-11-08 Parties runs, with their results and labels. Their withdraw-before-stop ordering is now recorded as unproven, because Q signalled the whole group.
+
+### Loop 2 amendment — 2026-11-09 (Step 03 verification → BS-4 hosted-proof scope)
+
+- **Trigger:** Step 03 verification of loop 2 found BS-4's v2 execution-phase hosted run unachievable as written. The native window lasts about 11 s after about 163 s of startup. Changing the suite inputs is refused (HXP020). Three attempts sent no cancellation: two hit HTTP 504 on Dapr downloads, one HXP020. The passing L run 42587199919 exercised the patched Q only, with tool 4.44.13 and helper `3c80`.
+- **New fact:** an external session released Builds v4.45.1 from `main` `25de7a74` at 09:09:57Z. That `main` carries PR #177 (`bde7fd4f`), merged externally at 08:13Z. This removes the tool and gitlink mismatch that blocked the L rerun on patched Builds (HXW009, HXT007).
+- **Owner decision:** adopt both recommendations. Rerun L `cancel-execution` on v4.45.1, and run one v2 late-startup cancellation on v4.45.1 with a kernel-signal observer and unchanged test inputs. Execution-phase v2 ordering is covered by L's identical tool-only rule plus the local H process-level test. The BS-4 task carries the exact amended requirement.
+- **Known-bad states:** changing Parties suite or test inputs for a proof; more than one cancellation per run; a cancellation before the ready check; treating a run that had no live owned composed resource as the v2 proof.
+- **KEEP:** everything in loop 2's KEEP list; run 42587199919 with its result and label; the three failed v2 attempts and the two failed L setup attempts, as recorded.
 
 ## Review Triage Log
 

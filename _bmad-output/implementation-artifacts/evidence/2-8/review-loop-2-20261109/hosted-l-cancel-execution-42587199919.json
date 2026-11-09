@@ -1,0 +1,652 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 hosted proof; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "b00e60a69ace273150c133665dd42488841eb7d5",
+   "branch": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f-attempt-3",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+   "namedInJobLog": true
+  }
+ },
+ "run": {
+  "id": 42587199919,
+  "run_attempt": 1,
+  "event": "workflow_dispatch",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-09T08:36:40Z",
+  "updated_at": "2026-11-09T08:59:46Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42587199919",
+  "path": ".github/workflows/ci-lifecycle-qualification.yml"
+ },
+ "job": {
+  "id": 129066791038,
+  "name": "qualification",
+  "conclusion": "cancelled"
+ },
+ "steps": {
+  "Set up job": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:54:27Z",
+   "completed_at": "2026-11-09T08:54:28Z"
+  },
+  "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:54:28Z",
+   "completed_at": "2026-11-09T08:54:31Z"
+  },
+  "Initialize only direct owner dependencies": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:54:31Z",
+   "completed_at": "2026-11-09T08:55:00Z"
+  },
+  "Test the lifecycle controller before any service": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:00Z",
+   "completed_at": "2026-11-09T08:55:08Z"
+  },
+  "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:08Z",
+   "completed_at": "2026-11-09T08:55:09Z"
+  },
+  "Prepare the actual pinned package tool and catalog": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:09Z",
+   "completed_at": "2026-11-09T08:55:21Z"
+  },
+  "Build the explicit declared lifecycle suite": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:21Z",
+   "completed_at": "2026-11-09T08:55:37Z"
+  },
+  "Read verified catalog toolchain versions": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:37Z",
+   "completed_at": "2026-11-09T08:55:37Z"
+  },
+  "Restore verified Aspire runtime packages in this job": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:37Z",
+   "completed_at": "2026-11-09T08:55:44Z"
+  },
+  "Install toolchain without provisioning services": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:44Z",
+   "completed_at": "2026-11-09T08:55:53Z"
+  },
+  "Configure only the dedicated pull reader": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:53Z",
+   "completed_at": "2026-11-09T08:55:53Z"
+  },
+  "Exercise real passing failing partial-startup and exact retry scenarios": {
+   "conclusion": "skipped",
+   "started_at": "2026-11-09T08:55:53Z",
+   "completed_at": "2026-11-09T08:55:53Z"
+  },
+  "Observe actual startup cancellation readiness": {
+   "conclusion": "skipped",
+   "started_at": "2026-11-09T08:55:53Z",
+   "completed_at": "2026-11-09T08:55:53Z"
+  },
+  "Start the Story 2.8 proof event observer": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:53Z",
+   "completed_at": "2026-11-09T08:55:53Z"
+  },
+  "Observe actual execution cancellation readiness and active hold": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:55:53Z",
+   "completed_at": "2026-11-09T08:59:28Z"
+  },
+  "Publish the actual ready owner before operator cancellation": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:28Z",
+   "completed_at": "2026-11-09T08:59:29Z"
+  },
+  "Await parent cancellation of this exact ready run": {
+   "conclusion": "cancelled",
+   "started_at": "2026-11-09T08:59:29Z",
+   "completed_at": "2026-11-09T08:59:34Z"
+  },
+  "Independently finalize every exact same-job owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:34Z",
+   "completed_at": "2026-11-09T08:59:40Z"
+  },
+  "Remove the private reader file": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:40Z",
+   "completed_at": "2026-11-09T08:59:40Z"
+  },
+  "Retain classified lifecycle observations": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:40Z",
+   "completed_at": "2026-11-09T08:59:41Z"
+  },
+  "Wait for the Story 2.8 proof observer flush": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:41Z",
+   "completed_at": "2026-11-09T08:59:43Z"
+  },
+  "Capture the Story 2.8 proof tool diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:43Z",
+   "completed_at": "2026-11-09T08:59:43Z"
+  },
+  "Retain the Story 2.8 proof event observations": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:43Z",
+   "completed_at": "2026-11-09T08:59:44Z"
+  },
+  "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68": {
+   "conclusion": "skipped",
+   "started_at": "2026-11-09T08:59:44Z",
+   "completed_at": "2026-11-09T08:59:44Z"
+  },
+  "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:44Z",
+   "completed_at": "2026-11-09T08:59:44Z"
+  },
+  "Complete job": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:59:44Z",
+   "completed_at": "2026-11-09T08:59:44Z"
+  }
+ },
+ "cancellation": {
+  "requestedAtUtc": "2026-11-09T08:59:31.466553+00:00",
+  "run": 42587199919,
+  "attempt": 1,
+  "source": "b00e60a69ace273150c133665dd42488841eb7d5",
+  "branch": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f-attempt-3",
+  "phase": "execution",
+  "jobId": 129066791038,
+  "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+  "artifactId": 13659869580,
+  "actualReadyAgeSecondsImmediatelyBeforeRequest": 2.8145890000000002,
+  "actualFinalWholeToolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42587199919/cancel",
+  "responseStatusLine": "HTTP/2.0 202 Accepted",
+  "requestsForThisRun": 1
+ },
+ "timestamps": {
+  "admissionClosingStatusWrite": {
+   "utc": "2026-11-09T08:59:34.219557+00:00",
+   "source": "test-result.json terminal.recordedAt (first outcome cancelled)",
+   "observedOwnerStatus": [
+    {
+     "utc": "2026-11-09T08:59:34.333014+00:00",
+     "status": "Ready",
+     "terminalStatus": "cancelled"
+    },
+    {
+     "utc": "2026-11-09T08:59:34.499691+00:00",
+     "status": "Cancelled",
+     "terminalStatus": "cancelled"
+    }
+   ]
+  },
+  "attachmentWithdrawalCommit": {
+   "utc": "2026-11-09T08:59:34.462918+00:00",
+   "source": "attachment-withdrawals.json endedAtUtc and the observed commit (file mtime)",
+   "endedAtUtc": [
+    "2026-11-09T08:59:34.449397+00:00"
+   ],
+   "observedCommitUtc": "2026-11-09T08:59:34.462918+00:00",
+   "attachments": [
+    {
+     "acceptedAtUtc": "2026-11-09T08:59:28.3776976+00:00",
+     "attachedRunId": "8a2d431eb9833f696f8d6bc714613f9b",
+     "effectiveHoldSeconds": 240,
+     "endReason": "ci-job-cancelled",
+     "endedAtUtc": "2026-11-09T08:59:34.4493971+00:00",
+     "environmentId": "7b578d7dcc49b59b835885a8df922225",
+     "expiresAtUtc": "2026-11-09T09:03:28.3776976+00:00",
+     "originalAttachmentRequestId": "1ab3cd2478ee00531a604f6c2054756d",
+     "outcome": "withdrawn",
+     "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+     "requestedHoldSeconds": 240
+    }
+   ]
+  },
+  "firstComposedResourceStop": {
+   "utc": "2026-11-09T08:59:34.662319+00:00",
+   "source": "environment-process-exit",
+   "detail": {
+    "pid": 5248,
+    "role": "apphost"
+   },
+   "rule": "Refine one ordering audit from its retained primary data.\n\nT3 counts only stops of the composed environment after the single cancellation request: the AppHost, DCP, daprd and\nservice processes, sidecars, and owned containers. The owner's native test execution (the tool's own non-AppHost child\nprocess subtree) is reported separately. Transient helper exits (processes seen for less than 30 s) are not resource\nstops.",
+   "firstEnvironmentKernelSignal": {
+    "utc": "2026-11-09T08:59:34.795252+00:00",
+    "wallNs": 1794214774795251838,
+    "signal": 15,
+    "targetPid": 8573,
+    "targetComm": "dcp",
+    "targetRole": "dcp",
+    "senderComm": "dcp",
+    "senderPid": 10879
+   },
+   "firstOwnedContainerStopAfterRequest": {
+    "utc": "2026-11-09T08:59:34.804304+00:00",
+    "action": "kill",
+    "container": "4c7ebb38c235",
+    "name": "tunnel-proxy-d7750fba-e029-452a-a886-a91fe7a86790"
+   },
+   "firstLongLivedEnvironmentExitAfterRequest": {
+    "utc": "2026-11-09T08:59:34.662319+00:00",
+    "pid": 5248,
+    "role": "apphost"
+   }
+  }
+ },
+ "orderingVerdict": {
+  "rule": "admission-closing write and withdrawal commit both strictly before the first composed-environment stop after the request",
+  "passed": true,
+  "marginsMs": {
+   "firstStopMinusAdmissionClosing": 442.761561,
+   "firstStopMinusWithdrawalCommit": 199.400561
+  }
+ },
+ "composedProcessesObserved": [
+  "Hexalith.Builds.Module.EventStoreHost",
+  "Hexalith.Parties.Platform.LifecycleTests",
+  "apphost",
+  "catatonit",
+  "csc",
+  "daprd",
+  "dcp",
+  "docker",
+  "docker-buildx",
+  "dotnet",
+  "git",
+  "native-test-host",
+  "podman"
+ ],
+ "ownedContainersCreated": 14,
+ "firstOutcome": {
+  "cause": "run-cancelled",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "outcome": "cancelled",
+  "recordedAt": "2026-11-09T08:59:34.2195566Z"
+ },
+ "cleanup": {
+  "attemptId": "944aa35ef0723fe1c1b2ad7e4b48d749",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "disposition": "complete",
+  "failures": [],
+  "leftoverResourceIds": [],
+  "observedAt": "2026-11-09T08:59:40.3306101Z",
+  "ownedResourceIds": [
+   "resource:dapr-placement-mtls",
+   "resource:dapr-scheduler-mtls",
+   "resource:dapr-sentry",
+   "resource:eventstore",
+   "resource:eventstore-dapr-cli",
+   "resource:memories",
+   "resource:memories-access-telemetry",
+   "resource:memories-access-telemetry-clock",
+   "resource:memories-access-telemetry-clock-dapr-cli",
+   "resource:memories-access-telemetry-dapr-cli",
+   "resource:memories-dapr-cli",
+   "resource:memories-domain-service",
+   "resource:memories-domain-service-dapr-cli",
+   "resource:memories-graph",
+   "resource:memories-vectors",
+   "resource:parties",
+   "resource:parties-dapr-cli",
+   "resource:redis",
+   "resource:tenants",
+   "resource:tenants-api",
+   "resource:tenants-api-dapr-cli",
+   "resource:tenants-dapr-cli"
+  ],
+  "state": "populated"
+ },
+ "jobLogSha256": "3cbd751eefb3b770bb2ca71a32767e619a72f5134e74c0a5c5c235dee8e61c3f",
+ "artifacts": {
+  "module-integration-diagnostics": {
+   "id": 13661180292,
+   "bytes": 12797,
+   "digest": "sha256:8df2ea346d41d75f29c2617b1cba9d6834d0a80cee6ebb1e873cb8c0bc481226"
+  },
+  "blocking-test-results": {
+   "id": 13661075612,
+   "bytes": 944053,
+   "digest": "sha256:9a05cfc2dba153c3fef22edac70c2939e9139a1b4ec9381d728b027653436419"
+  },
+  "story-2-8-proof-observer": {
+   "id": 13660861730,
+   "bytes": 49993,
+   "digest": "sha256:14ae0ddd4584eae7b86b9a58d94d916d3d6289b251375552d52241cac4f08b06"
+  },
+  "ci-lifecycle-observations": {
+   "id": 13660039033,
+   "bytes": 15748,
+   "digest": "sha256:bd7eec02681ef67602d73e668a7b682aa22afe8a43129badae87450495583af4"
+  },
+  "lifecycle-cancellation-ready": {
+   "id": 13659869580,
+   "bytes": 7202,
+   "digest": "sha256:053285df2dab1f62e30add7ff8adb1dc6f61cadb55725cfdb354190e50eab8d1"
+  }
+ },
+ "candidateAcceptance": false,
+ "finalizer": {
+  "diagnostics": [
+   {
+    "category": "None",
+    "field": "ci-job-cancelled",
+    "hint": null,
+    "location": null,
+    "message": "Attached runs withdrawn (ci-job-cancelled): 8a2d431eb9833f696f8d6bc714613f9b.",
+    "phase": "Cleanup",
+    "row": null,
+    "ruleId": "HXI011",
+    "source": null
+   },
+   {
+    "category": "None",
+    "field": "down",
+    "hint": null,
+    "location": null,
+    "message": "Runner-owned invocation cleanup completed.",
+    "phase": "Cleanup",
+    "row": null,
+    "ruleId": "HXI001",
+    "source": null
+   }
+  ],
+  "outcome": {
+   "category": "None",
+   "exitCode": "Success",
+   "phase": "None",
+   "ruleId": null
+  },
+  "remainingResources": {
+   "claimIds": [],
+   "containerIds": [],
+   "discoveryFailures": [],
+   "isEmpty": true,
+   "processIds": [],
+   "resourceIds": [],
+   "unverified": false,
+   "workspaceIds": []
+  },
+  "runId": "b57aee05251302b7cc4ad8693952c662",
+  "status": "completed",
+  "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/b57aee05251302b7cc4ad8693952c662/test-result.json"
+ },
+ "controllerObservations": [
+  {
+   "exitCode": 0,
+   "kind": "cancellation-active-hold",
+   "observedAtUtc": "2026-11-09T08:59:28.650030+00:00",
+   "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+   "result": {
+    "attachment": {
+     "acceptedAtUtc": "2026-11-09T08:59:28.3776976+00:00",
+     "attachedRunId": "8a2d431eb9833f696f8d6bc714613f9b",
+     "effectiveHoldSeconds": 240,
+     "endReason": null,
+     "endedAtUtc": null,
+     "environmentId": "7b578d7dcc49b59b835885a8df922225",
+     "expiresAtUtc": "2026-11-09T09:03:28.3776976+00:00",
+     "originalAttachmentRequestId": "1ab3cd2478ee00531a604f6c2054756d",
+     "outcome": null,
+     "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+     "requestedHoldSeconds": 240
+    },
+    "diagnostics": [],
+    "outcome": {
+     "category": "None",
+     "exitCode": "Success",
+     "phase": "None",
+     "ruleId": null
+    },
+    "status": "attached"
+   }
+  },
+  {
+   "kind": "actual-cancellation-state-snapshot",
+   "observedAtUtc": "2026-11-09T08:59:33.995414+00:00",
+   "snapshot": {
+    "admission": {
+     "acceptedAtUtc": "2026-11-09T08:59:28.3776976+00:00",
+     "attachedRunId": "8a2d431eb9833f696f8d6bc714613f9b",
+     "effectiveHoldSeconds": 240,
+     "endReason": null,
+     "endedAtUtc": null,
+     "environmentId": "7b578d7dcc49b59b835885a8df922225",
+     "expiresAtUtc": "2026-11-09T09:03:28.3776976+00:00",
+     "originalAttachmentRequestId": "1ab3cd2478ee00531a604f6c2054756d",
+     "outcome": null,
+     "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+     "requestedHoldSeconds": 240
+    },
+    "attemptId": "7a3f2a3d8601c96477b3bc7ba26c7f0d",
+    "environmentId": "7b578d7dcc49b59b835885a8df922225",
+    "executionContext": {
+     "disposable": true,
+     "jobId": "qualification",
+     "kind": "ci",
+     "operatingSystem": "Linux",
+     "repository": "Hexalith/Hexalith.Parties",
+     "runnerKind": "github-hosted",
+     "workflowAttempt": 1,
+     "workflowRunId": "42587199919"
+    },
+    "firstOutcome": null,
+    "nativeExecution": {
+     "birth": "30380",
+     "processId": 11619
+    },
+    "observedAtUtc": "2026-11-09T08:59:33.993460+00:00",
+    "readStartedAtUtc": "2026-11-09T08:59:33.990380+00:00",
+    "runId": "b57aee05251302b7cc4ad8693952c662",
+    "stateTestTerminal": null,
+    "stateUpdatedAtUtc": "2026-11-09T08:59:03.764869+00:00",
+    "status": "Ready"
+   }
+  },
+  {
+   "kind": "external-cancellation-signal",
+   "observedAtUtc": "2026-11-09T08:59:34.000948+00:00",
+   "signals": [
+    {
+     "observedAtUtc": "2026-11-09T08:59:33.803245+00:00",
+     "signal": 2
+    }
+   ],
+   "terminalBeforeSignalForward": null
+  },
+  {
+   "kind": "owned-process-signal",
+   "observedAtUtc": "2026-11-09T08:59:34.023020+00:00",
+   "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+   "pid": 3782,
+   "signal": 2,
+   "toolProcessIds": [
+    3782,
+    3801
+   ]
+  },
+  {
+   "allocationStatus": "allocated",
+   "candidateAcceptance": false,
+   "failures": [],
+   "issuedOwners": 1,
+   "issuedOwnersCleanupVerified": true,
+   "kind": "finalizer-result",
+   "observedAtUtc": "2026-11-09T08:59:40.420618+00:00"
+  }
+ ],
+ "nativeTestExecution": {
+  "note": "The tool stops its own native test execution when it is cancelled. That is the owner's test process, outside the composed environment, and this proof does not count it as a composed-resource stop. It is recorded here, with its order, for review.",
+  "firstSignalAfterRequest": {
+   "utc": "2026-11-09T08:59:34.138337+00:00",
+   "wallNs": 1794214774138336838,
+   "signal": 9,
+   "targetPid": 11395,
+   "targetComm": "dotnet",
+   "targetRole": "dotnet",
+   "senderComm": ".NET TP Worker",
+   "senderPid": 12400
+  },
+  "beforeAdmissionClosingWrite": true,
+  "beforeWithdrawalCommit": true,
+  "senders": [
+   ".NET TP Worker"
+  ]
+ },
+ "signalOriginCheck": {
+  "toolProcessIds": [
+   3782,
+   3801
+  ],
+  "signalsToToolAfterRequest": [
+   {
+    "utc": "2026-11-09T08:59:34.022852+00:00",
+    "signal": 2,
+    "targetPid": 3782,
+    "targetComm": "dotnet",
+    "senderComm": "<...>",
+    "senderPid": 12338
+   },
+   {
+    "utc": "2026-11-09T08:59:34.022989+00:00",
+    "signal": 2,
+    "targetPid": 3801,
+    "targetComm": "dotnet",
+    "senderComm": "python3",
+    "senderPid": 12338
+   }
+  ],
+  "signalsToComposedFromOutsideTheRuntime": [],
+  "firstEnvironmentSignals": [
+   {
+    "utc": "2026-11-09T08:59:34.795252+00:00",
+    "signal": 15,
+    "targetComm": "dcp",
+    "targetRole": "dcp",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.101493+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.106401+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.110628+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.120007+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.165171+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.190909+00:00",
+    "signal": 15,
+    "targetComm": "daprd",
+    "targetRole": "daprd",
+    "senderComm": "dcp"
+   },
+   {
+    "utc": "2026-11-09T08:59:35.267685+00:00",
+    "signal": 9,
+    "targetComm": "catatonit",
+    "targetRole": "catatonit",
+    "senderComm": ".NET TP Worker"
+   }
+  ]
+ },
+ "classification": {
+  "environmentProcesses": 443,
+  "nativeExecutionProcesses": 12,
+  "ownedContainerStopsAfterRequest": 40
+ },
+ "attempt": "attempt 3 of run 2 (granted by the parent); attempts 42583201444 and 42584756093 stay recorded as failed",
+ "exercises": {
+  "statement": "This run exercises Parties 4c0167b8 controller tool-only signalling with the pinned tool 4.44.13 and the pinned Builds 3c80 helper. It does not exercise the Builds bde7fd4f helper. references/Hexalith.Builds stayed at the 3c80 gitlink with a clean working tree. Only the lifecycle workflow read the Dapr archive digests, from proof copy proof/story-2-8/dapr-toolchain-sha256.json, which is byte-identical to Builds bde7fd4f Props/dapr-toolchain-sha256.json (SHA-256 1daa76804f7539ac9df0b311de71163b645dbccefd0b86f9ef29baf7c7882474, checked in the step).",
+  "tool": "hexalith.builds.module.cli 4.44.13 (.config/dotnet-tools.json SHA-256 31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550)",
+  "controllerHelper": "Builds 3c8096180ecf2aa539ac454815efbfceb8a92822 (pinned, unmodified)",
+  "digestData": "Builds bde7fd4f875ae147c0631b97c349ef9b73561ed4 Props/dapr-toolchain-sha256.json, proof copy"
+ },
+ "dispatch": {
+  "schema": "hexalith.story-2-8.dispatch-receipt.v1",
+  "scenario": "cancel-execution",
+  "requestedAtUtc": "2026-11-09T08:36:37.200642+00:00",
+  "responseReceivedAtUtc": "2026-11-09T08:36:38.993774+00:00",
+  "httpStatusLine": "HTTP/2.0 204 No Content",
+  "endpoint": "POST repos/Hexalith/Hexalith.Parties/actions/workflows/406038512/dispatches",
+  "ref": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f-attempt-3",
+  "inputs": {
+   "scenario": "cancel-execution"
+  },
+  "run": {
+   "id": 42587199919,
+   "run_attempt": 1,
+   "head_sha": "b00e60a69ace273150c133665dd42488841eb7d5",
+   "head_branch": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f-attempt-3",
+   "event": "workflow_dispatch",
+   "path": ".github/workflows/ci-lifecycle-qualification.yml",
+   "created_at": "2026-11-09T08:36:40Z",
+   "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42587199919"
+  },
+  "repository": "Hexalith/Hexalith.Parties",
+  "candidateAcceptance": false
+ },
+ "readyAuditBeforeCancel": {
+  "auditedAtUtc": "2026-11-09T08:59:31.464691+00:00",
+  "source": "b00e60a69ace273150c133665dd42488841eb7d5",
+  "runId": 42587199919,
+  "attempt": 1,
+  "jobId": 129066791038,
+  "artifactId": 13659869580,
+  "archiveSha256": "053285df2dab1f62e30add7ff8adb1dc6f61cadb55725cfdb354190e50eab8d1",
+  "phase": "execution",
+  "ownerRunId": "b57aee05251302b7cc4ad8693952c662",
+  "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+  "readinessAgeSeconds": 2.812727,
+  "scope": "Fresh immutable readiness plus active controller wait; actual signal-time phase/PID/hold and cleanup still require the final runner observations.",
+  "cancelRequested": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+ },
+ "privateRoot": "/home/administrator/.cache/hexalith/story-2-8/review-loop-2-20261109/actual-42587199919-execution"
+}

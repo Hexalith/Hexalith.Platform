@@ -1,0 +1,178 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "attempt": "failed-before-cancellation (attempt 3, granted by the parent)",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+   "branch": "proof/story-2-8-v2-exec-cancel-bde7fd4f-attempt-3",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+   "namedInJobLog": true
+  }
+ },
+ "run": {
+  "id": 42587081454,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T08:35:41Z",
+  "updated_at": "2026-11-09T08:40:54Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42587081454",
+  "path": ".github/workflows/story-2-8-v2-exec-cancel-proof.yml"
+ },
+ "job": {
+  "id": 129059356491,
+  "name": "ci / build-and-test",
+  "conclusion": "failure"
+ },
+ "steps": {
+  "Validate declared integration inputs": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:35:48Z",
+   "completed_at": "2026-11-09T08:35:48Z"
+  },
+  "Prepare integration binaries": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:40:09Z",
+   "completed_at": "2026-11-09T08:40:17Z"
+  },
+  "Runner-owned package integration": {
+   "conclusion": "failure",
+   "started_at": "2026-11-09T08:40:18Z",
+   "completed_at": "2026-11-09T08:40:44Z"
+  },
+  "Finalize exact CI owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:40:44Z",
+   "completed_at": "2026-11-09T08:40:48Z"
+  },
+  "Upload classified integration diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T08:40:48Z",
+   "completed_at": "2026-11-09T08:40:49Z"
+  }
+ },
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "The integration step failed 26 s after it started, before the 480 s cancellation point; the watcher never sent a request."
+ },
+ "cause": "The pinned tool 4.44.13 refused the owner at startup with HXP020: \"The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs.\" The proof-only instrumentation changed the platform-package test inputs: it added a long-running native test and raised the suite execution timeout. That change is incompatible with a package-profile run. No resources were started.",
+ "defectClass": "instrumentation defect of the proof design (third attempt); stopped as instructed",
+ "invocation": {
+  "classification": "baseline-only",
+  "executionContext": {
+   "disposable": true,
+   "jobId": "build-and-test",
+   "kind": "ci",
+   "operatingSystem": "Linux",
+   "repository": "Hexalith/Hexalith.Parties",
+   "runnerKind": "github-hosted",
+   "workflowAttempt": 1,
+   "workflowRunId": "42587081454"
+  },
+  "profiles": [
+   "platform-package"
+  ],
+  "timeoutSeconds": 2000
+ },
+ "helperExecution": {
+  "processExitCode": 3,
+  "launched": true,
+  "cancelled": false,
+  "timedOut": false,
+  "signals": [],
+  "outputParsed": true,
+  "toolOutcome": {
+   "category": "TopologyOrLifecycle",
+   "exitCode": "TopologyOrLifecycle",
+   "phase": "Topology",
+   "ruleId": "HXP020"
+  },
+  "toolRuleText": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagn"
+ },
+ "cleanupRecords": {
+  "cleanup-1.json": {
+   "status": "completed",
+   "jobStatus": "",
+   "processExitCode": 0,
+   "verified": true,
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   }
+  },
+  "cleanup-2.json": {
+   "status": "completed",
+   "jobStatus": "failure",
+   "processExitCode": 0,
+   "verified": true,
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   }
+  }
+ },
+ "firstOutcome": {
+  "cause": "startup-failure",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "outcome": "failed",
+  "recordedAt": "2026-11-09T08:40:43.3387329Z"
+ },
+ "cleanup": {
+  "attemptId": "a0f72fffc6afcf09ad2409feaacda52a",
+  "diagnosticIds": [
+   "lifecycle"
+  ],
+  "disposition": "complete",
+  "failures": [],
+  "leftoverResourceIds": [],
+  "observedAt": "2026-11-09T08:40:47.3706991Z",
+  "ownedResourceIds": [],
+  "state": "populated"
+ },
+ "incidentalObservations": {
+  "derivedHelperTimeoutSeconds": 2000,
+  "kernelSignalsDuringStartupFailure": [
+   "  .NET TP Worker-5375    [003] dl.3.   293.869169: signal_generate: sig=9 errno=0 code=0 comm=placement pid=5496 grp=1 res=0",
+   "  .NET TP Worker-5378    [003] dl.3.   293.910593: signal_generate: sig=9 errno=0 code=0 comm=scheduler pid=5506 grp=1 res=0"
+  ],
+  "note": "The derived 2,000-second timeout was the step-limited value under the 60-minute proof job. The helper ran its own exact down with an empty job status, and the always() finalizer ran a second exact down with job status failure; both verified empty inventories. The only kernel signals were SIGKILLs sent by the tool's own threads to the placement and scheduler processes during its startup-failure teardown; none came from the helper."
+ },
+ "artifacts": {
+  "module-integration-diagnostics": {
+   "id": 13660031087,
+   "bytes": 9486,
+   "digest": "sha256:fa6681add8592230c1cafaaa7317337213b5469e64c74b5668289db429952946"
+  },
+  "blocking-test-results": {
+   "id": 13658973876,
+   "bytes": 1874,
+   "digest": "sha256:92a71b3d95b6957e6421b6268f3c28c8244f2bb19831dd411802ea8007652b82"
+  }
+ },
+ "jobLogSha256": "d7a66f2180db27bdb8c438bff30a95015baa475f09673fd9478a13768a9f64c4",
+ "orderingVerdict": {
+  "passed": null,
+  "reason": "not reached"
+ },
+ "candidateAcceptance": false
+}

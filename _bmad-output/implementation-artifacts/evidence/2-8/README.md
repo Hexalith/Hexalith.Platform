@@ -1,5 +1,54 @@
 # Story 2.8 implementation and qualification evidence
 
+## Review loop 2, 2026-11-09 (targeted fix, no revert)
+
+This continuation implements the spec's *Review loop 2 tasks* under the same remote-operation authorization. Every record is in [review-loop-2-20261109](review-loop-2-20261109/). All results are `baseline-only`.
+
+- **Sources.** Builds `b411bafb` → `95b65d45`, `54970a7a` and `bde7fd4f` on PR [#177](https://github.com/Hexalith/Hexalith.Builds/pull/177). The last two commits only reword docstrings and move a suppression; every PR check passes at `bde7fd4f`. Parties `2849c5b4` → `4c0167b8` on `fix/lifecycle-cancel-signal-566b9bfc`. Platform holds the PB-9 test and its read-only preparation accessor, plus the PB-15 and BS-4 contract text.
+- **External delivery, not part of this loop.** An external `/pushall` under the owner account did two things this loop did not:
+  - It merged PR #177 into Builds `main` as `494c96a9` at 08:13Z.
+  - It committed this Platform working tree to Platform `main` as `6381fd6f`, which failed its tuple-CI preflight in the legacy lane.
+- **Local checks** ([results](review-loop-2-20261109/local-results-loop-2.json)):
+  - 232 Python tests with 626 subtests, including 11 new helper process and unit controls;
+  - the validator: legacy 411 and v2 302 assertions;
+  - 351/351 cases in the seven focused xUnit classes;
+  - Parties ci-lifecycle 95/95 and integration scripts 46/46, with both the pinned and the patched helper.
+
+  The new controls fail against `b411bafb`, apart from the escalation coverage (PB-3), which already passed there. The [loop-2 row index](review-loop-2-20261109/row-index-loop-2.json) and [path audit](review-loop-2-20261109/path-audit-loop-2.json) cover the touched rows and the fix delta.
+- **BS-4, Parties lifecycle cancel-execution, run [42587199919](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42587199919): passed** ([audit](review-loop-2-20261109/hosted-l-cancel-execution-42587199919.json)).
+  - The run had an active 240 s same-job hold, and the single request came at a ready age of 2.81 s.
+  - The controller forwarded SIGINT only to the two tool processes. A kernel signal trace shows no controller or helper signal reaching a composed process.
+  - Timestamps:
+    - admission-closing write (first outcome `cancelled`/HXC130): 08:59:34.220Z;
+    - withdrawal commit: 08:59:34.463Z;
+    - first composed-environment stop (AppHost exit): 08:59:34.662Z.
+  - The exact down left empty inventories.
+  - The run exercises the controller with the pinned 4.44.13 tool and the `3c80` helper. Only the digest data, byte-identical to `bde7fd4f`'s, came from a proof path.
+  - Open for Step 04: the tool SIGKILLed its own native test host at 08:59:34.138–.203Z, before both marks.
+- **BS-4, v2 execution cancellation: not achieved.** No cancellation was sent in any attempt:
+  - Runs 42582136922 and 42582794137 failed on HTTP 504 Dapr downloads.
+  - Run 42587081454 failed with HXP020, because the proof's long native test changed the suite inputs.
+- **Amended BS-4 proofs on Builds v4.45.1 (`25de7a74`): neither reached a cancellation.**
+  - Lifecycle rerun [42593229291](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42593229291) ([audit](review-loop-2-20261109/hosted-l-cancel-execution-42593229291.json)) was refused with HXW009, then HXW007. The staged Builds commit must equal the Platform `0f4e27f1` pin `3c80`, and no Platform release pins v4.45.1.
+  - v2 late-startup run [42593223538](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42593223538) ([audit](review-loop-2-20261109/hosted-v2-late-startup-42593223538.json)) had unchanged test inputs. It was refused with HXP020 0.2 s after the AppHost started, before the 130 s ready point. The likely cause is tool 4.45.1 and Dapr 1.19.1 against the Platform `0f4e27f1`/Builds `3c80` tuple.
+  - What the v2 run's kernel trace did confirm on a hosted runner:
+    - the muxer leads the recorded session, the tool is its direct child, and the run-tagged AppHost is the tool's child;
+    - the only signals were the tool's own startup-teardown SIGKILLs;
+    - both downs verified empty inventories.
+- **Two lifecycle setup attempts also failed before any owner existed:**
+  - Run 42583201444 failed with HXW009: Platform pins Builds `3c80`.
+  - Run 42584756093 failed with HXT007 after a submodule overlay.
+
+  All attempts are retained.
+
+Open, not claimed:
+
+- the amended BS-4 proofs, which need a Platform release that pins Builds v4.45.1, or an owner decision to run v2 with tool 4.44.13;
+- the test-host ruling;
+- PB-9 execution, which is a gate for Platform L/M delivery;
+- adopting a Builds release that carries the digest file;
+- Task 134 and normal delivery, which wait for Step 04.
+
 ## Review loop 1, 2026-11-09 (targeted fix, no revert)
 
 This continuation runs the spec's *Review loop 1 tasks* under the same remote-operation authorization (hosted proof, no merges). Every record is in [review-loop-1-20261109](review-loop-1-20261109/). All results are `baseline-only`: no candidate acceptance, no Platform tool acceptance and no Story 2.10 full-matrix pass.

@@ -1,0 +1,360 @@
+{
+ "schema": "hexalith.story-2-8.path-audit.loop-2.v1",
+ "rule": "Every path changed by the loop-2 fixes since the owner-chosen bases is listed once. Active source, configuration, tests and documentation in this list were authored and read in full for this loop; Step 04 reviews this fix delta. Unrelated incoming paths are named and excluded, never silently omitted.",
+ "builds": {
+  "repository": "Hexalith/Hexalith.Builds",
+  "base": "b411bafbcce5229e28a92ca54813e4c168bae312",
+  "head": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+  "paths": [
+   {
+    "path": ".github/workflows/domain-ci-v2.md",
+    "status": "M",
+    "oldBlob": "eadd9912b79a10066c7c21bf4696afb508ddb51d",
+    "newBlob": "9a909967e30fdf7afc07732c6017dea5e9adcbfb",
+    "class": "active-documentation"
+   },
+   {
+    "path": ".github/workflows/domain-ci-v2.yml",
+    "status": "M",
+    "oldBlob": "5e56364effdcd678d4f2cfd22a0411b8f29e9f34",
+    "newBlob": "1d702ae432d52a61bc1561e11db71d855032a55c",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "Github/run-module-integration/run_module_integration.py",
+    "status": "M",
+    "oldBlob": "92f676e2daf24bc053fc535edf839cb1aa05fb16",
+    "newBlob": "99fdc89f6f1ed9e644ad86d950da5201629206b0",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "Github/run-module-integration/tests/test_run_module_integration.py",
+    "status": "M",
+    "oldBlob": "e0d481a8ad0572fe742c2051852cccb3d2963121",
+    "newBlob": "7ef224007e99189c3dfb9331bf6988bd9941564e",
+    "class": "active-test"
+   },
+   {
+    "path": "Tools/test-domain-workflow-test-platforms.ps1",
+    "status": "M",
+    "oldBlob": "adbab15b892f7d3b8eccae6f3766eebfb7c062c8",
+    "newBlob": "efed4e647438ec0a44d54a6d9a0480553f579810",
+    "class": "active-test"
+   },
+   {
+    "path": "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs",
+    "status": "M",
+    "oldBlob": "2a98783abcd71da5e746c7d7df7bb90497b73851",
+    "newBlob": "7ffa4d1ea3399cc2d72d91dcfaf282be61ffd385",
+    "class": "active-test"
+   }
+  ],
+  "note": "Builds main merged this branch externally as 494c96a9 (08:13Z); the fix delta reviewed here is b411bafb..bde7fd4f."
+ },
+ "parties": {
+  "repository": "Hexalith/Hexalith.Parties",
+  "base": "2849c5b419c3dc445d6041c12968df29c97e0cc0",
+  "head": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+  "paths": [
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "38a62e0e78268a802066ad04485d3f122ccc964a",
+    "newBlob": "a911f56d419387ad15ee518dff04812a26048ebd",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": ".github/workflows/current-owner-startup-diagnostics.yml",
+    "status": "M",
+    "oldBlob": "0cc4665c7a9eed72d9b422720ab4151fe6a5d848",
+    "newBlob": "3ace6cea7772e76c5242e9fb071fb5ef43ec56c9",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/qualify-disposable-ci.py",
+    "status": "M",
+    "oldBlob": "84e19d014ad8bba1b2947d186f58dde2febe5728",
+    "newBlob": "85cb94cf82b00d2544eb2f74ebb14913c1de2d3e",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/test_current_owner_integration.py",
+    "status": "M",
+    "oldBlob": "5f8ff5f125cf9d7b75b4bf3d80fa41695abffa9f",
+    "newBlob": "8f8f95bffb26f7f08f5298e82321cd45fdd10cff",
+    "class": "active-test"
+   },
+   {
+    "path": "scripts/test_public_package_integration.py",
+    "status": "M",
+    "oldBlob": "662d93c86ea2a833caad53da954df3b7e6e34dcd",
+    "newBlob": "16ad58708aa9ae14c04cb8dce411ac91af7c06d2",
+    "class": "active-test"
+   },
+   {
+    "path": "scripts/verify-current-owner-integration.py",
+    "status": "M",
+    "oldBlob": "7627db35836896d40e5081b789163673b0628256",
+    "newBlob": "5f467a4eb30897e15345af13dd39b26d015b84bb",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/verify-public-package-integration.py",
+    "status": "M",
+    "oldBlob": "3780934c39aaae54c91be069a4fa374add2b8856",
+    "newBlob": "dc2074515c1fdab4a56100fac2f65c20db6caef0",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "tests/ci-lifecycle/test_loop2_fixes.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "e3511e54f530d811682949d18b7a252b9266551f",
+    "class": "active-test"
+   },
+   {
+    "path": "tests/ci-lifecycle/test_qualification_controller.py",
+    "status": "M",
+    "oldBlob": "6765c2ba27f1496170a32b36fb9b99f5e8afecf8",
+    "newBlob": "a3cbdf2c9c0b8202d99cfcadffab9fb917aabb23",
+    "class": "active-test"
+   },
+   {
+    "path": "tests/ci-lifecycle/test_review_fixes.py",
+    "status": "M",
+    "oldBlob": "fc538ee11f50edf7824f93f29fff255cf57e9a6f",
+    "newBlob": "63738fd0e96611c5d497f8a512f3f744a1476d56",
+    "class": "active-test"
+   }
+  ],
+  "proofBranchPaths": [
+   {
+    "path": ".github/workflows/story-2-8-v2-exec-cancel-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "0aedd99b2809e20335c9bb33533544bdbb6ff4b0",
+    "proofCommit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "module/hexalith.module-manifest.v2.json",
+    "status": "M",
+    "oldBlob": "755dd00f91faed58951300b480826dab4cfcfc47",
+    "newBlob": "4bb1767571c6ae847c88b397bde39099c4ef6a8c",
+    "proofCommit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/prepare-ci-package-dependencies.sh",
+    "status": "M",
+    "oldBlob": "26cc6c3621698e160ea7eae6789f513a81a73bdd",
+    "newBlob": "b8967cba564362ca0aaed7b970d8f5997ef5f0db",
+    "proofCommit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2dc823c9729670d4512d83d69f1ef06e29eb93e7",
+    "proofCommit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "tests/Hexalith.Parties.Platform.IntegrationTests/Story28ProofExecutionHoldTests.cs",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "84202937f0c228972d5ab692c639a1eb84c8c16a",
+    "proofCommit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "a911f56d419387ad15ee518dff04812a26048ebd",
+    "newBlob": "bfa63b9745e2112f2022f0dc276a66ec39eaec53",
+    "proofCommit": "a03936662457eff5e7f0556d1c9ad03e9c643faa",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "references/Hexalith.Builds",
+    "status": "M",
+    "oldBlob": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "newBlob": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+    "proofCommit": "a03936662457eff5e7f0556d1c9ad03e9c643faa",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2dc823c9729670d4512d83d69f1ef06e29eb93e7",
+    "proofCommit": "a03936662457eff5e7f0556d1c9ad03e9c643faa",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "a911f56d419387ad15ee518dff04812a26048ebd",
+    "newBlob": "4cde8b33bc14a9d6944a1713d48ed40cac769b69",
+    "proofCommit": "7f7aa172b3e79aefc4379a58ac0dddbb559ce6a7",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2dc823c9729670d4512d83d69f1ef06e29eb93e7",
+    "proofCommit": "7f7aa172b3e79aefc4379a58ac0dddbb559ce6a7",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "a911f56d419387ad15ee518dff04812a26048ebd",
+    "newBlob": "9dba3db57e92f2311f5d644bf43590cc06b67b12",
+    "proofCommit": "b00e60a69ace273150c133665dd42488841eb7d5",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "proof/story-2-8/dapr-toolchain-sha256.json",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "55fd9dabc405926d7619da91ae08ed19a00d6041",
+    "proofCommit": "b00e60a69ace273150c133665dd42488841eb7d5",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2dc823c9729670d4512d83d69f1ef06e29eb93e7",
+    "proofCommit": "b00e60a69ace273150c133665dd42488841eb7d5",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".config/dotnet-tools.json",
+    "status": "M",
+    "oldBlob": "f33a27655da3777374da6bb2830ac8b6af637fa2",
+    "newBlob": "23bb8cbf8410ea8328f86913d6855585bce123e3",
+    "proofCommit": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "a911f56d419387ad15ee518dff04812a26048ebd",
+    "newBlob": "2d31e70f7430ddf015bf48891ed26b286d084d25",
+    "proofCommit": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "references/Hexalith.Builds",
+    "status": "M",
+    "oldBlob": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "newBlob": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+    "proofCommit": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "05e0e889695f3701558ba7f965b0a61cb5454cbc",
+    "proofCommit": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".config/dotnet-tools.json",
+    "status": "M",
+    "oldBlob": "f33a27655da3777374da6bb2830ac8b6af637fa2",
+    "newBlob": "23bb8cbf8410ea8328f86913d6855585bce123e3",
+    "proofCommit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "921335a7e606ba3a5edc4dbcfecd00424f92b94b",
+    "proofCommit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/prepare-ci-package-dependencies.sh",
+    "status": "M",
+    "oldBlob": "26cc6c3621698e160ea7eae6789f513a81a73bdd",
+    "newBlob": "b8967cba564362ca0aaed7b970d8f5997ef5f0db",
+    "proofCommit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "05e0e889695f3701558ba7f965b0a61cb5454cbc",
+    "proofCommit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+    "class": "proof-branch-only-never-merged"
+   }
+  ]
+ },
+ "platform": {
+  "repository": "Hexalith/Hexalith.Platform",
+  "head": "6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2",
+  "workingTreePaths": [
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/README.md",
+    "workingTree": "M",
+    "class": "story-2-8-planning-or-living-evidence-index"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/row-index-loop-2.json",
+    "workingTree": "M",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md",
+    "workingTree": "M",
+    "class": "story-2-8-planning-or-living-evidence-index"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42587199919.json",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42593229291.json",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-exec-cancel-42587081454.json",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42593223538.json",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/proof-diff-535b3b62.patch",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/proof-diff-bae4f1b7.patch",
+    "workingTree": "??",
+    "class": "story-2-8-evidence-loop-1-or-2"
+   }
+  ],
+  "note": "Platform main 6381fd6f (external /pushall, 08:39Z) already carries the loop-1 and PB-9/PB-15 edits; the working-tree paths listed here are the later loop-2 evidence, README and spec updates.",
+  "platformMainPaths": [
+   "src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs",
+   "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+   "docs/contracts/test-environment-v1.md"
+  ]
+ },
+ "reusedReceipt": "review-loop-1-20261109/path-audit-loop-1.json and focused-hosted-proof-20261108/path-audit.json stay the records for every path before these bases.",
+ "candidateAcceptance": false
+}
