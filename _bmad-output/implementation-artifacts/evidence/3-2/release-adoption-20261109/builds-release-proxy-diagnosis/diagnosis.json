@@ -1,0 +1,45 @@
+{
+  "recordedUtc": "2026-11-09T16:45:36.575585+00:00",
+  "publisher": 42653985043,
+  "attempts": [
+    {
+      "attempt": 1,
+      "artifact": 13691940877,
+      "failure": "Exit3 where exact HXR003/exit2 required; raw failing command streams absent."
+    },
+    {
+      "attempt": 2,
+      "artifact": 13691149803,
+      "failure": "Same exact control failure; no further blind retry."
+    }
+  ],
+  "rootCauseReproduction": {
+    "oldSource": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+    "fixedSource": "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+    "oldProxySourceAndPackage": {
+      "exit": 3,
+      "rule": "HXW001"
+    },
+    "fixedProxySourceAndPackage": {
+      "exit": 2,
+      "rule": "HXR003"
+    },
+    "onlyContextChanged": "Old/new release Git proxy; actual CLI code, manifest, consumer root and profile held fixed.",
+    "mechanism": "CompositionProcess intentionally sanitizes child environment while preserving PATH; old proxy requires stripped HEXALITH_RELEASE_GIT. New proxy reads its captured original executable from a private sibling file.",
+    "hostedDiagnosticLimit": "The actual failed hosted streams were not retained by the old gate. Root cause is established through the four controlled actual source/package command streams, rather than inventing a missing hosted payload."
+  },
+  "localFullGate": {
+    "version": "4.46.1",
+    "source": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+    "exit": 0,
+    "controls": "passed",
+    "qualificationEvidenceCount": 55,
+    "sourceValidation": "skipped/not-run",
+    "releaseEligible": false,
+    "packageArchive": "local unsigned only"
+  },
+  "newExactSourcePushCi": 42657538253,
+  "newSourcePublicationPending": true,
+  "qualificationCredit": false,
+  "platformPinsChanged": false
+}

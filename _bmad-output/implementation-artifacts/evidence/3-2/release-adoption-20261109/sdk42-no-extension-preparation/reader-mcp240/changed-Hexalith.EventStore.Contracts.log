@@ -1,0 +1,8 @@
+Unhandled exception. System.IO.InvalidDataException: The qualified package catalog reader requires the exact signed public artifact bytes.
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort) in /tmp/public-owner-cohort-npmx59ri/PublishedCatalogArtifactCohort.cs:line 204
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.<>c__DisplayClass32_0.<VerifyFullParties>b__0(String name) in /tmp/public-owner-cohort-npmx59ri/PublishedCatalogArtifactCohort.cs:line 189
+   at System.Linq.Enumerable.IteratorSelectIterator`2.Fill(Iterator`1 source, Span`1 results, Func`2 func)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.PreallocatingToArray(Int32 count)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.ToArray()
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(String cohort) in /tmp/public-owner-cohort-npmx59ri/PublishedCatalogArtifactCohort.cs:line 188
+   at Program.<Main>$(String[] args) in /tmp/public-owner-cohort-npmx59ri/Program.cs:line 37

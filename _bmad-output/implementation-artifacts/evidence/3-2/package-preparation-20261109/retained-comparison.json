@@ -1,0 +1,1460 @@
+{
+  "scope": "Focused fresh source and unchanged-pin Release/package selections versus retained Debug broad inventories; no fresh full-suite pass or broad failure total is inferred.",
+  "baselineRevision": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+  "priorCurrentRevision": "59fb32933d76a7e71d9479e1903087a73ea66f2b",
+  "comparisons": {
+    "source": {
+      "baseline": {
+        "freshCounts": {
+          "Pass": 47
+        },
+        "common": 9,
+        "added": [
+          "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: False, mixed: False)",
+          "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: False)",
+          "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: True)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"authentication:jwtBearer:issuer\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer:Override\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"EventStore:Extensions:Packages:Forged:PackageId\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"unmapped\\\", condition: \\\"eventstore-extension-unmapped\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"missing\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"symlink\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dynamic-secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dapr-role\\\", condition: \\\"eventstore-extension-dapr-role\\\", named: \\\"Dapr role 'events'\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"extensionId\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"packageId\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\\\\\"first\\\\\\\",\\\\\\\"Nested\\\\\\\":{\\\\\\\"Level\\\\\\\":2}}\\\", expected: \\\"PlatformTestExtension__Marker__Name=first;Platform\\\"\u00b7\u00b7\u00b7, condition: null)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"[\\\\\\\"alpha\\\\\\\",\\\\\\\"beta\\\\\\\"]\\\", expected: \\\"PlatformTestExtension__Marker__0=alpha;PlatformTes\\\"\u00b7\u00b7\u00b7, condition: null)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\", expected: null, condition: \\\"eventstore-extension-input-invalid\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"Authentication\\\", value: \\\"{\\\\\\\"JwtBearer\\\\\\\":{\\\\\\\"Issuer\\\\\\\":\\\\\\\"forged\\\\\\\"}}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync"
+        ],
+        "regressions": [],
+        "freshFailures": [],
+        "cases": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.StarterValidatesWithRealTechnicalDeclarations",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"human\\\")",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"json\\\")",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: False, mixed: False)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: False)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: True)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"authentication:jwtBearer:issuer\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer:Override\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"EventStore:Extensions:Packages:Forged:PackageId\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"unmapped\\\", condition: \\\"eventstore-extension-unmapped\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"missing\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"symlink\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dynamic-secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dapr-role\\\", condition: \\\"eventstore-extension-dapr-role\\\", named: \\\"Dapr role 'events'\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"extensionId\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"packageId\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\\\\\"first\\\\\\\",\\\\\\\"Nested\\\\\\\":{\\\\\\\"Level\\\\\\\":2}}\\\", expected: \\\"PlatformTestExtension__Marker__Name=first;Platform\\\"\u00b7\u00b7\u00b7, condition: null)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"[\\\\\\\"alpha\\\\\\\",\\\\\\\"beta\\\\\\\"]\\\", expected: \\\"PlatformTestExtension__Marker__0=alpha;PlatformTes\\\"\u00b7\u00b7\u00b7, condition: null)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\", expected: null, condition: \\\"eventstore-extension-input-invalid\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"Authentication\\\", value: \\\"{\\\\\\\"JwtBearer\\\\\\\":{\\\\\\\"Issuer\\\\\\\":\\\\\\\"forged\\\\\\\"}}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+            "fresh": "Pass",
+            "retained": null
+          }
+        ]
+      },
+      "current": {
+        "freshCounts": {
+          "Pass": 47
+        },
+        "common": 45,
+        "added": [
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False)",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True)"
+        ],
+        "regressions": [],
+        "freshFailures": [],
+        "cases": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.StarterValidatesWithRealTechnicalDeclarations",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"human\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"json\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: False, mixed: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"authentication:jwtBearer:issuer\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer:Override\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"EventStore:Extensions:Packages:Forged:PackageId\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"unmapped\\\", condition: \\\"eventstore-extension-unmapped\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"missing\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"symlink\\\", condition: \\\"eventstore-extension-unavailable\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dynamic-secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dapr-role\\\", condition: \\\"eventstore-extension-dapr-role\\\", named: \\\"Dapr role 'events'\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"extensionId\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"packageId\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\\\\\"first\\\\\\\",\\\\\\\"Nested\\\\\\\":{\\\\\\\"Level\\\\\\\":2}}\\\", expected: \\\"PlatformTestExtension__Marker__Name=first;Platform\\\"\u00b7\u00b7\u00b7, condition: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"[\\\\\\\"alpha\\\\\\\",\\\\\\\"beta\\\\\\\"]\\\", expected: \\\"PlatformTestExtension__Marker__0=alpha;PlatformTes\\\"\u00b7\u00b7\u00b7, condition: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\", expected: null, condition: \\\"eventstore-extension-input-invalid\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"Authentication\\\", value: \\\"{\\\\\\\"JwtBearer\\\\\\\":{\\\\\\\"Issuer\\\\\\\":\\\\\\\"forged\\\\\\\"}}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True)",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+            "fresh": "Pass",
+            "retained": "Pass"
+          }
+        ]
+      }
+    },
+    "package": {
+      "baseline": {
+        "freshCounts": {
+          "Pass": 77,
+          "Fail": 5
+        },
+        "common": 79,
+        "added": [
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkHostRefusesDeclaredExtensionsAtStartupAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkWithoutTheExtensionApiRefusesDeclaredExtensions",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway"
+        ],
+        "regressions": [],
+        "freshFailures": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+            "fresh": "Fail",
+            "retained": "Fail"
+          }
+        ],
+        "cases": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkHostRefusesDeclaredExtensionsAtStartupAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkWithoutTheExtensionApiRefusesDeclaredExtensions",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7, expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"unknown\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.0\\\", full: False, expected: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.0\\\", full: True, expected: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2\\\", full: False, expected: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2\\\", full: True, expected: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.2\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.0\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.1\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.1\\\", tenants: \\\"7.0.2\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0+metadata\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.5\\\", tenants: \\\"7.0.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"unknown\\\", tenants: \\\"unknown\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"unknown\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.FullVerificationRequiresAFullAuthority",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"unknown\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignLoadedBodyRemainsRefusedByBothPredicateAndVerifier",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"no-proof\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"missing-server\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"foreign-image\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owner-snapshot\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"tenants-near-miss\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"sdk-near-miss\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"suite\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"extra-server\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"active-module\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"environment\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-root\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-source\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"mapping\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owners\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"drop-request\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"declaration-path\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"production\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OpaqueProofRejectsMutatedMappingCollectionsAndSerializedPlanCopies",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"memories\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"eventstore\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.ValidBoundRequestReachesImageProbeThroughComposeRun",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"key\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"binding\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"drop-binding\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"owners\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          }
+        ]
+      },
+      "current": {
+        "freshCounts": {
+          "Pass": 77,
+          "Fail": 5
+        },
+        "common": 80,
+        "added": [
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkHostRefusesDeclaredExtensionsAtStartupAsync",
+          "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkWithoutTheExtensionApiRefusesDeclaredExtensions"
+        ],
+        "regressions": [],
+        "freshFailures": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+            "fresh": "Fail",
+            "retained": "Fail"
+          }
+        ],
+        "cases": [
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.PlatformSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests.BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(declarative: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkHostRefusesDeclaredExtensionsAtStartupAsync",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageSdkWithoutTheExtensionApiRefusesDeclaredExtensions",
+            "fresh": "Pass",
+            "retained": null
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7, expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"unknown\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.AlteredPrivateCopyIsRefusedBeforeOwnerReflection(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.0\\\", full: False, expected: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.0\\\", full: True, expected: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2\\\", full: False, expected: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2\\\", full: True, expected: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.4\\\", tenants: \\\"7.0.2\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.0\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.1\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.1\\\", tenants: \\\"7.0.2\\\", full: True, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0+metadata\\\", tenants: \\\"7.0.2\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.1.0\\\", tenants: \\\"7.0.2.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"4.0.5\\\", tenants: \\\"7.0.0\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ExactVersionPairsDetermineOneClosedAuthority(sdk: \\\"unknown\\\", tenants: \\\"unknown\\\", full: False, expected: null)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"unknown\\\", expected: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: True, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.MixedReleasedBodiesCannotAcquireOtherCohortAuthority(historical: False, name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.FullVerificationRequiresAFullAuthority",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"eventstore-4.0.4-tenants-7.0.0\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignBodiesAndUnknownAuthoritiesRemainRefused(cohort: \\\"unknown\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+            "fresh": "Fail",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.ForeignLoadedBodyRemainsRefusedByBothPredicateAndVerifier",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort",
+            "fresh": "Pass",
+            "retained": "Fail"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"no-proof\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"missing-server\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"foreign-image\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owner-snapshot\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"tenants-near-miss\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"sdk-near-miss\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"suite\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"extra-server\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"active-module\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"environment\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-root\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"platform-source\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"mapping\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"owners\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"drop-request\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"declaration-path\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.ChangedScopeCohortOrAuthorityRefusesBeforeEffects(fault: \\\"production\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: False)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OrdinaryComposeCannotUseSerializedRequestOrProofFields(stripped: True)",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.OpaqueProofRejectsMutatedMappingCollectionsAndSerializedPlanCopies",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"memories\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests.AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(owner: \\\"eventstore\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.ValidBoundRequestReachesImageProbeThroughComposeRun",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"key\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"binding\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"drop-binding\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          },
+          {
+            "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests.InvalidBoundRequestRefusesBeforeComposeRunEffects(fault: \\\"owners\\\")",
+            "fresh": "Pass",
+            "retained": "Pass"
+          }
+        ]
+      }
+    }
+  },
+  "story28": {
+    "retainedAttribution": {
+      "test": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+      "changedByCommit": "6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2",
+      "commitSubject": "fix: story 2.8",
+      "change": "Replaced metadata-only recomputation with the actual PlatformPartiesPackageFixture/production-composition path.",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.",
+      "route": "Existing package/cohort fixture qualification follow-up; retain the genuine published-body admission checks. This is not an extension declaration or host-loading failure."
+    },
+    "freshObservation": "Modified preparation tree refuses earlier at the trusted parent-plan/key and unchanged-source/test guard. Keep this distinct from the retained genuine Memories Contracts prerequisite; neither is an extension failure.",
+    "checksWeakened": false
+  }
+}

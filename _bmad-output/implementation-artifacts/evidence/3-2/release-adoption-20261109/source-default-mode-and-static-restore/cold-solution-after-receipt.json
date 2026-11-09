@@ -1,0 +1,29 @@
+{
+  "recordedUtc": "2026-11-09T20:58:46.382702+00:00",
+  "command": [
+    "dotnet",
+    "build",
+    "Hexalith.Platform.slnx",
+    "-c",
+    "Debug",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "--artifacts-path",
+    "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/artifacts/cold-solution-after",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+  ],
+  "privateCache": "/tmp/story32-default-source-mode-probe-_o2d3b9r/nuget-cold-solution-after",
+  "cacheInitiallyEmpty": true,
+  "outputInitiallyAbsent": true,
+  "qualificationCredit": false,
+  "sourceFiles": {
+    "Directory.Build.props": "b9d2cbfe2b59d2cce7483a1bc9c16391fe76d53da6305e4a8f04d8baa8f2900b",
+    "Directory.Build.targets": "bcfb7aab6ba9ac5f74bc10b1e8cc3c7113bdece4b9dfa543aa06fdeb0ff98b1e",
+    "Directory.Solution.props": "9b2bd2ef799cca22537983f123a625e6f7221b3be3a49e42566f652b0fa20aa3",
+    "eng/SourceRestore.props": "2e433f7e5d30eb94beb7030f22fe0ddee7798ece8177eaec045084040851d100",
+    "eng/test_source_sdk_propagation.py": "e1e817642aafac779c37407936cc613a97456ff0be8e7c365567888f1191aaaf"
+  },
+  "exitCode": 0,
+  "completedUtc": "2026-11-09T21:00:46.352252+00:00"
+}

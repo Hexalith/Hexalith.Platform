@@ -1,0 +1,57 @@
+{
+  "recordedUtc": "2026-11-09T16:09:19.717382+00:00",
+  "priorUpstream": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+  "integratedUpstream": "93afbdfc47295d25033498b2cdfeb90e813717d0",
+  "retainedPartiesGitlink": "ee806fd0e82bdf6eec3a8c1f671427080dbed2ac",
+  "tupleRequiredJobs": [
+    "resolve-sources",
+    "tuple",
+    "Same changed source against the legacy public tuple",
+    "Same changed source against the pre-extension public tuple",
+    "tuple-verdict"
+  ],
+  "requiredCases": {
+    "defaultSdk42": 97,
+    "extensionComponents": 9,
+    "historicalSdk41": 412,
+    "historicalPublic": 349
+  },
+  "requiredSdkConsumerJobs": 6,
+  "controls": {
+    "sourceRelease": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0
+    },
+    "legacyReplay": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    "preExtensionReplay": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sdkProfiles": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fixtureGate": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fixtureArchives": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "aggregateBehavioralCombinations": 625,
+  "unchangedHistoricalProfileSha256": "3643ab2f60f255bd0d0b9a91452e1f7060b5f5b69bf0fef0a51cf8336a526c6c",
+  "newTupleAdopted": false,
+  "publicationCredit": false,
+  "qualificationCredit": false
+}

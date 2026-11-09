@@ -1,0 +1,19 @@
+{
+  "recordedUtc": "2026-11-09T13:11:41.357344+00:00",
+  "preflightLogBirthUtc": "2026-11-09T13:09:51.441366216Z",
+  "preflightLog": "logs/story32-es-preflight-success.log",
+  "priorConcurrentRelease": {
+    "id": 42623038544,
+    "createdUtc": "2026-11-09T13:09:47Z",
+    "source": "aa16227bd07f0564a3026d619a5abd973e02656f",
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42623038544",
+    "preserved": true
+  },
+  "ownDuplicateDispatch": {
+    "id": 42623055186,
+    "createdUtc": "2026-11-09T13:09:54Z",
+    "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42623055186",
+    "cancelled": true
+  },
+  "reason": "The preflight logfile was first created after the prior release already existed; the only following dispatch in this process created the later queued run. Cancel only this duplicate and inspect the preserved normal publisher."
+}

@@ -1,0 +1,22 @@
+{
+  "recordedUtc": "2026-11-09T19:15:19.349041+00:00",
+  "scope": "Provisional dirty isolated metadata-only SDK4.1 compile of 53db code; no committed replay, source-equivalence or qualification credit.",
+  "codeSource": "53dbd485baa9842886b1d615b7f56fa441cf4738",
+  "buildsSource": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "--artifacts-path",
+    "/tmp/story32-provisional-sdk41-compile-jke5241d/repository/artifacts/provisional-sdk41",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/story-3-2-tuple-forward-apbijkxq/artifacts/published/tools/net10.0/any"
+  ],
+  "exitCode": 1,
+  "qualificationCredit": false
+}

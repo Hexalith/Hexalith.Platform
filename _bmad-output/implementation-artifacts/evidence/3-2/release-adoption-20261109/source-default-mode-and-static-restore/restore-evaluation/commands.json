@@ -1,0 +1,102 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/ChildSelection-1.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-v3u1_6tm/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-2/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-2/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-3/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-3/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-4/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-4/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-5/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-5/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:RestoreUseStaticGraphEvaluation=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-6/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-v3u1_6tm/restore-control-6/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=false"
+    ],
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,289 @@
+{
+  "schema": "story32-package-preparation.v1",
+  "recordedUtc": "2026-11-09T11:39:52.261154+00:00",
+  "status": "in-progress",
+  "qualificationCredit": false,
+  "publishedInspection": "published-inspection.json",
+  "preservedBaseline": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+  "preparationHead": "27a1638e0e7d66b672708507d95a44fe31050718",
+  "worktree": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+  "dependencies": {
+    "Hexalith.EventStore": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841",
+    "Hexalith.Builds": "27145e52ffab5623198ba5efdab5cdb71aa42d28"
+  },
+  "changedSourceSha256": {
+    "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs": "83959fafedeb0be3d4dda843ca69064f502efbd1a3ec70d720e8db5e69787ce1",
+    "tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs": "818ed4bb7c9238d802d1bda77fdd7d2b0c4c3df342646c731007998e0a463db1"
+  },
+  "sourceFocused": {
+    "counts": {
+      "total": 47,
+      "passed": 47,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "failures": [],
+    "result": "logs/parent-source-tests.xml",
+    "build": "logs/parent-source-build.log"
+  },
+  "unchangedPinPackageClasses": {
+    "counts": {
+      "total": 82,
+      "passed": 77,
+      "failed": 5,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "failures": [
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+        "message": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)\n    should be\nTrue\n    but was\nFalse"
+      },
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+        "message": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)\n    should be\nTrue\n    but was\nFalse"
+      },
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+        "message": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+      },
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+        "message": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+      },
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+        "message": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+      }
+    ]
+  },
+  "story28Isolated": {
+    "counts": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "failures": [
+      {
+        "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+        "message": "System.IO.InvalidDataException : The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs."
+      }
+    ]
+  },
+  "proposedCiSelectorsOnSourceBinary": {
+    "counts": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "failures": []
+  },
+  "selectionLimit": "7/7 verifies proposed method selection/count only. Released package-SDK CI still awaits owner release/adoption.",
+  "candidateProbe": "candidate-attempt-4.json",
+  "ownerSdkProbe": "owner-snapshot-verification.json",
+  "commands": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo"
+      ],
+      "exitCode": 0,
+      "log": "logs/story32-preparation-source-build-final.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "exec",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "-xml",
+        "/tmp/story32-preparation-source-final-tests.xml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildsPublishedToolRoot=/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.45.0/tools/net10.0/any",
+        "--artifacts-path",
+        "/tmp/story32-unchanged-pin-published-package-artifacts",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "exec",
+        "/tmp/story32-unchanged-pin-published-package-artifacts/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+        "-xml",
+        "/tmp/story32-preparation-published-package-classes.xml"
+      ],
+      "exitCode": 1
+    },
+    {
+      "command": [
+        "dotnet",
+        "exec",
+        "/tmp/story32-unchanged-pin-published-package-artifacts/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+        "-xml",
+        "/tmp/story32-preparation-published-package-story28.xml"
+      ],
+      "exitCode": 1
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo"
+      ],
+      "exitCode": 0,
+      "log": "logs/parent-source-build.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "exec",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+        "-xml",
+        "/tmp/story32-parent-source-tests.xml"
+      ],
+      "exitCode": 0,
+      "log": "logs/parent-source-tests.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "/tmp/story32-candidate-package-kcm8w2qx/host-artifacts/bin/Candidate/release/Candidate.dll"
+      ],
+      "exitCode": 0,
+      "log": "logs/parent-candidate-http.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "/tmp/story32-owner-snapshot-038510mp/tests/bin/Debug/net10.0/OwnerSnapshot.Tests.dll",
+        "-xml",
+        "/tmp/story32-parent-owner-configured-tests.xml"
+      ],
+      "environment": {
+        "STORY32_CANDIDATE_RECEIPT": "/tmp/story32-candidate-package-kcm8w2qx/receipt.json"
+      },
+      "exitCode": 0,
+      "log": "logs/parent-owner-configured-tests.log"
+    }
+  ],
+  "baselineComparison": "retained-comparison.json",
+  "initialAttempts": [
+    "Mixed -class/-method filtering selected 0 tests and is explicitly superseded; it provides no passing credit.",
+    "Source-built Tooling in the first package fixture attempt reported version 1.0.0; the final package lane uses the unchanged published 4.45.0 archive.",
+    "Owner patch initial analyzer failures were corrected; its final owner and harness builds have zero warnings/errors.",
+    "Owner harness initially passed 6 tests but receipt lookup used the wrong xUnit working directory; final script corrects lookup and reruns."
+  ],
+  "remaining": [
+    "EventStore release containing accepted extension API, registration ownership and module diagnostics.",
+    "Builds consumer-view API release and pinned host-view materialization.",
+    "Reviewed SDK/tool/catalog pin and exact-source tuple adoption, signed package/image/publication identity and finite cohort enrollment.",
+    "Successful released package startup and automatic CI qualification; broad gate remains red.",
+    "Forward diff is a fail-closed proposal; new finite cohort registry/selection rows and release measurements are still required, and the 7-case selection has not qualified in released-package CI."
+  ],
+  "sourceFocusedBeforeFinalSnapshotFixtureCorrection": {
+    "counts": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0
+    },
+    "failures": []
+  },
+  "parentVerification": {
+    "candidateHttp": {
+      "exitCode": 0,
+      "log": "logs/parent-candidate-http.log",
+      "extension": "platform-test",
+      "apiMajor": 1,
+      "extensionReadiness": "Healthy",
+      "overallHttpStatus": 503,
+      "distributedReadiness": false
+    },
+    "ownerSnapshot": {
+      "passed": 6,
+      "failed": 0,
+      "result": "logs/parent-owner-configured-tests.xml",
+      "log": "logs/parent-owner-configured-tests.log",
+      "requiredEnvironment": {
+        "STORY32_CANDIDATE_RECEIPT": "/tmp/story32-candidate-package-kcm8w2qx/receipt.json"
+      },
+      "initialUnconfiguredAttempt": {
+        "passed": 5,
+        "failed": 1,
+        "result": "logs/parent-owner-tests.xml",
+        "reason": "Parent direct invocation omitted the probe script required receipt environment; configured rerun supersedes it."
+      }
+    },
+    "patchApplyChecks": {
+      "platform": 0,
+      "builds": 0,
+      "patchesApplied": false
+    },
+    "frozenBlockSha256": "4a472331c89e561becf7be150c20b835cf571e2970b282093e30a692b9fa8c49",
+    "frozenBlockUnchanged": true,
+    "originalBaselineRetained": true,
+    "gitDiffCheckExitCode": 0,
+    "mainCheckout": {
+      "head": "5cf3e8cbbea06cebcb8fc6ed2b8489ace1934732",
+      "modifiedByThisRun": false,
+      "concurrentEditsObservedAndPreserved": true
+    },
+    "noPublicationPushPinOrManifestAdoption": true
+  }
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/stage-one-measured-tuple-assembly/prepare-builds-binding.py", line 22, in <module>
+    assert (run['repository']['full_name'],run['head_sha'],run['head_branch'],run['event'],run['path'],run['status'],run['conclusion'])==(repository,a.source,'main',event,path,'completed','success')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

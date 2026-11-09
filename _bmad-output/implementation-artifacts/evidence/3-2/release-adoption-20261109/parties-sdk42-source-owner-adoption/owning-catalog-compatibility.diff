@@ -1,0 +1,95 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index ff837ed3..4978659c 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -3,16 +3,16 @@
+   <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true'">
+     <DefineConstants>$(DefineConstants);HEXALITH_DEVELOPMENT_CATALOG_SOURCE</DefineConstants>
+   </PropertyGroup>
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'">
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0'">
+     <HexalithEventStoreCatalogApiSupported>true</HexalithEventStoreCatalogApiSupported>
+     <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_API</DefineConstants>
+   </PropertyGroup>
+   <!-- Owner-declared legacy query selectors first ship in the exact public 4.1.0 API. -->
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '4.1.0'">
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0'">
+     <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_QUERY_SELECTOR_BINDINGS</DefineConstants>
+   </PropertyGroup>
+   <!-- Complete private hosted topology requires APIs first published in 3.130.0. -->
+-  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'">
++  <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0'">
+     <HexalithEventStoreCatalogHostsSupported>true</HexalithEventStoreCatalogHostsSupported>
+     <DefineConstants>$(DefineConstants);HEXALITH_EVENTSTORE_CATALOG_HOSTS</DefineConstants>
+   </PropertyGroup>
+@@ -32,7 +32,7 @@
+   </ItemGroup>
+   <!-- Shared registration remains opt-in. Qualify exact package API cohorts. -->
+   <Target Name="ConfigureFrontComposerFeedbackCandidate" BeforeTargets="PrepareForBuild;CoreCompile">
+-    <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'">
++    <PropertyGroup Condition="'$(HexalithEventStoreFromSource)' == 'true' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0'">
+       <DefineConstants>$(DefineConstants);HES_CANCELLABLE_PROJECTIONS</DefineConstants>
+     </PropertyGroup>
+ 
+diff --git a/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs b/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs
+index c866801f..749ba8eb 100644
+--- a/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs
++++ b/src/Hexalith.Parties.Contracts/Routing/PartiesCatalogDeclarations.cs
+@@ -126,13 +126,13 @@ public static class PartiesCatalogDeclarations
+     /// <summary>Existing wire query identities, including internal computed authority queries.</summary>
+     public static IReadOnlyList<RouteContractDeclaration> Queries { get; } = [
+         Query("detail", "PartyDetail", typeof(GetParty).FullName!, "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
+-        Query("get-party", "GetParty", typeof(GetParty).FullName!, "party-detail"),
++        Query("get-party", "GetParty", typeof(GetParty).FullName!, "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
+         Query("index", "PartyIndex", typeof(ListParties).FullName!, "party-index", compatibilityActorType: "PartyIndexProjectionQueryActor"),
+         Query("search", "PartySearch", typeof(SearchParties).FullName!, "party-index", compatibilityActorType: "PartyIndexProjectionQueryActor"),
+-        Query("export", "ExportPartyData", "Hexalith.Parties.Queries.ExportPartyDataQueryHandler", "party-detail"),
+-        Query("processing-records", "GetProcessingRecords", typeof(GetProcessingRecords).FullName!, "party-detail"),
+-        Query("erasure-status", "GetErasureStatus", "Hexalith.Parties.Queries.GetErasureStatusQueryHandler", "party-detail"),
+-        Query("erasure-certificate", "GetErasureCertificate", "Hexalith.Parties.Queries.GetErasureCertificateQueryHandler", "party-detail"),
++        Query("export", "ExportPartyData", "Hexalith.Parties.Queries.ExportPartyDataQueryHandler", "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
++        Query("processing-records", "GetProcessingRecords", typeof(GetProcessingRecords).FullName!, "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
++        Query("erasure-status", "GetErasureStatus", "Hexalith.Parties.Queries.GetErasureStatusQueryHandler", "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
++        Query("erasure-certificate", "GetErasureCertificate", "Hexalith.Parties.Queries.GetErasureCertificateQueryHandler", "party-detail", compatibilityActorType: "PartyDetailProjectionQueryActor"),
+         Query("identity", typeof(ResolvePartyIdentity).FullName!, typeof(ResolvePartyIdentity).FullName!, null),
+         Query("human-binding-at", typeof(ResolveHumanActorBindingAt).FullName!, typeof(ResolveHumanActorBindingAt).FullName!, null),
+         Query("chatbot-authority", ResolveChatBotPartyAuthority.QueryType, typeof(ResolveChatBotPartyAuthority).FullName!, null, true)];
+diff --git a/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs b/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs
+index 9efe1c9f..4f6d409a 100644
+--- a/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs
++++ b/tests/Hexalith.Parties.Contracts.Tests/PartiesCatalogTests.cs
+@@ -58,7 +58,12 @@ public class PartiesCatalogTests
+     [InlineData("PartyDetail", "PartyDetailProjectionQueryActor")]
+     [InlineData("PartyIndex", "PartyIndexProjectionQueryActor")]
+     [InlineData("PartySearch", "PartyIndexProjectionQueryActor")]
+-    public void PublishedMcpCliQueriesAcceptOnlyTheirOwnerDeclaredLegacySelector(string wireType, string selector)
++    [InlineData("GetParty", "PartyDetailProjectionQueryActor")]
++    [InlineData("ExportPartyData", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetProcessingRecords", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetErasureStatus", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetErasureCertificate", "PartyDetailProjectionQueryActor")]
++    public void PublishedQueriesAcceptOnlyTheirOwnerDeclaredLegacySelector(string wireType, string selector)
+     {
+         var route = PartiesCatalogDeclarations.Queries.Single(query => query.MessageType == wireType);
+         route.Execution!.TargetKind.ShouldBe("domain-service");
+@@ -73,7 +78,7 @@ public class PartiesCatalogTests
+     [Fact]
+     public void OtherPartyQueriesDoNotAcceptLegacySelectors()
+     {
+-        foreach (var route in PartiesCatalogDeclarations.Queries.Where(query => query.MessageType is not ("PartyDetail" or "PartyIndex" or "PartySearch")))
++        foreach (var route in PartiesCatalogDeclarations.Queries.Where(query => query.Execution!.QueryKind == "computed"))
+         {
+             route.Execution!.CompatibilityProjectionActorTypes.ShouldBeNull();
+             RouteCatalogQuerySelectorPolicy.Matches(route, "PartyDetailProjectionQueryActor").ShouldBeFalse();
+@@ -85,6 +90,11 @@ public class PartiesCatalogTests
+     [InlineData("PartyDetail", "PartyDetailProjectionQueryActor")]
+     [InlineData("PartyIndex", "PartyIndexProjectionQueryActor")]
+     [InlineData("PartySearch", "PartyIndexProjectionQueryActor")]
++    [InlineData("GetParty", "PartyDetailProjectionQueryActor")]
++    [InlineData("ExportPartyData", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetProcessingRecords", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetErasureStatus", "PartyDetailProjectionQueryActor")]
++    [InlineData("GetErasureCertificate", "PartyDetailProjectionQueryActor")]
+     public void OwnerSelectorsSurviveCanonicalCatalogSerialization(string wireType, string selector)
+     {
+         var route = PartiesCatalogDeclarations.Queries.Single(query => query.MessageType == wireType);

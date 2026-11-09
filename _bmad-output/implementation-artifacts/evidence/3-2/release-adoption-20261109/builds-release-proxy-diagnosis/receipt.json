@@ -1,0 +1,38 @@
+{
+  "recordedUtc": "2026-11-09T16:43:58.521419+00:00",
+  "ownerSource": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+  "fixedProxySource": "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+  "localUnsignedArchive": "/tmp/story32-builds-9b9e-g4-version-repro/Hexalith.Builds.Module.Cli.4.46.1.nupkg",
+  "archiveSha256": "dc4d661d0046f9dcac5bf0c935163976d9274b6baf5e624750803a25853218ae",
+  "cases": [
+    {
+      "proxy": "old",
+      "commandKind": "source",
+      "exitCode": 3,
+      "stdout": "{\"status\":\"failed\",\"outcome\":{\"exitCode\":\"TopologyOrLifecycle\",\"phase\":\"Topology\",\"category\":\"TopologyOrLifecycle\",\"ruleId\":\"HXW001\"},\"diagnostics\":[{\"ruleId\":\"HXW001\",\"phase\":\"Topology\",\"category\":\"TopologyOrLifecycle\",\"message\":\"Cannot inspect Git workspace containing manifest \\u0027/tmp/story32-g4-failed-command-ci001wdt/test/fixtures/module/positive/hexalith.module-manifest.v1.json\\u0027: Git metadata is invalid or inaccessible.\",\"field\":\"/tmp/story32-g4-failed-command-ci001wdt/test/fixtures/module/positive/hexalith.module-manifest.v1.json\",\"hint\":\"Use a manifest in the active root or one of its direct references.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    },
+    {
+      "proxy": "old",
+      "commandKind": "packaged",
+      "exitCode": 3,
+      "stdout": "{\"status\":\"failed\",\"outcome\":{\"exitCode\":\"TopologyOrLifecycle\",\"phase\":\"Topology\",\"category\":\"TopologyOrLifecycle\",\"ruleId\":\"HXW001\"},\"diagnostics\":[{\"ruleId\":\"HXW001\",\"phase\":\"Topology\",\"category\":\"TopologyOrLifecycle\",\"message\":\"Cannot inspect Git workspace containing manifest \\u0027/tmp/story32-g4-failed-command-ci001wdt/test/fixtures/module/positive/hexalith.module-manifest.v1.json\\u0027: Git metadata is invalid or inaccessible.\",\"field\":\"/tmp/story32-g4-failed-command-ci001wdt/test/fixtures/module/positive/hexalith.module-manifest.v1.json\",\"hint\":\"Use a manifest in the active root or one of its direct references.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    },
+    {
+      "proxy": "fixed",
+      "commandKind": "source",
+      "exitCode": 2,
+      "stdout": "{\"status\":\"unavailable\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXR003\"},\"diagnostics\":[{\"ruleId\":\"HXR003\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"The approved descriptor ABI cannot yet be composed into a supported runtime.\",\"field\":\"runtime\",\"hint\":\"Qualify the runner-owned G-6 topology before retrying.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    },
+    {
+      "proxy": "fixed",
+      "commandKind": "packaged",
+      "exitCode": 2,
+      "stdout": "{\"status\":\"unavailable\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXR003\"},\"diagnostics\":[{\"ruleId\":\"HXR003\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"The approved descriptor ABI cannot yet be composed into a supported runtime.\",\"field\":\"runtime\",\"hint\":\"Qualify the runner-owned G-6 topology before retrying.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    }
+  ],
+  "qualificationCredit": false
+}

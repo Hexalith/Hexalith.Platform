@@ -1,0 +1,37 @@
+{
+  "schema": "story32-fixture-github-publication-configuration.v1",
+  "recordedUtc": "2026-11-09T13:24:05.153036+00:00",
+  "authorization": "User explicitly replied you can do it to the concrete fixture publication configuration request.",
+  "repository": "Hexalith/Hexalith.Platform",
+  "environment": {
+    "id": 26714001499,
+    "name": "production",
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "requiredReviewers": [
+    "jpiquot"
+  ],
+  "preventSelfReview": false,
+  "branchPolicies": {
+    "total_count": 1,
+    "branch_policies": [
+      {
+        "id": 66050946,
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2NjA1MDk0Ng==",
+        "name": "main",
+        "type": "branch"
+      }
+    ]
+  },
+  "variables": {
+    "HEXALITH_TEST_EXTENSION_PUBLISH_ENABLED": "true",
+    "NUGET_TRUSTED_PUBLISHING_USER": "jpiquot"
+  },
+  "orgSecretGrantsChanged": false,
+  "nugetAccountPolicyConfiguredByThisOperation": false,
+  "productionServiceDeployment": false
+}

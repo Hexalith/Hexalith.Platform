@@ -1,0 +1,24 @@
+{
+  "root": "/tmp/story32-g4-failed-command-ci001wdt",
+  "source": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+  "cases": [
+    {
+      "case": "down",
+      "exitCode": 0,
+      "stdout": "{\"status\":\"completed\",\"outcome\":{\"exitCode\":\"Success\",\"phase\":\"None\",\"category\":\"None\",\"ruleId\":null},\"diagnostics\":[{\"ruleId\":\"HXI001\",\"phase\":\"Cleanup\",\"category\":\"None\",\"message\":\"Runner-owned invocation cleanup completed.\",\"field\":\"down\",\"hint\":null,\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    },
+    {
+      "case": "test",
+      "exitCode": 2,
+      "stdout": "{\"status\":\"unavailable\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXR003\"},\"diagnostics\":[{\"ruleId\":\"HXR003\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"The approved descriptor ABI cannot yet be composed into a supported runtime.\",\"field\":\"runtime\",\"hint\":\"Qualify the runner-owned G-6 topology before retrying.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    },
+    {
+      "case": "test-again",
+      "exitCode": 2,
+      "stdout": "{\"status\":\"unavailable\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXR003\"},\"diagnostics\":[{\"ruleId\":\"HXR003\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"The approved descriptor ABI cannot yet be composed into a supported runtime.\",\"field\":\"runtime\",\"hint\":\"Qualify the runner-owned G-6 topology before retrying.\",\"source\":null,\"location\":null,\"row\":null}]}\n",
+      "stderr": ""
+    }
+  ]
+}

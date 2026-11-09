@@ -1,0 +1,107 @@
+{
+  "recordedUtc": "2026-11-09T17:56:32.419776+00:00",
+  "scope": "Reviewed pre-publication fixture/native profile amendment only. Actual unchanged Platform host Program interoperability used the retained unsigned/nonpublic historical package archives.",
+  "sourceCandidate": "d360698a9cb5a6ffda28289478eaacd168dbecc7 plus reviewed native profile and separate measured default tuple candidate",
+  "nativeProfile": {
+    "executor": "mtp",
+    "expected": 1,
+    "passed": 1,
+    "skipped": 0,
+    "sdkReportLoaderValid": true,
+    "normalNativeParentExecuted": false,
+    "actualHandoffHashRepresentation": "SDK uppercase SHA256"
+  },
+  "resourceFreeControls": {
+    "expected": 30,
+    "executed": 30,
+    "passed": 30,
+    "skipped": 0,
+    "nodeGateControlsRetained": 14
+  },
+  "prepublicationAmendment": "Original platformtestextension identity retained, explicit ES/Tenants/Memories closure, sole DomainService package dependency, signed producer contract binds all3 native source bodies. No ordinary service-audit exemption.",
+  "historicalRefusals": {
+    "pythonPackage": "HXP020 retained unchanged",
+    "ordinaryPlatformOwnerAdoption": "HXA001;109 diagnostics retained separately"
+  },
+  "credits": {
+    "signedFixture": false,
+    "nativeParent": false,
+    "hostAdmission": false,
+    "qualification": false,
+    "distributedReadiness": false
+  },
+  "files": {
+    "actual-unsigned-candidate/actual-ready.json": {
+      "sha256": "f012eb0006785a11959d9cc50118f79b00781ed3a84b51303015db6bd7e8de9f",
+      "bytes": 2101
+    },
+    "actual-unsigned-candidate/build.log": {
+      "sha256": "c6cc04c04c3e7c76d645b42440640d64d8fe8ec43641c31e30b2cbf3c7e30377",
+      "bytes": 2260
+    },
+    "actual-unsigned-candidate/http.log": {
+      "sha256": "8411236e81dc082801e3bfea0cc8d44feee5fde3b09651514055b61e971d37b1",
+      "bytes": 83260
+    },
+    "actual-unsigned-candidate/native-entry-result.json": {
+      "sha256": "f51217d6d42ab0ab706d7ac429898631c0e13b2428c38640aae4644f4a0b65be",
+      "bytes": 722
+    },
+    "actual-unsigned-candidate/native-tests/module-tests.trx": {
+      "sha256": "a80639677b20a4404df08d6778715bd72be851d0788c0f62690bbfa35107c66c",
+      "bytes": 2559
+    },
+    "actual-unsigned-candidate/receipt.json": {
+      "sha256": "97958269658c98a8cbbafa35663a2b8d2cd3215e6e37da385da2b14503d75268",
+      "bytes": 3466
+    },
+    "story32-fixture-native-mtp-boundary-controls.log": {
+      "sha256": "a3f5fa32d082809efd14557ea924a320ac13aec208e940d66f7cff75981650a6",
+      "bytes": 4383
+    },
+    "story32-fixture-native-mtp-boundary-report-loader.log": {
+      "sha256": "eb524561ac6142f232ab69b4da625ffe3c5fb99092008743f00c76be53541054",
+      "bytes": 196
+    },
+    "story32-fixture-native-mtp-build-attempt2.log": {
+      "sha256": "a8a1d2c76388d84373561b1ffeeddee5b4782b14a6ac83b8b5f088413cc02e0a",
+      "bytes": 389
+    },
+    "story32-fixture-native-mtp-build.log": {
+      "sha256": "7d3b532b376db801fa0bb6aad71621f3add78bb94ce00a006d33ce6bd8569e8a",
+      "bytes": 1340
+    },
+    "story32-fixture-native-mtp-manifest-validation.json": {
+      "sha256": "724d6ace8bd53e2658aa456dc61b065be48a3fe24e71ebb7c93b76c056cd0d53",
+      "bytes": 120
+    },
+    "story32-fixture-native-mtp-profile-boundaries-review.json": {
+      "sha256": "ccc572bd3082a3098a8567b3ac7229dfaeb7746f7123202a06892419b502ea78",
+      "bytes": 4408
+    },
+    "story32-fixture-native-mtp-profile-boundaries.patch": {
+      "sha256": "7f49b8cc89ffe8d4d1e1c8c4e7b6f8c6c96252fd03a3c1e4658eff07ee71cfd1",
+      "bytes": 45804
+    },
+    "story32-fixture-native-mtp-profile-review.json": {
+      "sha256": "f106b44eeaa98e0478fe6c67263d229f6aeb6d49d314a4892ab34f67dec2f6e5",
+      "bytes": 3809
+    },
+    "story32-fixture-native-mtp-profile.patch": {
+      "sha256": "e09f9ed947b6015ae91163244feb0be27eb3faad171ba894fde14c527c91baa3",
+      "bytes": 40929
+    },
+    "story32-fixture-owner-resolution-controls-attempt3.log": {
+      "sha256": "543bb8938760ab3cfbba0a6b5305499491ae30d614ecdc89a32d670a1e66ae2d",
+      "bytes": 474
+    },
+    "story32-fixture-python-package-manifest-refusal.json": {
+      "sha256": "2ef49f2ee55eec2996affb1d8253c4907bfd78cef202cbb67cca995b9730aa84",
+      "bytes": 517
+    },
+    "story32-run-native-mtp-entry-uppercase-live-probe.py": {
+      "sha256": "1189dac73a0b1b89bfccf4c191d2f07c82435e9ec93fa0e8cb5caa76b0ae8107",
+      "bytes": 7007
+    }
+  }
+}

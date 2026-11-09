@@ -1,0 +1,36 @@
+
+> hexalith-platform@0.0.0-development test:source-release
+> node --test tests/source-release/*.test.mjs
+
+✔ either final callback requires both latest successful main lanes and exact five/six jobs (2.281491ms)
+✔ earlier callback defers pending/missing counterpart; later callback can proceed (0.70191ms)
+✔ latest failed/cancelled/timed-out/skipped/neutral counterpart never borrows an earlier success (1.339396ms)
+✔ superseded callback, primary attempt race and latest pending attempt refuse (0.577459ms)
+✔ required job failure/cancellation/skip, missing/unknown and duplicate names refuse (0.891908ms)
+✔ source release requires source resolution, all three execution lanes and aggregate verdict (1.631712ms)
+✔ wrong event/repository/branch/SHA/checkout/unknown workflow and incomplete API discovery refuse (2.010666ms)
+✔ main advancing during collection or immediately before mutation refuses without saving a ready phase (0.397871ms)
+✔ changed qualifying attempt cannot publish notes carrying the earlier run bindings (0.480526ms)
+✔ duplicate callbacks and standard no-release outcome do not force a publication (0.968212ms)
+✔ no-release return after main advance is refused and computed-version failure diagnostics survive (0.379365ms)
+✔ standard real analyzer computes patch/minor/major and declines build/docs/empty commits (9.162274ms)
+✔ explicit source-only plugins omit package publishing and source-main mutations (1.378391ms)
+✔ actual pinned GitHub hooks make no issue, PR, label, package or registry calls (2.047097ms)
+✔ GET transport binds official API and refuses redirects, errors and oversized bodies (1.007041ms)
+✔ workflow separates read-only verification from serialized contents-write publisher and binds callback checkout (3.844516ms)
+✔ real entry point refuses local execution without a positive CI identity or any network/write probe (201.102509ms)
+✔ actual release hook binds computed version/source and retains bounded public run notes (1.494441ms)
+✔ verifier uses the reviewed default-branch code to refuse an older callback before its helper existed (0.21172ms)
+✔ outer CLI failure preserves actual post-tag release failure phase/version/reason and prior published outcome (0.439081ms)
+✔ actual pinned notes generator renders feature fix breaking notes and repository links (25.929608ms)
+✔ current and both genuine historical executions fan out from source resolution (0.951464ms)
+✔ overall tuple verdict refuses failed cancelled skipped or missing lanes (0.123319ms)
+✔ actual aggregate step exits nonzero for every unsuccessful or absent lane result (794.788604ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 844.566245

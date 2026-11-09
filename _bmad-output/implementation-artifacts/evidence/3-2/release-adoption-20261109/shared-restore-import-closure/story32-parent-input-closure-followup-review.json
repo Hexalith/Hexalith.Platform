@@ -1,0 +1,35 @@
+{
+  "kind": "independent-four-file-import-closure-followup-review",
+  "patchSha256": "7a6049e0da09c24284613b3d966d3c5a83b0b71696612fc512c1fb38ec665940",
+  "files": {
+    "eng/test_host_builds_resolution.py": "ebbcbdaa590de22d7619830db10e15d40ee41019111f4b5460bf3b9958a63f81",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs": "3cbbace5d9a3423f472db8f06bcd253cbcef021baf1ba870220f029073210bf6",
+    "eng/mcpcli-operator-setup/prepare.py": "71b5c0d7e2838e34823c5534a0aca2461d3f4f46d8bc7cb0804977dbd2d0e4ff",
+    "eng/mcpcli-operator-setup/test_prepare.py": "96e20c6af78fd2bdd0772862027f13c869565bc821a4e686e37a75c5fdef6f02"
+  },
+  "reviewFindings": [],
+  "independentlyExecuted": {
+    "hostBuildResolution": 15,
+    "operatorPreparation": 10,
+    "operatorGuardMatrix": 11,
+    "allExitZero": true
+  },
+  "csharpReceiptSha256": "f1e7aabe51c007c7ab9feda33573def6f82a49e9e0cd81fe7cd9c0d463f0dd65",
+  "csharpRawFilesVerified": 5,
+  "csharpExistingCases": [
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingSnapshotFailsByOwnerWithoutReadingSourceReferences",
+    "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.MissingImageFailsBeforeAddingResources"
+  ],
+  "csharpPass": 4,
+  "sourceInputsUnchanged": 23849,
+  "outputsUnchanged": true,
+  "inventoryChange": "Bind newly imported eng/SourceRestore.props and actual automatic Directory.Build.targets; three mutation tests exercise six added/modified/deleted drift refusals before any external command. Directory.Solution.props excluded because project entry does not import it.",
+  "candidateAcceptance": false,
+  "hostAdmissionCredit": false,
+  "completePreflightValidationReceipt": "/tmp/story32-shared-restore-fixture-closure/validation-closed.json",
+  "next": "Prepare new candidate separately from open frozen measurement; new actual source comparisons and tests required.",
+  "completeValidationRawFilesVerified": 127,
+  "all14CompletePreflightCommandsExitZero": true
+}

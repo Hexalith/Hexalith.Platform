@@ -77,8 +77,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static string CurrentCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name : PublishedCatalogArtifactCohort.CurrentOwnerName;
     internal static string EventStoreTestCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name : PublishedCatalogArtifactCohort.EventStorePackageTestName;
 
-    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
+    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package", bool sdk42 = false)
     {
+        if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0", "The explicit SDK4.2 case must load its real package cohort.");
         bool current = profile == PlatformCurrentOwnerProof.Profile;
         bool published = !current && PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
         string cohort = current ? CurrentCohort
@@ -294,6 +295,24 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();
         result.ExitCode.ShouldBe(0);
         return result.Output.Trim();
+    }
+
+    /// <summary>Retains existing process diagnostics outside the source tree before normal fixture cleanup.</summary>
+    internal void RetainReaderDiagnostics()
+    {
+        string source = Path.Combine(Reader, "generation.log");
+        if (!File.Exists(source)) return;
+        try
+        {
+            string target = Path.Combine(Path.GetTempPath(), "hexalith-sdk42-reader-diagnostics", Path.GetFileName(Workspace));
+            CompositionWorkspace.CreatePrivateDirectory(target);
+            File.Copy(source, Path.Combine(target, "generation.log"), overwrite: false);
+            Console.Error.WriteLine("Retained existing reader diagnostics: " + target);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            Console.Error.WriteLine("Reader diagnostic retention failed; the original test failure is preserved.");
+        }
     }
 
     /// <inheritdoc />

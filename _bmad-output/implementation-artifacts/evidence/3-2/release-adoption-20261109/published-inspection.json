@@ -1,0 +1,330 @@
+{
+  "observedUtc": "2026-11-09T13:18:00.035997+00:00",
+  "work": "/tmp/story32-published-inspection-s1jx0uaa",
+  "packages": [
+    {
+      "id": "Hexalith.EventStore.DomainService",
+      "version": "4.1.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.domainservice/4.1.0/hexalith.eventstore.domainservice.4.1.0.nupkg",
+      "indexUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.domainservice/index.json",
+      "latestListed": "4.1.0",
+      "archiveSha256": "da40e1e05461bac67bbbf9f3a839085e0f8c65e726168b33f2dc955e0c2d1fb0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+      },
+      "repositorySignaturePresent": true,
+      "binaryMetadataNames": {
+        "EventStoreExtensionApi": false,
+        "EventStoreExtensionAttribute": false
+      },
+      "api": {
+        "command": [
+          "dnx",
+          "dotnet-inspect",
+          "-y",
+          "--",
+          "type",
+          "Hexalith.EventStore.DomainService.EventStoreExtensionApi",
+          "--library",
+          "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.EventStore.DomainService.4.1.0/lib/net10.0/Hexalith.EventStore.DomainService.dll",
+          "--json"
+        ],
+        "exitCode": 1,
+        "typeFound": false,
+        "catalogPackageVersionSignatures": [],
+        "rawOutputPath": "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.EventStore.DomainService.4.1.0/lib/net10.0/Hexalith.EventStore.DomainService.api.json",
+        "rawOutputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "Error: Type 'Hexalith.EventStore.DomainService.EventStoreExtensionApi' not found.\n"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Server",
+      "version": "4.1.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.server/4.1.0/hexalith.eventstore.server.4.1.0.nupkg",
+      "indexUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.server/index.json",
+      "latestListed": "4.1.0",
+      "archiveSha256": "fce322ee16345aa1c150375065bc2665c34f38d1bab6086d1144dd275dc25da4",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"
+      },
+      "repositorySignaturePresent": true,
+      "binaryMetadataNames": {
+        "EventStoreExtensionServiceCollectionExtensions": false,
+        "EventStoreExtensionDeclaration": false
+      },
+      "api": {
+        "command": [
+          "dnx",
+          "dotnet-inspect",
+          "-y",
+          "--",
+          "type",
+          "Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions",
+          "--library",
+          "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.EventStore.Server.4.1.0/lib/net10.0/Hexalith.EventStore.Server.dll",
+          "--json"
+        ],
+        "exitCode": 1,
+        "typeFound": false,
+        "catalogPackageVersionSignatures": [],
+        "rawOutputPath": "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.EventStore.Server.4.1.0/lib/net10.0/Hexalith.EventStore.Server.api.json",
+        "rawOutputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr": "Error: Type 'Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions' not found.\n\n  Did you mean:\n    Hexalith.EventStore.Server.Configuration.EventStoreServerServiceCollectionExtensions\n    Hexalith.EventStore.Server.Commands.TrustedEffectRetentionServiceCollectionExtensions\n    Hexalith.EventStore.Server.Configuration.ProjectionSlotServiceCollectionExtensions\n    Hexalith.EventStore.Server.Configuration.InteractionPayloadProtectionServiceCollectionExtensions\n    Hexalith.EventStore.Server.Configuration.InteractionProtectionBindingServiceCollectionExtensions\n    Hexalith.EventStore.Server.Queries.SafeDenialQueryRoutingServiceCollectionExtensions\n"
+      }
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "4.44.13",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.44.13/hexalith.builds.module.cli.4.44.13.nupkg",
+      "indexUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/index.json",
+      "latestListed": "4.45.1",
+      "archiveSha256": "036d32fb2c7ea961d4ec055ad59a70f2cdd6377ab034d67f2b82e01e16b62bec",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "3c8096180ecf2aa539ac454815efbfceb8a92822"
+      },
+      "repositorySignaturePresent": true,
+      "toolingSha256": "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d",
+      "eventStoreExtensionsSchemaLiteral": false,
+      "api": {
+        "command": [
+          "dnx",
+          "dotnet-inspect",
+          "-y",
+          "--",
+          "type",
+          "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+          "--library",
+          "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.44.13/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+          "--json"
+        ],
+        "exitCode": 0,
+        "typeFound": true,
+        "catalogPackageVersionSignatures": [],
+        "rawOutputPath": "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.44.13/tools/net10.0/any/Hexalith.Builds.Tooling.api.json",
+        "rawOutputSha256": "2d79123441a7ada2f756716c812637e1dafb19c8b93dddcb2fb49f81bfdffc7b",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "4.45.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.45.0/hexalith.builds.module.cli.4.45.0.nupkg",
+      "indexUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/index.json",
+      "latestListed": "4.45.1",
+      "archiveSha256": "dd99ad612367d6b0ffba69e24f93f16dcae649fb8edeb213f226f6c8864bc498",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "27145e52ffab5623198ba5efdab5cdb71aa42d28"
+      },
+      "repositorySignaturePresent": true,
+      "toolingSha256": "0c8c00e5563730f953f24b19b777dedd1887f4d186e92347145e55783d4d4981",
+      "eventStoreExtensionsSchemaLiteral": true,
+      "api": {
+        "command": [
+          "dnx",
+          "dotnet-inspect",
+          "-y",
+          "--",
+          "type",
+          "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+          "--library",
+          "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.45.0/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+          "--json"
+        ],
+        "exitCode": 0,
+        "typeFound": true,
+        "catalogPackageVersionSignatures": [
+          "string? CatalogPackageVersion(string packageId, string source)"
+        ],
+        "rawOutputPath": "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.45.0/tools/net10.0/any/Hexalith.Builds.Tooling.api.json",
+        "rawOutputSha256": "3a88032d7e6efdbf05d11eb8baed415f9561891dcbba3a53d080881ee4e01a61",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "4.45.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.45.1/hexalith.builds.module.cli.4.45.1.nupkg",
+      "indexUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/index.json",
+      "latestListed": "4.45.1",
+      "archiveSha256": "d8f35ce3e25cebaea378b8036bcf18cc3f837ae99a06721a5783242e0e1c630b",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "25de7a74d14d099faf7baea5da0cbb0b40264592"
+      },
+      "repositorySignaturePresent": true,
+      "toolingSha256": "ff84b5dca30a0a7f70efa8fff9e4a167c0c7336f2d0acb3e31e38a0710fe9c00",
+      "eventStoreExtensionsSchemaLiteral": true,
+      "api": {
+        "command": [
+          "dnx",
+          "dotnet-inspect",
+          "-y",
+          "--",
+          "type",
+          "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+          "--library",
+          "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.45.1/tools/net10.0/any/Hexalith.Builds.Tooling.dll",
+          "--json"
+        ],
+        "exitCode": 0,
+        "typeFound": true,
+        "catalogPackageVersionSignatures": [
+          "string? CatalogPackageVersion(string packageId, string source)"
+        ],
+        "rawOutputPath": "/tmp/story32-published-inspection-s1jx0uaa/Hexalith.Builds.Module.Cli.4.45.1/tools/net10.0/any/Hexalith.Builds.Tooling.api.json",
+        "rawOutputSha256": "11854908d0f576406f1d39719452e724829ff6271c21069f6350c1432f7ba88b",
+        "stderr": ""
+      }
+    }
+  ],
+  "releases": {
+    "Hexalith.EventStore": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/releases?per_page=10",
+      "items": [
+        {
+          "tag_name": "v4.1.0",
+          "published_at": "2026-11-04T11:31:56Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.1.0",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.0.4",
+          "published_at": "2026-11-03T05:07:09Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.0.4",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.0.3",
+          "published_at": "2026-11-03T02:50:26Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.0.3",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.0.2",
+          "published_at": "2026-11-03T00:54:04Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.0.2",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.0.1",
+          "published_at": "2026-11-02T22:53:17Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.0.1",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.0.0",
+          "published_at": "2026-11-02T19:20:36Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.0.0",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v3.133.0",
+          "published_at": "2026-11-02T12:32:03Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.133.0",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v3.132.2",
+          "published_at": "2026-11-02T08:42:18Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.132.2",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v3.132.1",
+          "published_at": "2026-11-02T02:54:21Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.132.1",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v3.132.0",
+          "published_at": "2026-11-02T01:48:01Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v3.132.0",
+          "target_commitish": "main"
+        }
+      ]
+    },
+    "Hexalith.Builds": {
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases?per_page=10",
+      "items": [
+        {
+          "tag_name": "v4.45.1",
+          "published_at": "2026-11-09T09:09:57Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.1",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.45.0",
+          "published_at": "2026-11-08T17:09:37Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.13",
+          "published_at": "2026-11-08T02:36:59Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.12",
+          "published_at": "2026-11-07T10:17:24Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.12",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.11",
+          "published_at": "2026-11-06T16:45:20Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.11",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.10",
+          "published_at": "2026-11-06T13:33:01Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.9",
+          "published_at": "2026-11-06T10:36:01Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.9",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.8",
+          "published_at": "2026-11-06T06:35:02Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.8",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.7",
+          "published_at": "2026-11-06T05:51:29Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.7",
+          "target_commitish": "main"
+        },
+        {
+          "tag_name": "v4.44.6",
+          "published_at": "2026-11-06T01:52:26Z",
+          "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.6",
+          "target_commitish": "main"
+        }
+      ]
+    }
+  },
+  "qualificationCredit": false,
+  "conclusion": {
+    "EventStore": "No published release carries the required extension API. Latest 4.1.0 lacks the types in actual DomainService and Server archives; its source predates the accepted extension work.",
+    "Builds": "4.45.0 and 4.45.1 carry the original extension manifest/catalog lookup API; 4.44.13 does not. None carries the proposed consumer-view overload. Selected 4.45.0 need not change for the original API, but the owner correction needs release/adoption.",
+    "candidateScope": "Local candidate archives demonstrate packaging mechanics only. Published package startup and automatic CI qualification remain unavailable pending approved owner release/adoption."
+  }
+}

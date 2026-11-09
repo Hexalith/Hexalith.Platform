@@ -1,0 +1,83 @@
+{
+  "recordedUtc": "2026-11-09T15:13:11.732087+00:00",
+  "sourceDebug": {
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "extensionCases": 36,
+    "companionCases": 12,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0,
+    "newSdk42PackageOnlyClassesExcluded": true,
+    "original47CaseInventoryRetained": true,
+    "addedNoExtensionSeedCase": 1
+  },
+  "replayControls": {
+    "preExtensionClosedMetadata": 8,
+    "legacyExactTransformations": 12,
+    "sdkSuiteAndActualCatalogPin": 7,
+    "sourceReleaseGate": 20
+  },
+  "fixturePublisher": {
+    "node": 14,
+    "python": 7,
+    "actualSignedPublication": false
+  },
+  "realSdk42ConsumerBinding": {
+    "status": "passed",
+    "cases": 15,
+    "sdk": "4.2.0",
+    "tenants": "7.0.5",
+    "copiedToolSourceClosureRetainedInResult": true,
+    "authorityRegistered": false
+  },
+  "parentIndependentReview": "Parent independently inspected the finite production cohort path, checked92 XML cases, reviewed the real-entry override removal, ran7 fixture producer controls, and ran8 pre-extension,12 legacy and7 SDK/profile/pin controls. These observations confer no released-tuple or host admission credit.",
+  "qualifiedNewDefaultTuple": false,
+  "storyAcceptance": false,
+  "files": [
+    {
+      "path": "sdk42-source-root-build.log",
+      "sha256": "bddd1eca6106bab4ad3365e5ad243ff899e99cc0a1b298e8d445bedfd3394f43"
+    },
+    {
+      "path": "sdk42-source-root-extension-tests.log",
+      "sha256": "d748a648066171c8f1616afa742d01fe3d3f9f8c835eab175a29b59b453b72e3"
+    },
+    {
+      "path": "sdk42-source-root-extension-tests.xml",
+      "sha256": "0c42beafbc702e7c1181cf1886fbc41b8422e0b8fb0772ce622c6e3ca8c5715b"
+    },
+    {
+      "path": "sdk42-source-root-companion-tests.log",
+      "sha256": "78fbd4e73a52647a595998c0002f64f7994ef18acb60d008260a2446124c6fa6"
+    },
+    {
+      "path": "sdk42-source-root-companion-tests.xml",
+      "sha256": "16f7ceb1d24a487dd892365d989c77e521cc8cc30f75ff32144f9b4a051de362"
+    },
+    {
+      "path": "sdk42-closed-replay-metadata-tests.log",
+      "sha256": "cec7170262dbaced00daed12c7aa47f1c86332235f8a60f5a2e791d4d9b7df01"
+    },
+    {
+      "path": "sdk42-legacy-transformation-tests.log",
+      "sha256": "6dc27025a1c3c36e0a7de46e3658b37468f346273e383c72d96cf5efb5a896fc"
+    },
+    {
+      "path": "sdk42-suite-pin-controls.log",
+      "sha256": "21c7e48d0b1ec908feef784bbce1fa55f2c9a7acf76382fa7578754a78bd1ed8"
+    },
+    {
+      "path": "sdk42-final-source-release-controls.log",
+      "sha256": "1e167a455e761167a994c5e5704b7ca7b141355ade41c061d15a5eab01577f61"
+    },
+    {
+      "path": "fixture-producer-node-controls.log",
+      "sha256": "24da92bbf86621a50815f2cf3a2ff6aeca4c38d5eae54451b8f5856762d4406c"
+    },
+    {
+      "path": "fixture-declaration-control-tests.log",
+      "sha256": "e75ddf5e6c7ab76f8f09b7a237f71079c7bfe2b7ae519393a2261eccc46b90f5"
+    }
+  ]
+}

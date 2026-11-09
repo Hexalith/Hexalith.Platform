@@ -1,0 +1,24 @@
+{
+  "generation": 1,
+  "instanceId": "public-owner-component",
+  "gatewayAppId": "eventstore",
+  "outputDirectory": "/tmp/story32-sdk42-upstream-catalog-reader/source-output",
+  "qualificationCohort": "source",
+  "owners": [
+    {
+      "assembly": "Hexalith.Tenants.Contracts",
+      "adapterAssembly": "Hexalith.Tenants.Server",
+      "appId": "tenants"
+    },
+    {
+      "assembly": "Hexalith.Memories.EventStore",
+      "adapterAssembly": "Hexalith.Memories.EventStoreExtensions",
+      "appId": "memories-domain-service"
+    },
+    {
+      "assembly": "Hexalith.Parties.Contracts",
+      "adapterAssembly": "Hexalith.Parties.EventStoreExtensions",
+      "appId": "parties"
+    }
+  ]
+}

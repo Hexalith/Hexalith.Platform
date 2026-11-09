@@ -15,9 +15,9 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
 
     /// <summary>Selects genuine catalog/tool inputs and explicitly synthetic active-SDK entry files without starting resources.</summary>
     /// <param name="currentTest">Selects the separate current EventStore test inputs; historical callers keep the authentic public default.</param>
-    internal PlatformPackageCatalogReaderFixture(bool currentTest = false)
+    internal PlatformPackageCatalogReaderFixture(bool currentTest = false, bool sdk42 = false)
     {
-        _owner = currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
+        _owner = sdk42 ? PlatformQualificationPackageFixture.ExtensionSdkTest() : currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
         string platform = PlatformTestRepository.Root;
         string root = Metadata("PlatformTestReaderWorkspaceRoot");
         if (string.IsNullOrWhiteSpace(root)) root = platform;

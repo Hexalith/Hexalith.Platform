@@ -1,0 +1,77 @@
+--- a/eng/test_host_builds_resolution.py
++++ b/eng/test_host_builds_resolution.py
+@@ -21,8 +21,10 @@
+         self.platform = self.workspace / "Hexalith.Platform"
+         self.project = self.platform / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+         self.project.parent.mkdir(parents=True)
+-        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets"):
+-            shutil.copyfile(ROOT / name, self.platform / name)
++        for name in ("Directory.Build.props", "Directory.Packages.props", "Directory.Build.targets", "eng/SourceRestore.props"):
++            destination = self.platform / name
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / name, destination)
+         shutil.copyfile(ROOT / self.project.relative_to(self.platform), self.project)
+         self.test_project = self.platform / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
+         self.test_project.parent.mkdir(parents=True)
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs
+@@ -18,6 +18,8 @@
+         File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
+         foreach (string file in new[] { "Directory.Build.props", "Directory.Packages.props" })
+             File.Copy(Path.Combine(platformRoot, file), Path.Combine(Root, file));
++        Directory.CreateDirectory(Path.Combine(Root, "eng"));
++        File.Copy(Path.Combine(platformRoot, "eng", "SourceRestore.props"), Path.Combine(Root, "eng", "SourceRestore.props"));
+         string reader = Path.Combine(Root, "src", "Hexalith.Platform.CatalogBuilder");
+         Directory.CreateDirectory(reader);
+         foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs" })
+--- a/eng/mcpcli-operator-setup/prepare.py
++++ b/eng/mcpcli-operator-setup/prepare.py
+@@ -53,7 +53,8 @@
+              *sorted((root / 'eng/mcpcli-operator-setup/chart').rglob('*')),
+              *sorted((root / 'eng/mcpcli-operator-setup').glob('*.py')),
+              *sorted((root / 'eng/mcpcli-operator-setup/graph-export').glob('*.cs*')),
+-             root / 'Directory.Build.props', root / 'Directory.Packages.props', root / 'global.json']
++             root / 'Directory.Build.props', root / 'Directory.Build.targets', root / 'Directory.Packages.props',
++             root / 'eng/SourceRestore.props', root / 'global.json']
+     for module in ('EventStore', 'Tenants', 'Parties', 'Memories'):
+         paths.append(root / 'references' / ('Hexalith.' + module) / 'module/hexalith.module-manifest.v2.json')
+     return {str(p.relative_to(root)): sha(p) for p in paths if p.is_file()}
+--- a/eng/mcpcli-operator-setup/test_prepare.py
++++ b/eng/mcpcli-operator-setup/test_prepare.py
+@@ -63,5 +63,36 @@
+             network.assert_not_called()
+ 
+ 
++    def imported_build_input_change_refuses(self, fault):
++        from guard_fixtures import Control
++        for name in ('eng/SourceRestore.props', 'Directory.Build.targets'):
++            with self.subTest(input=name), Control() as control, patch.object(
++                    prepare, 'subprocess_git_revision', return_value='a' * 40), patch.object(prepare, 'run') as run:
++                path = control.root / name
++                path.parent.mkdir(parents=True, exist_ok=True)
++                if fault != 'added':
++                    path.write_bytes((prepare.ROOT / name).read_bytes())
++                    control.rebind_source()
++                prepare.validate_profile(control.profile, control.root, control.graph)
++                if fault == 'deleted':
++                    path.unlink()
++                elif fault == 'modified':
++                    path.write_bytes(path.read_bytes() + b'\n<!-- changed imported build context -->\n')
++                else:
++                    path.write_bytes((prepare.ROOT / name).read_bytes())
++                with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
++                    prepare.validate_profile(control.profile, control.root, control.graph)
++                run.assert_not_called()
++
++    def test_modified_imported_source_restore_and_targets_refuse(self):
++        self.imported_build_input_change_refuses('modified')
++
++    def test_added_imported_source_restore_and_targets_refuse(self):
++        self.imported_build_input_change_refuses('added')
++
++    def test_deleted_imported_source_restore_and_targets_refuse(self):
++        self.imported_build_input_change_refuses('deleted')
++
++
+ if __name__ == '__main__':
+     unittest.main()

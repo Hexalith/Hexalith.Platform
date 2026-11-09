@@ -1,0 +1,24 @@
+{
+  "recordedUtc": "2026-11-09T16:34:06.135320+00:00",
+  "source": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+  "publisher": 42653985043,
+  "conclusion": "failure",
+  "actualAttemptedVersion": "4.46.1",
+  "failedGate": "Positive packaged module test command path exited3, expected2 (HXR003 prerequisite unavailable control).",
+  "sourcePackageParityPassedBeforeFailure": true,
+  "tagLookup": {
+    "exitCode": 1,
+    "stdout": "{\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+    "stderr": "gh: Not Found (HTTP 404)\n"
+  },
+  "officialNuget": {
+    "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.46.1/hexalith.builds.module.cli.4.46.1.nupkg",
+    "status": 404
+  },
+  "retainedArtifactId": 13691940877,
+  "limitation": "The existing gate saves the failing tool output only after its assertion, so the failed-stream body is absent from its retained artifact. A source-command reproduction is in progress; no underlying diagnostic is inferred yet.",
+  "normalProductionReviewUsed": true,
+  "existingControlsUnchanged": true,
+  "publicationCredit": false,
+  "platformPinsChanged": false
+}

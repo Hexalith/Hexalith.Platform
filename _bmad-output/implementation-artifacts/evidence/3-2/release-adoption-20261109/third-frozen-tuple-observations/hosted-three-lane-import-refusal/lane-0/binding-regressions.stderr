@@ -1,0 +1,204 @@
+FFFFF..FFFFFFFFFFFFF
+======================================================================
+FAIL: test_ci_rejects_foreign_source_fallback_before_build (__main__.HostBuildsResolutionTests.test_ci_rejects_foreign_source_fallback_before_build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 172, in test_ci_rejects_foreign_source_fallback_before_build
+    self.assertIn("Platform CI refuses foreign project references", result.stdout + result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Platform CI refuses foreign project references' not found in '/tmp/tmp9njjytdf/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp9njjytdf/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp9njjytdf/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk. [/tmp/tmp9njjytdf/Hexalith.Platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]\nBuild failed. Properties, Items, and Target results cannot be obtained. See details in stderr above.\n'
+
+======================================================================
+FAIL: test_debug_keeps_eventstore_compatibility_import_after_selected_catalog (__main__.HostBuildsResolutionTests.test_debug_keeps_eventstore_compatibility_import_after_selected_catalog)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 101, in test_debug_keeps_eventstore_compatibility_import_after_selected_catalog
+    self.assert_selection(selected, "debug", "-p:Configuration=Debug")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpctj9eq_k/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpctj9eq_k/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpctj9eq_k/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_explicit_root_binds_both_catalog_and_tooling (__main__.HostBuildsResolutionTests.test_explicit_root_binds_both_catalog_and_tooling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 82, in test_explicit_root_binds_both_catalog_and_tooling
+    self.assert_selection(selected, "explicit", f"-p:HexalithBuildsRoot={selected}")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpbwvd1cpy/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpbwvd1cpy/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpbwvd1cpy/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root (__main__.HostBuildsResolutionTests.test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root) (root=PosixPath('/tmp/tmpyp_l636c/mapped-builds'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 131, in test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root
+    self.assert_selection(selected, "mapped", mapped)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpyp_l636c/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpyp_l636c/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpyp_l636c/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root (__main__.HostBuildsResolutionTests.test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root) (root='../mapped-builds')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 131, in test_late_mapping_binds_catalog_tooling_and_seed_to_selected_root
+    self.assert_selection(selected, "mapped", mapped)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpyp_l636c/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpyp_l636c/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpyp_l636c/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_missing_late_mapped_root_does_not_fall_back (__main__.HostBuildsResolutionTests.test_missing_late_mapped_root_does_not_fall_back) (root=PosixPath('/tmp/tmprm8elyg3/missing-mapped-builds'), project=PosixPath('/tmp/tmprm8elyg3/Hexalith.Platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 152, in test_missing_late_mapped_root_does_not_fall_back
+    self.assertIn(str(missing), result.stdout + result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '/tmp/tmprm8elyg3/missing-mapped-builds' not found in '/tmp/tmprm8elyg3/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.\n'
+
+======================================================================
+FAIL: test_missing_late_mapped_root_does_not_fall_back (__main__.HostBuildsResolutionTests.test_missing_late_mapped_root_does_not_fall_back) (root=PosixPath('/tmp/tmprm8elyg3/missing-mapped-builds'), project=PosixPath('/tmp/tmprm8elyg3/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 152, in test_missing_late_mapped_root_does_not_fall_back
+    self.assertIn(str(missing), result.stdout + result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '/tmp/tmprm8elyg3/missing-mapped-builds' not found in '/tmp/tmprm8elyg3/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.\n'
+
+======================================================================
+FAIL: test_missing_late_mapped_root_does_not_fall_back (__main__.HostBuildsResolutionTests.test_missing_late_mapped_root_does_not_fall_back) (root='../missing-mapped-builds', project=PosixPath('/tmp/tmprm8elyg3/Hexalith.Platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 152, in test_missing_late_mapped_root_does_not_fall_back
+    self.assertIn(str(missing), result.stdout + result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '/tmp/tmprm8elyg3/missing-mapped-builds' not found in '/tmp/tmprm8elyg3/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.\n'
+
+======================================================================
+FAIL: test_missing_late_mapped_root_does_not_fall_back (__main__.HostBuildsResolutionTests.test_missing_late_mapped_root_does_not_fall_back) (root='../missing-mapped-builds', project=PosixPath('/tmp/tmprm8elyg3/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 152, in test_missing_late_mapped_root_does_not_fall_back
+    self.assertIn(str(missing), result.stdout + result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '/tmp/tmprm8elyg3/missing-mapped-builds' not found in '/tmp/tmprm8elyg3/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmprm8elyg3/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.\n'
+
+======================================================================
+FAIL: test_published_tool_root_removes_foreign_builds_projects_and_keeps_host_metadata (__main__.HostBuildsResolutionTests.test_published_tool_root_removes_foreign_builds_projects_and_keeps_host_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 158, in test_published_tool_root_removes_foreign_builds_projects_and_keeps_host_metadata
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmp4at12939/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp4at12939/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp4at12939/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_relative_explicit_root_is_relative_to_platform_for_every_consumer (__main__.HostBuildsResolutionTests.test_relative_explicit_root_is_relative_to_platform_for_every_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 92, in test_relative_explicit_root_is_relative_to_platform_for_every_consumer
+    self.assert_selection(selected, "relative", "-p:HexalithBuildsRoot=../Hexalith.Builds")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmp2fvsxfjv/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp2fvsxfjv/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp2fvsxfjv/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_runner_assembly_override_does_not_add_a_source_reference (__main__.HostBuildsResolutionTests.test_runner_assembly_override_does_not_add_a_source_reference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 195, in test_runner_assembly_override_does_not_add_a_source_reference
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmp8hvxe03c/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp8hvxe03c/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp8hvxe03c/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_sibling_keeps_existing_catalog_precedence (__main__.HostBuildsResolutionTests.test_sibling_keeps_existing_catalog_precedence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 73, in test_sibling_keeps_existing_catalog_precedence
+    self.assert_selection(selected, "workspace")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmptu5h8pmg/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmptu5h8pmg/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmptu5h8pmg/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_standalone_initialized_dependency_is_supported (__main__.HostBuildsResolutionTests.test_standalone_initialized_dependency_is_supported)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 77, in test_standalone_initialized_dependency_is_supported
+    self.assert_selection(selected, "standalone")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpu3ywn11s/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpu3ywn11s/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpu3ywn11s/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_tenant_registry_inherits_transitive_catalog_and_keeps_one_gateway_pin (__main__.HostBuildsResolutionTests.test_tenant_registry_inherits_transitive_catalog_and_keeps_one_gateway_pin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 183, in test_tenant_registry_inherits_transitive_catalog_and_keeps_one_gateway_pin
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpe3281e2y/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpe3281e2y/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpe3281e2y/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_test_project_seed_reference_uses_sibling_and_relative_override (__main__.HostBuildsResolutionTests.test_test_project_seed_reference_uses_sibling_and_relative_override) (properties=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 111, in test_test_project_seed_reference_uses_sibling_and_relative_override
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmp8y7v2hkk/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp8y7v2hkk/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp8y7v2hkk/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_test_project_seed_reference_uses_sibling_and_relative_override (__main__.HostBuildsResolutionTests.test_test_project_seed_reference_uses_sibling_and_relative_override) (properties=['-p:HexalithBuildsRoot=../Hexalith.Builds'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 111, in test_test_project_seed_reference_uses_sibling_and_relative_override
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmp8y7v2hkk/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmp8y7v2hkk/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmp8y7v2hkk/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+======================================================================
+FAIL: test_workspace_sibling_is_used_without_nested_initialization (__main__.HostBuildsResolutionTests.test_workspace_sibling_is_used_without_nested_initialization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 67, in test_workspace_sibling_is_used_without_nested_initialization
+    self.assert_selection(selected, "workspace")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_host_builds_resolution.py", line 57, in assert_selection
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/tmpx7jn1pnx/Hexalith.Platform/Directory.Build.props(22,3): error MSB4019: The imported project "/tmp/tmpx7jn1pnx/Hexalith.Platform/eng/SourceRestore.props" was not found. Confirm that the expression in the Import declaration "$(MSBuildThisFileDirectory)eng/SourceRestore.props", which evaluated to "/tmp/tmpx7jn1pnx/Hexalith.Platform/eng/SourceRestore.props", is correct, and that the file exists on disk.
+
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.537s
+
+FAILED (failures=18)

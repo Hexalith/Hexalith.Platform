@@ -1,0 +1,74 @@
+{
+  "recordedUtc": "2026-11-09T18:08:25.388505+00:00",
+  "oldPartiesSource": "ee806fd0e82bdf6eec3a8c1f671427080dbed2ac",
+  "newPartiesSource": "ebe1739d70a4e76447938b0bb8c53db508bf6019",
+  "commits": [
+    "a69fa1794555acd66709ea382290eb3d5297f03a",
+    "ebe1739d70a4e76447938b0bb8c53db508bf6019"
+  ],
+  "diagnosticSource": "82a92e032feb9efee22cfd0b621d35ffc1c6d7e5",
+  "diagnosticRawReceipt": {
+    "retainedPath": "/tmp/story32-builds447-reader-diagnosis-3fetwv7b/receipt.json",
+    "sha256": "f93dd8ef1d3da7b58e1586439895206197e696587ad9792384f99c3df6a4e7ee",
+    "bytes": 8871409
+  },
+  "cause": "Owning Parties finite catalog/API/query/host guards omitted measured SDK4.2; actual reader threw No compiled owner declaration source was enrolled.",
+  "resolution": "Adopt existing normally qualified upstream owner source. No Platform DefineConstants/source fallback or changed acceptance rule.",
+  "unchangedModuleDeclarationSha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+  "publicPartiesPackageAndImagePinsUnchanged": true,
+  "samePartiesSourceRequiredForAllThreeReplayCommits": true,
+  "story28": {
+    "actualTest": "PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+    "result": "FAIL: historical/default fixture HasQualifiedSdkBytes(cohort) with actualSDK4.2; no altered fixture input.",
+    "priorM23Observation": "Retained separately and unchanged; this new observation does not establish it fixed or identical."
+  },
+  "diagnosticSourceAndOutputsUnchanged": true,
+  "qualificationCredit": false,
+  "candidateAcceptance": false,
+  "files": {
+    "current-source-ci.json": {
+      "sha256": "f13d0b39a7b51b74a00a9c9f34369c5b98c91d97b28ae000f12ed5dc2414fe41",
+      "bytes": 12904
+    },
+    "current-source-release-candidate-gate.json": {
+      "sha256": "c523df570386cc242bee26a6fde78710535060d1aeb048ec00dff5dc43075029",
+      "bytes": 12769
+    },
+    "owning-catalog-compatibility.diff": {
+      "sha256": "801750ec9bb88aff6043cd0169937a61754257b077958996b4bd3a1b3ab474f1",
+      "bytes": 9382
+    },
+    "retained-failed-reader/current-owner-reader.stderr": {
+      "sha256": "94d359277700f053a9c279022407cdc46fb7c46c148de196703a951b6f9f0728",
+      "bytes": 132
+    },
+    "retained-failed-reader/current-owner-reader.stdout": {
+      "sha256": "844baee64742826e66ac5b2f79d86a4469db7961d974c488a46a2c53b4129e2e",
+      "bytes": 1345
+    },
+    "retained-failed-reader/current-owner-reader.xml": {
+      "sha256": "1abf7f1e56f8a07b718aa03e04243fa369992f0613b0b332226a21f3751f8de2",
+      "bytes": 2744
+    },
+    "retained-failed-reader/diagnostic-build.log": {
+      "sha256": "96a9086cb467b2621654b5757768f0b13e6d7c0a4bac5af9cadffaddc8ac72f2",
+      "bytes": 1701
+    },
+    "retained-failed-reader/generation.log": {
+      "sha256": "a502562b7fc7465fa0b54b3f350f2a55d7bb0e00c4a510b1a54140a6e807ba7d",
+      "bytes": 418
+    },
+    "retained-failed-reader/story28-actual-fixture.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "retained-failed-reader/story28-actual-fixture.stdout": {
+      "sha256": "1894d25b873a7b2c0e21bf3871e8059b7521a7f59a1807f6b6f405b719100ad3",
+      "bytes": 2303
+    },
+    "retained-failed-reader/story28-actual-fixture.xml": {
+      "sha256": "d812ec7340c045c765d1e1ada2180b44a81e53acc0f757ee9cda783697f855f9",
+      "bytes": 3440
+    }
+  }
+}

@@ -1,0 +1,819 @@
+diff --git a/.github/workflows/tuple-ci.yml b/.github/workflows/tuple-ci.yml
+--- a/.github/workflows/tuple-ci.yml
++++ b/.github/workflows/tuple-ci.yml
+@@ -86,7 +86,7 @@
+           npm ci --ignore-scripts --no-audit --no-fund
+           npm run test:source-release
+           node --test eng/test-extension-release/gate.test.mjs
+-          python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
++          python3 -B eng/test-extension-release/run-controls.py
+           python3 -B eng/test_tuple_sdk_suites.py
+           python3 -B eng/test_pre_extension_tuple_source.py
+       - name: Verify exact candidate and initialize only owner-declared direct dependencies
+diff --git a/.github/workflows/test-extension-release.yml b/.github/workflows/test-extension-release.yml
+--- a/.github/workflows/test-extension-release.yml
++++ b/.github/workflows/test-extension-release.yml
+@@ -40,7 +40,7 @@
+       - name: Verify publisher refusal and archive controls
+         run: |
+           node --test eng/test-extension-release/gate.test.mjs
+-          python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
++          python3 -B eng/test-extension-release/run-controls.py
+       - name: Require exact current source release and normal qualifications
+         run: node eng/test-extension-release/gate.mjs
+       - name: Initialize direct dependencies
+diff --git a/eng/test-extension-release/README.md b/eng/test-extension-release/README.md
+--- a/eng/test-extension-release/README.md
++++ b/eng/test-extension-release/README.md
+@@ -48,7 +48,7 @@
+ 
+ ```bash
+ node --test eng/test-extension-release/gate.test.mjs
+-python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
++python3 -B eng/test-extension-release/run-controls.py
+ ```
+ 
+ These checks test release refusals and archive identity validation; they do not
+@@ -66,3 +66,30 @@
+ 
+ The publication controls now run automatically in tuple CI and again before
+ fixture publication: 14 Node gate cases and 7 Python archive/producer cases.
++
++The fixture declaration has one `mtp` package test,
++`eventstore-extension-package`, implemented in the separate
++`Hexalith.Platform.TestExtension.Qualification.Tests` project. It runs one bounded
++readiness observation after the normal parent supplies the owned endpoint and
++selected profile. It accepts an unhealthy overall `/ready` result only when the
++actual `eventstore-extensions` check is healthy and reports the declared extension
++id, major and package. It does not assert distributed readiness or establish
++package-load provenance by itself. The native case does not forward the parent's
++bearer token.
++
++The producer document binds the exact native project, test source and Python
++observer bodies carried in the archive. The fixture keeps its original
++`platformtestextension` module identity and explicitly declares EventStore,
++Tenants and Memories, preserving its actual domain closure. It remains a test
++fixture with `serviceEnrollment: false`; this source preparation grants no
++ordinary service adoption, owner repository mapping, private parent plan or
++finite host admission. Those require a normally released SDK path that proves
++the signed producer identity and the expanded reader/purpose cohort.
++
++Both tuple preflight and this publisher require exactly 30 resource-free Python
++controls (17 readiness, 9 archive identity, 4 execution-inventory controls) plus the existing 14 Node refusal
++controls. A missing or extra Python control fails the inventory before tests run. Execution
++also requires all 30 controls to run without skips. Readiness redirects are refused,
++and an observation completed after its native deadline cannot report Pass.
++A successful local observer or native report from an unsigned historical
++candidate grants no signed fixture, parent-plan or cohort qualification credit.
+diff --git a/eng/test-extension-release/verify-package.py b/eng/test-extension-release/verify-package.py
+--- a/eng/test-extension-release/verify-package.py
++++ b/eng/test-extension-release/verify-package.py
+@@ -15,6 +15,9 @@
+ 
+ DECLARATION = "build/hexalith.module-manifest.v2.json"
+ PRODUCER = "build/fixture-producer.json"
++TEST_ENTRY = "build/qualification/qualify-host.py"
++SOURCE_TEST_ENTRY = "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
++NATIVE_SOURCE_FILES = {'tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj': 'build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj', 'tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs': 'build/qualification/ReadinessTests.cs', 'eng/test-extension-release/qualify-host.py': 'build/qualification/qualify-host.py'}
+ ROOT = Path(__file__).resolve().parents[2]
+ FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
+ 
+@@ -22,8 +25,10 @@
+ def approved_documents(source):
+     if re.fullmatch(r"[a-f0-9]{40}", source) is None:
+         raise ValueError("Require an exact immutable fixture source revision")
+-    return {member: subprocess.check_output(["git", "show", source + ":" + FIXTURE + name], cwd=ROOT, timeout=30)
+-            for member, name in [(DECLARATION, "hexalith.module-manifest.v2.json"), (PRODUCER, "fixture-producer.json")]}
++    paths = {DECLARATION: FIXTURE + "hexalith.module-manifest.v2.json", PRODUCER: FIXTURE + "fixture-producer.json",
++             **{member: source for source, member in NATIVE_SOURCE_FILES.items()}}
++    return {member: subprocess.check_output(["git", "show", source + ":" + path], cwd=ROOT, timeout=30)
++            for member, path in paths.items()}
+ 
+ 
+ def inspect(path, version, source, *, approved=None):
+@@ -44,7 +49,7 @@
+         if len(dependencies) != 1 or dependencies[0].get("id") != "Hexalith.EventStore.DomainService":
+             raise ValueError("Unexpected fixture package dependency closure")
+         expected_documents = approved_documents(source) if approved is None else approved
+-        if set(expected_documents) != {DECLARATION, PRODUCER}:
++        if set(expected_documents) != {DECLARATION, PRODUCER, *NATIVE_SOURCE_FILES.values()}:
+             raise ValueError("Require the exact fixture declaration and producer authority")
+         for member, expected in expected_documents.items():
+             if member not in names or archive.read(member) != expected:
+@@ -56,11 +61,17 @@
+                        "publisherRepository": "Hexalith/Hexalith.Platform", "packageId": PACKAGE,
+                        "moduleId": "platformtestextension", "declaration": DECLARATION,
+                        "extensionId": "platform-test", "extensionApiMajor": 1,
+-                       "purpose": "signed-extension-host-qualification-only", "serviceEnrollment": False} \
++                       "purpose": "signed-extension-host-qualification-only", "serviceEnrollment": False,
++                       "ownerRepositoryIdentity": "Hexalith.Platform",
++                       "test": {"name": "eventstore-extension-package", "sourceEntry": SOURCE_TEST_ENTRY,
++                                "files": {source: {"path": member, "sha256": hashlib.sha256(archive.read(member)).hexdigest()}
++                                          for source, member in NATIVE_SOURCE_FILES.items()}}} \
+                 or declaration["schema"] != "hexalith.module-manifest.v2" or len(declaration["modules"]) != 1 \
+-                or module["identity"] != {"moduleId": "platformtestextension", "servers": [], "dependencies": ["eventstore", "tenants"]} \
++                or module["identity"] != {"moduleId": "platformtestextension", "servers": [], "dependencies": ["eventstore", "tenants", "memories"]} \
+                 or module["runtime"]["eventStoreExtensions"] != [{"packageId": PACKAGE, "extensionId": "platform-test", "extensionApiMajor": 1,
+-                    "configurationInputs": [{"key": "PlatformTestExtension:Marker", "source": "configuration", "reference": "platform-test-marker"}]}]:
++                    "configurationInputs": [{"key": "PlatformTestExtension:Marker", "source": "configuration", "reference": "platform-test-marker"}]}] \
++                or module.get("tests") != [{"name": "eventstore-extension-package", "executor": "mtp", "entry": SOURCE_TEST_ENTRY,
++                    "reportFormat": "trx", "executionTimeoutSeconds": 120, "stopTimeoutSeconds": 90, "mode": "package"}]:
+             raise ValueError("The Platform fixture producer/declaration identity is unsupported")
+         body = archive.read(LIBRARY)
+         if b"EventStoreExtensionAttribute" not in body or b"platform-test" not in body:
+@@ -71,7 +82,9 @@
+             "archiveSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+             "librarySha256": hashlib.sha256(body).hexdigest(), "bodies": bodies, "dependencies": dependencies,
+             "declaration": {"path": DECLARATION, "sha256": bodies[DECLARATION], "moduleId": "platformtestextension"},
+-            "producer": {"path": PRODUCER, "sha256": bodies[PRODUCER], "publisherRepository": "Hexalith/Hexalith.Platform"}}
++            "producer": {"path": PRODUCER, "sha256": bodies[PRODUCER], "publisherRepository": "Hexalith/Hexalith.Platform"},
++            "test": {"sourceEntry": SOURCE_TEST_ENTRY, "files": {source: {"path": member, "sha256": bodies[member]}
++                     for source, member in NATIVE_SOURCE_FILES.items()}}}
+ 
+ 
+ def main():
+diff --git a/eng/test-extension-release/test_package.py b/eng/test-extension-release/test_package.py
+--- a/eng/test-extension-release/test_package.py
++++ b/eng/test-extension-release/test_package.py
+@@ -12,12 +12,13 @@
+ 
+ class PackageIdentityTests(unittest.TestCase):
+     approved = {package.DECLARATION: (package.ROOT / package.FIXTURE / "hexalith.module-manifest.v2.json").read_bytes(),
+-                package.PRODUCER: (package.ROOT / package.FIXTURE / "fixture-producer.json").read_bytes()}
++                package.PRODUCER: (package.ROOT / package.FIXTURE / "fixture-producer.json").read_bytes(),
++                **{member: (package.ROOT / source).read_bytes() for source, member in package.NATIVE_SOURCE_FILES.items()}}
+ 
+     def inspect(self, path, version, source):
+         return package.inspect(path, version, source, approved=self.approved)
+ 
+-    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None, declaration=None, producer=None, omit=None):
++    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None, declaration=None, producer=None, test_entry=None, omit=None):
+         path = Path(root) / "fixture.nupkg"
+         source = source or "a" * 40
+         with zipfile.ZipFile(path, "w") as archive:
+@@ -29,6 +30,9 @@
+                 archive.writestr(package.DECLARATION, declaration or self.approved[package.DECLARATION])
+             if omit != package.PRODUCER:
+                 archive.writestr(package.PRODUCER, producer or self.approved[package.PRODUCER])
++            for member in package.NATIVE_SOURCE_FILES.values():
++                if omit != member:
++                    archive.writestr(member, test_entry or self.approved[member])
+         return path
+ 
+     def test_accepts_only_the_declared_source_and_fixture(self):
+@@ -38,12 +42,12 @@
+             self.assertIn(package.LIBRARY, result["bodies"])
+ 
+     def test_refuses_missing_declaration_or_producer(self):
+-        for missing in [package.DECLARATION, package.PRODUCER]:
++        for missing in [package.DECLARATION, package.PRODUCER, *package.NATIVE_SOURCE_FILES.values()]:
+             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
+                 self.inspect(self.archive(root, omit=missing), "1.9.0", "a" * 40)
+ 
+     def test_refuses_altered_declaration_or_foreign_producer(self):
+-        for member in ["declaration", "producer"]:
++        for member in ["declaration", "producer", "test_entry"]:
+             with self.subTest(member=member), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
+                 self.inspect(self.archive(root, **{member: b'{}'}), "1.9.0", "a" * 40)
+ 
+@@ -52,6 +56,22 @@
+         approved[package.PRODUCER] = approved[package.PRODUCER].replace(b'Hexalith/Hexalith.Platform', b'Foreign/Other')
+         with tempfile.TemporaryDirectory() as root:
+             path = self.archive(root, producer=approved[package.PRODUCER])
++            with self.assertRaisesRegex(ValueError, "unsupported"):
++                package.inspect(path, "1.9.0", "a" * 40, approved=approved)
++
++    def test_refuses_consistently_rebound_foreign_owner_metadata(self):
++        approved = dict(self.approved)
++        approved[package.PRODUCER] = approved[package.PRODUCER].replace(b'"Hexalith.Platform"', b'"Hexalith.Platformtestextension"')
++        with tempfile.TemporaryDirectory() as root:
++            path = self.archive(root, producer=approved[package.PRODUCER])
++            with self.assertRaisesRegex(ValueError, "unsupported"):
++                package.inspect(path, "1.9.0", "a" * 40, approved=approved)
++
++    def test_refuses_consistently_rebound_test_profile(self):
++        approved = dict(self.approved)
++        approved[package.DECLARATION] = approved[package.DECLARATION].replace(b'eventstore-extension-package', b'foreign-profile')
++        with tempfile.TemporaryDirectory() as root:
++            path = self.archive(root, declaration=approved[package.DECLARATION])
+             with self.assertRaisesRegex(ValueError, "unsupported"):
+                 package.inspect(path, "1.9.0", "a" * 40, approved=approved)
+ 
+diff --git a/eng/test-extension-release/qualify-host.py b/eng/test-extension-release/qualify-host.py
+new file mode 100644
+--- /dev/null
++++ b/eng/test-extension-release/qualify-host.py
+@@ -0,0 +1,149 @@
++#!/usr/bin/env python3
++"""Observe only the declared fixture's extension readiness through the native handoff."""
++from __future__ import annotations
++
++import datetime
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import sys
++import urllib.error
++import urllib.parse
++import urllib.request
++import xml.etree.ElementTree as ET
++
++MODULE = "platformtestextension"
++PROFILE = "eventstore-extension-package"
++SOURCE_ENTRY = "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
++OBSERVER_ENTRY = "eng/test-extension-release/qualify-host.py"
++SOURCE_FILES = {'tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj': 'build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj', 'tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs': 'build/qualification/ReadinessTests.cs', 'eng/test-extension-release/qualify-host.py': 'build/qualification/qualify-host.py'}
++
++
++def unique(pairs):
++    result = {}
++    for key, value in pairs:
++        if key in result:
++            raise ValueError("Duplicate fixture identity field")
++        result[key] = value
++    return result
++
++
++def handoff():
++    """Check the selected test and source bytes; this creates no admission authority."""
++    entry = Path(__file__).resolve()
++    root = entry.parents[2]
++    fixture = root / "tests/fixtures/Hexalith.Platform.TestExtension"
++    declaration_bytes = (fixture / "hexalith.module-manifest.v2.json").read_bytes()
++    declaration = json.loads(declaration_bytes, object_pairs_hook=unique)
++    producer = json.loads((fixture / "fixture-producer.json").read_bytes(), object_pairs_hook=unique)
++    module = declaration["modules"][0]
++    selection = module["tests"]
++    expected = {"name": PROFILE, "executor": "mtp", "entry": SOURCE_ENTRY,
++                "reportFormat": "trx", "executionTimeoutSeconds": 120,
++                "stopTimeoutSeconds": 90, "mode": "package"}
++    expected_files = {source: {"path": packaged, "sha256": hashlib.sha256((root / source).read_bytes()).hexdigest()}
++                      for source, packaged in SOURCE_FILES.items()}
++    entry_hash = expected_files[SOURCE_ENTRY]["sha256"]
++    if (len(declaration["modules"]) != 1 or module["identity"]["moduleId"] != MODULE
++            or selection != [expected] or entry.relative_to(root).as_posix() != OBSERVER_ENTRY
++            or producer["publisherRepository"] != "Hexalith/Hexalith.Platform"
++            or producer["ownerRepositoryIdentity"] != "Hexalith.Platform"
++            or producer["moduleId"] != MODULE or producer["serviceEnrollment"] is not False
++            or producer["test"] != {"name": PROFILE, "sourceEntry": SOURCE_ENTRY, "files": expected_files}):
++        raise ValueError("Fixture producer or selected test identity differs")
++    required = {"HEXALITH_G4_TEST_OWNER": MODULE, "HEXALITH_G4_TEST_NAME": PROFILE,
++                "HEXALITH_G4_TEST_MODE": "package",
++                "HEXALITH_G4_TEST_MANIFEST_HASH": hashlib.sha256(declaration_bytes).hexdigest(),
++                "HEXALITH_G4_TEST_ENTRY_HASH": entry_hash}
++    # The actual SDK emits uppercase SHA256; hex casing does not change the selected bytes.
++    actual = {key: os.environ.get(key, "") for key in required}
++    for key in ("HEXALITH_G4_TEST_MANIFEST_HASH", "HEXALITH_G4_TEST_ENTRY_HASH"):
++        actual[key] = actual[key].lower()
++    if any(actual[key] != value for key, value in required.items()):
++        raise ValueError("Native test selection differs from the owned fixture")
++    if re.fullmatch(r"[a-f0-9]{32}", os.environ.get("HEXALITH_G4_RUN_ID", "")) is None:
++        raise ValueError("Native run identity is unavailable")
++    deadline = datetime.datetime.fromisoformat(os.environ["HEXALITH_G4_EXECUTION_DEADLINE_UTC"].replace("Z", "+00:00"))
++    if deadline.tzinfo is None:
++        raise ValueError("Native execution deadline must identify UTC")
++    remaining = (deadline - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
++    if remaining <= 0:
++        raise ValueError("Native execution deadline has expired")
++    endpoint = urllib.parse.urlsplit(os.environ["HEXALITH_G4_EVENTSTORE_URL"])
++    if (endpoint.scheme not in ("http", "https") or not endpoint.hostname
++            or endpoint.username is not None or endpoint.password is not None
++            or endpoint.query or endpoint.fragment or endpoint.path not in ("", "/")):
++        raise ValueError("Native EventStore endpoint is unavailable")
++    report = Path(os.environ["HEXALITH_G4_TEST_REPORT_PATH"])
++    if not report.is_absolute() or not report.parent.is_dir():
++        raise ValueError("Native report path is unavailable")
++    extensions = module["runtime"]["eventStoreExtensions"]
++    if len(extensions) != 1:
++        raise ValueError("Fixture declaration has no unique extension")
++    return urllib.parse.urlunsplit(endpoint._replace(path="/ready")), min(5.0, remaining), report, extensions[0], deadline
++
++
++class RefuseRedirects(urllib.request.HTTPRedirectHandler):
++    def redirect_request(self, request, response, code, message, headers, new_url):
++        return None
++
++
++def observe(url, timeout, declared):
++    """An unrelated distributed readiness failure does not erase a healthy extension."""
++    request = urllib.request.Request(url, headers={"Accept": "application/json"})
++    try:
++        response = urllib.request.build_opener(RefuseRedirects()).open(request, timeout=timeout)
++    except urllib.error.HTTPError as error:
++        response = error
++    with response:
++        if response.status not in (200, 503):
++            raise ValueError("Extension readiness endpoint refused the request")
++        payload = response.read(262145)
++        if len(payload) > 262144:
++            raise ValueError("Extension readiness response exceeds its bound")
++        result = json.loads(payload, object_pairs_hook=unique)["results"]["eventstore-extensions"]
++    actual_major = result["data"][declared["extensionId"]]
++    if (result["status"] != "Healthy" or type(actual_major) is not int
++            or actual_major != declared["extensionApiMajor"]
++            or f"{declared['extensionId']}@{actual_major} ({declared['packageId']})" not in result["description"]):
++        raise ValueError("Declared extension identity or health differs")
++
++
++def write_report(path, passed):
++    document = ET.Element("TestRun", xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
++    results = ET.SubElement(document, "Results")
++    ET.SubElement(results, "UnitTestResult", testName="Declared Platform extension readiness",
++                  outcome="Passed" if passed else "Failed")
++    summary = ET.SubElement(document, "ResultSummary", outcome="Completed" if passed else "Failed")
++    ET.SubElement(summary, "Counters", total="1", executed="1", passed="1" if passed else "0",
++                  failed="0" if passed else "1", notExecuted="0")
++    with path.open("xb") as stream:
++        stream.write(ET.tostring(document, encoding="utf-8", xml_declaration=True))
++
++
++def main():
++    try:
++        url, timeout, report, declared, deadline = handoff()
++    except (OSError, ValueError, KeyError, IndexError, TypeError):
++        print("Fixture native handoff refused.", file=sys.stderr)
++        return 1
++    passed = True
++    try:
++        observe(url, timeout, declared)
++        if datetime.datetime.now(datetime.timezone.utc) >= deadline:
++            raise ValueError("Native execution deadline expired during readiness observation")
++    except (OSError, ValueError, KeyError, TypeError):
++        passed = False
++    try:
++        write_report(report, passed)
++    except (OSError, ValueError):
++        print("Fixture native report refused.", file=sys.stderr)
++        return 1
++    print("Declared extension readiness observed." if passed else "Declared extension readiness failed.")
++    return 0 if passed else 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/eng/test-extension-release/test_host_entry.py b/eng/test-extension-release/test_host_entry.py
+new file mode 100644
+--- /dev/null
++++ b/eng/test-extension-release/test_host_entry.py
+@@ -0,0 +1,224 @@
++"""Local HTTP/control fixtures; these confer no published host or native acceptance."""
++import datetime
++import hashlib
++import http.server
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import tempfile
++import threading
++import time
++import unittest
++import xml.etree.ElementTree as ET
++
++SOURCE = Path(__file__).with_name("qualify-host.py")
++ORIGINAL = Path(__file__).resolve().parents[2] / "tests/fixtures/Hexalith.Platform.TestExtension"
++PROFILE = "eventstore-extension-package"
++ENTRY = "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
++OBSERVER = "eng/test-extension-release/qualify-host.py"
++
++
++class HostEntryTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++        self.script = self.root / OBSERVER
++        self.script.parent.mkdir(parents=True)
++        shutil.copyfile(SOURCE, self.script)
++        self.fixture = self.root / "tests/fixtures/Hexalith.Platform.TestExtension"
++        self.fixture.mkdir(parents=True)
++        declaration = json.loads((ORIGINAL / "hexalith.module-manifest.v2.json").read_bytes())
++        declaration["modules"][0]["identity"]["dependencies"] = ["eventstore", "tenants", "memories"]
++        declaration["modules"][0]["tests"] = [{"name": PROFILE, "executor": "mtp", "entry": ENTRY,
++            "reportFormat": "trx", "executionTimeoutSeconds": 120, "stopTimeoutSeconds": 90, "mode": "package"}]
++        self.manifest = self.fixture / "hexalith.module-manifest.v2.json"
++        self.manifest.write_text(json.dumps(declaration, indent=2) + "\n")
++        producer = json.loads((ORIGINAL / "fixture-producer.json").read_bytes())
++        producer["ownerRepositoryIdentity"] = "Hexalith.Platform"
++        for relative in producer["test"]["files"]:
++            source = ORIGINAL.parents[2] / relative
++            target = self.root / relative
++            target.parent.mkdir(parents=True, exist_ok=True)
++            if relative != OBSERVER:
++                shutil.copyfile(source, target)
++        producer["test"] = {"name": PROFILE, "sourceEntry": ENTRY,
++            "files": {relative: {"path": metadata["path"], "sha256": hashlib.sha256((self.root / relative).read_bytes()).hexdigest()}
++                      for relative, metadata in producer["test"]["files"].items()}}
++        self.producer = self.fixture / "fixture-producer.json"
++        self.producer.write_text(json.dumps(producer, indent=2) + "\n")
++        self.report = self.root / "native-tests/result.trx"
++        self.report.parent.mkdir()
++        self.body = {"status": "Unhealthy", "results": {"eventstore-extensions": {"status": "Healthy",
++            "data": {"platform-test": 1}, "description": "platform-test@1 (Hexalith.Platform.TestExtension)"}}}
++        self.status = 503
++        self.redirect = False
++        self.chunk_delays = False
++        self.requests = []
++        fixture = self
++
++        class Handler(http.server.BaseHTTPRequestHandler):
++            def do_GET(self):
++                fixture.requests.append((self.path, dict(self.headers)))
++                if fixture.redirect and self.path == "/ready":
++                    self.send_response(302)
++                    self.send_header("Location", f"http://127.0.0.1:{fixture.server.server_port}/healthy-target")
++                    self.send_header("Content-Length", "0")
++                    self.end_headers()
++                    return
++                payload = fixture.body if isinstance(fixture.body, bytes) else json.dumps(fixture.body).encode()
++                self.send_response(fixture.status)
++                self.send_header("Content-Type", "application/json")
++                self.send_header("Content-Length", str(len(payload)))
++                self.end_headers()
++                if fixture.chunk_delays:
++                    time.sleep(0.15)
++                    self.wfile.write(payload[:len(payload) // 2])
++                    self.wfile.flush()
++                    time.sleep(0.15)
++                    self.wfile.write(payload[len(payload) // 2:])
++                else:
++                    self.wfile.write(payload)
++
++            def log_message(self, *args):
++                pass
++
++        self.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
++        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
++        self.thread.start()
++        self.addCleanup(self.close_server)
++        self.environment = os.environ.copy()
++        self.environment.update({"HEXALITH_G4_TEST_OWNER": "platformtestextension",
++            "HEXALITH_G4_TEST_NAME": PROFILE, "HEXALITH_G4_TEST_MODE": "package",
++            "HEXALITH_G4_TEST_MANIFEST_HASH": hashlib.sha256(self.manifest.read_bytes()).hexdigest(),
++            "HEXALITH_G4_TEST_ENTRY_HASH": hashlib.sha256((self.root / ENTRY).read_bytes()).hexdigest(),
++            "HEXALITH_G4_RUN_ID": "a" * 32,
++            "HEXALITH_G4_EXECUTION_DEADLINE_UTC": (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=120)).isoformat(),
++            "HEXALITH_G4_EVENTSTORE_URL": f"http://127.0.0.1:{self.server.server_port}/",
++            "HEXALITH_G4_TEST_REPORT_PATH": str(self.report),
++            "HEXALITH_G4_ACCESS_TOKEN": "not-a-real-token-never-send-or-retain"})
++
++    def close_server(self):
++        self.server.shutdown()
++        self.server.server_close()
++        self.thread.join(timeout=5)
++
++    def run_entry(self):
++        return subprocess.run(["python3", "-E", "-s", "-B", str(self.script)], env=self.environment,
++                              capture_output=True, text=True, timeout=10)
++
++    def result(self):
++        return ET.parse(self.report).getroot().find(".//{*}UnitTestResult").attrib["outcome"]
++
++    def test_healthy_extension_is_independent_of_overall_distributed_readiness(self):
++        result = self.run_entry()
++        self.assertEqual(0, result.returncode, result.stderr)
++        self.assertEqual("Passed", self.result())
++        self.assertEqual("/ready", self.requests[0][0])
++        self.assertNotIn("Authorization", self.requests[0][1])
++        self.assertNotIn(self.environment["HEXALITH_G4_ACCESS_TOKEN"], result.stdout + result.stderr + self.report.read_text())
++
++    def test_actual_sdk_uppercase_hash_handoff_passes(self):
++        for name in ["HEXALITH_G4_TEST_MANIFEST_HASH", "HEXALITH_G4_TEST_ENTRY_HASH"]:
++            self.environment[name] = self.environment[name].upper()
++        self.assertEqual(0, self.run_entry().returncode)
++        self.assertEqual("Passed", self.result())
++
++    def test_healthy_extension_with_http200_also_passes(self):
++        self.status = 200
++        self.assertEqual(0, self.run_entry().returncode)
++        self.assertEqual("Passed", self.result())
++
++    def test_unhealthy_extension_fails_and_retains_a_failed_report(self):
++        self.body["results"]["eventstore-extensions"]["status"] = "Unhealthy"
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual("Failed", self.result())
++
++    def test_declared_major_mismatch_is_refused(self):
++        self.body["results"]["eventstore-extensions"]["data"]["platform-test"] = 2
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual("Failed", self.result())
++
++    def test_boolean_is_not_an_api_major(self):
++        self.body["results"]["eventstore-extensions"]["data"]["platform-test"] = True
++        self.assertNotEqual(0, self.run_entry().returncode)
++
++    def test_wrong_extension_or_package_is_refused(self):
++        self.body["results"]["eventstore-extensions"]["description"] = "platform-test@1 (Foreign.Package)"
++        self.assertNotEqual(0, self.run_entry().returncode)
++
++    def test_wrong_native_owner_is_refused_before_http(self):
++        self.environment["HEXALITH_G4_TEST_OWNER"] = "platform"
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual([], self.requests)
++        self.assertFalse(self.report.exists())
++
++    def test_wrong_profile_or_mode_is_refused_before_http(self):
++        for name, value in [("HEXALITH_G4_TEST_NAME", "other"), ("HEXALITH_G4_TEST_MODE", "source")]:
++            with self.subTest(name=name):
++                original = self.environment[name]
++                self.environment[name] = value
++                self.assertNotEqual(0, self.run_entry().returncode)
++                self.environment[name] = original
++        self.assertEqual([], self.requests)
++
++    def test_changed_source_hashes_are_refused_before_http(self):
++        for name in ["HEXALITH_G4_TEST_MANIFEST_HASH", "HEXALITH_G4_TEST_ENTRY_HASH"]:
++            with self.subTest(name=name):
++                original = self.environment[name]
++                self.environment[name] = "f" * 64
++                self.assertNotEqual(0, self.run_entry().returncode)
++                self.environment[name] = original
++        self.assertEqual([], self.requests)
++
++    def test_foreign_producer_is_refused_before_http(self):
++        document = json.loads(self.producer.read_bytes())
++        document["ownerRepositoryIdentity"] = "Hexalith.Platformtestextension"
++        self.producer.write_text(json.dumps(document))
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual([], self.requests)
++
++    def test_invalid_or_expired_run_is_refused_before_http(self):
++        self.environment["HEXALITH_G4_RUN_ID"] = "invalid"
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.environment["HEXALITH_G4_RUN_ID"] = "a" * 32
++        self.environment["HEXALITH_G4_EXECUTION_DEADLINE_UTC"] = "2000-01-01T00:00:00+00:00"
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual([], self.requests)
++
++    def test_malformed_or_oversized_health_body_fails(self):
++        for body in [b"not-json", b"x" * 262145]:
++            with self.subTest(size=len(body)):
++                self.body = body
++                self.assertNotEqual(0, self.run_entry().returncode)
++                self.assertEqual("Failed", self.result())
++                self.report.unlink()
++
++    def test_authentication_failure_cannot_become_a_healthy_extension(self):
++        self.status = 401
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual("Failed", self.result())
++
++    def test_redirect_to_healthy_target_is_refused_without_second_request(self):
++        self.redirect = True
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual("Failed", self.result())
++        self.assertEqual(["/ready"], [path for path, _ in self.requests])
++
++    def test_expiry_during_http_cannot_emit_a_passing_report(self):
++        self.chunk_delays = True
++        self.environment["HEXALITH_G4_EXECUTION_DEADLINE_UTC"] = (
++            datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=0.25)).isoformat()
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual("Failed", self.result())
++
++    def test_existing_report_is_never_overwritten(self):
++        self.report.write_bytes(b"existing evidence")
++        self.assertNotEqual(0, self.run_entry().returncode)
++        self.assertEqual(b"existing evidence", self.report.read_bytes())
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/eng/test-extension-release/run-controls.py b/eng/test-extension-release/run-controls.py
+new file mode 100644
+--- /dev/null
++++ b/eng/test-extension-release/run-controls.py
+@@ -0,0 +1,39 @@
++#!/usr/bin/env python3
++"""Run the publisher's exact resource-free control inventory before qualification."""
++from pathlib import Path
++import sys
++import unittest
++
++
++def cases(suite):
++    for item in suite:
++        if isinstance(item, unittest.TestSuite):
++            yield from cases(item)
++        else:
++            yield item
++
++
++def run(suite, expected, *, stream=sys.stderr, runner_factory=unittest.TextTestRunner):
++    inventory = {}
++    for case in cases(suite):
++        module = case.__class__.__module__
++        inventory[module] = inventory.get(module, 0) + 1
++    if inventory != expected:
++        print(f"Publisher control inventory differs: expected {expected}, actual {inventory}", file=stream)
++        return 1
++    result = runner_factory(verbosity=2, stream=stream).run(suite)
++    if result.testsRun != sum(expected.values()) or result.skipped or not result.wasSuccessful():
++        print("Publisher controls require the exact executed inventory with no skips or failures.", file=stream)
++        return 1
++    return 0
++
++
++def main():
++    suite = unittest.defaultTestLoader.discover(str(Path(__file__).resolve().parent), pattern="test_*.py")
++    expected = {"test_host_entry": 17, "test_package": 9, "test_controls": 4}
++    print("Publisher controls: 30 (17 readiness, 9 archive identity, 4 execution-inventory controls).", flush=True)
++    return run(suite, expected)
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj b/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
+--- a/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
+@@ -19,6 +19,9 @@
+   <ItemGroup>
+     <None Include="hexalith.module-manifest.v2.json" Pack="true" PackagePath="build/hexalith.module-manifest.v2.json" />
+     <None Include="fixture-producer.json" Pack="true" PackagePath="build/fixture-producer.json" />
++    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" Pack="true" PackagePath="build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" />
++    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs" Pack="true" PackagePath="build/qualification/ReadinessTests.cs" />
++    <None Include="../../../eng/test-extension-release/qualify-host.py" Pack="true" PackagePath="build/qualification/qualify-host.py" />
+   </ItemGroup>
+   <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json b/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json
+--- a/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json
+@@ -7,7 +7,8 @@
+         "servers": [],
+         "dependencies": [
+           "eventstore",
+-          "tenants"
++          "tenants",
++          "memories"
+         ]
+       },
+       "runtime": {
+@@ -57,7 +58,18 @@
+           "reason": "Platform-owned signed extension qualification fixture; no service or production enrollment."
+         },
+         "recoveryInventory": []
+-      }
++      },
++      "tests": [
++        {
++          "name": "eventstore-extension-package",
++          "executor": "mtp",
++          "entry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
++          "reportFormat": "trx",
++          "executionTimeoutSeconds": 120,
++          "stopTimeoutSeconds": 90,
++          "mode": "package"
++        }
++      ]
+     }
+   ]
+ }
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json b/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json
+--- a/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json
+@@ -7,5 +7,24 @@
+   "extensionId": "platform-test",
+   "extensionApiMajor": 1,
+   "purpose": "signed-extension-host-qualification-only",
+-  "serviceEnrollment": false
++  "serviceEnrollment": false,
++  "ownerRepositoryIdentity": "Hexalith.Platform",
++  "test": {
++    "name": "eventstore-extension-package",
++    "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
++    "files": {
++      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {
++        "path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
++        "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"
++      },
++      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {
++        "path": "build/qualification/ReadinessTests.cs",
++        "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
++      },
++      "eng/test-extension-release/qualify-host.py": {
++        "path": "build/qualification/qualify-host.py",
++        "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"
++      }
++    }
++  }
+ }
+diff --git a/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj b/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj
+new file mode 100644
+--- /dev/null
++++ b/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj
+@@ -0,0 +1,10 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
++  <ItemGroup>
++    <PackageReference Include="xunit.v3" />
++    <PackageReference Include="xunit.runner.visualstudio" />
++    <PackageReference Include="Microsoft.NET.Test.Sdk" />
++    <Using Include="Xunit" />
++    <AssemblyMetadata Include="PlatformFixtureRepositoryRoot" Value="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)/../..'))" />
++  </ItemGroup>
++</Project>
+diff --git a/tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs b/tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs
+new file mode 100644
+--- /dev/null
++++ b/tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs
+@@ -0,0 +1,55 @@
++using System.Diagnostics;
++using System.Reflection;
++
++namespace Hexalith.Platform.TestExtension.Qualification.Tests;
++
++/// <summary>Observes the one declared package fixture after its legitimate parent supplies a ready endpoint.</summary>
++public sealed class ReadinessTests
++{
++    /// <summary>The native MTP result describes only the declared extension's readiness.</summary>
++    [Fact]
++    public async Task DeclaredExtensionReportsItsPackageIdentityAndMajorAsync()
++    {
++        string root = typeof(ReadinessTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
++            .Single(attribute => attribute.Key == "PlatformFixtureRepositoryRoot").Value!;
++        string observer = Path.Combine(root, "eng", "test-extension-release", "qualify-host.py");
++        Assert.True(File.Exists(observer), "The source-bound readiness observer is unavailable.");
++        string report = Path.Combine(Path.GetTempPath(), "hexalith-fixture-observer-" + Guid.NewGuid().ToString("N") + ".trx");
++        var start = new ProcessStartInfo("python3")
++        {
++            WorkingDirectory = root, UseShellExecute = false,
++            RedirectStandardOutput = true, RedirectStandardError = true,
++        };
++        foreach (string argument in new[] { "-E", "-s", "-B", observer }) start.ArgumentList.Add(argument);
++        start.Environment.Clear();
++        foreach (string key in new[] { "PATH", "HOME", "SYSTEMROOT", "TMPDIR", "TEMP", "TMP",
++            "HEXALITH_G4_TEST_OWNER", "HEXALITH_G4_TEST_NAME", "HEXALITH_G4_TEST_MODE",
++            "HEXALITH_G4_TEST_MANIFEST_HASH", "HEXALITH_G4_TEST_ENTRY_HASH", "HEXALITH_G4_RUN_ID",
++            "HEXALITH_G4_EXECUTION_DEADLINE_UTC", "HEXALITH_G4_EVENTSTORE_URL" })
++            if (Environment.GetEnvironmentVariable(key) is { } value) start.Environment[key] = value;
++        start.Environment["HEXALITH_G4_TEST_REPORT_PATH"] = report;
++        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        timeout.CancelAfter(TimeSpan.FromSeconds(15));
++        using var process = new Process { StartInfo = start };
++        bool started = false;
++        try
++        {
++            started = process.Start();
++            Assert.True(started, "The readiness observer could not start.");
++            Task<string> output = process.StandardOutput.ReadToEndAsync(timeout.Token);
++            Task<string> error = process.StandardError.ReadToEndAsync(timeout.Token);
++            await process.WaitForExitAsync(timeout.Token).ConfigureAwait(true);
++            Assert.True(process.ExitCode == 0, "Declared extension readiness observer failed: "
++                + await output.ConfigureAwait(true) + await error.ConfigureAwait(true));
++        }
++        finally
++        {
++            if (started && !process.HasExited)
++            {
++                process.Kill(entireProcessTree: true);
++                Assert.True(process.WaitForExit(5000), "The cancelled readiness observer did not terminate.");
++            }
++            if (File.Exists(report)) File.Delete(report);
++        }
++    }
++}
+diff --git a/eng/test-extension-release/test_controls.py b/eng/test-extension-release/test_controls.py
+new file mode 100644
+--- /dev/null
++++ b/eng/test-extension-release/test_controls.py
+@@ -0,0 +1,36 @@
++"""Require actual execution of every discovered publisher control, including no skips."""
++import importlib.util
++import io
++from pathlib import Path
++from types import SimpleNamespace
++import unittest
++
++spec = importlib.util.spec_from_file_location("publisher_controls", Path(__file__).with_name("run-controls.py"))
++controls = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(controls)
++
++
++class ExecutionInventoryTests(unittest.TestCase):
++    def suite(self, *, skip=False):
++        class Control(unittest.TestCase):
++            @unittest.skipIf(skip, "required control deliberately skipped by the refusal fixture")
++            def test_required(self):
++                pass
++        return unittest.TestSuite([Control("test_required")])
++
++    def test_successful_exact_inventory_passes(self):
++        self.assertEqual(0, controls.run(self.suite(), {__name__: 1}, stream=io.StringIO()))
++
++    def test_skipped_discovered_control_is_refused(self):
++        self.assertEqual(1, controls.run(self.suite(skip=True), {__name__: 1}, stream=io.StringIO()))
++
++    def test_missing_discovered_case_is_refused(self):
++        self.assertEqual(1, controls.run(self.suite(), {__name__: 2}, stream=io.StringIO()))
++
++    def test_incomplete_execution_is_refused_even_without_failure(self):
++        class IncompleteRunner:
++            def __init__(self, **kwargs):
++                pass
++            def run(self, suite):
++                return SimpleNamespace(testsRun=0, skipped=[], wasSuccessful=lambda: True)
++        self.assertEqual(1, controls.run(self.suite(), {__name__: 1}, stream=io.StringIO(), runner_factory=IncompleteRunner))

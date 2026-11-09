@@ -1,0 +1,45 @@
+{
+  "recordedUtc": "2026-11-09T16:13:25.055823+00:00",
+  "source": "46441ce0ddf94128fcc47294ac9b63d0cc5cb17b",
+  "pins": {
+    "builds": "4.45.0",
+    "sdk": "4.1.0"
+  },
+  "outputRoot": "artifacts/story32-upstream-gateway-regression",
+  "build": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "test": {
+    "command": "NUGET_PACKAGES=/tmp/story32-sdk41-regression-public-cache dotnet artifacts/story32-upstream-gateway-regression/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests -result-xml /tmp/story32-upstream-gateway-regression-tests.xml",
+    "counts": {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+      "id": "2187def6-b920-443a-b27d-499343b1a936",
+      "name": "/tmp/story-3-2-broad-20261109-_z_wy84q/current/artifacts/story32-upstream-gateway-regression/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll",
+      "run-date": "2026-11-09",
+      "run-time": "16:10:54",
+      "start-rtf": "2026-11-09T16:10:54.6171801+00:00",
+      "test-framework": "xUnit.net v3 4.0.2+0c7aa4991f",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-11-09T16:10:58.5104826+00:00",
+      "not-run": "0",
+      "passed": "1",
+      "skipped": "0",
+      "time": "3.893",
+      "time-rtf": "00:00:03.8930000",
+      "total": "1"
+    }
+  },
+  "sourceCleanObservedBeforeAndAfter": true,
+  "purpose": "Verify the integrated upstream gateway AppId binding proof using the actual generated private package reader, without rerunning unchanged groups or claiming a new qualified tuple.",
+  "artifactHashes": {
+    "tests.log": "fe32ac2e51bcc96424693ce3fca9a9ad20c181fd24502d951b8444207acc14cd",
+    "build.log": "7aadcd3a5fe512e13b63296c68f75244d69383fdb8ec1a2bedb51fde7e9b1003",
+    "tests.xml": "a5ab6131f3a288bcad51e1060bad15dc115e109ff248c803afea4d5a76ae8e32"
+  },
+  "qualificationCredit": false,
+  "sdk42DefaultCredit": false
+}

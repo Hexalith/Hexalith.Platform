@@ -1,0 +1,27 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index 13ede152..a0a73023 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -5,6 +5,22 @@
+       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+     </ProjectReference>
+   </ItemGroup>
++  <!-- Plain source builds carry the caller-selected catalog SDK through owner defaults.
++       Authenticated source mappings keep their existing version authority. -->
++  <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true' and '$(HexalithEventStoreVersion)' != '' and '$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">
++    <ProjectReference Update="@(ProjectReference)">
++      <AdditionalProperties Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*='))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
++    </ProjectReference>
++  </ItemGroup>
++  <!-- The SDK adds transitive project references after evaluation, without the caller's edge metadata. -->
++  <Target Name="PreservePlatformSourceCatalogSelection" AfterTargets="IncludeTransitiveProjectReferences"
++          Condition="'$(UseHexalithProjectReferences)' == 'true' and '$(HexalithEventStoreVersion)' != '' and '$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">
++    <ItemGroup>
++      <ProjectReference Update="@(ProjectReference)">
++        <AdditionalProperties Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*='))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
++      </ProjectReference>
++    </ItemGroup>
++  </Target>
+   <Target Name="ValidatePlatformCiReferences" BeforeTargets="PrepareForBuild" Condition="'$(CI)' == 'true'">
+     <Error Condition="'$(Configuration)' != 'Release' or '$(UseHexalithProjectReferences)' == 'true'" Text="Platform CI requires Release assets and package references." />
+     <ItemGroup>

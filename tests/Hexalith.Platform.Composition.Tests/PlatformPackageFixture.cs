@@ -18,6 +18,8 @@ internal sealed class PlatformPackageFixture : IDisposable
         File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json"), Path.Combine(declarations, "local-profile.json"));
         foreach (string file in new[] { "Directory.Build.props", "Directory.Packages.props" })
             File.Copy(Path.Combine(platformRoot, file), Path.Combine(Root, file));
+        Directory.CreateDirectory(Path.Combine(Root, "eng"));
+        File.Copy(Path.Combine(platformRoot, "eng", "SourceRestore.props"), Path.Combine(Root, "eng", "SourceRestore.props"));
         string reader = Path.Combine(Root, "src", "Hexalith.Platform.CatalogBuilder");
         Directory.CreateDirectory(reader);
         foreach (string file in new[] { "Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs" })

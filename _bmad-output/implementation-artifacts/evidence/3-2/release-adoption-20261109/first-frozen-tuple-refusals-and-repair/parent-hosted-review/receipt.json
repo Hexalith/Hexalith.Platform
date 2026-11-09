@@ -1,0 +1,199 @@
+{
+  "kind": "independent-hosted-preflight-failure-review",
+  "createdUtc": "2026-11-09T19:46:57.271870+00:00",
+  "candidateAcceptance": false,
+  "fixturePublicationCredit": false,
+  "head": "a88ae34328af405237a5ac51a3bbbaf5f58a493d",
+  "observedFailure": "All three lanes stop at the same synthetic preflight catalog fixture before application tests; the synthetic catalog lacks the real single SDK4.1 pin required by the unchanged historical admission guard.",
+  "requiredCorrection": "Include the required SDK4.1 catalog pin in this synthetic fixture; preserve the production guard and all failures.",
+  "scope": "This control fixture failure is independent of the separate 349-case historical Parties source mismatch.",
+  "commands": [
+    {
+      "name": "local-control-reproduction",
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "exitCode": 1
+    },
+    {
+      "name": "tuple-run",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "42684861205",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--json",
+        "status,conclusion,headSha,jobs,url"
+      ],
+      "cwd": null,
+      "exitCode": 0
+    },
+    {
+      "name": "catalog-run",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "42684861123",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--json",
+        "status,conclusion,headSha,jobs,url"
+      ],
+      "cwd": null,
+      "exitCode": 0
+    },
+    {
+      "name": "pr-state",
+      "argv": [
+        "gh",
+        "pr",
+        "view",
+        "39",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--json",
+        "state,isDraft,headRefOid,baseRefName,url"
+      ],
+      "cwd": null,
+      "exitCode": 0
+    }
+  ],
+  "lanes": [
+    {
+      "path": "/tmp/story32-parent-hosted-42684861205/current/Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/tuple-ci-result.json",
+      "sha256": "2bb4f68a88f094ec9e562f3162e5402f1592ce705c475dbc154bdb5d8d501206",
+      "platformRevision": "4244923a4c6904e436f665733b3a2515ca093947",
+      "status": "failed",
+      "blocker": "tuple-binding-controls failed; retained command output is authoritative.",
+      "lastCommand": {
+        "name": "tuple-binding-controls",
+        "argv": [
+          "/usr/bin/python3",
+          "-B",
+          "eng/test_builds_tuple.py"
+        ],
+        "cwd": "/home/runner/work/Hexalith.Platform/Hexalith.Platform",
+        "exitCode": 1,
+        "startedUtc": "2026-11-09T19:39:26.636726+00:00",
+        "timeoutSeconds": 1200,
+        "finishedUtc": "2026-11-09T19:39:28.616036+00:00"
+      }
+    },
+    {
+      "path": "/tmp/story32-parent-hosted-42684861205/legacy/legacy-public-cohort/tuple-ci-result.json",
+      "sha256": "cfe6f7920fedddecf33a804fe0f3ae15b51a2a3e5a730ea7af7175f3143e489e",
+      "platformRevision": "87bf914eb2e990023d46dff1d14fdbf62f42320e",
+      "status": "failed",
+      "blocker": "tuple-binding-controls failed; retained command output is authoritative.",
+      "lastCommand": {
+        "name": "tuple-binding-controls",
+        "argv": [
+          "/usr/bin/python3",
+          "-B",
+          "eng/test_builds_tuple.py"
+        ],
+        "cwd": "/home/runner/work/Hexalith.Platform/Hexalith.Platform",
+        "exitCode": 1,
+        "startedUtc": "2026-11-09T19:40:06.303238+00:00",
+        "timeoutSeconds": 1200,
+        "finishedUtc": "2026-11-09T19:40:09.134931+00:00"
+      }
+    },
+    {
+      "path": "/tmp/story32-parent-hosted-42684861205/pre-extension/pre-extension-public-cohort/tuple-ci-result.json",
+      "sha256": "1acc740197f6855c5783d369a665d18704852cf7c8e5e7385ec6855c71162d15",
+      "platformRevision": "baafebd8fb9926eedfd85a4f13e8b1e754eae96c",
+      "status": "failed",
+      "blocker": "tuple-binding-controls failed; retained command output is authoritative.",
+      "lastCommand": {
+        "name": "tuple-binding-controls",
+        "argv": [
+          "/usr/bin/python3",
+          "-B",
+          "eng/test_builds_tuple.py"
+        ],
+        "cwd": "/home/runner/work/Hexalith.Platform/Hexalith.Platform",
+        "exitCode": 1,
+        "startedUtc": "2026-11-09T19:39:34.374671+00:00",
+        "timeoutSeconds": 1200,
+        "finishedUtc": "2026-11-09T19:39:36.254341+00:00"
+      }
+    }
+  ],
+  "files": {
+    "current/Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/tuple-binding-controls.stderr": {
+      "sha256": "b73b4b679832751d49dc71f85738cbc16ce970b7b42e30c2edb757b937c9e342",
+      "size": 1256
+    },
+    "current/Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/tuple-binding-controls.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "current/Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/tuple-ci-result.json": {
+      "sha256": "2bb4f68a88f094ec9e562f3162e5402f1592ce705c475dbc154bdb5d8d501206",
+      "size": 4557175
+    },
+    "legacy/legacy-public-cohort/tuple-binding-controls.stderr": {
+      "sha256": "219fccc2a5ae259d1812d9e301ac36458e33d2e3b0efabf75b96d2e94cdc87e1",
+      "size": 1256
+    },
+    "legacy/legacy-public-cohort/tuple-binding-controls.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "legacy/legacy-public-cohort/tuple-ci-result.json": {
+      "sha256": "cfe6f7920fedddecf33a804fe0f3ae15b51a2a3e5a730ea7af7175f3143e489e",
+      "size": 4555876
+    },
+    "pre-extension/pre-extension-public-cohort/tuple-binding-controls.stderr": {
+      "sha256": "6727b61c1bf97c0ff9a5cec329a46372df7958e02efa8ea66b07dcbdbdda1fc5",
+      "size": 1256
+    },
+    "pre-extension/pre-extension-public-cohort/tuple-binding-controls.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "pre-extension/pre-extension-public-cohort/tuple-ci-result.json": {
+      "sha256": "1acc740197f6855c5783d369a665d18704852cf7c8e5e7385ec6855c71162d15",
+      "size": 4557535
+    },
+    "review/catalog-run.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "review/catalog-run.stdout": {
+      "sha256": "057fe360ffdcad5ff46eeba5710200b08bfa469f802bfec7025df954a9a7e97b",
+      "size": 12093
+    },
+    "review/local-control-reproduction.stderr": {
+      "sha256": "b9719d01180e361e9322103859f7f664f17f6231edf7c84ea1bae8f312e63086",
+      "size": 1423
+    },
+    "review/local-control-reproduction.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "review/pr-state.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "review/pr-state.stdout": {
+      "sha256": "97b34da6348b6c66561dc748192ee81bc93e79f31382f4788892a1975c9d8cde",
+      "size": 171
+    },
+    "review/tuple-run.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "review/tuple-run.stdout": {
+      "sha256": "e6d6553bc6865e7aa2a0f970540ff52175b629c392e49b08d74154f3244b4ea5",
+      "size": 6328
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "recordedUtc": "2026-11-09T18:21:31.027373+00:00",
+  "scope": "Failed Debug/source harness attempts only; separate from measured package/default cohort, current owner guard and Story2.8 observations.",
+  "source": "8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+  "sourceUnchanged": true,
+  "outputsUnchanged": true,
+  "counts": [
+    {
+      "name": "extensions",
+      "counts": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "6bfd2609-feab-4b87-bba4-3d2982c4cce7",
+        "name": "/tmp/story32-builds447-sdk42-source-artifacts/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-09",
+        "run-time": "18:14:54",
+        "start-rtf": "2026-11-09T18:14:54.4838294+00:00",
+        "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "30",
+        "finish-rtf": "2026-11-09T18:14:55.4821106+00:00",
+        "not-run": "0",
+        "passed": "6",
+        "skipped": "0",
+        "time": "0.999",
+        "time-rtf": "00:00:00.9990000",
+        "total": "36"
+      }
+    },
+    {
+      "name": "companions",
+      "counts": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "c9762d0f-7541-42de-9f7b-5750473c94af",
+        "name": "/tmp/story32-builds447-sdk42-source-artifacts/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-09",
+        "run-time": "18:14:55",
+        "start-rtf": "2026-11-09T18:14:55.6969176+00:00",
+        "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "5",
+        "finish-rtf": "2026-11-09T18:14:57.1546663+00:00",
+        "not-run": "0",
+        "passed": "7",
+        "skipped": "0",
+        "time": "1.458",
+        "time-rtf": "00:00:01.4580000",
+        "total": "12"
+      }
+    }
+  ],
+  "rawFullReceiptRetained": {
+    "path": "/tmp/story32-builds447-source-controls-mp3ej2wx/receipt.json",
+    "sha256": "666874d66f4849da57b93b5926a5d99dc16f0ad66032df56e3250c05a7516d9a",
+    "bytes": 8890039
+  },
+  "attribution": "External output root breaks five repository-walking companions; mixed source SDK4.1/4.2 assembly identities break30 extension cases.",
+  "qualificationCredit": false
+}

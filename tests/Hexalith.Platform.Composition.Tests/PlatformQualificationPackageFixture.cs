@@ -14,9 +14,12 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
     /// <summary>Selects actual checkout provenance for separate current-test controls; grants no public or runtime acceptance.</summary>
     internal static PlatformQualificationPackageFixture CurrentTest() => new(currentTest: true);
 
+    /// <summary>Uses the independently released SDK4.2 source binding in an isolated component fixture.</summary>
+    internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true, sdk42: true);
+
     /// <summary>Copies genuine declaration/policy bytes and creates explicitly synthetic owned entry prerequisites.</summary>
     /// <param name="currentTest">Whether to copy actual current provenance instead of the authenticated historical public bytes.</param>
-    private PlatformQualificationPackageFixture(bool currentTest)
+    private PlatformQualificationPackageFixture(bool currentTest, bool sdk42 = false)
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-qualified-cohort-" + Guid.NewGuid().ToString("N"));
         string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
@@ -36,6 +39,13 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
             if (Convert.ToHexStringLower(SHA256.HashData(bytes)) != "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61")
                 throw new InvalidDataException("The historical public provenance fixture differs from its authenticated Git body.");
             File.WriteAllBytes(provenancePath, bytes);
+        }
+        if (sdk42)
+        {
+            JsonNode sdkProvenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
+            sdkProvenance["eventstore"]!["version"] = "4.2.0";
+            sdkProvenance["eventstore"]!["commit"] = "aa16227bd07f0564a3026d619a5abd973e02656f";
+            File.WriteAllText(provenancePath, sdkProvenance.ToJsonString());
         }
         string components = Path.Combine(PlatformTestRepository.Root, "DaprComponents", "reference");
         foreach (string file in Directory.GetFiles(components, "*", SearchOption.AllDirectories))
@@ -84,6 +94,10 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         {
             PlatformRoot = Root, Mapping = mapping, ActiveModule = "eventstore", DeclarationPaths = [manifest], QualificationOwners = ["tenants"],
             EventStoreSeedProject = seed, RunPlan = Plan, QualificationOwnerProof = PlatformQualificationOwnerProof.Create(Plan, key),
+            ReleaseCommits = new Dictionary<string, string>(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseCommits)
+                { ["eventstore/4.2.0"] = "aa16227bd07f0564a3026d619a5abd973e02656f" },
+            ReleaseSnapshotHashes = new Dictionary<string, string>(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseSnapshotHashes)
+                { ["eventstore/4.2.0"] = "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495" },
         };
     }
 

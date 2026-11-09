@@ -1,0 +1,367 @@
+diff --git a/.github/workflows/tuple-ci.yml b/.github/workflows/tuple-ci.yml
+index ba50b89d..ed81dea7 100644
+--- a/.github/workflows/tuple-ci.yml
++++ b/.github/workflows/tuple-ci.yml
+@@ -103,6 +103,15 @@ jobs:
+           test "$(git rev-parse HEAD:references/Hexalith.Builds)" = "$builds_source"
+           git submodule update --init
+           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = "$builds_source"
++      - name: Recheck the exact initialized Parties source and declaration
++        run: |
++          python3 -B - <<'PY'
++          import sys
++          from pathlib import Path
++          sys.path.insert(0, 'eng')
++          from legacy_tuple_source import verify_parties_checkout
++          verify_parties_checkout(Path.cwd(), historical=False)
++          PY
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+         id: dotnet
+         with:
+@@ -186,6 +195,15 @@ jobs:
+           PYCODE
+           git -c submodule.recurse=false submodule update --init
+           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = fc2122240a39f03628c04fa8433e5eece90b8b4c
++      - name: Recheck the exact initialized Parties source and declaration
++        run: |
++          python3 -B - <<'PY'
++          import sys
++          from pathlib import Path
++          sys.path.insert(0, 'eng')
++          from legacy_tuple_source import verify_parties_checkout
++          verify_parties_checkout(Path.cwd(), historical=True)
++          PY
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+         with:
+           global-json-file: global.json
+@@ -231,6 +249,15 @@ jobs:
+           git -c submodule.recurse=false submodule update --init
+           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = 27145e52ffab5623198ba5efdab5cdb71aa42d28
+           test "$(git -C references/Hexalith.EventStore rev-parse HEAD)" = cab8363c2b6e2c0588efc8ca9c2e09fab0006841
++      - name: Recheck the exact initialized Parties source and declaration
++        run: |
++          python3 -B - <<'PY'
++          import sys
++          from pathlib import Path
++          sys.path.insert(0, 'eng')
++          from legacy_tuple_source import verify_parties_checkout
++          verify_parties_checkout(Path.cwd(), historical=False)
++          PY
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+         with:
+           global-json-file: global.json
+diff --git a/eng/legacy_tuple_source.py b/eng/legacy_tuple_source.py
+index e6dbe140..91832571 100644
+--- a/eng/legacy_tuple_source.py
++++ b/eng/legacy_tuple_source.py
+@@ -17,6 +17,32 @@ TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
+ TENANTS_705_SOURCE = "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35"
+ MEMORIES_CURRENT_SOURCE = "246157a7ff8e2dcd8d356c833a77a02514490d2f"
+ EVENTSTORE_420_SOURCE = "aa16227bd07f0564a3026d619a5abd973e02656f"
++LEGACY_PARTIES_SOURCE = "bb2783120c0eed620e3d4f52a2ebaf6aa510126f"
++CURRENT_PARTIES_SOURCE = "ebe1739d70a4e76447938b0bb8c53db508bf6019"
++LEGACY_PARTIES_DECLARATION = "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b"
++CURRENT_PARTIES_DECLARATION = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348"
++PARTIES_PATH = "references/Hexalith.Parties"
++
++
++def parties_source(root: Path, revision: str) -> str:
++    try:
++        return git(root, "rev-parse", revision + ":" + PARTIES_PATH).decode().strip()
++    except subprocess.CalledProcessError as error:
++        raise ValueError("The exact Parties source gitlink is missing.") from error
++
++
++def verify_parties_checkout(root: Path, historical: bool) -> dict:
++    """Recheck the actual initialized owner without granting service or host admission."""
++    source = LEGACY_PARTIES_SOURCE if historical else CURRENT_PARTIES_SOURCE
++    declaration = LEGACY_PARTIES_DECLARATION if historical else CURRENT_PARTIES_DECLARATION
++    owner = root / PARTIES_PATH
++    try:
++        if parties_source(root, "HEAD") != source or git(owner, "rev-parse", "HEAD").decode().strip() != source \
++                or hashlib.sha256((owner / "module/hexalith.module-manifest.v2.json").read_bytes()).hexdigest() != declaration:
++            raise ValueError("Parties checkout or declaration differs from its exact historical/current binding.")
++    except (OSError, subprocess.CalledProcessError) as error:
++        raise ValueError("The exact Parties checkout or declaration is unavailable.") from error
++    return {"source": source, "declarationSha256": declaration, "qualificationCredit": False}
+ ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
+            "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties", "references/Hexalith.EventStore", "eng/pre-extension-tuple-source.json"}
+ 
+@@ -100,6 +126,10 @@ def verify(root: Path, current: str, legacy: str) -> dict:
+         if git(root, "rev-parse", legacy + ":references/Hexalith.EventStore").decode().strip() != "cab8363c2b6e2c0588efc8ca9c2e09fab0006841" \
+                 or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != EVENTSTORE_420_SOURCE or selected != sdk_expected:
+             raise ValueError("Changed SDK gitlink must retain its exact old source and match the published SDK4.2 provenance.")
++    if (PARTIES_PATH in changed or selected == sdk_expected) and (selected != sdk_expected
++            or parties_source(root, legacy) != LEGACY_PARTIES_SOURCE
++            or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
++        raise ValueError("SDK4.2 replay requires the exact historical BB to current EBE Parties sources.")
+     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
+     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
+         raise ValueError("Legacy source changed its exact published tool identity.")
+diff --git a/eng/pre_extension_tuple_source.py b/eng/pre_extension_tuple_source.py
+index 595e4c43..663ab51c 100644
+--- a/eng/pre_extension_tuple_source.py
++++ b/eng/pre_extension_tuple_source.py
+@@ -6,7 +6,7 @@ import json
+ import copy
+ import re
+ from pathlib import Path
+-from legacy_tuple_source import commit, decode, git
++from legacy_tuple_source import commit, decode, git, parties_source, CURRENT_PARTIES_SOURCE
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ DESCRIPTOR = 'eng/pre-extension-tuple-source.json'
+@@ -119,6 +119,9 @@ def verify(root: Path, current: str, historical: str) -> dict:
+             git(root, 'cat-file', '-e', recorded + '^{commit}')
+     if ('references/Hexalith.EventStore' in changed or selected == expected) and (selected != expected or git(root, 'rev-parse', current + ':references/Hexalith.EventStore').decode().strip() != SDK42_SOURCE):
+         raise ValueError('Changed SDK gitlink must match the exact published source and provenance.')
++    if selected == expected and (parties_source(root, historical) != CURRENT_PARTIES_SOURCE
++            or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
++        raise ValueError('The pre-extension/current SDK4.2 replay requires unchanged exact EBE Parties sources.')
+     verify_tuple_metadata(root, current, historical)
+     tool = decode(git(root, 'show', historical + ':.config/dotnet-tools.json'))['tools']['hexalith.builds.module.cli']
+     if tool['version'] != '4.45.0' or tool['rollForward'] is not False:
+diff --git a/eng/test_builds_tuple.py b/eng/test_builds_tuple.py
+index 387075d7..aec6e284 100644
+--- a/eng/test_builds_tuple.py
++++ b/eng/test_builds_tuple.py
+@@ -193,7 +193,7 @@ class BuildsTupleTests(unittest.TestCase):
+         sibling = owner.parent / "Hexalith.Builds"
+         catalog = sibling / "Props/Directory.Packages.props"
+         catalog.parent.mkdir(parents=True)
+-        catalog_bytes = b"<Project />\n"
++        catalog_bytes = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
+         catalog.write_bytes(catalog_bytes)
+         self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(catalog_bytes).hexdigest()
+         self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
+diff --git a/eng/test_legacy_tuple_source.py b/eng/test_legacy_tuple_source.py
+index 8fdef1c0..44452e2f 100644
+--- a/eng/test_legacy_tuple_source.py
++++ b/eng/test_legacy_tuple_source.py
+@@ -6,6 +6,7 @@ from pathlib import Path
+ import subprocess
+ import tempfile
+ import unittest
++from unittest.mock import patch
+ 
+ import legacy_tuple_source as legacy
+ 
+@@ -160,6 +161,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
+         self.git("checkout", "-q", self.old)
+         (self.root / "references/Hexalith.EventStore").mkdir(parents=True)
+         self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
+         historical = self.commit()
+         self.git("checkout", "-q", self.current)
+         self.descriptor["sourceRevision"] = historical
+@@ -170,6 +173,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
+         self.write(legacy.PROVENANCE, json.dumps(selected).encode())
+         (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+         self.git("update-index", "--add", "--cacheinfo", "160000,aa16227bd07f0564a3026d619a5abd973e02656f,references/Hexalith.EventStore")
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.CURRENT_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
+         current = self.commit()
+         self.git("checkout", "-q", historical)
+         self.assertEqual(legacy.verify(self.root, current, historical)["requiredCount"], 349)
+@@ -180,6 +185,57 @@ class LegacyTupleSourceTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, "exact old source"):
+             legacy.verify(self.root, changed, historical)
+ 
++    def test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings(self):
++        self.git("checkout", "-q", self.old)
++        for path, source in [("references/Hexalith.EventStore", "cab8363c2b6e2c0588efc8ca9c2e09fab0006841"),
++                             (legacy.PARTIES_PATH, legacy.LEGACY_PARTIES_SOURCE)]:
++            (self.root / path).mkdir(parents=True, exist_ok=True)
++            self.git("update-index", "--add", "--cacheinfo", "160000," + source + "," + path)
++        historical = self.commit()
++        for old_source, current_source in [("e" * 40, legacy.CURRENT_PARTIES_SOURCE),
++                (None, legacy.CURRENT_PARTIES_SOURCE), (legacy.CURRENT_PARTIES_SOURCE, legacy.LEGACY_PARTIES_SOURCE),
++                (legacy.LEGACY_PARTIES_SOURCE, "e" * 40), (legacy.LEGACY_PARTIES_SOURCE, None)]:
++            with self.subTest(old=old_source, current=current_source):
++                self.git("checkout", "-q", historical)
++                if old_source is None:
++                    self.git("update-index", "--force-remove", legacy.PARTIES_PATH)
++                else:
++                    self.git("update-index", "--cacheinfo", "160000," + old_source + "," + legacy.PARTIES_PATH)
++                selected_old = historical if old_source == legacy.LEGACY_PARTIES_SOURCE else self.commit()
++                self.git("checkout", "-q", self.current)
++                self.descriptor["sourceRevision"] = selected_old
++                self.write_descriptor()
++                selected = json.loads(self.current_provenance)
++                selected["tenants"].update(version="7.0.5", commit=legacy.TENANTS_705_SOURCE)
++                selected["eventstore"].update(version="4.2.0", commit=legacy.EVENTSTORE_420_SOURCE)
++                self.write(legacy.PROVENANCE, json.dumps(selected).encode())
++                (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
++                (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++                self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.EVENTSTORE_420_SOURCE + ",references/Hexalith.EventStore")
++                if current_source is None:
++                    self.git("update-index", "--force-remove", legacy.PARTIES_PATH)
++                else:
++                    self.git("update-index", "--add", "--cacheinfo", "160000," + current_source + "," + legacy.PARTIES_PATH)
++                selected_current = self.commit()
++                self.git("checkout", "-q", selected_old)
++                with self.assertRaisesRegex(ValueError, "Parties source"):
++                    legacy.verify(self.root, selected_current, selected_old)
++
++    def test_old_provenance_cannot_hide_an_arbitrary_parties_source_change(self):
++        self.git("checkout", "-q", self.old)
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
++        historical = self.commit()
++        self.git("checkout", "-q", self.current)
++        self.descriptor["sourceRevision"] = historical
++        self.write_descriptor()
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + "e" * 40 + "," + legacy.PARTIES_PATH)
++        changed = self.commit()
++        self.git("checkout", "-q", historical)
++        with self.assertRaisesRegex(ValueError, "exact historical BB"):
++            legacy.verify(self.root, changed, historical)
++
+     def test_new_replay_descriptor_is_finite_metadata_not_a_source_exemption(self):
+         from pre_extension_tuple_source import DESCRIPTOR, BUILDS, EVENTSTORE, PROFILE_HASH
+         document = dict(schema="hexalith.platform.pre-extension-tuple-source.v1", purpose="same-code-sdk41-tuple-regression",
+@@ -214,6 +270,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
+         self.git("checkout", "-q", self.old)
+         (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+         self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
+         historical = self.commit()
+         self.git("checkout", "-q", self.current)
+         self.descriptor["sourceRevision"] = historical
+@@ -224,6 +282,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
+         document["eventstore"].update(version="4.2.0", commit=legacy.EVENTSTORE_420_SOURCE)
+         self.write(legacy.PROVENANCE, json.dumps(document).encode())
+         self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.EVENTSTORE_420_SOURCE + ",references/Hexalith.EventStore")
++        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
++        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.CURRENT_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
+         released = self.commit()
+         self.git("checkout", "-q", historical)
+         result = legacy.verify(self.root, released, historical)
+@@ -281,5 +341,64 @@ class LegacyTupleSourceTests(unittest.TestCase):
+                 with self.assertRaises(ValueError): legacy.verify(self.root, new, bad_old)
+ 
+ 
++class PartiesCheckoutTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(prefix="finite-parties-checkout-")
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.owner = self.root / legacy.PARTIES_PATH
++        self.owner.mkdir(parents=True)
++        for repository in [self.root, self.owner]:
++            self.git(repository, "init", "-q")
++            self.git(repository, "config", "user.name", "Finite Parties checkout control")
++            self.git(repository, "config", "user.email", "fixture@invalid")
++        self.manifest = self.owner / "module/hexalith.module-manifest.v2.json"
++        self.manifest.parent.mkdir()
++        self.manifest.write_bytes(b'{"scope":"synthetic checkout control only"}\n')
++        self.git(self.owner, "add", ".")
++        self.git(self.owner, "commit", "-q", "-m", "test(tuple): record isolated owner")
++        self.source = self.git(self.owner, "rev-parse", "HEAD")
++        declaration = hashlib.sha256(self.manifest.read_bytes()).hexdigest()
++        self.git(self.root, "update-index", "--add", "--cacheinfo", "160000," + self.source + "," + legacy.PARTIES_PATH)
++        self.git(self.root, "commit", "-q", "-m", "test(tuple): bind isolated owner")
++        # Synthetic constants are scoped to this genuine local Git control, never publication inputs.
++        constants = patch.multiple(legacy, LEGACY_PARTIES_SOURCE=self.source, CURRENT_PARTIES_SOURCE=self.source,
++                                   LEGACY_PARTIES_DECLARATION=declaration, CURRENT_PARTIES_DECLARATION=declaration)
++        constants.start()
++        self.addCleanup(constants.stop)
++
++    def git(self, root, *arguments):
++        return subprocess.run(["git", *arguments], cwd=root, capture_output=True, check=True).stdout.decode().strip()
++
++    def test_actual_initialized_owner_and_manifest_match_both_finite_roles(self):
++        for historical in [False, True]:
++            result = legacy.verify_parties_checkout(self.root, historical)
++            self.assertEqual(result["source"], self.source)
++            self.assertFalse(result["qualificationCredit"])
++
++    def test_wrong_recorded_gitlink_refuses(self):
++        self.git(self.root, "update-index", "--cacheinfo", "160000," + "e" * 40 + "," + legacy.PARTIES_PATH)
++        self.git(self.root, "commit", "-q", "-m", "test(tuple): change recorded owner")
++        with self.assertRaises(ValueError):
++            legacy.verify_parties_checkout(self.root, False)
++
++    def test_wrong_initialized_owner_head_refuses(self):
++        (self.owner / "changed.txt").write_text("different actual owner revision\n")
++        self.git(self.owner, "add", ".")
++        self.git(self.owner, "commit", "-q", "-m", "test(tuple): change initialized owner")
++        with self.assertRaises(ValueError):
++            legacy.verify_parties_checkout(self.root, False)
++
++    def test_changed_manifest_bytes_refuse(self):
++        self.manifest.write_bytes(self.manifest.read_bytes() + b" ")
++        with self.assertRaises(ValueError):
++            legacy.verify_parties_checkout(self.root, False)
++
++    def test_missing_manifest_refuses(self):
++        self.manifest.unlink()
++        with self.assertRaises(ValueError):
++            legacy.verify_parties_checkout(self.root, False)
++
++
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/eng/test_pre_extension_tuple_source.py b/eng/test_pre_extension_tuple_source.py
+index 2b35ab99..53b3eea7 100644
+--- a/eng/test_pre_extension_tuple_source.py
++++ b/eng/test_pre_extension_tuple_source.py
+@@ -31,6 +31,7 @@ class PreExtensionSourceTests(unittest.TestCase):
+         self.write('tests/Control.cs', b'unchanged controls\n')
+         self.gitlink('references/Hexalith.Builds', history.BUILDS)
+         self.gitlink('references/Hexalith.EventStore', history.EVENTSTORE)
++        self.gitlink('references/Hexalith.Parties', history.CURRENT_PARTIES_SOURCE)
+         self.descriptor = dict(schema='hexalith.platform.pre-extension-tuple-source.v1', purpose='same-code-sdk41-tuple-regression',
+                                sourceRevision=None, buildsSource=history.BUILDS, eventStoreSource=history.EVENTSTORE,
+                                toolVersion='4.45.0', profileSha256=history.PROFILE_HASH, requiredCount=412, qualificationCredit=False)
+@@ -144,6 +145,27 @@ class PreExtensionSourceTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, 'unapproved metadata'):
+             history.verify(self.root, changed, self.old)
+ 
++    def test_unchanged_foreign_or_missing_parties_gitlinks_cannot_claim_the_new_replay(self):
++        for source in ['d' * 40, None]:
++            with self.subTest(source=source):
++                self.git('checkout', '-q', self.old)
++                if source is None:
++                    self.git('update-index', '--force-remove', 'references/Hexalith.Parties')
++                else:
++                    self.gitlink('references/Hexalith.Parties', source)
++                historical = self.commit()
++                self.git('checkout', '-q', self.current)
++                self.descriptor['sourceRevision'] = historical
++                self.write_descriptor()
++                if source is None:
++                    self.git('update-index', '--force-remove', 'references/Hexalith.Parties')
++                else:
++                    self.gitlink('references/Hexalith.Parties', source)
++                current = self.commit()
++                self.git('checkout', '-q', historical)
++                with self.assertRaisesRegex(ValueError, 'Parties source'):
++                    history.verify(self.root, current, historical)
++
+     def test_private_tuple_identity_transformation_changes_only_bound_version_fields(self):
+         # These deliberately synthetic private Git/package identities prove only the metadata comparison.
+         self.git('checkout', '-q', self.current)
+diff --git a/tests/source-release/tuple-workflow.test.mjs b/tests/source-release/tuple-workflow.test.mjs
+index fa2ce450..e7fe8aca 100644
+--- a/tests/source-release/tuple-workflow.test.mjs
++++ b/tests/source-release/tuple-workflow.test.mjs
+@@ -49,3 +49,15 @@ test('actual aggregate step exits nonzero for every unsuccessful or absent lane
+     assert.equal(result.status === 0, [source, current, legacy, preExtension].every(value => value === 'success'));
+   }
+ });
++
++
++test('all three actual lanes recheck the finite initialized Parties owner before package execution', () => {
++  for (const [lane, historical] of [['tuple', false], ['legacy-public-cohort', true], ['pre-extension-public-cohort', false]]) {
++    const steps = workflow.jobs[lane].steps;
++    const check = steps.findIndex(step => step.name === 'Recheck the exact initialized Parties source and declaration');
++    assert.ok(check > 0);
++    assert.ok(steps.slice(0, check).some(step => step.run?.includes('submodule update --init')));
++    assert.ok(steps[check].run.includes(`verify_parties_checkout(Path.cwd(), historical=${historical ? 'True' : 'False'})`));
++    assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
++  }
++});

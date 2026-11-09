@@ -1,0 +1,462 @@
+﻿2026-11-09T14:18:21.9406457Z Current runner version: '2.338.2'
+2026-11-09T14:18:21.9428462Z ##[group]Runner Image Provisioner
+2026-11-09T14:18:21.9429156Z Hosted Compute Agent
+2026-11-09T14:18:21.9429687Z Version: 20261028.624
+2026-11-09T14:18:21.9430212Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-09T14:18:21.9430805Z Build Date: 2026-10-28T21:51:42Z
+2026-11-09T14:18:21.9431443Z Worker ID: {d3c65b8e-aa94-4f7b-932d-8af37eb77050}
+2026-11-09T14:18:21.9432021Z Region: westus2
+2026-11-09T14:18:21.9432534Z Cloud: Azure
+2026-11-09T14:18:21.9432998Z ##[endgroup]
+2026-11-09T14:18:21.9434298Z ##[group]Operating System
+2026-11-09T14:18:21.9434908Z Ubuntu
+2026-11-09T14:18:21.9435343Z 26.04.1
+2026-11-09T14:18:21.9435768Z LTS
+2026-11-09T14:18:21.9436274Z ##[endgroup]
+2026-11-09T14:18:21.9436747Z ##[group]Runner Image
+2026-11-09T14:18:21.9437323Z Image: ubuntu-26.04
+2026-11-09T14:18:21.9437831Z Version: 20261101.186.1
+2026-11-09T14:18:21.9438912Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-09T14:18:21.9440248Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+2026-11-09T14:18:21.9441067Z ##[endgroup]
+2026-11-09T14:18:21.9442010Z ##[group]GITHUB_TOKEN Permissions
+2026-11-09T14:18:21.9444056Z Contents: read
+2026-11-09T14:18:21.9444568Z Metadata: read
+2026-11-09T14:18:21.9445083Z ##[endgroup]
+2026-11-09T14:18:21.9447010Z Secret source: Actions
+2026-11-09T14:18:21.9447831Z Cache mode: write
+2026-11-09T14:18:21.9448573Z Prepare workflow directory
+2026-11-09T14:18:22.0117416Z Prepare all required actions
+2026-11-09T14:18:22.0162857Z Getting action download info
+2026-11-09T14:18:22.3665720Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-09T14:18:22.4725616Z Download action repository 'Hexalith/Hexalith.Builds@06645197b4013dfac0f39be73d09e20c753d4876' (SHA:06645197b4013dfac0f39be73d09e20c753d4876)
+2026-11-09T14:18:25.5965899Z Download action repository 'actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73' (SHA:0f4a354dd5547a28c70b7853dbd95d5b67886e73)
+2026-11-09T14:18:25.9527291Z Uses: Hexalith/Hexalith.Builds/.github/workflows/ci.yml@refs/pull/180/merge (06645197b4013dfac0f39be73d09e20c753d4876)
+2026-11-09T14:18:25.9530890Z ##[group] Inputs
+2026-11-09T14:18:25.9531305Z   module-root: 
+2026-11-09T14:18:25.9531616Z   expected-source: 
+2026-11-09T14:18:25.9532002Z ##[endgroup]
+2026-11-09T14:18:25.9532367Z Complete job name: .NET tests / Build and unit tests
+2026-11-09T14:18:26.0190930Z ##[group]Run :
+2026-11-09T14:18:26.0191272Z [36;1m:[0m
+2026-11-09T14:18:26.0239309Z shell: /usr/bin/bash -e {0}
+2026-11-09T14:18:26.0239812Z env:
+2026-11-09T14:18:26.0240059Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:26.0240347Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:26.0240585Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:26.0240818Z ##[endgroup]
+2026-11-09T14:18:26.0512138Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-09T14:18:26.0512563Z with:
+2026-11-09T14:18:26.0512771Z   submodules: false
+2026-11-09T14:18:26.0512994Z   persist-credentials: false
+2026-11-09T14:18:26.0513251Z   repository: Hexalith/Hexalith.Builds
+2026-11-09T14:18:26.0515806Z   token: ***
+2026-11-09T14:18:26.0516031Z   ssh-strict: true
+2026-11-09T14:18:26.0516256Z   ssh-user: git
+2026-11-09T14:18:26.0516457Z   clean: true
+2026-11-09T14:18:26.0516675Z   sparse-checkout-cone-mode: true
+2026-11-09T14:18:26.0516928Z   fetch-depth: 1
+2026-11-09T14:18:26.0517134Z   fetch-tags: false
+2026-11-09T14:18:26.0517359Z   show-progress: true
+2026-11-09T14:18:26.0517597Z   lfs: false
+2026-11-09T14:18:26.0517805Z   set-safe-directory: true
+2026-11-09T14:18:26.0518052Z   allow-unsafe-pr-checkout: false
+2026-11-09T14:18:26.0518299Z env:
+2026-11-09T14:18:26.0518515Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:26.0518774Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:26.0519132Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:26.0519352Z ##[endgroup]
+2026-11-09T14:18:26.2608951Z Syncing repository: Hexalith/Hexalith.Builds
+2026-11-09T14:18:26.2610940Z ##[group]Getting Git version info
+2026-11-09T14:18:26.2611535Z Working directory is '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-09T14:18:26.2612515Z [command]/usr/bin/git version
+2026-11-09T14:18:26.2626707Z git version 2.56.0
+2026-11-09T14:18:26.2642889Z ##[endgroup]
+2026-11-09T14:18:26.2653078Z Temporarily overriding HOME='/home/runner/work/_temp/282c92fb-8e7e-44d0-b324-abbc0201af8c' before making global git config changes
+2026-11-09T14:18:26.2654309Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-09T14:18:26.2659939Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-09T14:18:26.2715255Z Deleting the contents of '/home/runner/work/Hexalith.Builds/Hexalith.Builds'
+2026-11-09T14:18:26.2718024Z ##[group]Determining repository object format
+2026-11-09T14:18:26.2719464Z ##[endgroup]
+2026-11-09T14:18:26.2720077Z ##[group]Initializing the repository
+2026-11-09T14:18:26.2724112Z [command]/usr/bin/git init /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-09T14:18:26.2813151Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-09T14:18:26.2814105Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-09T14:18:26.2814595Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-09T14:18:26.2814977Z hint: call:
+2026-11-09T14:18:26.2815177Z hint:
+2026-11-09T14:18:26.2815603Z hint: 	git config --global init.defaultBranch <name>
+2026-11-09T14:18:26.2815912Z hint:
+2026-11-09T14:18:26.2816201Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-09T14:18:26.2816722Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-09T14:18:26.2817086Z hint:
+2026-11-09T14:18:26.2817352Z hint: 	git branch -m <name>
+2026-11-09T14:18:26.2817646Z hint:
+2026-11-09T14:18:26.2818113Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-09T14:18:26.2819824Z Initialized empty Git repository in /home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/
+2026-11-09T14:18:26.2831735Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Builds
+2026-11-09T14:18:26.2880652Z ##[endgroup]
+2026-11-09T14:18:26.2881333Z ##[group]Disabling automatic garbage collection
+2026-11-09T14:18:26.2883873Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-09T14:18:26.2915965Z ##[endgroup]
+2026-11-09T14:18:26.2916550Z ##[group]Setting up auth
+2026-11-09T14:18:26.2916968Z Removing SSH command configuration
+2026-11-09T14:18:26.2921949Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-09T14:18:26.2954967Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-09T14:18:26.3383887Z Removing HTTP extra header
+2026-11-09T14:18:26.3388329Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-09T14:18:26.3417344Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-09T14:18:26.3662237Z Removing includeIf entries pointing to credentials config files
+2026-11-09T14:18:26.3663262Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-09T14:18:26.3695348Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-09T14:18:26.3984030Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-09T14:18:26.4001285Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path /home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:26.4032973Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:26.4067357Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:26.4097574Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:26.4126009Z ##[endgroup]
+2026-11-09T14:18:26.4126550Z ##[group]Fetching the repository
+2026-11-09T14:18:26.4135118Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +06645197b4013dfac0f39be73d09e20c753d4876:refs/remotes/pull/180/merge
+2026-11-09T14:18:27.8883801Z From https://github.com/Hexalith/Hexalith.Builds
+2026-11-09T14:18:27.8884488Z  * [new ref]         06645197b4013dfac0f39be73d09e20c753d4876 -> pull/180/merge
+2026-11-09T14:18:27.8887586Z ##[endgroup]
+2026-11-09T14:18:27.8888109Z ##[group]Determining the checkout info
+2026-11-09T14:18:27.8888717Z ##[endgroup]
+2026-11-09T14:18:27.8894025Z [command]/usr/bin/git sparse-checkout disable
+2026-11-09T14:18:27.8941827Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-09T14:18:27.8974570Z ##[group]Checking out the ref
+2026-11-09T14:18:27.8979163Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/180/merge
+2026-11-09T14:18:28.1290750Z Note: switching to 'refs/remotes/pull/180/merge'.
+2026-11-09T14:18:28.1291497Z 
+2026-11-09T14:18:28.1291992Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-09T14:18:28.1293024Z changes and commit them, and you can discard any commits you make in this
+2026-11-09T14:18:28.1293815Z state without impacting any branches by switching back to a branch.
+2026-11-09T14:18:28.1294218Z 
+2026-11-09T14:18:28.1294629Z If you want to create a new branch to retain commits you create, you may
+2026-11-09T14:18:28.1295271Z do so (now or later) by using -c with the switch command. Example:
+2026-11-09T14:18:28.1295672Z 
+2026-11-09T14:18:28.1295938Z   git switch -c <new-branch-name>
+2026-11-09T14:18:28.1296260Z 
+2026-11-09T14:18:28.1296550Z Or undo this operation with:
+2026-11-09T14:18:28.1296758Z 
+2026-11-09T14:18:28.1296951Z   git switch -
+2026-11-09T14:18:28.1297269Z 
+2026-11-09T14:18:28.1297583Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-09T14:18:28.1298636Z 
+2026-11-09T14:18:28.1299605Z HEAD is now at 0664519 Merge 89d1ee37b5b80905198c87351a72da52abe08100 into fe02e57c291d28ea4298e7429850cf26208f5fbc
+2026-11-09T14:18:28.1311643Z ##[endgroup]
+2026-11-09T14:18:28.1364393Z [command]/usr/bin/git log -1 --format=%H
+2026-11-09T14:18:28.1392184Z 06645197b4013dfac0f39be73d09e20c753d4876
+2026-11-09T14:18:28.1403154Z ##[group]Removing auth
+2026-11-09T14:18:28.1403407Z Removing SSH command configuration
+2026-11-09T14:18:28.1407014Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-09T14:18:28.1440986Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-09T14:18:28.1712681Z Removing HTTP extra header
+2026-11-09T14:18:28.1716396Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-09T14:18:28.1751782Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-09T14:18:28.2006718Z Removing includeIf entries pointing to credentials config files
+2026-11-09T14:18:28.2009875Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-09T14:18:28.2033566Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-09T14:18:28.2034306Z includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-09T14:18:28.2034704Z includeif.gitdir:/github/workspace/.git.path
+2026-11-09T14:18:28.2034993Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-09T14:18:28.2041528Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path
+2026-11-09T14:18:28.2063839Z /home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:28.2075236Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-19752e61\-f55c\-4c8c\-8d45\-12f8252c4e77\.config
+2026-11-09T14:18:28.2110720Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path
+2026-11-09T14:18:28.2134988Z /home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:28.2141902Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Builds/Hexalith.Builds/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-19752e61\-f55c\-4c8c\-8d45\-12f8252c4e77\.config
+2026-11-09T14:18:28.2174072Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-09T14:18:28.2196779Z /github/runner_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:28.2204451Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-19752e61\-f55c\-4c8c\-8d45\-12f8252c4e77\.config
+2026-11-09T14:18:28.2866394Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-09T14:18:28.2893541Z /github/runner_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config
+2026-11-09T14:18:28.2900613Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-19752e61\-f55c\-4c8c\-8d45\-12f8252c4e77\.config
+2026-11-09T14:18:28.2936994Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-09T14:18:28.3187095Z Removing credentials config '/home/runner/work/_temp/git-credentials-19752e61-f55c-4c8c-8d45-12f8252c4e77.config'
+2026-11-09T14:18:28.3195873Z ##[endgroup]
+2026-11-09T14:18:28.3348780Z ##[group]Run Hexalith/Hexalith.Builds/Github/ci-prepare@06645197b4013dfac0f39be73d09e20c753d4876
+2026-11-09T14:18:28.3349168Z env:
+2026-11-09T14:18:28.3349377Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:28.3349601Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:28.3349782Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:28.3349971Z ##[endgroup]
+2026-11-09T14:18:28.3395937Z ##[start-action display=Read validated module configuration;id=prepare.prepare]
+2026-11-09T14:18:28.3455517Z ##[group]Run python3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase prepare
+2026-11-09T14:18:28.3456067Z [36;1mpython3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase prepare[0m
+2026-11-09T14:18:28.3501652Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-09T14:18:28.3501934Z env:
+2026-11-09T14:18:28.3502126Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:28.3502351Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:28.3502523Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:28.3502778Z ##[endgroup]
+2026-11-09T14:18:28.4007295Z {"solution": "Hexalith.Builds.slnx", "global-json": "global.json", "submodules": "[]"}
+2026-11-09T14:18:28.4112344Z ##[end-action id=prepare.prepare;outcome=success;conclusion=success;duration_ms=71]
+2026-11-09T14:18:28.4214927Z ##[group]Run actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73
+2026-11-09T14:18:28.4215248Z with:
+2026-11-09T14:18:28.4215430Z   global-json-file: global.json
+2026-11-09T14:18:28.4215650Z   skip-lts-prepass: false
+2026-11-09T14:18:28.4215839Z   cache: false
+2026-11-09T14:18:28.4216002Z env:
+2026-11-09T14:18:28.4216179Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:28.4216400Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:28.4216572Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:28.4216754Z ##[endgroup]
+2026-11-09T14:18:28.5382007Z [command]/home/runner/work/_actions/actions/setup-dotnet/0f4a354dd5547a28c70b7853dbd95d5b67886e73/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-09T14:18:28.8532083Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-09T14:18:28.8553157Z [command]/home/runner/work/_actions/actions/setup-dotnet/0f4a354dd5547a28c70b7853dbd95d5b67886e73/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+2026-11-09T14:18:29.0627708Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-09T14:18:29.0776394Z ##[group]Run Hexalith/Hexalith.Builds/Github/ci-build@06645197b4013dfac0f39be73d09e20c753d4876
+2026-11-09T14:18:29.0776771Z env:
+2026-11-09T14:18:29.0776956Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:29.0777181Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:29.0777365Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:29.0777559Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-09T14:18:29.0777757Z ##[endgroup]
+2026-11-09T14:18:29.0780621Z ##[start-action display=Restore and build;id=__self.__run]
+2026-11-09T14:18:29.0797054Z ##[group]Run python3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase build
+2026-11-09T14:18:29.0797511Z [36;1mpython3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase build[0m
+2026-11-09T14:18:29.0845313Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-09T14:18:29.0845636Z env:
+2026-11-09T14:18:29.0845830Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:18:29.0846061Z   CI_MODULE_ROOT: 
+2026-11-09T14:18:29.0846307Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:18:29.0846503Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-09T14:18:29.0846700Z ##[endgroup]
+2026-11-09T14:18:34.7937818Z   Determining projects to restore...
+2026-11-09T14:18:38.4112772Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.44 sec).
+2026-11-09T14:18:38.5560187Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 16 ms).
+2026-11-09T14:18:39.1935594Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 3.11 sec).
+2026-11-09T14:18:39.2905607Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 3.14 sec).
+2026-11-09T14:18:39.3378641Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 24 ms).
+2026-11-09T14:18:39.3976893Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 20 ms).
+2026-11-09T14:18:39.4738827Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 14 ms).
+2026-11-09T14:18:39.4795175Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 6 ms).
+2026-11-09T14:18:40.6781004Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 1.2 sec).
+2026-11-09T14:18:40.6970405Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 6 ms).
+2026-11-09T14:18:40.7116893Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 3 ms).
+2026-11-09T14:18:40.7135591Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 1.22 sec).
+2026-11-09T14:18:40.7290752Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 7 ms).
+2026-11-09T14:18:40.7473905Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 28 ms).
+2026-11-09T14:18:41.0610892Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 5.15 sec).
+2026-11-09T14:18:41.0639268Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 2.5 sec).
+2026-11-09T14:18:46.5952632Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+2026-11-09T14:18:50.8455806Z   P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+2026-11-09T14:18:54.0266152Z   Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+2026-11-09T14:18:54.7535833Z   P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+2026-11-09T14:18:55.3585873Z   Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+2026-11-09T14:18:56.4118049Z   P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+2026-11-09T14:18:56.7780609Z   P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+2026-11-09T14:18:57.0721366Z   P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+2026-11-09T14:18:57.5179610Z   P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+2026-11-09T14:20:56.8885580Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+2026-11-09T14:20:57.5792428Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+2026-11-09T14:20:57.6005206Z   P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+2026-11-09T14:20:57.6245609Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+2026-11-09T14:20:59.5185851Z   Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+2026-11-09T14:21:02.6271132Z   Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+2026-11-09T14:21:25.9202735Z   Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+2026-11-09T14:21:25.9782666Z   Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+2026-11-09T14:21:26.0157525Z 
+2026-11-09T14:21:26.0158337Z Build succeeded.
+2026-11-09T14:21:26.0158646Z     0 Warning(s)
+2026-11-09T14:21:26.0158907Z     0 Error(s)
+2026-11-09T14:21:26.0159052Z 
+2026-11-09T14:21:26.0159225Z Time Elapsed 00:02:44.57
+2026-11-09T14:21:26.0577992Z ##[end-action id=__self.__run;outcome=success;conclusion=success;duration_ms=176979]
+2026-11-09T14:21:26.0632541Z ##[group]Run Hexalith/Hexalith.Builds/Github/ci-unit-tests@06645197b4013dfac0f39be73d09e20c753d4876
+2026-11-09T14:21:26.0633185Z env:
+2026-11-09T14:21:26.0633465Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:21:26.0634000Z   CI_MODULE_ROOT: 
+2026-11-09T14:21:26.0634277Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:21:26.0634581Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-09T14:21:26.0634887Z ##[endgroup]
+2026-11-09T14:21:26.0638688Z ##[start-action display=Run unit projects in ordinal path order;id=__self_2.__run]
+2026-11-09T14:21:26.0659658Z ##[group]Run python3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase unit
+2026-11-09T14:21:26.0660337Z [36;1mpython3 -I "$GITHUB_ACTION_PATH/../lib/ci_pipeline.py" --phase unit[0m
+2026-11-09T14:21:26.0723360Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-09T14:21:26.0724010Z env:
+2026-11-09T14:21:26.0724298Z   CI_REPOSITORY: Hexalith/Hexalith.Builds
+2026-11-09T14:21:26.0724658Z   CI_MODULE_ROOT: 
+2026-11-09T14:21:26.0724992Z   CI_EXPECTED_SOURCE: 
+2026-11-09T14:21:26.0725265Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-09T14:21:26.0725585Z ##[endgroup]
+2026-11-09T14:21:33.6604976Z {"unit": ["test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj", "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj"], "integration": ["test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj"], "excluded": []}
+2026-11-09T14:21:33.6606929Z Unit tests: test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj
+2026-11-09T14:21:34.7406354Z Running tests from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll (net10.0|x64)
+2026-11-09T14:21:40.3362023Z [m/home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll (net10.0|x64) [32mpassed[m [90m(5s 597ms)[m
+2026-11-09T14:21:40.3416690Z 
+2026-11-09T14:21:40.3424912Z [32mTest run summary: Passed!
+2026-11-09T14:21:40.3428829Z [m  total: 191
+2026-11-09T14:21:40.3429101Z   failed: 0
+2026-11-09T14:21:40.3429425Z [32m  succeeded: 191
+2026-11-09T14:21:40.3429747Z [m  skipped: 0
+2026-11-09T14:21:40.3430080Z   duration: 5s 791ms
+2026-11-09T14:21:40.3587883Z Unit tests: test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj
+2026-11-09T14:21:41.4725899Z Running tests from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:39.4476517Z [31mfailed[m Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(unknownVersion: True) [90m(1s 518ms)[m
+2026-11-09T14:23:39.4485359Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:39.4491620Z [31m  Shouldly.ShouldAssertException : "Hexalith.EventStore: release snapshot '/tmp/hexalith-workspace-tests/666717b5464c4d71a0bb4ffd5568797..."
+2026-11-09T14:23:39.4493495Z       should contain (case insensitive comparison)
+2026-11-09T14:23:39.4494442Z   "does not match Builds catalog version '999.0.0'"
+2026-11-09T14:23:39.4495085Z       but did not
+2026-11-09T14:23:39.4497142Z [m[90m    at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedClosureStillRefusesChangedHashOrUnknownVersionAsync(Boolean unknownVersion) in /_/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs:99[90m
+2026-11-09T14:23:39.4499241Z     at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-09T14:23:39.4500557Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+2026-11-09T14:23:39.4501812Z     --- End of stack trace from previous location ---
+2026-11-09T14:23:39.4503151Z [90m    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-09T14:23:39.4504812Z     at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+2026-11-09T14:23:41.0486926Z [m[31mfailed[m Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedParties310UsesVerifiedDirectCatalogAndExactSourceFixtureAsync(platformRoot: True) [90m(642ms)[m
+2026-11-09T14:23:41.0501880Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:41.0525911Z [31m  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/hexalith-workspace-tests/042893d806b4444f8f1548ef67db0f9c/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '4.1.0' at commit 'dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a' does not match Builds catalog version '4.2.0', release commit 'aa16227bd07f0564a3026d619a5abd973e02656f', or its released v2 declaration (absent until the owner releases one).
+2026-11-09T14:23:41.0535919Z [m[90m    at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:129[90m
+2026-11-09T14:23:41.0538618Z     at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:27[90m
+2026-11-09T14:23:41.0541905Z     at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedParties310UsesVerifiedDirectCatalogAndExactSourceFixtureAsync(Boolean platformRoot) in /_/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs:138[90m
+2026-11-09T14:23:41.0543572Z     --- End of stack trace from previous location ---
+2026-11-09T14:23:41.9314157Z [m[31mfailed[m Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedParties310UsesVerifiedDirectCatalogAndExactSourceFixtureAsync(platformRoot: False) [90m(883ms)[m
+2026-11-09T14:23:41.9328683Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:41.9341288Z [31m  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/hexalith-workspace-tests/a92329cabcdc4c3cb999263c0628a77e/checkout/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '4.1.0' at commit 'dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a' does not match Builds catalog version '4.2.0', release commit 'aa16227bd07f0564a3026d619a5abd973e02656f', or its released v2 declaration (absent until the owner releases one).
+2026-11-09T14:23:41.9348573Z [m[90m    at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:129[90m
+2026-11-09T14:23:41.9351717Z     at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:27[90m
+2026-11-09T14:23:41.9357477Z     at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ReleasedParties310UsesVerifiedDirectCatalogAndExactSourceFixtureAsync(Boolean platformRoot) in /_/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs:138[90m
+2026-11-09T14:23:41.9359540Z     --- End of stack trace from previous location ---
+2026-11-09T14:23:42.6038249Z [m[31mfailed[m Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: True) [90m(671ms)[m
+2026-11-09T14:23:42.6041324Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:42.6046156Z [31m  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/hexalith-workspace-tests/7ee66bd62baf4038b0a7f97b396e297d/platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '4.1.0' at commit 'dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a' does not match Builds catalog version '4.2.0', release commit 'aa16227bd07f0564a3026d619a5abd973e02656f', or its released v2 declaration (absent until the owner releases one).
+2026-11-09T14:23:42.6052789Z [m[90m    at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:129[90m
+2026-11-09T14:23:42.6055916Z     at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:27[90m
+2026-11-09T14:23:42.6059037Z     at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(Boolean platformRoot) in /_/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs:40[90m
+2026-11-09T14:23:42.6061099Z     --- End of stack trace from previous location ---
+2026-11-09T14:23:43.6066559Z [m[31mfailed[m Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(platformRoot: False) [90m(999ms)[m
+2026-11-09T14:23:43.6069299Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:23:43.6073967Z [31m  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/hexalith-workspace-tests/9de0e6c0e8704d61acf4eff9b54ed314/checkout/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '4.1.0' at commit 'dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a' does not match Builds catalog version '4.2.0', release commit 'aa16227bd07f0564a3026d619a5abd973e02656f', or its released v2 declaration (absent until the owner releases one).
+2026-11-09T14:23:43.6078476Z [m[90m    at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:129[90m
+2026-11-09T14:23:43.6081246Z     at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options) in /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs:27[90m
+2026-11-09T14:23:43.6085410Z     at Hexalith.Builds.ModuleTool.Tests.DirectCatalogDeclarationTests.ColdStartUsesVerifiedCatalogWithoutNestedModuleDependenciesAsync(Boolean platformRoot) in /_/test/Hexalith.Builds.Module.Tests/DirectCatalogDeclarationTests.cs:40[90m
+2026-11-09T14:23:43.6087642Z     --- End of stack trace from previous location ---
+2026-11-09T14:24:24.5022574Z [m[33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync
+2026-11-09T14:24:24.5044909Z   This integration assertion requires the enclosing Platform checkout or a verified source mapping.
+2026-11-09T14:24:24.5046281Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:25:32.7754702Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync
+2026-11-09T14:25:32.7772538Z   This repository is not inside the Platform root with its Commons checkout.
+2026-11-09T14:25:32.7774771Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:26:05.0752224Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync
+2026-11-09T14:26:05.0753985Z   This repository is not inside the Platform root with its EventStore checkout.
+2026-11-09T14:26:05.0755645Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:32:48.5605110Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync
+2026-11-09T14:32:48.5605942Z   This qualification-only assertion requires the controlled catalog SDK interception harness.
+2026-11-09T14:32:48.5606735Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:33:00.2907112Z [33mskipped[m Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync
+2026-11-09T14:33:00.2908561Z   Native process inspection is explicitly gated to Windows and macOS.
+2026-11-09T14:33:00.2910099Z   from /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64)
+2026-11-09T14:33:34.4820362Z [m/home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll (net10.0|x64) [31mfailed with 5 error(s)[m [90m(11m 53s 011ms)[m
+2026-11-09T14:33:34.4821484Z Exit code: 2
+2026-11-09T14:33:34.4821970Z   Standard output: g4: waiting for resource 'first' to become healthy.
+2026-11-09T14:33:34.4822580Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4822973Z   g4: waiting for resource 'worker' to become healthy.
+2026-11-09T14:33:34.4823288Z   g4: waiting for Dapr invocation of 'worker-app'.
+2026-11-09T14:33:34.4823575Z   g4: waiting for resource 'worker' to become healthy.
+2026-11-09T14:33:34.4824261Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4825017Z         Health check infrastructure-redis with status Unhealthy completed after 3.4776ms with message 'Redis did not answer PING.'
+2026-11-09T14:33:34.4825534Z   g4: waiting for resource 'redis' to become healthy.
+2026-11-09T14:33:34.4825842Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4826121Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4826539Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4827118Z         Health check module-defined with status Unhealthy completed after 0.0658ms with message '(null)'
+2026-11-09T14:33:34.4827557Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4828139Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4828394Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4828725Z   g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4829013Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4829264Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4829584Z   g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4829870Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4830136Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4830450Z   g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4830737Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4831014Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4831517Z   g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4831812Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4832077Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4832425Z   g4: waiting for resource 'eventstore-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4832719Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4833098Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4834425Z         Health check module-defined with status Unhealthy completed after 0.0659ms with message '(null)'
+2026-11-09T14:33:34.4834975Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4835512Z         Health check module-defined with status Unhealthy completed after 0.0062ms with message '(null)'
+2026-11-09T14:33:34.4836034Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4836573Z         Health check module-defined with status Unhealthy completed after 0.0067ms with message '(null)'
+2026-11-09T14:33:34.4837144Z   fail: Microsoft.Extensions.Diagnostics.HealthChecks.DefaultHealthCheckService[103]
+2026-11-09T14:33:34.4837686Z         Health check module-defined with status Unhealthy completed after 0.0072ms with message '(null)'
+2026-11-09T14:33:34.4838102Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4838370Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4838624Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4838922Z   g4: waiting for resource 'first' to become healthy.
+2026-11-09T14:33:34.4839230Z   g4: waiting for Dapr invocation of 'worker-app'.
+2026-11-09T14:33:34.4839526Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4839833Z   g4: waiting for resource 'worker' to become healthy.
+2026-11-09T14:33:34.4840114Z   g4: waiting for Dapr invocation of 'worker-app'.
+2026-11-09T14:33:34.4840411Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4840703Z   g4: waiting for resource 'worker' to become healthy.
+2026-11-09T14:33:34.4841004Z   g4: waiting for Dapr invocation of 'worker-app'.
+2026-11-09T14:33:34.4841252Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4841507Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4841797Z   g4: waiting for resource 'sample' to become healthy.
+2026-11-09T14:33:34.4842108Z   g4: waiting for resource 'sample-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4842435Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4842723Z   g4: waiting for resource 'sample' to become healthy.
+2026-11-09T14:33:34.4843026Z   g4: waiting for resource 'sample-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4843334Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4843801Z   g4: waiting for resource 'sample' to become healthy.
+2026-11-09T14:33:34.4844216Z   g4: waiting for resource 'sample-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4844531Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4844974Z   g4: waiting for resource 'sample' to become healthy.
+2026-11-09T14:33:34.4845273Z   g4: waiting for resource 'sample-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4845555Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4845804Z   g4: waiting for resource 'eventstore' to become healthy.
+2026-11-09T14:33:34.4846183Z   g4: waiting for resource 'sample' to become healthy.
+2026-11-09T14:33:34.4846526Z   g4: waiting for resource 'sample-dapr-cli' to become healthy.
+2026-11-09T14:33:34.4846805Z   g4: every resource is healthy.
+2026-11-09T14:33:34.4847252Z   Error output: g4: HXR026 resource='selected' appId='selected-app' status='connection-unavailable;probe-timeout'.
+2026-11-09T14:33:34.4847801Z   g4: HXR026 resource='selected' appId='selected-app' status='HTTP 503;probe-timeout'.
+2026-11-09T14:33:34.4848396Z   g4: HXR026 resource='selected' appId='selected-app' status='request-timeout;probe-timeout'.
+2026-11-09T14:33:34.4848888Z   g4: HXR028 resource='stdin-listener' appId='-' status='blocked-after-stop'.
+2026-11-09T14:33:34.4849416Z   g4: HXR027 resource='eventstore' appId='eventstore' status='cutover-activation-HTTP-403;stage=writer-cutover'.
+2026-11-09T14:33:34.4849963Z   g4: HXR021 resource='apphost-start' appId='-' status='state=unreported;health=unreported'.
+2026-11-09T14:33:34.4850672Z   g4: HXR021 resource='worker' appId='-' status='state=Running;health=Unhealthy'.
+2026-11-09T14:33:34.4851372Z   g4: HXR026 resource='selected-test-observations' appId='orders' status='identity-or-access-unavailable'.
+2026-11-09T14:33:34.4851881Z   g4: HXR025 resource='first' appId='-' status='state=Running;health=Unhealthy'.
+2026-11-09T14:33:34.4852110Z 
+2026-11-09T14:33:34.4857197Z [31mTest run summary: Failed!
+2026-11-09T14:33:34.4861429Z [m  total: 2927
+2026-11-09T14:33:34.4861709Z [31m  failed: 5
+2026-11-09T14:33:34.4862027Z [m  succeeded: 2917
+2026-11-09T14:33:34.4862300Z   skipped: 5
+2026-11-09T14:33:34.4862485Z   duration: 11m 53s 204ms
+2026-11-09T14:33:34.4862880Z Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)
+2026-11-09T14:33:34.5009338Z dotnet test --project test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj --no-build --no-restore -p:Configuration=Release -p:UseHexalithProjectReferences=false -p:NuGetAudit=false -p:RestoreConfigFile=/home/runner/work/_actions/Hexalith/Hexalith.Builds/06645197b4013dfac0f39be73d09e20c753d4876/NuGet.ci.Config -p:EnableNETAnalyzers=true -p:RunAnalyzers=true -p:RunAnalyzersDuringBuild=true -p:TreatWarningsAsErrors=true -p:MSBuildTreatWarningsAsErrors=true --stop-on-fail off failed (2)
+2026-11-09T14:33:34.5105249Z ##[error]Process completed with exit code 2.
+2026-11-09T14:33:34.5111550Z ##[end-action id=__self_2.__run;outcome=failure;conclusion=failure;duration_ms=728447]
+2026-11-09T14:33:34.5205520Z Post job cleanup.
+2026-11-09T14:33:34.5920969Z [command]/usr/bin/git version
+2026-11-09T14:33:34.5959358Z git version 2.56.0
+2026-11-09T14:33:34.5985757Z Temporarily overriding HOME='/home/runner/work/_temp/d82126c3-5e2a-4b4c-9f4d-697ff0eafac5' before making global git config changes
+2026-11-09T14:33:34.5987072Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-09T14:33:34.5989487Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Builds/Hexalith.Builds
+2026-11-09T14:33:34.6017734Z Removing SSH command configuration
+2026-11-09T14:33:34.6022899Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-09T14:33:34.6053951Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-09T14:33:34.6336977Z Removing HTTP extra header
+2026-11-09T14:33:34.6337805Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-09T14:33:34.6358083Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-09T14:33:34.6644769Z Removing includeIf entries pointing to credentials config files
+2026-11-09T14:33:34.6646994Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-09T14:33:34.6675961Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-09T14:33:34.7059875Z Evaluate and set job outputs
+2026-11-09T14:33:34.7064756Z Set output 'solution'
+2026-11-09T14:33:34.7066021Z Set output 'submodules'
+2026-11-09T14:33:34.7066586Z Cleaning up orphan processes
+2026-11-09T14:33:34.7368504Z Terminate orphan process: pid (2498) (dotnet)
+2026-11-09T14:33:34.7387933Z Terminate orphan process: pid (2499) (dotnet)
+2026-11-09T14:33:34.7406562Z Terminate orphan process: pid (2500) (dotnet)
+2026-11-09T14:33:34.7425116Z Terminate orphan process: pid (2660) (VBCSCompiler)

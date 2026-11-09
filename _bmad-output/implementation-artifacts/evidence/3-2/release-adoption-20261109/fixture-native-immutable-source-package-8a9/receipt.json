@@ -1,0 +1,84 @@
+{
+  "recordedUtc": "2026-11-09T18:18:05.071552+00:00",
+  "scope": "Unsigned nonpublic prepublication archive qualification of actual immutable source documents, complete native source set and actual signed SDK assets only.",
+  "source": "8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+  "localOnlyPackageVersion": "0.0.0-story32.native-prepublication",
+  "archiveRetainedPath": "/tmp/story32-fixture-sourcebound-8a9/feed/Hexalith.Platform.TestExtension.0.0.0-story32.native-prepublication.nupkg",
+  "archiveSha256": "9e2134099b56ffbf3a85228c6f118004a9897e3398ec3fd379b81733a4995719",
+  "declaration": {
+    "path": "build/hexalith.module-manifest.v2.json",
+    "sha256": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+    "moduleId": "platformtestextension"
+  },
+  "producer": {
+    "path": "build/fixture-producer.json",
+    "sha256": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+    "publisherRepository": "Hexalith/Hexalith.Platform"
+  },
+  "nativeSources": {
+    "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+    "files": {
+      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {
+        "path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+        "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"
+      },
+      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {
+        "path": "build/qualification/ReadinessTests.cs",
+        "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
+      },
+      "eng/test-extension-release/qualify-host.py": {
+        "path": "build/qualification/qualify-host.py",
+        "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"
+      }
+    }
+  },
+  "soleDomainServiceDependency": true,
+  "actualSdkPackages": [
+    "Hexalith.EventStore.Client/4.2.0",
+    "Hexalith.EventStore.Contracts/4.2.0",
+    "Hexalith.EventStore.DomainService/4.2.0",
+    "Hexalith.EventStore.ServiceDefaults/4.2.0"
+  ],
+  "sourceDocumentAuthority": "Exact git show source:path bytes for declaration, producer, native project/test/observer; no working-tree substitution.",
+  "credits": {
+    "signedFixture": false,
+    "normalPublication": false,
+    "nativeParent": false,
+    "hostAdmission": false,
+    "qualification": false
+  },
+  "files": {
+    "native-build.log": {
+      "sha256": "56c303f331644ba332a5849e0fead2c19ee3564d521b399fbf9c315c48f41a2f",
+      "bytes": 528
+    },
+    "pack-command.json": {
+      "sha256": "0bae729d642de801ee28ffd502477fd244a9e83662e64db6ba43c923c3d28d78",
+      "bytes": 1060
+    },
+    "pack.log": {
+      "sha256": "858e8fb378dfd82aa0d428b4e1e4128688d5faf2f927d3115baef4d972d4f84e",
+      "bytes": 714
+    },
+    "package-identity.json": {
+      "sha256": "c2b7a95d022061dcd67388b4dfe117ab5e0b8150cb452948fd92f16ef0ab136f",
+      "bytes": 3171
+    },
+    "signed-sdk-identity.json": {
+      "sha256": "43b170a5873f93912b534a7f4e54cee3ec173cf7d220202825bbbbb16bdd4503",
+      "bytes": 2441
+    },
+    "verify-command.json": {
+      "sha256": "d8138441be66684526763346c8fdce01aa8d4fce5bc07dde8b97f1a8332d1c4f",
+      "bytes": 646
+    },
+    "verify-source-package.log": {
+      "sha256": "41111db6e29c5c87259d00a5d8a28d144e29918d9c0e6b18395d92a5eefa34f6",
+      "bytes": 2927
+    },
+    "verify-source-package.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

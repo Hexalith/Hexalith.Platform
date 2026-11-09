@@ -1,0 +1,19 @@
+.........E.........
+======================================================================
+ERROR: test_preflight_verifies_selected_sibling_and_binds_its_msbuild_root (__main__.BuildsTupleTests.test_preflight_verifies_selected_sibling_and_binds_its_msbuild_root) (source='matching')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/test_builds_tuple.py", line 245, in test_preflight_verifies_selected_sibling_and_binds_its_msbuild_root
+    run_tuple_ci.main()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/run_tuple_ci.py", line 179, in main
+    verify_historical_catalog_pin(catalog)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/runner/work/Hexalith.Platform/Hexalith.Platform/eng/run_tuple_ci.py", line 98, in verify_historical_catalog_pin
+    raise ValueError("Historical controls require the single real SDK4.1 catalog pin; overrides cannot substitute.")
+ValueError: Historical controls require the single real SDK4.1 catalog pin; overrides cannot substitute.
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.822s
+
+FAILED (errors=1)

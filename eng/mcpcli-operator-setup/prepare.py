@@ -53,7 +53,8 @@ def source_inputs(root):
              *sorted((root / 'eng/mcpcli-operator-setup/chart').rglob('*')),
              *sorted((root / 'eng/mcpcli-operator-setup').glob('*.py')),
              *sorted((root / 'eng/mcpcli-operator-setup/graph-export').glob('*.cs*')),
-             root / 'Directory.Build.props', root / 'Directory.Packages.props', root / 'global.json']
+             root / 'Directory.Build.props', root / 'Directory.Build.targets', root / 'Directory.Packages.props',
+             root / 'eng/SourceRestore.props', root / 'global.json']
     for module in ('EventStore', 'Tenants', 'Parties', 'Memories'):
         paths.append(root / 'references' / ('Hexalith.' + module) / 'module/hexalith.module-manifest.v2.json')
     return {str(p.relative_to(root)): sha(p) for p in paths if p.is_file()}

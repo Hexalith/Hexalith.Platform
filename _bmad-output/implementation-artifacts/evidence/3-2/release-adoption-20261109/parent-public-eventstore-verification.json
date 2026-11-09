@@ -1,0 +1,48 @@
+{
+  "recordedUtc": "2026-11-09T13:28:39.235857+00:00",
+  "work": "/tmp/story32-parent-public-eventstore-_hq0w4vf",
+  "independentOfficialDownloads": true,
+  "results": [
+    {
+      "package": "Hexalith.EventStore.DomainService",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.domainservice/4.2.0/hexalith.eventstore.domainservice.4.2.0.nupkg",
+      "archiveSha256": "0b891de762de9d4f6749da714c04fcb7952ba5535f6ea63e1110e073264e36ca",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      },
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/tmp/story32-parent-public-eventstore-_hq0w4vf/Hexalith.EventStore.DomainService.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "stdout": "\nVerifying Hexalith.EventStore.DomainService.4.2.0\nContent hash: 9Y3ECcUmJUDxx1Fgl2OvzQssVHAGFXzs5bLhnHKLEf9kpPFeyqhiTI+Z9n+AA2tG43bXgIksJWDoASwU0B4K+w==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "stderr": ""
+    },
+    {
+      "package": "Hexalith.EventStore.Server",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.server/4.2.0/hexalith.eventstore.server.4.2.0.nupkg",
+      "archiveSha256": "7ba25cc6a9517a63d8bf0bbf543458a6104e62bd8c29f0df8b3711e74c81c3a5",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      },
+      "command": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/tmp/story32-parent-public-eventstore-_hq0w4vf/Hexalith.EventStore.Server.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "stdout": "\nVerifying Hexalith.EventStore.Server.4.2.0\nContent hash: Fy470u3/LHJRheLlQ93NH/1SZMvYsCMosTMp1C+liwqMymFfn7+zcOxpSEXSHZt+TzGj2ORNFlwDpAlgj3Bv6Q==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "stderr": ""
+    }
+  ],
+  "qualificationCredit": false
+}

@@ -1,0 +1,6 @@
+<Project>
+  <!-- Project and solution restore must retain the build's per-reference source/version context. -->
+  <PropertyGroup>
+    <RestoreUseStaticGraphEvaluation Condition="'$(RestoreUseStaticGraphEvaluation)' == '' and ('$(UseHexalithProjectReferences)' == 'true' or ('$(UseHexalithProjectReferences)' == '' and ('$(Configuration)' == 'Debug' or '$(Configuration)' == ''))) and '$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">true</RestoreUseStaticGraphEvaluation>
+  </PropertyGroup>
+</Project>

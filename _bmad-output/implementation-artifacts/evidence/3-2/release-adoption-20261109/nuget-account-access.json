@@ -1,0 +1,22 @@
+{
+  "recordedUtc": "2026-11-09T13:24:02.494339+00:00",
+  "authorization": "User said you can do it in response to the concrete fixture publisher configuration request.",
+  "githubSide": "Handled by the implementation agent through authenticated gh, independently of NuGet account access.",
+  "nugetAccessObservation": {
+    "requestedUrl": "https://www.nuget.org/account/TrustedPublishing",
+    "httpStatus": 200,
+    "finalUrl": "https://www.nuget.org/users/account/LogOn?ReturnUrl=%2Faccount%2FTrustedPublishing",
+    "authenticatedAccountAvailable": false,
+    "signInRequired": true
+  },
+  "officialSetupDocumentation": "https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing",
+  "nugetGalleryRevision": "5969489b9f4928c70dbbb645768c47a525133f9b",
+  "policyManagementSource": "https://github.com/NuGet/NuGetGallery/blob/5969489b9f4928c70dbbb645768c47a525133f9b/src/NuGetGallery/Controllers/UsersController.cs",
+  "managementAuthentication": "TrustedPublishing requires UIAuthorize. GenerateTrustedPublisherPolicy requires UIAuthorize, HttpPost and ValidateAntiForgeryToken. The available GitHub CLI identity is not a NuGet account UI session.",
+  "integrationDiscovery": {
+    "query": "NuGet",
+    "matchingPlugins": 0
+  },
+  "accountSettingChanged": false,
+  "nextPrerequisite": "An authenticated NuGet account session or account-owner creation of the exact documented Trusted Publishing policy; no credential or org-secret grants are broadened."
+}

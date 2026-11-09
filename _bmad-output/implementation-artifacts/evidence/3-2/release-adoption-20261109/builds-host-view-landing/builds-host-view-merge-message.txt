@@ -1,0 +1,5 @@
+fix(catalog): record the Platform EventStore host consumer view (#180)
+
+Record the actual Platform EventStore host in the pinned-tree catalog while
+retaining one canonical SDK version and explicit historical selection.
+Preserve the concurrently adopted SDK4.2 source, seed and declaration inputs.

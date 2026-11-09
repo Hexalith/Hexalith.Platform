@@ -1,0 +1,448 @@
+Release	Create Release	﻿2026-11-09T15:11:32.0898097Z Prepare all required actions
+Release	Create Release	2026-11-09T15:11:32.0898829Z Getting action download info
+Release	Create Release	2026-11-09T15:11:32.2246378Z Download action repository 'actions/setup-node@v7.1.0' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+Release	Create Release	2026-11-09T15:11:32.3069850Z ##[group]Run ./Github/create-release
+Release	Create Release	2026-11-09T15:11:32.3070258Z with:
+Release	Create Release	2026-11-09T15:11:32.3073204Z   github-token: ***
+Release	Create Release	2026-11-09T15:11:32.3073838Z   nuget-api-key: ***
+Release	Create Release	2026-11-09T15:11:32.3074160Z env:
+Release	Create Release	2026-11-09T15:11:32.3074527Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T15:11:32.3074924Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42638222177
+Release	Create Release	2026-11-09T15:11:32.3075305Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:32.3082242Z ##[start-action display=Setup Node.js;id=create_release.__actions_setup-node]
+Release	Create Release	2026-11-09T15:11:32.3143486Z ##[group]Run actions/setup-node@v7.1.0
+Release	Create Release	2026-11-09T15:11:32.3143873Z with:
+Release	Create Release	2026-11-09T15:11:32.3144261Z   node-version: 24
+Release	Create Release	2026-11-09T15:11:32.3144589Z   check-latest: false
+Release	Create Release	2026-11-09T15:11:32.3147012Z   token: ***
+Release	Create Release	2026-11-09T15:11:32.3147342Z   package-manager-cache: true
+Release	Create Release	2026-11-09T15:11:32.3147834Z env:
+Release	Create Release	2026-11-09T15:11:32.3148144Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T15:11:32.3148524Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42638222177
+Release	Create Release	2026-11-09T15:11:32.3148940Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:32.4442410Z Found in cache @ /opt/hostedtoolcache/node/24.22.2/x64
+Release	Create Release	2026-11-09T15:11:33.1716468Z ##[group]Environment details
+Release	Create Release	2026-11-09T15:11:35.0720944Z node: v24.22.2
+Release	Create Release	2026-11-09T15:11:35.0721723Z npm: 11.19.1
+Release	Create Release	2026-11-09T15:11:35.0722233Z yarn: 1.22.22
+Release	Create Release	2026-11-09T15:11:35.0723267Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:35.0798571Z ##[end-action id=create_release.__actions_setup-node;outcome=success;conclusion=success;duration_ms=2771]
+Release	Create Release	2026-11-09T15:11:35.0802174Z ##[start-action display=Install semantic-release dependencies;id=create_release.__run]
+Release	Create Release	2026-11-09T15:11:35.0825759Z ##[group]Run npm ci --ignore-scripts
+Release	Create Release	2026-11-09T15:11:35.0826254Z [36;1mnpm ci --ignore-scripts[0m
+Release	Create Release	2026-11-09T15:11:35.0908856Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T15:11:35.0909464Z env:
+Release	Create Release	2026-11-09T15:11:35.0909801Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T15:11:35.0910266Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42638222177
+Release	Create Release	2026-11-09T15:11:35.0910820Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:39.5411998Z 
+Release	Create Release	2026-11-09T15:11:39.5423290Z added 318 packages, and audited 319 packages in 4s
+Release	Create Release	2026-11-09T15:11:39.5423893Z 
+Release	Create Release	2026-11-09T15:11:39.5424487Z 89 packages are looking for funding
+Release	Create Release	2026-11-09T15:11:39.5425104Z   run `npm fund` for details
+Release	Create Release	2026-11-09T15:11:39.5425903Z 
+Release	Create Release	2026-11-09T15:11:39.5426264Z found 0 vulnerabilities
+Release	Create Release	2026-11-09T15:11:39.5734666Z ##[end-action id=create_release.__run;outcome=success;conclusion=success;duration_ms=4493]
+Release	Create Release	2026-11-09T15:11:39.5737785Z ##[start-action display=Verify dependency provenance and signatures;id=create_release.__run_2]
+Release	Create Release	2026-11-09T15:11:39.5760503Z ##[group]Run npm audit signatures
+Release	Create Release	2026-11-09T15:11:39.5761115Z [36;1mnpm audit signatures[0m
+Release	Create Release	2026-11-09T15:11:39.5795780Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T15:11:39.5796334Z env:
+Release	Create Release	2026-11-09T15:11:39.5797158Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T15:11:39.5797619Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42638222177
+Release	Create Release	2026-11-09T15:11:39.5798020Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:42.9323890Z audited 318 packages in 3s
+Release	Create Release	2026-11-09T15:11:42.9324663Z 
+Release	Create Release	2026-11-09T15:11:42.9326202Z 318 packages have verified registry signatures
+Release	Create Release	2026-11-09T15:11:42.9326620Z 
+Release	Create Release	2026-11-09T15:11:42.9326905Z 58 packages have verified attestations
+Release	Create Release	2026-11-09T15:11:42.9327782Z (use --json --include-attestations to view attestation details)
+Release	Create Release	2026-11-09T15:11:42.9328219Z 
+Release	Create Release	2026-11-09T15:11:42.9527637Z ##[end-action id=create_release.__run_2;outcome=success;conclusion=success;duration_ms=3378]
+Release	Create Release	2026-11-09T15:11:42.9536590Z ##[start-action display=Semantic Release;id=create_release.__run_3]
+Release	Create Release	2026-11-09T15:11:42.9560719Z ##[group]Run npx --no-install --ignore-scripts semantic-release
+Release	Create Release	2026-11-09T15:11:42.9561336Z [36;1mnpx --no-install --ignore-scripts semantic-release[0m
+Release	Create Release	2026-11-09T15:11:42.9594304Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T15:11:42.9594957Z env:
+Release	Create Release	2026-11-09T15:11:42.9595279Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T15:11:42.9595734Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42638222177
+Release	Create Release	2026-11-09T15:11:42.9598464Z   GITHUB_TOKEN: ***
+Release	Create Release	2026-11-09T15:11:42.9599062Z   NUGET_API_KEY: ***
+Release	Create Release	2026-11-09T15:11:42.9599962Z   HEXALITH_NUGET_VERIFY_ATTEMPTS: 180
+Release	Create Release	2026-11-09T15:11:42.9600315Z ##[endgroup]
+Release	Create Release	2026-11-09T15:11:44.0000885Z [3:11:43 PM] [semantic-release] › ℹ  Running semantic-release version 25.0.9
+Release	Create Release	2026-11-09T15:11:44.2101991Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "verifyConditions" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2104047Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "verifyConditions" from "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:44.2107155Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "analyzeCommits" from "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T15:11:44.2108340Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "analyzeCommits" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2110771Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "verifyRelease" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2113347Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "generateNotes" from "@semantic-release/release-notes-generator"
+Release	Create Release	2026-11-09T15:11:44.2114869Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "generateNotes" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2119373Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "prepare" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2123680Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "publish" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2124966Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "publish" from "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:44.2126021Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "addChannel" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2127236Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "addChannel" from "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:44.2128709Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "success" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2129848Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "success" from "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:44.2130986Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "fail" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:44.2131912Z [3:11:44 PM] [semantic-release] › ✔  Loaded plugin "fail" from "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:45.7947600Z [3:11:45 PM] [semantic-release] › ✔  Run automated release from branch main on repository https://github.com/Hexalith/Hexalith.Builds.git
+Release	Create Release	2026-11-09T15:11:46.2755111Z [3:11:46 PM] [semantic-release] › ✔  Allowed to push to the Git repository
+Release	Create Release	2026-11-09T15:11:46.2759181Z [3:11:46 PM] [semantic-release] › ℹ  Start step "verifyConditions" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:46.2789884Z [3:11:46 PM] [semantic-release] › ✔  Completed step "verifyConditions" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:46.2791719Z [3:11:46 PM] [semantic-release] › ℹ  Start step "verifyConditions" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:46.2819497Z [3:11:46 PM] [semantic-release] [@semantic-release/github] › ℹ  Verify GitHub authentication (https://api.github.com)
+Release	Create Release	2026-11-09T15:11:46.7529747Z [3:11:46 PM] [semantic-release] › ✔  Completed step "verifyConditions" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T15:11:46.7598674Z [3:11:46 PM] [semantic-release] › ℹ  Found git tag v4.45.1 associated with version 4.45.1 on branch main
+Release	Create Release	2026-11-09T15:11:46.7717291Z [3:11:46 PM] [semantic-release] › ℹ  Found 14 commits since last release
+Release	Create Release	2026-11-09T15:11:46.7725567Z [3:11:46 PM] [semantic-release] › ℹ  Start step "analyzeCommits" of plugin "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T15:11:46.7859430Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(deps): record the EventStore 4.2 package audit
+Release	Create Release	2026-11-09T15:11:46.7860066Z 
+Release	Create Release	2026-11-09T15:11:46.7860637Z Bind fresh metadata to source 7564c965337f46a1c3b6244476b13b0fa85dd653.
+Release	Create Release	2026-11-09T15:11:46.7861668Z Record the 13 selected 4.2.0 packages and preserve all 155
+Release	Create Release	2026-11-09T15:11:46.7862244Z unrelated family observations and historical context.
+Release	Create Release	2026-11-09T15:11:46.7865891Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7868113Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(deps): adopt the published EventStore 4.2 SDK
+Release	Create Release	2026-11-09T15:11:46.7868996Z 
+Release	Create Release	2026-11-09T15:11:46.7869478Z Select the released 4.2.0 family and retain Dapr 1.19.1.
+Release	Create Release	2026-11-09T15:11:46.7871136Z Keep historical 4.1.0 declaration authority and add the exact
+Release	Create Release	2026-11-09T15:11:46.7872034Z 4.2.0 source and technical receiver capability.
+Release	Create Release	2026-11-09T15:11:46.7872565Z 
+Release	Create Release	2026-11-09T15:11:46.7873095Z Rebind current synthetic fixtures without changing historical
+Release	Create Release	2026-11-09T15:11:46.7874119Z qualification records. Regenerate the revision-bound audit after
+Release	Create Release	2026-11-09T15:11:46.7875308Z this source commit; Platform admission remains separately qualified.
+Release	Create Release	2026-11-09T15:11:46.7876889Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7878979Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(ci): harden shared unit stage discovery and dispatch runs
+Release	Create Release	2026-11-09T15:11:46.7879897Z 
+Release	Create Release	2026-11-09T15:11:46.7880623Z Read xUnit identity from each inner build of multi-targeted test projects
+Release	Create Release	2026-11-09T15:11:46.7881848Z and trim evaluated TargetFrameworks entries as the SDK does. Keep Builds
+Release	Create Release	2026-11-09T15:11:46.7882982Z module-root fixtures free of a Builds gitlink, pass literal Git pathspecs
+Release	Create Release	2026-11-09T15:11:46.7883916Z and report the full failing command.
+Release	Create Release	2026-11-09T15:11:46.7884323Z 
+Release	Create Release	2026-11-09T15:11:46.7884864Z Skip G-4 evidence archiving on manual builds-ci dispatches, because the
+Release	Create Release	2026-11-09T15:11:46.7886237Z archiver credits only push and pull_request carriers.
+Release	Create Release	2026-11-09T15:11:46.7886781Z 
+Release	Create Release	2026-11-09T15:11:46.7887535Z Add behavioral regressions for ordinal case-sensitive classification and
+Release	Create Release	2026-11-09T15:11:46.7888640Z execution, workflow outputs, module-root paths, outer and inner test
+Release	Create Release	2026-11-09T15:11:46.7889764Z identity, path and gitlink guards, PYTHONPATH poisoning and the NuGet
+Release	Create Release	2026-11-09T15:11:46.7890845Z signature and source-mapping policy.
+Release	Create Release	2026-11-09T15:11:46.7891199Z 
+Release	Create Release	2026-11-09T15:11:46.7891699Z Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Release	Create Release	2026-11-09T15:11:46.7893241Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T15:11:46.7895516Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(deps): record the refreshed package audit
+Release	Create Release	2026-11-09T15:11:46.7896388Z 
+Release	Create Release	2026-11-09T15:11:46.7896930Z Bind the catalog freshness audit to the compatible version bump
+Release	Create Release	2026-11-09T15:11:46.7898101Z so the selected rows match the committed central declarations.
+Release	Create Release	2026-11-09T15:11:46.7898549Z 
+Release	Create Release	2026-11-09T15:11:46.7899036Z Co-authored-by: Cursor <cursoragent@cursor.com>
+Release	Create Release	2026-11-09T15:11:46.7900627Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7902557Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(deps): adopt current compatible package versions
+Release	Create Release	2026-11-09T15:11:46.7903508Z 
+Release	Create Release	2026-11-09T15:11:46.7903975Z Move the shared catalog to the latest compatible stable releases,
+Release	Create Release	2026-11-09T15:11:46.7904704Z including bunit 2.14.0 with AngleSharp 1.10.1.
+Release	Create Release	2026-11-09T15:11:46.7905501Z Keep the net10 Microsoft.Build hold, OpenApi 2.x,
+Release	Create Release	2026-11-09T15:11:46.7906374Z Azure.Bicep.Core 0.48.1, and the qualified EventStore 4.1.0 cohort.
+Release	Create Release	2026-11-09T15:11:46.7906820Z 
+Release	Create Release	2026-11-09T15:11:46.7907207Z Co-authored-by: Cursor <cursoragent@cursor.com>
+Release	Create Release	2026-11-09T15:11:46.7908546Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7911026Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: feat(catalog): resolve recorded consumer package views
+Release	Create Release	2026-11-09T15:11:46.7912146Z 
+Release	Create Release	2026-11-09T15:11:46.7912761Z Preserve the default lookup ABI and select only validated recorded views
+Release	Create Release	2026-11-09T15:11:46.7913929Z for named composition consumers. Retain missing-view and tampering refusals.
+Release	Create Release	2026-11-09T15:11:46.7915606Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is minor
+Release	Create Release	2026-11-09T15:11:46.7917481Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: refactor(catalog): separate recorded view selection
+Release	Create Release	2026-11-09T15:11:46.7918549Z 
+Release	Create Release	2026-11-09T15:11:46.7919078Z Keep the validated snapshot view separate from live catalog lookup.
+Release	Create Release	2026-11-09T15:11:46.7920610Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7922228Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: feat(catalog): resolve recorded consumer package views
+Release	Create Release	2026-11-09T15:11:46.7923032Z 
+Release	Create Release	2026-11-09T15:11:46.7923581Z Preserve the default package lookup ABI and require a validated recorded
+Release	Create Release	2026-11-09T15:11:46.7924474Z consumer view when composition selects a specific host.
+Release	Create Release	2026-11-09T15:11:46.7925769Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is minor
+Release	Create Release	2026-11-09T15:11:46.7927299Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: feat(ci): build and test shared unit stages
+Release	Create Release	2026-11-09T15:11:46.7928775Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is minor
+Release	Create Release	2026-11-09T15:11:46.7930929Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: ci: probe hosted workflow self references
+Release	Create Release	2026-11-09T15:11:46.7932130Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7933368Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(ci): merge story 2.8 review fixes into main
+Release	Create Release	2026-11-09T15:11:46.7933860Z 
+Release	Create Release	2026-11-09T15:11:46.7934476Z Merge fix/ci-v2-review-fixes-bde7fd4f (194e87da): interrupt the tool on a
+Release	Create Release	2026-11-09T15:11:46.7935211Z helper timeout so it withdraws before stopping, re-read the receipt before
+Release	Create Release	2026-11-09T15:11:46.7935953Z recording not-allocated, record tool-unavailable cleanup when the tool
+Release	Create Release	2026-11-09T15:11:46.7936671Z cannot be verified, bound the post-kill down wait, redact camelCase secret
+Release	Create Release	2026-11-09T15:11:46.7937401Z keys and harden the related tests. Main's current validator is kept as is.
+Release	Create Release	2026-11-09T15:11:46.7937759Z 
+Release	Create Release	2026-11-09T15:11:46.7938073Z Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Release	Create Release	2026-11-09T15:11:46.7938998Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T15:11:46.7940515Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: feat(ci): define shared configuration contract
+Release	Create Release	2026-11-09T15:11:46.7942125Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is minor
+Release	Create Release	2026-11-09T15:11:46.7943903Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(ci): interrupt the tool on timeout and close finalizer gaps
+Release	Create Release	2026-11-09T15:11:46.7944766Z 
+Release	Create Release	2026-11-09T15:11:46.7945245Z The real tool stops cooperatively only on SIGINT, so the helper timeout
+Release	Create Release	2026-11-09T15:11:46.7946225Z now interrupts the tool first and kills it after the stop allowance,
+Release	Create Release	2026-11-09T15:11:46.7947170Z keeping the timeout classification and every budget constant. The
+Release	Create Release	2026-11-09T15:11:46.7948277Z finalizer re-reads the receipt after stopping a muxer-orphaned tool and
+Release	Create Release	2026-11-09T15:11:46.7949505Z takes the exact down when one appeared. A missing or unexecutable tool
+Release	Create Release	2026-11-09T15:11:46.7950690Z at finalization is recorded as unverified cleanup and still retains
+Release	Create Release	2026-11-09T15:11:46.7951835Z declared diagnostics. A timed-out down no longer waits on a descendant
+Release	Create Release	2026-11-09T15:11:46.7952804Z outside its process group, and camel-case secret keys are redacted.
+Release	Create Release	2026-11-09T15:11:46.7953321Z 
+Release	Create Release	2026-11-09T15:11:46.7953800Z The tests now model a tool that dies on SIGTERM. They add a timeout run
+Release	Create Release	2026-11-09T15:11:46.7954720Z with a muxer, tool and tagged AppHost, an orphaned-tool finalizer run,
+Release	Create Release	2026-11-09T15:11:46.7955888Z an owned AppHost descendant, a failed final cleanup record, a detached
+Release	Create Release	2026-11-09T15:11:46.7956893Z down descendant, the exact derived timeout and budget refusal text. The
+Release	Create Release	2026-11-09T15:11:46.7957884Z validator checks that the job's first step records its start, and the
+Release	Create Release	2026-11-09T15:11:46.7958669Z documentation is corrected.
+Release	Create Release	2026-11-09T15:11:46.7959007Z 
+Release	Create Release	2026-11-09T15:11:46.7959384Z Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Release	Create Release	2026-11-09T15:11:46.7961025Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T15:11:46.7962674Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: ci: add Builds quality checks
+Release	Create Release	2026-11-09T15:11:46.7964171Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T15:11:46.7965793Z [3:11:46 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analysis of 14 commits complete: minor release
+Release	Create Release	2026-11-09T15:11:46.7967392Z [3:11:46 PM] [semantic-release] › ✔  Completed step "analyzeCommits" of plugin "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T15:11:46.7968837Z [3:11:46 PM] [semantic-release] › ℹ  Start step "analyzeCommits" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:46.7970274Z [3:11:46 PM] [semantic-release] › ✔  Completed step "analyzeCommits" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:46.8057127Z [3:11:46 PM] [semantic-release] › ℹ  The next release version is 4.46.0
+Release	Create Release	2026-11-09T15:11:46.8072539Z [3:11:46 PM] [semantic-release] › ℹ  Start step "verifyRelease" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:11:46.8074286Z [3:11:46 PM] [semantic-release] [@semantic-release/exec] › ℹ  Call script pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version 4.46.0
+Release	Create Release	2026-11-09T15:15:30.9296673Z Packing Hexalith.Builds.Module.Cli at 4.46.0 in Release configuration.
+Release	Create Release	2026-11-09T15:15:37.1172605Z Packing Hexalith.Builds.Evidence.Cli at 4.46.0 in Release configuration.
+Release	Create Release	2026-11-09T15:15:44.1498103Z Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.46.0.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/platform-loader
+Release	Create Release	2026-11-09T15:15:44.1547786Z   Determining projects to restore...
+Release	Create Release	2026-11-09T15:15:44.1553818Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 2.93 sec).
+Release	Create Release	2026-11-09T15:15:44.1561020Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.93 sec).
+Release	Create Release	2026-11-09T15:15:44.1563711Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 2.93 sec).
+Release	Create Release	2026-11-09T15:15:44.1579840Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 3 ms).
+Release	Create Release	2026-11-09T15:15:44.1582570Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 222 ms).
+Release	Create Release	2026-11-09T15:15:44.1585161Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 3 ms).
+Release	Create Release	2026-11-09T15:15:44.1587325Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 4 ms).
+Release	Create Release	2026-11-09T15:15:44.1589507Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 1.56 sec).
+Release	Create Release	2026-11-09T15:15:44.1592623Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 1.21 sec).
+Release	Create Release	2026-11-09T15:15:44.1594830Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 6 ms).
+Release	Create Release	2026-11-09T15:15:44.1597159Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T15:15:44.1599432Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 26 ms).
+Release	Create Release	2026-11-09T15:15:44.1602498Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 12 ms).
+Release	Create Release	2026-11-09T15:15:44.1604860Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 863 ms).
+Release	Create Release	2026-11-09T15:15:44.1607261Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 5.71 sec).
+Release	Create Release	2026-11-09T15:15:44.1609563Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 2.74 sec).
+Release	Create Release	2026-11-09T15:15:44.1612310Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:15:44.1614850Z   P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+Release	Create Release	2026-11-09T15:15:44.1616991Z   P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+Release	Create Release	2026-11-09T15:15:44.1619570Z   Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+Release	Create Release	2026-11-09T15:15:44.1622356Z   P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+Release	Create Release	2026-11-09T15:15:44.1624894Z   Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+Release	Create Release	2026-11-09T15:15:44.1627217Z   P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+Release	Create Release	2026-11-09T15:15:44.1629305Z   P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+Release	Create Release	2026-11-09T15:15:44.1631285Z   P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+Release	Create Release	2026-11-09T15:15:44.1633424Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T15:15:44.1635839Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1638422Z   P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+Release	Create Release	2026-11-09T15:15:44.1641008Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1643335Z   Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+Release	Create Release	2026-11-09T15:15:44.1646177Z   Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+Release	Create Release	2026-11-09T15:15:44.1649077Z   Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+Release	Create Release	2026-11-09T15:15:44.1652020Z   Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+Release	Create Release	2026-11-09T15:15:44.1653257Z 
+Release	Create Release	2026-11-09T15:15:44.1653668Z Build succeeded.
+Release	Create Release	2026-11-09T15:15:44.1654250Z     0 Warning(s)
+Release	Create Release	2026-11-09T15:15:44.1654880Z     0 Error(s)
+Release	Create Release	2026-11-09T15:15:44.1655279Z 
+Release	Create Release	2026-11-09T15:15:44.1655699Z Time Elapsed 00:03:23.66
+Release	Create Release	2026-11-09T15:15:44.1657300Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:15:44.1659609Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T15:15:44.1662031Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1664442Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1666496Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T15:15:44.1668830Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/Hexalith.Builds.Module.Cli.4.46.0.nupkg'.
+Release	Create Release	2026-11-09T15:15:44.1671131Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/Hexalith.Builds.Module.Cli.4.46.0.snupkg'.
+Release	Create Release	2026-11-09T15:15:44.1673477Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:15:44.1675724Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T15:15:44.1678174Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1680868Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T15:15:44.1683128Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T15:15:44.1685239Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/Hexalith.Builds.Evidence.Cli.4.46.0.nupkg'.
+Release	Create Release	2026-11-09T15:15:44.1687718Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/Hexalith.Builds.Evidence.Cli.4.46.0.snupkg'.
+Release	Create Release	2026-11-09T15:15:45.4446953Z Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:15:46.4131888Z Tool 'hexalith.builds.module.cli' (version '4.46.0') was restored. Available commands: hexalith-module
+Release	Create Release	2026-11-09T15:15:46.4133496Z Tool 'hexalith.builds.evidence.cli' (version '4.46.0') was restored. Available commands: hexalith-evidence
+Release	Create Release	2026-11-09T15:15:46.4134631Z 
+Release	Create Release	2026-11-09T15:15:46.4135037Z Restore was successful.
+Release	Create Release	2026-11-09T15:17:41.6642965Z   Determining projects to restore...
+Release	Create Release	2026-11-09T15:17:41.6644608Z   Restored /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 842 ms).
+Release	Create Release	2026-11-09T15:17:41.6647009Z   Restored /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 842 ms).
+Release	Create Release	2026-11-09T15:17:41.6656892Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:17:41.6659036Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T15:17:41.6661457Z   Hexalith.Builds.Module.Cli -> /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T15:17:41.6662658Z 
+Release	Create Release	2026-11-09T15:17:41.6662891Z Build succeeded.
+Release	Create Release	2026-11-09T15:17:41.6663349Z     0 Warning(s)
+Release	Create Release	2026-11-09T15:17:41.6663780Z     0 Error(s)
+Release	Create Release	2026-11-09T15:17:41.6664021Z 
+Release	Create Release	2026-11-09T15:17:41.6664287Z Time Elapsed 00:01:33.81
+Release	Create Release	2026-11-09T15:17:45.1613217Z   Determining projects to restore...
+Release	Create Release	2026-11-09T15:17:45.1632942Z   Restored /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 274 ms).
+Release	Create Release	2026-11-09T15:17:45.1635052Z   1 of 2 projects are up-to-date for restore.
+Release	Create Release	2026-11-09T15:17:45.1636795Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T15:17:45.1639248Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T15:17:45.1642051Z   Hexalith.Builds.Evidence.Cli -> /tmp/hexalith-builds-g4-source-e96990deb83f4121a6f2e48ac89e99c3/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Debug/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T15:17:45.1662566Z 
+Release	Create Release	2026-11-09T15:17:45.1671643Z Build succeeded.
+Release	Create Release	2026-11-09T15:17:45.1692077Z     0 Warning(s)
+Release	Create Release	2026-11-09T15:17:45.1692741Z     0 Error(s)
+Release	Create Release	2026-11-09T15:17:45.1693044Z 
+Release	Create Release	2026-11-09T15:17:45.1693348Z Time Elapsed 00:00:03.21
+Release	Create Release	2026-11-09T15:18:27.9919057Z   Determining projects to restore...
+Release	Create Release	2026-11-09T15:18:27.9924537Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/PackagedSeedProbe/PackagedSeedProbe.csproj (in 801 ms).
+Release	Create Release	2026-11-09T15:18:27.9936489Z   PackagedSeedProbe -> /tmp/hexalith-g4-seed-probe-18fa965f9be34612bc0a17890f5a9164/PackagedSeedProbe.dll
+Release	Create Release	2026-11-09T15:18:27.9937579Z 
+Release	Create Release	2026-11-09T15:18:27.9938479Z Build succeeded.
+Release	Create Release	2026-11-09T15:18:27.9939396Z     0 Warning(s)
+Release	Create Release	2026-11-09T15:18:27.9940013Z     0 Error(s)
+Release	Create Release	2026-11-09T15:18:27.9940660Z 
+Release	Create Release	2026-11-09T15:18:27.9941103Z Time Elapsed 00:00:02.67
+Release	Create Release	2026-11-09T15:18:27.9944664Z {"EventId":35,"LogLevel":"Warning","Category":"Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager","Message":"No XML encryptor configured. Key {a4ff9b38-bbaf-4508-af2f-1bc57b1eef01} may be persisted to storage in unencrypted form.","State":{"KeyId":"a4ff9b38-bbaf-4508-af2f-1bc57b1eef01","{OriginalFormat}":"No XML encryptor configured. Key {KeyId:B} may be persisted to storage in unencrypted form."}}
+Release	Create Release	2026-11-09T15:18:27.9956203Z {"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+Release	Create Release	2026-11-09T15:18:27.9965537Z {"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+Release	Create Release	2026-11-09T15:18:27.9972467Z {"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+Release	Create Release	2026-11-09T15:18:27.9975548Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+Release	Create Release	2026-11-09T15:18:27.9977315Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+Release	Create Release	2026-11-09T15:18:27.9980953Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/hexalith-g4-seed-probe-18fa965f9be34612bc0a17890f5a9164/seed-178351edb29341f9a89100d70ec55e23/tools/net10.0/any/g4-host/bin/EventStoreHost","State":{"ContentRoot":"/tmp/hexalith-g4-seed-probe-18fa965f9be34612bc0a17890f5a9164/seed-178351edb29341f9a89100d70ec55e23/tools/net10.0/any/g4-host/bin/EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+Release	Create Release	2026-11-09T15:18:27.9994222Z {"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+Release	Create Release	2026-11-09T15:18:28.0005079Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-missing","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-missing","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0011590Z {"EventId":5501,"LogLevel":"Warning","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme=EventStoreSidecarChannel, Reason=channel-token-missing, StatusCode=401, Path=/projections/changed, CorrelationId=bff01ef93f4016628d3887a94cb4cd13","State":{"Message":"CorrelationId=bff01ef93f4016628d3887a94cb4cd13,Path=/projections/changed,StatusCode=401,Reason=channel-token-missing,Scheme=EventStoreSidecarChannel,{OriginalFormat}=Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}","CorrelationId":"bff01ef93f4016628d3887a94cb4cd13","Path":"/projections/changed","StatusCode":401,"Reason":"channel-token-missing","Scheme":"EventStoreSidecarChannel","{OriginalFormat}":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}"}}
+Release	Create Release	2026-11-09T15:18:28.0017117Z {"EventId":12,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"AuthenticationScheme: EventStoreSidecarChannel was challenged.","State":{"AuthenticationScheme":"EventStoreSidecarChannel","{OriginalFormat}":"AuthenticationScheme: {AuthenticationScheme} was challenged."}}
+Release	Create Release	2026-11-09T15:18:28.0020629Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-invalid","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-invalid","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0024272Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-invalid","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-invalid","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0030858Z {"EventId":5501,"LogLevel":"Warning","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme=EventStoreSidecarChannel, Reason=channel-token-invalid, StatusCode=401, Path=/projections/changed, CorrelationId=0744a8f0c9ee3bfca4b05b16296affdc","State":{"Message":"CorrelationId=0744a8f0c9ee3bfca4b05b16296affdc,Path=/projections/changed,StatusCode=401,Reason=channel-token-invalid,Scheme=EventStoreSidecarChannel,{OriginalFormat}=Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}","CorrelationId":"0744a8f0c9ee3bfca4b05b16296affdc","Path":"/projections/changed","StatusCode":401,"Reason":"channel-token-invalid","Scheme":"EventStoreSidecarChannel","{OriginalFormat}":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}"}}
+Release	Create Release	2026-11-09T15:18:28.0036347Z {"EventId":12,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"AuthenticationScheme: EventStoreSidecarChannel was challenged.","State":{"AuthenticationScheme":"EventStoreSidecarChannel","{OriginalFormat}":"AuthenticationScheme: {AuthenticationScheme} was challenged."}}
+Release	Create Release	2026-11-09T15:18:28.0039718Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-missing","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-missing","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0046235Z {"EventId":5501,"LogLevel":"Warning","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme=EventStoreSidecarChannel, Reason=channel-token-missing, StatusCode=401, Path=/dapr/subscribe, CorrelationId=b9dd724df15327887054a6e7a4e1141d","State":{"Message":"CorrelationId=b9dd724df15327887054a6e7a4e1141d,Path=/dapr/subscribe,StatusCode=401,Reason=channel-token-missing,Scheme=EventStoreSidecarChannel,{OriginalFormat}=Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}","CorrelationId":"b9dd724df15327887054a6e7a4e1141d","Path":"/dapr/subscribe","StatusCode":401,"Reason":"channel-token-missing","Scheme":"EventStoreSidecarChannel","{OriginalFormat}":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}"}}
+Release	Create Release	2026-11-09T15:18:28.0052037Z {"EventId":12,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"AuthenticationScheme: EventStoreSidecarChannel was challenged.","State":{"AuthenticationScheme":"EventStoreSidecarChannel","{OriginalFormat}":"AuthenticationScheme: {AuthenticationScheme} was challenged."}}
+Release	Create Release	2026-11-09T15:18:28.0054097Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+Release	Create Release	2026-11-09T15:18:28.0060028Z {"EventId":7105,"LogLevel":"Warning","Category":"Hexalith.EventStore.Server.Configuration.FoldedSnapshotQualificationHostedService","Message":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","State":{"Message":"{OriginalFormat}=Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent","{OriginalFormat}":"Folded snapshot qualification is not registered on the actor host; automatic snapshots are skipped and manual snapshot creation is unsupported. Enroll reviewed profiles on both hosts. Legacy history-bearing snapshots require full event replay. FailureClass=SnapshotCaptureUnsupported, Stage=FoldedSnapshotQualificationAbsent"}}
+Release	Create Release	2026-11-09T15:18:28.0067437Z {"EventId":1120,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ProjectionDiscoveryHostedService","Message":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","State":{"Message":"{OriginalFormat}=Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime.","{OriginalFormat}":"Projection discovery: no domain service registrations found in EventStore:DomainServices:Registrations. Projections will activate on first domain service resolution at runtime."}}
+Release	Create Release	2026-11-09T15:18:28.0072725Z {"EventId":1200,"LogLevel":"Information","Category":"Hexalith.EventStore.Server.Projections.ActiveRebuildIndexCleanupService","Message":"Active-rebuild-index cleanup service started: CadenceSeconds=60, Stage=ActiveRebuildIndexCleanupServiceStarted","State":{"Message":"CadenceSeconds=60,{OriginalFormat}=Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted","CadenceSeconds":60,"{OriginalFormat}":"Active-rebuild-index cleanup service started: CadenceSeconds={CadenceSeconds}, Stage=ActiveRebuildIndexCleanupServiceStarted"}}
+Release	Create Release	2026-11-09T15:18:28.0086742Z {"EventId":0,"LogLevel":"Warning","Category":"Hexalith.EventStore.Configuration.DaprRateLimitConfigSync","Message":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values.","Exception":"Dapr.DaprException: GetConfiguration operation failed: the Dapr endpoint indicated a failure. See InnerException for details.\n ---\u003E Grpc.Core.RpcException: Status(StatusCode=\u0022Unavailable\u0022, Detail=\u0022Error connecting to subchannel.\u0022, DebugException=\u0022System.Net.Sockets.SocketException: Connection refused\u0022)\n ---\u003E System.Net.Sockets.SocketException (111): Connection refused\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)\n   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\n   at Grpc.Net.Client.Balancer.Internal.SocketConnectivitySubchannelTransport.TryConnectAsync(ConnectContext context, Int32 attempt)\n   --- End of inner exception stack trace ---\n   at Grpc.Net.Client.Balancer.Internal.ConnectionManager.PickAsync(PickContext context, Boolean waitForReady, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Balancer.Internal.BalancerHttpHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)\n   at Grpc.Net.Client.Internal.GrpcCall\u00602.RunCall(HttpRequestMessage request, Nullable\u00601 timeout)\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   --- End of inner exception stack trace ---\n   at Dapr.Client.DaprClientGrpc.GetConfiguration(String storeName, IReadOnlyList\u00601 keys, IReadOnlyDictionary\u00602 metadata, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.FetchConfigurationAsync(DaprClient daprClient, String[] keys, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.LoadTenantIdsAsync(DaprClient daprClient, CancellationToken cancellationToken)\n   at Hexalith.EventStore.Configuration.DaprRateLimitConfigSync.SyncTenantOverridesAsync(DaprClient daprClient, CancellationToken cancellationToken)","State":{"{OriginalFormat}":"DAPR config store unavailable for rate limit sync. Falling back to appsettings.json values."}}
+Release	Create Release	2026-11-09T15:18:28.0096449Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+Release	Create Release	2026-11-09T15:18:28.0098178Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+Release	Create Release	2026-11-09T15:18:28.0101173Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/hexalith-g4-seed-probe-18fa965f9be34612bc0a17890f5a9164/seed-178351edb29341f9a89100d70ec55e23/tools/net10.0/any/g4-host/bin/EventStoreHost","State":{"ContentRoot":"/tmp/hexalith-g4-seed-probe-18fa965f9be34612bc0a17890f5a9164/seed-178351edb29341f9a89100d70ec55e23/tools/net10.0/any/g4-host/bin/EventStoreHost","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+Release	Create Release	2026-11-09T15:18:28.0104947Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-missing","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-missing","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0111758Z {"EventId":5501,"LogLevel":"Warning","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme=EventStoreSidecarChannel, Reason=channel-token-missing, StatusCode=401, Path=/projections/changed, CorrelationId=99801d09ccda2dbd56601ae1dbbedbfa","State":{"Message":"CorrelationId=99801d09ccda2dbd56601ae1dbbedbfa,Path=/projections/changed,StatusCode=401,Reason=channel-token-missing,Scheme=EventStoreSidecarChannel,{OriginalFormat}=Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}","CorrelationId":"99801d09ccda2dbd56601ae1dbbedbfa","Path":"/projections/changed","StatusCode":401,"Reason":"channel-token-missing","Scheme":"EventStoreSidecarChannel","{OriginalFormat}":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}"}}
+Release	Create Release	2026-11-09T15:18:28.0117462Z {"EventId":12,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"AuthenticationScheme: EventStoreSidecarChannel was challenged.","State":{"AuthenticationScheme":"EventStoreSidecarChannel","{OriginalFormat}":"AuthenticationScheme: {AuthenticationScheme} was challenged."}}
+Release	Create Release	2026-11-09T15:18:28.0120970Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-invalid","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-invalid","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0124688Z {"EventId":7,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"EventStoreSidecarChannel was not authenticated. Failure message: channel-token-invalid","State":{"AuthenticationScheme":"EventStoreSidecarChannel","FailureMessage":"channel-token-invalid","{OriginalFormat}":"{AuthenticationScheme} was not authenticated. Failure message: {FailureMessage}"}}
+Release	Create Release	2026-11-09T15:18:28.0131406Z {"EventId":5501,"LogLevel":"Warning","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme=EventStoreSidecarChannel, Reason=channel-token-invalid, StatusCode=401, Path=/projections/changed, CorrelationId=5e6dd7cd8fdb9e1efa9223589bc4eedd","State":{"Message":"CorrelationId=5e6dd7cd8fdb9e1efa9223589bc4eedd,Path=/projections/changed,StatusCode=401,Reason=channel-token-invalid,Scheme=EventStoreSidecarChannel,{OriginalFormat}=Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}","CorrelationId":"5e6dd7cd8fdb9e1efa9223589bc4eedd","Path":"/projections/changed","StatusCode":401,"Reason":"channel-token-invalid","Scheme":"EventStoreSidecarChannel","{OriginalFormat}":"Internal credential denied: SecurityEvent=InternalAuthenticationDenied, Scheme={Scheme}, Reason={Reason}, StatusCode={StatusCode}, Path={Path}, CorrelationId={CorrelationId}"}}
+Release	Create Release	2026-11-09T15:18:28.0137125Z {"EventId":12,"LogLevel":"Information","Category":"Hexalith.EventStore.ServiceDefaults.Authentication.DaprSidecarChannelAuthenticationHandler","Message":"AuthenticationScheme: EventStoreSidecarChannel was challenged.","State":{"AuthenticationScheme":"EventStoreSidecarChannel","{OriginalFormat}":"AuthenticationScheme: {AuthenticationScheme} was challenged."}}
+Release	Create Release	2026-11-09T15:18:28.0139230Z {"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+Release	Create Release	2026-11-09T15:18:28.0140437Z Packaged seed configured/declarative HTTP and receiver metadata checks passed.
+Release	Create Release	2026-11-09T15:18:54.3781916Z Packed G-4 tool contract qualification passed for version '4.46.0'; inventory recorded at '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.0/g4-tool-package-inventory.json'.
+Release	Create Release	2026-11-09T15:18:55.5932674Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/../artifacts/g4-tool-packages/4.46.0/g4-tool-qualification-evidence.zip
+Release	Create Release	2026-11-09T15:18:56.9196106Z [3:18:56 PM] [semantic-release] › ✔  Completed step "verifyRelease" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:18:56.9197411Z [3:18:56 PM] [semantic-release] › ℹ  Start step "generateNotes" of plugin "@semantic-release/release-notes-generator"
+Release	Create Release	2026-11-09T15:18:56.9601570Z [3:18:56 PM] [semantic-release] › ✔  Completed step "generateNotes" of plugin "@semantic-release/release-notes-generator"
+Release	Create Release	2026-11-09T15:18:56.9603307Z [3:18:56 PM] [semantic-release] › ℹ  Start step "generateNotes" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:18:56.9609891Z [3:18:56 PM] [semantic-release] › ✔  Completed step "generateNotes" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:18:56.9619624Z [3:18:56 PM] [semantic-release] › ℹ  Start step "prepare" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:18:56.9635918Z [3:18:56 PM] [semantic-release] [@semantic-release/exec] › ℹ  Call script pwsh -NoProfile -File ./Tools/prepare-g4-tool-release.ps1 -Version 4.46.0
+Release	Create Release	2026-11-09T15:18:57.7335889Z /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/../artifacts/g4-tool-packages/4.46.0/g4-tool-qualification-evidence.zip
+Release	Create Release	2026-11-09T15:18:59.0514511Z [3:18:59 PM] [semantic-release] › ✔  Completed step "prepare" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T15:19:02.1774655Z [3:19:02 PM] [semantic-release] › ✘  An error occurred while running semantic-release: ExecaError: Command failed with exit code 1: git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0
+Release	Create Release	2026-11-09T15:19:02.1776206Z 
+Release	Create Release	2026-11-09T15:19:02.1776690Z remote: Internal Server Error        
+Release	Create Release	2026-11-09T15:19:02.1777508Z remote: Request ID 988A:63830:10E6:2A22:6AF1E465        
+Release	Create Release	2026-11-09T15:19:02.1778137Z remote: Time 2026-11-09T15:19:02Z
+Release	Create Release	2026-11-09T15:19:02.1779247Z To https://github.com/Hexalith/Hexalith.Builds.git
+Release	Create Release	2026-11-09T15:19:02.1780866Z  ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)
+Release	Create Release	2026-11-09T15:19:02.1782293Z error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'
+Release	Create Release	2026-11-09T15:19:02.1783488Z     at getFinalError (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/execa/lib/return/final-error.js:6:9)
+Release	Create Release	2026-11-09T15:19:02.1784723Z     at makeError (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/execa/lib/return/result.js:108:16)
+Release	Create Release	2026-11-09T15:19:02.1785721Z     at getAsyncResult (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/execa/lib/methods/main-async.js:168:4)
+Release	Create Release	2026-11-09T15:19:02.1786750Z     at handlePromise (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/execa/lib/methods/main-async.js:151:17)
+Release	Create Release	2026-11-09T15:19:02.1787824Z     at async pushNotes (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/lib/git.js:252:3)
+Release	Create Release	2026-11-09T15:19:02.1788765Z     at async run (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/index.js:211:5)
+Release	Create Release	2026-11-09T15:19:02.1789821Z     at async Module.default (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/index.js:278:22)
+Release	Create Release	2026-11-09T15:19:02.1791192Z     at async default (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/cli.js:55:5) {
+Release	Create Release	2026-11-09T15:19:02.1792422Z   shortMessage: "Command failed with exit code 1: git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0",
+Release	Create Release	2026-11-09T15:19:02.1793628Z   command: 'git push -- https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git refs/notes/semantic-release-v4.46.0',
+Release	Create Release	2026-11-09T15:19:02.1794713Z   escapedCommand: "git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0",
+Release	Create Release	2026-11-09T15:19:02.1795563Z   cwd: '/home/runner/work/Hexalith.Builds/Hexalith.Builds',
+Release	Create Release	2026-11-09T15:19:02.1796010Z   durationMs: 1409.278112,
+Release	Create Release	2026-11-09T15:19:02.1796559Z   failed: true,
+Release	Create Release	2026-11-09T15:19:02.1796968Z   timedOut: false,
+Release	Create Release	2026-11-09T15:19:02.1797342Z   isCanceled: false,
+Release	Create Release	2026-11-09T15:19:02.1797724Z   isGracefullyCanceled: false,
+Release	Create Release	2026-11-09T15:19:02.1798217Z   isTerminated: false,
+Release	Create Release	2026-11-09T15:19:02.1798697Z   isMaxBuffer: false,
+Release	Create Release	2026-11-09T15:19:02.1799599Z   isForcefullyTerminated: false,
+Release	Create Release	2026-11-09T15:19:02.1800026Z   exitCode: 1,
+Release	Create Release	2026-11-09T15:19:02.1804231Z   stdout: '',
+Release	Create Release	2026-11-09T15:19:02.1804833Z   stderr: 'remote: Internal Server Error        \n' +
+Release	Create Release	2026-11-09T15:19:02.1805483Z     'remote: Request ID 988A:63830:10E6:2A22:6AF1E465        \n' +
+Release	Create Release	2026-11-09T15:19:02.1806084Z     'remote: Time 2026-11-09T15:19:02Z\n' +
+Release	Create Release	2026-11-09T15:19:02.1806717Z     'To https://github.com/Hexalith/Hexalith.Builds.git\n' +
+Release	Create Release	2026-11-09T15:19:02.1807685Z     ' ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)\n' +
+Release	Create Release	2026-11-09T15:19:02.1808981Z     "error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'",
+Release	Create Release	2026-11-09T15:19:02.1809659Z   stdio: [
+Release	Create Release	2026-11-09T15:19:02.1810021Z     undefined,
+Release	Create Release	2026-11-09T15:19:02.1810678Z     '',
+Release	Create Release	2026-11-09T15:19:02.1811285Z     'remote: Internal Server Error        \n' +
+Release	Create Release	2026-11-09T15:19:02.1811950Z       'remote: Request ID 988A:63830:10E6:2A22:6AF1E465        \n' +
+Release	Create Release	2026-11-09T15:19:02.1812625Z       'remote: Time 2026-11-09T15:19:02Z\n' +
+Release	Create Release	2026-11-09T15:19:02.1813291Z       'To https://github.com/Hexalith/Hexalith.Builds.git\n' +
+Release	Create Release	2026-11-09T15:19:02.1814331Z       ' ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)\n' +
+Release	Create Release	2026-11-09T15:19:02.1815438Z       "error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'"
+Release	Create Release	2026-11-09T15:19:02.1816119Z   ],
+Release	Create Release	2026-11-09T15:19:02.1816587Z   ipcOutput: [],
+Release	Create Release	2026-11-09T15:19:02.1817097Z   pipedFrom: []
+Release	Create Release	2026-11-09T15:19:02.1817513Z }
+Release	Create Release	2026-11-09T15:19:02.1818614Z ExecaError: Command failed with exit code 1: git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0
+Release	Create Release	2026-11-09T15:19:02.1819408Z 
+Release	Create Release	2026-11-09T15:19:02.1819740Z remote: Internal Server Error        
+Release	Create Release	2026-11-09T15:19:02.1820502Z remote: Request ID 988A:63830:10E6:2A22:6AF1E465        
+Release	Create Release	2026-11-09T15:19:02.1821142Z remote: Time 2026-11-09T15:19:02Z
+Release	Create Release	2026-11-09T15:19:02.1821794Z To https://github.com/Hexalith/Hexalith.Builds.git
+Release	Create Release	2026-11-09T15:19:02.1822752Z  ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)
+Release	Create Release	2026-11-09T15:19:02.1823786Z error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'
+Release	Create Release	2026-11-09T15:19:02.1825260Z     at getFinalError [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4mexeca[24m/lib/return/final-error.js:6:9[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1826806Z     at makeError [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4mexeca[24m/lib/return/result.js:108:16[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1828428Z     at getAsyncResult [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4mexeca[24m/lib/methods/main-async.js:168:4[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1830008Z     at handlePromise [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4mexeca[24m/lib/methods/main-async.js:151:17[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1831837Z     at async pushNotes [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/lib/git.js:252:3[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1833393Z     at async run [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/index.js:211:5[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1834944Z     at async Module.default [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/index.js:278:22[90m)[39m
+Release	Create Release	2026-11-09T15:19:02.1836459Z     at async default [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/cli.js:55:5[90m)[39m {
+Release	Create Release	2026-11-09T15:19:02.1838412Z   shortMessage: [32m"Command failed with exit code 1: git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0"[39m,
+Release	Create Release	2026-11-09T15:19:02.1840226Z   command: [32m'git push -- https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git refs/notes/semantic-release-v4.46.0'[39m,
+Release	Create Release	2026-11-09T15:19:02.1842185Z   escapedCommand: [32m"git push -- 'https://x-access-token:[secure]@github.com/Hexalith/Hexalith.Builds.git' refs/notes/semantic-release-v4.46.0"[39m,
+Release	Create Release	2026-11-09T15:19:02.1843183Z   cwd: [32m'/home/runner/work/Hexalith.Builds/Hexalith.Builds'[39m,
+Release	Create Release	2026-11-09T15:19:02.1843854Z   durationMs: [33m1409.278112[39m,
+Release	Create Release	2026-11-09T15:19:02.1844376Z   failed: [33mtrue[39m,
+Release	Create Release	2026-11-09T15:19:02.1844887Z   timedOut: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1845442Z   isCanceled: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1845976Z   isGracefullyCanceled: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1846637Z   isTerminated: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1847393Z   isMaxBuffer: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1848016Z   isForcefullyTerminated: [33mfalse[39m,
+Release	Create Release	2026-11-09T15:19:02.1848650Z   exitCode: [33m1[39m,
+Release	Create Release	2026-11-09T15:19:02.1849281Z   stdout: [32m''[39m,
+Release	Create Release	2026-11-09T15:19:02.1849967Z   stderr: [32m'remote: Internal Server Error        \n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1850936Z     [32m'remote: Request ID 988A:63830:10E6:2A22:6AF1E465        \n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1851634Z     [32m'remote: Time 2026-11-09T15:19:02Z\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1852260Z     [32m'To https://github.com/Hexalith/Hexalith.Builds.git\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1853243Z     [32m' ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1854294Z     [32m"error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'"[39m,
+Release	Create Release	2026-11-09T15:19:02.1854833Z   stdio: [
+Release	Create Release	2026-11-09T15:19:02.1855221Z     [90mundefined[39m,
+Release	Create Release	2026-11-09T15:19:02.1855646Z     [32m''[39m,
+Release	Create Release	2026-11-09T15:19:02.1856109Z     [32m'remote: Internal Server Error        \n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1856791Z       [32m'remote: Request ID 988A:63830:10E6:2A22:6AF1E465        \n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1857461Z       [32m'remote: Time 2026-11-09T15:19:02Z\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1858087Z       [32m'To https://github.com/Hexalith/Hexalith.Builds.git\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1859060Z       [32m' ! [remote rejected]   refs/notes/semantic-release-v4.46.0 -> refs/notes/semantic-release-v4.46.0 (Internal Server Error)\n'[39m +
+Release	Create Release	2026-11-09T15:19:02.1860107Z       [32m"error: failed to push some refs to 'https://github.com/Hexalith/Hexalith.Builds.git'"[39m
+Release	Create Release	2026-11-09T15:19:02.1860912Z   ],
+Release	Create Release	2026-11-09T15:19:02.1861259Z   ipcOutput: [],
+Release	Create Release	2026-11-09T15:19:02.1861639Z   pipedFrom: []
+Release	Create Release	2026-11-09T15:19:02.2001594Z }
+Release	Create Release	2026-11-09T15:19:02.2012991Z ##[error]Process completed with exit code 1.
+Release	Create Release	2026-11-09T15:19:02.2021531Z ##[end-action id=create_release.__run_3;outcome=failure;conclusion=failure;duration_ms=439248]

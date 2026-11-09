@@ -97,4 +97,8 @@
     <PackageDownload Include="Hexalith.Parties.Contracts" Version="[3.0.0];[3.1.0]" />
     <PackageDownload Include="Hexalith.Parties.EventStoreExtensions" Version="[3.0.0];[3.1.0]" />
   </ItemGroup>
+  <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK;HEXALITH_PLATFORM_CANONICAL_SCOPES;HEXALITH_PLATFORM_CATALOG_SDK;HEXALITH_PLATFORM_V2_CATALOG</DefineConstants>
+  </PropertyGroup>
 </Project>
