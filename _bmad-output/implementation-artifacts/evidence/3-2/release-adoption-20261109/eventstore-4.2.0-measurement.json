@@ -1,0 +1,1950 @@
+{
+  "schema": "story32-released-sdk-measurement.v1",
+  "recordedUtc": "2026-11-09T13:25:24.907850+00:00",
+  "repository": "Hexalith/Hexalith.EventStore",
+  "source": "aa16227bd07f0564a3026d619a5abd973e02656f",
+  "version": "4.2.0",
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.2.0",
+  "releasePublishedUtc": "2026-11-09T13:19:17Z",
+  "work": "/tmp/story32-released-sdk-qsjsi1y0",
+  "packages": [
+    {
+      "id": "Hexalith.EventStore.Admin.Abstractions",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.admin.abstractions/4.2.0/hexalith.eventstore.admin.abstractions.4.2.0.nupkg",
+      "archiveSha256": "2d991e39e24f3f4c25033f5d6addf4ea26b0fc539c532464e87650459cd808ac",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Admin.Abstractions.4.2.0\nContent hash: JSo/0p9q6SIhOuh51uCKW/Jon7c5VaHy5WjXwe1TEptJ7MlJUTe2nHtNzC5lPDUsKr5q/JiuoYgU8jJsQvk2KA==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Admin.Abstractions.dll": "9b1edf00cc5e31ace475c851587876a4dc0321fab9d1e2af0aa771b114cfb584"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Contracts",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.contracts/4.2.0/hexalith.eventstore.contracts.4.2.0.nupkg",
+      "archiveSha256": "e1a3e80d0c2c999b93d4e27d5b0016ae8048eb1425481e6a1c732bad710b8e6d",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Contracts.4.2.0\nContent hash: byejPd+fssR5SJndvJiTVEg2nm5FzSFyyg2daM325G7/g+MMyggxkvsEqkEzmfuuOT7VqEMCBBoODWuLYeZwdw==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Contracts.dll": "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.ServiceDefaults",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.servicedefaults/4.2.0/hexalith.eventstore.servicedefaults.4.2.0.nupkg",
+      "archiveSha256": "468d63c1672d36c7e2f84b0bebc499642aad5802a22b42e7f20cd80fff20d800",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.ServiceDefaults.4.2.0\nContent hash: In733wTqlkn8TgQfkRi6LHtyhkgNHJ9X39ptRiotIpcP2znW0OuQCcMAhmdlYRn9R2eLJYrL/X4QwnJxW3vqvg==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.ServiceDefaults.dll": "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Client",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.client/4.2.0/hexalith.eventstore.client.4.2.0.nupkg",
+      "archiveSha256": "1482d2b33007e3562783d4f293785ce9944089635bd29b0c12fa8f59eb6f34ba",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Client.4.2.0\nContent hash: f2kxYbtjp2piQjHrwAiqysleJs+D8KpeabR/xqkNKEHG/BWOUUxg/vQ7o9+EDkp5lJ83t1atvGWvsYUNynyIGg==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Client.dll": "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.DomainService",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.domainservice/4.2.0/hexalith.eventstore.domainservice.4.2.0.nupkg",
+      "archiveSha256": "0b891de762de9d4f6749da714c04fcb7952ba5535f6ea63e1110e073264e36ca",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.DomainService.4.2.0\nContent hash: 9Y3ECcUmJUDxx1Fgl2OvzQssVHAGFXzs5bLhnHKLEf9kpPFeyqhiTI+Z9n+AA2tG43bXgIksJWDoASwU0B4K+w==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.DomainService.dll": "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646"
+      },
+      "api": [
+        {
+          "type": "Hexalith.EventStore.DomainService.EventStoreExtensionApi",
+          "command": [
+            "dnx",
+            "dotnet-inspect",
+            "-y",
+            "--",
+            "member",
+            "Hexalith.EventStore.DomainService.EventStoreExtensionApi",
+            "--library",
+            "/tmp/story32-released-sdk-qsjsi1y0/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.dll",
+            "--json"
+          ],
+          "exitCode": 0,
+          "result": {
+            "namespace": "Hexalith.EventStore.DomainService",
+            "name": "EventStoreExtensionApi",
+            "metadata_name": "EventStoreExtensionApi",
+            "definition_name": {
+              "namespace": "Hexalith.EventStore.DomainService",
+              "segments": [
+                "EventStoreExtensionApi"
+              ]
+            },
+            "introduced_type_parameter_counts": [
+              0
+            ],
+            "kind": "class",
+            "attributes": [],
+            "has_union_attribute": false,
+            "layout": "Auto",
+            "layout_details": {
+              "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+              "type_token": 33554568,
+              "size": 0,
+              "packing_size": 0
+            },
+            "memory_safety": {
+              "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+              "rules": {
+                "kind": "available",
+                "state": 0,
+                "observations": []
+              }
+            },
+            "is_sealed": true,
+            "is_abstract": true,
+            "is_static": true,
+            "is_by_ref_like": false,
+            "is_read_only": false,
+            "base_type": "System.Object",
+            "interfaces": [],
+            "derived_types": [],
+            "type_parameters": [],
+            "members": [
+              {
+                "name": "IsSupported",
+                "kind": "method",
+                "attributes": [],
+                "signature": "bool IsSupported(int major)",
+                "digest": "45f70f26ca",
+                "canonical_signature": "M:Hexalith.EventStore.DomainService.EventStoreExtensionApi.IsSupported(int)",
+                "metadata_token": 100664664,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664664,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "method_token": 100664664,
+                  "attributes": "Public, Static, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "SupportedMajors",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyList<int> SupportedMajors { get; }",
+                "digest": "5015ecb9a6",
+                "canonical_signature": "P:Hexalith.EventStore.DomainService.EventStoreExtensionApi.SupportedMajors",
+                "index_parameter_count": 0,
+                "getter_token": 100664663,
+                "getter_has_method_body": true,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876274,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664663,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876274
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109266,
+                      "matched_name": "<SupportedMajors>k__BackingField",
+                      "is_static": true
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "method_token": 100664663,
+                    "attributes": "Public, Static, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "CurrentMajor",
+                "kind": "field",
+                "attributes": [],
+                "field_layout": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "declaring_type_token": 33554568,
+                  "field_token": 67109265
+                },
+                "return_type": "int",
+                "digest": "ee97b26735",
+                "canonical_signature": "F:Hexalith.EventStore.DomainService.EventStoreExtensionApi.CurrentMajor",
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": true,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 67109265,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 1,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              }
+            ],
+            "additional_source_files": [],
+            "is_partial_type": false,
+            "is_forwarded": false,
+            "full_name": "Hexalith.EventStore.DomainService.EventStoreExtensionApi",
+            "documentation": {
+              "samples": []
+            }
+          }
+        },
+        {
+          "type": "Hexalith.EventStore.DomainService.EventStoreExtensionAttribute",
+          "command": [
+            "dnx",
+            "dotnet-inspect",
+            "-y",
+            "--",
+            "member",
+            "Hexalith.EventStore.DomainService.EventStoreExtensionAttribute",
+            "--library",
+            "/tmp/story32-released-sdk-qsjsi1y0/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.dll",
+            "--json"
+          ],
+          "exitCode": 0,
+          "result": {
+            "namespace": "Hexalith.EventStore.DomainService",
+            "name": "EventStoreExtensionAttribute",
+            "metadata_name": "EventStoreExtensionAttribute",
+            "definition_name": {
+              "namespace": "Hexalith.EventStore.DomainService",
+              "segments": [
+                "EventStoreExtensionAttribute"
+              ]
+            },
+            "introduced_type_parameter_counts": [
+              0
+            ],
+            "kind": "class",
+            "attributes": [
+              "System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false)"
+            ],
+            "has_union_attribute": false,
+            "layout": "Auto",
+            "layout_details": {
+              "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+              "type_token": 33554569,
+              "size": 0,
+              "packing_size": 0
+            },
+            "memory_safety": {
+              "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+              "rules": {
+                "kind": "available",
+                "state": 0,
+                "observations": []
+              }
+            },
+            "is_sealed": true,
+            "is_abstract": false,
+            "is_static": false,
+            "is_by_ref_like": false,
+            "is_read_only": false,
+            "base_type": "System.Attribute",
+            "interfaces": [],
+            "derived_types": [],
+            "type_parameters": [],
+            "members": [
+              {
+                "name": ".ctor",
+                "kind": "constructor",
+                "attributes": [],
+                "signature": "void .ctor(string id, int major)",
+                "digest": "fcbe199de0",
+                "canonical_signature": "M:Hexalith.EventStore.DomainService.EventStoreExtensionAttribute.#ctor(string,int)",
+                "metadata_token": 100664666,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664666,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "method_token": 100664666,
+                  "attributes": "Public, HideBySig, SpecialName, RTSpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Id",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string Id { get; }",
+                "digest": "80467ebdb5",
+                "canonical_signature": "P:Hexalith.EventStore.DomainService.EventStoreExtensionAttribute.Id",
+                "index_parameter_count": 0,
+                "getter_token": 100664667,
+                "getter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876275,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664667,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876275
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109267,
+                      "matched_name": "<Id>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "method_token": 100664667,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Major",
+                "kind": "property",
+                "attributes": [],
+                "signature": "int Major { get; }",
+                "digest": "dc6861deb5",
+                "canonical_signature": "P:Hexalith.EventStore.DomainService.EventStoreExtensionAttribute.Major",
+                "index_parameter_count": 0,
+                "getter_token": 100664668,
+                "getter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876276,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664668,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876276
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109268,
+                      "matched_name": "<Major>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "6c6d0329-bf3b-468a-886e-7d9e7938d17a",
+                    "method_token": 100664668,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              }
+            ],
+            "additional_source_files": [],
+            "is_partial_type": false,
+            "is_forwarded": false,
+            "full_name": "Hexalith.EventStore.DomainService.EventStoreExtensionAttribute",
+            "documentation": {
+              "samples": []
+            }
+          }
+        }
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Server",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.server/4.2.0/hexalith.eventstore.server.4.2.0.nupkg",
+      "archiveSha256": "7ba25cc6a9517a63d8bf0bbf543458a6104e62bd8c29f0df8b3711e74c81c3a5",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Server.4.2.0\nContent hash: Fy470u3/LHJRheLlQ93NH/1SZMvYsCMosTMp1C+liwqMymFfn7+zcOxpSEXSHZt+TzGj2ORNFlwDpAlgj3Bv6Q==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Server.dll": "95038655c275192a4971ea8f74a1a3748be15793736ed5914813614b84cf6cf1"
+      },
+      "api": [
+        {
+          "type": "Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration",
+          "command": [
+            "dnx",
+            "dotnet-inspect",
+            "-y",
+            "--",
+            "member",
+            "Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration",
+            "--library",
+            "/tmp/story32-released-sdk-qsjsi1y0/Hexalith.EventStore.Server/Hexalith.EventStore.Server.dll",
+            "--json"
+          ],
+          "exitCode": 0,
+          "result": {
+            "namespace": "Hexalith.EventStore.Server.Extensions",
+            "name": "EventStoreExtensionDeclaration",
+            "metadata_name": "EventStoreExtensionDeclaration",
+            "definition_name": {
+              "namespace": "Hexalith.EventStore.Server.Extensions",
+              "segments": [
+                "EventStoreExtensionDeclaration"
+              ]
+            },
+            "introduced_type_parameter_counts": [
+              0
+            ],
+            "kind": "class",
+            "attributes": [],
+            "has_union_attribute": false,
+            "layout": "Auto",
+            "layout_details": {
+              "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+              "type_token": 33554884,
+              "size": 0,
+              "packing_size": 0
+            },
+            "memory_safety": {
+              "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+              "rules": {
+                "kind": "available",
+                "state": 0,
+                "observations": []
+              }
+            },
+            "is_sealed": true,
+            "is_abstract": false,
+            "is_static": false,
+            "is_by_ref_like": false,
+            "is_read_only": false,
+            "base_type": "System.Object",
+            "interfaces": [
+              "System.IEquatable<Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration>"
+            ],
+            "derived_types": [],
+            "type_parameters": [],
+            "members": [
+              {
+                "name": ".ctor",
+                "kind": "constructor",
+                "attributes": [],
+                "signature": "void .ctor(string PackageId, string ExtensionId, int ApiMajor)",
+                "digest": "fa59f5b801",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.#ctor(string,string,int)",
+                "metadata_token": 100669151,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669151,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669151,
+                  "attributes": "Public, HideBySig, SpecialName, RTSpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ToString",
+                "kind": "method",
+                "attributes": [],
+                "signature": "string ToString()",
+                "digest": "9bd9034984",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.ToString()",
+                "metadata_token": 100669161,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669161,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669161,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "op_Inequality",
+                "kind": "operator",
+                "attributes": [],
+                "signature": "bool op_Inequality(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration? left, Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration? right)",
+                "digest": "eed18b21db",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.op_Inequality(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration?,Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration?)",
+                "metadata_token": 100669163,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669163,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669163,
+                  "attributes": "Public, Static, HideBySig, SpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "op_Equality",
+                "kind": "operator",
+                "attributes": [],
+                "signature": "bool op_Equality(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration? left, Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration? right)",
+                "digest": "c9cdcee962",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.op_Equality(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration?,Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration?)",
+                "metadata_token": 100669164,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669164,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669164,
+                  "attributes": "Public, Static, HideBySig, SpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "GetHashCode",
+                "kind": "method",
+                "attributes": [],
+                "signature": "int GetHashCode()",
+                "digest": "0c107fb959",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.GetHashCode()",
+                "metadata_token": 100669165,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669165,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669165,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Equals",
+                "kind": "method",
+                "attributes": [],
+                "signature": "bool Equals(object? obj)",
+                "digest": "cbf2015395",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.Equals(object?)",
+                "metadata_token": 100669166,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669166,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669166,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Equals",
+                "kind": "method",
+                "attributes": [],
+                "signature": "bool Equals(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration? other)",
+                "digest": "fb466f35ed",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.Equals(Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration?)",
+                "metadata_token": 100669167,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669167,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669167,
+                  "attributes": "Public, Final, Virtual, HideBySig, NewSlot",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Deconstruct",
+                "kind": "method",
+                "attributes": [],
+                "signature": "void Deconstruct(out string PackageId, out string ExtensionId, out int ApiMajor)",
+                "digest": "b8d06c0503",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.Deconstruct(out string,out string,out int)",
+                "metadata_token": 100669170,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669170,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669170,
+                  "attributes": "Public, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "PackageId",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string PackageId { get; init; }",
+                "digest": "9ba814f4c1",
+                "canonical_signature": "P:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.PackageId",
+                "index_parameter_count": 0,
+                "getter_token": 100669153,
+                "setter_token": 100669154,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385877204,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669153,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877204
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669154,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877204
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67110748,
+                      "matched_name": "<PackageId>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669153,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669154,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ExtensionId",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string ExtensionId { get; init; }",
+                "digest": "83f6b2129e",
+                "canonical_signature": "P:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.ExtensionId",
+                "index_parameter_count": 0,
+                "getter_token": 100669155,
+                "setter_token": 100669156,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385877205,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669155,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877205
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669156,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877205
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67110749,
+                      "matched_name": "<ExtensionId>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669155,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669156,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ApiMajor",
+                "kind": "property",
+                "attributes": [],
+                "signature": "int ApiMajor { get; init; }",
+                "digest": "041ce409c8",
+                "canonical_signature": "P:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.ApiMajor",
+                "index_parameter_count": 0,
+                "getter_token": 100669157,
+                "setter_token": 100669158,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385877206,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669157,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877206
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669158,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877206
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67110750,
+                      "matched_name": "<ApiMajor>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669157,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669158,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ModuleId",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string? ModuleId { get; init; }",
+                "digest": "df0ac100ea",
+                "canonical_signature": "P:Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration.ModuleId",
+                "index_parameter_count": 0,
+                "getter_token": 100669159,
+                "setter_token": 100669160,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385877207,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669159,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877207
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100669160,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385877207
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67110751,
+                      "matched_name": "<ModuleId>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669159,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                    "method_token": 100669160,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              }
+            ],
+            "additional_source_files": [],
+            "is_partial_type": false,
+            "is_forwarded": false,
+            "full_name": "Hexalith.EventStore.Server.Extensions.EventStoreExtensionDeclaration",
+            "documentation": {
+              "samples": []
+            }
+          }
+        },
+        {
+          "type": "Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions",
+          "command": [
+            "dnx",
+            "dotnet-inspect",
+            "-y",
+            "--",
+            "member",
+            "Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions",
+            "--library",
+            "/tmp/story32-released-sdk-qsjsi1y0/Hexalith.EventStore.Server/Hexalith.EventStore.Server.dll",
+            "--json"
+          ],
+          "exitCode": 0,
+          "result": {
+            "namespace": "Hexalith.EventStore.Server.Extensions",
+            "name": "EventStoreExtensionServiceCollectionExtensions",
+            "metadata_name": "EventStoreExtensionServiceCollectionExtensions",
+            "definition_name": {
+              "namespace": "Hexalith.EventStore.Server.Extensions",
+              "segments": [
+                "EventStoreExtensionServiceCollectionExtensions"
+              ]
+            },
+            "introduced_type_parameter_counts": [
+              0
+            ],
+            "kind": "class",
+            "attributes": [],
+            "has_union_attribute": false,
+            "layout": "Auto",
+            "layout_details": {
+              "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+              "type_token": 33554887,
+              "size": 0,
+              "packing_size": 0
+            },
+            "memory_safety": {
+              "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+              "rules": {
+                "kind": "available",
+                "state": 0,
+                "observations": []
+              }
+            },
+            "is_sealed": true,
+            "is_abstract": true,
+            "is_static": true,
+            "is_by_ref_like": false,
+            "is_read_only": false,
+            "base_type": "System.Object",
+            "interfaces": [],
+            "derived_types": [],
+            "type_parameters": [],
+            "members": [
+              {
+                "name": "AddEventStoreExtensions",
+                "kind": "method",
+                "attributes": [],
+                "signature": "Microsoft.Extensions.DependencyInjection.IServiceCollection AddEventStoreExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration)",
+                "digest": "306340d328",
+                "canonical_signature": "M:Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions.AddEventStoreExtensions(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)",
+                "metadata_token": 100669188,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100669188,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "method_token": 100669188,
+                  "attributes": "Public, Static, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": true,
+                "is_obsolete": false,
+                "extended_type": "Microsoft.Extensions.DependencyInjection.IServiceCollection",
+                "declaring_type": "Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions",
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ConfigurationSection",
+                "kind": "field",
+                "attributes": [],
+                "field_layout": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "declaring_type_token": 33554887,
+                  "field_token": 67110754
+                },
+                "return_type": "string",
+                "digest": "bf212c3a2c",
+                "canonical_signature": "F:Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions.ConfigurationSection",
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": true,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 67110754,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 1,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "HealthCheckName",
+                "kind": "field",
+                "attributes": [],
+                "field_layout": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "declaring_type_token": 33554887,
+                  "field_token": 67110755
+                },
+                "return_type": "string",
+                "digest": "ae0c3f7d6f",
+                "canonical_signature": "F:Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions.HealthCheckName",
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": true,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "0a5454ec-2178-4e36-bf63-0d8d33d13bc0",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 67110755,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 1,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              }
+            ],
+            "additional_source_files": [],
+            "is_partial_type": false,
+            "is_forwarded": false,
+            "full_name": "Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions",
+            "documentation": {
+              "samples": []
+            }
+          }
+        }
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Gateway",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.gateway/4.2.0/hexalith.eventstore.gateway.4.2.0.nupkg",
+      "archiveSha256": "277efc4ab9e9a643ef591c6963893989bd9b9060f4bec5dd2a70852236c0b526",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Gateway.4.2.0\nContent hash: hZEkmMPThoWFVZWSpVrAaoaRLzui2i9z88hBLb4WJASgHA1YoR6ZUK4QEyfKXMTxTE1b81buWLDsgmdoIPaWkw==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Gateway.dll": "a7038a4e7858aca19c78cf2489fbffd5bd78925b956a96f2473d854127ed0b46"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    },
+    {
+      "id": "Hexalith.EventStore.Aspire",
+      "version": "4.2.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.eventstore.aspire/4.2.0/hexalith.eventstore.aspire.4.2.0.nupkg",
+      "archiveSha256": "579609ce9a4903a530d0d85d9478c08b829015278e5041628d3e5c12bf98a973",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Aspire.4.2.0\nContent hash: vkPDD+llFWY7hLixOEf3fLFdCJN3tP3UOQDzJ1C2MquB0GZfcebqJERLAU2TSE8b7xYalSL807binQmSehtUqg==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "lib/net10.0/Hexalith.EventStore.Aspire.dll": "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a"
+      },
+      "api": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore",
+        "commit": "aa16227bd07f0564a3026d619a5abd973e02656f"
+      }
+    }
+  ],
+  "qualificationCredit": false
+}

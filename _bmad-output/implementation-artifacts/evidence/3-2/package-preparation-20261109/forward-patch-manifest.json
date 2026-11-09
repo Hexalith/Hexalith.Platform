@@ -1,0 +1,19 @@
+{
+  "applied": false,
+  "placeholdersRequireMeasuredRelease": true,
+  "newAutomaticGroupRequiredCount": 7,
+  "existingCiGroupsChanged": false,
+  "sdkFeatureProjects": [
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj"
+  ],
+  "ownerPatchSource": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "remaining": [
+    "Publish accepted EventStore source cab8363c2b6e2c0588efc8ca9c2e09fab0006841 or a reviewed descendant.",
+    "Release Builds with consumer-view API; materialize the exact host ProjectVersions before composition.",
+    "Measure signed package bodies, source/publication identities and image digests; enroll one exact cohort before replacing placeholders.",
+    "Refresh L/M tuple, published tool binding, exact-source legacy pair and replay automatic suite/counts."
+  ]
+}

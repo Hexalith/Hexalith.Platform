@@ -1,0 +1,65 @@
+namespace Hexalith.Builds.ModuleTool.Tests.Workspace;
+
+using System.Reflection;
+using System.Text.Json;
+using System.Xml.Linq;
+using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
+using Hexalith.Platform.Composition;
+using Shouldly;
+
+/// <summary>Real package restore/build through the proposed SDK consumer view and production binding writer.</summary>
+public sealed class HostSnapshotRestoreTests
+{
+    [Fact]
+    public async Task RecordedHostViewRestoresTheActualCandidatePackageAsync()
+    {
+        using JsonDocument candidate = JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("STORY32_CANDIDATE_RECEIPT")!));
+        candidate.RootElement.GetProperty("passed").GetBoolean().ShouldBeTrue();
+        string version = candidate.RootElement.GetProperty("packageVersion").GetString()!;
+        string feed = Path.Combine(candidate.RootElement.GetProperty("work").GetString()!, "feed");
+        const string package = "Hexalith.Platform.TestExtension";
+        const string consumer = "Hexalith.Platform.EventStoreHost";
+        string work = Directory.CreateTempSubdirectory("story32-host-snapshot-restore-").FullName;
+        try
+        {
+            SourceMapping mapping = new(WorkspaceMode.Package, work, "Hexalith.Platform", [], false);
+            Dictionary<string, string> defaults = new() { [package] = "9.8.7" };
+            Dictionary<string, string> pinned = new() { ["Props/Directory.Packages.props"] = new string('a', 64) };
+            Dictionary<string, string> host = candidate.RootElement.GetProperty("resolvedLibraries").EnumerateObject()
+                .ToDictionary(item => item.Name.Split('/')[0], _ => version);
+            Dictionary<string, IReadOnlyDictionary<string, string>> projects = new() { [consumer] = host };
+            string commit = new('b', 40);
+            string fileHash = new('a', 64);
+            CatalogVersionSnapshot snapshot = new(mapping.ContentHash, commit, fileHash, pinned, defaults, projects,
+                CatalogVersionSnapshot.ComputeHash(mapping.ContentHash, commit, fileHash, pinned, defaults, projects));
+            Directory.CreateDirectory(Path.Combine(work, "source-mapping"));
+            File.WriteAllText(Path.Combine(work, "source-mapping", "catalog-versions.json"), JsonSerializer.Serialize(snapshot));
+            CompositionDeclarationOptions options = new(mapping, []) { Workspace = work };
+            options.CatalogPackageVersion(package, "component-probe").ShouldBe("9.8.7");
+            string selected = options.CatalogPackageVersion(package, "component-probe", consumer)!;
+            selected.ShouldBe(version);
+            PlatformEventStoreExtensionBinding binding = new("extensionprobe", "component-probe", package, "platform-test", 1, package, selected, []);
+            Type writer = typeof(PlatformEventStoreHostBinding).Assembly.GetType("Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings", true)!;
+            string props = (string)writer.GetMethod("Write", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
+                [new PlatformEventStoreHostBinding("unused-component-host", [binding]), Path.Combine(work, "bindings")])!;
+            XElement central = new("Project", new XElement("PropertyGroup", new XElement("ManagePackageVersionsCentrally", "true")),
+                new XElement("ItemGroup", host.Where(item => item.Key != package).Select(item => new XElement("PackageVersion", new XAttribute("Include", item.Key), new XAttribute("Version", item.Value)))));
+            new XDocument(central).Save(Path.Combine(work, "Directory.Packages.props"));
+            string project = Path.Combine(work, consumer + ".csproj");
+            new XDocument(new XElement("Project", new XAttribute("Sdk", "Microsoft.NET.Sdk"),
+                new XElement("PropertyGroup", new XElement("TargetFramework", "net10.0"), new XElement("TreatWarningsAsErrors", "true")),
+                new XElement("Import", new XAttribute("Project", props)))).Save(project);
+            File.WriteAllText(Path.Combine(work, "Probe.cs"), "public static class Probe { public const string Adapter = Hexalith.Platform.TestExtension.PlatformTestExtensionAdapters.AdapterId; }");
+            File.WriteAllText(Path.Combine(work, "nuget.config"), "<configuration><packageSources><clear/><add key=\"candidate\" value=\"" + feed + "\"/><add key=\"nuget.org\" value=\"https://api.nuget.org/v3/index.json\"/></packageSources><packageSourceMapping><clear/><packageSource key=\"candidate\">" + string.Concat(host.Keys.Select(id => "<package pattern=\"" + id + "\"/>")) + "</packageSource><packageSource key=\"nuget.org\"><package pattern=\"*\"/></packageSource></packageSourceMapping></configuration>");
+            CompositionProcessResult build = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+                ["build", project, "-c", "Release", "-nodeReuse:false", "--disable-build-servers", "--nologo"], work, null), TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken);
+            build.ExitCode.ShouldBe(0, build.Output + build.ErrorOutput);
+            using JsonDocument assets = JsonDocument.Parse(File.ReadAllText(Path.Combine(work, "obj", "project.assets.json")));
+            assets.RootElement.GetProperty("libraries").GetProperty(package + "/" + version).GetProperty("type").GetString().ShouldBe("package");
+            File.WriteAllText("host-view-result.json", JsonSerializer.Serialize(new { DefaultVersion = "9.8.7", HostVersion = selected, ResolvedVersion = version,
+                Type = "package", Consumer = consumer, RealPackageRestoreAndCompilation = true, QualificationCredit = false }));
+        }
+        finally { Directory.Delete(work, true); }
+    }
+}

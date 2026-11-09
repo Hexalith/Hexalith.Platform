@@ -159,7 +159,9 @@ internal static class PlatformEventStoreExtensionBindings
                 continue;
             }
             references.Add(new XElement("PackageReference", new XAttribute("Include", extension.Reference)));
-            references.Add(new XElement("PackageVersion", new XAttribute("Update", extension.Reference), new XAttribute("Version", extension.PackageVersion)));
+            // Replace any live central item and also admit packages present only in the validated snapshot.
+            references.Add(new XElement("PackageVersion", new XAttribute("Remove", extension.Reference)));
+            references.Add(new XElement("PackageVersion", new XAttribute("Include", extension.Reference), new XAttribute("Version", extension.PackageVersion)));
         }
         string props = Path.Combine(directory, "bindings.props");
         new XDocument(new XElement("Project", references)).Save(props);

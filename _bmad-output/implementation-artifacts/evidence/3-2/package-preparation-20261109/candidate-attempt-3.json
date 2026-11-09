@@ -1,0 +1,325 @@
+{
+  "schema": "story32-local-candidate-probe.v1",
+  "qualificationCredit": false,
+  "candidateOnly": true,
+  "packageVersion": "0.0.0-story32.local.20261109",
+  "work": "/tmp/story32-candidate-package-k36badgr",
+  "commands": [
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.Admin.Abstractions/Hexalith.EventStore.Admin.Abstractions.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-Admin.Abstractions.log",
+      "exitCode": 0,
+      "elapsedSeconds": 6.092
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-Contracts.log",
+      "exitCode": 0,
+      "elapsedSeconds": 1.068
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/Hexalith.EventStore.ServiceDefaults.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-ServiceDefaults.log",
+      "exitCode": 0,
+      "elapsedSeconds": 3.732
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-Client.log",
+      "exitCode": 0,
+      "elapsedSeconds": 4.49
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/Hexalith.EventStore.DomainService.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-DomainService.log",
+      "exitCode": 0,
+      "elapsedSeconds": 4.682
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.Server/Hexalith.EventStore.Server.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-Server.log",
+      "exitCode": 0,
+      "elapsedSeconds": 7.464
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.EventStore/src/Hexalith.EventStore.Gateway/Hexalith.EventStore.Gateway.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/sdk-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:GeneratePackageOnBuild=false",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-Gateway.log",
+      "exitCode": 0,
+      "elapsedSeconds": 5.288
+    },
+    {
+      "command": [
+        "dotnet",
+        "pack",
+        "/tmp/story32-candidate-package-k36badgr/platform/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/fixture-artifacts",
+        "-o",
+        "/tmp/story32-candidate-package-k36badgr/feed",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:RestoreAdditionalProjectSources=/tmp/story32-candidate-package-k36badgr/feed",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo",
+        "-p:IsPackable=true",
+        "-p:PackageVersion=0.0.0-story32.local.20261109",
+        "-p:Version=0.0.0-story32.local.20261109",
+        "-p:Description=Disposable local Story 3.2 extension probe",
+        "-p:Authors=Local candidate probe"
+      ],
+      "cwd": "/tmp/story32-candidate-package-k36badgr/platform",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/pack-fixture.log",
+      "exitCode": 0,
+      "elapsedSeconds": 2.27
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/tmp/story32-candidate-package-k36badgr/generator/Generator.csproj",
+        "--",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0",
+        "0.0.0-story32.local.20261109",
+        "/tmp/story32-candidate-package-k36badgr/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+        "/tmp/story32-candidate-package-k36badgr/bindings"
+      ],
+      "cwd": "/tmp/story32-candidate-package-k36badgr",
+      "timeoutSeconds": 120,
+      "log": "/tmp/story32-candidate-package-k36badgr/generate-bindings.log",
+      "exitCode": 0,
+      "elapsedSeconds": 1.267
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story32-candidate-package-k36badgr/platform/candidate-driver/Candidate.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-candidate-package-k36badgr/host-artifacts",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:RestoreAdditionalProjectSources=/tmp/story32-candidate-package-k36badgr/feed",
+        "-p:PlatformEventStoreExtensionBindings=/tmp/story32-candidate-package-k36badgr/bindings/bindings.props"
+      ],
+      "cwd": "/tmp/story32-candidate-package-k36badgr/platform",
+      "timeoutSeconds": 600,
+      "log": "/tmp/story32-candidate-package-k36badgr/build-host.log",
+      "exitCode": 0,
+      "elapsedSeconds": 12.817
+    }
+  ],
+  "scope": "Actual Platform Program over loopback Kestrel HTTP; no sidecar/distributed readiness or production cohort admission.",
+  "limits": [
+    "The existing seed metadata fixture removes only AdminOperationalIndexHostedService's hosted alias; no Dapr sidecar is provisioned.",
+    "The locally packaged SDK is deliberately unsigned and nonpublic. No signed-body, image, provenance or finite-host admission check is invoked or changed."
+  ],
+  "source": {
+    "platform": "27a1638e0e7d66b672708507d95a44fe31050718",
+    "eventstore": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841"
+  },
+  "consumerProjectLibraries": {
+    "Hexalith.Platform.Custody/1.0.0": {
+      "type": "project",
+      "path": "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj",
+      "msbuildProject": "../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj"
+    },
+    "Hexalith.Platform.Custody.Component/1.0.0": {
+      "type": "project",
+      "path": "../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj",
+      "msbuildProject": "../Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj"
+    },
+    "Hexalith.Platform.Identity/1.0.0": {
+      "type": "project",
+      "path": "../Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj",
+      "msbuildProject": "../Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj"
+    },
+    "Hexalith.Platform.Protection/1.0.0": {
+      "type": "project",
+      "path": "../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj",
+      "msbuildProject": "../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj"
+    },
+    "Hexalith.Platform.Secrets.Runtime/1.0.0": {
+      "type": "project",
+      "path": "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj",
+      "msbuildProject": "../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj"
+    }
+  },
+  "foreignProjectReferences": [],
+  "resolvedLibraries": {
+    "Hexalith.Platform.TestExtension/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.Admin.Abstractions/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.Contracts/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.ServiceDefaults/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.Client/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.DomainService/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.Server/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    },
+    "Hexalith.EventStore.Gateway/0.0.0-story32.local.20261109": {
+      "depsType": "package",
+      "assetsType": "package"
+    }
+  },
+  "passed": false,
+  "failure": ""
+}
